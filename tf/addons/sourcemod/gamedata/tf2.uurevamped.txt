@@ -1,0 +1,151 @@
+"Games"
+{
+	"tf"
+	{
+		"Offsets"
+		{
+			"CTFWeaponBaseGrenadeProj::InitGrenade(int float)"
+			{
+				"linux"		"242"
+				"windows"	"240"
+			}
+			"CTFPlayerShared::m_pOuter"
+			{
+				// checked in CTFPlayerShared::HasDemoShieldEquipped()
+				"linux"		"400"
+				"windows"	"400"
+			}
+			"m_flTauntAttackTime" 
+			{
+				"windows"	"32"
+				"linux"		"28"
+			}
+			"CBasePlayer::OnMyWeaponFired"
+			{
+				"windows"	"354"
+				"linux"		"355"
+			}
+			"CTFWeaponBase::GetWeaponID()"
+			{
+				"windows"	"376"
+				"linux"		"382"
+			}
+			"CTFWeaponBase::GetDamageType()"
+			{
+				"windows"	"130"
+				"linux"		"131"
+			}
+			"CTFWeaponBase::CanFireCriticalShot()"
+			{
+				"windows"	"432"
+				"linux"		"439"
+			}
+			"CBaseCombatCharacter::Weapon_ShootPosition()"
+			{
+				"windows"	"272"
+				"linux"		"273"
+			}
+		}
+		"Functions"
+		{
+			"CTFPlayerShared::ModifyRage()"
+			{
+				"signature"		"CTFPlayerShared::ModifyRage()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"address"
+				"arguments"
+				{
+					"delta"
+					{
+						"type"	"float"
+					}
+				}
+			}
+			"CTFBotLocomotion::GetRunSpeed()"
+			{
+				"signature"		"CTFBotLocomotion::GetRunSpeed()"
+				"callconv"		"thiscall"
+				"return"		"float"
+				"this"			"address"
+			}
+			"CBaseEntity::IsInWorld()"
+			{
+				"signature"		"CBaseEntity::IsInWorld()"
+				"callconv"		"thiscall"
+				"return"		"bool"
+				"this"			"entity"
+			}
+			"CBasePlayer::SetPunchAngle()"
+			{
+				"signature"		"CBasePlayer::SetPunchAngle()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"entity"
+				"arguments"
+				{
+					"angle"
+					{
+						"type"	"vectorptr"
+					}
+				}
+			}
+			"CTFWeaponBase::ApplyFireDelay(float)"
+			{
+				"signature"		"CTFWeaponBase::ApplyFireDelay(float)"
+				"callconv"		"thiscall"
+				"return"		"float"
+				"this"			"entity"
+				"arguments"
+				{
+					"delay"
+					{
+						"type"	"float"
+					}
+				}
+			}
+		}
+		"Signatures"
+		{
+			"CTFPlayerShared::ModifyRage()"
+			{
+				// last call in assembly block containing unique string "rage_on_hit"
+				"library"	"server"
+				"linux"		"@_ZN15CTFPlayerShared10ModifyRageEf"
+				"windows"	"\x55\x8B\xEC\xF3\x0F\x10\x81\x8C\x02\x00\x00"
+			}
+			"CTFBotLocomotion::GetRunSpeed()"
+			{
+				"library"	"server"
+				"linux"		"@_ZNK16CTFBotLocomotion11GetRunSpeedEv"
+			}
+			"CBaseEntity::IsInWorld()"
+			{
+				"library"	"server"
+				"linux"		"@_ZNK11CBaseEntity9IsInWorldEv"
+			}
+			"CBasePlayer::SetPunchAngle()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN11CBasePlayer13SetPunchAngleERK6QAngle"
+			}
+			"CBaseAnimating::LookupBone"
+			{
+				"library"	"server"
+				"linux"		"@_ZN14CBaseAnimating10LookupBoneEPKc"
+				"windows"	"\x55\x8B\xEC\x56\x8B\xF1\x80\xBE\x41\x03\x00\x00\x00\x75\x2A\x83\xBE\x6C\x04\x00\x00\x00\x75\x2A\xE8\x2A\x2A\x2A\x2A\x85\xC0\x74\x2A\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x8B\x86\x6C\x04\x00\x00\x85\xC0\x74\x2A\x83\x38\x00\x74\x2A\xFF\x75\x08\x50\xE8\x2A\x2A\x2A\x2A\x83\xC4\x08\x5E"
+			}
+			"CBaseAnimating::GetBonePosition"
+			{
+				"library"	"server"
+				"linux"		"@_ZN14CBaseAnimating15GetBonePositionEiR6VectorR6QAngle"
+				"windows"	"\x55\x8B\xEC\x83\xEC\x30\x56\x8B\xF1\x80\xBE\x41\x03\x00\x00\x00"
+			}
+			"CTFWeaponBase::ApplyFireDelay(float)"
+			{
+				"library"	"server"
+				"linux"		"@_ZNK13CTFWeaponBase14ApplyFireDelayEf"
+			}
+		}
+	}
+}
