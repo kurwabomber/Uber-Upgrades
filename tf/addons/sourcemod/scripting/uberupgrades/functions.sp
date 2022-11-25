@@ -1332,6 +1332,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 		TF2Attrib_SetByName(client,"maxammo primary increased",1+((additionalstartmoney+StartMoney)/5000.0)*OverAllMultiplier);
 		TF2Attrib_SetByName(client,"maxammo secondary increased",1+((additionalstartmoney+StartMoney)/5000.0)*OverAllMultiplier);
 		TF2Attrib_SetByName(client,"ammo regen", 1.0);
+		TF2Attrib_SetByName(client,"increased air control", 3.0);
 		TF2Attrib_SetByName(melee,"melee range multiplier", 50.0);
 		TF2Attrib_SetByName(melee,"fire rate penalty HIDDEN", 0.75);
 		if((additionalstartmoney+StartMoney) <= 300000.0/OverAllMultiplier)
@@ -2542,7 +2543,11 @@ projGravity(entity)
 			{
 				//PrintToChatAll("2");
 				new Address:projgravity = TF2Attrib_GetByName(ClientWeapon, "cloak_consume_on_feign_death_activate");
-				if(projgravity != Address_Null)
+
+				decl String:strClassname[64];
+				GetEntityClassname( entity, strClassname, sizeof(strClassname) );
+
+				if(projgravity != Address_Null && TF2Attrib_GetValue(projgravity) != 0.0)
 				{
 					//PrintToChatAll("3");
 					if(GetEntityMoveType(entity) != MOVETYPE_VPHYSICS)
@@ -2553,10 +2558,10 @@ projGravity(entity)
 					}
 					else
 					{
-						if(HasEntProp(entity, Prop_Data, "m_angRotation"))
+						if(StrEqual(strClassname, "tf_projectile_pipe"))
 						{
 							new Float:flAng[3],Float:fVelocity[3],Float:vBuffer[3];
-							new Float:velocity = 2000.0;
+							new Float:velocity = 5000.0;
 							GetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
 							
 							GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR);
@@ -2565,11 +2570,28 @@ projGravity(entity)
 							fVelocity[1] = vBuffer[1]*velocity;
 							fVelocity[2] = vBuffer[2]*velocity;
 							//SetEntPropVector(entity, Prop_Data, "m_vecVelocity", fVelocity);
-							TeleportEntity(entity, NULL_VECTOR, NULL_VECTOR, fVelocity);
+							TeleportEntity(entity, NULL_VECTOR, flAng, fVelocity);
+							//Phys_SetVelocity(entity, fVelocity, NULL_VECTOR, true);
 							SetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", fVelocity);
 							SetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
 						}
+						else if(StrEqual(strClassname, "tf_projectile_cleaver"))
+						{
+							new Float:flAng[3],Float:fVelocity[3],Float:vBuffer[3];
+							new Float:vecAngImpulse[3];
+							GetCleaverAngularImpulse(vecAngImpulse);
+							new Float:velocity = 5000.0;
+							GetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
+							flAng[0] -= 10.0;
+							GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR);
+							fVelocity[0] = vBuffer[0]*velocity;
+							fVelocity[1] = vBuffer[1]*velocity;
+							fVelocity[2] = vBuffer[2]*velocity;
+							SDKCall(g_SDKCallInitGrenade, entity, fVelocity, vecAngImpulse, client, 0, 5.0);
+							SetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", fVelocity);
+						}
 						Phys_EnableGravity(entity, false);
+						//Phys_EnableCollisions(entity, false);
 					}
 					//PrintToChatAll("END | movetype = %i | gravity = %.2f", GetEntityMoveType(entity), GetEntityGravity(entity));
 				}
@@ -2636,6 +2658,7 @@ stock void ResizeHitbox(int entity, float fScale)
 }
 stock ResizeProjectile(entity)
 {
+	entity = EntRefToEntIndex(entity);
 	if(IsValidEntity(entity))
 	{
 		int client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");

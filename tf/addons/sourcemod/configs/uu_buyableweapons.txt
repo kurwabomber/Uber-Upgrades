@@ -6,11 +6,12 @@
 		"weapon_class"	"tf_weapon_katana"
 		"weapon_menu"	"menuKatana"
 		"class"			"soldier"
-		"description"	"Has the base stats of a Half-Zatoichi.\nHas +15 bleed status buildup on hit.\nAbility strikes enemies within a 600HU sphere up to 20 times\n doing 10 base DPS. Does not increase victim bleed.\n\nThere will be blood-shed! (meme)"
+		"description"	"Has the base stats of a Half-Zatoichi.\nHas +15 bleed status buildup on hit.\nAbility strikes enemies within a 600HU sphere up to 20 times\n doing 10 base DPS. Does not increase victim bleed.\nConverts all fire rate into damage.\nThere will be blood-shed! (meme)"
 		"cost"			"70000.0"
 		"honor bound"	"1"
 		"Bleed Per Hit"	"15"
 		"Ability : Corpse Piler" "9"
+		"Converts Firerate to Damage"	"1"
 	}
 	"Moonveil"
 	{

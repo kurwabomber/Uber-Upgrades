@@ -237,6 +237,17 @@ public MRESReturn OnCalculateBotSpeedPost(int client, Handle hReturn) {
 	DHookSetReturn(hReturn, 3000.0);
 	return MRES_Supercede;
 }
+public MRESReturn OnSentryThink(int entity)  {
+	if(IsValidEntity(entity))
+	{
+		if(sentryThought[entity] == false)
+		{
+			sentryThought[entity] = true;
+			return MRES_Ignored;
+		}
+	}
+	return MRES_Supercede;
+}
 public MRESReturn IsInWorldCheck(int entity, Handle hReturn, Handle hParams)  {
 	if(IsValidEntity(entity))
 	{
@@ -263,9 +274,38 @@ public MRESReturn OnFireRateCall(int entity, Handle hReturn, Handle hParams)  {
 	if(IsValidWeapon(entity))
 	{
 		new Float:rate = DHookGetReturn(hReturn);
+
+		//If their weapon doesn't have a clip, reload rate also affects fire rate.
+		if(HasEntProp(entity, Prop_Data, "m_iClip1") && GetEntProp(entity,Prop_Data,"m_iClip1")  == -1)
+		{
+			new Address:ModClip = TF2Attrib_GetByName(entity, "mod max primary clip override");
+			if(ModClip == Address_Null)
+			{
+				new Address:apsMult12 = TF2Attrib_GetByName(entity, "faster reload rate");
+				new Address:apsMult13 = TF2Attrib_GetByName(entity, "Reload time increased");
+				new Address:apsMult14 = TF2Attrib_GetByName(entity, "Reload time decreased");
+				new Address:apsMult15 = TF2Attrib_GetByName(entity, "reload time increased hidden");
+				
+				if(apsMult12 != Address_Null) {
+				rate *= TF2Attrib_GetValue(apsMult12);
+				}
+				if(apsMult13 != Address_Null) {
+				rate *= TF2Attrib_GetValue(apsMult13);
+				}
+				if(apsMult14 != Address_Null) {
+				rate *= TF2Attrib_GetValue(apsMult14);
+				}
+				if(apsMult15 != Address_Null) {
+				rate *= TF2Attrib_GetValue(apsMult15);
+				}
+			}
+		}
 		weaponFireRate[entity] = 1.0/rate;
 	}
 	return MRES_Ignored;
+}
+public MRESReturn OnBotJumpLogic(int entity, Handle hReturn, Handle hParams)  {
+	return MRES_Supercede;
 }
 public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 {
@@ -533,6 +573,7 @@ public OnEntityCreated(entity, const char[] classname)
 	if(!IsValidEntity(entity) || entity < 0 || entity > 2048)
 		return;
 
+
 	weaponFireRate[entity] = -1.0;
 	if(StrEqual(classname, "obj_attachment_sapper"))
 	{
@@ -540,6 +581,7 @@ public OnEntityCreated(entity, const char[] classname)
 	}
 	else if(StrEqual(classname, "obj_sentrygun"))
     {
+		isEntitySentry[entity] = true;
 		SDKHook(entity, SDKHook_OnTakeDamage, OnTakeDamagePre_Sentry); 
 		CreateTimer(0.35, BuildingRegeneration, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 		RequestFrame(checkEnabledSentry, EntIndexToEntRef(entity));
@@ -612,6 +654,7 @@ public OnEntityCreated(entity, const char[] classname)
 		{
 			RequestFrame(MultiShot, EntIndexToEntRef(entity));
 			RequestFrame(projGravity, EntIndexToEntRef(entity));
+			RequestFrame(ResizeProjectile, EntIndexToEntRef(entity))
 			CreateTimer(0.03, ThrowableHomingThink, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 		}
 		if(StrEqual(classname, "tf_projectile_pipe") || StrEqual(classname, "tf_projectile_pipe_remote"))
@@ -654,6 +697,7 @@ public OnEntityDestroyed(entity)
 	{
 		ShouldNotHome[entity][i] = false;
 	}
+	isEntitySentry[entity] = false;
 	isProjectileHoming[entity] = false;
 	isProjectileBoomerang[entity] = false;
 	projectileHomingDegree[entity] = 0.0;
@@ -1888,17 +1932,25 @@ public OnGameFrame()
 
 	for(new i=MaxClients; i < MAXENTITIES; i++)
 	{
-		if(isProjectileHoming[i] == true)
+		if(IsValidEntity(i))
 		{
-			OnThinkPost(i);
-		}
-		if(isProjectileBoomerang[i] == true)
-		{
-			BoomerangThink(i);
-		}
-		if(projectileHomingDegree[i] > 0.0)
-		{
-			OnHomingThink(i);
+			if(isProjectileHoming[i] == true)
+			{
+				OnThinkPost(i);
+			}
+			if(isProjectileBoomerang[i] == true)
+			{
+				BoomerangThink(i);
+			}
+			if(projectileHomingDegree[i] > 0.0)
+			{
+				OnHomingThink(i);
+			}
+			if(isEntitySentry[i] == true)
+			{
+				sentryThought[i] = false;
+				SDKCall(g_SDKCallSentryThink, i);
+			}
 		}
 	}
 	for(new client=1; client<=MaxClients; client++)
@@ -2192,7 +2244,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 	{
 		canShootAgain[client] = true;
 		new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEntity(CWeapon))
+		if(IsValidWeapon(CWeapon))
 		{
 			meleeLimiter[client]++;
 			if(!IsFakeClient(client))
@@ -2204,6 +2256,11 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					WritePackCell(hPack, client);
 					WritePackFloat(hPack, 0.5);
 					CreateTimer(1.0, RemoveFire, hPack);
+
+					if(meleeLimiter[client] & 1 && weaponFireRate[CWeapon] > 5.01)
+					{
+						SDKCall(g_SDKCallSmack, CWeapon);
+					}
 				}
 				else
 				{
@@ -2212,6 +2269,16 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					WritePackCell(hPack, client);
 					WritePackFloat(hPack, 1.0);
 					CreateTimer(1.0, RemoveFire, hPack);
+					new String:classname[64]; 
+					GetEdictClassname(CWeapon, classname, sizeof(classname)); 
+
+					if(StrEqual(classname, "tf_weapon_cleaver"))
+					{
+						if(weaponFireRate[CWeapon] > 5.01)
+						{
+							SDKCall(g_SDKCallJar, CWeapon);
+						}
+					}
 				}
 			}
 			decl Float:fAngles[3], Float:fVelocity[3], Float:fOrigin[3], Float:vBuffer[3];

@@ -1788,19 +1788,20 @@
 			"Attr12"	"Bleed Per Hit"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr8"		"reveal cloaked victim on hit"
 			"Attr9"		"reveal disguised victim on hit"
 		}
 		"Cleaver specific upgrades"
 		{
-			"Attr1"		"Fire Rate (throw)"
-			"Attr3"		"Blast radius increased (Throwable)"
+			"Attr1"		"fire rate bonus(multshit)"
+			"Attr2"		"Projectile Hitbox Bonus"
+			"Attr3"		"projectile penetration"
+			"Attr4"		"No gravity projectile"
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Grenade Launcher"
+			"Sp1"		"Some Other Beggar Tweak"
 		}
 	}
 	"menuFireball"

@@ -274,9 +274,10 @@
 		}
 		"Grenade Launcher"//48
 		{
+			"requirement"					"100000"
+			"cost"							"20000"
 			"override projectile type"		"1"
 			"damage bonus HIDDEN"			"16.6"
-			"fire rate penalty(cleaver)"		"30"
 		}
 		"Dispencer Heal rate"//49
 		{

@@ -1086,7 +1086,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			if(StrContains(strName, "weapon") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Primary Stats");
-				decl String:Description[512];
+				decl String:Description[1024];
 				
 				Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
 				GetAlphabetForm(TF2_GetDamageModifiers(client, primary)),
@@ -1095,8 +1095,21 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 				GetAlphabetForm(TF2_GetWeaponclassDPS(client, primary) * TF2_GetDPSModifiers(client, primary))); 
 
 				if(weaponFireRate[primary] != -1.0)
+				{
 					Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[primary]);
-					
+					new Float:tickRate = 1.0/GetTickInterval();
+
+					for(int i = 1 ; i < 6 ; i++)
+					{
+						if(weaponFireRate[primary] >= tickRate/i)
+						{
+							tickRate /= i;
+							Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[primary]-tickRate)/tickRate));
+							break;
+						}
+					}
+				}
+
 				AddMenuItem(menu, "primary_description", Description, ITEMDRAW_DISABLED);
 			}
 			else
@@ -1148,7 +1161,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			else if(StrContains(strName, "weapon") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Secondary Stats");
-				decl String:Description[512];
+				decl String:Description[1024];
 				
 				Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
 				GetAlphabetForm(TF2_GetDamageModifiers(client, secondary)),
@@ -1157,7 +1170,20 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 				GetAlphabetForm(TF2_GetWeaponclassDPS(client, secondary) * TF2_GetDPSModifiers(client, secondary))); 
 
 				if(weaponFireRate[secondary] != -1.0)
+				{
 					Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[secondary]);
+					new Float:tickRate = 1.0/GetTickInterval();
+
+					for(int i = 1 ; i < 6 ; i++)
+					{
+						if(weaponFireRate[secondary] >= tickRate/i)
+						{
+							tickRate /= i;
+							Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[secondary]-tickRate)/tickRate));
+							break;
+						}
+					}
+				}
 
 				AddMenuItem(menu, "secondary_description", Description, ITEMDRAW_DISABLED);
 			}
@@ -1187,7 +1213,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			if(StrContains(strName, "weapon") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Melee Stats");
-				decl String:Description[512];
+				decl String:Description[1024];
 				
 				Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
 				GetAlphabetForm(TF2_GetDamageModifiers(client, melee)),
@@ -1250,7 +1276,20 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 					Format(Description, sizeof(Description), "%s\nSentry DPS = %s", Description, GetAlphabetForm(SentryDPS));
 				}
 				if(weaponFireRate[melee] != -1.0)
+				{
 					Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[melee]);
+					new Float:tickRate = 1.0/GetTickInterval();
+
+					for(int i = 1 ; i < 6 ; i++)
+					{
+						if(weaponFireRate[melee] >= tickRate/i)
+						{
+							tickRate /= i;
+							Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[melee]-tickRate)/tickRate));
+							break;
+						}
+					}
+				}
 				
 				AddMenuItem(menu, "melee_description", Description, ITEMDRAW_DISABLED);
 			}
@@ -1271,13 +1310,30 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			if(StrContains(strName, "weapon") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Bought Weapon Stats");
-				decl String:Description[512];
+				decl String:Description[1024];
 				
 				Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
 				GetAlphabetForm(TF2_GetDamageModifiers(client, weapon)),
 				GetAlphabetForm(TF2_GetDPSModifiers(client, weapon)),
 				TF2_GetWeaponclassDPS(client, weapon),
 				GetAlphabetForm(TF2_GetWeaponclassDPS(client, weapon) * TF2_GetDPSModifiers(client, weapon))); 
+
+				if(weaponFireRate[weapon] != -1.0)
+				{
+					Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[weapon]);
+					new Float:tickRate = 1.0/GetTickInterval();
+
+					for(int i = 1 ; i < 6 ; i++)
+					{
+						if(weaponFireRate[weapon] >= tickRate/i)
+						{
+							tickRate /= i;
+							Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[weapon]-tickRate)/tickRate));
+							break;
+						}
+					}
+				}
+
 				AddMenuItem(menu, "primary_description", Description, ITEMDRAW_DISABLED);
 			}
 			else

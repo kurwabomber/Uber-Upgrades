@@ -117,7 +117,6 @@ public Action:ShowHelp(client, args)
 {
 	if(IsValidClient3(client))
 	{
-		CPrintToChat(client, "{gray}Help | {gold}Please join the discord : https://discord.gg/ukfX6ZsuWT Ask any questions there, talk to other players & make suggestions.");
 		CPrintToChat(client, "{gray}Help | {gold}This server is running Uber Upgrades v%s", PLUGIN_VERSION);
 		if(!IsMvM())
 		{

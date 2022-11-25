@@ -635,7 +635,8 @@ public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 	if(IsValidClient3(victim) && miniCritStatus[victim] == false && IsValidClient3(attacker) && 
 	(critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > 0.0 || miniCritStatusVictim[victim] > 0.0))
 	{
-		PrintToChat(attacker, "minicrit override 1");
+		if(debugMode)
+			PrintToChat(attacker, "minicrit override 1");
 		miniCritStatus[victim] = true;
 		damage *= 1.4;
 		critType = CritType_None;
@@ -666,7 +667,8 @@ int damagecustom, CritType &critType)
 	if(IsValidClient3(victim) && lastDamageTaken[victim] != 0.0 && miniCritStatus[victim] == false && IsValidClient3(attacker) 
 	&& (critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > 0.0 || miniCritStatusVictim[victim] > 0.0))
 	{
-		PrintToChat(attacker, "minicrit override failsafe");
+		if(debugMode)
+			PrintToChat(attacker, "minicrit override failsafe");
 		miniCritStatus[victim] = true
 		damage = lastDamageTaken[victim] * 1.4;
 		critType = CritType_None
@@ -689,6 +691,9 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damage
 		damagetype &= ~DMG_CRIT;
 		damage *= 2.25
 	}
+	if(damagetype & DMG_USEDISTANCEMOD)
+		damagetype -= DMG_USEDISTANCEMOD;
+
 	if (damagecustom == TF_CUSTOM_BACKSTAB && IsValidClient3(victim))
 	{
 		new bool:ToggleBackstab = true;

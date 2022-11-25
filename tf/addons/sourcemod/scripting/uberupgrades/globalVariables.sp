@@ -18,6 +18,9 @@ new Handle:SAwaterMark;
 new Handle:respawnMenu;
 new Handle:particleToggle;
 new Handle:g_SDKCallInitGrenade;
+new Handle:g_SDKCallSmack;
+new Handle:g_SDKCallJar;
+new Handle:g_SDKCallSentryThink;
 new Handle:Hook_OnMyWeaponFired;
 new Handle:hudSync;
 new Handle:hudSpells;
@@ -167,7 +170,8 @@ new String:SpellList[][] = {"Zap","Lightning Strike","Projected Healing","A Call
 new bool:inScore[MAXPLAYERS+1];
 new bool:hardcapWarning = false;
 new bool:isFailHooked = false;
-
+new bool:isEntitySentry[MAXENTITIES+1];
+new bool:sentryThought[MAXENTITIES+1];
 //MvM Checkpoints
 
 new currentupgrades_idx_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]

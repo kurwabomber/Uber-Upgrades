@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"No gravity projectile"
+	{
+		"en"		"No Gravity Projectile"
+	}
 	"Projectile speed decreased(t)"
 	{
 		"en"		"Projectile speed increased"

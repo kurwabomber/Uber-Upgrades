@@ -282,6 +282,53 @@ public void OnPluginStart()
 	{
 		PrintToServer("CustomAttrs | Grenade Creation offset not found.");
 	}
+
+	//Melee Call
+	StartPrepSDKCall(SDKCall_Entity);
+	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CTFWeaponBaseMelee::Smack()");
+	g_SDKCallSmack = EndPrepSDKCall();
+	if(g_SDKCallSmack==INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | Melee smack offset not found.");
+	}
+
+	//Jar Call
+	StartPrepSDKCall(SDKCall_Entity);
+	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CTFJar::TossJarThink()");
+	g_SDKCallJar = EndPrepSDKCall();
+	if(g_SDKCallJar==INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | Jar Throw offset not found.");
+	}
+
+	//Sentry Think Call
+	StartPrepSDKCall(SDKCall_Entity);
+	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CObjectSentrygun::SentryThink()");
+	g_SDKCallSentryThink = EndPrepSDKCall();
+	if(g_SDKCallSentryThink==INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | Sentry think offset not found.");
+	}
+
+	//Sentry Think Cap
+	Handle g_DHookSentryThink = DHookCreateFromConf(hConf, "CObjectSentrygun::SentryThink()");
+	
+	if(g_DHookSentryThink == INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | Sentry think function error");
+	}
+	DHookEnableDetour(g_DHookSentryThink, false, OnSentryThink);
+
+
+	//disable bot jumping
+	Handle g_DHookPlayerLocomotionJump = DHookCreateFromConf(hConf, "PlayerLocomotion::Jump()");
+	
+	if(g_DHookPlayerLocomotionJump == INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | bot locomotion jump function error");
+	}
+	DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);
+
 	//fire rate?
 	Handle g_DHookFireRateCall = DHookCreateFromConf(hConf, "CTFWeaponBase::ApplyFireDelay(float)");
 	
@@ -375,7 +422,7 @@ public void OnPluginStart()
 		PrintToServer("UU : Was unable to create a table. | SQLERROR : %s.", Error);
 	}
 	//Refresh
-	for (new client = 0; client < MaxClients; client++)
+	for (new client = 1; client < MaxClients; client++)
 	{
 		if(IsValidClient(client))
 		{
@@ -396,7 +443,7 @@ public void OnPluginStart()
 			AttunedSpells[client][i] = 0.0;
 		}
 	}
-	for (int i = 0 ; i <= MaxClients ; i++)
+	for (int i = 1 ; i <= MaxClients ; i++)
 		if(IsValidClient3(i))
 			OnClientPutInServer(i);
 }

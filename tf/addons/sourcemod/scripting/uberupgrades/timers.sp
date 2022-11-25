@@ -118,11 +118,11 @@ public Action:Timer_Second(Handle:timer)
 			new Address:regenActive = TF2Attrib_GetByName(client, "medigun crit blast percent bar deplete")
 			if(regenActive != Address_Null)
 			{
-				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.0005 * TF2Attrib_GetValue(regenActive) *  Pow(arcanePower, 2.0);
+				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.00015 * TF2Attrib_GetValue(regenActive) *  Pow(arcanePower, 2.0);
 			}
 			else
 			{
-				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.0005 *  Pow(arcanePower, 2.0);
+				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.00015 *  Pow(arcanePower, 2.0);
 			}
 			new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))

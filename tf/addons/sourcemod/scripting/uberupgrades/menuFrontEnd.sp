@@ -192,6 +192,48 @@ Action:Menu_UpgradeChoice(client, cat_choice, String:TitleStr[100], int page = 0
 				{
 					Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, (GetResistance(client, true, 0.0, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true)));
 				}
+				case 4:
+				{
+					new Float:arcanePower = 1.0;
+					
+					new Address:ArcaneActive = TF2Attrib_GetByName(client, "medigun crit fire percent bar deplete")
+					if(ArcaneActive != Address_Null)
+					{
+						arcanePower = TF2Attrib_GetValue(ArcaneActive);
+					}
+					
+					new Float:arcaneDamageMult = 1.0;
+
+					new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "sticky detonate mode")
+					if(ArcaneDamageActive != Address_Null)
+					{
+						arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
+					}
+
+					new Float:delta = Pow((arcaneDamageMult+upgrades_ratio[tmp_up_idx]) * Pow(arcanePower, 4.0), 2.45) - Pow(arcaneDamageMult * Pow(arcanePower, 4.0), 2.45);
+					Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, delta);
+				}
+				case 5:
+				{
+					new Float:arcanePower = 1.0;
+					
+					new Address:ArcaneActive = TF2Attrib_GetByName(client, "medigun crit fire percent bar deplete")
+					if(ArcaneActive != Address_Null)
+					{
+						arcanePower = TF2Attrib_GetValue(ArcaneActive);
+					}
+					
+					new Float:arcaneDamageMult = 1.0;
+
+					new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "sticky detonate mode")
+					if(ArcaneDamageActive != Address_Null)
+					{
+						arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
+					}
+
+					new Float:delta = Pow(arcaneDamageMult * Pow(arcanePower+upgrades_ratio[tmp_up_idx], 4.0), 2.45) - Pow(arcaneDamageMult * Pow(arcanePower, 4.0), 2.45);
+					Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, delta);
+				}
 			}
 
 			AddMenuItem(menu, "upgrade", desc_str);

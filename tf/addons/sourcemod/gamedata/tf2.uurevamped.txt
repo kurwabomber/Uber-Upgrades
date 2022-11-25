@@ -104,6 +104,20 @@
 					}
 				}
 			}
+			"PlayerLocomotion::Jump()"
+			{
+				"signature"		"PlayerLocomotion::Jump()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"address"
+			}
+			"CObjectSentrygun::SentryThink()"
+			{
+				"signature"		"CObjectSentrygun::SentryThink()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"entity"
+			}
 		}
 		"Signatures"
 		{
@@ -145,6 +159,26 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZNK13CTFWeaponBase14ApplyFireDelayEf"
+			}
+			"CTFWeaponBaseMelee::Smack()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN18CTFWeaponBaseMelee5SmackEv"
+			}
+			"PlayerLocomotion::Jump()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN16PlayerLocomotion4JumpEv"
+			}
+			"CTFJar::TossJarThink()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN6CTFJar12TossJarThinkEv"
+			}
+			"CObjectSentrygun::SentryThink()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN16CObjectSentrygun11SentryThinkEv"
 			}
 		}
 	}

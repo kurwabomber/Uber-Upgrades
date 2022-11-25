@@ -1787,10 +1787,6 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 						if(apsMult15 != Address_Null) {
 						aps /= TF2Attrib_GetValue(apsMult15) / efficiency;
 						}
-						if(TF2_IsPlayerInCondition( client, TFCond_RuneHaste ))//Really valve?
-						{
-							aps *= 2.0 * efficiency;
-						}
 					}
 				}
 				//Normal Firerate Attributes
