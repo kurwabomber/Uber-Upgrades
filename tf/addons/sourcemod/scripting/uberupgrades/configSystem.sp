@@ -142,8 +142,7 @@ BrowseAttributesKV(Handle:kv)
 				else if(!strcmp(Buf,"description"))
 				{
 					KvGetString(kv, "", Buf, 512);
-					ReplaceString(Buf, sizeof(Buf), "\\n", "\n");
-					strcopy(upgrades_description[_u_id], 512, Buf);
+					upgrades_description[_u_id] = Buf;
 				}
 				else if (!strcmp(Buf,"max"))
 				{
@@ -160,11 +159,12 @@ BrowseAttributesKV(Handle:kv)
 }
 
 
-BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, w_sub_att_idx = -1, level = 0)
+BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_att_idx = -1, level = 0)
 {
 	decl String:Buf[128];
 	do
 	{
+		new bool:incrementLater = false;
 		KvGetSectionName(kv, Buf, sizeof(Buf));
 		if (level == 1)
 		{
@@ -173,6 +173,7 @@ BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, w_sub_att_idx = -1, level
 				PrintToServer("[uu_lists] Malformated uu_lists | uu_weapon.txt file?: %s was not found", Buf)
 			}
 			w_sub_id = -1;
+			w_subcat_id = 0;
 			given_upgrd_classnames_tweak_nb[w_id] = 0
 		}
 		if (level == 2)
@@ -180,7 +181,6 @@ BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, w_sub_att_idx = -1, level
 			KvGetSectionName(kv, Buf, sizeof(Buf))
 			if (!strcmp(Buf, "special_tweaks_listid"))
 			{
-
 				KvGetString(kv, "", Buf, 64);
 				
 				given_upgrd_classnames_tweak_idx[w_id] = StringToInt(Buf)
@@ -189,15 +189,27 @@ BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, w_sub_att_idx = -1, level
 			{
 				w_sub_id++
 			
-				given_upgrd_classnames[w_id][w_sub_id] = Buf
-				given_upgrd_list_nb[w_id]++
-				w_sub_att_idx = 0
+				given_upgrd_classnames[w_id][w_sub_id] = Buf;
+				given_upgrd_list_nb[w_id]++;
+				w_sub_att_idx = 0;
+				w_subcat_id = 0;
+			}
+		}
+		if(level == 3)
+		{
+			if(StrContains(Buf, "!") != -1)
+			{
+				incrementLater = true;
+				given_upgrd_subclassnames[w_id][w_sub_id][w_subcat_id] = Buf;
+				given_upgrd_subcat[w_id][w_sub_id]++;
+				given_upgrd_subcat_nb[w_id][w_sub_id]++;
+				w_sub_att_idx = 0;
 			}
 		}
 		if (KvGotoFirstSubKey(kv, false))
 		{
 			KvGetSectionName(kv, Buf, sizeof(Buf));
-			BrowseAttListKV(kv, w_id, w_sub_id, w_sub_att_idx, level + 1);
+			BrowseAttListKV(kv, w_id, w_sub_id, w_subcat_id, w_sub_att_idx, level + 1);
 			KvGoBack(kv);
 		}
 		else
@@ -225,12 +237,13 @@ BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, w_sub_att_idx = -1, level
 							PrintToServer("[uu_specialtweaks] Malformated uu_attributes | uu_attributes.txt file?: %s was not found", Buf)
 						}
 					}
-			
-					given_upgrd_list[w_id][w_sub_id][w_sub_att_idx] = attr_id
+					given_upgrd_list[w_id][w_sub_id][w_subcat_id][w_sub_att_idx] = attr_id
 					w_sub_att_idx++
 				}
 			}
 		}
+		if(incrementLater)
+			w_subcat_id++;
 	}
 	while (KvGotoNextKey(kv, false));
 }

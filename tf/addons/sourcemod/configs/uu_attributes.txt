@@ -5968,6 +5968,16 @@
 			"init"		"0"
 			"max"		"300"
 		}
+		"1534.6"
+		{
+			"name"		"crit from behind"
+			"ref"		"Homing Projectiles (cleaver)"
+			"cost"		"10000"
+			"increase_ratio"	"0.4"
+			"value"		"75"
+			"init"		"0"
+			"max"		"225"
+		}
 		"1535"
 		{
 			"name"		"weapon spread bonus"
@@ -6096,6 +6106,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Zaps closest enemy for 20 base 3 scaling arcane damage.\n30% chance to zap another time."
 			"max"		"1"
 		}
 		"1542.1"
@@ -6106,6 +6117,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Smites in an AOE at crosshair.\n200 base 80 scaling arcane damage.\nApplies 2 seconds of heavy afterburn."
 			"max"		"1"
 		}
 		"1542.2"
@@ -6116,6 +6128,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Heals for 20% max health in an AOE at collision."
 			"max"		"1"
 		}
 		"1542.3"
@@ -6126,6 +6139,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Shoots 25 homing bolts that deal\n90 base 120 scaling arcane damage on collision."
 			"max"		"1"
 		}
 		"1542.4"
@@ -6136,6 +6150,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Shoots a homing bolt that deals\n10 base 7.5 scaling arcane damage on collision."
 			"max"		"1"
 		}
 		"1542.5"
@@ -6146,6 +6161,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Shoots a spear that deals 100 base 40 scaling arcane damage."
 			"max"		"1"
 		}
 		"1542.6"
@@ -6156,6 +6172,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Adds +80 arcane scaling DPS to your current weapon."
 			"max"		"1"
 		}
 		"1542.7"
@@ -6166,6 +6183,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Deals 100 base 60 scaling arcane damage in an AOE around you.\nStuns targets for 0.4s and shortly massively increases dodge chance."
 			"max"		"1"
 		}
 		"1542.8"
@@ -6176,16 +6194,18 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Traps enemies at crosshair and deals\n10 base 5 scaling arcane damage per tick.\nSlowly increases radiation buildup."
 			"max"		"1"
 		}
 		"1542.9"
 		{
 			"name"		"powerup max charges"
 			"ref"		"Arcane - Darkmoon Blade"
-			"cost"		"30000"
+			"cost"		"20000"
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Adds +3.5 arcane scaling damage to your melee."
 			"max"		"1"
 		}
 		//Arcane V2
@@ -6197,6 +6217,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Gives agility rune and speed bonus for 8s\n& for everyone around you.\nIncreases dodge chance to 75% for 1.5s."
 			"max"		"1"
 		}
 		"1542.9"
@@ -6207,6 +6228,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Summons 30 rockets to fall at crosshair,\neach dealing 90 base 25 scaling arcane damage."
 			"max"		"1"
 		}
 		"1542.9"
@@ -6217,6 +6239,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Applies a deadly DOT in an AOE around you.\nDeals 20 base 12.5 scaling arcane damage\nper tick. Applies 20 ticks."
 			"max"		"1"
 		}
 		"1542.9"
@@ -6227,6 +6250,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Summons 20 automatically detonating grenades.\nEach deals 90 base 9.5 scaling.\nFor every second alive, the grenades gain +35% damage."
 			"max"		"1"
 		}
 		"1542.9"
@@ -6237,6 +6261,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Deals 100 base 60 scaling arcane damage in an AOE around you.\nStuns targets for 2.25s and pushes them away 900 HU."
 			"max"		"1"
 		}
 		"1542.9"
@@ -6247,6 +6272,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Summons a sentry ontop of your head."
 			"max"		"1"
 		}
 		"1542.9"
@@ -6257,6 +6283,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Heals in an AOE for 4x your health.\nGives +100% temporary armor and +65% armor regeneration."
 			"max"		"1"
 		}
 		"1542.9"
@@ -6267,6 +6294,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Shoots 5 rays that deal 200 base 80 scaling arcane damage.\nAutomatically homes in witihn 10 degrees and also splashes."
 			"max"		"1"
 		}
 		"1542.9"
@@ -6277,6 +6305,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Applies the sapped effect to all enemies around crosshair.\n-50% speed and jump height, lasts 10 seconds."
 			"max"		"1"
 		}
 		//Class Tweaks
@@ -6854,6 +6883,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"All outgoing damage is multiplied by 2x."
 			"max"		"1.00"
 		}
 		"2100.1"
@@ -6864,6 +6894,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"All incoming damage is multiplied by 0.5x.\nGives immunity to crits."
 			"max"		"1.00"
 		}
 		"2100.2"
@@ -6874,6 +6905,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"All incoming damage is multiplied by 0.75x.\nGives +25% damage dealt from bleed.\nGives 80% lifesteal."
 			"max"		"1.00"
 		}
 		"2100.4"
@@ -6884,6 +6916,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"66% of incoming damage is given to filling revenge meter.\nAll incoming damage is multiplied by 0.8x.\nOn activation:\nGrants +40% armor damage, +50% damage and full crits."
 			"max"		"1.00"
 		}
 		"2100.5"
@@ -6894,6 +6927,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"Disables armor recharge delay.\nAll damage taken is multiplied by 0.75x.\n+10% max health regeneration per second."
 			"max"		"1.00"
 		}
 		"2100.6"
@@ -6904,6 +6938,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"-95% weapon spread, 2x projectile speed, and immunity to self damage.\nCertain projectile weapons are given homing\nGrants headshot capability for all weapons.\nGrants sniper an extra +90 charge per second\nGrants demoman instant detonation of stickies.\nAll outgoing damage is multiplied by 1.35x"	
 			"max"		"1.00"
 		}
 		"2100.7"
@@ -6914,6 +6949,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"Grants 1.33x reload and fire rate, infinite jumps, speed boost\nand 1.4x speed, 1.3x jump height, 1.75x self push force,\nand 35% dodge chance."
 			"max"		"1.00"
 		}
 		"2100.8"
@@ -6924,6 +6960,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"All outgoing melee damage is multiplied by 1.75x.\nAll incoming damage is multiplied by 0.8x.\nDamage causes concussion buildup.\nOn concussion proc:\nStuns for 1s and target receives minicrits for 10s."
 			"max"		"1.00"
 		}
 		"2100.9"
@@ -6934,6 +6971,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"Gives 1.33x reload and fire rate.\n1.5x uber and heal rate for medics\n1.2x outgoing damage for teammates nearby\nand 0.8x incoming damage for yourself."
 			"max"		"1.00"
 		}
 		"2100.10"
@@ -6944,6 +6982,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"Steals all healthpacks nearby,\ngiving 2s of 2x armor regeneration & 25% max health heal.\nEnemies nearby will get plagued for 20s,\ndecreasing damage dealt by 0.5x.\nAll incoming damage is multiplied by 0.75x."
 			"max"		"1.00"
 		}
 		"2100.11"
@@ -6954,6 +6993,7 @@
 			"cost"		"80000"
 			"value"		"1"
 			"init"		"0.00"
+			"description"	"All incoming damage is multiplied by 0.8x and builds up supernova charge.\nWhen supernova is used:\nStuns all nearby enemies for 6s and buildings for 10s.\nOutgoing splash damage is given 1.8x damage\nnon splash weapons are given 1.35x damage and splashes 100% damage dealt with falloff."
 			"max"		"1.00"
 		}
 	}

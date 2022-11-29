@@ -39,36 +39,60 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Speed Aura"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr2"		"Vampire Powerup"
+				"Attr4"		"Revenge Powerup"
+				"Attr6"		"Precision Powerup"
+				"Attr8"		"Knockout Powerup"
+				"Attr11"	"Supernova Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr1"		"Resistance Powerup"
+				"Attr5"		"Regeneration Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr9"		"King Powerup"
+				"Attr10"	"Plague Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr7"		"Agility Powerup"
+			}
 		}
 	}
 	"body_sniper"
@@ -1718,6 +1742,38 @@
 			"Sp3"		"Some Other Beggar Tweak"
 		}
 	}
+	"quickiebomb"
+	{
+		"special_tweaks_listid"		"2"
+		"Damage upgrades"
+		{
+			"Attr0"		"damage bonus"
+			"Attr20"	"ap (armyofnotmany)"
+			"Attr17"	"stickybomb charge rate"
+			"Attr18"	"Increased Overall Damage"
+			"Attr0"		"Overall Damage Bonus"
+			"Attr8"		"Weapons Deals No Knockback"
+			"Attr13"	"Life Steal Ability"
+			"Attr5"		"blast radius increased"
+			"Attr12"	"reveal cloaked victim on hit"
+			"Attr13"	"reveal disguised victim on hit"
+		}
+		"Pipebomb launcher specific upgrades"
+		{
+			"Attr1"		"fire rate bonus(multshit)"
+			"Attr2"		"clip size bonus"
+			"Attr4"		"faster reload rate"
+			"Attr6"		"reload clip all at once"
+			"Attr9"		"sticky arm time bonus"
+			"Attr6"		"rocket jump damage reduction"
+			"Attr11"	"self dmg push force increased"
+			"Attr13"	"air control when blast jumping"
+		}
+		"Special Tweaks"
+		{
+			"Sp3"		"Some Other Beggar Tweak"
+		}
+	}
 	"demomel"
 	{
 		"special_tweaks_listid"		"2"
@@ -1795,8 +1851,7 @@
 		"Cleaver specific upgrades"
 		{
 			"Attr1"		"fire rate bonus(multshit)"
-			"Attr2"		"Projectile Hitbox Bonus"
-			"Attr3"		"projectile penetration"
+			"Attr2"		"Homing Projectiles (cleaver)"
 			"Attr4"		"No gravity projectile"
 		}
 		"Special Tweaks"

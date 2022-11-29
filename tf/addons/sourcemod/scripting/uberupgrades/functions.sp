@@ -2558,22 +2558,22 @@ projGravity(entity)
 					}
 					else
 					{
-						if(StrEqual(strClassname, "tf_projectile_pipe"))
+						if(StrEqual(strClassname, "tf_projectile_pipe") || StrEqual(strClassname, "tf_projectile_pipe_remote"))
 						{
 							new Float:flAng[3],Float:fVelocity[3],Float:vBuffer[3];
 							new Float:velocity = 5000.0;
 							GetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
-							
 							GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR);
 							
 							fVelocity[0] = vBuffer[0]*velocity;
 							fVelocity[1] = vBuffer[1]*velocity;
 							fVelocity[2] = vBuffer[2]*velocity;
 							//SetEntPropVector(entity, Prop_Data, "m_vecVelocity", fVelocity);
-							TeleportEntity(entity, NULL_VECTOR, flAng, fVelocity);
-							//Phys_SetVelocity(entity, fVelocity, NULL_VECTOR, true);
+							//TeleportEntity(entity, NULL_VECTOR, NULL_VECTOR, fVelocity);
+							//SDKCall(g_SDKCallInitGrenade, entity, fVelocity, vecAngImpulse, client, 0, 5.0);
+							Phys_SetVelocity(entity, fVelocity, NULL_VECTOR, true);
 							SetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", fVelocity);
-							SetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
+							//SetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
 						}
 						else if(StrEqual(strClassname, "tf_projectile_cleaver"))
 						{

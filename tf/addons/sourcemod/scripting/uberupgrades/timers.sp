@@ -1983,6 +1983,9 @@ public Action:ThrowableHomingThink(Handle:timer, any:ref)
 	if(IsValidEntity(entity))
     {
 		new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		if(!IsValidClient3(owner) && HasEntProp(entity, Prop_Data, "m_hThrower"))
+			owner = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
+
 		if(IsValidClient3(owner))
 		{
 			new Target = GetClosestTarget(entity, owner); 

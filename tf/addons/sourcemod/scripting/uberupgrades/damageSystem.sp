@@ -429,8 +429,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		{
 			if(RageActive[attacker] == true && TF2Attrib_GetValue(revengePowerupAttacker) > 0.0)
 			{
-				damagetype |= DMG_RADIUS_MAX;
-				damage *= 1.75;
+				damage *= 1.5;
 				changed = true;
 				if(powerupParticle[attacker] <= 0.0)
 				{
@@ -446,8 +445,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		{
 			new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
 			if(precisionPowerupValue > 0.0){
-				damagetype |= DMG_RADIUS_MAX;
-				damage *= 1.25;
+				damage *= 1.35;
 				changed = true;
 			}
 		}
@@ -2092,7 +2090,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, &Float:damage,
 				if(knockoutPowerupValue > 0.0){
 					if(_:TF2II_GetListedItemSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 					{
-						damage *= 1.5;
+						damage *= 1.75;
 					}
 				}
 			}

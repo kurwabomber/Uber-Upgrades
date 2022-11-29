@@ -17,7 +17,8 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 		new slot = current_slot_used[client]
 		new w_id = current_w_list_id[client]
 		new cat_id = current_w_c_list_id[client]
-		new upgrade_choice = given_upgrd_list[w_id][cat_id][param2]
+		new subcat_id = current_w_sc_list_id[client]
+		new upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
 		new inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
 		
 		new rate = 1;
@@ -51,10 +52,12 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				}
 				if(upgrades_description[upgrade_choice][0])
 				{
-					disableUUMiniHud[client] = 4.0;
+					disableUUMiniHud[client] = 8.0;
 					decl String:upgradeDescription[1024]
 					Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 					upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
+					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
+					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "pct");
 					SendItemInfo(client, upgradeDescription);
 				}
 			}
@@ -145,10 +148,12 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 
 					if(upgrades_description[upgrade_choice][0])
 					{
-						disableUUMiniHud[client] = 4.0;
+						disableUUMiniHud[client] = 8.0;
 						decl String:upgradeDescription[1024]
 						Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 						upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
+						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
+						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "pct");
 						SendItemInfo(client, upgradeDescription);
 					}
 				}
@@ -237,7 +242,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 			Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client], fstr3,
 				fstr)
 		}
-		Menu_UpgradeChoice(client, cat_id, fstr2, GetMenuSelectionPosition())
+		Menu_UpgradeChoice(client, subcat_id, cat_id, fstr2, GetMenuSelectionPosition())
 	}
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
 	{
@@ -266,33 +271,45 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 }
 
 
-public MenuHandler_BodyUpgrades(Handle:menu, MenuAction:action, client, param2)
-{	
-	if (action == MenuAction_Select)
-	{
-		decl String:fstr2[100]
-		decl String:fstr[40]
-		decl String:fstr3[20]
-		
-		Format(fstr, sizeof(fstr), "%T", given_upgrd_classnames[_:current_class[client] - 1][param2], 
-					client)
-		Format(fstr3, sizeof(fstr3), "%T", "Body Upgrades", client)
-		Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client], fstr3,
-				fstr)
-
-		Menu_UpgradeChoice(client, param2, fstr2)
-	}
-    if (action == MenuAction_End)
-        CloseHandle(menu);
-	return;
-}
-
 public MenuHandler_SpeMenubuy(Handle:menu, MenuAction:action, client, param2)
 {
 	CloseHandle(menu);
 	return; 
 }
-
+public MenuHandler_ChooseSubcat(Handle:menu, MenuAction:action, client, param2)
+{
+	new Handle:buymenusel = CreateMenu(MenuHandler_BuyUpgrade);
+	if (action == MenuAction_Select)
+	{
+		decl String:fstr2[100]
+		decl String:fstr[40]
+		decl String:fstr3[20]
+		new slot = current_slot_used[client]
+		new cat_id = current_w_sc_list_id[client];
+		new w_id = current_w_list_id[client]
+		if (slot != 4)
+		{
+			Format(fstr, sizeof(fstr), "%T", given_upgrd_classnames[w_id][cat_id], client)
+			Format(fstr3, sizeof(fstr3), "%T", current_slot_name[slot], client)
+			Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client],fstr3,fstr)
+			Menu_UpgradeChoice(client, param2, cat_id, fstr2)
+		}
+		else
+		{
+			Format(fstr, sizeof(fstr), "%T", given_upgrd_classnames[w_id][cat_id], client)
+			Format(fstr3, sizeof(fstr3), "%T", "Body Upgrades", client)
+			Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client], fstr3, fstr)
+			Menu_UpgradeChoice(client, param2, cat_id, fstr2)
+		}
+	}
+	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
+		Menu_BuyUpgrade(client, 0);
+	}
+    if (action == MenuAction_End)
+        CloseHandle(menu);
+	SetMenuExitBackButton(buymenusel, true);
+	return; 
+}
 public MenuHandler_Choosecat(Handle:menu, MenuAction:action, client, param2)
 {
 	new Handle:buymenusel = CreateMenu(MenuHandler_BuyUpgrade);
@@ -308,13 +325,20 @@ public MenuHandler_Choosecat(Handle:menu, MenuAction:action, client, param2)
 			Format(fstr, sizeof(fstr), "%T", given_upgrd_classnames[cat_id][param2], client)
 			Format(fstr3, sizeof(fstr3), "%T", current_slot_name[slot], client)
 			Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client],fstr3,fstr)
-			if (param2 == given_upgrd_classnames_tweak_idx[cat_id])
+			if(given_upgrd_subcat[cat_id][param2] > 0)
 			{
-				Menu_SpecialUpgradeChoice(client, param2, fstr2,0)
+				Menu_ChooseSubcat(client, param2, fstr2)
 			}
 			else
 			{
-				Menu_UpgradeChoice(client, param2, fstr2)
+				if (param2 == given_upgrd_classnames_tweak_idx[cat_id])
+				{
+					Menu_SpecialUpgradeChoice(client, param2, fstr2,0)
+				}
+				else
+				{
+					Menu_UpgradeChoice(client, 0, param2, fstr2)
+				}
 			}
 		}
 		else
@@ -322,15 +346,22 @@ public MenuHandler_Choosecat(Handle:menu, MenuAction:action, client, param2)
 			Format(fstr, sizeof(fstr), "%T", given_upgrd_classnames[cat_id][param2], client)
 			Format(fstr3, sizeof(fstr3), "%T", "Body Upgrades", client)
 			Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client], fstr3, fstr)
-			if (param2 == given_upgrd_classnames_tweak_idx[cat_id])
+			if(given_upgrd_subcat[cat_id][param2] > 0)
 			{
-				Menu_SpecialUpgradeChoice(client, param2, fstr2,0)
+				Menu_ChooseSubcat(client, param2, fstr2)
 			}
 			else
 			{
-				Menu_UpgradeChoice(client, param2, fstr2)
+				if (param2 == given_upgrd_classnames_tweak_idx[cat_id])
+				{
+					Menu_SpecialUpgradeChoice(client, param2, fstr2,0)
+				}
+				else
+				{
+					Menu_UpgradeChoice(client, 0, param2, fstr2)
+				}
 			}
-			if(AreClientCookiesCached(client))
+			/*if(AreClientCookiesCached(client))
 			{
 				if(param2 == 0)
 				{
@@ -362,7 +393,7 @@ public MenuHandler_Choosecat(Handle:menu, MenuAction:action, client, param2)
 						CPrintToChat(client, "{valve}Tutorial {white}| Arcane Damage boosts damage exponentially.\nArcane Power increases all stats & boosts Arcane Damage to the power of 4.\nArcane spells can be used at the front of the buy menu.");
 					}
 				}
-			}
+			}*/
 		}
 	}
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
@@ -437,7 +468,7 @@ public MenuHandler_BuyUpgrade(Handle:menu, MenuAction:action, client, param2)
 				Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
 																  ,fstr)
 				Menu_ChooseCategory(client, fstr2)
-				if(AreClientCookiesCached(client))
+				/*if(AreClientCookiesCached(client))
 				{
 					new String:TutorialString[32];
 					GetClientCookie(client, WeaponTutorial, TutorialString, sizeof(TutorialString));
@@ -450,7 +481,7 @@ public MenuHandler_BuyUpgrade(Handle:menu, MenuAction:action, client, param2)
 						SetHudTextParams(-1.0, -1.0, 15.0, 252, 161, 3, 255, 0, 0.0, 0.0, 0.0);
 						ShowHudText(client, 10, TutorialText);
 					}
-				}
+				}*/
 			}
 		}
 	}
@@ -633,7 +664,7 @@ public MenuHandler_SpecialUpgradeChoice(Handle:menu, MenuAction:action, client, 
 		new slot = current_slot_used[client]
 		new w_id = current_w_list_id[client]
 		new cat_id = current_w_c_list_id[client]
-		new spTweak = given_upgrd_list[w_id][cat_id][param2]
+		new spTweak = given_upgrd_list[w_id][cat_id][0][param2]
 		for (new i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
 		{
 			new upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]

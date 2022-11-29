@@ -164,14 +164,17 @@ public Action:HideWatermark(client, args)
 }
 public Action:Menu_QuickBuyUpgrade(client, args)
 {
-	new String:arg1[128];
+	/*
+	new String:arg1[32];
 	new arg1_ = -1;
-	new String:arg2[128];
+	new String:arg2[32];
 	new arg2_ = -1;
-	new String:arg3[128];
+	new String:arg3[32];
 	new arg3_ = -1;
-	new String:arg4[128];
-	new arg4_ = 0;
+	new String:arg4[32];
+	new arg3_ = -1;
+	new String:arg5[32];
+	new arg5_ = 0;
 	new	bool:flag = false
 	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
@@ -201,17 +204,19 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 				if (GetCmdArg(3, arg3, sizeof(arg3)))
 				{
 					arg3_ = StringToInt(arg3)-1;
-					arg4_ = 1
-					if (GetCmdArg(4, arg4, sizeof(arg4)))
+					arg5_ = 1
+
+
+					if (GetCmdArg(5, arg5, sizeof(arg5)))
 					{
-						arg4_ = StringToInt(arg4);
-						if (arg4_ >= 100000)
+						arg5_ = StringToInt(arg5);
+						if (arg5_ >= 100000)
 						{
-							arg4_ = 100000
+							arg5_ = 100000
 						}
-						if (arg4_ < 1)
+						if (arg5_ < 1)
 						{
-							arg4_ = 1
+							arg5_ = 1
 						}
 					}
 					if(arg2_ <= -1)
@@ -234,7 +239,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 							{
 								client_tweak_highest_requirement[client][arg1_] = upgrades_tweaks_requirement[spTweak];
 							}
-							for(new timesUpgraded = 0; timesUpgraded < arg4_ && loopBroke == 0; timesUpgraded++)
+							for(new timesUpgraded = 0; timesUpgraded < arg5_ && loopBroke == 0; timesUpgraded++)
 							{
 								if(CurrencyOwned[client] >= upgrades_tweaks_cost[spTweak])
 								{
@@ -414,7 +419,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 							new Float:t_up_cost = 0.0;
 							new times = 0;
 							new bool:notEnough = false;
-							for (new idx = 0; idx < arg4_; idx++)
+							for (new idx = 0; idx < arg5_; idx++)
 							{
 								new Float:nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice])
 								if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] > 0.0 && RoundFloat(upgrades_val*100.0)/100.0 < upgrades_m_val[upgrade_choice])
@@ -471,6 +476,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 	{
 		ReplyToCommand(client, "You cannot quick-buy while dead.");
 	}
+	*/
 	return Plugin_Handled;
 }
 public Action:ReloadCfgFiles(client, args)

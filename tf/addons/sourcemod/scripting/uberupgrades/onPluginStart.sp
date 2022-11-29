@@ -410,6 +410,16 @@ public void OnPluginStart()
 	//Config
 	SetConVarFloat(FindConVar("sv_maxvelocity"), 1000000000.0, true, false);
 	SetConVarFloat(FindConVar("tf_scout_bat_launch_delay"), -0.1, true, false);
+	SetConVarFloat(FindConVar("sv_maxunlag"), 0.3, true, false);
+	SetConVarFloat(FindConVar("tf_parachute_aircontrol"), 5000.0, true, false);
+	SetConVarFloat(FindConVar("tf_parachute_maxspeed_xy"), 10000.0, true, false);
+	SetConVarFloat(FindConVar("tf_parachute_maxspeed_z"), -50.0, true, false);
+	SetConVarFloat(FindConVar("tf_stealth_damage_reduction"), 0.75, true, false);
+	SetConVarFloat(FindConVar("tf_feign_death_damage_scale"), 0.1, true, false);
+	SetConVarFloat(FindConVar("tf_feign_death_activate_damage_scale"), 0.05, true, false);
+
+	SetConVarInt(FindConVar("tf_parachute_deploy_toggle_allowed"), 0, true, false);
+	SetConVarInt(FindConVar("sv_unlag_fixstuck"), 1, true, false);
 	//Database
 	new String:queryString[512];
 	Format(queryString, sizeof(queryString), "CREATE TABLE 'PlayerList' ('steamid' VARCHAR(64), 'datapack' INT)");

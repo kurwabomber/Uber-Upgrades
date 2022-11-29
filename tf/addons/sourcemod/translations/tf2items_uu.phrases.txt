@@ -1,8 +1,49 @@
 "Phrases"
 {
+	"!Offensive Powerups"
+	{
+		"en"		"Offensive Powerups"
+	}
+	"!Defensive Powerups"
+	{
+		"en"		"Defensive Powerups"
+	}
+	"!Support Powerups"
+	{
+		"en"		"Support Powerups"
+	}
+	"!Misc. Powerups"
+	{
+		"en"		"Misc. Powerups"
+	}
+	"!Arcane Stats"
+	{
+		"en"		"Arcane Stats"
+	}
+	"!Tier 1 Arcane Spells"
+	{
+		"en"		"Tier 1 Arcane Spells"
+	}
+	"!Tier 2 Arcane Spells"
+	{
+		"en"		"Tier 2 Arcane Spells"
+	}
+	"!Tier 3 Arcane Spells"
+	{
+		"en"		"Tier 3 Arcane Spells"
+	}
+	//Failsafe
+	""
+	{
+		"en"		""
+	}
 	"No gravity projectile"
 	{
 		"en"		"No Gravity Projectile"
+	}
+	"Homing Projectiles (cleaver)"
+	{
+		"en"		"Homing Projectiles"
 	}
 	"Projectile speed decreased(t)"
 	{

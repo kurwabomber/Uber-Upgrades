@@ -37,7 +37,7 @@ public Action:Menu_BuyUpgrade(client, args)
 	}
 }
 //When you purchase an upgrade
-Action:Menu_UpgradeChoice(client, cat_choice, String:TitleStr[100], int page = 0)
+Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100], int page = 0)
 {
 	new i
 
@@ -55,10 +55,13 @@ Action:Menu_UpgradeChoice(client, cat_choice, String:TitleStr[100], int page = 0
 		new Float:tmp_ratio
 		new slot
 		decl String:plus_sign[4]
-		current_w_c_list_id[client] = cat_choice
+		current_w_sc_list_id[client] = subcat_choice;
+		current_w_c_list_id[client] = cat_choice;
 		slot = current_slot_used[client]
-		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][i]); i++)
+		//PrintToServer("%i | %i", cat_choice, subcat_choice)
+		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); i++)
 		{
+			//PrintToServer("%i", tmp_up_idx);
 			up_cost = upgrades_costs[tmp_up_idx] / 2
 			if (slot == 1)
 			{
@@ -243,10 +246,9 @@ Action:Menu_UpgradeChoice(client, cat_choice, String:TitleStr[100], int page = 0
 		DisplayMenuAtItem(menu, client, page, MENU_TIME_FOREVER)
 	}
 }
-//Slot Selection
+//Category Selection
 public Action:Menu_ChooseCategory(client, String:TitleStr[128])
 {
-
 	new w_id
 	
 	new Handle:menu = CreateMenu(MenuHandler_Choosecat);
@@ -271,6 +273,32 @@ public Action:Menu_ChooseCategory(client, String:TitleStr[128])
 		{
 			Format(buf, sizeof(buf), "%T", given_upgrd_classnames[w_id][i], client)
 			AddMenuItem(menu, "upgrade", buf);
+		}
+	}
+	SetMenuTitle(menu, TitleStr);
+	SetMenuExitBackButton(menu, true);
+	if (IsValidClient(client) && IsPlayerAlive(client))
+	{
+		DisplayMenu(menu, client, 20);
+	}
+}
+//Subcategory Selection
+public Action:Menu_ChooseSubcat(client, subcat_choice, const char[] TitleStr)
+{
+	new w_id = current_w_list_id[client];
+	new slot = current_slot_used[client];
+	new cat_id = currentitem_catidx[client][slot]
+	new Handle:menu = CreateMenu(MenuHandler_ChooseSubcat);
+	if (w_id >= -1)
+	{
+		current_w_sc_list_id[client] = subcat_choice;
+		new String:buf[128]
+
+		for(new j = 0; j < given_upgrd_subcat_nb[cat_id][subcat_choice];j++)
+		{
+			//PrintToServer("%s", given_upgrd_subclassnames[w_id][j])
+			Format(buf, sizeof(buf), "%T", given_upgrd_subclassnames[cat_id][subcat_choice][j], client);
+			AddMenuItem(menu, "subcat", buf);
 		}
 	}
 	SetMenuTitle(menu, TitleStr);
@@ -306,7 +334,7 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, String:TitleStr[100]
 		slot = current_slot_used[client]
 		for (i = 0; i < given_upgrd_classnames_tweak_nb[w_id]; i++)
 		{
-			tmp_spe_up_idx = given_upgrd_list[w_id][cat_choice][i]
+			tmp_spe_up_idx = given_upgrd_list[w_id][cat_choice][0][i]
 			Format(buft, sizeof(buft), "%T",  upgrades_tweaks[tmp_spe_up_idx], client);
 			if(upgrades_tweaks_cost[tmp_spe_up_idx] > 0.0)
 			{

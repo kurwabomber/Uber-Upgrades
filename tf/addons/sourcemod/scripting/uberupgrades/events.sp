@@ -64,7 +64,7 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 			new Float:revengePowerupValue = TF2Attrib_GetValue(revengePowerup);
 			if(revengePowerupValue > 0.0)
 			{
-				RageBuildup[client] += (damage/TF2_GetMaxHealth(client))*0.667;
+				RageBuildup[client] += (damage/float(TF2_GetMaxHealth(client)))*0.667;
 				if(RageBuildup[client] > 1.0)
 					RageBuildup[client]= 1.0;
 			}
@@ -72,8 +72,8 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 		new Address:supernovaPowerupVictim = TF2Attrib_GetByName(client, "spawn with physics toy");
 		if(supernovaPowerupVictim != Address_Null && TF2Attrib_GetValue(supernovaPowerupVictim) > 0.0)
 		{
-			SupernovaBuildup[client] += (damage/TF2_GetMaxHealth(client));
-			if(SupernovaBuildup[client] > 0.0)
+			SupernovaBuildup[client] += (damage/float(TF2_GetMaxHealth(client)));
+			if(SupernovaBuildup[client] > 1.0)
 				SupernovaBuildup[client] = 1.0;
 		}
 	}
@@ -655,7 +655,9 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(MultiShot, EntIndexToEntRef(entity));
 			RequestFrame(projGravity, EntIndexToEntRef(entity));
 			RequestFrame(ResizeProjectile, EntIndexToEntRef(entity))
+			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
 			CreateTimer(0.03, ThrowableHomingThink, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+			CreateTimer(1.5, SelfDestruct, EntIndexToEntRef(entity));
 		}
 		if(StrEqual(classname, "tf_projectile_pipe") || StrEqual(classname, "tf_projectile_pipe_remote"))
 		{
@@ -3278,6 +3280,10 @@ public TF2Items_OnGiveNamedItem_Post(client, String:classname[], itemDefinitionI
 						else if (!strcmp(classname, "tf_weapon_grenadelauncher") && itemDefinitionIndex == 1151)
 						{
 							currentitem_catidx[client][slot] = GetUpgrade_CatList("tf_iron_bomber")
+						}
+						else if (!strcmp(classname, "tf_weapon_pipebomblauncher") && itemDefinitionIndex == 1150)
+						{
+							currentitem_catidx[client][slot] = GetUpgrade_CatList("tf_quickiebomb")
 						}
 						else if (!strcmp(classname, "tf_weapon_cannon"))
 						{

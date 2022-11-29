@@ -34,12 +34,15 @@ new Handle:WeaponTutorial;
 new DisableBotUpgrades
 new DisableCooldowns
 new given_upgrd_list_nb[_NUMBER_DEFINELISTS]
-new given_upgrd_list[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][128]
+new given_upgrd_subcat_nb[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT]
+new given_upgrd_list[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][_NUMBER_DEFINELISTS_CAT][128]
 new given_upgrd_classnames_tweak_idx[_NUMBER_DEFINELISTS]
 new given_upgrd_classnames_tweak_nb[_NUMBER_DEFINELISTS]
+new given_upgrd_subcat[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT]
 new wcname_l_idx[WCNAMELISTSIZE]
 new current_w_list_id[MAXPLAYERS + 1]
 new current_w_c_list_id[MAXPLAYERS + 1]
+new current_w_sc_list_id[MAXPLAYERS + 1]
 new TFClassType:current_class[MAXPLAYERS + 1]
 new TFClassType:previous_class[MAXPLAYERS + 1]
 new current_slot_used[MAXPLAYERS + 1]
@@ -148,6 +151,7 @@ new Float:disableUUMiniHud[MAXPLAYERS+1];
 
 //String
 new String:given_upgrd_classnames[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][128]
+new String:given_upgrd_subclassnames[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][_NUMBER_DEFINELISTS_CAT][128]
 new String:wcnamelist[WCNAMELISTSIZE][128]
 new String:current_slot_name[NB_SLOTS_UED + 1][MAXPLAYERS + 1]
 new String:currentitem_classname[MAXPLAYERS + 1][NB_SLOTS_UED + 1][128]

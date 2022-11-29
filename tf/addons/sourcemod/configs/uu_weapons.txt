@@ -93,6 +93,7 @@
 		"vaccinator"							"vacc"			//Vaccinator
 		"medigun"								"medigun"		//Stock Medigun
 		"tf_iron_bomber"						"ironbomber"	//Iron Bomber
+		"tf_quickiebomb"						"quickiebomb"	//Quickiebomb launcher
 		"hitmans"								"hitmans"		//Hitman's Heatmaker
 		"brassBeast"							"brassBeast"
 		//Custom Weapons
