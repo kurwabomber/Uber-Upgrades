@@ -94,6 +94,11 @@
 				"Attr7"		"Agility Powerup"
 			}
 		}
+		"Damage Type Affinities"
+		{
+			"Attr1"			"Direct Damage Taken Reduced"
+			"Attr2"			"Arcane Damage Taken Reduced"
+		}
 	}
 	"body_sniper"
 	{
@@ -754,10 +759,6 @@
 		{
 			"Sp1"		"Honor!"
 		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Charge"
-		}
 	}
 	"engweap"
 	{
@@ -1024,10 +1025,10 @@
 		{
 			"Attr0"		"damage bonus(IS)"
 			"Attr7"		"ap (highervoltage)"
+			"Attr6"		"Accuracy Scales DMG Replacement"
 			"Attr1"		"Primary Fire damage bonus"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr21"	"afterburn time increased(N)"
 			"Attr10"	"reveal cloaked victim on hit"
@@ -1036,7 +1037,7 @@
 		"Short circuit specific upgrades"
 		{
 			"Attr0"		"fire rate bonus(shrtcrt)"
-			"Attr1"		"bullets per shot bonus (shrtcrt)"
+			"Attr1"		"Increased Shock Range"
 		}
 	}
 	"engmelweap"
@@ -1068,8 +1069,8 @@
 			"Attr15"	"Sentry Armor Piercing Damage"
 			"Attr16"	"ap (sentrycal)"
 			"Attr0"		"Overall Damage Bonus"
+			"Attr16"	"Sentry Maximum Ammo"
 			"Attr4"		"Sentry Ammo Regeneration"
-			"Attr6"		"engy dispenser radius increased"
 			"Attr7"		"engy sentry radius increased"
 			"Attr10"	"Construction rate increased"
 			"Attr13"	"Build rate bonus"
@@ -1084,7 +1085,11 @@
 		{
 			"Attr0"		"Firestorm Rounds"
 			"Attr1"		"Double Sentry Rocket Shot"
+			"Attr3"		"Sentry Rocket Fire Rate"
+			"Attr6"		"Dispenser Regeneration Rate"
+			"Attr7"		"engy dispenser radius increased"
 			"Attr2"		"Teleporter Gives Buffs"
+			"Attr4"		"Teleporter Recharge Rate"
 		}
 	}
 	"minigunweap"
@@ -1673,10 +1678,6 @@
 			"Attr8"		"add cloak on kill"
 			"Attr11"	"disguise on backstab"
 		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Charge"
-		}
 	}
 	"democharge"
 	{
@@ -1802,10 +1803,6 @@
 		{
 			"Sp1"		"Honor!"
 		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Charge"
-		}
 	}
 	"menuKatana"
 	{
@@ -1856,7 +1853,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Some Other Beggar Tweak"
+			"Sp1"		"Blade Stream"
+			"Sp2"		"Fan of Knives"
 		}
 	}
 	"menuFireball"
@@ -2001,10 +1999,6 @@
 		{
 			"Sp1"		"Honor!"
 		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Charge"
-		}
 	}
 	"pointer"
 	{
@@ -2040,7 +2034,7 @@
 			"Attr1"		"clip size bonus"
 			"Attr2"		"faster reload rate"
 			"Attr11"	"reload clip all at once"
-			"Attr3"		"Projectile force increased"
+			"Attr3"		"Projectile speed increased"
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr8"		"fuse bonus"
@@ -2075,7 +2069,7 @@
 			"Attr1"		"clip size bonus"
 			"Attr2"		"faster reload rate"
 			"Attr7"		"reload clip all at once"
-			"Attr3"		"Projectile force increased"
+			"Attr3"		"Projectile speed increased"
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr9"		"air control when blast jumping"
@@ -2169,10 +2163,6 @@
 		"Special Tweaks"
 		{
 			"Sp1"		"Honor!"
-		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Charge"
 		}
 	}
 	"sprweapH"
@@ -2376,22 +2366,19 @@
 		{
 			"Sp1"		"Honor!"
 		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Charge"
-		}
 	}
 	"medi"
 	{
 		"special_tweaks_listid"		"1"
 		"Medigun Specific upgrades"
 		{
+			"Attr7"		"Medigun Heal Range Bonus"
 			"Attr2"		"heal rate bonus"
 			"Attr8"		"heal rate bonus(A)"
 			"Attr4"		"overheal bonus"
-			//"Attr5"		"overheal decay bonus"
 			"Attr3"		"ubercharge rate bonus"
 			"Attr8"		"Damage Multiplier for healed player"
+			"Attr9"		"Healing for Buildings"
 		}
 		"Special Tweaks"
 		{
@@ -2403,6 +2390,7 @@
 		"special_tweaks_listid"		"1"
 		"Medigun Specific upgrades"
 		{
+			"Attr7"		"Medigun Heal Range Bonus"
 			"Attr2"		"heal rate bonus"
 			"Attr8"		"heal rate bonus(A)"
 			"Attr9"		"overheal fill rate bonus"
@@ -2410,6 +2398,7 @@
 			//"Attr5"		"overheal decay bonus"
 			"Attr3"		"ubercharge rate bonus"
 			"Attr8"		"Damage Multiplier for healed player"
+			"Attr9"		"Healing for Buildings"
 		}
 		"Special Tweaks"
 		{
@@ -2421,6 +2410,7 @@
 		"special_tweaks_listid"		"-1"
 		"Medigun Specific upgrades"
 		{
+			"Attr7"		"Medigun Heal Range Bonus"
 			"Attr2"		"heal rate bonus"
 			"Attr8"		"heal rate bonus(A)"
 			"Attr9"		"overheal fill rate bonus"
@@ -2429,6 +2419,7 @@
 			"Attr3"		"ubercharge rate bonus"
 			"Attr6"		"ubercharge rate multiplier"
 			"Attr8"		"Damage Multiplier for healed player"
+			"Attr9"		"Healing for Buildings"
 		}
 		"Vaccinator Upgrades"
 		{

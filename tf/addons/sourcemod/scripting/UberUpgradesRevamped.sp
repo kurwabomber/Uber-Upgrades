@@ -18,6 +18,7 @@
 #include <razorstocks>
 #include <stocksoup/memory>
 #include <vphysics>
+#include <tf2utils>
 
 #pragma tabsize 0
 
@@ -27,7 +28,7 @@
 #define RED 0
 #define BLUE 1
 #define NB_SLOTS_UED 6
-#define MAX_ATTRIBUTES 3000
+#define MAX_ATTRIBUTES 7000
 #define MAX_ATTRIBUTES_ITEM 65
 #define _NUMBER_DEFINELISTS 630
 #define _NUMBER_DEFINELISTS_CAT 9

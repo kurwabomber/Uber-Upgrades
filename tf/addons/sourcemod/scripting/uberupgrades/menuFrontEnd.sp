@@ -59,6 +59,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 		current_w_c_list_id[client] = cat_choice;
 		slot = current_slot_used[client]
 		//PrintToServer("%i | %i", cat_choice, subcat_choice)
+		
 		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); i++)
 		{
 			//PrintToServer("%i", tmp_up_idx);
@@ -182,10 +183,23 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 				{
 					if(val == 0.0)
 						val = upgrades_i_val[tmp_up_idx];
-
-					char tempStr[32];
-					FloatToString((val+upgrades_ratio[tmp_up_idx])/val, tempStr, sizeof(tempStr));
-					Format(desc_str, sizeof(desc_str), "%s (%.6sx)", desc_str, tempStr);
+					
+					if(upgrades_efficiency_list[client][slot][tmp_up_idx])
+					{
+						Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][tmp_up_idx]);
+					}
+					upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(((val+upgrades_ratio[tmp_up_idx])/val)-1.0)/up_cost;
+				}
+				case 6:
+				{
+					if(val == 0.0)
+						val = upgrades_i_val[tmp_up_idx];
+					
+					if(upgrades_efficiency_list[client][slot][tmp_up_idx])
+					{
+						Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][tmp_up_idx]);
+					}
+					upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(0.05)/up_cost;
 				}
 				case 2:
 				{
@@ -199,7 +213,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 				{
 					new Float:arcanePower = 1.0;
 					
-					new Address:ArcaneActive = TF2Attrib_GetByName(client, "medigun crit fire percent bar deplete")
+					new Address:ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
 					if(ArcaneActive != Address_Null)
 					{
 						arcanePower = TF2Attrib_GetValue(ArcaneActive);
@@ -207,7 +221,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 					
 					new Float:arcaneDamageMult = 1.0;
 
-					new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "sticky detonate mode")
+					new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
 					if(ArcaneDamageActive != Address_Null)
 					{
 						arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
@@ -220,7 +234,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 				{
 					new Float:arcanePower = 1.0;
 					
-					new Address:ArcaneActive = TF2Attrib_GetByName(client, "medigun crit fire percent bar deplete")
+					new Address:ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
 					if(ArcaneActive != Address_Null)
 					{
 						arcanePower = TF2Attrib_GetValue(ArcaneActive);
@@ -228,7 +242,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 					
 					new Float:arcaneDamageMult = 1.0;
 
-					new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "sticky detonate mode")
+					new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
 					if(ArcaneDamageActive != Address_Null)
 					{
 						arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
@@ -240,6 +254,39 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 			}
 
 			AddMenuItem(menu, "upgrade", desc_str);
+		}
+		if(efficiencyCalculationTimer[client] <= 0.0)
+		{
+			int numEff = 0;
+			for(int e=0;e<MAX_ATTRIBUTES;e++)
+			{
+				if(upgrades_efficiency[client][slot][e])
+				{
+					numEff++;
+				}
+			}
+			float max = 0.0;
+			int highestIndex = 0;
+			bool toBlock[MAX_ATTRIBUTES];
+			for(int k=0;k<numEff;k++) 
+			{
+				for(int t=0;t<MAX_ATTRIBUTES;t++)
+				{
+					if(toBlock[t] == false && upgrades_efficiency[client][slot][t])
+					{
+						if(upgrades_efficiency[client][slot][t] > max)
+						{
+							max = upgrades_efficiency[client][slot][t]
+							highestIndex = t;
+						}
+					}
+				}
+				max = 0.0;
+				toBlock[highestIndex] = true;
+				//PrintToServer("%i | %.2f | %s", k, upgrades_efficiency[client][slot][highestIndex], toBlock[highestIndex] ? "blocked" : "unblocked")
+				upgrades_efficiency_list[client][slot][highestIndex] = k+1;
+			}
+			efficiencyCalculationTimer[client] = 0.3;
 		}
 		SetMenuTitle(menu, TitleStr);
 		SetMenuExitBackButton(menu, true);
@@ -587,7 +634,7 @@ public CreateBuyNewWeaponMenu(client)
 	SetMenuExitBackButton(BuyNWmenu, true);
 	new i = 0;
 	new it = 0;
-	new String:strTotal[32];
+	new String:strTotal[64];
 	new String:playerClass[16]
 	switch(current_class[client])
 	{
@@ -632,7 +679,7 @@ public CreateBuyNewWeaponMenu(client)
 	{
 		if(StrContains(upgrades_weapon_class_restrictions[i],playerClass) != -1 || StrEqual(upgrades_weapon_class_restrictions[i],"none",false))
 		{
-			Format(strTotal, sizeof(strTotal), "%s | Costs $%.0f",upgrades_weapon[i],upgrades_weapon_cost[i]); 
+			Format(strTotal, sizeof(strTotal), "%s | $%.0f",upgrades_weapon[i],upgrades_weapon_cost[i]); 
 			AddMenuItem(BuyNWmenu, "tweak", strTotal);
 			buyableIndexOffParam[client][it] = i
 			it++

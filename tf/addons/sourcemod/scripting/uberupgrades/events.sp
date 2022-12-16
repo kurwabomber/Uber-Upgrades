@@ -937,7 +937,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	
 	CancelClientMenu(client);
 	new attack = GetClientOfUserId(GetEventInt(event, "attacker"));
-	
+	fanOfKnivesCount[client] = 0;
 	if(IsValidClient(client))
 	{
 		if(IsValidEntity(autoSentryID[client]) && autoSentryID[client] > 32)
@@ -953,7 +953,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	}
 	if ((!IsMvM()) && !(GetEventInt(event, "death_flags") & 32))
 	{
-		if((StartMoney + additionalstartmoney) < 1500000.0)
+		if((StartMoney + additionalstartmoney) < 50000000.0)
 		{
 			new Float:BotMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((StartMoney + additionalstartmoney), 0.985))) * ServerMoneyMult) * 3.0);
 			new Float:PlayerMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((additionalstartmoney + StartMoney), 1.125))) * ServerMoneyMult) * 3.0);
@@ -984,9 +984,9 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 				additionalstartmoney += BotMoneyKill
 			}
 			
-			if((StartMoney + additionalstartmoney) > 1500000.0)
+			if((StartMoney + additionalstartmoney) > 50000000.0)
 			{
-				additionalstartmoney = 1500000.0 - StartMoney;
+				additionalstartmoney = 50000000.0 - StartMoney;
 			}
 		}
 		else if(hardcapWarning == false)
@@ -1009,7 +1009,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			shouldAttack[client] = false;
 			buttons |= IN_ATTACK;
 		}
-		globalButtons[client] = buttons;
 		if(buttons & IN_SCORE)
 		{
 			inScore[client] = true;
@@ -1076,6 +1075,23 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			}
 			if(IsPlayerAlive(client))
 			{
+				if(!(buttons & IN_ATTACK) && globalButtons[client] & IN_ATTACK && fanOfKnivesCount[client] > 1)
+				{
+					new Float:fOrigin[3], Float:fAngles[3];
+					GetClientEyePosition(client, fOrigin);
+
+					GetClientEyeAngles(client, fAngles);
+					fAngles[1] -= 15.0;
+					for(new i = 0; i < fanOfKnivesCount[client]; i++)
+					{
+						fAngles[1] += 30.0/fanOfKnivesCount[client]
+						TeleportEntity(client, NULL_VECTOR, fAngles, NULL_VECTOR);
+						SDKCall(g_SDKCallJar, CWeapon);
+					}
+					fAngles[1] -= 15.0;
+					TeleportEntity(client, NULL_VECTOR, fAngles, NULL_VECTOR);
+					fanOfKnivesCount[client] = 0;
+				}
 				if(buttons & IN_DUCK && buttons & IN_ATTACK3)
 				{
 					if(RageActive[client] == false && RageBuildup[client] >= 1.0)
@@ -1924,6 +1940,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		fEyeAngles[client] = angles;
 		AirblastPatch(client);
 		lastFlag[client] = flags;
+		globalButtons[client] = buttons;
 	}
 	return Plugin_Continue;
 }
@@ -1963,6 +1980,8 @@ public OnGameFrame()
 		{
 			if(MenuTimer[client] > 0.0){
 			MenuTimer[client] -= tickRate; }
+			if(efficiencyCalculationTimer[client] > 0.0){
+			efficiencyCalculationTimer[client] -= tickRate; }
 			if(ImpulseTimer[client] > 0.0){
 			ImpulseTimer[client] -= tickRate; }
 			if(weaponTrailTimer[client] > 0.0){
@@ -2278,7 +2297,9 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					{
 						if(weaponFireRate[CWeapon] > 5.01)
 						{
-							SDKCall(g_SDKCallJar, CWeapon);
+							new Address:override = TF2Attrib_GetByName(CWeapon, "override projectile type");
+							if(override == Address_Null)
+								SDKCall(g_SDKCallJar, CWeapon);
 						}
 					}
 				}
@@ -2677,15 +2698,14 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 							
 							new Float:velocity = 900.0;
-							new Float:vecAngImpulse[3];
-							GetCleaverAngularImpulse(vecAngImpulse);
 							fVelocity[0] = vBuffer[0]*velocity;
 							fVelocity[1] = vBuffer[1]*velocity;
-							fVelocity[2] = vBuffer[2]*velocity;
+							fVelocity[2] = 150.0 + vBuffer[2]*velocity;
 							
 							TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 							DispatchSpawn(iEntity);
 							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchChaos);
+							setProjGravity(iEntity, 0.4);
 							CreateTimer(10.0,SelfDestruct,EntIndexToEntRef(iEntity));
 						}
 					}
@@ -2736,6 +2756,49 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
 							//PrintToServer("%.2f", TF2_GetWeaponFireRate(CWeapon));
 						}
+					}
+					case 46.0:
+					{
+						if(fanOfKnivesCount[client] < 100)
+							fanOfKnivesCount[client]++;
+						/*
+						new Float:fwd[3]
+						GetClientEyePosition(client, fOrigin);
+						GetClientEyeAngles(client, fAngles);
+						new Float:tempAngle[3] = fAngles;
+						new Float:velocity = 6000.0;
+						new Float:vecAngImpulse[3];
+						GetCleaverAngularImpulse(vecAngImpulse);
+						for(new i = 0; i < fanOfKnivesCount[client]; i++)
+						{
+							new String:projName[32] = "tf_projectile_cleaver";
+							new iEntity = CreateEntityByName(projName);
+							if (IsValidEdict(iEntity)) 
+							{
+								new iTeam = GetClientTeam(client);
+								SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+								tempAngle = fAngles[1] + GetRandomFloat(-35.0,35.0);
+								GetAngleVectors(tempAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
+								GetAngleVectors(tempAngle,fwd, NULL_VECTOR, NULL_VECTOR);
+								ScaleVector(fwd, 30.0);
+								AddVectors(fOrigin, fwd, fOrigin);
+								fVelocity[0] = vBuffer[0]*velocity;
+								fVelocity[1] = vBuffer[1]*velocity;
+								fVelocity[2] = vBuffer[2]*velocity;
+
+								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+								SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+								SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+							
+								DispatchSpawn(iEntity);
+								TeleportEntity(iEntity, fOrigin, tempAngle, NULL_VECTOR);
+								SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+							}
+						}
+						fanOfKnivesCount[client] = 0;
+						*/
 					}
 				}
 			}
@@ -2941,6 +3004,7 @@ public Event_PlayerreSpawn(Handle:event, const String:name[], bool:dontBroadcast
 		CreateTimer(0.4, WeaponReGiveUpgrades, GetClientUserId(client));
 		SetEntProp(client, Prop_Send, "m_nCurrency", 0);
 		CancelClientMenu(client);
+		SetClientViewEntity(client, client);
 		if(AreClientCookiesCached(client))
 		{
 			new String:menuEnabled[64];
@@ -3141,7 +3205,7 @@ public Event_Teleported(Handle:event, const String:name[], bool:dontBroadcast)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
 							{
-								Entity_Hurt(i, RoundToNearest(LightningDamage), client, DMG_GENERIC);
+								SDKHooks_TakeDamage(i, client, client, LightningDamage, DMG_GENERIC, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
 								if(IsValidClient3(i))
 								{
 									new Float:velocity[3];

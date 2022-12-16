@@ -237,10 +237,13 @@ public ResetClientUpgrade_slot(client, slot)
 		currentupgrades_idx_mvm_chkp[client][slot][i] = currentupgrades_idx[client][slot][i];
 	}
 	//I AM THE STORM THAT IS APPROACHING
+	//Thank you retard MR L
 	for(new i = 0; i < MAX_ATTRIBUTES; i++)
 	{
 		upgrades_ref_to_idx[client][slot][i] = 20000;
 		upgrades_ref_to_idx_mvm_chkp[client][slot][i] = 20000;
+		upgrades_efficiency[client][slot][i] = 0.0;
+		upgrades_efficiency_list[client][slot][i] = 0;
 	}
 	
 	if (slot != 4 && currentitem_idx[client][slot])
@@ -795,6 +798,7 @@ RespawnEffect(client)
 	TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
 	TF2Attrib_SetByName(client,"airblast_pushback_disabled", 1.0);
 	TF2Attrib_SetByName(client,"airblast_deflect_projectiles_disabled", 1.0);
+	TF2Attrib_SetByName(client,"no damage view flinch", 1.0);
 	SetEntityHealth(client, TF2_GetMaxHealth(client))
 }
 ChangeClassEffect(client)
@@ -832,16 +836,16 @@ refreshUpgrades(client, slot)
 			for(new i = 0; i<Max_Attunement_Slots;i++)
 			{
 				AttunedSpells[client][i] = 0.0;
-				new Address:zapActive = TF2Attrib_GetByName(client, "throwable damage");
-				new Address:lightningActive = TF2Attrib_GetByName(client, "throwable healing");
-				new Address:healingAuraActive = TF2Attrib_GetByName(client, "throwable particle trail only");
-				new Address:callBeyondActive = TF2Attrib_GetByName(client, "item style override");
-				new Address:blackskyEyeActive = TF2Attrib_GetByName(client, "taunt is highfive");
-				new Address:sunlightSpearActive = TF2Attrib_GetByName(client, "duel loser account id");
-				new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "thermal_thruster_air_launch");
-				new Address:snapfreezeActive = TF2Attrib_GetByName(client, "cannot trade");
-				new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "Wrench index");
-				new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "powerup max charges");
+				new Address:zapActive = TF2Attrib_GetByName(client, "arcane zap");
+				new Address:lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
+				new Address:healingAuraActive = TF2Attrib_GetByName(client, "arcane projected healing");
+				new Address:callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
+				new Address:blackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
+				new Address:sunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
+				new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
+				new Address:snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
+				new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
+				new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
 				if(zapActive != Address_Null && !isUsed[1])
 				{
 					if(TF2Attrib_GetValue(zapActive) > 0.1)
@@ -938,7 +942,7 @@ refreshUpgrades(client, slot)
 				{
 					case TFClass_Scout:
 					{
-						new Address:speedAuraActive = TF2Attrib_GetByName(client, "purchased");//Scout
+						new Address:speedAuraActive = TF2Attrib_GetByName(client, "arcane speed aura");//Scout
 						if(speedAuraActive != Address_Null && !isUsed[11])
 						{
 							if(TF2Attrib_GetValue(speedAuraActive) > 0.1)
@@ -951,7 +955,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Soldier:
 					{
-						new Address:aerialStrikeActive = TF2Attrib_GetByName(client, "event date");
+						new Address:aerialStrikeActive = TF2Attrib_GetByName(client, "arcane aerial strike");
 						if(aerialStrikeActive != Address_Null && !isUsed[12])
 						{
 							if(TF2Attrib_GetValue(aerialStrikeActive) > 0.1)
@@ -964,7 +968,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Pyro:
 					{
-						new Address:infernoActive = TF2Attrib_GetByName(client, "gifter account id");
+						new Address:infernoActive = TF2Attrib_GetByName(client, "arcane inferno");
 						if(infernoActive != Address_Null && !isUsed[13])
 						{
 							if(TF2Attrib_GetValue(infernoActive) > 0.1)
@@ -977,7 +981,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_DemoMan:
 					{
-						new Address:mineFieldActive = TF2Attrib_GetByName(client, "set supply crate series");
+						new Address:mineFieldActive = TF2Attrib_GetByName(client, "arcane mine field");
 						if(mineFieldActive != Address_Null && !isUsed[14])
 						{
 							if(TF2Attrib_GetValue(mineFieldActive) > 0.1)
@@ -990,7 +994,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Heavy:
 					{
-						new Address:shockwaveActive = TF2Attrib_GetByName(client, "elevate quality");
+						new Address:shockwaveActive = TF2Attrib_GetByName(client, "arcane shockwave");
 						if(shockwaveActive != Address_Null && !isUsed[15])
 						{
 							if(TF2Attrib_GetValue(shockwaveActive) > 0.1)
@@ -1003,7 +1007,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Engineer:
 					{
-						new Address:autoSentryActive = TF2Attrib_GetByName(client, "referenced item id low");
+						new Address:autoSentryActive = TF2Attrib_GetByName(client, "arcane autosentry");
 						if(autoSentryActive != Address_Null && !isUsed[16])
 						{
 							if(TF2Attrib_GetValue(autoSentryActive) > 0.1)
@@ -1016,7 +1020,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Medic:
 					{
-						new Address:soothingSunlightActive = TF2Attrib_GetByName(client, "referenced item id high");
+						new Address:soothingSunlightActive = TF2Attrib_GetByName(client, "arcane soothing sunlight");
 						if(soothingSunlightActive != Address_Null && !isUsed[17])
 						{
 							if(TF2Attrib_GetValue(soothingSunlightActive) > 0.1)
@@ -1029,7 +1033,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Sniper:
 					{
-						new Address:arcaneHunterActive = TF2Attrib_GetByName(client, "referenced item def UPDATED");
+						new Address:arcaneHunterActive = TF2Attrib_GetByName(client, "arcane hunter");
 						if(arcaneHunterActive != Address_Null && !isUsed[18])
 						{
 							if(TF2Attrib_GetValue(arcaneHunterActive) > 0.1)
@@ -1042,7 +1046,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Spy:
 					{
-						new Address:markForDeathActive = TF2Attrib_GetByName(client, "always tradable");
+						new Address:markForDeathActive = TF2Attrib_GetByName(client, "arcane mark for death");
 						if(markForDeathActive != Address_Null && !isUsed[19])
 						{
 							if(TF2Attrib_GetValue(markForDeathActive) > 0.1)
@@ -2561,7 +2565,12 @@ projGravity(entity)
 						if(StrEqual(strClassname, "tf_projectile_pipe") || StrEqual(strClassname, "tf_projectile_pipe_remote"))
 						{
 							new Float:flAng[3],Float:fVelocity[3],Float:vBuffer[3];
-							new Float:velocity = 5000.0;
+							new Float:velocity = 3000.0;
+
+							new Address:projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
+							if(projspeed != Address_Null)
+								velocity *= TF2Attrib_GetValue(projspeed);
+
 							GetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
 							GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR);
 							
@@ -2571,7 +2580,7 @@ projGravity(entity)
 							//SetEntPropVector(entity, Prop_Data, "m_vecVelocity", fVelocity);
 							//TeleportEntity(entity, NULL_VECTOR, NULL_VECTOR, fVelocity);
 							//SDKCall(g_SDKCallInitGrenade, entity, fVelocity, vecAngImpulse, client, 0, 5.0);
-							Phys_SetVelocity(entity, fVelocity, NULL_VECTOR, true);
+							Phys_SetVelocity(entity, fVelocity, NULL_VECTOR);
 							SetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", fVelocity);
 							//SetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
 						}
@@ -2580,7 +2589,12 @@ projGravity(entity)
 							new Float:flAng[3],Float:fVelocity[3],Float:vBuffer[3];
 							new Float:vecAngImpulse[3];
 							GetCleaverAngularImpulse(vecAngImpulse);
-							new Float:velocity = 5000.0;
+							new Float:velocity = 3000.0;
+
+							new Address:projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
+							if(projspeed != Address_Null)
+								velocity *= TF2Attrib_GetValue(projspeed);
+
 							GetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
 							flAng[0] -= 10.0;
 							GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR);

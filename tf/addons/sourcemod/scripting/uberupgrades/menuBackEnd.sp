@@ -260,7 +260,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 			decl String:fstr2[128]
 			Format(fstr, sizeof(fstr), "%T", current_slot_name[current_slot_used[client]], client)
 			Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
-															  ,fstr)
+															,fstr)
 			Menu_ChooseCategory(client, fstr2)
 		}
 	}
@@ -1030,79 +1030,79 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			GetAlphabetForm(GetEntPropFloat(client, Prop_Data, "m_flMaxspeed")),
 			GetAlphabetForm(fl_RegenFocus[client]*66.6)); 
 			
-			new Address:zapActive = TF2Attrib_GetByName(client, "throwable damage");
+			new Address:zapActive = TF2Attrib_GetByName(client, "arcane zap");
 			if(zapActive != Address_Null && TF2Attrib_GetValue(zapActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nZap Damage = %s", 
 				Description, GetAlphabetForm(20.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 3.0)))
 			}
-			new Address:lightningActive = TF2Attrib_GetByName(client, "throwable healing");
+			new Address:lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
 			if(lightningActive != Address_Null && TF2Attrib_GetValue(lightningActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nLightning Strike Damage = %s", 
 				Description, GetAlphabetForm(200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 80.0)))
 			}
-			new Address:callBeyondActive = TF2Attrib_GetByName(client, "item style override");
+			new Address:callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
 			if(callBeyondActive != Address_Null && TF2Attrib_GetValue(callBeyondActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nA Call Beyond Damage = %s x 25", 
 				Description, GetAlphabetForm(200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 120.0)))
 			}
-			new Address:BlackskyEyeActive = TF2Attrib_GetByName(client, "taunt is highfive");
+			new Address:BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
 			if(BlackskyEyeActive != Address_Null && TF2Attrib_GetValue(BlackskyEyeActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nBlacksky Eye Damage = %s", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 7.5)))
 			}
-			new Address:SunlightSpearActive = TF2Attrib_GetByName(client, "duel loser account id");
+			new Address:SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
 			if(SunlightSpearActive != Address_Null && TF2Attrib_GetValue(SunlightSpearActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nSunlight Spear Damage = %s", 
 				Description, GetAlphabetForm(100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 40.0)))
 			}
-			new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "thermal_thruster_air_launch");
+			new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
 			if(lightningenchantmentActive != Address_Null && TF2Attrib_GetValue(lightningenchantmentActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nLightning Enchantment DPS = %s", 
 				Description, GetAlphabetForm(20.0*(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.0))))
 			}
-			new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "powerup max charges");
+			new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
 			if(darkmoonbladeActive != Address_Null && TF2Attrib_GetValue(darkmoonbladeActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nDarkmoon Blade Damage = %s", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.5)))
 			}
-			new Address:snapfreezeActive = TF2Attrib_GetByName(client, "cannot trade");
+			new Address:snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
 			if(snapfreezeActive != Address_Null && TF2Attrib_GetValue(snapfreezeActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nSnap Freeze Damage = %s", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0)))
 			}
-			new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "Wrench index");
+			new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
 			if(arcaneprisonActive != Address_Null && TF2Attrib_GetValue(arcaneprisonActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nArcane Prison Damage = %s", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 5.0)))
 			}
-			new Address:classSpecificActive = TF2Attrib_GetByName(client, "event date");
+			new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
 			if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nAerial Strike Damage = %s x 30", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 25.0)))
 			}
-			new Address:classSpecificActive2 = TF2Attrib_GetByName(client, "gifter account id");
+			new Address:classSpecificActive2 = TF2Attrib_GetByName(client, "arcane inferno");
 			if(classSpecificActive2 != Address_Null && TF2Attrib_GetValue(classSpecificActive2) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nInferno Damage = %s x 20", 
 				Description, GetAlphabetForm(20.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 12.5)))
 			}
-			new Address:classSpecificActive3 = TF2Attrib_GetByName(client, "set supply crate series");
+			new Address:classSpecificActive3 = TF2Attrib_GetByName(client, "arcane mine field");
 			if(classSpecificActive3 != Address_Null && TF2Attrib_GetValue(classSpecificActive3) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nMine Field Damage = %s x 20", 
 				Description, GetAlphabetForm(90.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 6.5)))
 			}
-			new Address:classSpecificActive4 = TF2Attrib_GetByName(client, "referenced item def UPDATED");
+			new Address:classSpecificActive4 = TF2Attrib_GetByName(client, "arcane hunter");
 			if(classSpecificActive4 != Address_Null && TF2Attrib_GetValue(classSpecificActive4) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nArcane Hunter Damage = %s x 5", 

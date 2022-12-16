@@ -628,6 +628,7 @@
 			"ref"		"damage bonus (clea)"
 			"increase_ratio" "0.06"
 			"cost"		"400"
+			"display_style"		"1"
 			"value"		"0.30"
 			"init"		"1.00"
 			"max"		"100000000.00"
@@ -2743,11 +2744,11 @@
 		{
 			"name"		"increased jump height"
 			"ref"		"jump height"
-			"cost"		"400"
-			"increase_ratio" 	"0.1"
+			"cost"		"500"
+			"increase_ratio" 	"0.3"
 			"value"		"0.25"
 			"init"		"1.00"
-			"max"		"7.00"
+			"max"		"4.00"
 		}
 		"177"
 		{
@@ -3935,6 +3936,7 @@
 			"ref"		"Overall Damage"
 			"cost"		"550"
 			"increase_ratio"	"0.3"
+			"display_style"		"1"
 			"value"		"0.25"
 			"init"		"1"
 			"max"		"30"
@@ -5284,6 +5286,7 @@
 			"value"		"1.0"
 			"increase_ratio"	"0.5"
 			"init"		"0"
+			"display_style"		"6"
 			"description"	"Multiplies damage by 1.05x\nper purchase.\nFormula is 1.05^value."
 			"max"		"60"
 		}
@@ -6028,7 +6031,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
-			"max"		"15"
+			"max"		"4"
 		}
 		"1538.1"
 		{
@@ -6043,7 +6046,7 @@
 		//Arcane Update
 		"1539"
 		{
-			"name"		"medigun crit bullet percent bar deplete"
+			"name"		"arcane focus max"
 			"ref"		"Max Focus"
 			"cost"		"400"
 			"increase_ratio"	"0.125"
@@ -6054,7 +6057,7 @@
 		}
 		"1540"
 		{
-			"name"		"medigun crit blast percent bar deplete"
+			"name"		"arcane focus regeneration"
 			"ref"		"Focus Regeneration"
 			"cost"		"2000"
 			"increase_ratio"	"0.4"
@@ -6065,7 +6068,7 @@
 		}
 		"1541"
 		{
-			"name"		"medigun crit fire percent bar deplete"
+			"name"		"arcane power"
 			"ref"		"Arcane Power"
 			"cost"		"300"
 			"increase_ratio"	"0.9"
@@ -6077,7 +6080,7 @@
 		}
 		"1541.1"
 		{
-			"name"		"throwable fire speed"
+			"name"		"arcane attunement slots"
 			"ref"		"Attunement Slots"
 			"cost"		"10000"
 			"increase_ratio"	"0.0"
@@ -6086,9 +6089,9 @@
 			"description"	"Increases the maximum amount of\nunique arcane spells you can hold."
 			"max"		"4"
 		}
-		"1541.1"
+		"1541.2"
 		{
-			"name"		"sticky detonate mode"
+			"name"		"arcane damage"
 			"ref"		"Arcane Damage"
 			"cost"		"4000"
 			"increase_ratio"	"0.25"
@@ -6098,9 +6101,19 @@
 			"display_style"	"4"
 			"max"		"500"
 		}
+		"1541.3"
+		{
+			"name"		"arcane cooldown rate"
+			"ref"		"Arcane Cooldown Reduction"
+			"cost"		"15000"
+			"increase_ratio"	"0.4"
+			"value"		"-0.1"
+			"init"		"1"
+			"max"		"0.3"
+		}
 		"1542"
 		{
-			"name"		"throwable damage"
+			"name"		"arcane zap"
 			"ref"		"Arcane - Zap"
 			"cost"		"3000"
 			"increase_ratio"	"0"
@@ -6111,7 +6124,7 @@
 		}
 		"1542.1"
 		{
-			"name"		"throwable healing"
+			"name"		"arcane lightning strike"
 			"ref"		"Arcane - Lightning Strike"
 			"cost"		"15000"
 			"increase_ratio"	"0"
@@ -6122,7 +6135,7 @@
 		}
 		"1542.2"
 		{
-			"name"		"throwable particle trail only"
+			"name"		"arcane projected healing"
 			"ref"		"Arcane - Healing Aura"
 			"cost"		"20000"
 			"increase_ratio"	"0"
@@ -6133,7 +6146,7 @@
 		}
 		"1542.3"
 		{
-			"name"		"item style override"
+			"name"		"arcane a call beyond"
 			"ref"		"Arcane - A Call Beyond"
 			"cost"		"70000"
 			"increase_ratio"	"0"
@@ -6144,7 +6157,7 @@
 		}
 		"1542.4"
 		{
-			"name"		"taunt is highfive"
+			"name"		"arcane blacksky eye"
 			"ref"		"Arcane - Blacksky Eye"
 			"cost"		"8000"
 			"increase_ratio"	"0"
@@ -6155,7 +6168,7 @@
 		}
 		"1542.5"
 		{
-			"name"		"duel loser account id"
+			"name"		"arcane sunlight spear"
 			"ref"		"Arcane - Sunlight Spear"
 			"cost"		"15000"
 			"increase_ratio"	"0"
@@ -6166,7 +6179,7 @@
 		}
 		"1542.6"
 		{
-			"name"		"thermal_thruster_air_launch"
+			"name"		"arcane lightning enchantment"
 			"ref"		"Arcane - Lightning Enchantment"
 			"cost"		"30000"
 			"increase_ratio"	"0"
@@ -6177,7 +6190,7 @@
 		}
 		"1542.7"
 		{
-			"name"		"cannot trade"
+			"name"		"arcane snap freeze"
 			"ref"		"Arcane - Snap Freeze"
 			"cost"		"25000"
 			"increase_ratio"	"0"
@@ -6188,7 +6201,7 @@
 		}
 		"1542.8"
 		{
-			"name"		"Wrench index"
+			"name"		"arcane prison"
 			"ref"		"Arcane - Arcane Prison"
 			"cost"		"25000"
 			"increase_ratio"	"0"
@@ -6199,7 +6212,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"powerup max charges"
+			"name"		"arcane darkmoon blade"
 			"ref"		"Arcane - Darkmoon Blade"
 			"cost"		"20000"
 			"increase_ratio"	"0"
@@ -6211,7 +6224,7 @@
 		//Arcane V2
 		"1542.9"
 		{
-			"name"		"purchased"
+			"name"		"arcane speed aura"
 			"ref"		"Arcane - Speed Aura"
 			"cost"		"20000"
 			"increase_ratio"	"0"
@@ -6222,7 +6235,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"event date"
+			"name"		"arcane aerial strike"
 			"ref"		"Arcane - Aerial Strike"
 			"cost"		"40000"
 			"increase_ratio"	"0"
@@ -6233,7 +6246,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"gifter account id"
+			"name"		"arcane inferno"
 			"ref"		"Arcane - Inferno"
 			"cost"		"40000"
 			"increase_ratio"	"0"
@@ -6244,7 +6257,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"set supply crate series"
+			"name"		"arcane mine field"
 			"ref"		"Arcane - Mine Field"
 			"cost"		"60000"
 			"increase_ratio"	"0"
@@ -6255,7 +6268,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"elevate quality"
+			"name"		"arcane shockwave"
 			"ref"		"Arcane - Shockwave"
 			"cost"		"20000"
 			"increase_ratio"	"0"
@@ -6266,7 +6279,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"referenced item id low"
+			"name"		"arcane autosentry"
 			"ref"		"Arcane - Auto-Sentry"
 			"cost"		"20000"
 			"increase_ratio"	"0"
@@ -6277,7 +6290,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"referenced item id high"
+			"name"		"arcane soothing sunlight"
 			"ref"		"Arcane - Soothing Sunlight"
 			"cost"		"60000"
 			"increase_ratio"	"0"
@@ -6288,7 +6301,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"referenced item def UPDATED"
+			"name"		"arcane hunter"
 			"ref"		"Arcane - Arcane Hunter"
 			"cost"		"30000"
 			"increase_ratio"	"0"
@@ -6299,7 +6312,7 @@
 		}
 		"1542.9"
 		{
-			"name"		"always tradable"
+			"name"		"arcane mark for death"
 			"ref"		"Arcane - Mark-For-Death"
 			"cost"		"20000"
 			"increase_ratio"	"0"
@@ -6497,7 +6510,7 @@
 			"increase_ratio" 	"0.05"
 			"value"		"0.5"
 			"init"		"1.00"
-			"max"		"10.0"
+			"max"		"5.0"
 		}
 		"1558"
 		{
@@ -6540,7 +6553,7 @@
 		}
 		"1562"
 		{
-			"name"		"sapper damage leaches health"
+			"name"		"arcane weapon scaling"
 			"ref"		"Arcane Weapon Scaling"
 			"cost"		"0"
 			"value"		"1"
@@ -6728,6 +6741,181 @@
 			"value"		"1"
 			"init"		"0"
 			"max"		"1"
+		}
+		"1582"
+		{
+			"name"		"mod medic killed marked for death"
+			"ref"		"Crit Damage Bonus"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"1"
+			"max"		"100"
+		}
+		"1583"
+		{
+			"name"		"mod medic killed marked for death"
+			"ref"		"Crit Damage Bonus"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"1"
+			"max"		"100"
+		}
+		"1584"
+		{
+			"name"		"critboost on kill"
+			"ref"		"Crit on Kill Duration"
+			"cost"		"0"
+			"value"		"1.0"
+			"init"		"0"
+			"max"		"4"
+		}
+		"1585"
+		{
+			"name"		"override projectile type"
+			"ref"		"Fan of Knives"
+			"cost"		"0"
+			"value"		"1.00"
+			"init"		"45.00"
+			"max"		"46.00"
+		}
+		"1586"
+		{
+			"name"		"arrow mastery"
+			"ref"		"Arrow Mastery"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"5"
+		}
+		"1587"
+		{
+			"name"		"mult dispenser rate"
+			"ref"		"Dispenser Regeneration Rate"
+			"cost"		"1100"
+			"increase_ratio"	"0.2"
+			"value"		"0.25"
+			"init"		"1"
+			"max"		"50"
+		}
+		"1588"
+		{
+			"name"		"mvm sentry ammo"
+			"ref"		"Sentry Maximum Ammo"
+			"cost"		"500"
+			"increase_ratio"	"0.3"
+			"value"		"0.25"
+			"init"		"1"
+			"max"		"10"
+		}
+		"1589"
+		{
+			"name"		"explosive bullets"
+			"ref"		"Explosive Bullets Radius"
+			"cost"		"2000"
+			"increase_ratio"	"0.5"
+			"value"		"30.0"
+			"init"		"0"
+			"max"		"150"
+		}
+		"1590"
+		{
+			"name"		"mult firerocket rate"
+			"ref"		"Sentry Rocket Fire Rate"
+			"cost"		"3000"
+			"increase_ratio"	"0.3"
+			"value"		"-0.1"
+			"init"		"1.0"
+			"max"		"0.1"
+		}
+		"1591"
+		{
+			"name"		"mult medigun range"
+			"ref"		"Medigun Heal Range Bonus"
+			"cost"		"1500"
+			"increase_ratio"	"0.3"
+			"value"		"0.25"
+			"init"		"1.0"
+			"max"		"6.0"
+		}
+		"1592"
+		{
+			"name"		"mult teleporter recharge rate"
+			"ref"		"Teleporter Recharge Rate"
+			"cost"		"2000"
+			"increase_ratio"	"0.4"
+			"value"		"-0.25"
+			"init"		"1.0"
+			"max"		"0.1"
+		}
+		"1593"
+		{
+			"name"		"medic machinery beam"
+			"ref"		"Healing for Buildings"
+			"cost"		"8000"
+			"increase_ratio"	"0.0"
+			"value"		"1"
+			"init"		"0.0"
+			"description"	"+10% healing to buildings per purchase."
+			"max"		"5"
+		}
+		"1594"
+		{
+			"name"		"explosive bullets"
+			"ref"		"Explosive Bullets"
+			"cost"		"0"
+			"increase_ratio"	"0.0"
+			"value"		"1"
+			"init"		"0.0"
+			"max"		"500"
+		}
+		"1595"
+		{
+			"name"		"mult projectile count"
+			"ref"		"Increased Projectile Count"
+			"cost"		"0"
+			"increase_ratio"	"0.0"
+			"value"		"1"
+			"init"		"0.0"
+			"max"		"500"
+		}
+		"1596"
+		{
+			"name"		"max bullet range"
+			"ref"		"Increased Shock Range"
+			"cost"		"1200"
+			"increase_ratio"	"0.4"
+			"value"		"150"
+			"init"		"450"
+			"max"		"2500"
+		}
+		"1597"
+		{
+			"name"		"bullet spread additive"
+			"ref"		"Additive Bullet Spread"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"100"
+		}
+		"1598"
+		{
+			"name"		"direct damage taken reduced"
+			"ref"		"Direct Damage Taken Reduced"
+			"cost"		"30000"
+			"increase_ratio"	"1.2"
+			"value"		"-0.25"
+			"init"		"1.0"
+			"max"		"0.25"
+		}
+		"1599"
+		{
+			"name"		"arcane damage taken reduced"
+			"ref"		"Arcane Damage Taken Reduced"
+			"cost"		"30000"
+			"increase_ratio"	"1.2"
+			"value"		"-0.25"
+			"init"		"1.0"
+			"max"		"0.25"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"

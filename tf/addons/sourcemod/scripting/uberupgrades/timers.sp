@@ -92,7 +92,7 @@ public Action:Timer_Second(Handle:timer)
 			//Arcane
 			new Float:arcanePower = 1.0;
 			
-			new Address:ArcaneActive = TF2Attrib_GetByName(client, "medigun crit fire percent bar deplete")
+			new Address:ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
 			if(ArcaneActive != Address_Null)
 			{
 				arcanePower = TF2Attrib_GetValue(ArcaneActive);
@@ -100,13 +100,13 @@ public Action:Timer_Second(Handle:timer)
 			ArcanePower[client] = arcanePower;
 			
 			new Float:arcaneDamageMult = 1.0;
-			new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "sticky detonate mode")
+			new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
 			if(ArcaneDamageActive != Address_Null)
 			{
 				arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
 			}
 			ArcaneDamage[client] = arcaneDamageMult;
-			new Address:focusActive = TF2Attrib_GetByName(client, "medigun crit bullet percent bar deplete")
+			new Address:focusActive = TF2Attrib_GetByName(client, "arcane focus max")
 			if(focusActive != Address_Null)
 			{
 				fl_MaxFocus[client] = (TF2Attrib_GetValue(focusActive)+100.0)* Pow(arcanePower, 2.0);
@@ -115,7 +115,7 @@ public Action:Timer_Second(Handle:timer)
 			{
 				fl_MaxFocus[client] = 100.0*arcanePower;
 			}
-			new Address:regenActive = TF2Attrib_GetByName(client, "medigun crit blast percent bar deplete")
+			new Address:regenActive = TF2Attrib_GetByName(client, "arcane focus regeneration")
 			if(regenActive != Address_Null)
 			{
 				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.00015 * TF2Attrib_GetValue(regenActive) *  Pow(arcanePower, 2.0);
@@ -701,7 +701,7 @@ public Action:Timer_Every100MS(Handle:timer)
 									{
 										if(IsPointVisible(clientpos,VictimPos))
 										{
-											Entity_Hurt(i, RoundToNearest(LightningDamage), client, DMG_GENERIC);
+											SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
 										}
 									}
 								}
@@ -1026,7 +1026,7 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 									{
 										if(IsPointVisible(clientpos,VictimPos))
 										{
-											Entity_Hurt(i, RoundToNearest(LightningDamage), client, DMG_GENERIC);
+											SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
 											if(IsValidClient3(i))
 											{
 												new Float:velocity[3];
@@ -1127,41 +1127,46 @@ public Action:BuildingRegeneration(Handle:timer, any:entity)
 		new shells = GetEntProp(entity, Prop_Send, "m_iAmmoShells");
 		new rockets = GetEntProp(entity, Prop_Send, "m_iAmmoRockets");
 		new Address:AmmoRegen = TF2Attrib_GetByName(melee, "disguise on backstab");
+		new Float:maxAmmoMultiplier = 1.0;
+		new Address:ammoMult = TF2Attrib_GetByName(melee, "mvm sentry ammo");
+		if(ammoMult != Address_Null)
+			maxAmmoMultiplier = TF2Attrib_GetValue(ammoMult);
+
 		if(AmmoRegen != Address_Null)
 		{
 			new AmmoRegeneration = RoundToNearest(TF2Attrib_GetValue(AmmoRegen)/5.0);
 			
 			if(sentryLevel != 1)
 			{
-				if((shells + AmmoRegeneration) < 200)
+				if((shells + AmmoRegeneration) < RoundToNearest(200.0 * maxAmmoMultiplier))
 				{
 					SetEntProp(entity, Prop_Send, "m_iAmmoShells", shells + AmmoRegeneration);
 				}
 				else
 				{
-					SetEntProp(entity, Prop_Send, "m_iAmmoShells", 200);
+					SetEntProp(entity, Prop_Send, "m_iAmmoShells", RoundToNearest(200.0 * maxAmmoMultiplier));
 				}
 			}
 			else
 			{
-				if((shells + AmmoRegeneration) < 150)
+				if((shells + AmmoRegeneration) < RoundToNearest(150.0 * maxAmmoMultiplier))
 				{
 					SetEntProp(entity, Prop_Send, "m_iAmmoShells", shells + AmmoRegeneration);
 				}
 				else
 				{
-					SetEntProp(entity, Prop_Send, "m_iAmmoShells", 150);
+					SetEntProp(entity, Prop_Send, "m_iAmmoShells", RoundToNearest(150.0 * maxAmmoMultiplier));
 				}
 			}
 			if(sentryLevel == 3)
 			{
-				if((rockets + (AmmoRegeneration/10)) < 20)
+				if((rockets + (AmmoRegeneration/10)) < RoundToNearest(20.0 * maxAmmoMultiplier))
 				{
 					SetEntProp(entity, Prop_Send, "m_iAmmoRockets", rockets + (AmmoRegeneration/10));
 				}
 				else
 				{
-					SetEntProp(entity, Prop_Send, "m_iAmmoRockets", 20);
+					SetEntProp(entity, Prop_Send, "m_iAmmoRockets", RoundToNearest(20.0 * maxAmmoMultiplier));
 				}				
 			}
 		}
@@ -1598,7 +1603,7 @@ public Action:eurekaDelayed(Handle:timer, int client)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
 							{
-								Entity_Hurt(i, RoundToNearest(LightningDamage), client, DMG_GENERIC);
+								SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
 								if(IsValidClient3(i))
 								{
 									new Float:velocity[3];
@@ -1672,7 +1677,7 @@ public Action:CreateBloodTracer(Handle:timer,any:data)
 					if(IsPointVisible(PlayerOrigin,VictimPos))
 					{
 						CreateParticle(i, "env_sawblood", true, "", 2.0);
-						Entity_Hurt(i, RoundToNearest(mult), client, DMG_BLAST);
+						SDKHooks_TakeDamage(i,client,client, mult, DMG_SLASH, weapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
 					}
 				}
 			}

@@ -9,7 +9,7 @@
 		"description"	"Has the base stats of a Half-Zatoichi.\nHas +15 bleed status buildup on hit.\nAbility strikes enemies within a 600HU sphere up to 20 times\n doing 10 base DPS. Does not increase victim bleed.\nConverts all fire rate into damage.\nThere will be blood-shed! (meme)"
 		"cost"			"70000.0"
 		"honor bound"	"1"
-		"Bleed Per Hit"	"15"
+		"Bleed Per Hit"	"30"
 		"Ability : Corpse Piler" "9"
 		"Converts Firerate to Damage"	"1"
 	}
@@ -74,11 +74,12 @@
 		"weapon_class"	"tf_weapon_cleaver"
 		"weapon_menu"	"menuFireball"
 		"class"			"scout"
-		"description"	"Shoots a fireball that deals 20 arcane scaling, but has 50% falloff.\nInfinite ammo."
+		"description"	"Shoots a fireball that deals 80 arcane scaling, but has 50% falloff.\nInfinite ammo."
 		"cost"			"50000.0"
 		"Ability : Chaos Bed Vestiges"	"11"
 		"override projectile type"	"43.0"
 		"Infinite Ammo Count"	"100.0"
+		"fire rate penalty HIDDEN" "4.0"
 	}
 	"Orbital Strike"
 	{
@@ -121,5 +122,26 @@
 		"Radiation Buildup On Backstab"	"25"
 		"Increased Overall Damage"	"1.65"
 		"Stealth On Backstab"	"3"
+	}
+	"nigga blaster 2.21"
+	{
+		"index"			"15148"
+		"weapon_class"	"tf_weapon_pistol"
+		"weapon_menu"	"tf_weapon_pistol"
+		"class"			"scout,engineer"
+		"description"	"Converts all fire rate into damage."
+		"cost"			"5000.0"
+		"Converts Firerate to Damage"	"1"
+	}
+	"revolving soule"
+	{
+		"index"			"15149"
+		"weapon_class"	"tf_weapon_revolver"
+		"weapon_menu"	"tf_weapon_revolver"
+		"class"			"sniper"
+		"description"	"Converts all fire rate into damage."
+		"cost"			"5000.0"
+		"Converts Firerate to Damage"	"1"
+		"revolver use hit locations"	"1"
 	}
 }

@@ -3,9 +3,9 @@ public Action:Timer_WaitForTF2Econ(Handle:timer)
 	new i = 0
 	if (TF2II_IsValidAttribID(1))
 	{
-		for (i = 0; i < 3000; i++)
+		for (i = 0; i < 7000; i++)
 		{
-			if (TF2II_IsValidAttribID(i))
+			if(TF2II_IsValidAttribID(i))
 			{
 				TF2II_GetAttribName( i, upgradesWorkNames[i], 96 );
 			}
@@ -289,7 +289,7 @@ public void OnPluginStart()
 	g_SDKCallSmack = EndPrepSDKCall();
 	if(g_SDKCallSmack==INVALID_HANDLE)
 	{
-		PrintToServer("CustomAttrs | Melee smack offset not found.");
+		PrintToServer("CustomAttrs | Melee smack signature not found.");
 	}
 
 	//Jar Call
@@ -298,7 +298,7 @@ public void OnPluginStart()
 	g_SDKCallJar = EndPrepSDKCall();
 	if(g_SDKCallJar==INVALID_HANDLE)
 	{
-		PrintToServer("CustomAttrs | Jar Throw offset not found.");
+		PrintToServer("CustomAttrs | Jar Throw signature not found.");
 	}
 
 	//Sentry Think Call
@@ -307,7 +307,7 @@ public void OnPluginStart()
 	g_SDKCallSentryThink = EndPrepSDKCall();
 	if(g_SDKCallSentryThink==INVALID_HANDLE)
 	{
-		PrintToServer("CustomAttrs | Sentry think offset not found.");
+		PrintToServer("CustomAttrs | Sentry think signature not found.");
 	}
 
 	//Sentry Think Cap
@@ -321,13 +321,13 @@ public void OnPluginStart()
 
 
 	//disable bot jumping
-	Handle g_DHookPlayerLocomotionJump = DHookCreateFromConf(hConf, "PlayerLocomotion::Jump()");
+	/*Handle g_DHookPlayerLocomotionJump = DHookCreateFromConf(hConf, "PlayerLocomotion::Jump()");
 	
 	if(g_DHookPlayerLocomotionJump == INVALID_HANDLE)
 	{
 		PrintToServer("CustomAttrs | bot locomotion jump function error");
 	}
-	DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);
+	DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);*/
 
 	//fire rate?
 	Handle g_DHookFireRateCall = DHookCreateFromConf(hConf, "CTFWeaponBase::ApplyFireDelay(float)");
@@ -347,7 +347,7 @@ public void OnPluginStart()
 	}
 	DHookEnableDetour(g_DHookOnModifyRage, false, OnModifyRagePre);
 	//Bot speed
-	Handle g_DHookBotSpeed = DHookCreateFromConf(hConf, "CTFBotLocomotion::GetRunSpeed()");
+	/*Handle g_DHookBotSpeed = DHookCreateFromConf(hConf, "CTFBotLocomotion::GetRunSpeed()");
 	
 	if(g_DHookBotSpeed == INVALID_HANDLE)
 	{
@@ -357,7 +357,7 @@ public void OnPluginStart()
 	{
 		PrintToServer("CustomAttrs | Bot speed cap removal applied.")
 	}
-	DHookEnableDetour(g_DHookBotSpeed, true, OnCalculateBotSpeedPost);
+	DHookEnableDetour(g_DHookBotSpeed, true, OnCalculateBotSpeedPost);*/
 	
 	//Is In world
 	Handle g_DHookInWorld = DHookCreateFromConf(hConf, "CBaseEntity::IsInWorld()");
@@ -365,10 +365,6 @@ public void OnPluginStart()
 	if(g_DHookInWorld == INVALID_HANDLE)
 	{
 		PrintToServer("CustomAttrs | Grenade patch fucked up.");
-	}
-	else
-	{
-		PrintToServer("CustomAttrs | Grenade patch applied.")
 	}
 	DHookEnableDetour(g_DHookInWorld, true, IsInWorldCheck);
 
@@ -378,10 +374,6 @@ public void OnPluginStart()
 	if(g_DHookRecoil == INVALID_HANDLE)
 	{
 		PrintToServer("CustomAttrs | Recoil patch fucked up.");
-	}
-	else
-	{
-		PrintToServer("CustomAttrs | Recoil patch applied.")
 	}
 	DHookEnableDetour(g_DHookRecoil, false, OnRecoilApplied);
 

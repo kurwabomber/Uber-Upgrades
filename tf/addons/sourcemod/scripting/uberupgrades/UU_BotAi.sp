@@ -29,8 +29,266 @@ new Float:forwardInput[MAXPLAYERS+1];
 new Float:backInput[MAXPLAYERS+1];
 new Float:leftInput[MAXPLAYERS+1];
 new Float:rightInput[MAXPLAYERS+1];
-//Stocks
-//==== [ OTHERS ] ==================================================
+new Float:cannotJump[MAXPLAYERS+1];
+//ay lmao
+public OnEntityCreated(entity, const String:classname[])
+{
+	if(StrEqual(classname, "trigger_capture_area"))
+	{
+		SDKHook(entity, SDKHook_StartTouch, StartTouchPoint);
+		SDKHook(entity, SDKHook_EndTouch, EndTouchPoint);
+	}
+}
+public Action:StartTouchPoint(entity, client)
+{
+	if(IsValidClient3(client))
+	{
+		cannotJump[client] = 8.0;
+	}
+}
+public Action:EndTouchPoint(entity, client)
+{
+	if(IsValidClient3(client))
+	{
+		cannotJump[client] = 2.0;
+	}
+}
+public void TF2_OnConditionAdded(client, TFCond:cond)
+{
+	if(IsValidClient3(client))
+	{
+		switch(cond)
+		{
+			case TFCond_Taunting:
+			{
+				cannotJump[client] = 2.5;
+			}
+			case TFCond_Teleporting:
+			{
+				cannotJump[client] = 1.0;
+			}
+		}
+	}
+}
+public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
+{
+	if(!IsFakeClient(client))
+		return Plugin_Continue;
+	if(IsMvM())
+		return Plugin_Continue;
+
+	new bool:changed = false;
+	new Float:tickRate = GetTickInterval();
+
+	if(attackInput[client] > 0.0)
+	{
+		buttons |= IN_ATTACK;
+		attackInput[client] -= tickRate;
+	}
+	if(forwardInput[client] > 0.0)
+	{
+		buttons |= IN_FORWARD;
+		forwardInput[client] -= tickRate;
+	}
+	if(backInput[client] > 0.0)
+	{
+		buttons |= IN_BACK;
+		backInput[client] -= tickRate;
+	}
+	if(leftInput[client] > 0.0)
+	{
+		buttons |= IN_MOVELEFT;
+		leftInput[client] -= tickRate;
+	}
+	if(rightInput[client] > 0.0)
+	{
+		buttons |= IN_MOVERIGHT;
+		rightInput[client] -= tickRate;
+	}
+	if(cannotJump[client] > 0.0) {cannotJump[client] -= tickRate;}
+
+	if(counter[client] & 4 == 0)
+	{
+		if(IsValidClient3(client) && !TF2Spawn_IsClientInSpawn(client))
+		{
+			new currentWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			new primary = GetPlayerWeaponSlot(client,0)
+			new secondary = GetPlayerWeaponSlot(client,1)
+			new melee = GetPlayerWeaponSlot(client,2)
+			new TFClassType:CurrentClass = TF2_GetPlayerClass(client)
+			new flags = GetEntityFlags(client)
+			char primaryClassname[32]; char secondaryClassname[32]; char meleeClassname[32]; char currentClassname[32];
+
+			if(IsValidEntity(primary))
+				GetEntityClassname(primary, primaryClassname, sizeof(primaryClassname));
+			if(IsValidEntity(secondary))
+				GetEntityClassname(secondary, secondaryClassname, sizeof(secondaryClassname));
+			if(IsValidEntity(melee))
+				GetEntityClassname(melee, meleeClassname, sizeof(meleeClassname));
+			if(IsValidEntity(currentWeapon))
+				GetEntityClassname(currentWeapon, currentClassname, sizeof(currentClassname));
+
+			if(cannotJump[client] <= 0.0 && !TF2_IsPlayerInCondition(client, TFCond_Zoomed) && flags & FL_ONGROUND && attackInput[client] <= 0.0)
+			{
+				new Float:scalarMovement[3];
+				scalarMovement[0] = GetEntPropFloat(client, Prop_Send, "m_vecVelocity[0]");
+				scalarMovement[1] = GetEntPropFloat(client, Prop_Send, "m_vecVelocity[1]");
+				scalarMovement[2] = 0.0;
+
+				if(GetVectorLength(scalarMovement) < 10.0)
+				{
+					buttons |= IN_JUMP;
+					changed = true;
+				}
+			}
+
+
+			for(new i = 1; i < MaxClients; i++)//Aimbot 
+			{
+				if(!IsValidClient3(i))
+					continue;
+				if(!IsPlayerAlive(i))
+					continue;
+				if(GetClientTeam(client) == GetClientTeam(i))
+					continue;
+				if(IsClientObserver(i))
+					continue;
+				if(TF2_IsPlayerInCondition(i, TFCond_Cloaked))
+					continue;
+				if(TF2_IsPlayerInCondition(i, TFCond_Disguised))
+					continue;
+				if(!ClientCanSeeClient(client, i))
+					continue;
+				
+				
+				if(currentWeapon == primary)
+				{
+					switch(CurrentClass)
+					{
+						case(TFClass_Pyro):{
+							if(IsValidEntity(primary))
+							{
+								new Address:FlameActive = TF2Attrib_GetByName(primary, "flame_speed");
+								if(FlameActive != Address_Null){
+									if(IsTargetInSightRange(client, i, 10.0, TF2Attrib_GetValue(FlameActive)*0.2)){
+										autoAim(client,i, angles);
+										attackInput[client] = 0.8;
+										break;
+									}
+								}
+							}
+						}
+						case(TFClass_Heavy):{
+							if(IsTargetInSightRange(client, i, 30.0, 2000.0)){
+								autoAim(client,i, angles);
+								attackInput[client] = 0.4;
+								break;
+							}
+						}
+						case(TFClass_Sniper):{
+							if(IsValidEntity(melee) && currentWeapon != melee && IsTargetInSightRange(client, i, 40.0, 300.0)){
+								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon", melee);
+								buttons &= ~IN_ATTACK;
+								buttons &= ~IN_ATTACK2;
+								changed = true;
+								break;
+							}
+							else if(IsTargetInSightRange(client, i, 5.0, 8000.0)){
+								autoAim(client,i, angles, true);
+								attackInput[client] = 0.1;
+								break;
+							}
+						}
+						case(TFClass_Scout):{
+
+							if(IsTargetInSightRange(client, i, 40.0, 800.0)){
+								autoAim(client,i, angles);
+								attackInput[client] = 0.5;
+								break;
+							}
+							else if(IsTargetInSightRange(client, i, 40.0, 1500.0)){
+								float vVictim[3], vAttacker[3];
+								GetClientAbsOrigin(i, vVictim);
+								GetClientAbsOrigin(client, vAttacker);
+								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon", secondary);
+								break;
+							}
+						}
+						case(TFClass_DemoMan):{
+							if(IsTargetInSightRange(client, i, 40.0, 1300.0)){
+								new Float:offset[3]		
+								float vVictim[3], vAttacker[3], distance;
+								GetClientAbsOrigin(i, vVictim);
+								GetClientAbsOrigin(client, vAttacker);
+								distance = GetVectorDistance(vVictim, vAttacker)
+								offset[0] = -1.0*((distance-1200.0)/50.0)
+								if(offset[0] > 0.0)
+									offset[0] *= 0.1
+								attackInput[client] = 0.4;
+								autoAim(client,i, angles,_,offset);
+								break;
+							}
+							else if(IsTargetInSightRange(client, i, 40.0, 4000.0)){
+								float vVictim[3], vAttacker[3];
+								GetClientAbsOrigin(i, vVictim);
+								GetClientAbsOrigin(client, vAttacker);
+								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon", secondary);
+								break;
+							}
+						}
+					}
+				}
+				else if(currentWeapon == secondary && StrContains(secondaryClassname, "lunchbox") == -1 && StrContains(secondaryClassname, "wearable") == -1)
+				{
+					switch(CurrentClass)
+					{
+						case(TFClass_DemoMan):{
+							if(IsTargetInSightRange(client, i, 40.0, 4000.0)){
+								new Float:offset[3]		
+								float vVictim[3], vAttacker[3], distance;
+								GetClientAbsOrigin(i, vVictim);
+								GetClientAbsOrigin(client, vAttacker);
+								distance = GetVectorDistance(vVictim, vAttacker)
+								offset[0] = -1.0*((distance-1200.0)/65.0)
+								if(offset[0] > 0.0)
+									offset[0] *= 0.1
+								attackInput[client] = 0.15;
+								autoAim(client,i, angles,_,offset);
+								break;
+							}
+							buttons |= IN_ATTACK2;
+							changed = true;
+							break;
+						}
+						default:{
+							if(IsTargetInSightRange(client, i, 40.0, 2000.0)){
+								attackInput[client] = 0.3;
+								autoAim(client,i, angles);
+								break;
+							}
+						}
+					}
+				}
+				else if(currentWeapon == melee)
+				{
+					if(IsTargetInSightRange(client, i, 20.0, 800.0)){
+						attackInput[client] = 0.4;
+						changed = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+	counter[client]++;
+
+	if(changed)
+		return Plugin_Changed;
+	return Plugin_Continue;
+}
+
+
+//lol
 stock AnglesToVelocity( Float:fAngle[3], Float:fVelocity[3], Float:fSpeed = 1.0 )
 {
     fVelocity[0] = Cosine( DegToRad( fAngle[1] ) ); 
@@ -204,208 +462,4 @@ stock autoAim(client, target, float vViewAngles[3], bool headshots = false, floa
 	SubtractVectors(target_point, GetEyePosition(client), target_point_adjusted);
 	
 	SnapEyeAngles(client, target_point_adjusted, vViewAngles, offsets);
-}
-public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
-{
-	if(!IsFakeClient(client))
-		return Plugin_Continue;
-	if(IsMvM())
-		return Plugin_Continue;
-
-	new bool:changed = false;
-	new Float:tickRate = GetTickInterval();
-
-	if(attackInput[client] > 0.0)
-	{
-		buttons |= IN_ATTACK;
-		attackInput[client] -= tickRate;
-	}
-	if(forwardInput[client] > 0.0)
-	{
-		buttons |= IN_FORWARD;
-		forwardInput[client] -= tickRate;
-	}
-	if(backInput[client] > 0.0)
-	{
-		buttons |= IN_BACK;
-		backInput[client] -= tickRate;
-	}
-	if(leftInput[client] > 0.0)
-	{
-		buttons |= IN_MOVELEFT;
-		leftInput[client] -= tickRate;
-	}
-	if(rightInput[client] > 0.0)
-	{
-		buttons |= IN_MOVERIGHT;
-		rightInput[client] -= tickRate;
-	}
-
-	if(counter[client] & 4 == 0)
-	{
-		if(IsValidClient3(client))
-		{
-			new currentWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			new primary = GetPlayerWeaponSlot(client,0)
-			new secondary = GetPlayerWeaponSlot(client,1)
-			new melee = GetPlayerWeaponSlot(client,2)
-			new TFClassType:CurrentClass = TF2_GetPlayerClass(client)
-			new flags = GetEntityFlags(client)
-
-			if(!TF2_IsPlayerInCondition(client, TFCond_Zoomed) && flags & FL_ONGROUND && attackInput[client] <= 0.0)
-			{
-				new Float:scalarMovement[3];
-				scalarMovement[0] = GetEntPropFloat(client, Prop_Send, "m_vecVelocity[0]");
-				scalarMovement[1] = GetEntPropFloat(client, Prop_Send, "m_vecVelocity[1]");
-				scalarMovement[2] = 0.0;
-
-				if(GetVectorLength(scalarMovement) < 10.0)
-				{
-					buttons |= IN_JUMP;
-					changed = true;
-				}
-			}
-
-
-			for(new i = 1; i < MaxClients; i++)//Aimbot 
-			{
-				if(!IsValidClient3(i))
-					continue;
-				if(!IsPlayerAlive(i))
-					continue;
-				if(GetClientTeam(client) == GetClientTeam(i))
-					continue;
-				if(IsClientObserver(i))
-					continue;
-				if(TF2_IsPlayerInCondition(i, TFCond_Cloaked))
-					continue;
-				if(TF2_IsPlayerInCondition(i, TFCond_Disguised))
-					continue;
-				if(!ClientCanSeeClient(client, i))
-					continue;
-				
-				
-				if(currentWeapon == primary)
-				{
-					switch(CurrentClass)
-					{
-						case(TFClass_Pyro):{
-							if(IsValidEntity(primary))
-							{
-								new Address:FlameActive = TF2Attrib_GetByName(primary, "flame_speed");
-								if(FlameActive != Address_Null){
-									if(IsTargetInSightRange(client, i, 10.0, TF2Attrib_GetValue(FlameActive)*0.2)){
-										autoAim(client,i, angles);
-										attackInput[client] = 0.8;
-										break;
-									}
-								}
-							}
-						}
-						case(TFClass_Heavy):{
-							if(IsTargetInSightRange(client, i, 30.0, 2000.0)){
-								autoAim(client,i, angles);
-								attackInput[client] = 0.4;
-								break;
-							}
-						}
-						case(TFClass_Sniper):{
-							if(IsValidEntity(melee) && currentWeapon != melee && IsTargetInSightRange(client, i, 40.0, 300.0)){
-								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon", melee);
-								buttons &= ~IN_ATTACK;
-								buttons &= ~IN_ATTACK2;
-								changed = true;
-								break;
-							}
-							else if(IsTargetInSightRange(client, i, 5.0, 8000.0)){
-								autoAim(client,i, angles, true);
-								attackInput[client] = 0.1;
-								break;
-							}
-						}
-						case(TFClass_Scout):{
-							if(IsTargetInSightRange(client, i, 40.0, 800.0)){
-								autoAim(client,i, angles);
-								attackInput[client] = 0.5;
-								break;
-							}
-							else if(IsTargetInSightRange(client, i, 40.0, 1500.0)){
-								float vVictim[3], vAttacker[3];
-								GetClientAbsOrigin(i, vVictim);
-								GetClientAbsOrigin(client, vAttacker);
-								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon", secondary);
-								break;
-							}
-						}
-						case(TFClass_DemoMan):{
-							if(IsTargetInSightRange(client, i, 40.0, 1300.0)){
-								new Float:offset[3]		
-								float vVictim[3], vAttacker[3], distance;
-								GetClientAbsOrigin(i, vVictim);
-								GetClientAbsOrigin(client, vAttacker);
-								distance = GetVectorDistance(vVictim, vAttacker)
-								offset[0] = -1.0*((distance-1200.0)/50.0)
-								if(offset[0] > 0.0)
-									offset[0] *= 0.1
-								attackInput[client] = 0.4;
-								autoAim(client,i, angles,_,offset);
-								break;
-							}
-							else if(IsTargetInSightRange(client, i, 40.0, 4000.0)){
-								float vVictim[3], vAttacker[3];
-								GetClientAbsOrigin(i, vVictim);
-								GetClientAbsOrigin(client, vAttacker);
-								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon", secondary);
-								break;
-							}
-						}
-					}
-				}
-				else if(currentWeapon == secondary)
-				{
-					switch(CurrentClass)
-					{
-						case(TFClass_DemoMan):{
-							if(IsTargetInSightRange(client, i, 40.0, 4000.0)){
-								new Float:offset[3]		
-								float vVictim[3], vAttacker[3], distance;
-								GetClientAbsOrigin(i, vVictim);
-								GetClientAbsOrigin(client, vAttacker);
-								distance = GetVectorDistance(vVictim, vAttacker)
-								offset[0] = -1.0*((distance-1200.0)/65.0)
-								if(offset[0] > 0.0)
-									offset[0] *= 0.1
-								attackInput[client] = 0.15;
-								autoAim(client,i, angles,_,offset);
-								break;
-							}
-							buttons |= IN_ATTACK2;
-							changed = true;
-							break;
-						}
-						default:{
-							if(IsTargetInSightRange(client, i, 40.0, 2000.0)){
-								attackInput[client] = 0.3;
-								autoAim(client,i, angles);
-								break;
-							}
-						}
-					}
-				}
-				else if(currentWeapon == melee)
-				{
-					if(IsTargetInSightRange(client, i, 20.0, 800.0)){
-						attackInput[client] = 0.4;
-						changed = true;
-						break;
-					}
-				}
-			}
-		}
-	}
-	counter[client]++;
-
-	if(changed)
-		return Plugin_Changed;
-	return Plugin_Continue;
 }

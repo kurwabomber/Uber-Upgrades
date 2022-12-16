@@ -5,7 +5,7 @@ public Menu_ShowArcane(client)
 	{
 		new Handle:menu = CreateMenu(MenuHandler_ArcaneCast);
 		new attunement = 1;
-		new Address:attuneActive = TF2Attrib_GetByName(client, "throwable fire speed");
+		new Address:attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
 		if(attuneActive != Address_Null)
 		{
 			attunement += RoundToNearest(TF2Attrib_GetValue(attuneActive));
@@ -155,7 +155,7 @@ public Action:Command_UseArcane(client, args)
 		if (IsValidClient(client) && IsPlayerAlive(client))
 		{
 			new attuneSlots = 0
-			new Address:slotActive = TF2Attrib_GetByName(client, "throwable fire speed");
+			new Address:slotActive = TF2Attrib_GetByName(client, "arcane attunement slots");
 			if(slotActive != Address_Null)
 			{
 				attuneSlots += RoundToNearest(TF2Attrib_GetValue(slotActive))
@@ -273,7 +273,7 @@ public Action:Command_UseArcane(client, args)
 //Arcane Spells
 CastMarkForDeath(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "always tradable");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane mark for death");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:focusCost = (fl_MaxFocus[client]*0.50)
@@ -330,7 +330,7 @@ CastMarkForDeath(client, attuneSlot)
 }
 CastSunlightSpear(client, attuneSlot)
 {
-	new Address:SunlightSpearActive = TF2Attrib_GetByName(client, "duel loser account id");
+	new Address:SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
 	if(SunlightSpearActive != Address_Null && TF2Attrib_GetValue(SunlightSpearActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -408,7 +408,7 @@ CastSunlightSpear(client, attuneSlot)
 }
 CastLightningEnchantment(client, attuneSlot)
 {
-	new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "thermal_thruster_air_launch");
+	new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
 	if(lightningenchantmentActive != Address_Null)
 	{
 		new Float:level = ArcaneDamage[client];
@@ -439,7 +439,7 @@ CastLightningEnchantment(client, attuneSlot)
 }
 CastDarkmoonBlade(client, attuneSlot)
 {
-	new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "powerup max charges");
+	new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
 	if(darkmoonbladeActive != Address_Null)
 	{
 		new Float:level = ArcaneDamage[client];
@@ -469,7 +469,7 @@ CastDarkmoonBlade(client, attuneSlot)
 }
 CastSnapFreeze(client, attuneSlot)
 {
-	new Address:snapfreezeActive = TF2Attrib_GetByName(client, "cannot trade");
+	new Address:snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
 	if(snapfreezeActive != Address_Null && TF2Attrib_GetValue(snapfreezeActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -485,6 +485,7 @@ CastSnapFreeze(client, attuneSlot)
 				if(DisableCooldowns != 1)
 					SpellCooldowns[client][attuneSlot] = 9.0/ArcanePower[client];
 				EmitAmbientSound(SOUND_FREEZE, clientpos, client, 150);
+				float damage = 100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0);
 				for(new i = 1; i<MAXENTITIES;i++)
 				{
 					if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
@@ -497,7 +498,7 @@ CastSnapFreeze(client, attuneSlot)
 							new Float:distance = GetVectorDistance(clientpos,VictimPos);
 							if(distance <= 500.0)
 							{
-								Entity_Hurt(i, RoundToNearest((100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0))), client, 1073741824);
+								SDKHooks_TakeDamage(i,client,client,damage,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
 								if(IsValidClient3(i))
 								{
 									TF2_AddCondition(i, TFCond_FreezeInput, 0.4);
@@ -522,7 +523,7 @@ CastSnapFreeze(client, attuneSlot)
 }
 CastArcanePrison(client, attuneSlot)
 {
-	new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "Wrench index");
+	new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
 	if(arcaneprisonActive != Address_Null && TF2Attrib_GetValue(arcaneprisonActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -586,7 +587,7 @@ CastArcanePrison(client, attuneSlot)
 }
 CastSpeedAura(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "purchased");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane speed aura");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:focusCost = (fl_MaxFocus[client]*0.4)/ArcanePower[client]
@@ -631,7 +632,7 @@ CastSpeedAura(client, attuneSlot)
 }
 CastAerialStrike(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "event date");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -729,7 +730,7 @@ public Action:aerialStrike(Handle:timer,any:data)
 }
 CastInferno(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "gifter account id");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane inferno");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -830,7 +831,7 @@ CastInferno(client, attuneSlot)
 
 CastMineField(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "set supply crate series");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane mine field");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -960,7 +961,7 @@ public Action:Timer_GrenadeMines(Handle:timer, any:ref)
 }
 CastShockwave(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "elevate quality");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane shockwave");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -978,7 +979,7 @@ CastShockwave(client, attuneSlot)
 				if(DisableCooldowns != 1)
 					SpellCooldowns[client][attuneSlot] = 20.0/ArcanePower[client];
 					
-				new damageDealt = RoundToNearest((100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0)));
+				new Float:damageDealt = (100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0));
 				for(new i = 1; i<MAXENTITIES;i++)
 				{
 					if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
@@ -991,7 +992,7 @@ CastShockwave(client, attuneSlot)
 							new Float:distance = GetVectorDistance(ClientPos,VictimPos);
 							if(distance <= 500.0)
 							{
-								Entity_Hurt(i, damageDealt, client, DMG_GENERIC);
+								SDKHooks_TakeDamage(i,client,client,damageDealt,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
 								if(IsValidClient3(i))
 								{
 									TF2_AddCondition(i, TFCond_FreezeInput, 0.4);
@@ -1016,7 +1017,7 @@ CastShockwave(client, attuneSlot)
 }
 CastAutoSentry(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "referenced item id low");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane autosentry");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:focusCost = (fl_MaxFocus[client])
@@ -1091,7 +1092,7 @@ public Action:RemoveAutoSentryID(Handle:timer, any:ref)
 }
 CastSoothingSunlight(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "referenced item id high");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane soothing sunlight");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:focusCost = (fl_MaxFocus[client])/ArcanePower[client]
@@ -1156,7 +1157,7 @@ public Action:SoothingSunlight(Handle:timer, client)
 }
 CastArcaneHunter(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "referenced item def UPDATED");
+	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane hunter");
 	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
 	{
 		new Float:focusCost = (200.0 + (65.0 * ArcaneDamage[client]))/ArcanePower[client]
@@ -1288,7 +1289,7 @@ public Action:ArcaneHunter(Handle:timer, client)
 				{
 					if(IsPointVisible(clientpos,VictimPos))
 					{
-						Entity_Hurt(i, RoundToNearest(LightningDamage), client, 1073741824);
+						SDKHooks_TakeDamage(i,client,client,LightningDamage,1073741824,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
 					}
 				}
 			}
@@ -1297,7 +1298,7 @@ public Action:ArcaneHunter(Handle:timer, client)
 }
 CastBlackskyEye(client, attuneSlot)
 {
-	new Address:BlackskyEyeActive = TF2Attrib_GetByName(client, "taunt is highfive");
+	new Address:BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
 	if(BlackskyEyeActive != Address_Null && TF2Attrib_GetValue(BlackskyEyeActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -1368,7 +1369,7 @@ CastBlackskyEye(client, attuneSlot)
 }
 CastACallBeyond(client, attuneSlot)
 {
-	new Address:callBeyondActive = TF2Attrib_GetByName(client, "item style override");
+	new Address:callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
 	if(callBeyondActive != Address_Null && TF2Attrib_GetValue(callBeyondActive))
 	{
 		new Float:level = ArcaneDamage[client];
@@ -1432,11 +1433,11 @@ public Action:ACallBeyond(Handle:timer, client)
 
 				GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 				GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-				ScaleVector(fwd, 30.0);
+				ScaleVector(fwd, 90.0);
 				
 				AddVectors(fOrigin, fwd, fOrigin);
 				
-				new Float:Speed = 1500.0;
+				new Float:Speed = 1700.0;
 				fVelocity[0] = vBuffer[0]*Speed;
 				fVelocity[1] = vBuffer[1]*Speed;
 				fVelocity[2] = vBuffer[2]*Speed;
@@ -1460,7 +1461,7 @@ public Action:ACallBeyond(Handle:timer, client)
 }
 CastZap(client, attuneSlot)
 {
-	new Address:zapActive = TF2Attrib_GetByName(client, "throwable damage");
+	new Address:zapActive = TF2Attrib_GetByName(client, "arcane zap");
 	if(zapActive != Address_Null && TF2Attrib_GetValue(zapActive) > 0.0)
 	{
 		new Float:level = ArcaneDamage[client];
@@ -1544,8 +1545,8 @@ DoZap(client,victim)
 		
 		new Float:LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 3.0));
 		SDKHooks_TakeDamage(victim,client,client, 6.0, (DMG_RADIATION+DMG_DISSOLVE), -1, NULL_VECTOR, NULL_VECTOR);
-		Entity_Hurt(victim, RoundToNearest(LightningDamage), client, 1073741824);
-		
+		SDKHooks_TakeDamage(victim,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(victim));
+			
 		if(0.3 >= GetRandomFloat(0.0, 1.0))
 		{
 			new Handle:hPack = CreateDataPack();
@@ -1565,7 +1566,7 @@ public Action:zapAgain(Handle:timer,any:data)
 }
 CastLightning(client, attuneSlot)
 {
-	new Address:lightningActive = TF2Attrib_GetByName(client, "throwable healing");
+	new Address:lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
 	if(lightningActive != Address_Null)
 	{
 		new Float:level = ArcaneDamage[client];
@@ -1633,7 +1634,7 @@ CastLightning(client, attuneSlot)
 					
 					for(new i = 1; i<MAXENTITIES;i++)
 					{
-						if(IsValidEntity(i) && IsValidForDamage(i) && IsOnDifferentTeams(client,i))
+						if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 						{
 							new Float:VictimPos[3];
 							GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
@@ -1645,7 +1646,8 @@ CastLightning(client, attuneSlot)
 								if(IsPointVisible(clientpos,VictimPos))
 								{
 									new Float:LightningDamage = (200.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 80.0));
-									Entity_Hurt(i, RoundToNearest(LightningDamage), client, 1073741824);
+									SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
+
 									CreateParticle(i, "utaunt_auroraglow_orange_parent", true, "", 3.25);
 									
 									if(IsValidClient3(i))
@@ -1669,7 +1671,7 @@ CastLightning(client, attuneSlot)
 }
 CastHealing(client, attuneSlot)//Projected Healing
 {
-	new Address:healAuraActive = TF2Attrib_GetByName(client, "throwable particle trail only");
+	new Address:healAuraActive = TF2Attrib_GetByName(client, "arcane projected healing");
 	if(healAuraActive != Address_Null)
 	{
 		new Float:level = ArcaneDamage[client];

@@ -1,5 +1,89 @@
 "Phrases"
 {
+	"Arcane Cooldown Reduction"
+	{
+		"en"		"Arcane Cooldown Reduction"
+	}
+	"Damage Type Affinities"
+	{
+		"en"		"Damage Type Affinities"
+	}
+	"Direct Damage Taken Reduced"
+	{
+		"en"		"Direct Damage Taken Reduced"
+	}
+	"Arcane Damage Taken Reduced"
+	{
+		"en"		"Arcane Damage Taken Reduced"
+	}
+	"Additive Bullet Spread"
+	{
+		"en"		"Additive Bullet Spread"
+	}
+	"Increased Shock Range"
+	{
+		"en"		"Increased Shock Range"
+	}
+	"Teleporter Recharge Rate"
+	{
+		"en"		"Teleporter Recharge Rate"
+	}
+	"Increased Projectile Count"
+	{
+		"en"		"Increased Projectile Count"
+	}
+	"Explosive Bullets"
+	{
+		"en"		"Explosive Bullets"
+	}
+	"Healing for Buildings"
+	{
+		"en"		"Healing for Buildings"
+	}
+	"Dispenser Regeneration Rate"
+	{
+		"en"		"Dispenser Regeneration Rate"
+	}
+	"Sentry Maximum Ammo"
+	{
+		"en"		"Sentry Maximum Ammo"
+	}
+	"Explosive Bullets Radius"
+	{
+		"en"		"Explosive Bullets Radius"
+	}
+	"Sentry Rocket Fire Rate"
+	{
+		"en"		"Sentry Rocket Fire Rate"
+	}
+	"Medigun Heal Range Bonus"
+	{
+		"en"		"Medigun Heal Range Bonus"
+	}
+	"fires milk bolt"
+	{
+		"en"		"fires milk bolt"
+	}
+	"Arrow Mastery"
+	{
+		"en"		"Arrow Mastery"
+	}
+	"Crit on Kill Duration"
+	{
+		"en"		"Crit on Kill Duration"
+	}
+	"Blade Stream"
+	{
+		"en"		"Blade Stream"
+	}
+	"Fan of Knives"
+	{
+		"en"		"Fan of Knives"
+	}
+	"Crit Damage Bonus"
+	{
+		"en"		"Crit Damage Bonus"
+	}
 	"!Offensive Powerups"
 	{
 		"en"		"Offensive Powerups"
@@ -371,7 +455,7 @@
 	}
 	"Ability : Charge"
 	{
-		"en"		"Ability : Adrenaline"
+		"en"		"Ability : Class Specific"
 	}
 	"Ability : Stun Shot"
 	{
@@ -2650,7 +2734,7 @@
 	}
 	"max ammo"
 	{
-		"en"		"max ammo"
+		"en"		"Maximum Secondary Ammo"
 	}
 	"maxammo primary increased"
 	{

@@ -385,5 +385,21 @@
 			"bleeding duration"						"5"
 			"Bleed Per Hit"							"2"
 		}
+		"Blade Stream"
+		{
+			"requirement"					"150000"
+			"cost"							"15000"
+			"fire rate bonus HIDDEN"		"7.5"
+			"Crit Damage Bonus"				"4.0"
+			"Crit on Kill Duration"			"4.0"
+		}
+		"Fan of Knives"
+		{
+			"requirement"					"200000"
+			"fire rate bonus HIDDEN"		"6.5"
+			"Fan of Knives"					"1"
+			"slow enemy on hit major"		"0.5"
+			"Crit on Kill Duration"			"4.0"
+		}
 	}
 }

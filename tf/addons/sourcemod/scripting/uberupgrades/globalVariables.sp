@@ -36,6 +36,7 @@ new DisableCooldowns
 new given_upgrd_list_nb[_NUMBER_DEFINELISTS]
 new given_upgrd_subcat_nb[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT]
 new given_upgrd_list[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][_NUMBER_DEFINELISTS_CAT][128]
+new upgrades_efficiency_list[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES]
 new given_upgrd_classnames_tweak_idx[_NUMBER_DEFINELISTS]
 new given_upgrd_classnames_tweak_nb[_NUMBER_DEFINELISTS]
 new given_upgrd_subcat[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT]
@@ -87,12 +88,15 @@ new globalButtons[MAXPLAYERS+1];
 new singularBuysPerMinute[MAXPLAYERS+1];
 new bossPhase[MAXPLAYERS+1];
 new upgrades_display_style[MAX_ATTRIBUTES];
+new fanOfKnivesCount[MAXPLAYERS+1];
 //Floats
 new Float:MoneyBonusKill
 new Float:StartMoney
 new Float:MoneyForTeamRatio[2]
+new Float:efficiencyCalculationTimer[MAXPLAYERS + 1]
 new Float:currentupgrades_i[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]
 new Float:currentupgrades_val[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]
+new Float:upgrades_efficiency[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES]
 new Float:client_spent_money[MAXPLAYERS + 1][NB_SLOTS_UED + 1]
 new Float:client_tweak_highest_requirement[MAXPLAYERS + 1][NB_SLOTS_UED + 1]
 new Float:upgrades_ratio[MAX_ATTRIBUTES]
@@ -185,6 +189,7 @@ new client_new_weapon_ent_id_mvm_chkp[MAXPLAYERS + 1]
 new currentupgrades_restriction_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1][5];
 new Float:currentupgrades_val_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]
 new Float:client_spent_money_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1]
+new Float:waveToCurrency[] = {60000.0, 92000.0, 130400.0, 176480.0, 231776.0, 298131.2, 377757.4, 473308.9, 587970.7, 725564.0, 890677.8, 1088813.3, 1326576.0, 1611891.0, 1954269.0, 1954269.0, 2365123.0, 2858148.0}
 
 //Custom Attributes
 new Float:fl_GlobalCoolDown[MAXPLAYERS+1];
