@@ -22,22 +22,15 @@ new bool:ShouldNotHome[MAXENTITIES][MAXPLAYERS+1];
 stock bool:IsValidClient(client)
 {
     if ( client <= 0 || client > MaxClients ) return false; 
-    if ( !IsClientInGame( client ) ) return false; 
+	if ( !IsClientInGame(client) ) return false;
     if ( IsFakeClient( client ) ) return false; 
-    if ( !IsClientConnected( client ) ) return false; 
-    if ( GetEntProp( client, Prop_Send, "m_bIsCoaching" ) ) return false; 
-    if ( IsClientSourceTV( client ) || IsClientReplay( client ) ) return false; 
 	
     return true; 
 }
 stock bool:IsValidClient3(client)
 {
     if ( client <= 0 || client > MaxClients ) return false; 
-    if ( !IsClientInGame( client ) ) return false; 
-    if ( !IsClientConnected( client ) ) return false; 
-    if ( GetEntProp( client, Prop_Send, "m_bIsCoaching" ) ) return false; 
-    if ( IsClientSourceTV( client ) || IsClientReplay( client ) ) return false; 
-		
+	if ( !IsClientInGame(client) ) return false;
     return true; 
 }
 stock bool:IsValidForDamage(entity)
@@ -226,40 +219,6 @@ stock Entity_SetName(entity, const String:name[], any:...)
 
 	return DispatchKeyValue(entity, "targetname", format);
 }
-stock bool:Entity_Hurt(entity, damage, attacker=0, damageType=DMG_GENERIC, const String:fakeClassName[]="")
-{
-	static point_hurt = INVALID_ENT_REFERENCE;
-	if (point_hurt == INVALID_ENT_REFERENCE || !IsValidEntity(point_hurt)) {
-		point_hurt = EntIndexToEntRef(Entity_Create("point_hurt"));
-
-		if (point_hurt == INVALID_ENT_REFERENCE) {
-			return false;
-		}
-
-		DispatchSpawn(point_hurt);
-	}
-	if(damage == -2147483648)
-	{
-		damage = 2147483647
-	}
-	AcceptEntityInput(point_hurt, "TurnOn");
-	SetEntProp(point_hurt, Prop_Data, "m_nDamage", damage);
-	SetEntProp(point_hurt, Prop_Data, "m_bitsDamageType", damageType);
-	Entity_PointHurtAtTarget(point_hurt, entity);
-
-	if (fakeClassName[0] != '\0') {
-		Entity_SetClassName(point_hurt, fakeClassName);
-	}
-
-	AcceptEntityInput(point_hurt, "Hurt", attacker);
-	AcceptEntityInput(point_hurt, "TurnOff");
-
-	if (fakeClassName[0] != '\0') {
-		Entity_SetClassName(point_hurt, "point_hurt");
-	}
-
-	return true;
-}
 stock refreshAllWeapons(client)
 {
 	TF2Attrib_ClearCache(client);
@@ -274,7 +233,7 @@ stock refreshAllWeapons(client)
 }
 stock EntityExplosion(owner, Float:damage, Float:radius, Float:pos[3], soundType = 0, bool:visual = true, entity = -1, Float:soundLevel = 0.65,damagetype = DMG_BLAST, weapon = -1, Float:falloff = 0.0, soundPriority = 100, bool:ignition = false)
 {
-	if(entity == -1)
+	if(entity == -1 || !IsValidEntity(entity))
 		entity = owner;
 	for(new i = 1; i < MAXENTITIES; i++)
 	{
@@ -306,7 +265,7 @@ stock EntityExplosion(owner, Float:damage, Float:radius, Float:pos[3], soundType
 					}
 					else
 					{
-						Entity_Hurt(i, RoundToNearest(damage), owner, damagetype);
+						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,-1,NULL_VECTOR,NULL_VECTOR, false);
 					}
 				}
 			}
@@ -467,13 +426,9 @@ stock float GetResistance(int client, bool includeReduction = false, float incre
 		new Float:ArmorMult = 1.0;
 		
 		if(capActive != Address_Null)
-		{
 			ArmorMult = TF2Attrib_GetValue(capActive);
-		}
 		if(Defense != Address_Null)
-		{
 			DefenseMult = TF2Attrib_GetValue(Defense);
-		}
 		/*if(TF2_IsPlayerInCondition(client, TFCond_NoTaunting_DEPRECATED))
 		{
 			ArmorMult -= 1.0;
@@ -2669,14 +2624,7 @@ public Action:DOTDamage(Handle:timer,any:data)
 	{
 		if(IsValidForDamage(victim) && IsValidClient3(attacker))
 		{
-			if(IsValidClient3(victim))
-			{
-				SDKHooks_TakeDamage(victim,attacker,attacker,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
-			}
-			else
-			{
-				Entity_Hurt(victim, RoundToNearest(damage), attacker, damagetype);
-			}
+			SDKHooks_TakeDamage(victim,attacker,attacker,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR,!IsValidClient3(victim));
 			repeats--;
 			new Handle:hPack = CreateDataPack();
 			WritePackCell(hPack, EntIndexToEntRef(victim));

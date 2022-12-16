@@ -58,6 +58,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 		current_w_sc_list_id[client] = subcat_choice;
 		current_w_c_list_id[client] = cat_choice;
 		slot = current_slot_used[client]
+		int attributeDisabled[MAX_ATTRIBUTES]
 		//PrintToServer("%i | %i", cat_choice, subcat_choice)
 		
 		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); i++)
@@ -114,6 +115,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 						up_cost, buf,
 						plus_sign, RoundFloat(tmp_ratio * 100), (RoundFloat(tmp_val * 100)))
 					itemDisabled = true;
+					attributeDisabled[tmp_up_idx] = true;
 				}
 				else if(upgrades_restriction_category[tmp_up_idx] != 0 && (val == 0.0 || val - upgrades_i_val[tmp_up_idx] == 0.0))
 				{
@@ -125,6 +127,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 								up_cost, buf,
 								plus_sign, RoundFloat(tmp_ratio * 100), (RoundFloat(tmp_val * 100)))
 							itemDisabled = true;
+							attributeDisabled[tmp_up_idx] = true;
 						}
 					}
 					if(!itemDisabled)
@@ -149,6 +152,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 						up_cost, buf,
 						plus_sign, tmp_ratio, tmp_val)
 					itemDisabled = true
+					attributeDisabled[tmp_up_idx] = true;
 				}
 				else if(upgrades_restriction_category[tmp_up_idx] != 0 && (val == 0.0 || val - upgrades_i_val[tmp_up_idx] == 0.0))
 				{
@@ -160,6 +164,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 								up_cost, buf,
 								plus_sign, RoundFloat(tmp_ratio * 100), (RoundFloat(tmp_val * 100)))
 							itemDisabled = true;
+							attributeDisabled[tmp_up_idx] = true;
 						}
 					}
 					if(!itemDisabled)
@@ -176,83 +181,84 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 						plus_sign, tmp_ratio, tmp_val)
 				}
 			}
-
-			switch(upgrades_display_style[tmp_up_idx])
+			if(!itemDisabled)
 			{
-				case 1:
+				switch(upgrades_display_style[tmp_up_idx])
 				{
-					if(val == 0.0)
-						val = upgrades_i_val[tmp_up_idx];
-					
-					if(upgrades_efficiency_list[client][slot][tmp_up_idx])
+					case 1:
 					{
-						Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][tmp_up_idx]);
+						if(val == 0.0)
+							val = upgrades_i_val[tmp_up_idx];
+						
+						if(upgrades_efficiency_list[client][slot][tmp_up_idx])
+						{
+							Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][tmp_up_idx]);
+						}
+						upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(((val+upgrades_ratio[tmp_up_idx])/val)-1.0)/up_cost;
 					}
-					upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(((val+upgrades_ratio[tmp_up_idx])/val)-1.0)/up_cost;
-				}
-				case 6:
-				{
-					if(val == 0.0)
-						val = upgrades_i_val[tmp_up_idx];
-					
-					if(upgrades_efficiency_list[client][slot][tmp_up_idx])
+					case 6:
 					{
-						Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][tmp_up_idx]);
+						if(val == 0.0)
+							val = upgrades_i_val[tmp_up_idx];
+						
+						if(upgrades_efficiency_list[client][slot][tmp_up_idx])
+						{
+							Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][tmp_up_idx]);
+						}
+						upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(0.05)/up_cost;
 					}
-					upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(0.05)/up_cost;
-				}
-				case 2:
-				{
-					Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, (GetResistance(client, true, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true)));
-				}
-				case 3:
-				{
-					Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, (GetResistance(client, true, 0.0, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true)));
-				}
-				case 4:
-				{
-					new Float:arcanePower = 1.0;
-					
-					new Address:ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
-					if(ArcaneActive != Address_Null)
+					case 2:
 					{
-						arcanePower = TF2Attrib_GetValue(ArcaneActive);
+						Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, (GetResistance(client, true, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true)));
 					}
-					
-					new Float:arcaneDamageMult = 1.0;
+					case 3:
+					{
+						Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, (GetResistance(client, true, 0.0, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true)));
+					}
+					case 4:
+					{
+						new Float:arcanePower = 1.0;
+						
+						new Address:ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
+						if(ArcaneActive != Address_Null)
+						{
+							arcanePower = TF2Attrib_GetValue(ArcaneActive);
+						}
+						
+						new Float:arcaneDamageMult = 1.0;
 
-					new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
-					if(ArcaneDamageActive != Address_Null)
-					{
-						arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
-					}
+						new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
+						if(ArcaneDamageActive != Address_Null)
+						{
+							arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
+						}
 
-					new Float:delta = Pow((arcaneDamageMult+upgrades_ratio[tmp_up_idx]) * Pow(arcanePower, 4.0), 2.45) - Pow(arcaneDamageMult * Pow(arcanePower, 4.0), 2.45);
-					Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, delta);
-				}
-				case 5:
-				{
-					new Float:arcanePower = 1.0;
-					
-					new Address:ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
-					if(ArcaneActive != Address_Null)
-					{
-						arcanePower = TF2Attrib_GetValue(ArcaneActive);
+						new Float:delta = Pow((arcaneDamageMult+upgrades_ratio[tmp_up_idx]) * Pow(arcanePower, 4.0), 2.45) - Pow(arcaneDamageMult * Pow(arcanePower, 4.0), 2.45);
+						Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, delta);
 					}
-					
-					new Float:arcaneDamageMult = 1.0;
-
-					new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
-					if(ArcaneDamageActive != Address_Null)
+					case 5:
 					{
-						arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
-					}
+						new Float:arcanePower = 1.0;
+						
+						new Address:ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
+						if(ArcaneActive != Address_Null)
+						{
+							arcanePower = TF2Attrib_GetValue(ArcaneActive);
+						}
+						
+						new Float:arcaneDamageMult = 1.0;
 
-					new Float:delta = Pow(arcaneDamageMult * Pow(arcanePower+upgrades_ratio[tmp_up_idx], 4.0), 2.45) - Pow(arcaneDamageMult * Pow(arcanePower, 4.0), 2.45);
-					Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, delta);
+						new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
+						if(ArcaneDamageActive != Address_Null)
+						{
+							arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
+						}
+
+						new Float:delta = Pow(arcaneDamageMult * Pow(arcanePower+upgrades_ratio[tmp_up_idx], 4.0), 2.45) - Pow(arcaneDamageMult * Pow(arcanePower, 4.0), 2.45);
+						Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, delta);
+					}
 				}
 			}
-
 			AddMenuItem(menu, "upgrade", desc_str);
 		}
 		if(efficiencyCalculationTimer[client] <= 0.0)
@@ -272,7 +278,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 			{
 				for(int t=0;t<MAX_ATTRIBUTES;t++)
 				{
-					if(toBlock[t] == false && upgrades_efficiency[client][slot][t])
+					if(!toBlock[t] && upgrades_efficiency[client][slot][t])
 					{
 						if(upgrades_efficiency[client][slot][t] > max)
 						{
@@ -280,13 +286,18 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 							highestIndex = t;
 						}
 					}
+					if(attributeDisabled[t])
+					{
+						upgrades_efficiency_list[client][slot][t] = 0;
+						upgrades_efficiency[client][slot][t] = 0.0;
+					}
 				}
 				max = 0.0;
 				toBlock[highestIndex] = true;
 				//PrintToServer("%i | %.2f | %s", k, upgrades_efficiency[client][slot][highestIndex], toBlock[highestIndex] ? "blocked" : "unblocked")
 				upgrades_efficiency_list[client][slot][highestIndex] = k+1;
 			}
-			efficiencyCalculationTimer[client] = 0.3;
+			efficiencyCalculationTimer[client] = 0.1;
 		}
 		SetMenuTitle(menu, TitleStr);
 		SetMenuExitBackButton(menu, true);
