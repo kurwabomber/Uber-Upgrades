@@ -1,0 +1,37 @@
+"The Fan O War Replacement"
+{
+	"classes"
+	{
+		"scout"	"2"
+	}
+	"baseclass"		"bat"
+	"baseindex"		"355"
+	"replace"		"355"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Deals -75% damage. Applies a 4 second debuff where the enemy takes 50% more damage."
+	"attributes"
+	{
+		"disguise damage reduction"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.25"
+		}
+		"damage penalty"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"mark for death"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"crits_become_minicrits"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+	}
+}

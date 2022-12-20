@@ -1,0 +1,32 @@
+"The Machina - Reskin"
+{
+	"classes"
+	{
+		"sniper"	"0"
+	}
+	"baseclass"		"sniperrifle"
+	"baseindex"		"30665"
+	"replace"		"30665"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Deals 30% less damage to overhealed players. Scales 20% more with charge."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"sniper fires tracer"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0"
+		}
+		"no charge impact range"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.4"
+		}
+	}
+}

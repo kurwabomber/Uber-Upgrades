@@ -1,0 +1,32 @@
+"The UberSaw"
+{
+	"classes"
+	{
+		"medic"	"2"
+	}
+	"baseclass"		"bonesaw"
+	"baseindex"		"37"
+	"replace"		"37"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Insert Description"
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"crit damage multiplier"
+		{
+			"plugin"	"basic-attributes"
+			"value"		"1.1"
+		}
+		"add uber charge on hit"
+		{
+			"plugin"	 "tf2attributes"
+			"value"		"0.03"
+		}
+	}
+}

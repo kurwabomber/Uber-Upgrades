@@ -1,0 +1,32 @@
+"The Bushwacka"
+{
+	"classes"
+	{
+		"sniper"	"2"
+	}
+	"baseclass"		"club"
+	"baseindex"		"232"
+	"replace"		"232"
+	"quality"		"7"
+	"logname"		"Bushwacka"
+	"nobots"		"1"
+	"description"	""
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"override projectile type"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"41.0"
+		}
+		"fire rate penalty HIDDEN"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"4.0"
+		}
+	}
+}

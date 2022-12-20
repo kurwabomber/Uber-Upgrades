@@ -1,0 +1,42 @@
+"The Soda Popper"
+{
+	"classes"
+	{
+		"scout"		"0"
+	}
+	"baseclass"		"soda_popper"
+	"baseindex"		"448"
+	"replace"		"448"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"While is active : Boosts movespeed by +80% & drains 25 maxhealth per second.\nReduces overall movespeed by -20%.\nHas fixed spread pattern."
+	"attributes"
+	{	
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"fixed_shot_pattern"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"mult_player_movespeed_active"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.8"
+		}
+		"move speed penalty"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.8"
+		}
+		"mod_maxhealth_drain_rate"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"25"
+		}
+	}
+}

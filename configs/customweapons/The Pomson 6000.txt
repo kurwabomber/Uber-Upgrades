@@ -1,0 +1,42 @@
+"Pomson replacement"
+{
+	"classes"
+	{
+		"engineer"		"0"
+	}
+	"baseclass"		"drg_pomson"
+	"baseindex"		"588"
+	"replace"		"588"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Homes in at 200HU.\nTickrate for damage is quadrupled.\n+75% projectile speed."
+	"attributes"
+	{
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"energy weapon penetration"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"crit from behind"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"350"
+		}
+		"mod demo buff type"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.1"
+		}
+		"SET BONUS: special dsp"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+	}
+}

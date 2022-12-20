@@ -1,0 +1,37 @@
+"Quickiebomb Launcher"
+{
+	"classes"
+	{
+		"demoman"	"1"
+	}
+	"baseclass"		"pipebomblauncher"
+	"baseindex"		"1150"
+	"replace"		"1150"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Insert Description"
+	"attributes"
+	{	
+		"apply look velocity on damage"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"12"
+		}
+		"throwable healing"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.75"
+		}
+		"SET BONUS: special dsp"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"max pipebombs decreased"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"-6"
+		}
+	}
+}

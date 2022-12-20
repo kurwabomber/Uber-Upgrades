@@ -1,0 +1,32 @@
+"The Festive Force-A-Nature"
+{
+	"classes"
+	{
+		"scout"	"0"
+	}
+	"baseclass"		"scattergun"
+	"baseindex"		"1078"
+	"replace"		"1078"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"Force-A-Nature"
+	"description"	"-"
+	"attributes"
+	{		
+		"fire rate penalty HIDDEN"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.5"
+		}
+		"disguise damage reduction"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.8"
+		}
+		"fire rate bonus"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.0"
+		}
+	}
+}

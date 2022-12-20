@@ -1,0 +1,27 @@
+"The Big Earner"
+{
+	"classes"
+	{
+		"spy"	"2"
+	}
+	"baseclass"		"knife"
+	"baseindex"		"461"
+	"replace"		"461"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"BigEarner"
+	"description"	"You move 15% faster."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"move speed bonus"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.15"
+		}
+	}
+}

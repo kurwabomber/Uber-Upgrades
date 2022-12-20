@@ -1,0 +1,37 @@
+"The Black Box"
+{
+	"classes"
+	{
+		"soldier"	"0"
+	}
+	"baseclass"		"rocketlauncher"
+	"baseindex"		"228"
+	"replace"		"228"
+	"quality"		"7"
+	"logname"		"BlackBox"
+	"nobots"		"1"
+	"description"	""
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"flame_ignore_player_velocity"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.0"
+		}
+		"health regen"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"-4"
+		}
+		"provide on active"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+	}
+}

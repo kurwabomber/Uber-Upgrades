@@ -1,0 +1,57 @@
+"The Airstrike- replacement"
+{
+	"classes"
+	{
+		"soldier"	"0"
+	}
+	"baseclass"		"rocketlauncher_airstrike"
+	"baseindex"		"1104"
+	"replace"		"1104"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"-10% blast radius. -15% damage. -40% rocket jump dmg.\n-30% fire delay while in air.\nReduced particles."
+	"attributes"
+	{		
+		"Blast radius decreased"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.90"
+		}
+		"damage penalty"
+		{
+			"plugin"	"tf2attributes"
+			"value"	"0.85"
+		}
+		"rocket jump damage reduction"	
+		{
+			"plugin"	"tf2attributes"
+			"value" "0.60"
+		}
+		"rocketjump attackrate bonus"
+		{
+			"plugin"	"tf2attributes"
+			"value" 	"0.70"
+		}
+		"mini rockets"
+		{
+			"plugin"	"tf2attributes"
+			"value"				"1"// less particles used by trails
+		}
+		"clipsize increase on kill"
+		{
+			"plugin"	"tf2attributes"
+			"value"				"15"
+		}
+		"disable fancy class select anim"
+		{
+			"plugin"	"tf2attributes"
+			"value"				"1"
+		}
+		"no self blast dmg"
+		{
+			"plugin"	"tf2attributes"
+			"value"				"1"//less particles used by blast
+		}
+	}
+}

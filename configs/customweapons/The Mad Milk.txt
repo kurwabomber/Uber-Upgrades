@@ -1,0 +1,42 @@
+"Mad Milk"
+{
+	"classes"
+	{
+		"scout"	"1"
+	}
+	"baseclass"		"jar_milk"
+	"baseindex"		"222"
+	"replace"		"222"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"bugged lmao. Infinite ammo."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"infinite ammo"
+		{
+			"plugin"	"basic-attributes"
+			"value"		"50"
+		}
+		"grenade no bounce"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"fuse bonus"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.66"
+		}
+		"override projectile type"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"8"
+		}
+	}
+}

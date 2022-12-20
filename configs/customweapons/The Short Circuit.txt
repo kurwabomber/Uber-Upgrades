@@ -1,0 +1,46 @@
+"The Short Circuit"
+{
+	"classes"
+	{
+		"engineer"		"1"
+	}
+	"baseclass"		"mechanical_arm"
+	"baseindex"		"528"
+	"replace"		"528"
+	"quality"		"7"
+	"logname"		"custom"
+	"description"	"Shoots instant rockets.\n-20% damage, Ignites victims & shoots 2x slower."
+	"attributes"
+	{
+		"provide on active"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"explosive bullets"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"140.0"
+		}
+		"flame_ignore_player_velocity"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"fire rate penalty"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"2.0"
+		}
+		"centerfire projectile"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+	}
+}

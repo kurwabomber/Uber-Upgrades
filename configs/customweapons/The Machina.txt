@@ -1,0 +1,32 @@
+"The Machina"
+{
+	"classes"
+	{
+		"sniper"	"0"
+	}
+	"baseclass"		"sniperrifle"
+	"baseindex"		"526"
+	"replace"		"526"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Deals 30% less damage to overhealed players. Scales 20% more with charge."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"sniper fires tracer"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0"
+		}
+		"flame size penalty"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"3.0"
+		}
+	}
+}

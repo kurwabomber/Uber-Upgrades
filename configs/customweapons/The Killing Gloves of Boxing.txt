@@ -1,0 +1,32 @@
+"The Killing Gloves of Boxing"
+{
+	"classes"
+	{
+		"heavy"	"2"
+	}
+	"baseclass"		"fists"
+	"baseindex"		"43"
+	"replace"		"43"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	""
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"critboost on kill"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0"
+		}
+		"minicritboost on kill"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"2"
+		}
+	}
+}

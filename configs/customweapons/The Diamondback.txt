@@ -1,0 +1,32 @@
+"The Diamondback"
+{
+	"classes"
+	{
+		"spy"	"0"
+	}
+	"baseclass"		"revolver"
+	"baseindex"		"525"
+	"replace"		"525"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"diamondBack"
+	"description"	"Is a heavy weapon."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"provide on active"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"SET BONUS: special dsp"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+	}
+}

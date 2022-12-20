@@ -1,0 +1,36 @@
+"The Fan O'War"
+{
+	"classes"
+	{
+		"scout"	"2"
+	}
+	"baseclass"		"bat"
+	"baseindex"		"355"
+	"replace"		"355"
+	"quality"		"7"
+	"logname"		"FanOWar"
+	"description"	""
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"accepted wedding ring account id 1"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.75"
+		}
+		"recipe component defined item 1"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"4.0"
+		}
+		"disguise damage reduction"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.6"
+		}
+	}
+}

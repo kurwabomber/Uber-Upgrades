@@ -1,0 +1,31 @@
+"The Cow Mangler"
+{
+	"classes"
+	{
+		"soldier"		"0"
+	}
+	"baseclass"		"particle_cannon"
+	"baseindex"		"441"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Afterburn damage is boosted by +50%."
+	"attributes"
+	{
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"shot penetrate all players"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.5"
+		}
+		"reload time increased hidden"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.2"
+		}
+	}
+}

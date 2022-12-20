@@ -1,0 +1,32 @@
+"The Cleaner's Carbine"
+{
+	"classes"
+	{
+		"sniper"	"1"
+	}
+	"baseclass"		"smg"
+	"baseindex"		"751"
+	"replace"		"751"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Converts firerate into damage."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"SET BONUS: special dsp"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"closerange backattack minicrits"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+	}
+}

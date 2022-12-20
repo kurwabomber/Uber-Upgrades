@@ -1,0 +1,37 @@
+"The Direct Hit"
+{
+	"classes"
+	{
+		"soldier"		"0"
+	}
+	"baseclass"		"rocketlauncher_directhit"
+	"baseindex"		"127"
+	"replace"		"127"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Automatically comes with maxed out armor piercing explosive.\nProjectile speed is multiplied by 1.5x."
+	"attributes"
+	{	
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"Blast radius decreased"
+		{
+			"plugin"	"tf2attributes"
+			"value"		".3"
+		}
+		"Projectile speed increased"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.0"
+		}
+		"Projectile speed increased HIDDEN"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.8"
+		}
+	}
+}

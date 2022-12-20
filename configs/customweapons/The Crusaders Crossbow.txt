@@ -1,0 +1,27 @@
+"The Crusaders Crossbow"
+{
+	"classes"
+	{
+		"medic"	"0"
+	}
+	"baseclass"		"crossbow"
+	"baseindex"		"305"
+	"replace"		"305"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"CrusadersCrossbow"
+	"description"	"No Fall off. Deals 10% more crit damage."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"crit damage multiplier"
+		{
+			"plugin"	"basic-attributes"
+			"value"		"1.1"
+		}
+	}
+}

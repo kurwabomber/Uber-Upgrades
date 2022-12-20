@@ -1,0 +1,37 @@
+"The Flying Guillotine"
+{
+	"classes"
+	{
+		"scout"	"1"
+	}
+	"baseclass"		"cleaver"
+	"baseindex"		"812"
+	"replace"		"812"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Deal 15% more damage against overhealed players.\nInfinite ammo."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0"
+		}
+		"infinite ammo"
+		{
+			"plugin"	"basic-attributes"
+			"value"		"50"
+		}
+		"grenade no bounce"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"grenade no spin"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+	}
+}

@@ -1,0 +1,57 @@
+"The Hitmans Heatmaker"
+{
+	"classes"
+	{
+		"sniper"	"0"
+	}
+	"baseclass"		"sniperrifle"
+	"baseindex"		"752"
+	"replace"		"752"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	"Shoots rockets that deal -10% damage.\nShoot 3x faster while airborne.\nDeals +50% more damage against overhealed players.\nRockets travel at near hitscan speeds."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"mod rage on hit bonus"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"increase buff duration"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.35"
+		}
+		"sniper fires tracer"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0"
+		}
+		"Blast radius increased"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.25"
+		}
+		"override projectile type"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"2"
+		}
+		"Projectile speed increased"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1000"
+		}
+		"damage bonus HIDDEN"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.2"
+		}
+	}
+}

@@ -1,0 +1,26 @@
+"The Overdose"
+{
+	"classes"
+	{
+		"medic"	"0"
+	}
+	"baseclass"		"syringegun_medic"
+	"baseindex"		"36"
+	"replace"		"36"
+	"quality"		"7"
+	"logname"		"Overdose"
+	"description"	"Crits deal 1.4x damage.\nNo damage falloff."
+	"attributes"
+	{		
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"accepted wedding ring account id 1"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"6.0"
+		}
+	}
+}

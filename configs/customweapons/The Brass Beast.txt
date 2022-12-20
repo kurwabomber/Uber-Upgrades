@@ -1,0 +1,42 @@
+"The Brass Beast"
+{
+	"classes"
+	{
+		"heavy"	"0"
+	}
+	"baseclass"		"minigun"
+	"baseindex"		"312"
+	"replace"		"312"
+	"quality"		"7"
+	"nobots"		"1"
+	"logname"		"custom"
+	"description"	""
+	"attributes"
+	{
+		"provide on active"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"weapon_allow_inspect"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1"
+		}
+		"dmg taken increased"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"0.8"
+		}
+		"override projectile type"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"42.0"
+		}
+		"fire rate penalty HIDDEN"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"5.0"
+		}
+	}
+}
