@@ -68,7 +68,7 @@ SavePlayerData(client)
 		pack.WriteCell(upgrades_weapon_current[client]);
 		Format(queryString, sizeof(queryString), "REPLACE INTO PlayerList (steamid, datapack) VALUES ('%s', '%i')", steamid, pack);
 		new Handle:queryH = SQL_Query(DB, queryString);
-		if(queryH != INVALID_HANDLE)
+		if(IsValidHandle(queryH))
 		{
 			PrintToServer("UU : Successfully saved player upgrades.");
 		}else{
@@ -89,13 +89,13 @@ GivePlayerData(client)
 		Format(queryDelete, sizeof(queryDelete), "DELETE FROM PlayerList WHERE steamid='%s'", steamid);
 		
 		new Handle:queryH = SQL_Query(DB, queryString);
-		if(queryH != INVALID_HANDLE)
+		if(IsValidHandle(queryH))
 		{
 			if(SQL_FetchRow(queryH))
 			{
 				new Float:CurrencyFormulated = (StartMoney + additionalstartmoney);
 				DataPack pack = view_as<DataPack>(SQL_FetchInt(queryH, 1));
-				if(pack != INVALID_HANDLE || pack != null)
+				if(IsValidHandle(pack))
 				{
 					pack.Reset();
 					PrintToServer("UU : Successfully gave player upgrades to %N.", client);
@@ -163,7 +163,7 @@ GivePlayerData(client)
 			CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 		}
 		queryH = SQL_Query(DB, queryDelete);
-		if(queryH == INVALID_HANDLE){
+		if(!IsValidHandle(queryH)){
 			SQL_GetError(DB,Error,sizeof(Error));
 			PrintToServer("UU : Was unable to clear database IDs. | SQLERROR : %s.", Error);
 		}
@@ -175,7 +175,7 @@ DeleteSavedPlayerData()
 	new String:queryString[2048];
 	Format(queryString, sizeof(queryString), "DELETE FROM PlayerList");
 	new Handle:queryH = SQL_Query(DB, queryString);
-	if(queryH != INVALID_HANDLE)
+	if(IsValidHandle(queryH))
 	{
 		PrintToServer("UU : Deleted all saved data.");
 	}else{
@@ -188,7 +188,7 @@ DeleteDatabase()
 	new String:queryString[2048];
 	Format(queryString, sizeof(queryString), "DROP TABLE PlayerList");
 	new Handle:queryH = SQL_Query(DB, queryString);
-	if(queryH != INVALID_HANDLE)
+	if(IsValidHandle(queryH))
 	{
 		PrintToServer("UU : Deleted database.");
 	}else{

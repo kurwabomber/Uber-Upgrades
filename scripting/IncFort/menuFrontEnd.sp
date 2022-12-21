@@ -139,9 +139,9 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 				}
 				else if(upgrades_requirement[tmp_up_idx] > StartMoney + additionalstartmoney)
 				{
-					Format(desc_str, sizeof(desc_str), "$%5d - %s\n\t\t\t%s%i%%\t(%i%%) RESTRICTED",
+					Format(desc_str, sizeof(desc_str), "$%5d - %s\n\t\t\t%s%i%%\t(%i%%) RESTRICTED - $%s",
 						up_cost, buf,
-						plus_sign, RoundFloat(tmp_ratio * 100), (RoundFloat(tmp_val * 100)))
+						plus_sign, RoundFloat(tmp_ratio * 100), RoundFloat(tmp_val * 100), GetAlphabetForm(upgrades_requirement[tmp_up_idx]))
 					itemDisabled = true;
 					attributeDisabled[tmp_up_idx] = true;
 				}
@@ -184,9 +184,9 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 				}
 				else if(upgrades_requirement[tmp_up_idx] > StartMoney + additionalstartmoney)
 				{
-					Format(desc_str, sizeof(desc_str), "$%5d - %s\n\t\t\t%s%3.1f\t(%.1f) RESTRICTED",
+					Format(desc_str, sizeof(desc_str), "$%5d - %s\n\t\t\t%s%3.1f\t(%.1f) RESTRICTED - $%s",
 						up_cost, buf,
-						plus_sign, tmp_ratio, tmp_val)
+						plus_sign, tmp_ratio, tmp_val, GetAlphabetForm(upgrades_requirement[tmp_up_idx]))
 					itemDisabled = true
 					attributeDisabled[tmp_up_idx] = true;
 				}

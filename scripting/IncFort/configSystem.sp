@@ -149,11 +149,23 @@ BrowseAttributesKV(Handle:kv)
 					KvGetString(kv, "", Buf, 64);
 					upgrades_requirement[_u_id] = StringToFloat(Buf);
 				}
+				else if(!strcmp(Buf, "staged_max"))
+				{
+					KvGetString(kv, "", Buf, 512);
+					char parts[MAX_STAGES][256];
+					int it = ExplodeString(Buf, ",", parts, MAX_STAGES, 256);
+
+					for(int i = 1;i<it;i++)
+					{
+						//PrintToServer("Stage %i | Set to %.2f max.", i, StringToFloat(parts[i])) //it works :D
+						upgrades_staged_max[_u_id][i] = StringToFloat(parts[i]);
+					}
+				}
 				else if (!strcmp(Buf,"max"))
 				{
 					KvGetString(kv, "", Buf, 64);
 					upgrades_m_val[_u_id] = StringToFloat(Buf)
-					
+					upgrades_staged_max[_u_id][0] = upgrades_m_val[_u_id]
 					_u_id++//Finish the attribute here.
 				}
 			}

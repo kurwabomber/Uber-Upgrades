@@ -235,13 +235,14 @@ public void OnPluginStart()
 	
 	DB = SQL_Connect("default", true, Error, sizeof(Error));
 	
-	if(DB == INVALID_HANDLE)
+	if(!IsValidHandle(DB))
 	{
 		PrintToServer("UU : Cannot connect to SQL server. : %s", Error);
 		CloseHandle(DB);
 	} else{
 		PrintToServer("UU : Successfully connected to SQL server.");
 	}
+	gameStage = 0;
 	
 	hudSync = CreateHudSynchronizer();
 	hudSpells = CreateHudSynchronizer();

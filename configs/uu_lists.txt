@@ -1528,9 +1528,10 @@
 		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
-			"Attr1"		"damage bonus(L)"
+			"Attr1"		"damage bonus"
 			"Attr24"	"ap (biggercali)"
 			"Attr2"		"sniper full charge damage bonus"
+			"Attr4"		"Increased Overall Damage"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
 			
@@ -1545,7 +1546,6 @@
 		{
 			"Attr0"		"fire rate bonus(multshit)"
 			"Attr1"		"faster reload rate"
-			"Attr2"		"bullets per shot bonus (single)"
 			"Attr7"		"Initial Charge percent"
 			"Attr5"		"aiming movespeed increased"
 		}

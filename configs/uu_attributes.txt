@@ -5286,6 +5286,7 @@
 			"value"		"1.0"
 			"increase_ratio"	"0.5"
 			"init"		"0"
+			"staged_max"		"60.0,100.0,300.0,1000.0"
 			"display_style"		"6"
 			"description"	"Multiplies damage by 1.05x\nper purchase.\nFormula is 1.05^value."
 			"max"		"60"

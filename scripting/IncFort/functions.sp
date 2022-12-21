@@ -801,6 +801,16 @@ RespawnEffect(client)
 	TF2Attrib_SetByName(client,"no damage view flinch", 1.0);
 	SetEntityHealth(client, TF2_GetMaxHealth(client))
 }
+UpdateMaxValuesStage(int stage)
+{
+	for(int i = 0;i<MAX_ATTRIBUTES;i++)
+	{
+		if(upgrades_staged_max[i][stage] != 0.0)
+		{
+			upgrades_m_val[i] = upgrades_staged_max[i][stage];
+		}
+	}
+}
 ChangeClassEffect(client)
 {
 	if(IsValidClient(client))

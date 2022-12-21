@@ -33,25 +33,15 @@
 			"plugin"	"tf2attributes"
 			"value"		"0"
 		}
-		"Blast radius increased"
+		"explosive bullets"
 		{
 			"plugin"	"tf2attributes"
-			"value"		"1.25"
+			"value"		"200.0"
 		}
-		"override projectile type"
+		"sniper no headshots"
 		{
 			"plugin"	"tf2attributes"
-			"value"		"2"
-		}
-		"Projectile speed increased"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"1000"
-		}
-		"damage bonus HIDDEN"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"1.2"
+			"value"		"1"
 		}
 	}
 }

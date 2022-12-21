@@ -33,6 +33,7 @@ new Handle:WeaponTutorial;
 //Integers
 new DisableBotUpgrades
 new DisableCooldowns
+new gameStage;
 new given_upgrd_list_nb[_NUMBER_DEFINELISTS]
 new given_upgrd_subcat_nb[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT]
 new given_upgrd_list[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][_NUMBER_DEFINELISTS_CAT][128]
@@ -105,6 +106,7 @@ new Float:upgrades_m_val[MAX_ATTRIBUTES]
 new Float:upgrades_requirement[MAX_ATTRIBUTES]
 new Float:upgrades_costs_inc_ratio[MAX_ATTRIBUTES]
 new Float:upgrades_tweaks_att_ratio[_NB_SP_TWEAKS][NB_SLOTS_UED + 1]
+new Float:upgrades_staged_max[MAX_ATTRIBUTES][MAX_STAGES];
 new Float:additionalstartmoney;
 new	Float:mvmadditional;
 new Float:CurrencyOwned[MAXPLAYERS + 1]
