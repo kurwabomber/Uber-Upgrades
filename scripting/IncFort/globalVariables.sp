@@ -260,6 +260,7 @@ new bool:shouldAttack[MAXPLAYERS+1];
 new bool:critStatus[MAXPLAYERS+1];
 new bool:miniCritStatus[MAXPLAYERS+1];
 new bool:RageActive[MAXPLAYERS+1];
+new bool:canBypassRestriction[MAXPLAYERS+1];
 new Float:miniCritStatusVictim[MAXPLAYERS+1];
 new Float:miniCritStatusAttacker[MAXPLAYERS+1];
 new Float:corrosiveDOT[MAXPLAYERS+1][MAXPLAYERS+1][2]

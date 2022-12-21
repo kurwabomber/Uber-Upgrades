@@ -102,6 +102,10 @@ public GiveNewUpgradedWeapon_(client, slot)
 }
 stock is_client_got_req(client, upgrade_choice, slot, inum, Float:rate = 1.0)
 {
+
+	if (canBypassRestriction[client])
+		return 1;
+
 	new Float:up_cost = float(upgrades_costs[upgrade_choice]) * rate;
 	new max_ups = currentupgrades_number[client][slot];
 	up_cost /= 2.0;
@@ -681,7 +685,8 @@ public UpgradeItem(client, upgrade_choice, inum, Float:ratio, slot)
 	else
 	{
 		currentupgrades_val[client][slot][inum] += (upgrades_ratio[upgrade_choice] * ratio);
-		check_apply_maxvalue(client, slot, inum, upgrade_choice)
+		if(!canBypassRestriction[client])
+		 check_apply_maxvalue(client, slot, inum, upgrade_choice)
 	}
 	client_last_up_idx[client] = upgrade_choice
 	client_last_up_slot[client] = slot

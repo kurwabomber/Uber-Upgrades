@@ -113,6 +113,31 @@ public Action:Command_RemoveCash(client, args)
 	}
 	return Plugin_Handled;
 }
+public Action:Command_SetUUAdmin(client, args)
+{
+	if(args != 2)
+	{
+		ReplyToCommand(client, "[SM] Usage: sm_setuuadmin \"target\" \"bool\"");
+		return Plugin_Handled;
+	}
+	
+	new String:strTarget[MAX_TARGET_LENGTH], String:strToggle[128], bool:toggle, String:target_name[MAX_TARGET_LENGTH],target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
+	GetCmdArg(1, strTarget, sizeof(strTarget));
+	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, COMMAND_FILTER_NO_BOTS, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+	{
+		ReplyToTargetError(client, target_count);
+		return Plugin_Handled;
+	}
+
+	GetCmdArg(2, strToggle, sizeof(strToggle));
+	toggle = view_as<bool>(StringToInt(strToggle));
+
+	for(new i = 0; i < target_count; i++)
+	{
+		canBypassRestriction[target_list[i]] = toggle;
+	}
+	return Plugin_Handled;
+}
 public Action:ShowHelp(client, args)
 {
 	if(IsValidClient3(client))

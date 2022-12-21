@@ -1542,11 +1542,14 @@ CastZap(client, attuneSlot)
 			if(SpellCooldowns[client][attuneSlot] <= 0.0)
 			{
 				//zap yeah?
-				new closestClient = 0;
+				new closestClient[MAXENTITIES];
 				new Float:clientpos[3];
 				GetClientEyePosition(client,clientpos);
 				clientpos[2] -= 15.0;
 				new Float:closestDistance = 2000.0;
+				new validCount = 0;
+				new maximumTargets[] = {0,1,2,3};
+				new Float:range[] = {0.0,600.0,1500.0,1500.0};
 				for(new i = 1; i<MAXENTITIES;i++)
 				{
 					if(IsValidForDamage(i))
@@ -1557,30 +1560,35 @@ CastZap(client, attuneSlot)
 							GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 							VictimPos[2] += 15.0;
 							new Float:Distance = GetVectorDistance(clientpos,VictimPos);
-							if(Distance < closestDistance)
+							if(Distance < closestDistance && Distance < range[spellLevel])
 							{
 								if(IsPointVisible(clientpos,VictimPos))
 								{
-									closestClient = i;
+									PrintToServer("%f", Distance);
+									closestClient[validCount] = i;
 									closestDistance = Distance;
+									validCount++;
 								}
 							}
 						}
 					}
 				}
-				new Float:range = 400.0 + (level * 40.0);
-				if(range > 900.0)
+				validCount = 0;
+				for(int it = MAXENTITIES-1;it>=0 && validCount < maximumTargets[spellLevel];it--)
 				{
-					range = 900.0;
+					if(closestClient[it] != 0){
+						PrintToServer("brah %i", it);
+						validCount++;
+						DoZap(client,closestClient[it], spellLevel);
+					}
 				}
-				if(closestDistance <= range)
+				if(validCount > 0)
 				{
 					fl_CurrentFocus[client] -= focusCost;
 					if(DisableCooldowns != 1)
 						SpellCooldowns[client][attuneSlot] = 0.1;
 					applyArcaneCooldownReduction(client, attuneSlot);
 					PrintHintText(client, "Used %s! -%.2f focus.",SpellList[0],focusCost);
-					DoZap(client,closestClient);
 				}
 			}
 		}
@@ -1591,7 +1599,7 @@ CastZap(client, attuneSlot)
 		}
 	}
 }
-DoZap(client,victim)
+DoZap(client,victim,spellLevel)
 {
 	if(IsValidForDamage(victim))
 	{
@@ -1603,27 +1611,26 @@ DoZap(client,victim)
 		GetEntPropVector(victim, Prop_Data, "m_vecOrigin", VictimPosition);
 		VictimPosition[2] += 15.0;
 		
-		new Float:range = 400.0 + (level * 40.0);
-		if(range > 900.0)
-		{
-			range = 900.0;
-		}
+		new Float:range[] = {0.0,600.0,1500.0,1500.0};
 		
-		TE_SetupBeamRingPoint(clientpos, 20.0, range*1.25, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, {255,0,255,133}, 140, 0);
+		TE_SetupBeamRingPoint(clientpos, 20.0, range[spellLevel]*1.25, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, {255,0,255,133}, 140, 0);
 		TE_SendToAll();
 		TE_SetupBeamPoints(clientpos,VictimPosition,g_LightningSprite,spriteIndex,0,35,0.15,6.0,5.0,0,1.0,{255,000,255,255},20);
 		TE_SendToAll();
 		EmitAmbientSound(SOUND_ZAP, clientpos, client, 50);
 		
-		new Float:LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 3.0));
-		SDKHooks_TakeDamage(victim,client,client, 6.0, (DMG_RADIATION+DMG_DISSOLVE), -1, NULL_VECTOR, NULL_VECTOR);
+		new Float:LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 3.0));
+		new Float:radiationAmount[] = {0.0,6.0,10.0,25.0};
+		SDKHooks_TakeDamage(victim,client,client, radiationAmount[spellLevel], (DMG_RADIATION+DMG_DISSOLVE), -1, NULL_VECTOR, NULL_VECTOR);
 		SDKHooks_TakeDamage(victim,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(victim));
+		new Float:chance[] = {0.0,0.3,0.6,0.9};
 			
-		if(0.3 >= GetRandomFloat(0.0, 1.0))
+		if(chance[spellLevel] >= GetRandomFloat(0.0, 1.0))
 		{
 			new Handle:hPack = CreateDataPack();
 			WritePackCell(hPack, EntIndexToEntRef(client));
 			WritePackCell(hPack, EntIndexToEntRef(victim));
+			WritePackCell(hPack, EntIndexToEntRef(spellLevel));
 			CreateTimer(0.1,zapAgain,hPack);
 		}
 	}
@@ -1633,7 +1640,8 @@ public Action:zapAgain(Handle:timer,any:data)
 	ResetPack(data);
 	new client = EntRefToEntIndex(ReadPackCell(data));
 	new victim = EntRefToEntIndex(ReadPackCell(data));
-	DoZap(client,victim);
+	new spellLevel = EntRefToEntIndex(ReadPackCell(data));
+	DoZap(client,victim,spellLevel);
 	CloseHandle(data);
 }
 CastLightning(client, attuneSlot)
@@ -1661,7 +1669,11 @@ CastLightning(client, attuneSlot)
 					TracePlayerAim(client, clientpos);
 					new Float:temppos[3];
 					TracePlayerAim(client, temppos);
-					for(new iter = 0;iter < (spellLevel == 1 ? 1 : 5);iter++)
+
+					int quantity[] = {0,1,5,25}
+					float afterburnDamage[] = {0.0,0.02,0.04,0.08}
+					float range[] = {0.0,600.0,1200.0,1500.0}
+					for(new iter = 0;iter < quantity[spellLevel];iter++)
 					{
 						// define where the lightning strike starts
 						if(iter > 1)
@@ -1705,7 +1717,7 @@ CastLightning(client, attuneSlot)
 						
 						TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 						TE_SendToAll();
-						for(new it =0;it<6;it++)
+						/*for(new it =0;it<6;it++)
 						{
 							new Float:randomPos[3];
 							randomPos[0] = startpos[0]+GetRandomFloat(-150.0,150.0);
@@ -1713,7 +1725,7 @@ CastLightning(client, attuneSlot)
 							randomPos[2] = startpos[2];
 							
 							CreateParticle(-1, "utaunt_electricity_cloud_parent_WB", false, "", 5.0, randomPos);
-						}
+						}*/
 						
 						EmitAmbientSound(SOUND_THUNDER, startpos, client, SNDLEVEL_RAIDSIREN);
 						
@@ -1725,8 +1737,7 @@ CastLightning(client, attuneSlot)
 								GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 								VictimPos[2] += 30.0;
 								new Float:Distance = GetVectorDistance(clientpos,VictimPos);
-								new Float:Range = spellLevel > 1 ? 1200.0 : 600.0;
-								if(Distance <= Range)
+								if(Distance <= range[spellLevel])
 								{
 									if(IsPointVisible(clientpos,VictimPos))
 									{
@@ -1739,7 +1750,7 @@ CastLightning(client, attuneSlot)
 										{
 											TF2_IgnitePlayer(i, client, 3.0);
 										}
-										DOTStock(i,client,LightningDamage*0.02,-1,0,20,1.0,0.1,true);//A fake afterburn. This allows for stacking of DOT & custom tick rates.
+										DOTStock(i,client,LightningDamage*afterburnDamage[spellLevel],-1,0,20,1.0,0.1,true);//A fake afterburn. This allows for stacking of DOT & custom tick rates.
 									}
 								}
 							}

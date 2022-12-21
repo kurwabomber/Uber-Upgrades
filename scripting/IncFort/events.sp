@@ -3024,6 +3024,7 @@ public OnClientDisconnect(client)
 	ConcussionBuildup[client] = 0.0;
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
+	canBypassRestriction[client] = false;
 	for(new i = 0; i < Max_Attunement_Slots; i++)
 	{
 		AttunedSpells[client][i] = 0.0;
@@ -3049,6 +3050,7 @@ public OnClientPutInServer(client)
 	RadiationMaximum[client] = 400.0;
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
+	canBypassRestriction[client] = false;
 	for(new i = 0; i < Max_Attunement_Slots; i++)
 	{
 		AttunedSpells[client][i] = 0.0;

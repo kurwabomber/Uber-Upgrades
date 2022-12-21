@@ -120,14 +120,16 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				for (new idx = 0; idx < rate; idx++)
 				{
 					new Float:nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice])
-					if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] > 0.0 && RoundFloat(upgrades_val*100.0)/100.0 < upgrades_m_val[upgrade_choice])
+					if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] > 0.0 && 
+					(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 < upgrades_m_val[upgrade_choice]))
 					{
 						t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[upgrade_choice]))
 						idx_currentupgrades_val++		
 						upgrades_val += upgrades_ratio[upgrade_choice]
 						times++;
 					}
-					if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] < 0.0 && RoundFloat(upgrades_val*100.0)/100.0 > upgrades_m_val[upgrade_choice])
+					if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] < 0.0 && 
+					(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 > upgrades_m_val[upgrade_choice]))
 					{
 						t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice]))
 						idx_currentupgrades_val++		
@@ -141,7 +143,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				}
 				if(times > 0)
 				{
-					if(upgrades_restriction_category[upgrade_choice] != 0)
+					if(canBypassRestriction[client] == false && upgrades_restriction_category[upgrade_choice] != 0)
 					{
 						for(new i = 1;i<5;i++)
 						{
@@ -167,7 +169,10 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 					}
 					CurrencyOwned[client] -= t_up_cost;
 					currentupgrades_val[client][slot][inum] = upgrades_val
-					check_apply_maxvalue(client, slot, inum, upgrade_choice)
+
+					if(!canBypassRestriction[client])
+						check_apply_maxvalue(client, slot, inum, upgrade_choice)
+
 					client_spent_money[client][slot] += t_up_cost
 					GiveNewUpgradedWeapon_(client, slot)
 					PrintToChat(client, "You bought %t %i times.",upgradesNames[upgrade_choice],times);
@@ -218,16 +223,18 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 					new times = 0;
 					for (new idx = 0; idx < yeah; idx++)
 					{
-						if(idx_currentupgrades_val > 0 && upgrades_ratio[upgrade_choice] > 0.0 && RoundFloat(upgrades_val*100.0)/100.0 <= upgrades_m_val[upgrade_choice]
-						&& client_spent_money[client][slot] + t_up_cost > client_tweak_highest_requirement[client][slot] - 1.0)
+						if(idx_currentupgrades_val > 0 && upgrades_ratio[upgrade_choice] > 0.0 && 
+						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 <= upgrades_m_val[upgrade_choice]
+						&& client_spent_money[client][slot] + t_up_cost > client_tweak_highest_requirement[client][slot] - 1.0)))
 						{
 							idx_currentupgrades_val--
 							t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[upgrade_choice]))		
 							upgrades_val -= upgrades_ratio[upgrade_choice]
 							times++;
 						}
-						if(idx_currentupgrades_val > 0 && upgrades_ratio[upgrade_choice] < 0.0 && RoundFloat(upgrades_val*100.0)/100.0 >= upgrades_m_val[upgrade_choice]
-						&& client_spent_money[client][slot] + t_up_cost > client_tweak_highest_requirement[client][slot] - 1.0)
+						if(idx_currentupgrades_val > 0 && upgrades_ratio[upgrade_choice] < 0.0 && 
+						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 >= upgrades_m_val[upgrade_choice]
+						&& client_spent_money[client][slot] + t_up_cost > client_tweak_highest_requirement[client][slot] - 1.0)))
 						{
 							idx_currentupgrades_val--
 							t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice]))	
@@ -239,7 +246,8 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 					{
 						CurrencyOwned[client] -= t_up_cost;
 						currentupgrades_val[client][slot][inum] = upgrades_val
-						check_apply_maxvalue(client, slot, inum, upgrade_choice)
+						if(!canBypassRestriction[client])
+							check_apply_maxvalue(client, slot, inum, upgrade_choice)
 						client_spent_money[client][slot] += t_up_cost
 						GiveNewUpgradedWeapon_(client, slot)
 						PrintToChat(client, "You downgraded %t %i times.",upgradesNames[upgrade_choice],times);
@@ -695,7 +703,7 @@ public MenuHandler_AttributesTweak_action(Handle:menu, MenuAction:action, client
 							
 						if(up_cost > 200.0)
 						{
-							if(client_spent_money[client][s] - up_cost > client_tweak_highest_requirement[client][s] - 1.0)
+							if(canBypassRestriction[client] || client_spent_money[client][s] - up_cost > client_tweak_highest_requirement[client][s] - 1.0)
 							{
 								remove_attribute(client, param2)
 								CurrencyOwned[client] += up_cost;
@@ -734,6 +742,10 @@ public MenuHandler_SpecialUpgradeChoice(Handle:menu, MenuAction:action, client, 
 		{
 			new upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
 			new inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
+
+			if(canBypassRestriction[client])
+				break;
+
 			if (inum != 20000)
 			{
 				if (currentupgrades_val[client][slot][inum] == upgrades_m_val[upgrade_choice])

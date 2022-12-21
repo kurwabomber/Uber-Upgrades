@@ -107,6 +107,7 @@ public UberShopinitMenusHandlers()
 	RegAdminCmd("sm_setcash", Command_SetCash, ADMFLAG_GENERIC, "Sets cash of selected target/targets.");
 	RegAdminCmd("sm_addcash", Command_AddCash, ADMFLAG_GENERIC, "Adds cash of selected target/targets.");
 	RegAdminCmd("sm_removecash", Command_RemoveCash, ADMFLAG_GENERIC, "Removes cash of selected target/targets.");
+	RegAdminCmd("sm_setuuadmin", Command_SetUUAdmin, ADMFLAG_GENERIC, "Removes restrictions of targets.");
 	RegAdminCmd("sm_resetallplayers", ResetPlayers, ADMFLAG_ROOT, "Remove Everyones Upgrades");
 	RegAdminCmd("sm_setcurrency", GiveAllMoney, ADMFLAG_ROOT, "Sets Uberuprgades Cash");
 	RegAdminCmd("sm_test", TestCommand, ADMFLAG_ROOT, "Filler Test");
