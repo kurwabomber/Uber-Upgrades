@@ -272,22 +272,45 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 	}
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
 	{
-		if (current_slot_used[client] == 4)
+		if(given_upgrd_subcat_nb[current_w_list_id[client]][current_w_c_list_id[client]] > 0)
 		{
-			decl String:fstr[30]
-			decl String:fstr2[128]
-			Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
-			Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
-			Menu_ChooseCategory(client, fstr2)
+			if (current_slot_used[client] == 4)
+			{
+				decl String:fstr[30]
+				decl String:fstr2[128]
+				Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
+				Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
+				Menu_ChooseSubcat(client, current_w_c_list_id[client], fstr2)
+			}
+			else
+			{
+				decl String:fstr[30]
+				decl String:fstr2[128]
+				Format(fstr, sizeof(fstr), "%T", current_slot_name[current_slot_used[client]], client)
+				Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
+																,fstr)
+				Menu_ChooseSubcat(client, current_w_c_list_id[client], fstr2)
+			}
 		}
 		else
 		{
-			decl String:fstr[30]
-			decl String:fstr2[128]
-			Format(fstr, sizeof(fstr), "%T", current_slot_name[current_slot_used[client]], client)
-			Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
-															,fstr)
-			Menu_ChooseCategory(client, fstr2)
+			if (current_slot_used[client] == 4)
+			{
+				decl String:fstr[30]
+				decl String:fstr2[128]
+				Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
+				Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
+				Menu_ChooseCategory(client, fstr2)
+			}
+			else
+			{
+				decl String:fstr[30]
+				decl String:fstr2[128]
+				Format(fstr, sizeof(fstr), "%T", current_slot_name[current_slot_used[client]], client)
+				Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
+																,fstr)
+				Menu_ChooseCategory(client, fstr2)
+			}
 		}
 	}
     if (action == MenuAction_End)
@@ -329,7 +352,23 @@ public MenuHandler_ChooseSubcat(Handle:menu, MenuAction:action, client, param2)
 		}
 	}
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
-		Menu_BuyUpgrade(client, 0);
+		if(current_slot_used[client] == 4)
+		{
+			decl String:fstr[30]
+			decl String:fstr2[128]
+			Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
+			Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
+			Menu_ChooseCategory(client, fstr2)
+		}
+		else
+		{
+			decl String:fstr[30]
+			decl String:fstr2[128]
+			Format(fstr, sizeof(fstr), "%T", current_slot_used[client], client)
+			Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
+																,fstr)
+			Menu_ChooseCategory(client, fstr2)
+		}
 	}
     if (action == MenuAction_End)
         CloseHandle(menu);

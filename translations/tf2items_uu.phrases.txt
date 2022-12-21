@@ -1,5 +1,6 @@
 "Phrases"
 {
+
 	"Slow Resistance"
 	{
 		"en"		"Slow Resistance"
@@ -2521,6 +2522,10 @@
 		"en"		"Fire Rate Penalty"
 	}
 	"fire rate bonus(multshit)"
+	{
+		"en"		"Fire Rate Bonus"
+	}
+	"fire rate bonus(old)"
 	{
 		"en"		"Fire Rate Bonus"
 	}

@@ -46,6 +46,7 @@
 				"Attr3"		"Arcane Power"
 				"Attr4"		"Arcane Damage"
 				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
 			}
 			"!Tier 1 Arcane Spells"
 			{
@@ -678,7 +679,7 @@
 	}
 	"cow_m"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr1"		"damage bonus(H)"
@@ -703,14 +704,10 @@
 			"Attr6"		"air control when blast jumping"
 			"Attr5"		"charge movespeed increased"
 		}
-		"Special Tweaks"
-		{
-			"Sp2"		"Fast Laser Shot"
-		}
 	}
 	"airstrike"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr1"			"damage bonus"
@@ -734,10 +731,6 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
-		}
-		"Special Tweaks"
-		{
-			"Sp1"		"Some Other Beggar Tweak"
 		}
 	}
 	"scomelweap"
@@ -794,7 +787,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp5"		"Rocket Launcher"
 			"Sp6"		"Lacerating Rounds"
 		}
@@ -805,7 +797,7 @@
 	}
 	"rayengweap"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -826,10 +818,6 @@
 			"Attr2"		"clip size bonus (E)"
 			"Attr3"		"bullets per shot bonus"
 			"Attr3"		"Projectile speed increased"
-		}
-		"Special tweaks"
-		{
-			"Sp2"		"Fast Laser Shot"
 		}
 	}
 	"sprweap2"
@@ -860,7 +848,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp4"		"No Reload Necessary"
 			"Sp5"		"Rocket Launcher"
 			"Sp6"		"Lacerating Rounds"
@@ -905,7 +892,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp0"		"Fast Shot"
 			"Sp1"		"Rocket Launcher(S)"
 		}
 		"Rocket Upgrades"
@@ -942,7 +928,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp4"		"No Reload Necessary"
 			"Sp5"		"Rocket Launcher"
 			"Sp6"		"Lacerating Rounds"
@@ -986,7 +971,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp5"		"Rocket Launcher(S)"
 		}
 		"Rocket Upgrades"
@@ -998,7 +982,7 @@
 	}
 	"rayweap"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1020,10 +1004,6 @@
 			"Attr2"		"clip size bonus (E)"
 			"Attr3"		"Projectile speed increased"
 			"Attr4"		"bullets per shot bonus"
-		}
-		"Special tweaks"
-		{
-			"Sp0"		"Fast Laser Shot"
 		}
 	}
 	
@@ -1119,7 +1099,7 @@
 		}
 		"Minigun specific upgrades"
 		{
-			"Attr1"		"fire rate bonus(multshit)"
+			"Attr1"		"fire rate bonus(old)"
 			"Attr2"		"bullets per shot bonus (heavy)"	
 			"Attr14"	"Shoots extra projectile"
 			"Attr3"		"weapon spread bonus(H)"
@@ -1149,7 +1129,7 @@
 		}
 		"Minigun specific upgrades"
 		{
-			"Attr1"		"fire rate bonus(multshit)"
+			"Attr1"		"fire rate bonus(old)"
 			"Attr2"		"bullets per shot bonus (heavy)"
 			"Attr6"		"minigun spinup time decreased"
 			"Attr7"		"aiming movespeed increased"
@@ -1188,7 +1168,7 @@
 	}
 	"medweap_c"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1208,10 +1188,6 @@
 			"Attr3"		"clip size bonus (B)"
 			"Attr4"		"faster reload rate (U)"
 			"Attr6"		"Homing Projectiles (crossbow)"
-		}
-		"Special Tweaks"
-		{
-			"Sp1"	"Some Other Beggar Tweak"
 		}
 	}
 	"menuCrossbow"
@@ -1298,7 +1274,7 @@
 	}
 	"pyroflareg"// flare gun
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(H)"
@@ -1318,14 +1294,10 @@
 			"Attr1"		"fire rate bonus(multshit)"
 			"Attr2"		"Projectile speed increased"
 		}
-		"Special Tweaks"
-		{
-			"Sp0"		"Some Other Beggar Tweak"
-		}
 	}
 	"pyroflaregd"//Detonator
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1346,14 +1318,10 @@
 			"Attr1"		"fire rate bonus(multshit)"
 			"Attr2"		"blast radius increased"
 		}
-		"Special Tweaks"
-		{
-			"Sp0"		"Some Other Beggar Tweak"
-		}
 	}
 	"pyroflareg2"//manmelter
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(H)"
@@ -1373,10 +1341,6 @@
 			"Attr4"		"extra fire rate HIDDEN"
 			"Attr2"		"Projectile speed increased(DH)"
 		}		
-		"Special Tweaks"
-		{
-			"Sp2"		"Some Other Beggar Tweak"
-		}
 	}
 	"shtgpyr"
 	{
@@ -1405,7 +1369,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp4"		"No Reload Necessary"
 			"Sp5"		"Rocket Launcher"
 			"Sp6"		"Lacerating Rounds"
@@ -1448,7 +1411,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp5"		"Rocket Launcher"
 			"Sp6"		"Lacerating Rounds"
 		}
@@ -1486,7 +1448,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp5"		"Rocket Launcher(Shortstop)"
 			"Sp6"		"Lacerating Rounds"
 		}
@@ -1516,7 +1477,7 @@
 		}
 		"Sniper specific upgrades"
 		{
-			"Attr0"		"fire rate bonus(multshit)"
+			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"faster reload rate"
 			"Attr2"		"bullets per shot bonus (single)"
 			"Attr8"		"Initial Charge percent"
@@ -1544,7 +1505,7 @@
 		}
 		"Sniper specific upgrades"
 		{
-			"Attr0"		"fire rate bonus(multshit)"
+			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"faster reload rate"
 			"Attr7"		"Initial Charge percent"
 			"Attr5"		"aiming movespeed increased"
@@ -1569,7 +1530,7 @@
 		}
 		"Sniper specific upgrades"
 		{
-			"Attr0"		"fire rate bonus(multshit)"
+			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"faster reload rate"
 			"Attr2"		"bullets per shot bonus (single)"
 			"Attr7"		"Initial Charge percent"
@@ -1578,7 +1539,7 @@
 	}
 	"c_bow"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr2"		"damage bonus SPECIAL"
@@ -1596,10 +1557,6 @@
 		{
 			"Attr0"		"fire rate bonus(fortified)"
 			"Attr6"		"Projectile speed increased(ARROW)"
-		}
-		"Special Tweaks"
-		{
-			"Sp1"		"Some Other Beggar Tweak"
 		}
 		"Special Abilities"
 		{
@@ -1634,7 +1591,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp3"		"Rocket Launcher(S)"
 		}
 		"Rocket Upgrades"
@@ -1720,7 +1676,7 @@
 	
 	"demopipe"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1747,14 +1703,10 @@
 			"Attr11"	"self dmg push force increased"
 			"Attr13"	"air control when blast jumping"
 		}
-		"Special Tweaks"
-		{
-			"Sp3"		"Some Other Beggar Tweak"
-		}
 	}
 	"quickiebomb"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1778,10 +1730,6 @@
 			"Attr6"		"rocket jump damage reduction"
 			"Attr11"	"self dmg push force increased"
 			"Attr13"	"air control when blast jumping"
-		}
-		"Special Tweaks"
-		{
-			"Sp3"		"Some Other Beggar Tweak"
 		}
 	}
 	"demomel"
@@ -1918,7 +1866,7 @@
 		}
 		"Jarate specific upgrades"
 		{
-			"Attr1"		"fire rate bonus(multshit)"
+			"Attr1"		"fire rate bonus(old)"
 			"Attr2"		"Blast radius increased (Throwable)"
 			"Attr3"		"Projectile speed increased"
 			"Attr4"		"dmg from all reduced(wearable)"
@@ -1956,7 +1904,7 @@
 		}
 		"Jarate specific upgrades"
 		{
-			"Attr1"		"fire rate bonus(multshit)"
+			"Attr1"		"fire rate bonus(old)"
 			"Attr3"		"Blast radius increased (Throwable)"
 			"Attr4"		"Projectile speed increased"
 			"Attr5"		"dmg from all reduced(wearable)"
@@ -2020,7 +1968,7 @@
 	}
 	"grenade"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus"
@@ -2050,14 +1998,10 @@
 			"Attr10"	"Iron Bomber Attribute"
 			"Attr9"		"air control when blast jumping"
 		}
-		"Special Tweaks"
-		{
-			"Sp3"		"Some Other Beggar Tweak"
-		}
 	}
 	"ironbomber"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus"
@@ -2083,10 +2027,6 @@
 			"Attr5"		"rocket jump damage reduction"
 			"Attr9"		"air control when blast jumping"
 		}
-		"Special Tweaks"
-		{
-			"Sp3"		"Some Other Beggar Tweak"
-		}
 	}
 	"cannon"
 	{
@@ -2098,7 +2038,6 @@
 			"Attr16"		"Extra Damage Bonus"
 			"Attr0"			"Overall Damage Bonus"
 			"Attr8"			"Weapons Deals No Knockback"
-			
 			"Attr13"		"Life Steal Ability"
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
@@ -2121,7 +2060,6 @@
 		"Special Tweaks"
 		{
 			"Sp2"		"Siege Charge"
-			"Sp3"		"Some Other Beggar Tweak"
 		}
 	}
 	"chute"
@@ -2202,7 +2140,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Fast Shot"
 			"Sp4"		"No Reload Necessary"
 			"Sp5"		"Rocket Launcher"
 			"Sp6"		"Lacerating Rounds"
@@ -2242,7 +2179,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp2"		"Some Other Beggar Tweak"
 			"Sp6"		"Lacerating Rounds"
 		}
 	}
@@ -2327,7 +2263,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp3"		"Fast Shot"
 			"Sp4"		"Rocket Launcher"
 			"Sp5"		"Lacerating Rounds"
 		}
@@ -2456,7 +2391,7 @@
 	}//direct hit
 	"directhit"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus"
@@ -2482,14 +2417,10 @@
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
 		}
-		"Special Tweaks"
-		{
-			"Sp1"		"Some Other Beggar Tweak"
-		}
 	}
 	"rlauncher"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus(H)"
@@ -2515,14 +2446,10 @@
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
 		}
-		"Special Tweaks"
-		{
-			"Sp3"		"Some Other Beggar Tweak"
-		}
 	}
 	"liberty"
 	{
-		"special_tweaks_listid"		"2"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus"
@@ -2547,10 +2474,6 @@
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
 		}
-		"Special Tweaks"
-		{
-			"Sp3"		"Some Other Beggar Tweak"
-		}
 	}
 	"spellbook"
 	{
@@ -2570,7 +2493,7 @@
 	}
 	"autofirebow"
 	{
-		"special_tweaks_listid"		"3"
+		"special_tweaks_listid"		"-1"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(H)"
@@ -2596,10 +2519,6 @@
 			"Attr3"		"afterburn time increased(N)"
 			"Attr4"		"Ignited Arrows Explode"
 			"Attr5"		"Ignited Arrows Explosion Radius"
-		}
-		"Special Tweaks"
-		{
-			"Sp0" 	"Some Other Beggar Tweak"
 		}
 	}
 	"lunchbox_bonk"//cola & bonk

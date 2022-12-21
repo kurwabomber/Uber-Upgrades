@@ -274,7 +274,10 @@ public Action:Command_UseArcane(client, args)
 CastMarkForDeath(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane mark for death");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:focusCost = (fl_MaxFocus[client]*0.50)
 		if(fl_CurrentFocus[client] >= focusCost)
@@ -284,7 +287,8 @@ CastMarkForDeath(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[18],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 25.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 25.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 
 				new Float:clientpos[3];
 				TracePlayerAim(client, clientpos);
@@ -331,7 +335,10 @@ CastMarkForDeath(client, attuneSlot)
 CastSunlightSpear(client, attuneSlot)
 {
 	new Address:SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
-	if(SunlightSpearActive != Address_Null && TF2Attrib_GetValue(SunlightSpearActive))
+	int spellLevel = 0;
+	if(SunlightSpearActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(SunlightSpearActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (30.0 + (20.0 * level))/ArcanePower[client]
@@ -341,7 +348,9 @@ CastSunlightSpear(client, attuneSlot)
 			{
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 0.4/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 0.4;
+				applyArcaneCooldownReduction(client, attuneSlot);
+
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[5],focusCost);
 
 				new Float:clientpos[3];
@@ -409,7 +418,10 @@ CastSunlightSpear(client, attuneSlot)
 CastLightningEnchantment(client, attuneSlot)
 {
 	new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
+	int spellLevel = 0;
 	if(lightningenchantmentActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(lightningenchantmentActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		if(level > 0.0)
@@ -421,7 +433,9 @@ CastLightningEnchantment(client, attuneSlot)
 				{
 					fl_CurrentFocus[client] -= focusCost;
 					if(DisableCooldowns != 1)
-						SpellCooldowns[client][attuneSlot] = 30.0/ArcanePower[client];
+						SpellCooldowns[client][attuneSlot] = 30.0;
+					applyArcaneCooldownReduction(client, attuneSlot);
+
 					PrintHintText(client, "Used %s! -%.2f focus.",SpellList[6],focusCost);
 					
 					LightningEnchantment[client] = (10.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 4.0));
@@ -440,7 +454,10 @@ CastLightningEnchantment(client, attuneSlot)
 CastDarkmoonBlade(client, attuneSlot)
 {
 	new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
+	int spellLevel = 0;
 	if(darkmoonbladeActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(darkmoonbladeActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		if(level > 0.0)
@@ -452,7 +469,8 @@ CastDarkmoonBlade(client, attuneSlot)
 				{
 					fl_CurrentFocus[client] -= focusCost;
 					if(DisableCooldowns != 1)
-						SpellCooldowns[client][attuneSlot] = 25.0/ArcanePower[client];
+						SpellCooldowns[client][attuneSlot] = 25.0;
+					applyArcaneCooldownReduction(client, attuneSlot);
 					PrintHintText(client, "Used %s! -%.2f focus.",SpellList[9],focusCost);
 					
 					DarkmoonBlade[client] = (10.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 4.5));
@@ -470,7 +488,10 @@ CastDarkmoonBlade(client, attuneSlot)
 CastSnapFreeze(client, attuneSlot)
 {
 	new Address:snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
-	if(snapfreezeActive != Address_Null && TF2Attrib_GetValue(snapfreezeActive))
+	int spellLevel = 0;
+	if(snapfreezeActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(snapfreezeActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (40.0 + (20.0 * level))/ArcanePower[client]
@@ -483,7 +504,9 @@ CastSnapFreeze(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[7],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 9.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 9.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
+
 				EmitAmbientSound(SOUND_FREEZE, clientpos, client, 150);
 				float damage = 100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0);
 				for(new i = 1; i<MAXENTITIES;i++)
@@ -524,7 +547,10 @@ CastSnapFreeze(client, attuneSlot)
 CastArcanePrison(client, attuneSlot)
 {
 	new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
-	if(arcaneprisonActive != Address_Null && TF2Attrib_GetValue(arcaneprisonActive))
+	int spellLevel = 0;
+	if(arcaneprisonActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(arcaneprisonActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (60.0 + (35.0 * level))/ArcanePower[client]
@@ -542,7 +568,9 @@ CastArcanePrison(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[8],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 20.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 20.0;
+
+				applyArcaneCooldownReduction(client, attuneSlot);
 				EmitAmbientSound(SOUND_CALLBEYOND_ACTIVE, ClientPos, client, 120);
 				
 				new iEntity = CreateEntityByName("tf_projectile_lightningorb");
@@ -588,7 +616,10 @@ CastArcanePrison(client, attuneSlot)
 CastSpeedAura(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane speed aura");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:focusCost = (fl_MaxFocus[client]*0.4)/ArcanePower[client]
 		if(fl_CurrentFocus[client] >= focusCost)
@@ -603,7 +634,8 @@ CastSpeedAura(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[10],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 35.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 35.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 				for(new i = 1; i<MaxClients;i++)
 				{
 					if(IsValidClient3(i) && GetClientTeam(i) == iTeam)
@@ -633,7 +665,10 @@ CastSpeedAura(client, attuneSlot)
 CastAerialStrike(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
@@ -648,7 +683,8 @@ CastAerialStrike(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[11],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 60.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 60.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 				new Float:ProjectileDamage = 90.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 25.0);
 				new Handle:hPack = CreateDataPack();
 				WritePackCell(hPack, client);
@@ -731,7 +767,10 @@ public Action:aerialStrike(Handle:timer,any:data)
 CastInferno(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane inferno");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
@@ -746,7 +785,8 @@ CastInferno(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[12],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 60.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 60.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 					
 				EmitSoundToAll(SOUND_INFERNO, client);
 				EmitSoundToAll(SOUND_INFERNO, client);
@@ -832,7 +872,10 @@ CastInferno(client, attuneSlot)
 CastMineField(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane mine field");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (120.0 + (50.0 * level))/ArcanePower[client]
@@ -847,7 +890,8 @@ CastMineField(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[13],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 50.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 50.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 					
 				new Float:radius = 300.0*ArcanePower[client];
 				new Float:damage = 90.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 6.5);
@@ -962,7 +1006,10 @@ public Action:Timer_GrenadeMines(Handle:timer, any:ref)
 CastShockwave(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane shockwave");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (50.0 + (30.0 * level))/ArcanePower[client]
@@ -977,7 +1024,8 @@ CastShockwave(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[14],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 20.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 20.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 					
 				new Float:damageDealt = (100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0));
 				for(new i = 1; i<MAXENTITIES;i++)
@@ -1018,7 +1066,10 @@ CastShockwave(client, attuneSlot)
 CastAutoSentry(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane autosentry");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:focusCost = (fl_MaxFocus[client])
 		if(fl_CurrentFocus[client] >= focusCost)
@@ -1030,7 +1081,8 @@ CastAutoSentry(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[15],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 120.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 120.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 					
 				new iEntity = CreateEntityByName("obj_sentrygun");
 				if(IsValidEntity(iEntity))
@@ -1093,7 +1145,10 @@ public Action:RemoveAutoSentryID(Handle:timer, any:ref)
 CastSoothingSunlight(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane soothing sunlight");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:focusCost = (fl_MaxFocus[client])/ArcanePower[client]
 		if(fl_CurrentFocus[client] >= focusCost)
@@ -1107,7 +1162,8 @@ CastSoothingSunlight(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[16],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 200.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 200.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 					
 				CreateTimer(4.0,SoothingSunlight,EntIndexToEntRef(client));
 				TF2_StunPlayer(client,5.0,0.0,TF_STUNFLAGS_BIGBONK,0);
@@ -1158,7 +1214,10 @@ public Action:SoothingSunlight(Handle:timer, client)
 CastArcaneHunter(client, attuneSlot)
 {
 	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane hunter");
-	if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive))
+	int spellLevel = 0;
+	if(classSpecificActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	if(spellLevel > 0)
 	{
 		new Float:focusCost = (200.0 + (65.0 * ArcaneDamage[client]))/ArcanePower[client]
 		if(fl_CurrentFocus[client] >= focusCost)
@@ -1168,7 +1227,8 @@ CastArcaneHunter(client, attuneSlot)
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[17],focusCost);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 30.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 30.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 				new Float:CPOS[3];
 				GetClientEyePosition(client,CPOS)
 				
@@ -1299,7 +1359,10 @@ public Action:ArcaneHunter(Handle:timer, client)
 CastBlackskyEye(client, attuneSlot)
 {
 	new Address:BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
-	if(BlackskyEyeActive != Address_Null && TF2Attrib_GetValue(BlackskyEyeActive))
+	int spellLevel = 0;
+	if(BlackskyEyeActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(BlackskyEyeActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (8.0 + (3.0 * level))/ArcanePower[client]
@@ -1309,7 +1372,8 @@ CastBlackskyEye(client, attuneSlot)
 			{
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 0.3/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 0.3;
+				applyArcaneCooldownReduction(client, attuneSlot);
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[4],focusCost);
 
 				new Float:clientpos[3];
@@ -1370,7 +1434,10 @@ CastBlackskyEye(client, attuneSlot)
 CastACallBeyond(client, attuneSlot)
 {
 	new Address:callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
-	if(callBeyondActive != Address_Null && TF2Attrib_GetValue(callBeyondActive))
+	int spellLevel = 0;
+	if(callBeyondActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(callBeyondActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (200.0 + (70.0 * level))/ArcanePower[client]
@@ -1382,7 +1449,8 @@ CastACallBeyond(client, attuneSlot)
 				TF2_AddCondition(client, TFCond_FreezeInput, 1.5);
 				fl_CurrentFocus[client] -= focusCost;
 				if(DisableCooldowns != 1)
-					SpellCooldowns[client][attuneSlot] = 50.0/ArcanePower[client];
+					SpellCooldowns[client][attuneSlot] = 50.0;
+				applyArcaneCooldownReduction(client, attuneSlot);
 				PrintHintText(client, "Used %s! -%.2f focus.",SpellList[3],focusCost);
 				CreateTimer(1.5, ACallBeyond, EntIndexToEntRef(client));
 				
@@ -1462,7 +1530,10 @@ public Action:ACallBeyond(Handle:timer, client)
 CastZap(client, attuneSlot)
 {
 	new Address:zapActive = TF2Attrib_GetByName(client, "arcane zap");
-	if(zapActive != Address_Null && TF2Attrib_GetValue(zapActive) > 0.0)
+	int spellLevel = 0;
+	if(zapActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(zapActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		new Float:focusCost = (3.0 + (0.5 * level))/ArcanePower[client]
@@ -1507,6 +1578,7 @@ CastZap(client, attuneSlot)
 					fl_CurrentFocus[client] -= focusCost;
 					if(DisableCooldowns != 1)
 						SpellCooldowns[client][attuneSlot] = 0.1;
+					applyArcaneCooldownReduction(client, attuneSlot);
 					PrintHintText(client, "Used %s! -%.2f focus.",SpellList[0],focusCost);
 					DoZap(client,closestClient);
 				}
@@ -1567,7 +1639,10 @@ public Action:zapAgain(Handle:timer,any:data)
 CastLightning(client, attuneSlot)
 {
 	new Address:lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
+	int spellLevel = 0;
 	if(lightningActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(lightningActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		if(level > 0.0)
@@ -1579,82 +1654,93 @@ CastLightning(client, attuneSlot)
 				{
 					fl_CurrentFocus[client] -= focusCost;
 					if(DisableCooldowns != 1)
-						SpellCooldowns[client][attuneSlot] = 11.0/ArcanePower[client];
+						SpellCooldowns[client][attuneSlot] = 11.0;
+					applyArcaneCooldownReduction(client, attuneSlot);
 					PrintHintText(client, "Used %s! -%.2f focus.",SpellList[1],focusCost);
 					new Float:clientpos[3];
 					TracePlayerAim(client, clientpos);
-					
-					// define where the lightning strike starts
-					new Float:startpos[3];
-					startpos[0] = clientpos[0];
-					startpos[1] = clientpos[1];
-					startpos[2] = clientpos[2] + 1600;
-					
-					// define the color of the strike
-					new iTeam = GetClientTeam(client);
-					//PrintToChat(client, "%i", iTeam);
-					new color[4];
-					if(iTeam == 2)
+					new Float:temppos[3];
+					TracePlayerAim(client, temppos);
+					for(new iter = 0;iter < (spellLevel == 1 ? 1 : 5);iter++)
 					{
-						color = {255, 0, 0, 255};
-					}
-					else if (iTeam == 3)
-					{
-						color = {0, 0, 255, 255};
-					}
-					
-					// define the direction of the sparks
-					new Float:dir[3] = {0.0, 0.0, 0.0};
-					
-					TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
-					TE_SendToAll();
-					
-					TE_SetupSparks(clientpos, dir, 5000, 1000);
-					TE_SendToAll();
-					
-					TE_SetupEnergySplash(clientpos, dir, false);
-					TE_SendToAll();
-					
-					TE_SetupSmoke(clientpos, g_SmokeSprite, 5.0, 10);
-					TE_SendToAll();
-					
-					TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
-					TE_SendToAll();
-					for(new it =0;it<6;it++)
-					{
-						new Float:randomPos[3];
-						randomPos[0] = startpos[0]+GetRandomFloat(-150.0,150.0);
-						randomPos[1] = startpos[1]+GetRandomFloat(-150.0,150.0);
-						randomPos[2] = startpos[2];
-						
-						CreateParticle(-1, "utaunt_electricity_cloud_parent_WB", false, "", 5.0, randomPos);
-					}
-					
-					EmitAmbientSound(SOUND_THUNDER, startpos, client, SNDLEVEL_RAIDSIREN);
-					
-					for(new i = 1; i<MAXENTITIES;i++)
-					{
-						if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
+						// define where the lightning strike starts
+						if(iter > 1)
 						{
-							new Float:VictimPos[3];
-							GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-							VictimPos[2] += 30.0;
-							new Float:Distance = GetVectorDistance(clientpos,VictimPos);
-							new Float:Range = 600.0;
-							if(Distance <= Range)
-							{
-								if(IsPointVisible(clientpos,VictimPos))
-								{
-									new Float:LightningDamage = (200.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 80.0));
-									SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
+							clientpos[0] = temppos[0] + GetRandomFloat(-900.0,900.0);
+							clientpos[1] = temppos[1] + GetRandomFloat(-900.0,900.0);
+						}
 
-									CreateParticle(i, "utaunt_auroraglow_orange_parent", true, "", 3.25);
-									
-									if(IsValidClient3(i))
+						new Float:startpos[3];
+						startpos[0] = clientpos[0];
+						startpos[1] = clientpos[1];
+						startpos[2] = clientpos[2] + 1600;
+						
+						// define the color of the strike
+						new iTeam = GetClientTeam(client);
+						//PrintToChat(client, "%i", iTeam);
+						new color[4];
+						if(iTeam == 2)
+						{
+							color = {255, 0, 0, 255};
+						}
+						else if (iTeam == 3)
+						{
+							color = {0, 0, 255, 255};
+						}
+						
+						// define the direction of the sparks
+						new Float:dir[3] = {0.0, 0.0, 0.0};
+						
+						TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
+						TE_SendToAll();
+						
+						TE_SetupSparks(clientpos, dir, 5000, 1000);
+						TE_SendToAll();
+						
+						TE_SetupEnergySplash(clientpos, dir, false);
+						TE_SendToAll();
+						
+						TE_SetupSmoke(clientpos, g_SmokeSprite, 5.0, 10);
+						TE_SendToAll();
+						
+						TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
+						TE_SendToAll();
+						for(new it =0;it<6;it++)
+						{
+							new Float:randomPos[3];
+							randomPos[0] = startpos[0]+GetRandomFloat(-150.0,150.0);
+							randomPos[1] = startpos[1]+GetRandomFloat(-150.0,150.0);
+							randomPos[2] = startpos[2];
+							
+							CreateParticle(-1, "utaunt_electricity_cloud_parent_WB", false, "", 5.0, randomPos);
+						}
+						
+						EmitAmbientSound(SOUND_THUNDER, startpos, client, SNDLEVEL_RAIDSIREN);
+						
+						for(new i = 1; i<MAXENTITIES;i++)
+						{
+							if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
+							{
+								new Float:VictimPos[3];
+								GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+								VictimPos[2] += 30.0;
+								new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+								new Float:Range = spellLevel > 1 ? 1200.0 : 600.0;
+								if(Distance <= Range)
+								{
+									if(IsPointVisible(clientpos,VictimPos))
 									{
-										TF2_IgnitePlayer(i, client, 3.0);
+										new Float:LightningDamage = (200.0 + (Pow(level * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
+										SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
+
+										CreateParticle(i, "utaunt_auroraglow_orange_parent", true, "", 3.25);
+										
+										if(IsValidClient3(i))
+										{
+											TF2_IgnitePlayer(i, client, 3.0);
+										}
+										DOTStock(i,client,LightningDamage*0.02,-1,0,20,1.0,0.1,true);//A fake afterburn. This allows for stacking of DOT & custom tick rates.
 									}
-									DOTStock(i,client,LightningDamage*0.02,-1,0,20,1.0,0.1,true);//A fake afterburn. This allows for stacking of DOT & custom tick rates.
 								}
 							}
 						}
@@ -1672,7 +1758,10 @@ CastLightning(client, attuneSlot)
 CastHealing(client, attuneSlot)//Projected Healing
 {
 	new Address:healAuraActive = TF2Attrib_GetByName(client, "arcane projected healing");
+	int spellLevel = 0;
 	if(healAuraActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(healAuraActive));
+	if(spellLevel > 0)
 	{
 		new Float:level = ArcaneDamage[client];
 		if(level > 0.0)

@@ -356,6 +356,16 @@ public DefineAttributesTab(client, itemidx, slot)
 		}
 	}
 }
+applyArcaneCooldownReduction(client, attuneSlot)
+{
+	float cdReduction = 1.0/ArcanePower[client];
+
+	new Address:cdMult = TF2Attrib_GetByName(client, "arcane cooldown rate");
+	if(cdMult != Address_Null)
+		cdReduction *= TF2Attrib_GetValue(cdMult);
+
+	SpellCooldowns[client][attuneSlot] *= cdReduction
+}
 DisplayItemChange(client,itemidx)
 {
 	new String:ChangeString[256];
@@ -428,10 +438,6 @@ DisplayItemChange(client,itemidx)
 		case 1104:
 		{
 			ChangeString = "The Air Strike | Rocket jumping gives 30% faster fire rate.";
-		}
-		case 730:
-		{
-			ChangeString = "The Beggar's Bazooka | Starts off with Some Beggar Tweak.";
 		}
 		//Soldier Secondary
 		case 129,1001:

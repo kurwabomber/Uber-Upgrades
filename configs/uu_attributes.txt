@@ -791,8 +791,20 @@
 		{
 			"name"		"disguise speed penalty"
 			"ref"		"fire rate bonus(multshit)"
-			"cost"		"600"
-			"increase_ratio" 	"0.3"
+			"cost"		"800"
+			"increase_ratio" 	"0.035"
+			"value"		"0.25"
+			"init"		"1.00"
+			"display_style" "1"
+			"description"	"1:1 pure fire rate multiplier.\nAll fire-rate not contributing to\nnext tick threshold is converted\ninto damage."
+			"max"		"28.0"
+		}
+		"12.1"
+		{
+			"name"		"disguise speed penalty"
+			"ref"		"fire rate bonus(old)"
+			"cost"		"800"
+			"increase_ratio" 	"0.035"
 			"value"		"0.25"
 			"init"		"1.00"
 			"display_style" "1"
@@ -5284,9 +5296,9 @@
 			"ref"		"Overall Damage Bonus"
 			"cost"		"425"
 			"value"		"1.0"
-			"increase_ratio"	"0.5"
+			"increase_ratio"	"0.4"
 			"init"		"0"
-			"staged_max"		"60.0,100.0,300.0,1000.0"
+			"staged_max"		"150.0,300.0,1000.0"
 			"display_style"		"6"
 			"description"	"Multiplies damage by 1.05x\nper purchase.\nFormula is 1.05^value."
 			"max"		"60"
@@ -6075,6 +6087,7 @@
 			"increase_ratio"	"0.9"
 			"value"		"0.01"
 			"init"		"1"
+			"staged_max"		"1.8,1.9,2.0"
 			"description"	"Multiplies all arcane stats by ^2.\nMultiplies arcane damage by ^4."
 			"display_style"	"5"
 			"max"		"1.7"
@@ -6087,8 +6100,9 @@
 			"increase_ratio"	"0.0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"3,4,5"
 			"description"	"Increases the maximum amount of\nunique arcane spells you can hold."
-			"max"		"4"
+			"max"		"2"
 		}
 		"1541.2"
 		{
@@ -6107,10 +6121,12 @@
 			"name"		"arcane cooldown rate"
 			"ref"		"Arcane Cooldown Reduction"
 			"cost"		"15000"
+			"requirement"		"1000000.0"
 			"increase_ratio"	"0.4"
 			"value"		"-0.1"
+			"staged_max"		"0.7,0.5,0.35"
 			"init"		"1"
-			"max"		"0.3"
+			"max"		"0.7"
 		}
 		"1542"
 		{
@@ -6120,6 +6136,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Zaps closest enemy for 20 base 3 scaling arcane damage.\n30% chance to zap another time."
 			"max"		"1"
 		}
@@ -6128,9 +6145,10 @@
 			"name"		"arcane lightning strike"
 			"ref"		"Arcane - Lightning Strike"
 			"cost"		"15000"
-			"increase_ratio"	"0"
+			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Smites in an AOE at crosshair.\n200 base 80 scaling arcane damage.\nApplies 2 seconds of heavy afterburn."
 			"max"		"1"
 		}
@@ -6142,6 +6160,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Heals for 20% max health in an AOE at collision."
 			"max"		"1"
 		}
@@ -6153,6 +6172,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Shoots 25 homing bolts that deal\n90 base 120 scaling arcane damage on collision."
 			"max"		"1"
 		}
@@ -6164,6 +6184,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Shoots a homing bolt that deals\n10 base 7.5 scaling arcane damage on collision."
 			"max"		"1"
 		}
@@ -6175,6 +6196,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Shoots a spear that deals 100 base 40 scaling arcane damage."
 			"max"		"1"
 		}
@@ -6186,6 +6208,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Adds +80 arcane scaling DPS to your current weapon."
 			"max"		"1"
 		}
@@ -6197,6 +6220,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Deals 100 base 60 scaling arcane damage in an AOE around you.\nStuns targets for 0.4s and shortly massively increases dodge chance."
 			"max"		"1"
 		}
@@ -6208,6 +6232,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Traps enemies at crosshair and deals\n10 base 5 scaling arcane damage per tick.\nSlowly increases radiation buildup."
 			"max"		"1"
 		}
@@ -6219,6 +6244,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Adds +3.5 arcane scaling damage to your melee."
 			"max"		"1"
 		}
@@ -6231,6 +6257,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Gives agility rune and speed bonus for 8s\n& for everyone around you.\nIncreases dodge chance to 75% for 1.5s."
 			"max"		"1"
 		}
@@ -6242,6 +6269,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Summons 30 rockets to fall at crosshair,\neach dealing 90 base 25 scaling arcane damage."
 			"max"		"1"
 		}
@@ -6253,6 +6281,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Applies a deadly DOT in an AOE around you.\nDeals 20 base 12.5 scaling arcane damage\nper tick. Applies 20 ticks."
 			"max"		"1"
 		}
@@ -6264,6 +6293,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Summons 20 automatically detonating grenades.\nEach deals 90 base 9.5 scaling.\nFor every second alive, the grenades gain +35% damage."
 			"max"		"1"
 		}
@@ -6275,6 +6305,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Deals 100 base 60 scaling arcane damage in an AOE around you.\nStuns targets for 2.25s and pushes them away 900 HU."
 			"max"		"1"
 		}
@@ -6286,6 +6317,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Summons a sentry ontop of your head."
 			"max"		"1"
 		}
@@ -6297,6 +6329,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Heals in an AOE for 4x your health.\nGives +100% temporary armor and +65% armor regeneration."
 			"max"		"1"
 		}
@@ -6308,6 +6341,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Shoots 5 rays that deal 200 base 80 scaling arcane damage.\nAutomatically homes in witihn 10 degrees and also splashes."
 			"max"		"1"
 		}
@@ -6319,6 +6353,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"staged_max"		"2,2,3"
 			"description"	"Applies the sapped effect to all enemies around crosshair.\n-50% speed and jump height, lasts 10 seconds."
 			"max"		"1"
 		}
@@ -6928,6 +6963,7 @@
 			"increase_ratio"	"3.0"
 			"requirement"		"5000000.0"
 			"value"		"0.1"
+			"staged_max"		"1.5,1.9,2.0"
 			"init"		"1.0"
 			"max"		"1.5"
 		}

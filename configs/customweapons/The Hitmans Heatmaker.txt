@@ -33,10 +33,15 @@
 			"plugin"	"tf2attributes"
 			"value"		"0"
 		}
-		"explosive bullets"
+		"override projectile type"
 		{
 			"plugin"	"tf2attributes"
-			"value"		"200.0"
+			"value"		"2.0"
+		}
+		"Projectile speed increased"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1000.0"
 		}
 		"sniper no headshots"
 		{

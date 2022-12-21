@@ -193,7 +193,7 @@ new currentupgrades_restriction_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1][5];
 new Float:currentupgrades_val_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]
 new Float:client_spent_money_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1]
 new Float:waveToCurrency[] = {60000.0, 92000.0, 130400.0, 176480.0, 231776.0, 298131.2, 377757.4, 473308.9, 587970.7, 725564.0, 890677.8, 1088813.3, 1326576.0, 1611891.0, 1954269.0, 1954269.0, 2365123.0, 2858148.0}
-
+new Float:spellScaling[] = {0.0,2.45,2.55,2.65};
 //Custom Attributes
 new Float:fl_GlobalCoolDown[MAXPLAYERS+1];
 new Float:weaponArtCooldown[MAXPLAYERS+1];

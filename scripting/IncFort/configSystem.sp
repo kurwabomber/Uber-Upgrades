@@ -158,7 +158,7 @@ BrowseAttributesKV(Handle:kv)
 					for(int i = 1;i<it;i++)
 					{
 						//PrintToServer("Stage %i | Set to %.2f max.", i, StringToFloat(parts[i])) //it works :D
-						upgrades_staged_max[_u_id][i] = StringToFloat(parts[i]);
+						upgrades_staged_max[_u_id][i] = StringToFloat(parts[i-1]);
 					}
 				}
 				else if (!strcmp(Buf,"max"))

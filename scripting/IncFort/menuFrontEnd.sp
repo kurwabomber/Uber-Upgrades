@@ -368,7 +368,7 @@ public Action:Menu_ChooseSubcat(client, subcat_choice, const char[] TitleStr)
 		current_w_sc_list_id[client] = subcat_choice;
 		new String:buf[128]
 
-		for(new j = 0; j < given_upgrd_subcat_nb[cat_id][subcat_choice];j++)
+		for(new j = 0; j < given_upgrd_subcat_nb[w_id][subcat_choice];j++)
 		{
 			//PrintToServer("%s", given_upgrd_subclassnames[w_id][j])
 			Format(buf, sizeof(buf), "%T", given_upgrd_subclassnames[cat_id][subcat_choice][j], client);
