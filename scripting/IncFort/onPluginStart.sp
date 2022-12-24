@@ -378,7 +378,16 @@ public void OnPluginStart()
 	{
 		PrintToServer("CustomAttrs | Grenade patch fucked up.");
 	}
-	DHookEnableDetour(g_DHookInWorld, true, IsInWorldCheck);
+	DHookEnableDetour(g_DHookInWorld, false, IsInWorldCheck);
+
+	//vphysics
+	Handle g_DHookValidVelocity = DHookCreateFromConf(hConf, "CheckEntityVelocity");
+	
+	if(g_DHookValidVelocity == INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | Grenade patch part 2 fucked up.");
+	}
+	DHookEnableDetour(g_DHookValidVelocity, false, CheckEntityVelocity);
 
 	//Recoil changes
 	Handle g_DHookRecoil = DHookCreateFromConf(hConf, "CBasePlayer::SetPunchAngle()");

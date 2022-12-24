@@ -457,7 +457,7 @@ public Action:Timer_Every100MS(Handle:timer)
 				}
 			}
 			new Float:plaguePower = 0.0;
-			new Address:plaguePowerup = TF2Attrib_GetByName(client, "disable fancy class select anim");
+			new Address:plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
 			new Float:clientPos[3];
 			GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
 			if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)

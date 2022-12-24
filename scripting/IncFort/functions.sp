@@ -810,7 +810,7 @@ RespawnEffect(client)
 	TF2Attrib_SetByName(client,"airblast_pushback_disabled", 1.0);
 	TF2Attrib_SetByName(client,"airblast_deflect_projectiles_disabled", 1.0);
 	TF2Attrib_SetByName(client,"no damage view flinch", 1.0);
-	SetEntityHealth(client, TF2_GetMaxHealth(client))
+	CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
 }
 UpdateMaxValuesStage(int stage)
 {
@@ -1110,7 +1110,7 @@ refreshUpgrades(client, slot)
 			}
 			
 			//Powerups
-			new Address:kingPowerup = TF2Attrib_GetByName(client, "attack projectiles");
+			new Address:kingPowerup = TF2Attrib_GetByName(client, "king powerup");
 			if(kingPowerup != Address_Null)
 			{
 				new Float:kingPowerupValue = TF2Attrib_GetValue(kingPowerup);
@@ -1126,7 +1126,7 @@ refreshUpgrades(client, slot)
 				}
 			}
 			
-			new Address:precisionPowerup = TF2Attrib_GetByName(client, "refill_ammo");
+			new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 			if(precisionPowerup != Address_Null)
 			{
 				new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
@@ -1159,7 +1159,7 @@ refreshUpgrades(client, slot)
 				}
 			}
 			
-			new Address:agilityPowerup = TF2Attrib_GetByName(client, "store sort override DEPRECATED");		
+			new Address:agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
 			if(agilityPowerup != Address_Null)
 			{
 				new Float:agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
@@ -1197,7 +1197,7 @@ refreshUpgrades(client, slot)
 				Spread -= 0.1
 				Spread *= TF2Attrib_GetValue(spread2);
 			}
-			new Address:precisionPowerup = TF2Attrib_GetByName(client, "refill_ammo");
+			new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 			if(precisionPowerup != Address_Null)
 			{
 				new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
@@ -1783,7 +1783,7 @@ AirblastPatch(client)
 						
 						new bool:immune = false;
 						
-						new Address:agilityPowerup = TF2Attrib_GetByName(client, "store sort override DEPRECATED");		
+						new Address:agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
 						if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
 						{
 							immune = true;
@@ -2503,7 +2503,7 @@ PrecisionHoming(entity)
 		int client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(client))
 		{
-			new Address:precisionPowerup = TF2Attrib_GetByName(client, "refill_ammo");
+			new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 			if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
 			{
 				projectileHomingDegree[entity] = 200.0;

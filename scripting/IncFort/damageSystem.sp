@@ -298,7 +298,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		if(damagetype != (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM))
 		{
 			new bool:delayBool = true;
-			new Address:regenerationPowerup = TF2Attrib_GetByName(victim, "recall");
+			new Address:regenerationPowerup = TF2Attrib_GetByName(victim, "regeneration powerup");
 			if(regenerationPowerup != Address_Null)
 			{
 				new Float:regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
@@ -318,7 +318,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				}
 			}
 		}
-		new Address:resistancePowerup = TF2Attrib_GetByName(victim, "expiration date");
+		new Address:resistancePowerup = TF2Attrib_GetByName(victim, "resistance powerup");
 		if(resistancePowerup != Address_Null)
 		{
 			new Float:resistancePowerupValue = TF2Attrib_GetValue(resistancePowerup);
@@ -335,7 +335,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				damage /= 2.0;
 			}
 		}
-		new Address:vampirePowerup = TF2Attrib_GetByName(victim, "unlimited quantity");//Vampire Powerup
+		new Address:vampirePowerup = TF2Attrib_GetByName(victim, "vampire powerup");//Vampire Powerup
 		if(vampirePowerup != Address_Null)
 		{
 			new Float:vampirePowerupValue = TF2Attrib_GetValue(vampirePowerup);
@@ -344,7 +344,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				damage *= 0.75;
 			}
 		}
-		new Address:revengePowerup = TF2Attrib_GetByName(victim, "sniper penetrate players when charged");//Vampire Powerup
+		new Address:revengePowerup = TF2Attrib_GetByName(victim, "revenge powerup");//Vampire Powerup
 		if(revengePowerup != Address_Null)
 		{
 			new Float:revengePowerupValue = TF2Attrib_GetValue(revengePowerup);
@@ -353,7 +353,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				damage *= 0.8;
 			}
 		}
-		new Address:regenerationPowerup = TF2Attrib_GetByName(victim, "recall");//Vampire Powerup
+		new Address:regenerationPowerup = TF2Attrib_GetByName(victim, "regeneration powerup");//Regeneration powerup
 		if(regenerationPowerup != Address_Null)
 		{
 			new Float:regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
@@ -363,7 +363,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 			}
 		}
 
-		new Address:knockoutPowerupVictim = TF2Attrib_GetByName(victim, "taunt is press and hold");
+		new Address:knockoutPowerupVictim = TF2Attrib_GetByName(victim, "knockout powerup");
 		if(knockoutPowerupVictim != Address_Null)
 		{
 			new Float:knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerupVictim);
@@ -372,7 +372,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 			}
 		}
 		
-		new Address:kingPowerup = TF2Attrib_GetByName(victim, "attack projectiles");
+		new Address:kingPowerup = TF2Attrib_GetByName(victim, "king powerup");
 		if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
 		{
 			damage *= 0.8;
@@ -382,7 +382,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		{
 			if(IsValidClient3(plagueAttacker[attacker]))
 			{
-				new Address:plaguePowerup = TF2Attrib_GetByName(plagueAttacker[attacker], "disable fancy class select anim");
+				new Address:plaguePowerup = TF2Attrib_GetByName(plagueAttacker[attacker], "plague powerup");
 				if(plaguePowerup != Address_Null)
 				{
 					new Float:plaguePowerupValue = TF2Attrib_GetValue(plaguePowerup);
@@ -393,19 +393,19 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				}
 			}
 		}
-		new Address:plaguePowerup = TF2Attrib_GetByName(victim, "disable fancy class select anim");
+		new Address:plaguePowerup = TF2Attrib_GetByName(victim, "plague powerup");
 		if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 		{
 			damage *= 0.7;
 		}
 		
-		new Address:supernovaPowerupVictim = TF2Attrib_GetByName(victim, "spawn with physics toy");
+		new Address:supernovaPowerupVictim = TF2Attrib_GetByName(victim, "supernova powerup");
 		if(supernovaPowerupVictim != Address_Null && TF2Attrib_GetValue(supernovaPowerupVictim) > 0.0)
 		{
 			damage *= 0.8;
 		}
 		
-		new Address:strengthPowerup = TF2Attrib_GetByName(attacker, "crit kill will gib");
+		new Address:strengthPowerup = TF2Attrib_GetByName(attacker, "strength powerup");
 		if(strengthPowerup != Address_Null)
 		{
 			new Float:strengthPowerupValue = TF2Attrib_GetValue(strengthPowerup);
@@ -415,7 +415,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 			}
 		}
 		
-		new Address:revengePowerupAttacker = TF2Attrib_GetByName(attacker, "sniper penetrate players when charged");
+		new Address:revengePowerupAttacker = TF2Attrib_GetByName(attacker, "revenge powerup");
 		if(revengePowerupAttacker != Address_Null)
 		{
 			if(RageActive[attacker] == true && TF2Attrib_GetValue(revengePowerupAttacker) > 0.0)
@@ -425,12 +425,12 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				{
 					CreateParticle(victim, "critgun_weaponmodel_red", true, "", 1.0,_,_,1);
 					TE_SendToAll();
-					powerupParticle[attacker] = 1.0;
+					powerupParticle[attacker] = 0.2;
 				}
 			}
 		}
 		
-		new Address:precisionPowerup = TF2Attrib_GetByName(attacker, "refill_ammo");
+		new Address:precisionPowerup = TF2Attrib_GetByName(attacker, "precision powerup");
 		if(precisionPowerup != Address_Null)
 		{
 			new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
@@ -456,7 +456,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 					new Float:Distance = GetVectorDistance(clientPos,VictimPos);
 					if(Distance <= 600.0)
 					{
-						new Address:kingPowerupAttacker = TF2Attrib_GetByName(i, "attack projectiles");
+						new Address:kingPowerupAttacker = TF2Attrib_GetByName(i, "king powerup");
 						if(kingPowerupAttacker != Address_Null && TF2Attrib_GetValue(kingPowerupAttacker) > 0.0)
 						{
 							highestKingDMG = 1.2;
@@ -471,7 +471,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 			damage *= highestKingDMG;
 		}
 		
-		new Address:knockoutPowerup = TF2Attrib_GetByName(attacker, "taunt is press and hold");
+		new Address:knockoutPowerup = TF2Attrib_GetByName(attacker, "knockout powerup");
 		if(knockoutPowerup != Address_Null)
 		{
 			new Float:knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
@@ -988,7 +988,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						damagecustom = 1;
 					}
 				}
-				new Address:precisionPowerup = TF2Attrib_GetByName(attacker, "refill_ammo");
+				new Address:precisionPowerup = TF2Attrib_GetByName(attacker, "precision powerup");
 				if(precisionPowerup != Address_Null)
 				{
 					new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
@@ -1352,7 +1352,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				}
 			}
 		}
-		new Address:supernovaPowerup = TF2Attrib_GetByName(attacker, "spawn with physics toy");
+		new Address:supernovaPowerup = TF2Attrib_GetByName(attacker, "supernova powerup");
 		if(supernovaPowerup != Address_Null)
 		{
 			new Float:supernovaPowerupValue = TF2Attrib_GetValue(supernovaPowerup);

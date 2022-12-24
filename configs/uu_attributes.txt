@@ -7126,7 +7126,7 @@
 		//2100 series is dedicated to powerups
 		"2100.0"
 		{
-			"name"		"crit kill will gib"
+			"name"		"strength powerup"
 			"ref"		"Strength Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7137,7 +7137,7 @@
 		}
 		"2100.1"
 		{
-			"name"		"expiration date"
+			"name"		"resistance powerup"
 			"ref"		"Resistance Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7148,7 +7148,7 @@
 		}
 		"2100.2"
 		{
-			"name"		"unlimited quantity"
+			"name"		"vampire powerup"
 			"ref"		"Vampire Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7159,7 +7159,7 @@
 		}
 		"2100.4"
 		{
-			"name"		"sniper penetrate players when charged"
+			"name"		"revenge powerup"
 			"ref"		"Revenge Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7170,7 +7170,7 @@
 		}
 		"2100.5"
 		{
-			"name"		"recall"
+			"name"		"regeneration powerup"
 			"ref"		"Regeneration Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7181,7 +7181,7 @@
 		}
 		"2100.6"
 		{
-			"name"		"refill_ammo"
+			"name"		"precision powerup"
 			"ref"		"Precision Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7192,7 +7192,7 @@
 		}
 		"2100.7"
 		{
-			"name"		"store sort override DEPRECATED"
+			"name"		"agility powerup"
 			"ref"		"Agility Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7203,7 +7203,7 @@
 		}
 		"2100.8"
 		{
-			"name"		"taunt is press and hold"
+			"name"		"knockout powerup"
 			"ref"		"Knockout Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7214,7 +7214,7 @@
 		}
 		"2100.9"
 		{
-			"name"		"attack projectiles"
+			"name"		"king powerup"
 			"ref"		"King Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7225,7 +7225,7 @@
 		}
 		"2100.10"
 		{
-			"name"		"disable fancy class select anim"
+			"name"		"plague powerup"
 			"ref"		"Plague Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"
@@ -7236,7 +7236,7 @@
 		}
 		"2100.11"
 		{
-			"name"		"spawn with physics toy"
+			"name"		"supernova powerup"
 			"ref"		"Supernova Powerup"
 			"restriction_category"	"1"
 			"cost"		"80000"

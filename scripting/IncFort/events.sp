@@ -28,7 +28,7 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 		WritePackFloat(hPack, damage);
 		CreateTimer(1.01, RemoveDamage, hPack);
 
-		new Address:knockoutPowerup = TF2Attrib_GetByName(attacker, "taunt is press and hold");
+		new Address:knockoutPowerup = TF2Attrib_GetByName(attacker, "knockout powerup");
 		if(knockoutPowerup != Address_Null)
 		{
 			new Float:knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
@@ -58,7 +58,7 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 	}
 	if(IsValidClient3(client))
 	{
-		new Address:revengePowerup = TF2Attrib_GetByName(client, "sniper penetrate players when charged");
+		new Address:revengePowerup = TF2Attrib_GetByName(client, "revenge powerup");
 		if(revengePowerup != Address_Null)
 		{
 			new Float:revengePowerupValue = TF2Attrib_GetValue(revengePowerup);
@@ -69,7 +69,7 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 					RageBuildup[client]= 1.0;
 			}
 		}
-		new Address:supernovaPowerupVictim = TF2Attrib_GetByName(client, "spawn with physics toy");
+		new Address:supernovaPowerupVictim = TF2Attrib_GetByName(client, "supernova powerup");
 		if(supernovaPowerupVictim != Address_Null && TF2Attrib_GetValue(supernovaPowerupVictim) > 0.0)
 		{
 			SupernovaBuildup[client] += (damage/float(TF2_GetMaxHealth(client)));
@@ -125,7 +125,7 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 					fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 				}
 				
-				new Address:vampirePowerup = TF2Attrib_GetByName(attacker, "unlimited quantity");//Vampire Powerup
+				new Address:vampirePowerup = TF2Attrib_GetByName(attacker, "vampire powerup");//Vampire Powerup
 				if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
 				{
 					new HealthGained = RoundToCeil(0.8 * damage * lifestealFactor);
@@ -239,7 +239,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 	TFCond cond = view_as<TFCond>(DHookGetParam(hParams, 1));
 	if(IsValidClient3(client))
 	{
-		new Address:agilityPowerup = TF2Attrib_GetByName(client, "store sort override DEPRECATED");		
+		new Address:agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
 		if(agilityPowerup != Address_Null)
 		{
 			new Float:agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
@@ -540,6 +540,10 @@ public MRESReturn IsInWorldCheck(int entity, Handle hReturn, Handle hParams)  {
     	} 
 	}
 	return MRES_Ignored;
+}
+public MRESReturn CheckEntityVelocity(Address pPlayerShared, Handle hReturn)  {
+	DHookSetReturn(hReturn, 1);
+	return MRES_Supercede;
 }
 public MRESReturn OnRecoilApplied(int entity, Handle hParams)  {
 	DHookSetParamVector(hParams, 1, NULL_VECTOR);
@@ -1168,7 +1172,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					{
 						charging += TF2Attrib_GetValue(charge)*tickRate;
 					}
-					new Address:precisionPowerup = TF2Attrib_GetByName(client, "refill_ammo");
+					new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 					if(precisionPowerup != Address_Null)
 					{
 						new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
@@ -1356,25 +1360,25 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				if(powerupParticle[client] <= 0.0 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 				{
 					
-					new Address:strengthPowerup = TF2Attrib_GetByName(client, "crit kill will gib");
+					new Address:strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");
 					if(strengthPowerup != Address_Null && TF2Attrib_GetValue(strengthPowerup) > 0.0)
 					{
 						CreateParticle(client, "utaunt_tarotcard_orange_wind", true, "", 5.0);
 						powerupParticle[client] = 5.0;
 					}
-					new Address:resistancePowerup = TF2Attrib_GetByName(client, "expiration date");
+					new Address:resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
 					if(resistancePowerup != Address_Null && TF2Attrib_GetValue(resistancePowerup) > 0.0)
 					{
 						CreateParticle(client, "soldierbuff_red_spikes", true, "", 2.0);
 						powerupParticle[client] = 2.0;
 					}
-					new Address:vampirePowerup = TF2Attrib_GetByName(client, "unlimited quantity");
+					new Address:vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
 					if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
 					{
 						CreateParticle(client, "spell_batball_red", true, "", 2.0);
 						powerupParticle[client] = 8.0;
 					}
-					new Address:regenerationPowerup = TF2Attrib_GetByName(client, "recall");
+					new Address:regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
 					if(regenerationPowerup != Address_Null && TF2Attrib_GetValue(regenerationPowerup) > 0.0)
 					{
 						new iTeam = GetClientTeam(client);
@@ -1388,7 +1392,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						powerupParticle[client] = 5.0;
 					}
-					new Address:precisionPowerup = TF2Attrib_GetByName(client, "refill_ammo");
+					new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 					if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
 					{
 						if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
@@ -1401,19 +1405,19 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						powerupParticle[client] = 5.0;
 					}
-					new Address:agilityPowerup = TF2Attrib_GetByName(client, "store sort override DEPRECATED");
+					new Address:agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");
 					if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
 					{
 						CreateParticle(client, "medic_resist_bullet", true, "", 5.0);
 						powerupParticle[client] = 5.0;
 					}
-					new Address:knockoutPowerup = TF2Attrib_GetByName(client, "taunt is press and hold");
+					new Address:knockoutPowerup = TF2Attrib_GetByName(client, "knockout powerup");
 					if(knockoutPowerup != Address_Null && TF2Attrib_GetValue(knockoutPowerup) > 0.0)
 					{
 						CreateParticle(client, "medic_resist_blast", true, "", 5.0);
 						powerupParticle[client] = 5.0;
 					}
-					new Address:kingPowerup = TF2Attrib_GetByName(client, "attack projectiles");
+					new Address:kingPowerup = TF2Attrib_GetByName(client, "king powerup");
 					if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
 					{
 						new clientTeam = GetClientTeam(client);
@@ -1447,13 +1451,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						powerupParticle[client] = 2.0;
 					}
-					new Address:plaguePowerup = TF2Attrib_GetByName(client, "disable fancy class select anim");
+					new Address:plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
 					if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 					{
 						CreateParticle(client, "powerup_plague_carrier", true, "", 5.0);
 						powerupParticle[client] = 5.0;
 					}
-					new Address:supernovaPowerup = TF2Attrib_GetByName(client, "spawn with physics toy");
+					new Address:supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
 					if(supernovaPowerup != Address_Null && TF2Attrib_GetValue(supernovaPowerup) > 0.0)
 					{
 						CreateParticle(client, "powerup_supernova_ready", true, "", 5.0);

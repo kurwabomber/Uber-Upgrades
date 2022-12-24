@@ -140,6 +140,13 @@
 					}
 				}
 			}
+			"CheckEntityVelocity"
+			{
+				"signature"		"CheckEntityVelocity"
+				"callconv"		"thiscall"
+				"return"		"int"
+				"this"			"address"
+			}
 		}
 		"Signatures"
 		{
@@ -206,6 +213,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN15CTFPlayerShared7AddCondE7ETFCondfP11CBaseEntity"
+			}
+			"CheckEntityVelocity"
+			{
+				"library"	"server"
+				"linux"		"@_Z19CheckEntityVelocityR6Vector"
 			}
 		}
 	}
