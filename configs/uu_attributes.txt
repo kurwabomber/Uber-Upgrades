@@ -2,619 +2,9 @@
 {
 	"attributes"
 	{
-		"unused"
-		{
-			"name"		"leave an unused here"
-			"ref"		"damage bonus tes"
-			"increase_ratio" "0.4"
-			"cost"		"400"
-			"value"		"0.25"
-			"init"		"1.00"
-			"max"		"1000.00"
-		}//fake attributes (qbuy glitch patch)
-		"1001"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1002"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1003"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1004"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1005"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1006"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1007"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1008"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1009"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1010"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1011"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1012"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1013"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1014"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1015"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1016"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1017"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1018"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1019"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1020"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1021"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1022"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1023"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1024"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1025"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1026"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1027"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1028"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1029"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1030"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1031"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1032"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1033"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1034"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1035"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1036"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1037"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1038"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1039"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1040"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1041"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1042"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1043"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1044"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1045"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1046"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1047"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1048"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1049"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1050"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1051"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1052"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1053"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1054"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1055"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1056"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1057"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1058"
-		{
-			"name"		"ragdolls become ash"
-			"ref"		"ragdolls become ash"
-			"increase_ratio" "0"
-			"cost"		"0"
-			"value"		"0.00"
-			"init"		"0.00"
-			"max"		"0.00"
-		}//actual attributes
-		"1"
-		{
-			"name"		"damage penalty on bodyshot"
-			"ref"		"Damage bonus multiplier"
-			"increase_ratio" "2.5"
-			"cost"		"4000"
-			"value"		"0.20"
-			"init"		"1.00"
-			"max"		"5.00"
-		}
-		"2"
-		{
-			"name"		"disguise damage reduction"
-			"ref"		"Damage bonus vs player (C)"
-			"increase_ratio" "0.18"
-			"cost"		"500"
-			"value"		"0.20"//75
-			"init"		"1.00"
-			"max"		"100000000.00"
-		}
 		"3"
 		{
-			"name"		"dmg penalty vs players"
+			"name"		"damage mult 1"
 			"ref"		"armor piercing damage"
 			"increase_ratio" "0.07"
 			"cost"		"0"
@@ -624,7 +14,7 @@
 		}
 		"3.5"
 		{
-			"name"		"dmg penalty vs players"
+			"name"		"damage mult 2"
 			"ref"		"damage bonus (clea)"
 			"increase_ratio" "0.06"
 			"cost"		"400"
@@ -637,15 +27,15 @@
 		{
 			"name"		"damage penalty"
 			"ref"		"damage penalty"
-			"increase_ratio" "0.8"
-			"cost"		"0"
-			"value"		"0.15"
+			"increase_ratio" "0.0"
+			"cost"		"-3000"
+			"value"		"-0.15"
 			"init"		"1.00"
-			"max"		"100000.00"
+			"max"		"0.00"
 		}
 		"5"
 		{
-			"name"		"dmg penalty vs players"
+			"name"		"damage mult 3"
 			"ref"		"damage bonus SPECIAL"
 			"increase_ratio" "0.35"
 			"cost"		"375"
@@ -657,7 +47,7 @@
 		}
 		"6"
 		{
-			"name"			"damage penalty"
+			"name"			"damage mult 4"
 			"ref"			"damage bonus"
 			"cost"			"800"
 			"increase_ratio" "0.07"
@@ -669,7 +59,7 @@
 		}
 		"751"
 		{
-			"name"			"damage penalty"
+			"name"			"damage mult 4"
 			"ref"			"damage bonus(L)"
 			"cost"			"900"
 			"increase_ratio" "0.09"
@@ -681,7 +71,7 @@
 		}
 		"752"
 		{
-			"name"			"damage penalty"
+			"name"			"damage mult 4"
 			"ref"			"damage bonus(H)"
 			"cost"			"780"
 			"increase_ratio" "0.05"
@@ -693,7 +83,7 @@
 		}
 		"753"
 		{
-			"name"			"dmg penalty vs players"
+			"name"			"damage mult 4"
 			"ref"			"damage bonus(IS)"
 			"cost"			"600"
 			"increase_ratio" "0.05"
@@ -3358,7 +2748,7 @@
 		}
 		"242"
 		{
-			"name"		"damage penalty"
+			"name"		"damage mult 5"
 			"ref"		"Extra damage bonus"
 			"increase_ratio"	"0.35"
 			"cost"		"2000"
@@ -3420,15 +2810,6 @@
 			"value"		"-0.05"
 			"init"		"1.00"
 			"max"		"0.50"
-		}
-		"248"
-		{
-			"name"		"damage penalty"
-			"ref"		"damage penaltyxd"
-			"cost"		"200"
-			"value"		"0.50"
-			"init"		"1.00"
-			"max"		"7.00"
 		}
 		"249"
 		{
@@ -3567,15 +2948,6 @@
 			"init"		"7.00"
 			"max"		"8.00"
 		}
-		"262"
-		{
-			"name"		"ubercharge"
-			"ref"		"Damage is Multiplied by Bullets/shot"
-			"cost"		"2500"
-			"value"		"1.00"
-			"init"		"0.00"
-			"max"		"5.00"
-		}
 		"263"
 		{
 			"name"		"increased air control"
@@ -3651,16 +3023,6 @@
 			"value"		"1.00"
 			"init"		"2.00"
 			"max"		"3.00"
-		}
-		"269"
-		{
-			"name"		"dmg penalty vs players"
-			"ref"		"Damage bonus vs player (S)"
-			"increase_ratio" "0.8"
-			"cost"		"650"
-			"value"		"1.01"
-			"init"		"1.00"
-			"max"		"60.00"
 		}
 		"130"
 		{
@@ -3944,7 +3306,7 @@
 		}
 		"300"
 		{
-			"name"		"disguise damage reduction"
+			"name"		"damage mult 6"
 			"ref"		"Overall Damage"
 			"cost"		"550"
 			"increase_ratio"	"0.3"
@@ -3955,7 +3317,7 @@
 		}
 		"300.5"
 		{
-			"name"		"disguise damage reduction"
+			"name"		"damage mult 7"
 			"ref"		"Overall Damage Penalty"
 			"cost"		"0"
 			"increase_ratio"	"0.0"
@@ -3965,7 +3327,7 @@
 		}
 		"300.6"
 		{
-			"name"		"disguise damage reduction"
+			"name"		"damage mult 8"
 			"ref"		"Accuracy Scales DMG Replacement"
 			"increase_ratio" "0.3"
 			"cost"		"1100"
@@ -3977,7 +3339,7 @@
 		}
 		"300.7"
 		{
-			"name"		"disguise damage reduction"
+			"name"		"damage mult 9"
 			"ref"		"Increased Overall Damage"
 			"cost"		"1000"
 			"increase_ratio"	"0.3"
@@ -3989,7 +3351,7 @@
 		}
 		"300.8"
 		{
-			"name"		"disguise damage reduction"
+			"name"		"damage mult 10"
 			"ref"		"Increased Overall Damage(F)"
 			"cost"		"1300"
 			"increase_ratio"	"0.7"
@@ -4020,7 +3382,7 @@
 		}
 		"303"
 		{
-			"name"		"damage bonus HIDDEN"
+			"name"		"damage mult 11"
 			"ref"		"Damage bonus vs player"
 			"cost"		"400"
 			"increase_ratio"	"0.20"
@@ -4777,7 +4139,7 @@
 		}
 		"383"
 		{
-			"name"		"dmg penalty vs players"
+			"name"		"damage mult 11"
 			"ref"		"damage bonus done against players"
 			"cost"		"800"
 			"value"		"0.5"
@@ -4789,7 +4151,7 @@
 		}
 		"383.5"
 		{
-			"name"		"clip size bonus"
+			"name"		"ignition explosion damage bonus"
 			"ref"		"Gas Passer Explosion Damage"
 			"cost"		"700"
 			"value"		"0.5"
@@ -5080,16 +4442,6 @@
 			"init"		"1"
 			"max"		"0.30"
 		}
-		"1305"
-		{
-			"name"		"dmg penalty vs players"
-			"ref"		"armor piercing damage(SB)"
-			"increase_ratio" "0.05"
-			"cost"		"400"
-			"value"		"0.50"//1.50
-			"init"		"1.00"
-			"max"		"100000000.00"
-		}
 		"1306"
 		{
 			"name"		"deploy time decreased"
@@ -5189,15 +4541,6 @@
 			"value"		"1"
 			"init"		"0"
 			"max"		"1"
-		}
-		"1317"
-		{
-			"name"		"dmg penalty vs nonstunned"
-			"ref"		"Convert Bullet damage to Melee damage"
-			"cost"		"60000"
-			"value"		"1"
-			"init"		"1"
-			"max"		"2"
 		}
 		"1318"
 		{
@@ -5577,7 +4920,7 @@
 		}
 		"1509"
 		{
-			"name"		"damage bonus HIDDEN"
+			"name"		"damage mult 7"
 			"ref"		"Direct Flame Damage Multiplier"
 			"cost"		"400"
 			"increase_ratio"	"0.2"
@@ -5589,7 +4932,7 @@
 		}
 		"1509.5"
 		{
-			"name"		"damage bonus HIDDEN"
+			"name"		"damage mult 9"
 			"ref"		"Extra Damage Bonus"
 			"cost"		"900"
 			"increase_ratio"	"0.15"
@@ -5601,7 +4944,7 @@
 		}
 		"1509.75"
 		{
-			"name"		"damage bonus HIDDEN"
+			"name"		"damage mult 9"
 			"ref"		"Extra Damage Bonus(fireball)"
 			"cost"		"1000"
 			"increase_ratio"	"0.3"
@@ -5738,7 +5081,7 @@
 		}
 		"1522"
 		{
-			"name"		"disguise damage reduction"
+			"name"		"damage mult 8"
 			"ref"		"damage dealt multiplier"
 			"cost"		"0"
 			"increase_ratio" "0.7"
@@ -6981,7 +6324,7 @@
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{
-			"name"		"taunt is highfive"
+			"name"		"damage mult 12"
 			"ref"		"ap (armyofnotmany)"
 			"increase_ratio" "0.0"
 			"cost"		"30000"
@@ -6993,7 +6336,7 @@
 		}
 		"2000.1"
 		{
-			"name"		"taunt is highfive"
+			"name"		"damage mult 12"
 			"ref"		"ap (electricmotor)"
 			"increase_ratio" "0.0"
 			"cost"		"6000"
@@ -7005,7 +6348,7 @@
 		}
 		"2000.1"
 		{
-			"name"		"taunt is highfive"
+			"name"		"damage mult 12"
 			"ref"		"ap (assault)"
 			"increase_ratio" "0.0"
 			"cost"		"6000"
@@ -7017,7 +6360,7 @@
 		}
 		"2000.2"
 		{
-			"name"		"taunt is highfive"
+			"name"		"damage mult 12"
 			"ref"		"ap (biggercali)"
 			"increase_ratio" "0.0"
 			"cost"		"13300"
@@ -7041,7 +6384,7 @@
 		}
 		"2000.4"
 		{
-			"name"		"taunt is highfive"
+			"name"		"damage mult 12"
 			"ref"		"ap (concentrated)"
 			"increase_ratio" "0.0"
 			"cost"		"7000"
@@ -7053,7 +6396,7 @@
 		}
 		"2000.5"
 		{
-			"name"		"taunt is highfive"
+			"name"		"damage mult 12"
 			"ref"		"ap (temprise)"
 			"increase_ratio" "0.0"
 			"cost"		"7200"
@@ -7065,7 +6408,7 @@
 		}
 		"2000.6"
 		{
-			"name"		"taunt is highfive"
+			"name"		"damage mult 12"
 			"ref"		"ap (slowswing)"
 			"increase_ratio" "0.0"
 			"cost"		"5500"
@@ -7077,7 +6420,7 @@
 		}
 		"2000.7"
 		{
-			"name"		"taunt is highfive"
+			"name"		"damage mult 12"
 			"ref"		"ap (compressedfire)"
 			"increase_ratio" "0.0"
 			"cost"		"7200"
@@ -7089,7 +6432,7 @@
 		}
 		"2000.8"
 		{
-			"name"		"disguise damage reduction"
+			"name"		"damage mult 12"
 			"ref"		"ap (condensedlaser)"
 			"increase_ratio" "0.0"
 			"cost"		"13300"
@@ -7101,7 +6444,7 @@
 		}
 		"2000.9"
 		{
-			"name"		"throwable healing"
+			"name"		"damage mult 12"
 			"ref"		"ap (heavycleaver)"
 			"increase_ratio" "0.0"
 			"cost"		"9450"
@@ -7113,7 +6456,7 @@
 		}
 		"2000.10"
 		{
-			"name"		"disguise damage reduction"
+			"name"		"damage mult 12"
 			"ref"		"ap (highervoltage)"
 			"increase_ratio" "0.0"
 			"cost"		"2400"

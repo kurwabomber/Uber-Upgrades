@@ -321,8 +321,7 @@ CastMarkForDeath(client, attuneSlot)
 						}
 					}
 				}
-				EmitAmbientSound(SOUND_SABOTAGE, clientpos, client, 100);
-				
+				EmitSoundToAll(SOUND_SABOTAGE, _, client, SNDLEVEL_SNOWMOBILE, _, 1.0, _,_,clientpos);
 			}
 		}
 		else
@@ -355,7 +354,7 @@ CastSunlightSpear(client, attuneSlot)
 
 				new Float:clientpos[3];
 				GetClientEyePosition(client,clientpos);
-				EmitAmbientSound(SOUND_CALLBEYOND_CAST, clientpos, client, SNDLEVEL_CONVO);
+				EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_NORMAL, _, 0.8, _,_,clientpos);
 				new iEntity = CreateEntityByName("tf_projectile_arrow");
 				if (IsValidEdict(iEntity)) 
 				{
@@ -507,7 +506,7 @@ CastSnapFreeze(client, attuneSlot)
 					SpellCooldowns[client][attuneSlot] = 9.0;
 				applyArcaneCooldownReduction(client, attuneSlot);
 
-				EmitAmbientSound(SOUND_FREEZE, clientpos, client, 150);
+				EmitSoundToAll(SOUND_FREEZE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 				float damage = 100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0);
 				for(new i = 1; i<MAXENTITIES;i++)
 				{
@@ -571,7 +570,7 @@ CastArcanePrison(client, attuneSlot)
 					SpellCooldowns[client][attuneSlot] = 20.0;
 
 				applyArcaneCooldownReduction(client, attuneSlot);
-				EmitAmbientSound(SOUND_CALLBEYOND_ACTIVE, ClientPos, client, 120);
+				EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 				
 				new iEntity = CreateEntityByName("tf_projectile_lightningorb");
 				if (IsValidEdict(iEntity)) 
@@ -652,7 +651,7 @@ CastSpeedAura(client, attuneSlot)
 						}
 					}
 				}
-				EmitSoundToAll(SOUND_SPEEDAURA, client);
+				EmitSoundToAll(SOUND_SPEEDAURA, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 			}
 		}
 		else
@@ -698,13 +697,13 @@ CastAerialStrike(client, attuneSlot)
 				CreateTimer(1.0,aerialStrike,hPack);
 				if(iTeam == 2)
 				{
-					EmitAmbientSound(SOUND_HORN_RED, ClientPos, client, SNDLEVEL_RAIDSIREN);
+					EmitSoundToAll(SOUND_HORN_RED, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 					TE_SetupBeamRingPoint(ClientPos, 20.0, 800.0, g_LightningSprite, spriteIndex, 0, 5, 1.0, 10.0, 1.0, {255,0,0,180}, 400, 0);
 					TE_SendToAll();
 				}
 				else
 				{
-					EmitAmbientSound(SOUND_HORN_BLUE, ClientPos, client, SNDLEVEL_RAIDSIREN);
+					EmitSoundToAll(SOUND_HORN_BLUE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 					TE_SetupBeamRingPoint(ClientPos, 20.0, 800.0, g_LightningSprite, spriteIndex, 0, 5, 1.0, 10.0, 1.0, {0,0,255,180}, 400, 0);
 					TE_SendToAll();
 				}
@@ -788,9 +787,7 @@ CastInferno(client, attuneSlot)
 					SpellCooldowns[client][attuneSlot] = 60.0;
 				applyArcaneCooldownReduction(client, attuneSlot);
 					
-				EmitSoundToAll(SOUND_INFERNO, client);
-				EmitSoundToAll(SOUND_INFERNO, client);
-				EmitSoundToAll(SOUND_INFERNO, client);
+				EmitSoundToAll(SOUND_INFERNO, _, client, SNDLEVEL_ROCKET, _, 1.0, _,_,ClientPos);
 				new Float:sphereRadius = 700.0;
 				new Float:tempdiameter;
 				for(new i=-9;i<=8;i++){
@@ -1052,7 +1049,7 @@ CastShockwave(client, attuneSlot)
 					}
 				}
 				TF2_AddCondition(client, TFCond_ObscuredSmoke, 0.4);
-				EmitAmbientSound(SOUND_SHOCKWAVE, ClientPos, client, 150);
+				EmitSoundToAll(SOUND_SHOCKWAVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 				CreateParticle(client, "bombinomicon_burningdebris", true, "", 1.0);
 			}
 		}
@@ -1208,7 +1205,7 @@ public Action:SoothingSunlight(Handle:timer, client)
 				}
 			}
 		}
-		EmitAmbientSound(SOUND_HEAL, ClientPos, client, SNDLEVEL_RAIDSIREN);
+		EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 	}
 }
 CastArcaneHunter(client, attuneSlot)
@@ -1234,7 +1231,7 @@ CastArcaneHunter(client, attuneSlot)
 				
 				for(new i=0;i<30;i++)
 				{
-					EmitAmbientSound(SOUND_ARCANESHOOTREADY, CPOS, client, 255);
+					EmitSoundToAll(SOUND_ARCANESHOOTREADY, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,CPOS);
 				}
 				
 				new Float:particleOffset[3] = {0.0,0.0,90.0};
@@ -1285,7 +1282,7 @@ public Action:ArcaneHunter(Handle:timer, client)
 		
 		GetClientEyePosition(client, soundPos);
 		GetClientEyeAngles(client, clientAng);
-		EmitAmbientSound(SOUND_ARCANESHOOT, soundPos, client, SNDLEVEL_RAIDSIREN);
+		EmitSoundToAll(SOUND_ARCANESHOOT, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
 		// define the direction of the sparks
 		new Float:dir[3] = {0.0, 0.0, 0.0};
 		
@@ -1378,7 +1375,11 @@ CastBlackskyEye(client, attuneSlot)
 
 				new Float:clientpos[3];
 				GetClientEyePosition(client,clientpos);
-				EmitAmbientSound(SOUND_CALLBEYOND_CAST, clientpos, client, SNDLEVEL_CONVO);
+				EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_NORMAL, _, 0.7, _,_,clientpos);
+				int maxCount[] = {0,1,2,3};
+				float projSpeed[] = {0.0,1200.0,2000.0,3000.0};
+				for(int iter = 0;iter < maxCount[spellLevel];iter++)
+				{
 				new iEntity = CreateEntityByName("tf_projectile_arrow");
 				if (IsValidEdict(iEntity)) 
 				{
@@ -1387,6 +1388,7 @@ CastBlackskyEye(client, attuneSlot)
 					new Float:vBuffer[3]
 					new Float:fVelocity[3]
 					new Float:fwd[3]
+					new Float:right[3]
 					new iTeam = GetClientTeam(client);
 					SetEntityRenderColor(iEntity, 255, 255, 255, 0);
 					SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
@@ -1400,12 +1402,24 @@ CastBlackskyEye(client, attuneSlot)
 					GetClientEyeAngles(client,fAngles);
 					
 					GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-					GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+					GetAngleVectors(fAngles,fwd, right, NULL_VECTOR);
 					ScaleVector(fwd, 60.0);
-					
+
+					switch(iter)
+					{
+						case 1:
+						{
+							ScaleVector(right, 50.0);
+						}
+						case 2:
+						{
+							ScaleVector(right, -50.0);
+						}
+					}
+					AddVectors(fOrigin, right, fOrigin);
 					AddVectors(fOrigin, fwd, fOrigin);
 					
-					new Float:Speed = 1200.0;
+					new Float:Speed = projSpeed[spellLevel];
 					fVelocity[0] = vBuffer[0]*Speed;
 					fVelocity[1] = vBuffer[1]*Speed;
 					fVelocity[2] = vBuffer[2]*Speed;
@@ -1420,7 +1434,9 @@ CastBlackskyEye(client, attuneSlot)
 					TE_SendToAll();
 					SDKHook(iEntity, SDKHook_StartTouchPost, BlackskyEyeCollision);
 					SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
-					CreateTimer(0.03, HomingSentryRocketThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+					//Stronger homing @ lvl 2
+					CreateTimer(spellLevel > 1 ? 0.01 : 0.03, HomingSentryRocketThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+				}
 				}
 			}
 		}
@@ -1456,7 +1472,7 @@ CastACallBeyond(client, attuneSlot)
 				
 				new Float:clientpos[3];
 				GetClientEyePosition(client,clientpos);
-				EmitAmbientSound(SOUND_CALLBEYOND_CAST, clientpos, client, SNDLEVEL_RAIDSIREN);
+				EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 				CreateParticle(client, "merasmus_tp_bits", true);
 				CreateParticle(client, "spellbook_major_burning", true);
 				CreateParticle(client, "unusual_meteor_cast_wheel_purple", true);
@@ -1501,7 +1517,7 @@ public Action:ACallBeyond(Handle:timer, client)
 
 				GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 				GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-				ScaleVector(fwd, 90.0);
+				ScaleVector(fwd, 130.0);
 				
 				AddVectors(fOrigin, fwd, fOrigin);
 				
@@ -1524,7 +1540,7 @@ public Action:ACallBeyond(Handle:timer, client)
 		}
 		new Float:clientpos[3];
 		GetClientEyePosition(client,clientpos);
-		EmitAmbientSound(SOUND_CALLBEYOND_ACTIVE, clientpos, client, SNDLEVEL_RAIDSIREN);
+		EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	}
 }
 CastZap(client, attuneSlot)
@@ -1617,7 +1633,7 @@ DoZap(client,victim,spellLevel)
 		TE_SendToAll();
 		TE_SetupBeamPoints(clientpos,VictimPosition,g_LightningSprite,spriteIndex,0,35,0.15,6.0,5.0,0,1.0,{255,000,255,255},20);
 		TE_SendToAll();
-		EmitAmbientSound(SOUND_ZAP, clientpos, client, 50);
+		EmitSoundToAll(SOUND_ZAP, _, client, SNDLEVEL_CONVO, _, 1.0, _,_,clientpos);
 		
 		new Float:LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 3.0));
 		new Float:radiationAmount[] = {0.0,6.0,10.0,25.0};
@@ -1727,8 +1743,6 @@ CastLightning(client, attuneSlot)
 							CreateParticle(-1, "utaunt_electricity_cloud_parent_WB", false, "", 5.0, randomPos);
 						}*/
 						
-						EmitAmbientSound(SOUND_THUNDER, startpos, client, SNDLEVEL_RAIDSIREN);
-						
 						for(new i = 1; i<MAXENTITIES;i++)
 						{
 							if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
@@ -1756,6 +1770,7 @@ CastLightning(client, attuneSlot)
 							}
 						}
 					}
+					EmitSoundToAll(SOUND_THUNDER, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 				}
 			}
 			else
@@ -1789,8 +1804,7 @@ CastHealing(client, attuneSlot)//Projected Healing
 					new Float:clientpos[3];
 					GetClientEyePosition(client,clientpos);
 					new iTeam = GetClientTeam(client);
-					EmitAmbientSound(SOUND_HEAL, clientpos, client, SNDLEVEL_RAIDSIREN);
-					
+					EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 					new iEntity = CreateEntityByName("tf_projectile_flare");
 					if (IsValidEdict(iEntity)) 
 					{

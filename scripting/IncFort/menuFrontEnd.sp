@@ -320,7 +320,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 				//PrintToServer("%i | %.2f | %s", k, upgrades_efficiency[client][slot][highestIndex], toBlock[highestIndex] ? "blocked" : "unblocked")
 				upgrades_efficiency_list[client][slot][highestIndex] = k+1;
 			}
-			efficiencyCalculationTimer[client] = 0.1;
+			efficiencyCalculationTimer[client] = 0.05;
 		}
 		SetMenuTitle(menu, TitleStr);
 		SetMenuExitBackButton(menu, true);

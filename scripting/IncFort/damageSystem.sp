@@ -887,7 +887,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			new secondary = GetWeapon(attacker,1);
 			if(IsValidEntity(secondary) && weapon == secondary)
 			{
-				new Address:gasExplosionDamage = TF2Attrib_GetByName(weapon, "clip size bonus");
+				new Address:gasExplosionDamage = TF2Attrib_GetByName(weapon, "ignition explosion damage bonus");
 				if(gasExplosionDamage != Address_Null)
 				{
 					damage *= TF2Attrib_GetValue(gasExplosionDamage);
@@ -1268,6 +1268,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		{
 			damage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
 		}
+
+		float damageBonus = TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", weapon);
+		damage *= damageBonus;
+
 		if(TF2_IsPlayerInCondition(attacker, TFCond_RunePrecision))
 		{
 			damage *= 2.0;

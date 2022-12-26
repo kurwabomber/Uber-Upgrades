@@ -87,7 +87,6 @@
 		"tf_weapon_jar_gas"						"gas"			//Gas Passer
 		"tf_weapon_slap"						"demomel"		//Hot Hand
 		"l"										"l"				//Revolver is Secondary
-		"tf_weapon_spellbook"					"spellbook"		//Spellbook
 		"tf_weapon_breakable_sign"				"demomel"		//Neon Annihilator
 		"autofirebow"							"autofirebow"	//Fortified Compound
 		"vaccinator"							"vacc"			//Vaccinator

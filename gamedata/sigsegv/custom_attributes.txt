@@ -3115,4 +3115,137 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "4631"
+    {
+        "name"  "ignition explosion damage bonus"
+        "attribute_class"	"explosion_damage_bonus"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+
+
+    //filler
+    "6000"
+    {
+        "name"  "damage mult 1"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6001"
+    {
+        "name"  "damage mult 2"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6002"
+    {
+        "name"  "damage mult 3"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6003"
+    {
+        "name"  "damage mult 4"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6004"
+    {
+        "name"  "damage mult 5"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6005"
+    {
+        "name"  "damage mult 6"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6006"
+    {
+        "name"  "damage mult 7"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6007"
+    {
+        "name"  "damage mult 8"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6008"
+    {
+        "name"  "damage mult 9"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6009"
+    {
+        "name"  "damage mult 10"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6010"
+    {
+        "name"  "damage mult 11"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6011"
+    {
+        "name"  "damage mult 12"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
 }

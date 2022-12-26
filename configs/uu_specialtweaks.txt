@@ -179,15 +179,6 @@
 			"clip size penalty HIDDEN"		"1.00"
 			"Reload time increased"		"3.00"
 		}
-		"Siege Charge"//33
-		{
-			"auto fires full clip all at once"		"1"
-			"clip size penalty (G)"		"7.5"
-			"Damage bonus vs player (C)"		"-2"
-			"Unremovable reload penalty"	"15"
-			"apply z velocity on damage"	"0.2"
-			"apply look velocity on damage"	"1.6"
-		}
 		"Turtle"//34
 		{
 			"jump height"		"-1"
@@ -291,12 +282,6 @@
 			"mod max primary clip override"				"1"
 			"maxammo secondary increased"		"2"
 			"fire rate penalty HIDDEN"		"2.5"
-		}
-		"Shrapnel Explosions"//51
-		{
-			"bleeding duration"	"3.0"
-			"Damage bonus vs player (C)"		"-0.25"
-			"Blast radius decreased"	"-0.5"
 		}
 		"Rocket Launcher(Shortstop)"//59
 		{

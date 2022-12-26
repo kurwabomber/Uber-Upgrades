@@ -73,13 +73,21 @@ public Action:BlackskyEyeCollision(entity, client)
 	if(StrEqual(strName,"tf_projectile_arrow",false))
 		return Plugin_Continue;
 
+	new Address:BlackskyEyeActive = TF2Attrib_GetByName(owner, "arcane blacksky eye");
+	int spellLevel = 0;
+	if(BlackskyEyeActive != Address_Null)
+		spellLevel = RoundToNearest(TF2Attrib_GetValue(BlackskyEyeActive));
+	if(spellLevel < 1)
+		return Plugin_Continue;
+
 	new Float:projvec[3];
-	new Float:level = ArcaneDamage[owner];
-	new Float:ProjectileDamage = 10.0 + (Pow(level*Pow(ArcanePower[owner], 4.0),2.45) * 7.5);
+	new Float:radius[] = {0.0, 300.0,500.0,800.0};
+	new Float:scaling[] = {0.0, 7.5, 8.5, 12.0};
+	new Float:ProjectileDamage = 10.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
-		EntityExplosion(owner,ProjectileDamage,500.0, projvec,0,false,entity,_,1073741824);
+		EntityExplosion(owner,ProjectileDamage,radius[spellLevel], projvec,0,false,entity,_,1073741824);
 	}
 		
 	return Plugin_Continue;
@@ -117,7 +125,7 @@ public Action:CallBeyondCollision(entity, client)
 	return Plugin_Continue;
 }
 public Action:ProjectedHealingCollision(entity, client)
-{		
+{
 	if(!IsValidEntity(entity))
 		return Plugin_Continue;
 

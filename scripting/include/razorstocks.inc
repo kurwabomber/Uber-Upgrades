@@ -1970,6 +1970,10 @@ stock float TF2_GetDamageModifiers(client,weapon,status=true)
 			if(DPSMult10 != Address_Null) {
 			dpsMult *= TF2Attrib_GetValue(DPSMult10);
 			}
+
+			float damageBonus = TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", weapon);
+			dpsMult *= damageBonus;
+
 			//Body Stats
 			new Address:BodyDPSMult1 = TF2Attrib_GetByName(client, "mod rage damage boost");
 			new Address:BodyDPSMult2 = TF2Attrib_GetByName(client, "damage bonus");
