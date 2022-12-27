@@ -766,7 +766,8 @@ public OnEntityCreated(entity, const char[] classname)
 		{
 			CreateTimer(5.0, SelfDestruct, EntIndexToEntRef(entity));
 			RequestFrame(SentryMultishot, EntIndexToEntRef(entity));
-			CreateTimer(0.03, HomingSentryRocketThink, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+			homingRadius[entity] = 900.0;
+			homingTickRate[entity] = 1;
 			RequestFrame(SentryDelay, EntIndexToEntRef(entity));
 		}
 		if(StrEqual(classname, "tf_projectile_energy_ring"))
@@ -802,6 +803,9 @@ public OnEntityDestroyed(entity)
 	isProjectileBoomerang[entity] = false;
 	projectileHomingDegree[entity] = 0.0;
 	gravChanges[entity] = false;
+	homingRadius[entity] = 0.0;
+	homingTickRate[entity] = 0;
+	homingTicks[entity] = 0;
 	//isProjectileSlash[entity][0] = 0.0;
 	//isProjectileSlash[entity][1] = 0.0;
 	jarateWeapon[entity] = -1;
@@ -2088,6 +2092,10 @@ public OnGameFrame()
 			{
 				sentryThought[i] = false;
 				SDKCall(g_SDKCallSentryThink, i);
+			}
+			if(homingRadius[i] > 0.0)
+			{
+				OnEntityHomingThink(i);
 			}
 		}
 	}

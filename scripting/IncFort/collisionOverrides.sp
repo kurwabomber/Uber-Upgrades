@@ -74,9 +74,8 @@ public Action:BlackskyEyeCollision(entity, client)
 		return Plugin_Continue;
 
 	new Address:BlackskyEyeActive = TF2Attrib_GetByName(owner, "arcane blacksky eye");
-	int spellLevel = 0;
-	if(BlackskyEyeActive != Address_Null)
-		spellLevel = RoundToNearest(TF2Attrib_GetValue(BlackskyEyeActive));
+	int spellLevel = BlackskyEyeActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(BlackskyEyeActive));
+	
 	if(spellLevel < 1)
 		return Plugin_Continue;
 

@@ -268,3 +268,7 @@ new Float:corrosiveDOT[MAXPLAYERS+1][MAXPLAYERS+1][2]
 new Handle:hudAbility;
 new Handle:hudStatus;
 new Address:g_offset_CTFPlayerShared_pOuter;
+//homing shit
+new Float:homingRadius[MAXENTITIES];
+new homingTickRate[MAXENTITIES];
+new homingTicks[MAXENTITIES];

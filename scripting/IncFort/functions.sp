@@ -2263,6 +2263,65 @@ public OnThinkPost(entity)
 		}
 	}
 }
+public OnEntityHomingThink(entity) 
+{ 
+	if(IsValidEntity(entity))
+		return;
+
+	if(!HasEntProp(entity,Prop_Send,"m_vInitialVelocity"))
+		return;
+
+	new owner = GetEntPropEnt( entity, Prop_Data, "m_hOwnerEntity" ); 
+	if(!IsValidClient3(owner) && IsValidEntity(owner) && HasEntProp(owner,Prop_Send,"m_hBuilder"))
+	{
+		owner = GetEntPropEnt(owner,Prop_Send,"m_hBuilder" );
+	}
+
+	if (!IsValidClient3(owner))
+		return;
+
+	new Target = GetClosestTarget(entity, owner); 
+	if(!IsValidClient3(Target) || owner == Target)
+		return;
+
+
+	new Float:EntityPos[3], Float:TargetPos[3]; 
+	GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", EntityPos ); 
+	GetClientAbsOrigin( Target, TargetPos ); 
+	new Float:distance = GetVectorDistance( EntityPos, TargetPos ); 
+
+	if( distance > homingRadius[entity] )
+		return;
+
+	if(homingTicks[entity] & homingTickRate[entity])
+	{
+		new Float:ProjLocation[3], Float:ProjVector[3], Float:BaseSpeed, Float:NewSpeed, Float:ProjAngle[3], Float:AimVector[3], Float:InitialSpeed[3]; 
+		
+		GetEntPropVector( entity, Prop_Send, "m_vInitialVelocity", InitialSpeed ); 
+		if ( GetVectorLength( InitialSpeed ) < 10.0 ) GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", InitialSpeed ); 
+		BaseSpeed = GetVectorLength( InitialSpeed ) * 0.3; 
+		
+		GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", ProjLocation ); 
+		GetClientAbsOrigin( Target, TargetPos ); 
+		TargetPos[2] += 20.0;
+		MakeVectorFromPoints( ProjLocation, TargetPos, AimVector ); 
+		
+		GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", ProjVector ); //50% HOME
+		//SubtractVectors( TargetPos, ProjLocation, ProjVector ); //100% HOME
+		AddVectors( ProjVector, AimVector, ProjVector ); 
+		NormalizeVector( ProjVector, ProjVector ); 
+		
+		GetEntPropVector( entity, Prop_Data, "m_angRotation", ProjAngle ); 
+		GetVectorAngles( ProjVector, ProjAngle ); 
+		
+		NewSpeed = ( BaseSpeed * 2.0 ) + 1.0 * BaseSpeed * 1.1; 
+		ScaleVector( ProjVector, NewSpeed ); 
+		
+		TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
+		SetEntityGravity(entity, 0.001);
+	}
+	homingTicks[entity]++;
+}
 CheckGrenadeMines(ref)
 {
 	new entity = EntRefToEntIndex(ref); 
