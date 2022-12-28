@@ -90,10 +90,10 @@ public GiveNewUpgradedWeapon_(client, slot)
 		{
 			for(new a = 0; a < iNumAttributes ; a++ )
 			{
-				new uuid = upgrades_to_a_id[currentupgrades_idx[client][slot][a]]
-				if (strcmp(upgradesWorkNames[uuid], ""))
+				new ifid = upgrades_to_a_id[currentupgrades_idx[client][slot][a]]
+				if (strcmp(upgradesWorkNames[ifid], ""))
 				{
-					TF2Attrib_SetByName(iEnt, upgradesWorkNames[uuid],currentupgrades_val[client][slot][a]);
+					TF2Attrib_SetByName(iEnt, upgradesWorkNames[ifid],currentupgrades_val[client][slot][a]);
 				}
 			}
 		}

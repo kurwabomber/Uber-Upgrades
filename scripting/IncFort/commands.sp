@@ -113,11 +113,11 @@ public Action:Command_RemoveCash(client, args)
 	}
 	return Plugin_Handled;
 }
-public Action:Command_SetUUAdmin(client, args)
+public Action:Command_SetIFAdmin(client, args)
 {
 	if(args != 2)
 	{
-		ReplyToCommand(client, "[SM] Usage: sm_setuuadmin \"target\" \"bool\"");
+		ReplyToCommand(client, "[SM] Usage: sm_setifadmin \"target\" \"bool\"");
 		return Plugin_Handled;
 	}
 	

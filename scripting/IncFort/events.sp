@@ -896,7 +896,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 	new String:responseBuffer[4096];
 	new ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
 	GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
-	if(StrContains(responseBuffer, "UU", false) != -1)
+	if(StrContains(responseBuffer, "IF", false) != -1)
 	{
 		if(StrContains(responseBuffer, "_Boss_Rush", false) != -1)
 		{
@@ -904,7 +904,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 			DamageMod = 2.55;
 			DefenseIncreasePerWaveMod = 0.03;
 			OverallMod = 1.8;
-			PrintToServer("UU | Set Mission to Boss Rush");
+			PrintToServer("IF | Set Mission to Boss Rush");
 		}
 		else if(StrContains(responseBuffer, "_Defend", false) != -1)
 		{
@@ -912,7 +912,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 			DamageMod = 2.55;
 			DefenseIncreasePerWaveMod = 0.03;
 			OverallMod = 1.8;
-			PrintToServer("UU | Set Mission to Defend");
+			PrintToServer("IF | Set Mission to Defend");
 		}
 		else if(StrContains(responseBuffer, "_Extreme", false) != -1)
 		{
@@ -920,7 +920,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 			DamageMod = 2.55;
 			DefenseIncreasePerWaveMod = 0.03;
 			OverallMod = 1.35;
-			PrintToServer("UU | Set Mission to Extreme");
+			PrintToServer("IF | Set Mission to Extreme");
 		}
 		else if(StrContains(responseBuffer, "_Hard", false) != -1)
 		{
@@ -928,7 +928,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 			DamageMod = 2.55;
 			DefenseIncreasePerWaveMod = 0.03;
 			OverallMod = 1.1;
-			PrintToServer("UU | Set Mission to Hard");
+			PrintToServer("IF | Set Mission to Hard");
 		}
 		else if(StrContains(responseBuffer, "_Intermediate", false) != -1)
 		{
@@ -936,7 +936,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 			DamageMod = 2.3;
 			DefenseIncreasePerWaveMod = 0.015;
 			OverallMod = 1.5;
-			PrintToServer("UU | Set Mission to Intermediate");
+			PrintToServer("IF | Set Mission to Intermediate");
 		}
 		else if(StrContains(responseBuffer, "_Rush", false) != -1)
 		{
@@ -944,7 +944,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 			DamageMod = 2.55;
 			DefenseIncreasePerWaveMod = 0.03;
 			OverallMod = 1.1;
-			PrintToServer("UU | Set Mission to Rush");
+			PrintToServer("IF | Set Mission to Rush");
 		}
 		else if(StrContains(responseBuffer, "_Survival", false) != -1)
 		{
@@ -952,7 +952,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 			DamageMod = 2.55;
 			DefenseIncreasePerWaveMod = 0.03;
 			OverallMod = 1.5;
-			PrintToServer("UU | Set Mission to Survival");
+			PrintToServer("IF | Set Mission to Survival");
 		}
 		else
 		{
@@ -960,7 +960,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 			DamageMod = 2.1;
 			DefenseIncreasePerWaveMod = 0.0;
 			OverallMod = 1.0;
-			PrintToServer("UU | Set Mission to Default");
+			PrintToServer("IF | Set Mission to Default");
 		}
 	}
 }
@@ -2139,8 +2139,8 @@ public OnGameFrame()
 				miniCritStatusVictim[client] -= tickRate;}
 				if(miniCritStatusAttacker[client] > 0.0){
 				miniCritStatusAttacker[client] -= tickRate;}
-				if(disableUUMiniHud[client] > 0.0){
-				disableUUMiniHud[client] -= tickRate;}
+				if(disableIFMiniHud[client] > 0.0){
+				disableIFMiniHud[client] -= tickRate;}
 
 				if(RageActive[client])
 				{

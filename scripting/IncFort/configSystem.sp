@@ -187,7 +187,7 @@ BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_at
 		{
 			if (!GetTrieValue(_weaponlist_names, Buf, w_id))
 			{
-				PrintToServer("[uu_lists] Malformated uu_lists | uu_weapon.txt file?: %s was not found", Buf)
+				PrintToServer("[if_lists] Malformated if_lists | if_weapon.txt file?: %s was not found", Buf)
 			}
 			w_sub_id = -1;
 			w_subcat_id = 0;
@@ -244,14 +244,14 @@ BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_at
 						given_upgrd_classnames_tweak_nb[w_id]++
 						if (!GetTrieValue(_spetweaks_names, Buf, attr_id))
 						{
-							PrintToServer("[uu_specialtweaks] Malformated uu_specialtweaks | uu_specialtweaks.txt file?: %s was not found", Buf)
+							PrintToServer("[if_specialtweaks] Malformated if_specialtweaks | if_specialtweaks.txt file?: %s was not found", Buf)
 						}
 					}
 					else
 					{
 						if (!GetTrieValue(_upg_names, Buf, attr_id))
 						{
-							PrintToServer("[uu_specialtweaks] Malformated uu_attributes | uu_attributes.txt file?: %s was not found", Buf)
+							PrintToServer("[if_specialtweaks] Malformated if_attributes | if_attributes.txt file?: %s was not found", Buf)
 						}
 					}
 					given_upgrd_list[w_id][w_sub_id][w_subcat_id][w_sub_att_idx] = attr_id
@@ -298,7 +298,7 @@ BrowseSpeTweaksKV(Handle:kv, &u_id = -1, att_id = -1, level = 0)
 			{
 				if (!GetTrieValue(_upg_names, Buf, attr_ref))
 				{
-					PrintToServer("[spetw_lists] Malformated uu_specialtweaks | uu_attribute.txt file?: %s was not found", Buf)
+					PrintToServer("[spetw_lists] Malformated if_specialtweaks | if_attribute.txt file?: %s was not found", Buf)
 				}
 				
 				upgrades_tweaks_att_idx[u_id][att_id] = attr_ref
@@ -372,7 +372,7 @@ BrowseWeaponsListKV(Handle:kv, &u_id = -1, att_id = -1, level = 0)
 			{
 				if (!GetTrieValue(_upg_names, Buf, attr_ref))
 				{
-					PrintToServer("[spetw_lists] Malformated uu_buyableweapons | uu_attribute.txt file?: %s was not found", Buf)
+					PrintToServer("[spetw_lists] Malformated if_buyableweapons | if_attribute.txt file?: %s was not found", Buf)
 				}
 				
 				upgrades_weapon_att_idx[u_id][att_id] = attr_ref
@@ -398,9 +398,9 @@ public _load_cfg_files()
 	_weaponlist_names = CreateTrie();
 	_spetweaks_names = CreateTrie();
 
-	new Handle:kv = CreateKeyValues("uu_weapons");
+	new Handle:kv = CreateKeyValues("if_weapons");
 	kv = CreateKeyValues("weapons");
-	FileToKeyValues(kv, "addons/sourcemod/configs/uu_weapons.txt");
+	FileToKeyValues(kv, "addons/sourcemod/configs/if_weapons.txt");
 	if (!KvGotoFirstSubKey(kv))
 	{
 		return false;
@@ -413,9 +413,9 @@ public _load_cfg_files()
 
 
 	kv = CreateKeyValues("attribs");
-	FileToKeyValues(kv, "addons/sourcemod/configs/uu_attributes.txt");
+	FileToKeyValues(kv, "addons/sourcemod/configs/if_attributes.txt");
 	_u_id = 1
-	PrintToServer("browsin uu attribs (kvh:%d)", kv)
+	PrintToServer("browsin if attribs (kvh:%d)", kv)
 	BrowseAttributesKV(kv)
 	PrintToServer("[UberUpgrades] %d attributes loaded", _u_id)
 	CloseHandle(kv);
@@ -424,21 +424,21 @@ public _load_cfg_files()
 
 	new static_uid = 1
 	kv = CreateKeyValues("special_tweaks");
-	FileToKeyValues(kv, "addons/sourcemod/configs/uu_specialtweaks.txt");
+	FileToKeyValues(kv, "addons/sourcemod/configs/if_specialtweaks.txt");
 	BrowseSpeTweaksKV(kv, static_uid)
 	PrintToServer("[UberUpgrades] %d special tweaks loaded", static_uid)
 	CloseHandle(kv);
 
 	static_uid = 0
 	kv = CreateKeyValues("lists");
-	FileToKeyValues(kv, "addons/sourcemod/configs/uu_lists.txt");
+	FileToKeyValues(kv, "addons/sourcemod/configs/if_lists.txt");
 	BrowseAttListKV(kv, static_uid)
 	PrintToServer("[UberUpgrades] %d lists loaded", static_uid)
 	CloseHandle(kv);
 	
 	static_uid = -1
 	kv = CreateKeyValues("buyableWeapons");
-	FileToKeyValues(kv, "addons/sourcemod/configs/uu_buyableweapons.txt");
+	FileToKeyValues(kv, "addons/sourcemod/configs/if_buyableweapons.txt");
 	BrowseWeaponsListKV(kv, static_uid)
 	PrintToServer("[UberUpgrades] %d buyable weapons loaded", static_uid+1)
 	CloseHandle(kv);

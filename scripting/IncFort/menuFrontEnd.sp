@@ -1,4 +1,4 @@
-//UU Front Menu
+//IF Front Menu
 public Action:Menu_BuyUpgrade(client, args)
 {
 	if (IsValidClient(client) && IsPlayerAlive(client) && !client_respawn_checkpoint[client] )
@@ -588,7 +588,7 @@ public Menu_ChangePreferences(client)
 		AddMenuItem(menu, "decreaseX", "-1 X to armor hud.");
 		AddMenuItem(menu, "increaseY", "+1 Y to armor hud.");
 		AddMenuItem(menu, "decreaseY", "-1 Y to armor hud.");
-		AddMenuItem(menu, "uurespawn", "Toggle buy menu on spawn.");
+		AddMenuItem(menu, "ifrespawn", "Toggle buy menu on spawn.");
 		AddMenuItem(menu, "disablewatermark", "Toggle watermark hud element.");
 		AddMenuItem(menu, "particleToggle", "Toggle Self-Viewable Particles");
 		AddMenuItem(menu, "resetTutorial", "Reset all tutorial HUD elements.");

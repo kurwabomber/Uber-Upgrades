@@ -153,7 +153,7 @@ new Float:fl_ArmorRegenBonus[MAXPLAYERS+1]
 new Float:upgrades_weapon_cost[NB_WEAPONS];
 new Float:upgrades_weapon_att_amt[NB_WEAPONS][NB_SLOTS_UED + 1];
 new Float:weaponFireRate[MAXENTITIES+1];
-new Float:disableUUMiniHud[MAXPLAYERS+1];
+new Float:disableIFMiniHud[MAXPLAYERS+1];
 
 //String
 new String:given_upgrd_classnames[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][128]

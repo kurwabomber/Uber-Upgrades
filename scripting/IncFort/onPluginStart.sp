@@ -30,7 +30,7 @@ public Action:Timer_WaitForTF2Econ(Handle:timer)
 		_load_cfg_files()
 		KillTimer(timer);
 	}
-	PrintToChatAll("UU Configs Reloaded");
+	PrintToChatAll("IF Configs Reloaded");
 }
 
 public UberShopDefineUpgradeTabs()
@@ -74,12 +74,12 @@ public UberShopinitMenusHandlers()
 	LoadTranslations("incrementalfortress.phrases.txt");
 	LoadTranslations("common.phrases.txt");
 	
-	cvar_MoneyBonusKill = CreateConVar("sm_uu_moneybonuskill", "600", "Sets the money bonus a client gets for killing: default 200");
-	cvar_StartMoney = CreateConVar("sm_uu_startmoney", "50000", "Sets the starting money: default 50000");
-	cvar_ServerMoneyMult = CreateConVar("sm_uu_moneymult", "1.0", "Sets the Cash Multiplier: default 1.0");
-	cvar_BotMultiplier = CreateConVar("sm_uu_botmultiplier", "0.65", "Sets the bot stat multiplier.: default 0.5");
-	cvar_DisableBotUpgrade = CreateConVar("sm_uu_disablebotupgrades","0","Disables bot upgrades if set to 1");
-	cvar_DisableCooldowns = CreateConVar("sm_uu_disablecooldowns","0","Disables arcane cooldowns if set to 1");
+	cvar_MoneyBonusKill = CreateConVar("sm_if_moneybonuskill", "600", "Sets the money bonus a client gets for killing: default 200");
+	cvar_StartMoney = CreateConVar("sm_if_startmoney", "50000", "Sets the starting money: default 50000");
+	cvar_ServerMoneyMult = CreateConVar("sm_if_moneymult", "1.0", "Sets the Cash Multiplier: default 1.0");
+	cvar_BotMultiplier = CreateConVar("sm_if_botmultiplier", "0.65", "Sets the bot stat multiplier.: default 0.5");
+	cvar_DisableBotUpgrade = CreateConVar("sm_if_disablebotupgrades","0","Disables bot upgrades if set to 1");
+	cvar_DisableCooldowns = CreateConVar("sm_if_disablecooldowns","0","Disables arcane cooldowns if set to 1");
 	
 	HookConVarChange(cvar_MoneyBonusKill, OnCvarChanged);
 	HookConVarChange(cvar_StartMoney, OnCvarChanged);
@@ -98,11 +98,11 @@ public UberShopinitMenusHandlers()
 	DisableCooldowns = GetConVarInt(cvar_DisableCooldowns);
 	
 	RegAdminCmd("reload_cfg", ReloadCfgFiles, ADMFLAG_ROOT, "Reloads All CFG files for Uberupgrades");
-	RegAdminCmd("sm_uuspentmoney", ShowSpentMoney, ADMFLAG_GENERIC, "Shows everyones upgrades");
+	RegAdminCmd("sm_ifspentmoney", ShowSpentMoney, ADMFLAG_GENERIC, "Shows everyones upgrades");
 	RegAdminCmd("sm_setcash", Command_SetCash, ADMFLAG_GENERIC, "Sets cash of selected target/targets.");
 	RegAdminCmd("sm_addcash", Command_AddCash, ADMFLAG_GENERIC, "Adds cash of selected target/targets.");
 	RegAdminCmd("sm_removecash", Command_RemoveCash, ADMFLAG_GENERIC, "Removes cash of selected target/targets.");
-	RegAdminCmd("sm_setuuadmin", Command_SetUUAdmin, ADMFLAG_GENERIC, "Removes restrictions of targets.");
+	RegAdminCmd("sm_setifadmin", Command_SetIFAdmin, ADMFLAG_GENERIC, "Removes restrictions of targets.");
 	RegAdminCmd("sm_resetallplayers", ResetPlayers, ADMFLAG_ROOT, "Remove Everyones Upgrades");
 	RegAdminCmd("sm_setcurrency", GiveAllMoney, ADMFLAG_ROOT, "Sets Uberuprgades Cash");
 	RegAdminCmd("sm_test", TestCommand, ADMFLAG_ROOT, "Filler Test");
@@ -126,7 +126,7 @@ public UberShopinitMenusHandlers()
 	
 	RegConsoleCmd("sm_stats", ShowMults, "Shows all your multipliers.");
 	RegConsoleCmd("sm_arcane", Command_UseArcane, "Use specified arcane spell.");
-	RegConsoleCmd("sm_showhelp", ShowHelp, "Displays all UU help.")
+	RegConsoleCmd("sm_showhelp", ShowHelp, "Displays all if help.")
 	
 	HookEvent("player_hurt", Event_Playerhurt, EventHookMode_Pre)
 	HookEvent("post_inventory_application", Event_PlayerreSpawn)
@@ -152,7 +152,7 @@ public OnMapStart()
 	{
 		new String:mapName[64]
 		GetCurrentMap(mapName, sizeof(mapName))
-		StrCat(mapName, sizeof(mapName),"_UU");
+		StrCat(mapName, sizeof(mapName),"_IF");
 		ServerCommand("tf_mvm_popfile %s", mapName)
 	}
 	GameRules_SetProp("m_bPlayingMedieval", 0)
@@ -233,10 +233,10 @@ public void OnPluginStart()
 	
 	if(!IsValidHandle(DB))
 	{
-		PrintToServer("UU : Cannot connect to SQL server. : %s", Error);
+		PrintToServer("IF : Cannot connect to SQL server. : %s", Error);
 		CloseHandle(DB);
 	} else{
-		PrintToServer("UU : Successfully connected to SQL server.");
+		PrintToServer("IF : Successfully connected to SQL server.");
 	}
 	gameStage = 0;
 	
@@ -262,7 +262,7 @@ public void OnPluginStart()
 	debugMode = view_as<bool>(GetConVarInt(cvar_debug));
 
 	//Offsets
-	Handle hConf = LoadGameConfigFile("tf2.uurevamped");
+	Handle hConf = LoadGameConfigFile("tf2.incrementalfortress");
 	
 	if (LookupOffset(g_iOffset, "CTFPlayer", "m_iSpawnCounter"))
 	g_iOffset -= GameConfGetOffset(hConf, "m_flTauntAttackTime");
@@ -408,8 +408,8 @@ public void OnPluginStart()
 	//Cookies
 	hArmorXPos = RegClientCookie("razor_armorxpos", "X Coordinate of armor bar.", CookieAccess_Protected);
 	hArmorYPos = RegClientCookie("razor_armorypos", "Y Coordinate of armor bar.", CookieAccess_Protected);
-	SAwaterMark = RegClientCookie("uu_watermark", "Toggles whether the watermark appears.", CookieAccess_Protected);
-	respawnMenu = RegClientCookie("uu_respawnmenu", "Toggles if you get the respawn menu on spawn.", CookieAccess_Protected);
+	SAwaterMark = RegClientCookie("if_watermark", "Toggles whether the watermark appears.", CookieAccess_Protected);
+	respawnMenu = RegClientCookie("if_respawnmenu", "Toggles if you get the respawn menu on spawn.", CookieAccess_Protected);
 	EngineerTutorial = RegClientCookie("tutorial_engineer", "State of Tutorial", CookieAccess_Protected);
 	ArmorTutorial = RegClientCookie("tutorial_armor", "State of Tutorial", CookieAccess_Protected);
 	ArcaneTutorial = RegClientCookie("tutorial_arcane", "State of Tutorial", CookieAccess_Protected);
@@ -434,10 +434,10 @@ public void OnPluginStart()
 	new Handle:queryH = SQL_Query(DB, queryString);
 	if(queryH != INVALID_HANDLE)
 	{
-		PrintToServer("UU : Successfully created a table.");
+		PrintToServer("IF : Successfully created a table.");
 	}else{
 		SQL_GetError(DB, Error, sizeof(Error));
-		PrintToServer("UU : Was unable to create a table. | SQLERROR : %s.", Error);
+		PrintToServer("IF : Was unable to create a table. | SQLERROR : %s.", Error);
 	}
 	//Refresh
 	for (new client = 1; client < MaxClients; client++)
@@ -471,7 +471,7 @@ public OnAllPluginsLoaded()
 }
 public OnPluginEnd()
 {
-	PrintToServer("UU | Plugin stopped.")
+	PrintToServer("IF | Plugin stopped.")
 	hudSync.Close();
 	hudSpells.Close();
 	hudWatermark.Close();

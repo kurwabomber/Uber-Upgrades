@@ -78,7 +78,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				}
 				if(upgrades_description[upgrade_choice][0])
 				{
-					disableUUMiniHud[client] = 8.0;
+					disableIFMiniHud[client] = 8.0;
 					decl String:upgradeDescription[1024]
 					Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 					upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
@@ -179,7 +179,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 
 					if(upgrades_description[upgrade_choice][0])
 					{
-						disableUUMiniHud[client] = 8.0;
+						disableIFMiniHud[client] = 8.0;
 						decl String:upgradeDescription[1024]
 						Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 						upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);

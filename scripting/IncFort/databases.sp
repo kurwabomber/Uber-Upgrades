@@ -70,10 +70,10 @@ SavePlayerData(client)
 		new Handle:queryH = SQL_Query(DB, queryString);
 		if(IsValidHandle(queryH))
 		{
-			PrintToServer("UU : Successfully saved player upgrades.");
+			PrintToServer("IF : Successfully saved player upgrades.");
 		}else{
 			SQL_GetError(DB, Error, sizeof(Error));
-			PrintToServer("UU : Was unable to save player upgrades | SQLERROR : %s.", Error);
+			PrintToServer("IF : Was unable to save player upgrades | SQLERROR : %s.", Error);
 		}
 	}
 	ResetClientUpgrades(client);
@@ -98,7 +98,7 @@ GivePlayerData(client)
 				if(IsValidHandle(pack))
 				{
 					pack.Reset();
-					PrintToServer("UU : Successfully gave player upgrades to %N.", client);
+					PrintToServer("IF : Successfully gave player upgrades to %N.", client);
 					new Float:spentMoney = 0.0;
 					for(new s = 0; s < NB_SLOTS_UED; s++)
 					{
@@ -149,7 +149,7 @@ GivePlayerData(client)
 				}
 				else
 				{
-					PrintToServer("UU : Was unable to save due to invalid pack handle.");
+					PrintToServer("IF : Was unable to save due to invalid pack handle.");
 					CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 				}
 			}
@@ -159,13 +159,13 @@ GivePlayerData(client)
 			}
 		}else{
 			SQL_GetError(DB,Error,sizeof(Error));
-			PrintToServer("UU : Was unable to give player upgrades | SQLERROR : %s.", Error);
+			PrintToServer("IF : Was unable to give player upgrades | SQLERROR : %s.", Error);
 			CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 		}
 		queryH = SQL_Query(DB, queryDelete);
 		if(!IsValidHandle(queryH)){
 			SQL_GetError(DB,Error,sizeof(Error));
-			PrintToServer("UU : Was unable to clear database IDs. | SQLERROR : %s.", Error);
+			PrintToServer("IF : Was unable to clear database IDs. | SQLERROR : %s.", Error);
 		}
 
 	}
@@ -177,10 +177,10 @@ DeleteSavedPlayerData()
 	new Handle:queryH = SQL_Query(DB, queryString);
 	if(IsValidHandle(queryH))
 	{
-		PrintToServer("UU : Deleted all saved data.");
+		PrintToServer("IF : Deleted all saved data.");
 	}else{
 		SQL_GetError(DB, Error, sizeof(Error));
-		PrintToServer("UU : Couldn't delete data. | SQLERROR : %s.", Error);
+		PrintToServer("IF : Couldn't delete data. | SQLERROR : %s.", Error);
 	}
 }
 DeleteDatabase()
@@ -190,9 +190,9 @@ DeleteDatabase()
 	new Handle:queryH = SQL_Query(DB, queryString);
 	if(IsValidHandle(queryH))
 	{
-		PrintToServer("UU : Deleted database.");
+		PrintToServer("IF : Deleted database.");
 	}else{
 		SQL_GetError(DB, Error, sizeof(Error));
-		PrintToServer("UU : Couldn't delete database. | SQLERROR : %s.", Error);
+		PrintToServer("IF : Couldn't delete database. | SQLERROR : %s.", Error);
 	}
 }

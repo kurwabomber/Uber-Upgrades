@@ -209,7 +209,7 @@ public Action:Timer_FixedVariables(Handle:timer)
 			}
 			if(inScore[client] == false)
 			{
-				if(disableUUMiniHud[client] <= 0.0)
+				if(disableIFMiniHud[client] <= 0.0)
 				{
 					decl String:Startcash[128]
 					Format(Startcash, sizeof(Startcash), "%.0f Startmoney\n$%.0f\n%0.f Player Kills\n%0.f Player Deaths\n%s Damage Dealt\n%s DPS\n%0.f RPS\n%s Damage Healed", StartMoney+additionalstartmoney,CurrencyOwned[client],Kills[client],Deaths[client],GetAlphabetForm(DamageDealt[client]),GetAlphabetForm(dps[client]),RPS[client],GetAlphabetForm(Healed[client])); 
@@ -1293,14 +1293,14 @@ public Action:LockMission(Handle:timer)
 	new ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
 	GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
 	PrintToServer("%s mission",responseBuffer);
-	if(StrContains(responseBuffer, "UU", false) != -1)
+	if(StrContains(responseBuffer, "IF", false) != -1)
 	{
-		PrintToServer("Is on a UU mission.");
+		PrintToServer("Is on a IF mission.");
 		return;
 	}
 	new String:mapName[64];
 	GetCurrentMap(mapName, sizeof(mapName));
-	StrCat(mapName, sizeof(mapName),"_UU");
+	StrCat(mapName, sizeof(mapName),"_IF");
 	ServerCommand("tf_mvm_popfile %s", mapName);
 	PrintToServer("Mission was changed to something not Incremental Fortress!");
 	CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You must choose a mission that is made for Incremental Fortress.");
@@ -1319,7 +1319,7 @@ public Action:ResetMission(Handle:timer)
 	{
 		new String:mapName[64]
 		GetCurrentMap(mapName, sizeof(mapName))
-		StrCat(mapName, sizeof(mapName),"_UU");
+		StrCat(mapName, sizeof(mapName),"_IF");
 		ServerCommand("tf_mvm_popfile %s", mapName)
 		PrintToServer("Everyone left! Time to restart everything.");
 		additionalstartmoney = 0.0
