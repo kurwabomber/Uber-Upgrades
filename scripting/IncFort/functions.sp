@@ -667,7 +667,7 @@ DisplayItemChange(client,itemidx)
 	}
 	if(ChangeString[0])
 	{
-		CPrintToChat(client, "{valve}Uber Upgrades {default}| {steelblue}Weapon Changes{default} | %s", ChangeString)
+		CPrintToChat(client, "{valve}Incremental Fortress {default}| {steelblue}Weapon Changes{default} | %s", ChangeString)
 	}
 }
 public UpgradeItem(client, upgrade_choice, inum, Float:ratio, slot)

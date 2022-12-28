@@ -956,7 +956,7 @@ public MenuHandler_Wiki(Handle:menu, MenuAction:action, client, param2)
 				case 0:
 				{
 					CPrintToChat(client, " ");
-					CPrintToChat(client, "{valve}Wiki {white}| Upgrades in Uber Upgrades Revamped have a base cost, increase ratio, value, initial value & max.\n You can buy these upgrades with the console command 'menuselect' or 'qbuy'.");
+					CPrintToChat(client, "{valve}Wiki {white}| Upgrades in Incremental Fortress have a base cost, increase ratio, value, initial value & max.\n You can buy these upgrades with the console command 'menuselect' or 'qbuy'.");
 					CPrintToChat(client, "{valve}Wiki {white}| Using menuselect means to choose whatever selection by console. qbuy is to bulk buy an upgrade or tweak. It follows the same style as menuselect, for example : qbuy 1 1 1 100 would buy health 100 times.");
 					CPrintToChat(client, "{valve}Wiki {white}| ★ Damage Multiplier ★ upgrades do not increase in cost. ");
 					CPrintToChat(client, " ");

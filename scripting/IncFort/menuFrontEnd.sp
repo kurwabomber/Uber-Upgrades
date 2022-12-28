@@ -4,7 +4,7 @@ public Action:Menu_BuyUpgrade(client, args)
 	if (IsValidClient(client) && IsPlayerAlive(client) && !client_respawn_checkpoint[client] )
 	{
 		menuBuy = CreateMenu(MenuHandler_BuyUpgrade);
-		SetMenuTitle(menuBuy, "Uber Upgrades - /buy or +SHOWSCORES");
+		SetMenuTitle(menuBuy, "Incremental Fortress - /buy or +SHOWSCORES");
 		
 		AddMenuItem(menuBuy, "upgrade_player", "Upgrade Body");
 		
@@ -605,7 +605,7 @@ Menu_ShowWiki(client, int item = 0)
 		new Handle:menu = CreateMenu(MenuHandler_Wiki);
 		
 		SetMenuExitBackButton(menu, true);
-		SetMenuTitle(menu, "★ Uber Upgrades Revamped Wiki ★");
+		SetMenuTitle(menu, "★ Incremental Fortress Wiki ★");
 		AddMenuItem(menu, "UpgradeInfo", "Upgrades Walkthrough");
 		AddMenuItem(menu, "DamageInfo", "Damage Math Walkthrough");
 		AddMenuItem(menu, "ArmorInfo", "Armor Math Walkthrough");

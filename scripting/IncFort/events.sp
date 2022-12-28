@@ -1095,21 +1095,21 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			if((StartMoney + additionalstartmoney) > 1000000.0 && gameStage == 0)
 			{
 				gameStage = 1;
-				CPrintToChatAll("{valve}Uber Upgrades {white}| You have reached the Vector stage! New upgrades unlocked.");
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Vector stage! New upgrades unlocked.");
 
 				UpdateMaxValuesStage(gameStage);
 			}
 			else if((StartMoney + additionalstartmoney) > 5000000.0 && gameStage == 1)
 			{
 				gameStage = 2;
-				CPrintToChatAll("{valve}Uber Upgrades {white}| You have reached the Dyad stage! New upgrades unlocked.");
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Dyad stage! New upgrades unlocked.");
 
 				UpdateMaxValuesStage(gameStage);
 			}
 			else if((StartMoney + additionalstartmoney) > 25000000.0 && gameStage == 2)
 			{
 				gameStage = 3;
-				CPrintToChatAll("{valve}Uber Upgrades {white}| You have reached the Triad stage! New upgrades unlocked.");
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Triad stage! New upgrades unlocked.");
 
 				UpdateMaxValuesStage(gameStage);
 			}
@@ -1117,7 +1117,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 		else if(hardcapWarning == false)
 		{
 			hardcapWarning = true;
-			CPrintToChatAll("{valve}Uber Upgrades {white}| {red}WARNING {white}| You have reached the hardcap for money in PvP!");
+			CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You have reached the hardcap for money in PvP!");
 		}
 	}
 }

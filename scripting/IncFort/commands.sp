@@ -142,7 +142,7 @@ public Action:ShowHelp(client, args)
 {
 	if(IsValidClient3(client))
 	{
-		CPrintToChat(client, "{gray}Help | {gold}This server is running Uber Upgrades v%s", PLUGIN_VERSION);
+		CPrintToChat(client, "{gray}Help | {gold}This server is running Incremental Fortress v%s", PLUGIN_VERSION);
 		if(!IsMvM())
 		{
 			CPrintToChat(client, "{gray}Help | {gold}/votemenu can be used to adjust how many bots and how difficult they are.")

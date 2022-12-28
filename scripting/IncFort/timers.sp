@@ -1302,8 +1302,8 @@ public Action:LockMission(Handle:timer)
 	GetCurrentMap(mapName, sizeof(mapName));
 	StrCat(mapName, sizeof(mapName),"_UU");
 	ServerCommand("tf_mvm_popfile %s", mapName);
-	PrintToServer("Mission was changed to something not Uber Upgrades!");
-	CPrintToChatAll("{valve}Uber Upgrades {white}| {red}WARNING {white}| You must choose a mission that is made for Uber Upgrades.");
+	PrintToServer("Mission was changed to something not Incremental Fortress!");
+	CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You must choose a mission that is made for Incremental Fortress.");
 }
 public Action:ResetMission(Handle:timer)
 {

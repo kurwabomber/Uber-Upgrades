@@ -60,16 +60,16 @@
 #define SOUND_DASH "weapons/bumper_car_jump.wav"
 #define SOUND_JAR_EXPLOSION "weapons/jar_explode.wav"
 
-#define PLUGIN_VERSION "2.0"
+#define PLUGIN_VERSION "INDEV-1.0"
 
 // Plugin Info
 public Plugin:myinfo =
 {
-	name = "Uber Upgrades",
-	author = "The Razor Clan :muscle:",
-	description = "superior sane person & christpilled product.",
+	name = "Incremental Upgrades",
+	author = "Telia (post-2.0) & Razor (pre-2.0)",
+	description = "Incremental game styled MvM upgrades on any gamemode.",
 	version = PLUGIN_VERSION,
-	url = "https://github.com/Standard-Appeal/Uber-Upgrades-Revamped",
+	url = "https://github.com/rustedBlood/Incremental-Fortress",
 }
 
 #include "IncFort/globalVariables.sp"
