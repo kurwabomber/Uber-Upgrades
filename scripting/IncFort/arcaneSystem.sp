@@ -4,12 +4,8 @@ public Menu_ShowArcane(client)
 	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
 		new Handle:menu = CreateMenu(MenuHandler_ArcaneCast);
-		new attunement = 1;
 		new Address:attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
-		if(attuneActive != Address_Null)
-		{
-			attunement += RoundToNearest(TF2Attrib_GetValue(attuneActive));
-		}
+		new attunement = 1 + (attuneActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(attuneActive)));
 		
 		SetMenuExitBackButton(menu, true);
 		SetMenuTitle(menu, "Use Arcane Spells");
@@ -30,113 +26,105 @@ public MenuHandler_ArcaneCast(Handle:menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select && IsValidClient(client) && IsPlayerAlive(client))
 	{
-		if(param2 >= 0 && param2 <= Max_Attunement_Slots)
+		RequestFrame(Menu_ShowArcane, client);
+		CloseHandle(menu);
+
+		if(param2 < 0 || param2 > Max_Attunement_Slots)
+			return;
+
+		if(AttunedSpells[client][param2] == 0.0)
+			{PrintHintText(client, "You have nothing attuned to this slot!");return;}
+
+		if(TF2_IsPlayerInCondition(client, TFCond_Cloaked))
+			{PrintHintText(client, "You cannot cast spells while invisible.");return;}
+
+		if(TF2_IsPlayerInCondition(client, TFCond_Disguised))
 		{
-			if(AttunedSpells[client][param2] != 0.0)
+			TF2_RemoveCondition(client, TFCond_Disguised);
+		}
+		switch(AttunedSpells[client][param2])
+		{
+			case 1.0:
 			{
-				if(!TF2_IsPlayerInCondition(client, TFCond_Cloaked))
-				{
-					if(TF2_IsPlayerInCondition(client, TFCond_Disguised))
-					{
-						TF2_RemoveCondition(client, TFCond_Disguised);
-					}
-					switch(AttunedSpells[client][param2])
-					{
-						case 1.0:
-						{
-							CastZap(client, param2);
-						}
-						case 2.0:
-						{
-							CastLightning(client, param2);
-						}
-						case 3.0:
-						{
-							CastHealing(client, param2);
-						}
-						case 4.0:
-						{
-							CastACallBeyond(client, param2);
-						}
-						case 5.0:
-						{
-							CastBlackskyEye(client, param2);
-						}
-						case 6.0:
-						{
-							CastSunlightSpear(client, param2);
-						}
-						case 7.0:
-						{
-							CastLightningEnchantment(client, param2);
-						}
-						case 8.0:
-						{
-							CastSnapFreeze(client, param2);
-						}
-						case 9.0:
-						{
-							CastArcanePrison(client, param2);
-						}
-						case 10.0:
-						{
-							CastDarkmoonBlade(client, param2);
-						}
-						case 11.0:
-						{
-							CastSpeedAura(client, param2);
-						}
-						case 12.0:
-						{
-							CastAerialStrike(client, param2);
-						}
-						case 13.0:
-						{
-							CastInferno(client, param2);
-						}
-						case 14.0:
-						{
-							CastMineField(client, param2);
-						}
-						case 15.0:
-						{
-							CastShockwave(client, param2);
-						}
-						case 16.0:
-						{
-							CastAutoSentry(client, param2);
-						}						
-						case 17.0:
-						{
-							CastSoothingSunlight(client, param2);
-						}
-						case 18.0:
-						{
-							CastArcaneHunter(client, param2);
-						}
-						case 19.0:
-						{
-							CastMarkForDeath(client, param2);
-						}
-						default:
-						{
-							PrintHintText(client, "Sorry, we havent implemented this yet!");
-						}
-					}
-				}
-				else
-				{
-					PrintHintText(client, "You cannot cast spells while invisible.");
-				}
+				CastZap(client, param2);
 			}
-			else
+			case 2.0:
 			{
-				PrintHintText(client, "You have nothing attuned to this slot!");
+				CastLightning(client, param2);
+			}
+			case 3.0:
+			{
+				CastHealing(client, param2);
+			}
+			case 4.0:
+			{
+				CastACallBeyond(client, param2);
+			}
+			case 5.0:
+			{
+				CastBlackskyEye(client, param2);
+			}
+			case 6.0:
+			{
+				CastSunlightSpear(client, param2);
+			}
+			case 7.0:
+			{
+				CastLightningEnchantment(client, param2);
+			}
+			case 8.0:
+			{
+				CastSnapFreeze(client, param2);
+			}
+			case 9.0:
+			{
+				CastArcanePrison(client, param2);
+			}
+			case 10.0:
+			{
+				CastDarkmoonBlade(client, param2);
+			}
+			case 11.0:
+			{
+				CastSpeedAura(client, param2);
+			}
+			case 12.0:
+			{
+				CastAerialStrike(client, param2);
+			}
+			case 13.0:
+			{
+				CastInferno(client, param2);
+			}
+			case 14.0:
+			{
+				CastMineField(client, param2);
+			}
+			case 15.0:
+			{
+				CastShockwave(client, param2);
+			}
+			case 16.0:
+			{
+				CastAutoSentry(client, param2);
+			}						
+			case 17.0:
+			{
+				CastSoothingSunlight(client, param2);
+			}
+			case 18.0:
+			{
+				CastArcaneHunter(client, param2);
+			}
+			case 19.0:
+			{
+				CastMarkForDeath(client, param2);
+			}
+			default:
+			{
+				PrintHintText(client, "Sorry, we havent implemented this yet!");
 			}
 		}
-
-		Menu_ShowArcane(client);
-		CloseHandle(menu);
 	}
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
 	{
@@ -149,121 +137,113 @@ public Action:Command_UseArcane(client, args)
 {
 	new String:arg1[128];
 	new param2;
-	if (GetCmdArg(1, arg1, sizeof(arg1)))
+	if (!GetCmdArg(1, arg1, sizeof(arg1)))
+		return Plugin_Handled;
+	
+	param2 = StringToInt(arg1)-1;
+	if (!IsValidClient(client))
+		return Plugin_Handled;
+
+	if (IsPlayerAlive(client))
+		return Plugin_Handled;
+
+
+	new Address:slotActive = TF2Attrib_GetByName(client, "arcane attunement slots");
+	new attuneSlots = 1 + (slotActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(slotActive)));
+
+	if(param2 < 0 && param2 > attuneSlots) 
+		return Plugin_Handled;
+
+	if(AttunedSpells[client][param2] == 0.0)
+		{PrintHintText(client, "You have nothing attuned to this slot!");return Plugin_Handled;}
+
+	if(TF2_IsPlayerInCondition(client, TFCond_Cloaked))
+		{PrintHintText(client, "You cannot cast spells while invisible.");return Plugin_Handled;}
+
+	if(TF2_IsPlayerInCondition(client, TFCond_Disguised))
+		TF2_RemoveCondition(client, TFCond_Disguised);
+
+	switch(AttunedSpells[client][param2])
 	{
-		param2 = StringToInt(arg1)-1;
-		if (IsValidClient(client) && IsPlayerAlive(client))
+		case 1.0:
 		{
-			new attuneSlots = 0
-			new Address:slotActive = TF2Attrib_GetByName(client, "arcane attunement slots");
-			if(slotActive != Address_Null)
-			{
-				attuneSlots += RoundToNearest(TF2Attrib_GetValue(slotActive))
-			}
-			if(param2 >= 0 && param2 <= attuneSlots)
-			{
-				if(AttunedSpells[client][param2] != 0.0)
-				{
-					if(!TF2_IsPlayerInCondition(client, TFCond_Cloaked))
-					{
-						if(TF2_IsPlayerInCondition(client, TFCond_Disguised))
-						{
-							TF2_RemoveCondition(client, TFCond_Disguised);
-						}
-						switch(AttunedSpells[client][param2])
-						{
-							case 1.0:
-							{
-								CastZap(client, param2);
-							}
-							case 2.0:
-							{
-								CastLightning(client, param2);
-							}
-							case 3.0:
-							{
-								CastHealing(client, param2);
-							}
-							case 4.0:
-							{
-								CastACallBeyond(client, param2);
-							}
-							case 5.0:
-							{
-								CastBlackskyEye(client, param2);
-							}
-							case 6.0:
-							{
-								CastSunlightSpear(client, param2);
-							}
-							case 7.0:
-							{
-								CastLightningEnchantment(client, param2);
-							}
-							case 8.0:
-							{
-								CastSnapFreeze(client, param2);
-							}
-							case 9.0:
-							{
-								CastArcanePrison(client, param2);
-							}
-							case 10.0:
-							{
-								CastDarkmoonBlade(client, param2);
-							}
-							case 11.0:
-							{
-								CastSpeedAura(client, param2);
-							}
-							case 12.0:
-							{
-								CastAerialStrike(client, param2);
-							}
-							case 13.0:
-							{
-								CastInferno(client, param2);
-							}
-							case 14.0:
-							{
-								CastMineField(client, param2);
-							}
-							case 15.0:
-							{
-								CastShockwave(client, param2);
-							}
-							case 16.0:
-							{
-								CastAutoSentry(client, param2);
-							}						
-							case 17.0:
-							{
-								CastSoothingSunlight(client, param2);
-							}
-							case 18.0:
-							{
-								CastArcaneHunter(client, param2);
-							}
-							case 19.0:
-							{
-								CastMarkForDeath(client, param2);
-							}
-							default:
-							{
-								PrintHintText(client, "Sorry, we havent implemented this yet!");
-							}
-						}
-					}
-					else
-					{
-						PrintHintText(client, "You cannot cast spells while invisible.");
-					}
-				}
-				else
-				{
-					PrintHintText(client, "You have nothing attuned to this slot!");
-				}
-			}
+			CastZap(client, param2);
+		}
+		case 2.0:
+		{
+			CastLightning(client, param2);
+		}
+		case 3.0:
+		{
+			CastHealing(client, param2);
+		}
+		case 4.0:
+		{
+			CastACallBeyond(client, param2);
+		}
+		case 5.0:
+		{
+			CastBlackskyEye(client, param2);
+		}
+		case 6.0:
+		{
+			CastSunlightSpear(client, param2);
+		}
+		case 7.0:
+		{
+			CastLightningEnchantment(client, param2);
+		}
+		case 8.0:
+		{
+			CastSnapFreeze(client, param2);
+		}
+		case 9.0:
+		{
+			CastArcanePrison(client, param2);
+		}
+		case 10.0:
+		{
+			CastDarkmoonBlade(client, param2);
+		}
+		case 11.0:
+		{
+			CastSpeedAura(client, param2);
+		}
+		case 12.0:
+		{
+			CastAerialStrike(client, param2);
+		}
+		case 13.0:
+		{
+			CastInferno(client, param2);
+		}
+		case 14.0:
+		{
+			CastMineField(client, param2);
+		}
+		case 15.0:
+		{
+			CastShockwave(client, param2);
+		}
+		case 16.0:
+		{
+			CastAutoSentry(client, param2);
+		}						
+		case 17.0:
+		{
+			CastSoothingSunlight(client, param2);
+		}
+		case 18.0:
+		{
+			CastArcaneHunter(client, param2);
+		}
+		case 19.0:
+		{
+			CastMarkForDeath(client, param2);
+		}
+		default:
+		{
+			PrintHintText(client, "Sorry, we havent implemented this yet!");
 		}
 	}
 	return Plugin_Handled;

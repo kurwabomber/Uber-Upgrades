@@ -35,7 +35,7 @@
 #define WCNAMELISTSIZE 700
 #define _NB_SP_TWEAKS 90
 #define NB_WEAPONS 20
-#define Max_Attunement_Slots 6
+#define Max_Attunement_Slots 10
 #define MAX_STAGES 5
 
 #define SOUND_THUNDER "ambient/explosions/explode_9.wav"
