@@ -712,13 +712,13 @@ CastInferno(client, attuneSlot)
 		return;
 	new Float:level = ArcaneDamage[client];
 	new Float:focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
-	if(fl_CurrentFocus[client] >= focusCost)
+	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
 		EmitSoundToClient(client, SOUND_FAIL);
 		return;
 	}
-	if(SpellCooldowns[client][attuneSlot] <= 0.0)
+	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 
 	new Float:ClientPos[3];
@@ -1120,7 +1120,7 @@ CastArcaneHunter(client, attuneSlot)
 		return;
 	
 	new Float:focusCost = (200.0 + (65.0 * ArcaneDamage[client]))/ArcanePower[client]
-	if(fl_CurrentFocus[client] >= focusCost)
+	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
 		EmitSoundToClient(client, SOUND_FAIL);
@@ -1289,7 +1289,7 @@ CastBlackskyEye(client, attuneSlot)
 	int maxCount[] = {0,1,2,3};
 	float projSpeed[] = {0.0,1200.0,2000.0,3000.0};
 	float radius[] = {0.0,700.0,1200.0,1500.0};
-	int tickRate[] = {0,2,1,0};
+	int tickRate[] = {0,4,2,0};
 	for(int iter = 0;iter < maxCount[spellLevel];iter++)
 	{
 		new iEntity = CreateEntityByName("tf_projectile_arrow");
@@ -1363,7 +1363,7 @@ CastACallBeyond(client, attuneSlot)
 	new Float:level = ArcaneDamage[client];
 	new Float:focusCost = (200.0 + (70.0 * level))/ArcanePower[client]
 
-	if(fl_CurrentFocus[client] >= focusCost)
+	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
 		EmitSoundToClient(client, SOUND_FAIL);
@@ -1399,7 +1399,7 @@ public Action:ACallBeyond(Handle:timer, client)
 
 	int projCount[] = {0,15,25,40};
 	float radius[] = {0.0,1500.0,2500.0,2500.0};
-	int tickRate[] = {0,2,1,0};
+	int tickRate[] = {0,5,2,0};
 	for(new i = 0;i<projCount[spellLevel];i++)
 	{
 		new iEntity = CreateEntityByName("tf_projectile_arrow");
@@ -1449,7 +1449,7 @@ public Action:ACallBeyond(Handle:timer, client)
 		
 		homingRadius[iEntity] = radius[spellLevel];
 		homingTickRate[iEntity] = tickRate[spellLevel];
-
+		homingDelay[iEntity] = 0.4;
 	}
 
 	new Float:clientpos[3];

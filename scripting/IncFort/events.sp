@@ -806,6 +806,7 @@ public OnEntityDestroyed(entity)
 	homingRadius[entity] = 0.0;
 	homingTickRate[entity] = 0;
 	homingTicks[entity] = 0;
+	homingDelay[entity] = 0.0;
 	//isProjectileSlash[entity][0] = 0.0;
 	//isProjectileSlash[entity][1] = 0.0;
 	jarateWeapon[entity] = -1;
@@ -2071,7 +2072,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 public OnGameFrame()
 {
 	new Float:tickRate = GetTickInterval();
-
+	new Float:time = GetGameTime();
 	for(new i=MaxClients; i < MAXENTITIES; i++)
 	{
 		if(IsValidEntity(i))
@@ -2093,7 +2094,7 @@ public OnGameFrame()
 				sentryThought[i] = false;
 				SDKCall(g_SDKCallSentryThink, i);
 			}
-			if(homingRadius[i] > 0.0)
+			if(homingRadius[i] > 0.0 && homingDelay[i] < time - entitySpawnTime[i])
 			{
 				OnEntityHomingThink(i);
 			}

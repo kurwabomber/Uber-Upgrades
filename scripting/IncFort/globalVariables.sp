@@ -270,5 +270,6 @@ new Handle:hudStatus;
 new Address:g_offset_CTFPlayerShared_pOuter;
 //homing shit
 new Float:homingRadius[MAXENTITIES];
+new Float:homingDelay[MAXENTITIES];
 new homingTickRate[MAXENTITIES];
 new homingTicks[MAXENTITIES];

@@ -2265,7 +2265,7 @@ public OnThinkPost(entity)
 }
 public OnEntityHomingThink(entity) 
 { 
-	if(IsValidEntity(entity))
+	if(!IsValidEntity(entity))
 		return;
 
 	if(!HasEntProp(entity,Prop_Send,"m_vInitialVelocity"))
@@ -2293,7 +2293,7 @@ public OnEntityHomingThink(entity)
 	if( distance > homingRadius[entity] )
 		return;
 
-	if(homingTicks[entity] & homingTickRate[entity])
+	if(homingTicks[entity] & homingTickRate[entity] == 1 || homingTickRate[entity] == 0)
 	{
 		new Float:ProjLocation[3], Float:ProjVector[3], Float:BaseSpeed, Float:NewSpeed, Float:ProjAngle[3], Float:AimVector[3], Float:InitialSpeed[3]; 
 		
