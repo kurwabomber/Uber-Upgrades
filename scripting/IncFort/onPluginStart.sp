@@ -71,10 +71,9 @@ public UberShopDefineUpgradeTabs()
 }
 public UberShopinitMenusHandlers()
 {
-	LoadTranslations("tf2items_uu.phrases.txt");
+	LoadTranslations("incrementalfortress.phrases.txt");
 	LoadTranslations("common.phrases.txt");
 	
-	cvar_uu_version = CreateConVar("uberupgrades_version", UU_VERSION, "The Plugin Version. Don't change.", FCVAR_NOTIFY);
 	cvar_MoneyBonusKill = CreateConVar("sm_uu_moneybonuskill", "600", "Sets the money bonus a client gets for killing: default 200");
 	cvar_StartMoney = CreateConVar("sm_uu_startmoney", "50000", "Sets the starting money: default 50000");
 	cvar_ServerMoneyMult = CreateConVar("sm_uu_moneymult", "1.0", "Sets the Cash Multiplier: default 1.0");
@@ -88,10 +87,6 @@ public UberShopinitMenusHandlers()
 	HookConVarChange(cvar_BotMultiplier, OnCvarChanged);
 	HookConVarChange(cvar_DisableBotUpgrade, OnCvarChanged);
 	HookConVarChange(cvar_DisableCooldowns, OnCvarChanged);
-	
-	if(cvar_uu_version)
-	{
-	}
 	MoneyForTeamRatio[RED]  = 1.0
 	MoneyForTeamRatio[BLUE]  = 1.0
 	

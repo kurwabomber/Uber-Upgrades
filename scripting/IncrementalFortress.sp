@@ -22,8 +22,6 @@
 
 #pragma tabsize 0
 
-#define UU_VERSION "razor's uberupgrades"
-
 #define SecondaryCostReduction 1.0
 #define RED 0
 #define BLUE 1

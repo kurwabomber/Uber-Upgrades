@@ -3,7 +3,6 @@ new Handle:up_menus[MAXPLAYERS + 1]
 new Handle:menuBuy
 new Handle:cvar_MoneyBonusKill
 new Handle:cvar_ServerMoneyMult
-new Handle:cvar_uu_version
 new Handle:cvar_StartMoney
 new Handle:cvar_DisableBotUpgrade
 new Handle:cvar_DisableCooldowns
