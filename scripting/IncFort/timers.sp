@@ -30,7 +30,6 @@ public Action:Timer_Second(Handle:timer)
 			
 			GetClientCookie(client, hArmorXPos, ArmorXPos[client], sizeof(ArmorXPos));
 			GetClientCookie(client, hArmorYPos, ArmorYPos[client], sizeof(ArmorYPos));
-			GetClientCookie(client, SAwaterMark, WaterMarkToggle[client], sizeof(WaterMarkToggle));
 			
 			new Address:armorRecharge = TF2Attrib_GetByName(client, "tmp dmgbuff on hit");
 			new Float:ArmorRechargeMult = 1.0;
@@ -247,16 +246,9 @@ public Action:Timer_FixedVariables(Handle:timer)
 						SetHudTextParams(0.02, 0.02, 0.21, 69, 245, 66, 255, 0, 0.0, 0.0, 0.0);
 						ShowSyncHudText(client, hudSpells, spellHUD);
 					}
-					
-					decl String:waterMark[64]
-					Format(waterMark, sizeof(waterMark), "markiplier.tf"); 
+
 					if (AreClientCookiesCached(client))
 					{
-						if(StringToFloat(WaterMarkToggle[client]) == 0.0)
-						{
-							SetHudTextParams(0.7, 0.8, 0.21, 252, 186, 3, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudWatermark, waterMark);
-						}
 						if(StringToFloat(ArmorXPos[client]) != 0.0 && StringToFloat(ArmorYPos[client]))
 						{
 							if(fl_AdditionalArmor[client] <= 0.0)
@@ -296,9 +288,6 @@ public Action:Timer_FixedVariables(Handle:timer)
 							SetHudTextParams(-0.75, -0.2, 0.21, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
 							ShowSyncHudText(client, hudSync, ArmorLeft);
 						}
-						
-						SetHudTextParams(0.7, 0.8, 0.21, 252, 186, 3, 255, 0, 0.0, 0.0, 0.0);
-						ShowSyncHudText(client, hudSync, waterMark);
 					}
 				}
 			}

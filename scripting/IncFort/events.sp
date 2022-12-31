@@ -549,6 +549,32 @@ public MRESReturn OnRecoilApplied(int entity, Handle hParams)  {
 	DHookSetParamVector(hParams, 1, NULL_VECTOR);
 	return MRES_ChangedHandled;
 }
+public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
+	float amount = DHookGetParam(hParams, 1);
+
+	additionalstartmoney += amount;
+	for (new i = 1; i < MaxClients; i++) 
+	{
+		CurrencyOwned[i] += amount;
+
+		if(!IsValidClient3(i))
+			continue;
+		if(!IsPlayerAlive(i))
+			continue;
+		if(GetClientTeam(i) != 2)
+			continue;
+		if(TF2_GetPlayerClass(i) != TFClass_Scout)
+			continue;
+
+		float overhealPCT = 1.0+(0.5*TF2Attrib_HookValueFloat(1.0, "mult_patient_overheal_penalty", i));
+		int healAmount = RoundToCeil(TF2_GetMaxHealth(i) * 0.03 * TF2Attrib_HookValueFloat(1.0, "mult_health_fromhealers", i));
+		AddPlayerHealth(i, healAmount, overhealPCT, true, 0);
+	}
+
+	RemoveEntity(entity);
+
+	return MRES_Ignored;
+}
 public MRESReturn OnFireRateCall(int entity, Handle hReturn, Handle hParams)  {
 	if(IsValidWeapon(entity))
 	{
@@ -693,10 +719,6 @@ public OnEntityCreated(entity, const char[] classname)
     {
 		SDKHook(entity, SDKHook_OnTakeDamage, OnTakeDamagePre_Sentry); 
 		CreateTimer(0.35, BuildingRegeneration, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-	}
-	else if(StrContains(classname, "item_currencypack", false) == 0)
-	{
-		RequestFrame(TeleportToNearestPlayer, EntIndexToEntRef(entity));
 	}
 	else if(StrContains(classname, "item_powerup_rune", false) == 0)
 	{
@@ -1027,12 +1049,11 @@ public Event_mvm_wave_begin(Handle:event, const String:name[], bool:dontBroadcas
 public Action:Event_PlayerCollectMoney(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new money = GetEventInt(event, "currency");
-	additionalstartmoney += float(money)*mvmadditional*mvmadditional;
+	additionalstartmoney += float(money);
 	for (new i = 0; i <= MaxClients; i++) 
 	{
 		CurrencyOwned[i] += money;
 	}
-	SetEventInt(event, "currency", 0);
 }
 public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 {

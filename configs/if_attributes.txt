@@ -6222,7 +6222,7 @@
 			"ref"		"Teleporter Recharge Rate"
 			"cost"		"2000"
 			"increase_ratio"	"0.4"
-			"value"		"-0.25"
+			"value"		"-0.1"
 			"init"		"1.0"
 			"max"		"0.1"
 		}

@@ -171,22 +171,6 @@ public Action:AdjustHud(client, args)
 	}
 	return Plugin_Handled;
 }
-public Action:HideWatermark(client, args)
-{
-	if(IsValidClient3(client))
-	{
-		new String:args1[128];
-		if(GetCmdArg(1, args1, sizeof(args1)))
-		{
-			SetClientCookie(client, SAwaterMark, args1);
-		}
-	}
-	else
-	{
-		PrintToChat(client, "Invalid Client");
-	}
-	return Plugin_Handled;
-}
 public Action:Menu_QuickBuyUpgrade(client, args)
 {
 	/*

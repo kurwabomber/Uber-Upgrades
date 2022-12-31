@@ -13,7 +13,6 @@ new Handle:cvar_BotMultiplier
 new Handle:DB = INVALID_HANDLE;
 new Handle:hArmorXPos;
 new Handle:hArmorYPos;
-new Handle:SAwaterMark;
 new Handle:respawnMenu;
 new Handle:particleToggle;
 new Handle:g_SDKCallInitGrenade;
@@ -23,7 +22,6 @@ new Handle:g_SDKCallSentryThink;
 new Handle:Hook_OnMyWeaponFired;
 new Handle:hudSync;
 new Handle:hudSpells;
-new Handle:hudWatermark;
 //Tutorial
 new Handle:EngineerTutorial;
 new Handle:ArmorTutorial;
@@ -107,7 +105,6 @@ new Float:upgrades_costs_inc_ratio[MAX_ATTRIBUTES]
 new Float:upgrades_tweaks_att_ratio[_NB_SP_TWEAKS][NB_SLOTS_UED + 1]
 new Float:upgrades_staged_max[MAX_ATTRIBUTES][MAX_STAGES];
 new Float:additionalstartmoney;
-new	Float:mvmadditional;
 new Float:CurrencyOwned[MAXPLAYERS + 1]
 new Float:ServerMoneyMult = 1.0
 new Float:OverAllMultiplier
@@ -173,7 +170,6 @@ new String:upgrades_weapon[NB_WEAPONS][128];
 new String:upgrades_description[MAX_ATTRIBUTES][512];
 char ArmorXPos[MAXPLAYERS + 1][64];
 char ArmorYPos[MAXPLAYERS + 1][64];
-char WaterMarkToggle[MAXPLAYERS + 1][64];
 new String:SpellList[][] = {"Zap","Lightning Strike","Projected Healing","A Call Beyond","Blacksky Eye","Sunlight Spear","Lightning Enchantment","Snap Freeze","Arcane Prison","darkmoon blade from dark souls","Speed Aura","Aerial Strike","Inferno","Mine Field","Shockwave","Auto-Sentry","Soothing Sunlight","Arcane Hunter","Sabotage"}
 
 //Bools

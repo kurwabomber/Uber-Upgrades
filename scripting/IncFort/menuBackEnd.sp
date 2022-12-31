@@ -894,20 +894,6 @@ public MenuHandler_Preferences(Handle:menu, MenuAction:action, client, param2)
 				}
 				case 5:
 				{
-					new String:waterMarkEnabled[64];
-					GetClientCookie(client, SAwaterMark, waterMarkEnabled, sizeof(waterMarkEnabled));
-					new Float:watermarkValue = StringToFloat(waterMarkEnabled);
-					
-					if(watermarkValue == 1.0){
-						SetClientCookie(client, SAwaterMark, "0");
-						PrintHintText(client, "Watermark is now enabled.");
-					}else{
-						SetClientCookie(client, SAwaterMark, "1");
-						PrintHintText(client, "Watermark is now disabled.");
-					}
-				}
-				case 6:
-				{
 					new String:particleToggleEnabled[64];
 					GetClientCookie(client, particleToggle, particleToggleEnabled, sizeof(particleToggleEnabled));
 					new Float:particleToggleValue = StringToFloat(particleToggleEnabled);
@@ -920,7 +906,7 @@ public MenuHandler_Preferences(Handle:menu, MenuAction:action, client, param2)
 						PrintHintText(client, "Self-Viewable Particles is now disabled.");
 					}
 				}
-				case 7:
+				case 6:
 				{
 					SetClientCookie(client, EngineerTutorial, "0");
 					SetClientCookie(client, ArmorTutorial, "0");

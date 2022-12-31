@@ -74,10 +74,10 @@ public UberShopinitMenusHandlers()
 	LoadTranslations("incrementalfortress.phrases.txt");
 	LoadTranslations("common.phrases.txt");
 	
-	cvar_MoneyBonusKill = CreateConVar("sm_if_moneybonuskill", "600", "Sets the money bonus a client gets for killing: default 200");
-	cvar_StartMoney = CreateConVar("sm_if_startmoney", "50000", "Sets the starting money: default 50000");
-	cvar_ServerMoneyMult = CreateConVar("sm_if_moneymult", "1.0", "Sets the Cash Multiplier: default 1.0");
-	cvar_BotMultiplier = CreateConVar("sm_if_botmultiplier", "0.65", "Sets the bot stat multiplier.: default 0.5");
+	cvar_MoneyBonusKill = CreateConVar("sm_if_moneybonuskill", "600", "Sets the money bonus a client gets for killing");
+	cvar_StartMoney = CreateConVar("sm_if_startmoney", "60000", "Sets the starting money");
+	cvar_ServerMoneyMult = CreateConVar("sm_if_moneymult", "1.0", "Sets the Cash Multiplier");
+	cvar_BotMultiplier = CreateConVar("sm_if_botmultiplier", "0.65", "Sets the bot stat multiplier.: default 0.65");
 	cvar_DisableBotUpgrade = CreateConVar("sm_if_disablebotupgrades","0","Disables bot upgrades if set to 1");
 	cvar_DisableCooldowns = CreateConVar("sm_if_disablecooldowns","0","Disables arcane cooldowns if set to 1");
 	
@@ -138,8 +138,8 @@ public UberShopinitMenusHandlers()
 	HookEvent("player_spawn", Event_PlayerreSpawn)
 	HookEvent("player_teleported", Event_Teleported)
 	HookEvent("deploy_buff_banner",	Event_BuffDeployed);
+	HookEvent("mvm_pickup_currency", Event_PlayerCollectMoney);
 	HookEvent("mvm_reset_stats", Event_ResetStats);
-	HookEvent("mvm_pickup_currency", Event_PlayerCollectMoney)
 	HookEvent("mvm_begin_wave",Event_mvm_wave_begin)
 	HookEvent("mvm_wave_complete",Event_mvm_wave_complete);
 	
@@ -159,19 +159,18 @@ public OnMapStart()
 	for(new i=0; i<=MaxClients; i++)
 	{
 		if(!IsValidClient3(i)){continue;}
-		if(b_Hooked[i] == false)
+		if(b_Hooked[i] == false) {continue;}
+
+		b_Hooked[i] = true;
+		SDKHook(i, SDKHook_OnTakeDamage, OnTakeDamage);
+		SDKHook(i, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
+		fl_MaxArmor[i] = 300.0;
+		fl_CurrentArmor[i] = 300.0;
+		fl_MaxFocus[i] = 100.0;
+		fl_CurrentFocus[i] = 100.0;
+		for(new i1 = 0; i1 < Max_Attunement_Slots; i1++)
 		{
-			b_Hooked[i] = true;
-			SDKHook(i, SDKHook_OnTakeDamage, OnTakeDamage);
-			SDKHook(i, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
-			fl_MaxArmor[i] = 300.0;
-			fl_CurrentArmor[i] = 300.0;
-			fl_MaxFocus[i] = 100.0;
-			fl_CurrentFocus[i] = 100.0;
-			for(new i1 = 0; i1 < Max_Attunement_Slots; i1++)
-			{
-				AttunedSpells[i][i1] = 0.0;
-			}
+			AttunedSpells[i][i1] = 0.0;
 		}
 	}
 	PrecacheSound(SOUND_THUNDER, true);
@@ -242,12 +241,10 @@ public void OnPluginStart()
 	
 	hudSync = CreateHudSynchronizer();
 	hudSpells = CreateHudSynchronizer();
-	hudWatermark = CreateHudSynchronizer();
 	hudStatus = CreateHudSynchronizer();
 	hudAbility = CreateHudSynchronizer();
 	
 	CreateTimer(0.1, Timer_FixedVariables, _, TIMER_REPEAT);
-	mvmadditional = 1.0;
 	StartMoney = GetConVarFloat(cvar_StartMoney);
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	
@@ -336,6 +333,15 @@ public void OnPluginStart()
 	}
 	DHookEnableDetour(g_DHookFireRateCall, true, OnFireRateCall);
 
+	//Currency
+	Handle g_DHookAddCurrency = DHookCreateFromConf(hConf, "CCurrencyPack::SetAmount()");
+	
+	if(g_DHookAddCurrency == INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | Currency Hook error");
+	}
+	DHookEnableDetour(g_DHookAddCurrency, true, OnCurrencySpawn);
+
 	//Modify Rage
 	Handle g_DHookOnModifyRage = DHookCreateFromConf(hConf, "CTFPlayerShared::ModifyRage()");
 	
@@ -408,7 +414,6 @@ public void OnPluginStart()
 	//Cookies
 	hArmorXPos = RegClientCookie("razor_armorxpos", "X Coordinate of armor bar.", CookieAccess_Protected);
 	hArmorYPos = RegClientCookie("razor_armorypos", "Y Coordinate of armor bar.", CookieAccess_Protected);
-	SAwaterMark = RegClientCookie("if_watermark", "Toggles whether the watermark appears.", CookieAccess_Protected);
 	respawnMenu = RegClientCookie("if_respawnmenu", "Toggles if you get the respawn menu on spawn.", CookieAccess_Protected);
 	EngineerTutorial = RegClientCookie("tutorial_engineer", "State of Tutorial", CookieAccess_Protected);
 	ArmorTutorial = RegClientCookie("tutorial_armor", "State of Tutorial", CookieAccess_Protected);
@@ -474,7 +479,6 @@ public OnPluginEnd()
 	PrintToServer("IF | Plugin stopped.")
 	hudSync.Close();
 	hudSpells.Close();
-	hudWatermark.Close();
 	hudAbility.Close();
 	hudStatus.Close();
 	for(new i=0; i<=MaxClients; i++)

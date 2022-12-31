@@ -2127,7 +2127,7 @@ SentryDelay(entity)
 		}
     } 
 }
-TeleportToNearestPlayer(entity)
+/*TeleportToNearestPlayer(entity)
 {
 	entity = EntRefToEntIndex(entity);
 	if(IsValidEntity(entity))
@@ -2160,7 +2160,7 @@ TeleportToNearestPlayer(entity)
 			TeleportEntity(entity, ClientPosition, NULL_VECTOR, NULL_VECTOR);
 		}
 	}
-}
+}*/
 SetZeroGravity(ref)
 {
 	new entity = EntRefToEntIndex(ref); 

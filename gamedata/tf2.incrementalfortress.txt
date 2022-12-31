@@ -147,6 +147,20 @@
 				"return"		"int"
 				"this"			"address"
 			}
+			"CCurrencyPack::SetAmount()"
+			{
+				"signature"		"CCurrencyPack::SetAmount()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"entity"
+				"arguments"
+				{
+					"amount"
+					{
+						"type"	"float"
+					}
+				}
+			}
 		}
 		"Signatures"
 		{
@@ -218,6 +232,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_Z19CheckEntityVelocityR6Vector"
+			}
+			"CCurrencyPack::SetAmount()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN13CCurrencyPack9SetAmountEf"
 			}
 		}
 	}

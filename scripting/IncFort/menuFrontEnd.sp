@@ -60,7 +60,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 		slot = current_slot_used[client]
 		int attributeDisabled[MAX_ATTRIBUTES]
 		//PrintToServer("%i | %i", cat_choice, subcat_choice)
-		
+
 		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); i++)
 		{
 			//PrintToServer("%i", tmp_up_idx);
@@ -232,11 +232,23 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 					}
 					case 2:
 					{
-						Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, (GetResistance(client, true, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true)));
+						if(val == 0.0)
+							val = upgrades_i_val[tmp_up_idx];
+						float delta = (GetResistance(client, true, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true));
+						if(upgrades_efficiency_list[client][slot][tmp_up_idx])
+							Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][tmp_up_idx]);
+
+						upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(delta)/up_cost;
 					}
 					case 3:
 					{
-						Format(desc_str, sizeof(desc_str), "%s (+%.1f)", desc_str, (GetResistance(client, true, 0.0, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true)));
+						if(val == 0.0)
+							val = upgrades_i_val[tmp_up_idx];
+						float delta = (GetResistance(client, true, 0.0, upgrades_ratio[tmp_up_idx])) - (GetResistance(client, true));
+						if(upgrades_efficiency_list[client][slot][tmp_up_idx])
+							Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][tmp_up_idx]);
+
+						upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(delta)/up_cost;
 					}
 					case 4:
 					{
@@ -282,45 +294,45 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, String:TitleStr[100
 					}
 				}
 			}
-			AddMenuItem(menu, "upgrade", desc_str);
-		}
-		if(efficiencyCalculationTimer[client] <= 0.0)
-		{
-			int numEff = 0;
-			for(int e=0;e<MAX_ATTRIBUTES;e++)
+			if(efficiencyCalculationTimer[client] <= 0.0)
 			{
-				if(upgrades_efficiency[client][slot][e])
+				int numEff = 0;
+				for(int e=0;e<MAX_ATTRIBUTES;e++)
 				{
-					numEff++;
-				}
-			}
-			float max = 0.0;
-			int highestIndex = 0;
-			bool toBlock[MAX_ATTRIBUTES];
-			for(int k=0;k<numEff;k++) 
-			{
-				for(int t=0;t<MAX_ATTRIBUTES;t++)
-				{
-					if(!toBlock[t] && upgrades_efficiency[client][slot][t])
+					if(upgrades_efficiency[client][slot][e])
 					{
-						if(upgrades_efficiency[client][slot][t] > max)
+						numEff++;
+					}
+				}
+				float max = 0.0;
+				int highestIndex = 0;
+				bool toBlock[MAX_ATTRIBUTES];
+				for(int k=0;k<numEff;k++) 
+				{
+					for(int t=0;t<MAX_ATTRIBUTES;t++)
+					{
+						if(!toBlock[t] && upgrades_efficiency[client][slot][t])
 						{
-							max = upgrades_efficiency[client][slot][t]
-							highestIndex = t;
+							if(upgrades_efficiency[client][slot][t] > max)
+							{
+								max = upgrades_efficiency[client][slot][t]
+								highestIndex = t;
+							}
+						}
+						if(attributeDisabled[t])
+						{
+							upgrades_efficiency_list[client][slot][t] = 0;
+							upgrades_efficiency[client][slot][t] = 0.0;
 						}
 					}
-					if(attributeDisabled[t])
-					{
-						upgrades_efficiency_list[client][slot][t] = 0;
-						upgrades_efficiency[client][slot][t] = 0.0;
-					}
+					max = 0.0;
+					toBlock[highestIndex] = true;
+					//PrintToServer("%i | %.2f | %s", k, upgrades_efficiency[client][slot][highestIndex], toBlock[highestIndex] ? "blocked" : "unblocked")
+					upgrades_efficiency_list[client][slot][highestIndex] = k+1;
 				}
-				max = 0.0;
-				toBlock[highestIndex] = true;
-				//PrintToServer("%i | %.2f | %s", k, upgrades_efficiency[client][slot][highestIndex], toBlock[highestIndex] ? "blocked" : "unblocked")
-				upgrades_efficiency_list[client][slot][highestIndex] = k+1;
+				efficiencyCalculationTimer[client] = 0.01;
 			}
-			efficiencyCalculationTimer[client] = 0.05;
+			AddMenuItem(menu, "upgrade", desc_str);
 		}
 		SetMenuTitle(menu, TitleStr);
 		SetMenuExitBackButton(menu, true);
@@ -589,7 +601,6 @@ public Menu_ChangePreferences(client)
 		AddMenuItem(menu, "increaseY", "+1 Y to armor hud.");
 		AddMenuItem(menu, "decreaseY", "-1 Y to armor hud.");
 		AddMenuItem(menu, "ifrespawn", "Toggle buy menu on spawn.");
-		AddMenuItem(menu, "disablewatermark", "Toggle watermark hud element.");
 		AddMenuItem(menu, "particleToggle", "Toggle Self-Viewable Particles");
 		AddMenuItem(menu, "resetTutorial", "Reset all tutorial HUD elements.");
 		if (IsValidClient(client) && IsPlayerAlive(client))
