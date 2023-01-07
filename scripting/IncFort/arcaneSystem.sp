@@ -3,15 +3,15 @@ public Menu_ShowArcane(client)
 {
 	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
-		new Handle:menu = CreateMenu(MenuHandler_ArcaneCast);
-		new Address:attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
-		new attunement = 1 + (attuneActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(attuneActive)));
+		Handle menu = CreateMenu(MenuHandler_ArcaneCast);
+		Address attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
+		int attunement = 1 + (attuneActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(attuneActive)));
 		
 		SetMenuExitBackButton(menu, true);
 		SetMenuTitle(menu, "Use Arcane Spells");
-		for (new s = 0; s < attunement; s++)
+		for (int s = 0; s < attunement; s++)
 		{
-			decl String:fstr[100]
+			char fstr[32]
 			Format(fstr, sizeof(fstr), "Use Arcane Spell #%i", s+1);
 			AddMenuItem(menu, "spell", fstr);
 		}
@@ -22,7 +22,7 @@ public Menu_ShowArcane(client)
 	}
 	return;
 }
-public MenuHandler_ArcaneCast(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_ArcaneCast(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select && IsValidClient(client) && IsPlayerAlive(client))
 	{
@@ -135,8 +135,8 @@ public MenuHandler_ArcaneCast(Handle:menu, MenuAction:action, client, param2)
 }
 public Action:Command_UseArcane(client, args)
 {
-	new String:arg1[128];
-	new param2;
+	char arg1[128];
+	int param2;
 	if (!GetCmdArg(1, arg1, sizeof(arg1)))
 		return Plugin_Handled;
 	
@@ -148,8 +148,8 @@ public Action:Command_UseArcane(client, args)
 		return Plugin_Handled;
 
 
-	new Address:slotActive = TF2Attrib_GetByName(client, "arcane attunement slots");
-	new attuneSlots = 1 + (slotActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(slotActive)));
+	Address slotActive = TF2Attrib_GetByName(client, "arcane attunement slots");
+	int attuneSlots = 1 + (slotActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(slotActive)));
 
 	if(param2 < 0 && param2 > attuneSlots) 
 		return Plugin_Handled;
@@ -253,12 +253,12 @@ public Action:Command_UseArcane(client, args)
 //Arcane Spells
 CastMarkForDeath(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane mark for death");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane mark for death");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
 
-	new Float:focusCost = (fl_MaxFocus[client]*0.50)
+	float focusCost = (fl_MaxFocus[client]*0.50)
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -274,20 +274,20 @@ CastMarkForDeath(client, attuneSlot)
 		SpellCooldowns[client][attuneSlot] = 25.0;
 	applyArcaneCooldownReduction(client, attuneSlot);
 
-	new Float:clientpos[3];
+	float clientpos[3];
 	TracePlayerAim(client, clientpos);
-	new Float:Range = 900.0*ArcanePower[client];
-	for(new i = 1; i<MAXENTITIES;i++)
+	float Range = 900.0*ArcanePower[client];
+	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
 			continue;
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 
-		new Float:VictimPos[3];
+		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 30.0;
-		new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+		float Distance = GetVectorDistance(clientpos,VictimPos);
 		if(Distance > Range)
 			continue;
 
@@ -311,12 +311,12 @@ CastMarkForDeath(client, attuneSlot)
 }
 CastSunlightSpear(client, attuneSlot)
 {
-	new Address:SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
+	Address SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
 	int spellLevel = SunlightSpearActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(SunlightSpearActive));
 	if(spellLevel < 1)
 		return;
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (30.0 + (20.0 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (30.0 + (20.0 * level))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -332,18 +332,18 @@ CastSunlightSpear(client, attuneSlot)
 
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[5],focusCost);
 
-	new Float:clientpos[3];
+	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_NORMAL, _, 0.8, _,_,clientpos);
-	new iEntity = CreateEntityByName("tf_projectile_arrow");
+	int iEntity = CreateEntityByName("tf_projectile_arrow");
 	if (!IsValidEdict(iEntity)) 
 		return;
-	new Float:fAngles[3]
-	new Float:fOrigin[3]
-	new Float:vBuffer[3]
-	new Float:fVelocity[3]
-	new Float:fwd[3]
-	new iTeam = GetClientTeam(client);
+	float fAngles[3]
+	float fOrigin[3]
+	float vBuffer[3]
+	float fVelocity[3]
+	float fwd[3]
+	int iTeam = GetClientTeam(client);
 	SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 	SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
@@ -361,7 +361,7 @@ CastSunlightSpear(client, attuneSlot)
 	
 	AddVectors(fOrigin, fwd, fOrigin);
 	
-	new Float:Speed = 3000.0;
+	float Speed = 3000.0;
 	fVelocity[0] = vBuffer[0]*Speed;
 	fVelocity[1] = vBuffer[1]*Speed;
 	fVelocity[2] = vBuffer[2]*Speed;
@@ -370,29 +370,29 @@ CastSunlightSpear(client, attuneSlot)
 	DispatchSpawn(iEntity);
 	SDKHook(iEntity, SDKHook_Touch, OnSunlightSpearCollision);
 	
-	for(new it = 0;it < 3;it++)
+	for(int it = 0;it < 3;it++)
 	{
-		new iParticle = CreateParticle(iEntity, "raygun_projectile_red_crit_trail", true, "", 4.0);
+		int iParticle = CreateParticle(iEntity, "raygun_projectile_red_crit_trail", true, "", 4.0);
 		TeleportEntity(iParticle, NULL_VECTOR, fAngles, NULL_VECTOR);
 	}
 	
-	new iParticle2 = CreateParticle(iEntity, "raygun_projectile_red_trail", true, "", 4.0);
+	int iParticle2 = CreateParticle(iEntity, "raygun_projectile_red_trail", true, "", 4.0);
 	TeleportEntity(iParticle2, NULL_VECTOR, fAngles, NULL_VECTOR);
 	
 	TE_SetupKillPlayerAttachments(iEntity);
 	TE_SendToAll();
-	new color[4]={255, 200, 0,225};
+	int color[4]={255, 200, 0,225};
 	TE_SetupBeamFollow(iEntity,Laser,0,0.5,3.0,3.0,1,color);
 	TE_SendToAll();
 }
 CastLightningEnchantment(client, attuneSlot)
 {
-	new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
+	Address lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
 	int spellLevel = lightningenchantmentActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(lightningenchantmentActive));
 	if(spellLevel < 1)
 		return;
 
-	new Float:focusCost = (150.0 + (40.0 * ArcaneDamage[client]))/ArcanePower[client];
+	float focusCost = (150.0 + (40.0 * ArcaneDamage[client]))/ArcanePower[client];
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -414,12 +414,12 @@ CastLightningEnchantment(client, attuneSlot)
 }
 CastDarkmoonBlade(client, attuneSlot)
 {
-	new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
+	Address darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
 	int spellLevel = darkmoonbladeActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(darkmoonbladeActive));
 	if(spellLevel < 1)
 		return;
 
-	new Float:focusCost = (100.0 + (20.0 * ArcaneDamage[client]))/ArcanePower[client];
+	float focusCost = (100.0 + (20.0 * ArcaneDamage[client]))/ArcanePower[client];
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -440,13 +440,13 @@ CastDarkmoonBlade(client, attuneSlot)
 }
 CastSnapFreeze(client, attuneSlot)
 {
-	new Address:snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
+	Address snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
 	int spellLevel = snapfreezeActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(snapfreezeActive));
 	if(spellLevel < 1)
 		return;
 
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (40.0 + (20.0 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (40.0 + (20.0 * level))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -456,7 +456,7 @@ CastSnapFreeze(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 
-	new Float:clientpos[3];
+	float clientpos[3];
 	GetClientEyePosition(client, clientpos);
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[7],focusCost);
 	fl_CurrentFocus[client] -= focusCost;
@@ -466,14 +466,14 @@ CastSnapFreeze(client, attuneSlot)
 
 	EmitSoundToAll(SOUND_FREEZE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	float damage = 100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0);
-	for(new i = 1; i<MAXENTITIES;i++)
+	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
 			continue;
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 
-		new Float:VictimPos[3];
+		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 15.0;
 
@@ -498,12 +498,12 @@ CastSnapFreeze(client, attuneSlot)
 }
 CastArcanePrison(client, attuneSlot)
 {
-	new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
+	Address arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
 	int spellLevel = arcaneprisonActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(arcaneprisonActive));
 	if(spellLevel < 1)
 		return;
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (60.0 + (35.0 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (60.0 + (35.0 * level))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -513,11 +513,11 @@ CastArcanePrison(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 
-	new Float:ClientPos[3];
-	new Float:ClientAngle[3];
+	float ClientPos[3];
+	float ClientAngle[3];
 	GetClientEyePosition(client,ClientPos);
 	GetClientEyeAngles(client,ClientAngle);
-	new iTeam = GetClientTeam(client)
+	int iTeam = GetClientTeam(client)
 	ClientPos[2] -= 20.0;
 
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[8],focusCost);
@@ -528,14 +528,14 @@ CastArcanePrison(client, attuneSlot)
 	applyArcaneCooldownReduction(client, attuneSlot);
 	EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 	
-	new iEntity = CreateEntityByName("tf_projectile_lightningorb");
+	int iEntity = CreateEntityByName("tf_projectile_lightningorb");
 	if (!IsValidEdict(iEntity)) 
 		return;
 
-	new Float:fAngles[3]
-	new Float:fOrigin[3]
-	new Float:vBuffer[3]
-	new Float:fVelocity[3]
+	float fAngles[3]
+	float fOrigin[3]
+	float vBuffer[3]
+	float fVelocity[3]
 	
 	if(LookPoint(client,fOrigin))
 	{
@@ -551,7 +551,7 @@ CastArcanePrison(client, attuneSlot)
 		
 		GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 		
-		new Float:Speed = 0.0;
+		float Speed = 0.0;
 		fVelocity[0] = vBuffer[0]*Speed;
 		fVelocity[1] = vBuffer[1]*Speed;
 		fVelocity[2] = vBuffer[2]*Speed;
@@ -562,11 +562,11 @@ CastArcanePrison(client, attuneSlot)
 }
 CastSpeedAura(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane speed aura");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane speed aura");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
-	new Float:focusCost = (fl_MaxFocus[client]*0.4)/ArcanePower[client]
+	float focusCost = (fl_MaxFocus[client]*0.4)/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -576,9 +576,9 @@ CastSpeedAura(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 
-	new Float:ClientPos[3];
+	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
-	new iTeam = GetClientTeam(client)
+	int iTeam = GetClientTeam(client)
 	ClientPos[2] -= 20.0;
 
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[10],focusCost);
@@ -586,16 +586,16 @@ CastSpeedAura(client, attuneSlot)
 	if(DisableCooldowns != 1)
 		SpellCooldowns[client][attuneSlot] = 35.0;
 	applyArcaneCooldownReduction(client, attuneSlot);
-	for(new i = 1; i<MaxClients;i++)
+	for(int i = 1; i<MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
 			continue;
 		if(GetClientTeam(i) != iTeam)
 			continue;
-		new Float:VictimPos[3];
+		float VictimPos[3];
 		GetClientEyePosition(i,VictimPos);
-		new Float:Distance = GetVectorDistance(ClientPos,VictimPos);
-		new Float:Range = 800.0;
+		float Distance = GetVectorDistance(ClientPos,VictimPos);
+		float Range = 800.0;
 		if(Distance > Range)
 			continue;
 
@@ -607,13 +607,13 @@ CastSpeedAura(client, attuneSlot)
 }
 CastAerialStrike(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
 
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{			
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -623,17 +623,17 @@ CastAerialStrike(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 
-	new Float:ClientPos[3];
+	float ClientPos[3];
 	TracePlayerAim(client, ClientPos);
-	new iTeam = GetClientTeam(client)
+	int iTeam = GetClientTeam(client)
 
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[11],focusCost);
 	fl_CurrentFocus[client] -= focusCost;
 	if(DisableCooldowns != 1)
 		SpellCooldowns[client][attuneSlot] = 60.0;
 	applyArcaneCooldownReduction(client, attuneSlot);
-	new Float:ProjectileDamage = 90.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 25.0);
-	new Handle:hPack = CreateDataPack();
+	float ProjectileDamage = 90.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 25.0);
+	Handle hPack = CreateDataPack();
 	WritePackCell(hPack, client);
 	WritePackCell(hPack, iTeam);
 	WritePackFloat(hPack, ProjectileDamage);
@@ -656,26 +656,26 @@ CastAerialStrike(client, attuneSlot)
 		TE_SendToAll();
 	}
 }
-public Action:aerialStrike(Handle:timer,any:data)
+public Action:aerialStrike(Handle timer,any:data)
 {
 	ResetPack(data);
-	new client = ReadPackCell(data);
-	new iTeam = ReadPackCell(data);
-	new Float:ProjectileDamage = ReadPackFloat(data);
-	new Float:ClientPos[3];
+	int client = ReadPackCell(data);
+	int iTeam = ReadPackCell(data);
+	float ProjectileDamage = ReadPackFloat(data);
+	float ClientPos[3];
 	ClientPos[0] = ReadPackFloat(data);
 	ClientPos[1] = ReadPackFloat(data);
 	ClientPos[2] = ReadPackFloat(data);
-	for(new i = 0;i<30;i++)
+	for(int i = 0;i<30;i++)
 	{
-		new iEntity = CreateEntityByName("tf_projectile_rocket");
+		int iEntity = CreateEntityByName("tf_projectile_rocket");
 		if (!IsValidEdict(iEntity)) 
 			continue;
 
-		new Float:fAngles[3]
-		new Float:fOrigin[3]
-		new Float:vBuffer[3]
-		new Float:fVelocity[3]
+		float fAngles[3]
+		float fOrigin[3]
+		float vBuffer[3]
+		float fVelocity[3]
 		SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 		SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
@@ -693,7 +693,7 @@ public Action:aerialStrike(Handle:timer,any:data)
 		fOrigin[1] += GetRandomFloat(-300.0/ArcanePower[client],300.0/ArcanePower[client]);
 		fOrigin[2] += 1000.0;
 		
-		new Float:Speed = 1500.0;
+		float Speed = 1500.0;
 		fVelocity[0] = vBuffer[0]*Speed;
 		fVelocity[1] = vBuffer[1]*Speed;
 		fVelocity[2] = vBuffer[2]*Speed;
@@ -706,12 +706,12 @@ public Action:aerialStrike(Handle:timer,any:data)
 }
 CastInferno(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane inferno");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane inferno");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -721,7 +721,7 @@ CastInferno(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 
-	new Float:ClientPos[3];
+	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	ClientPos[2] -= 20.0;
 
@@ -734,7 +734,7 @@ CastInferno(client, attuneSlot)
 	EmitSoundToAll(SOUND_INFERNO, _, client, SNDLEVEL_ROCKET, _, 1.0, _,_,ClientPos);
 	
 	//scripting god
-	new Float:flamePos[3];
+	float flamePos[3];
 	flamePos = ClientPos;
 	flamePos[2] += 400.0;
 	//ohhhhh myyyyy god!!!!!!
@@ -765,17 +765,17 @@ CastInferno(client, attuneSlot)
 	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
 	
 	
-	new Float:DMGDealt = 20.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 12.5);
-	for(new i = 1; i<MAXENTITIES;i++)
+	float DMGDealt = 20.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 12.5);
+	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
 			continue;
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 
-		new Float:VictimPos[3];
+		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-		new Float:Distance = GetVectorDistance(ClientPos,VictimPos);
+		float Distance = GetVectorDistance(ClientPos,VictimPos);
 		if(Distance > 800.0)
 			continue;
 
@@ -787,13 +787,13 @@ CastInferno(client, attuneSlot)
 
 CastMineField(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane mine field");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane mine field");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
 
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (120.0 + (50.0 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (120.0 + (50.0 * level))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{			
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -803,9 +803,9 @@ CastMineField(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 		
-	new Float:ClientPos[3];
+	float ClientPos[3];
 	TracePlayerAim(client, ClientPos);
-	new iTeam = GetClientTeam(client)
+	int iTeam = GetClientTeam(client)
 	
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[13],focusCost);
 	fl_CurrentFocus[client] -= focusCost;
@@ -813,17 +813,17 @@ CastMineField(client, attuneSlot)
 		SpellCooldowns[client][attuneSlot] = 50.0;
 	applyArcaneCooldownReduction(client, attuneSlot);
 		
-	new Float:radius = 300.0*ArcanePower[client];
-	new Float:damage = 90.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 6.5);
-	for(new i = 0;i<20;i++)
+	float radius = 300.0*ArcanePower[client];
+	float damage = 90.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 6.5);
+	for(int i = 0;i<20;i++)
 	{
-		new iEntity = CreateEntityByName("tf_projectile_pipe_remote");
+		int iEntity = CreateEntityByName("tf_projectile_pipe_remote");
 		if (!IsValidEdict(iEntity)) 
 			continue;
-		new Float:fAngles[3]
-		new Float:fOrigin[3]
-		new Float:vBuffer[3]
-		new Float:fVelocity[3]
+		float fAngles[3]
+		float fOrigin[3]
+		float vBuffer[3]
+		float fVelocity[3]
 		SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 		SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
@@ -845,7 +845,7 @@ CastMineField(client, attuneSlot)
 		fOrigin[1] += GetRandomFloat(-300.0/ArcanePower[client],300.0/ArcanePower[client]);
 		fOrigin[2] += 10.0;
 		
-		new Float:Speed = 1500.0;
+		float Speed = 1500.0;
 		fVelocity[0] = vBuffer[0]*Speed;
 		fVelocity[1] = vBuffer[1]*Speed;
 		fVelocity[2] = vBuffer[2]*Speed;
@@ -857,13 +857,13 @@ CastMineField(client, attuneSlot)
 }
 public void CheckMines(ref)
 {
-	new entity = EntRefToEntIndex(ref); 
+	int entity = EntRefToEntIndex(ref); 
 	if(!IsValidEntity(entity))
 		return;
 	if(!HasEntProp(entity, Prop_Data, "m_hThrower"))
 		return;
     
-	new client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
+	int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
 	if (!IsValidClient(client))
 		return;
 	if(!IsPlayerAlive(client))
@@ -874,21 +874,21 @@ public void CheckMines(ref)
 	SetEntProp(entity, Prop_Data, "m_nNextThinkTick", -1);
 	lastMinesTime[client] = GetGameTime();
 }
-public Action:Timer_GrenadeMines(Handle:timer, any:ref) 
+public Action:Timer_GrenadeMines(Handle timer, any:ref) 
 { 
-    new entity = EntRefToEntIndex(ref);
+    int entity = EntRefToEntIndex(ref);
 	if(!IsValidEntity(entity)){KillTimer(timer);return;}
 
-	new client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
+	int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
 	if(!IsValidClient3(client)){KillTimer(timer);return;}
 
-	new Float:distance = GetEntPropFloat(entity, Prop_Send, "m_DmgRadius")
-	new Float:damage = GetEntPropFloat(entity, Prop_Send, "m_flDamage")
-	new Float:timeMod = 1.0+((GetGameTime()-lastMinesTime[client])*0.35);
-	new Float:grenadevec[3], Float:targetvec[3];
+	float distance = GetEntPropFloat(entity, Prop_Send, "m_DmgRadius")
+	float damage = GetEntPropFloat(entity, Prop_Send, "m_flDamage")
+	float timeMod = 1.0+((GetGameTime()-lastMinesTime[client])*0.35);
+	float grenadevec[3], targetvec[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", grenadevec);
 	
-	for(new i=1; i<=MaxClients; i++)
+	for(int i=1; i<=MaxClients; i++)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -917,11 +917,11 @@ public Action:Timer_GrenadeMines(Handle:timer, any:ref)
 }
 CastShockwave(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane shockwave");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane shockwave");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
-	new Float:focusCost = (50.0 + (30.0 * ArcaneDamage[client]))/ArcanePower[client]
+	float focusCost = (50.0 + (30.0 * ArcaneDamage[client]))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{			
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -931,7 +931,7 @@ CastShockwave(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 
-	new Float:ClientPos[3];
+	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	ClientPos[2] -= 20.0;
 
@@ -941,15 +941,15 @@ CastShockwave(client, attuneSlot)
 		SpellCooldowns[client][attuneSlot] = 20.0;
 	applyArcaneCooldownReduction(client, attuneSlot);
 		
-	new Float:damageDealt = (100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0));
-	for(new i = 1; i<MAXENTITIES;i++)
+	float damageDealt = (100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0));
+	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
 			continue;
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 
-		new Float:VictimPos[3];
+		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 15.0;
 
@@ -973,11 +973,11 @@ CastShockwave(client, attuneSlot)
 }
 CastAutoSentry(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane autosentry");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane autosentry");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
-	new Float:focusCost = (fl_MaxFocus[client])
+	float focusCost = (fl_MaxFocus[client])
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -987,7 +987,7 @@ CastAutoSentry(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 	
-	new iTeam = GetClientTeam(client)
+	int iTeam = GetClientTeam(client)
 
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[15],focusCost);
 	fl_CurrentFocus[client] -= focusCost;
@@ -995,13 +995,13 @@ CastAutoSentry(client, attuneSlot)
 		SpellCooldowns[client][attuneSlot] = 120.0;
 	applyArcaneCooldownReduction(client, attuneSlot);
 		
-	new iEntity = CreateEntityByName("obj_sentrygun");
+	int iEntity = CreateEntityByName("obj_sentrygun");
 	if(!IsValidEntity(iEntity))
 		return;
 
-	new iLink = CreateLink(client,true);
-	new Float:angles[3];
-	new Float:position[3];
+	int iLink = CreateLink(client,true);
+	float angles[3];
+	float position[3];
 	//angles[0] -= 180.0;
 	//angles[1] -= 90.0;
 	//angles[2] += 90.0;
@@ -1040,19 +1040,19 @@ CastAutoSentry(client, attuneSlot)
 	CreateTimer(10.0,RemoveAutoSentryID, EntIndexToEntRef(client));
 	autoSentryID[client] = iEntity;
 }
-public Action:RemoveAutoSentryID(Handle:timer, any:ref) 
+public Action:RemoveAutoSentryID(Handle timer, any:ref) 
 {
 	ref = EntRefToEntIndex(ref)
 	autoSentryID[ref] = -1;
 }
 CastSoothingSunlight(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane soothing sunlight");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane soothing sunlight");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
 
-	new Float:focusCost = (fl_MaxFocus[client])/ArcanePower[client]
+	float focusCost = (fl_MaxFocus[client])/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -1062,7 +1062,7 @@ CastSoothingSunlight(client, attuneSlot)
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return;
 
-	new Float:ClientPos[3];
+	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	ClientPos[2] -= 40.0;
 
@@ -1077,16 +1077,16 @@ CastSoothingSunlight(client, attuneSlot)
 	TE_SetupBeamRingPoint(ClientPos, 20.0, 800.0, g_LightningSprite, spriteIndex, 0, 5, 4.0, 10.0, 1.0, {255,255,0,180}, 400, 0);
 	TE_SendToAll();
 }
-public Action:SoothingSunlight(Handle:timer, client) 
+public Action:SoothingSunlight(Handle timer, client) 
 {
 	client = EntRefToEntIndex(client)
 	if(!IsPlayerAlive(client))
 		return;
 
-	new iTeam = GetClientTeam(client)
-	new Float:ClientPos[3];
+	int iTeam = GetClientTeam(client)
+	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
-	for(new i = 1; i<MaxClients;i++)
+	for(int i = 1; i<MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -1094,32 +1094,32 @@ public Action:SoothingSunlight(Handle:timer, client)
 		if(GetClientTeam(i) != iTeam)
 			continue;
 
-		new Float:VictimPos[3];
+		float VictimPos[3];
 		GetClientEyePosition(i,VictimPos);
-		new Float:Distance = GetVectorDistance(ClientPos,VictimPos);
+		float Distance = GetVectorDistance(ClientPos,VictimPos);
 		if(Distance > 1350.0)
 			continue;
 
-		new Float:AmountHealing = TF2_GetMaxHealth(i) * 4.0 * ArcanePower[client];
+		float AmountHealing = TF2_GetMaxHealth(i) * 4.0 * ArcanePower[client];
 		AddPlayerHealth(i, RoundToCeil(AmountHealing), 4.0 * ArcanePower[client], true, client);
 		fl_CurrentArmor[i] += AmountHealing * 3.0 * ArcanePower[client];
 		if(fl_AdditionalArmor[i] < fl_MaxArmor[i] * ArcanePower[client])
 			fl_AdditionalArmor[i] = fl_MaxArmor[i] * ArcanePower[client];
 		TF2_AddCondition(i,TFCond_MegaHeal,6.5);
 	
-		new Float:particleOffset[3] = {0.0,0.0,15.0};
+		float particleOffset[3] = {0.0,0.0,15.0};
 		CreateParticle(i, "utaunt_glitter_parent_gold", true, "", 5.0, particleOffset);
 	}
 	EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 }
 CastArcaneHunter(client, attuneSlot)
 {
-	new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane hunter");
+	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane hunter");
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
 	
-	new Float:focusCost = (200.0 + (65.0 * ArcaneDamage[client]))/ArcanePower[client]
+	float focusCost = (200.0 + (65.0 * ArcaneDamage[client]))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -1134,19 +1134,19 @@ CastArcaneHunter(client, attuneSlot)
 	if(DisableCooldowns != 1)
 		SpellCooldowns[client][attuneSlot] = 30.0;
 	applyArcaneCooldownReduction(client, attuneSlot);
-	new Float:CPOS[3];
+	float CPOS[3];
 	GetClientEyePosition(client,CPOS)
 	
-	for(new i=0;i<30;i++)
+	for(int i=0;i<30;i++)
 	{
 		EmitSoundToAll(SOUND_ARCANESHOOTREADY, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,CPOS);
 	}
 	
-	new Float:particleOffset[3] = {0.0,0.0,90.0};
-	new iParticle = CreateParticle(client, "unusual_psychic_eye", true, "", 3.5, particleOffset);
+	float particleOffset[3] = {0.0,0.0,90.0};
+	int iParticle = CreateParticle(client, "unusual_psychic_eye", true, "", 3.5, particleOffset);
 	if(!IsValidEdict(iParticle))
 	{
-		new Handle:pack;
+		Handle pack;
 		CreateDataTimer(3.0, Timer_MoveParticle, pack);
 		WritePackCell(pack, EntIndexToEntRef(iParticle));
 	}
@@ -1157,18 +1157,18 @@ CastArcaneHunter(client, attuneSlot)
 	CreateTimer(1.6,ArcaneHunter,client);
 	CreateTimer(2.0,ArcaneHunter,client);
 }
-public Action:ArcaneHunter(Handle:timer, client) 
+public Action:ArcaneHunter(Handle timer, client) 
 {
 	if(!IsPlayerAlive(client))
 		return;
 
-	new Float:clientpos[3];
-	new Float:soundPos[3];
-	new Float:clientAng[3];
-	new Float:fwd[3];
+	float clientpos[3];
+	float soundPos[3];
+	float clientAng[3];
+	float fwd[3];
 	TracePlayerAim(client, clientpos);
 	
-	for(new i=1;i<MaxClients;i++)
+	for(int i=1;i<MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -1190,7 +1190,7 @@ public Action:ArcaneHunter(Handle:timer, client)
 	GetClientEyeAngles(client, clientAng);
 	EmitSoundToAll(SOUND_ARCANESHOOT, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
 	// define the direction of the sparks
-	new Float:dir[3] = {0.0, 0.0, 0.0};
+	float dir[3] = {0.0, 0.0, 0.0};
 	
 	TE_SetupEnergySplash(clientpos, dir, false);
 	TE_SendToAll();
@@ -1198,8 +1198,8 @@ public Action:ArcaneHunter(Handle:timer, client)
 	TE_SetupSparks(clientpos, dir, 5000, 1000);
 	TE_SendToAll();
 	
-	new Float:particleOffset[3] = {0.0,0.0,75.0};
-	new String:particleName[32];
+	float particleOffset[3] = {0.0,0.0,75.0};
+	char particleName[32];
 	particleName = GetClientTeam(client) == 2 ? "muzzle_raygun_red" : "muzzle_raygun_blue";
 	
 	GetAngleVectors(clientAng,fwd, NULL_VECTOR, NULL_VECTOR);
@@ -1208,12 +1208,12 @@ public Action:ArcaneHunter(Handle:timer, client)
 	
 	CreateParticle(client, particleName, false, "", 0.5, particleOffset);
 	
-	new iParti = CreateEntityByName("info_particle_system");
-	new iPart2 = CreateEntityByName("info_particle_system");
+	int iParti = CreateEntityByName("info_particle_system");
+	int iPart2 = CreateEntityByName("info_particle_system");
 
 	if (IsValidEntity(iParti) && IsValidEntity(iPart2))
 	{ 
-		decl String:szCtrlParti[32];
+		char szCtrlParti[32];
 		Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
 		DispatchKeyValue(iPart2, "targetname", szCtrlParti);
 		DispatchKeyValue(iParti, "effect_name", "merasmus_zap");
@@ -1224,27 +1224,27 @@ public Action:ArcaneHunter(Handle:timer, client)
 		ActivateEntity(iParti);
 		AcceptEntityInput(iParti, "Start");
 		
-		new Handle:pack;
+		Handle pack;
 		CreateDataTimer(1.0, Timer_KillParticle, pack);
 		WritePackCell(pack, EntIndexToEntRef(iParti));
-		new Handle:pack2;
+		Handle pack2;
 		CreateDataTimer(1.0, Timer_KillParticle, pack2);
 		WritePackCell(pack2, EntRefToEntIndex(iPart2));
 	}
 
-	new Float:LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 80.0));
-	for(new i = 1; i<MAXENTITIES;i++)
+	float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 80.0));
+	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
 			continue;
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 
-		new Float:VictimPos[3];
+		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 30.0;
-		new Float:Distance = GetVectorDistance(clientpos,VictimPos);
-		new Float:Range = 200.0;
+		float Distance = GetVectorDistance(clientpos,VictimPos);
+		float Range = 200.0;
 
 		if(Distance > Range)
 			continue;
@@ -1257,14 +1257,14 @@ public Action:ArcaneHunter(Handle:timer, client)
 }
 CastBlackskyEye(client, attuneSlot)
 {
-	new Address:BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
+	Address BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
 	int spellLevel = BlackskyEyeActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(BlackskyEyeActive));
 
 	if(spellLevel < 1)
 		return;
 
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (8.0 + (3.0 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (8.0 + (3.0 * level))/ArcanePower[client]
 
 	if(fl_CurrentFocus[client] < focusCost)
 	{
@@ -1282,7 +1282,7 @@ CastBlackskyEye(client, attuneSlot)
 	applyArcaneCooldownReduction(client, attuneSlot);
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[4],focusCost);
 
-	new Float:clientpos[3];
+	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_NORMAL, _, 0.7, _,_,clientpos);
 	//Properties
@@ -1292,17 +1292,17 @@ CastBlackskyEye(client, attuneSlot)
 	int tickRate[] = {0,4,2,0};
 	for(int iter = 0;iter < maxCount[spellLevel];iter++)
 	{
-		new iEntity = CreateEntityByName("tf_projectile_arrow");
+		int iEntity = CreateEntityByName("tf_projectile_arrow");
 		if (!IsValidEdict(iEntity)) 
 			continue;
 
-		new Float:fAngles[3]
-		new Float:fOrigin[3]
-		new Float:vBuffer[3]
-		new Float:fVelocity[3]
-		new Float:fwd[3]
-		new Float:right[3]
-		new iTeam = GetClientTeam(client);
+		float fAngles[3]
+		float fOrigin[3]
+		float vBuffer[3]
+		float fVelocity[3]
+		float fwd[3]
+		float right[3]
+		int iTeam = GetClientTeam(client);
 		SetEntityRenderColor(iEntity, 255, 255, 255, 0);
 		SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
@@ -1333,7 +1333,7 @@ CastBlackskyEye(client, attuneSlot)
 		AddVectors(fOrigin, right, fOrigin);
 		AddVectors(fOrigin, fwd, fOrigin);
 		
-		new Float:Speed = projSpeed[spellLevel];
+		float Speed = projSpeed[spellLevel];
 		fVelocity[0] = vBuffer[0]*Speed;
 		fVelocity[1] = vBuffer[1]*Speed;
 		fVelocity[2] = vBuffer[2]*Speed;
@@ -1343,7 +1343,7 @@ CastBlackskyEye(client, attuneSlot)
 		
 		TE_SetupKillPlayerAttachments(iEntity);
 		TE_SendToAll();
-		new color[4]={100, 100, 100,255};
+		int color[4]={100, 100, 100,255};
 		TE_SetupBeamFollow(iEntity,Laser,0,2.5,4.0,8.0,3,color);
 		TE_SendToAll();
 		SDKHook(iEntity, SDKHook_StartTouchPost, BlackskyEyeCollision);
@@ -1354,14 +1354,14 @@ CastBlackskyEye(client, attuneSlot)
 }
 CastACallBeyond(client, attuneSlot)
 {
-	new Address:callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
+	Address callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
 	int spellLevel = callBeyondActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(callBeyondActive));
 
 	if(spellLevel < 1)
 		return;
 	
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (200.0 + (70.0 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (200.0 + (70.0 * level))/ArcanePower[client]
 
 	if(fl_CurrentFocus[client] < focusCost)
 	{
@@ -1381,37 +1381,37 @@ CastACallBeyond(client, attuneSlot)
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[3],focusCost);
 	CreateTimer(1.5, ACallBeyond, EntIndexToEntRef(client));
 	
-	new Float:clientpos[3];
+	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	CreateParticle(client, "merasmus_tp_bits", true);
 	CreateParticle(client, "spellbook_major_burning", true);
 	CreateParticle(client, "unusual_meteor_cast_wheel_purple", true);
 }
-public Action:ACallBeyond(Handle:timer, client) 
+public Action:ACallBeyond(Handle timer, client) 
 {
 	client = EntRefToEntIndex(client)
 	if(!IsPlayerAlive(client))
 		return;
 	
-	new Address:callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
+	Address callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
 	int spellLevel = callBeyondActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(callBeyondActive));
 
 	int projCount[] = {0,15,25,40};
 	float radius[] = {0.0,1500.0,2500.0,2500.0};
 	int tickRate[] = {0,5,2,0};
-	for(new i = 0;i<projCount[spellLevel];i++)
+	for(int i = 0;i<projCount[spellLevel];i++)
 	{
-		new iEntity = CreateEntityByName("tf_projectile_arrow");
+		int iEntity = CreateEntityByName("tf_projectile_arrow");
 		if (!IsValidEdict(iEntity)) 
 			continue;
 
-		new Float:fAngles[3]
-		new Float:fOrigin[3]
-		new Float:vBuffer[3]
-		new Float:fVelocity[3]
-		new Float:fwd[3]
-		new iTeam = GetClientTeam(client);
+		float fAngles[3]
+		float fOrigin[3]
+		float vBuffer[3]
+		float fVelocity[3]
+		float fwd[3]
+		int iTeam = GetClientTeam(client);
 		SetEntityRenderColor(iEntity, 255, 255, 255, 0);
 		SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
@@ -1432,7 +1432,7 @@ public Action:ACallBeyond(Handle:timer, client)
 		
 		AddVectors(fOrigin, fwd, fOrigin);
 		
-		new Float:Speed = 1700.0;
+		float Speed = 1700.0;
 		fVelocity[0] = vBuffer[0]*Speed;
 		fVelocity[1] = vBuffer[1]*Speed;
 		fVelocity[2] = vBuffer[2]*Speed;
@@ -1441,7 +1441,7 @@ public Action:ACallBeyond(Handle:timer, client)
 		DispatchSpawn(iEntity);
 		TE_SetupKillPlayerAttachments(iEntity);
 		TE_SendToAll();
-		new color[4]={255, 255, 255,225};
+		int color[4]={255, 255, 255,225};
 		TE_SetupBeamFollow(iEntity,Laser,0,2.5,4.0,8.0,3,color);
 		TE_SendToAll();
 		SDKHook(iEntity, SDKHook_StartTouchPost, CallBeyondCollision);
@@ -1452,20 +1452,20 @@ public Action:ACallBeyond(Handle:timer, client)
 		homingDelay[iEntity] = 0.4;
 	}
 
-	new Float:clientpos[3];
+	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 }
 CastZap(client, attuneSlot)
 {
-	new Address:zapActive = TF2Attrib_GetByName(client, "arcane zap");
+	Address zapActive = TF2Attrib_GetByName(client, "arcane zap");
 	int spellLevel = zapActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(zapActive));
 
 	if(spellLevel < 1)
 		return;
 
-	new Float:level = ArcaneDamage[client];
-	new Float:focusCost = (3.0 + (0.5 * level))/ArcanePower[client]
+	float level = ArcaneDamage[client];
+	float focusCost = (3.0 + (0.5 * level))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -1476,25 +1476,25 @@ CastZap(client, attuneSlot)
 		return;
 
 	//zap yeah?
-	new closestClient[MAXENTITIES];
-	new Float:clientpos[3];
+	int closestClient[MAXENTITIES];
+	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	clientpos[2] -= 15.0;
-	new Float:closestDistance = 2000.0;
-	new validCount = 0;
-	new maximumTargets[] = {0,1,2,3};
-	new Float:range[] = {0.0,600.0,1500.0,1500.0};
-	for(new i = 1; i<MAXENTITIES;i++)
+	float closestDistance = 2000.0;
+	int validCount = 0;
+	int maximumTargets[] = {0,1,2,3};
+	float range[] = {0.0,600.0,1500.0,1500.0};
+	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
 			continue;
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 
-		new Float:VictimPos[3];
+		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 15.0;
-		new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+		float Distance = GetVectorDistance(clientpos,VictimPos);
 
 		if(Distance < closestDistance && Distance < range[spellLevel])
 		{
@@ -1529,15 +1529,15 @@ DoZap(client,victim,spellLevel)
 	if(!IsValidForDamage(victim))
 		return;
 
-	new Float:clientpos[3];
-	new Float:VictimPosition[3];
-	new Float:level = ArcaneDamage[client];
+	float clientpos[3];
+	float VictimPosition[3];
+	float level = ArcaneDamage[client];
 	
 	GetClientEyePosition(client,clientpos);
 	GetEntPropVector(victim, Prop_Data, "m_vecOrigin", VictimPosition);
 	VictimPosition[2] += 15.0;
 	
-	new Float:range[] = {0.0,600.0,1500.0,1500.0};
+	float range[] = {0.0,600.0,1500.0,1500.0};
 	
 	TE_SetupBeamRingPoint(clientpos, 20.0, range[spellLevel]*1.25, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, {255,0,255,133}, 140, 0);
 	TE_SendToAll();
@@ -1545,39 +1545,39 @@ DoZap(client,victim,spellLevel)
 	TE_SendToAll();
 	EmitSoundToAll(SOUND_ZAP, _, client, SNDLEVEL_CONVO, _, 1.0, _,_,clientpos);
 	
-	new Float:LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 3.0));
-	new Float:radiationAmount[] = {0.0,6.0,10.0,25.0};
+	float LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 3.0));
+	float radiationAmount[] = {0.0,6.0,10.0,25.0};
 	SDKHooks_TakeDamage(victim,client,client, radiationAmount[spellLevel], (DMG_RADIATION+DMG_DISSOLVE), -1, NULL_VECTOR, NULL_VECTOR);
 	SDKHooks_TakeDamage(victim,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(victim));
-	new Float:chance[] = {0.0,0.3,0.6,0.9};
+	float chance[] = {0.0,0.3,0.6,0.9};
 		
 	if(chance[spellLevel] >= GetRandomFloat(0.0, 1.0))
 	{
-		new Handle:hPack = CreateDataPack();
+		Handle hPack = CreateDataPack();
 		WritePackCell(hPack, EntIndexToEntRef(client));
 		WritePackCell(hPack, EntIndexToEntRef(victim));
 		WritePackCell(hPack, EntIndexToEntRef(spellLevel));
 		CreateTimer(0.1,zapAgain,hPack);
 	}
 }
-public Action:zapAgain(Handle:timer,any:data)
+public Action:zapAgain(Handle timer,any:data)
 {
 	ResetPack(data);
-	new client = EntRefToEntIndex(ReadPackCell(data));
-	new victim = EntRefToEntIndex(ReadPackCell(data));
-	new spellLevel = EntRefToEntIndex(ReadPackCell(data));
+	int client = EntRefToEntIndex(ReadPackCell(data));
+	int victim = EntRefToEntIndex(ReadPackCell(data));
+	int spellLevel = EntRefToEntIndex(ReadPackCell(data));
 	DoZap(client,victim,spellLevel);
 	CloseHandle(data);
 }
 CastLightning(client, attuneSlot)
 {
-	new Address:lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
+	Address lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
 	int spellLevel = lightningActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(lightningActive));
 
 	if(spellLevel < 1)
 		return;
 
-	new Float:focusCost = (60.0 + (30.0 * ArcaneDamage[client]))/ArcanePower[client];
+	float focusCost = (60.0 + (30.0 * ArcaneDamage[client]))/ArcanePower[client];
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -1592,15 +1592,15 @@ CastLightning(client, attuneSlot)
 		SpellCooldowns[client][attuneSlot] = 11.0;
 	applyArcaneCooldownReduction(client, attuneSlot);
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[1],focusCost);
-	new Float:clientpos[3];
+	float clientpos[3];
 	TracePlayerAim(client, clientpos);
-	new Float:temppos[3];
+	float temppos[3];
 	TracePlayerAim(client, temppos);
 
 	int quantity[] = {0,1,5,25}
 	float afterburnDamage[] = {0.0,0.02,0.04,0.08}
 	float range[] = {0.0,600.0,1200.0,1500.0}
-	for(new iter = 0;iter < quantity[spellLevel];iter++)
+	for(int iter = 0;iter < quantity[spellLevel];iter++)
 	{
 		// define where the lightning strike starts
 		if(iter > 1)
@@ -1609,7 +1609,7 @@ CastLightning(client, attuneSlot)
 			clientpos[1] = temppos[1] + GetRandomFloat(-900.0,900.0);
 		}
 
-		new Float:startpos[3];
+		float startpos[3];
 		startpos[0] = clientpos[0];
 		startpos[1] = clientpos[1];
 		startpos[2] = clientpos[2] + 1600;
@@ -1621,7 +1621,7 @@ CastLightning(client, attuneSlot)
 		color = iTeam == 2 ? {255, 0, 0, 255} : {0, 0, 255, 255};
 		
 		// define the direction of the sparks
-		new Float:dir[3] = {0.0, 0.0, 0.0};
+		float dir[3] = {0.0, 0.0, 0.0};
 		
 		TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
 		TE_SendToAll();
@@ -1638,24 +1638,24 @@ CastLightning(client, attuneSlot)
 		TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 		TE_SendToAll();
 		
-		for(new i = 1; i<MAXENTITIES;i++)
+		for(int i = 1; i<MAXENTITIES;i++)
 		{
 			if(!IsValidForDamage(i)) 
 				continue;
 			if (!IsOnDifferentTeams(client,i))
 				continue;
 
-			new Float:VictimPos[3];
+			float VictimPos[3];
 			GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 			VictimPos[2] += 30.0;
-			new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+			float Distance = GetVectorDistance(clientpos,VictimPos);
 			if(Distance > range[spellLevel])
 				continue;
 
 			if(!IsPointVisible(clientpos,VictimPos))
 				continue;
 
-			new Float:LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
+			float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
 			SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
 
 			CreateParticle(i, "utaunt_auroraglow_orange_parent", true, "", 3.25);
@@ -1670,13 +1670,13 @@ CastLightning(client, attuneSlot)
 }
 CastHealing(client, attuneSlot)//Projected Healing
 {
-	new Address:healAuraActive = TF2Attrib_GetByName(client, "arcane projected healing");
+	Address healAuraActive = TF2Attrib_GetByName(client, "arcane projected healing");
 	int spellLevel = healAuraActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(healAuraActive));
 
 	if(spellLevel < 1)
 		return;
 
-	new Float:focusCost = (fl_MaxFocus[client]*0.65)/ArcanePower[client];
+	float focusCost = (fl_MaxFocus[client]*0.65)/ArcanePower[client];
 	
 	if(fl_CurrentFocus[client] < focusCost)
 	{
@@ -1692,19 +1692,19 @@ CastHealing(client, attuneSlot)//Projected Healing
 		SpellCooldowns[client][attuneSlot] = 15.0;
 
 	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[2],focusCost);
-	new Float:clientpos[3];
+	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
-	new iTeam = GetClientTeam(client);
+	int iTeam = GetClientTeam(client);
 	EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
-	new iEntity = CreateEntityByName("tf_projectile_flare");
+	int iEntity = CreateEntityByName("tf_projectile_flare");
 	if (!IsValidEdict(iEntity)) 
 		return;
 
-	new Float:fAngles[3]
-	new Float:fOrigin[3]
-	new Float:vBuffer[3]
-	new Float:fVelocity[3]
-	new Float:fwd[3]
+	float fAngles[3]
+	float fOrigin[3]
+	float vBuffer[3]
+	float fVelocity[3]
+	float fwd[3]
 	SetEntityRenderColor(iEntity, 255, 255, 255, 0);
 	SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
@@ -1712,7 +1712,7 @@ CastHealing(client, attuneSlot)//Projected Healing
 	SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
 	SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
 	SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-	new g_offsCollisionGroup = FindSendPropInfo("CBaseEntity", "m_CollisionGroup");
+	int g_offsCollisionGroup = FindSendPropInfo("CBaseEntity", "m_CollisionGroup");
 	SetEntData(iEntity, g_offsCollisionGroup, 5, 4, true);
 				
 	GetClientEyePosition(client, fOrigin);
@@ -1724,7 +1724,7 @@ CastHealing(client, attuneSlot)//Projected Healing
 
 	AddVectors(fOrigin, fwd, fOrigin);
 
-	new Float:Speed = 1800.0;
+	float Speed = 1800.0;
 	fVelocity[0] = vBuffer[0]*Speed;
 	fVelocity[1] = vBuffer[1]*Speed;
 	fVelocity[2] = vBuffer[2]*Speed;

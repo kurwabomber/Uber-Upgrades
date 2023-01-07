@@ -1,25 +1,25 @@
-public Action:Timer_Second(Handle:timer)
+public Action:Timer_Second(Handle timer)
 {
-	for(new client = 1; client < MaxClients; client++)
+	for(int client = 1; client < MaxClients; client++)
 	{
 		if(singularBuysPerMinute[client] > 0)
 			singularBuysPerMinute[client]--;
 		if (IsValidClient3(client) && !IsFakeClient(client))
 		{
-			new Address:armorActive = TF2Attrib_GetByName(client, "obsolete ammo penalty")
+			Address armorActive = TF2Attrib_GetByName(client, "obsolete ammo penalty")
 			if(armorActive != Address_Null)
 			{
-				new Float:armorAmount = TF2Attrib_GetValue(armorActive);
+				float armorAmount = TF2Attrib_GetValue(armorActive);
 				fl_MaxArmor[client] = armorAmount+300.0;
 			}
 			else
 			{
 				fl_MaxArmor[client] = 300.0;
 			}
-			new Address:resActive = TF2Attrib_GetByName(client, "energy weapon no drain")
+			Address resActive = TF2Attrib_GetByName(client, "energy weapon no drain")
 			if(resActive != Address_Null)
 			{
-				new Float:resAmount = TF2Attrib_GetValue(resActive);
+				float resAmount = TF2Attrib_GetValue(resActive);
 				fl_ArmorRes[client] = resAmount+1.0;
 			}
 			else
@@ -31,8 +31,8 @@ public Action:Timer_Second(Handle:timer)
 			GetClientCookie(client, hArmorXPos, ArmorXPos[client], sizeof(ArmorXPos));
 			GetClientCookie(client, hArmorYPos, ArmorYPos[client], sizeof(ArmorYPos));
 			
-			new Address:armorRecharge = TF2Attrib_GetByName(client, "tmp dmgbuff on hit");
-			new Float:ArmorRechargeMult = 1.0;
+			Address armorRecharge = TF2Attrib_GetByName(client, "tmp dmgbuff on hit");
+			float ArmorRechargeMult = 1.0;
 			if(fl_ArmorRegenBonusDuration[client] > 0.0)
 			{
 				ArmorRechargeMult *= fl_ArmorRegenBonus[client]
@@ -43,7 +43,7 @@ public Action:Timer_Second(Handle:timer)
 				ArmorRechargeMult *= 2.0
 				fl_ArmorRegenConstant[client] += 0.05;
 			}
-			new Address:HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
+			Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
 			if(HealingReductionActive != Address_Null)
 			{
 				ArmorRechargeMult *= TF2Attrib_GetValue(HealingReductionActive);
@@ -52,26 +52,26 @@ public Action:Timer_Second(Handle:timer)
 			{
 				ArmorRechargeMult *= TF2Attrib_GetValue(armorRecharge);
 			}
-			new healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
+			int healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
 			if(healers > 0)
 			{
-				for (new i = 1; i < MaxClients; i++)
+				for (int i = 1; i < MaxClients; i++)
 				{
 					if (IsValidClient(i))
 					{
-						new healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
+						int healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
 						if(IsValidEntity(healerweapon))
 						{
 							if(HasEntProp(healerweapon, Prop_Send, "m_hHealingTarget") && GetEntPropEnt(healerweapon, Prop_Send, "m_hHealingTarget") == client)
 							{
 								if(IsValidEntity(healerweapon))
 								{
-									new Address:overhealBonus = TF2Attrib_GetByName(healerweapon, "overheal bonus");
+									Address overhealBonus = TF2Attrib_GetByName(healerweapon, "overheal bonus");
 									if(overhealBonus != Address_Null)
 									{
 										ArmorRechargeMult *= TF2Attrib_GetValue(overhealBonus);
 									}
-									new Address:constantArmorRegen = TF2Attrib_GetByName(healerweapon, "SRifle Charge rate increased");
+									Address constantArmorRegen = TF2Attrib_GetByName(healerweapon, "SRifle Charge rate increased");
 									if(constantArmorRegen != Address_Null)
 									{
 										fl_ArmorRegenConstant[client] += (fl_ArmorRegen[client]*TF2Attrib_GetValue(constantArmorRegen));
@@ -89,23 +89,23 @@ public Action:Timer_Second(Handle:timer)
 			fl_ArmorRegen[client] = (fl_MaxArmor[client]*0.0002);
 			fl_ArmorRegen[client] += (fl_MaxArmor[client]*0.0002*ArmorRechargeMult);
 			//Arcane
-			new Float:arcanePower = 1.0;
+			float arcanePower = 1.0;
 			
-			new Address:ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
+			Address ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
 			if(ArcaneActive != Address_Null)
 			{
 				arcanePower = TF2Attrib_GetValue(ArcaneActive);
 			}
 			ArcanePower[client] = arcanePower;
 			
-			new Float:arcaneDamageMult = 1.0;
-			new Address:ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
+			float arcaneDamageMult = 1.0;
+			Address ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
 			if(ArcaneDamageActive != Address_Null)
 			{
 				arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
 			}
 			ArcaneDamage[client] = arcaneDamageMult;
-			new Address:focusActive = TF2Attrib_GetByName(client, "arcane focus max")
+			Address focusActive = TF2Attrib_GetByName(client, "arcane focus max")
 			if(focusActive != Address_Null)
 			{
 				fl_MaxFocus[client] = (TF2Attrib_GetValue(focusActive)+100.0)* Pow(arcanePower, 2.0);
@@ -114,7 +114,7 @@ public Action:Timer_Second(Handle:timer)
 			{
 				fl_MaxFocus[client] = 100.0*arcanePower;
 			}
-			new Address:regenActive = TF2Attrib_GetByName(client, "arcane focus regeneration")
+			Address regenActive = TF2Attrib_GetByName(client, "arcane focus regeneration")
 			if(regenActive != Address_Null)
 			{
 				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.00015 * TF2Attrib_GetValue(regenActive) *  Pow(arcanePower, 2.0);
@@ -123,10 +123,10 @@ public Action:Timer_Second(Handle:timer)
 			{
 				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.00015 *  Pow(arcanePower, 2.0);
 			}
-			new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
-				new Address:distanceActive = TF2Attrib_GetByName(CWeapon, "critboost")
+				Address distanceActive = TF2Attrib_GetByName(CWeapon, "critboost")
 				if(distanceActive != Address_Null)
 				{
 					DragonsFurySpeedValue[client] = TF2Attrib_GetValue(distanceActive);
@@ -136,10 +136,10 @@ public Action:Timer_Second(Handle:timer)
 					DragonsFurySpeedValue[client] = 0.0;
 				}
 			}
-			new secondary = GetWeapon(client,1);
+			int secondary = GetWeapon(client,1);
 			if(IsValidEntity(secondary))
 			{
-				new Address:parachuteActive = TF2Attrib_GetByName(secondary, "powerup max charges")
+				Address parachuteActive = TF2Attrib_GetByName(secondary, "powerup max charges")
 				if(parachuteActive != Address_Null)
 				{
 					isParachuteReOpenable[client] = RoundToNearest(TF2Attrib_GetValue(parachuteActive));
@@ -148,7 +148,7 @@ public Action:Timer_Second(Handle:timer)
 				{
 					isParachuteReOpenable[client] = 0;
 				}
-				new Address:shieldSpeedActive = TF2Attrib_GetByName(secondary, "powerup charges")
+				Address shieldSpeedActive = TF2Attrib_GetByName(secondary, "powerup charges")
 				if(shieldSpeedActive != Address_Null)
 				{
 					shieldVelocity[client] = TF2Attrib_GetValue(shieldSpeedActive);
@@ -157,10 +157,10 @@ public Action:Timer_Second(Handle:timer)
 				{
 					shieldVelocity[client] = 0.0;
 				}
-				new Address:agilityPowerup = TF2Attrib_GetByName(client, "store sort override DEPRECATED");		
+				Address agilityPowerup = TF2Attrib_GetByName(client, "store sort override DEPRECATED");		
 				if(agilityPowerup != Address_Null)
 				{
-					new Float:agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
+					float agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
 					if(agilityPowerupValue > 0.0)
 					{
 						shieldVelocity[client] *= 1.8;
@@ -171,7 +171,7 @@ public Action:Timer_Second(Handle:timer)
 	}
 	if(IsMvM())
 	{
-		for(new i = 1; i < MaxClients; i++)
+		for(int i = 1; i < MaxClients; i++)
 		{
 			if(IsValidClient3(i))
 			{
@@ -192,9 +192,9 @@ public Action:Timer_Second(Handle:timer)
 		}
 	}
 }
-public Action:Timer_FixedVariables(Handle:timer)
+public Action:Timer_FixedVariables(Handle timer)
 {
-	for(new client = 0; client < MaxClients; client++)
+	for(int client = 0; client < MaxClients; client++)
 	{
 		if (IsValidClient(client) && IsPlayerAlive(client))
 		{
@@ -210,35 +210,35 @@ public Action:Timer_FixedVariables(Handle:timer)
 			{
 				if(disableIFMiniHud[client] <= 0.0)
 				{
-					decl String:Startcash[128]
+					char Startcash[128]
 					Format(Startcash, sizeof(Startcash), "%.0f Startmoney\n$%.0f\n%0.f Player Kills\n%0.f Player Deaths\n%s Damage Dealt\n%s DPS\n%0.f RPS\n%s Damage Healed", StartMoney+additionalstartmoney,CurrencyOwned[client],Kills[client],Deaths[client],GetAlphabetForm(DamageDealt[client]),GetAlphabetForm(dps[client]),RPS[client],GetAlphabetForm(Healed[client])); 
 					SendItemInfo(client, Startcash);
 				}
 				SetEntProp(client, Prop_Send, "m_nCurrency", 0);
-				decl String:ArmorLeft[96]
-				new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+				char ArmorLeft[96]
+				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
 					Format(ArmorLeft, sizeof(ArmorLeft), "Armor | %i / %i", RoundToCeil(fl_CurrentArmor[client] + fl_AdditionalArmor[client]), RoundToNearest(fl_MaxArmor[client])); 
 					if(CheckForAttunement(client))
 					{
 						Format(ArmorLeft, sizeof(ArmorLeft), "%s\nFocus  | %.0f / %.0f", ArmorLeft, fl_CurrentFocus[client],fl_MaxFocus[client]); 
-						new String:spellHUD[2048]
+						char spellHUD[2048]
 						Format(spellHUD, sizeof(spellHUD), "Current Spells Active | \n");
-						new activeSpells = 0;
-						new attunement = 1;
-						new Address:attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
+						int activeSpells = 0;
+						int attunement = 1;
+						Address attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
 						if(attuneActive != Address_Null)
 						{
 							attunement += RoundToNearest(TF2Attrib_GetValue(attuneActive));
 						}
-						for(new i = 0;i<Max_Attunement_Slots && attunement > activeSpells;i++)
+						for(int i = 0;i<Max_Attunement_Slots && attunement > activeSpells;i++)
 						{
 							if(AttunedSpells[client][i] != 0.0)
 							{
 								activeSpells++;
-								new spellID = RoundToNearest(AttunedSpells[client][i]-1.0)
-								new String:spellnum[2048]
+								int spellID = RoundToNearest(AttunedSpells[client][i]-1.0)
+								char spellnum[2048]
 								Format(spellnum, sizeof(spellnum),"%i - %s | Cooldown %.1f\n", i+1, SpellList[spellID], SpellCooldowns[client][i]);
 								StrCat(spellHUD,sizeof(spellHUD),spellnum);
 							}
@@ -294,29 +294,29 @@ public Action:Timer_FixedVariables(Handle:timer)
 		}
 		if(IsValidClient3(client))
 		{
-			new Address:RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
+			Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
 			if(RegenActive != Address_Null)
 			{
-				new Float:RegenPerSecond = TF2Attrib_GetValue(RegenActive);
-				new Float:RegenPerTick = RegenPerSecond/10;
-				new Address:HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
+				float RegenPerSecond = TF2Attrib_GetValue(RegenActive);
+				float RegenPerTick = RegenPerSecond/10;
+				Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
 				if(HealingReductionActive != Address_Null)
 				{
 					RegenPerTick *= TF2Attrib_GetValue(HealingReductionActive);
 				}
 				
-				new Address:regenerationPowerup = TF2Attrib_GetByName(client, "recall");
+				Address regenerationPowerup = TF2Attrib_GetByName(client, "recall");
 				if(regenerationPowerup != Address_Null)
 				{
-					new Float:regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
+					float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
 					if(regenerationPowerupValue > 0.0)
 					{
 						RegenPerTick += TF2_GetMaxHealth(client) / 100.0;
 					}
 				}
 				
-				new clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
-				new clientMaxHealth = TF2_GetMaxHealth(client);
+				int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
+				int clientMaxHealth = TF2_GetMaxHealth(client);
 				if(clientHealth < clientMaxHealth)
 				{
 					if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
@@ -337,10 +337,10 @@ public Action:Timer_FixedVariables(Handle:timer)
 					}
 				}
 			}
-			new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
-				new Address:PrecisionActive = TF2Attrib_GetByName(CWeapon, "medic regen bonus");
+				Address PrecisionActive = TF2Attrib_GetByName(CWeapon, "medic regen bonus");
 				if(PrecisionActive != Address_Null)
 				{
 					if(TF2Attrib_GetValue(PrecisionActive) != 0.0)
@@ -349,7 +349,7 @@ public Action:Timer_FixedVariables(Handle:timer)
 					}
 				}
 			}
-			new Address:conditionToggle = TF2Attrib_GetByName(client, "has pipboy build interface");
+			Address conditionToggle = TF2Attrib_GetByName(client, "has pipboy build interface");
 			if(conditionToggle != Address_Null)
 			{
 				if(TF2Attrib_GetValue(conditionToggle) > 1.0)
@@ -360,17 +360,17 @@ public Action:Timer_FixedVariables(Handle:timer)
 		}
 	}
 }
-public Action:Timer_Every100MS(Handle:timer)
+public Action:Timer_Every100MS(Handle timer)
 {
-	for(new client = 1; client < MaxClients; client++)
+	for(int client = 1; client < MaxClients; client++)
 	{
 		if (IsValidClient3(client) && IsPlayerAlive(client))
 		{
-			new Address:bleedResistance = TF2Attrib_GetByName(client, "sapper damage penalty");
-			new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			new primary = GetWeapon(client, 0);
-			new secondary = GetWeapon(client, 1);
-			new melee = GetWeapon(client, 2);
+			Address bleedResistance = TF2Attrib_GetByName(client, "sapper damage penalty");
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int primary = GetWeapon(client, 0);
+			int secondary = GetWeapon(client, 1);
+			int melee = GetWeapon(client, 2);
 			if(bleedResistance != Address_Null)
 			{
 				BleedMaximum[client] = 100.0 + TF2Attrib_GetValue(bleedResistance);
@@ -379,24 +379,24 @@ public Action:Timer_Every100MS(Handle:timer)
 			{
 				if(BleedBuildup[client] > 0.0 || RadiationBuildup[client] > 0.0)
 				{
-					new String:StatusEffectText[1024]
+					char StatusEffectText[1024]
 					Format(StatusEffectText, sizeof(StatusEffectText), " | Status Effects | "); 
 					
 					if(BleedBuildup[client] > 0.0)
 					{
-						new String:buildup[512];
+						char buildup[512];
 						Format(buildup, sizeof(buildup),"\n    BLEED: %.0f%", (BleedBuildup[client]/BleedMaximum[client])*100.0);
 						StrCat(StatusEffectText,sizeof(StatusEffectText),buildup);
 					}
 					if(RadiationBuildup[client] > 0.0)
 					{
-						new String:buildup[512];
+						char buildup[512];
 						Format(buildup, sizeof(buildup),"\n   RADIATION: %.0f%", (RadiationBuildup[client]/RadiationMaximum[client])*100.0);
 						StrCat(StatusEffectText,sizeof(StatusEffectText),buildup);
 					}
 					if(ConcussionBuildup[client] > 0.0)
 					{
-						new String:buildup[512];
+						char buildup[512];
 						Format(buildup, sizeof(buildup),"\n   CONCUSSION: %.0f%", ConcussionBuildup[client]*100.0);
 						StrCat(StatusEffectText,sizeof(StatusEffectText),buildup);
 					}
@@ -406,7 +406,7 @@ public Action:Timer_Every100MS(Handle:timer)
 				}
 				if(RageBuildup[client] > 0.0)
 				{
-					new String:StatusEffectText[256]
+					char StatusEffectText[256]
 					if(RageBuildup[client] < 1.0)
 					{
 						Format(StatusEffectText, sizeof(StatusEffectText),"Revenge: %.0f%", RageBuildup[client]*100.0);
@@ -432,7 +432,7 @@ public Action:Timer_Every100MS(Handle:timer)
 				}
 				if(SupernovaBuildup[client] > 0.0)
 				{
-					new String:StatusEffectText[256]
+					char StatusEffectText[256]
 					if(SupernovaBuildup[client] < 1.0)
 					{
 						Format(StatusEffectText, sizeof(StatusEffectText),"Supernova: %.0f%", SupernovaBuildup[client]*100.0);
@@ -445,22 +445,22 @@ public Action:Timer_Every100MS(Handle:timer)
 					ShowHudText(client, 9, StatusEffectText);
 				}
 			}
-			new Float:plaguePower = 0.0;
-			new Address:plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
-			new Float:clientPos[3];
+			float plaguePower = 0.0;
+			Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
+			float clientPos[3];
 			GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
 			if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 			{
 				plaguePower = 1.0;
-				for(new e = MaxClients;e<MAXENTITIES;e++)
+				for(int e = MaxClients;e<MAXENTITIES;e++)
 				{
 					if(IsValidEntity(e))
 					{
-						decl String:strName[32];
+						char strName[32];
 						GetEntityClassname(e, strName, 32)
 						if(StrContains(strName, "item_healthkit_", false) == 0 && GetEntProp(e, Prop_Data, "m_bDisabled") == 0)
 						{
-							new Float:VictimPos[3];
+							float VictimPos[3];
 							GetEntPropVector(e, Prop_Data, "m_vecOrigin", VictimPos);
 							if(GetVectorDistance(clientPos,VictimPos) <= 600.0)
 							{
@@ -482,7 +482,7 @@ public Action:Timer_Every100MS(Handle:timer)
 					}
 				}
 			}
-			for(new i=1;i<MaxClients;i++)
+			for(int i=1;i<MaxClients;i++)
 			{
 				if(corrosiveDOT[client][i][0] != 0.0 && corrosiveDOT[client][i][1] >= 0.0)
 				{
@@ -496,7 +496,7 @@ public Action:Timer_Every100MS(Handle:timer)
 				{
 					if(IsOnDifferentTeams(client,i))
 					{
-						new Float:VictimPos[3];
+						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 						if(GetVectorDistance(clientPos,VictimPos) <= 100.0)
 						{
@@ -509,7 +509,7 @@ public Action:Timer_Every100MS(Handle:timer)
 			}
 			if(IsValidEntity(CWeapon))
 			{
-				new Address:infAmmo = TF2Attrib_GetByName(CWeapon, "vision opt in flags")
+				Address infAmmo = TF2Attrib_GetByName(CWeapon, "vision opt in flags")
 				if(infAmmo != Address_Null)
 				{
 					SetAmmo_Weapon(CWeapon,RoundToNearest(TF2Attrib_GetValue(infAmmo)))
@@ -531,14 +531,14 @@ public Action:Timer_Every100MS(Handle:timer)
 
 				if(isBuffActive[client] == true)
 				{
-					/*new Float:range = 800.0;
-					new Address:rangeMult = TF2Attrib_GetByName(primary, "clip size bonus")
+					/*float range = 800.0;
+					Address rangeMult = TF2Attrib_GetByName(primary, "clip size bonus")
 					if(rangeMult != Address_Null)
 					{
 						range *= TF2Attrib_GetValue(rangeMult);
 					}*/
 					//Base Vanilla Buff Overrides
-					new buff = GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex")
+					int buff = GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex")
 					switch(buff)
 					{
 						case 752:
@@ -563,23 +563,23 @@ public Action:Timer_Every100MS(Handle:timer)
 
 				if(isBuffActive[client] == true)
 				{
-					new Float:range = 800.0;
-					new Address:rangeMult = TF2Attrib_GetByName(secondary, "clip size bonus")
+					float range = 800.0;
+					Address rangeMult = TF2Attrib_GetByName(secondary, "clip size bonus")
 					if(rangeMult != Address_Null)
 					{
 						range *= TF2Attrib_GetValue(rangeMult);
 					}
 					//Base Vanilla Buff Overrides
-					new buff = GetEntProp(secondary, Prop_Send, "m_iItemDefinitionIndex")
+					int buff = GetEntProp(secondary, Prop_Send, "m_iItemDefinitionIndex")
 					switch(buff)
 					{
 						case 129,1001:
 						{
-							for(new i=1;i<MaxClients;i++)
+							float ClientPos[3], VictimPos[3];
+							for(int i=1;i<MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
-									new Float:ClientPos[3], Float:VictimPos[3];
 									GetClientAbsOrigin(client, ClientPos);
 									GetClientAbsOrigin(i, VictimPos);
 									if(GetVectorDistance(ClientPos,VictimPos) <= range)
@@ -593,11 +593,11 @@ public Action:Timer_Every100MS(Handle:timer)
 						}
 						case 226:
 						{
-							for(new i=1;i<MaxClients;i++)
+							float ClientPos[3], VictimPos[3];
+							for(int i=1;i<MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
-									new Float:ClientPos[3], Float:VictimPos[3];
 									GetClientAbsOrigin(client, ClientPos);
 									GetClientAbsOrigin(i, VictimPos);
 									if(GetVectorDistance(ClientPos,VictimPos) <= range)
@@ -609,11 +609,11 @@ public Action:Timer_Every100MS(Handle:timer)
 						}
 						case 354:
 						{
-							for(new i=1;i<MaxClients;i++)
+							float ClientPos[3], VictimPos[3];
+							for(int i=1;i<MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
-									new Float:ClientPos[3], Float:VictimPos[3];
 									GetClientAbsOrigin(client, ClientPos);
 									GetClientAbsOrigin(i, VictimPos);
 									if(GetVectorDistance(ClientPos,VictimPos) <= range)
@@ -626,26 +626,26 @@ public Action:Timer_Every100MS(Handle:timer)
 					}
 					//Custom Buff Effects
 					//Lightning Strike banner : lightningCounter : "has pipboy build interface"
-					new Address:lightningBannerActive = TF2Attrib_GetByName(secondary, "has pipboy build interface");
+					Address lightningBannerActive = TF2Attrib_GetByName(secondary, "has pipboy build interface");
 					if(lightningBannerActive != Address_Null && TF2Attrib_GetValue(lightningBannerActive) != 0.0 && IsValidEntity(CWeapon))
 					{
 						if(lightningCounter[client] >= 8)
 						{
-							new Float:clientpos[3];
+							float clientpos[3];
 							GetClientAbsOrigin(client,clientpos);
 							clientpos[0] += GetRandomFloat(-500.0,500.0);
 							clientpos[1] += GetRandomFloat(-500.0,500.0);
 							clientpos[2] = getLowestPosition(clientpos);
 							// define where the lightning strike starts
-							new Float:startpos[3];
+							float startpos[3];
 							startpos[0] = clientpos[0];
 							startpos[1] = clientpos[1];
 							startpos[2] = clientpos[2] + 1600;
 							
 							// define the color of the strike
-							new iTeam = GetClientTeam(client);
+							int iTeam = GetClientTeam(client);
 							//PrintToChat(client, "%i", iTeam);
-							new color[4];
+							int color[4];
 							if(iTeam == 2)
 							{
 								color = {255, 0, 0, 255};
@@ -656,7 +656,7 @@ public Action:Timer_Every100MS(Handle:timer)
 							}
 							
 							// define the direction of the sparks
-							new Float:dir[3] = {0.0, 0.0, 0.0};
+							float dir[3] = {0.0, 0.0, 0.0};
 							
 							TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
 							TE_SendToAll();
@@ -677,15 +677,15 @@ public Action:Timer_Every100MS(Handle:timer)
 							
 							EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 							
-							new Float:LightningDamage = TF2_GetDPSModifiers(client,CWeapon)*10.0*TF2Attrib_GetValue(lightningBannerActive);
-							for(new i = 1; i<MAXENTITIES;i++)
+							float LightningDamage = TF2_GetDPSModifiers(client,CWeapon)*10.0*TF2Attrib_GetValue(lightningBannerActive);
+							for(int i = 1; i<MAXENTITIES;i++)
 							{
 								if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 								{
-									new Float:VictimPos[3];
+									float VictimPos[3];
 									GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 									VictimPos[2] += 30.0;
-									new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+									float Distance = GetVectorDistance(clientpos,VictimPos);
 									if(Distance <= range*0.3)
 									{
 										if(IsPointVisible(clientpos,VictimPos))
@@ -707,27 +707,27 @@ public Action:Timer_Every100MS(Handle:timer)
 		}
 	}
 }
-public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory. 
+public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory. 
 {
-	for(new client = 1; client < MaxClients; client++)
+	for(int client = 1; client < MaxClients; client++)
 	{
 		if (IsValidClient3(client) && IsPlayerAlive(client))
 		{
-			new melee = GetWeapon(client, 2);
+			int melee = GetWeapon(client, 2);
 			if(IsValidEntity(melee) && GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex") == 307)
 			{
-				new Address:MaxChargesActive = TF2Attrib_GetByName(melee, "zombiezombiezombiezombie");
-				new MaxCharges = 1;
+				Address MaxChargesActive = TF2Attrib_GetByName(melee, "zombiezombiezombiezombie");
+				int MaxCharges = 1;
 				if(MaxChargesActive != Address_Null)
 				{
 					MaxCharges += RoundToNearest(TF2Attrib_GetValue(MaxChargesActive));
 				}
 				CaberUses[client] = MaxCharges;
 			}
-			new Address:bossType = TF2Attrib_GetByName(client, "damage force increase text");
+			Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
 			if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 			{
-				new Float:bossValue = TF2Attrib_GetValue(bossType);
+				float bossValue = TF2Attrib_GetValue(bossType);
 				switch(bossValue)
 				{
 					case 3.0:
@@ -735,9 +735,9 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 						CreateParticle(client, "critgun_weaponmodel_red", true, "", 10.0,_,_,1);
 						TE_SendToAll();
 						SetEntityRenderColor(client, 190,0,0,255);
-						new counter = 0;
-						new bool:clientList[MAXPLAYERS+1];
-						for(new i = 1; i<MaxClients; i++)
+						int counter = 0;
+						bool clientList[MAXPLAYERS+1];
+						for(int i = 1; i<MaxClients; i++)
 						{
 							if (IsValidClient3(i) && IsPlayerAlive(i))
 							{
@@ -745,10 +745,10 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 								{
 									if(GetEntProp(i, Prop_Send, "m_bUseBossHealthBar") == 0 && !TF2_IsPlayerInCondition(i, TFCond_KingAura))
 									{
-										new Float:clientpos[3],Float:targetpos[3];
+										float clientpos[3], targetpos[3];
 										GetClientAbsOrigin(client, clientpos);
 										GetClientAbsOrigin(i, targetpos);
-										new Float:distance = GetVectorDistance(clientpos, targetpos);
+										float distance = GetVectorDistance(clientpos, targetpos);
 										if(distance <= 900.0)
 										{
 											counter++;
@@ -766,7 +766,7 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 						{
 							TF2_AddCondition(client, TFCond_MVMBotRadiowave, 2.0);
 							
-							for(new buffed = 1; buffed<MaxClients;buffed++)
+							for(int buffed = 1; buffed<MaxClients;buffed++)
 							{
 								if(clientList[buffed])
 								{
@@ -781,25 +781,25 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 					}
 					case 5.0:
 					{
-						new spellCasted = GetRandomInt(0,3);
+						int spellCasted = GetRandomInt(0,3);
 						if(spellCasted == 0)
 						{
-							new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+							int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 							if(IsValidEntity(CWeapon))
 							{
-								new Float:ClientPos[3];
-								new Float:flamePos[3];
+								float ClientPos[3];
+								float flamePos[3];
 								GetClientAbsOrigin(client,ClientPos);
-								new Float:sphereRadius = 700.0;
-								new Float:tempdiameter;
-								for(new i=-9;i<=8;i++){
-									new Float:rad=float(i*10)/360.0*(3.14159265*2);
+								float sphereRadius = 700.0;
+								float tempdiameter;
+								for(int i=-9;i<=8;i++){
+									float rad=float(i*10)/360.0*(3.14159265*2);
 									tempdiameter=sphereRadius*Cosine(rad)*2;
-									new Float:heightoffset=sphereRadius*Sine(rad);
+									float heightoffset=sphereRadius*Sine(rad);
 
 									//PrintToChatAll("degree %d rad %f sin %f cos %f radius %f offset %f",i*10,rad,Sine(rad),Cosine(rad),radius,heightoffset);
 
-									new Float:origin[3];
+									float origin[3];
 									origin[0]=ClientPos[0];
 									origin[1]=ClientPos[1];
 									origin[2]=ClientPos[2]+heightoffset;
@@ -838,16 +838,16 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
 								
 								
-								new Float:DMGDealt = 3.0 * TF2_GetDPSModifiers(client,CWeapon);
-								for(new i = 1; i<MAXENTITIES;i++)
+								float DMGDealt = 3.0 * TF2_GetDPSModifiers(client,CWeapon);
+								for(int i = 1; i<MAXENTITIES;i++)
 								{
 									if(IsValidForDamage(i))
 									{
 										if(IsOnDifferentTeams(client,i))
 										{
-											new Float:VictimPos[3];
+											float VictimPos[3];
 											GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-											new Float:Distance = GetVectorDistance(ClientPos,VictimPos);
+											float Distance = GetVectorDistance(ClientPos,VictimPos);
 											if(Distance <= 800.0)
 											{
 												CreateParticle(i, "dragons_fury_effect_parent", true, "", 2.0);
@@ -872,18 +872,18 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 						}
 						else if(spellCasted == 3 || spellCasted == 1)
 						{
-							new iTeam = GetClientTeam(client);
-							for(new i=0;i<3;i++)
+							int iTeam = GetClientTeam(client);
+							for(int i=0;i<3;i++)
 							{
-								new iEntity = CreateEntityByName("tf_projectile_flare");
+								int iEntity = CreateEntityByName("tf_projectile_flare");
 								if (IsValidEdict(iEntity)) 
 								{
-									new Float:fAngles[3]
-									new Float:fOrigin[3]
-									new Float:vBuffer[3]
-									new Float:vRight[3]
-									new Float:fVelocity[3]
-									new Float:fwd[3]
+									float fAngles[3]
+									float fOrigin[3]
+									float vBuffer[3]
+									float vRight[3]
+									float fVelocity[3]
+									float fwd[3]
 									SetEntityRenderColor(iEntity, 255, 255, 255, 0);
 									SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
@@ -905,7 +905,7 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 									AddVectors(fOrigin, vRight, fOrigin);
 									AddVectors(fOrigin, fwd, fOrigin);
 									
-									new Float:Speed = 1200.0;
+									float Speed = 1200.0;
 									fVelocity[0] = vBuffer[0]*Speed;
 									fVelocity[1] = vBuffer[1]*Speed;
 									fVelocity[2] = vBuffer[2]*Speed;
@@ -929,11 +929,11 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 						TF2Attrib_SetByName(client, "charge time increased", 10000000.0);
 						TF2Attrib_SetByName(client, "charge recharge rate increased", 100.0);
 						TF2_AddCondition(client, TFCond_Charging, 15.0);
-						new iEntity = CreateEntityByName("eyeball_boss");
-						new iTeam = GetClientTeam(client);
+						int iEntity = CreateEntityByName("eyeball_boss");
+						int iTeam = GetClientTeam(client);
 						if (IsValidEdict(iEntity)) 
 						{
-							new Float:fOrigin[3]
+							float fOrigin[3]
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
@@ -949,27 +949,27 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 					}
 					case 7.0:
 					{
-						new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+						int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 						if(IsValidEntity(CWeapon))
 						{
 							CreateParticle(CWeapon, "utaunt_auroraglow_orange_parent", true, "", 10.0,_,_,1);
 							TE_SendToAll();
 								
-							new Float:clientpos[3];
+							float clientpos[3];
 							GetClientAbsOrigin(client,clientpos);
 							clientpos[0] += GetRandomFloat(-200.0,200.0);
 							clientpos[1] += GetRandomFloat(-200.0,200.0);
 							clientpos[2] = getLowestPosition(clientpos);
 							// define where the lightning strike starts
-							new Float:startpos[3];
+							float startpos[3];
 							startpos[0] = clientpos[0];
 							startpos[1] = clientpos[1];
 							startpos[2] = clientpos[2] + 1600;
 							
 							// define the color of the strike
-							new iTeam = GetClientTeam(client);
+							int iTeam = GetClientTeam(client);
 							//PrintToChat(client, "%i", iTeam);
-							new color[4];
+							int color[4];
 							if(iTeam == 2)
 							{
 								color = {255, 0, 0, 255};
@@ -980,7 +980,7 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 							}
 							
 							// define the direction of the sparks
-							new Float:dir[3] = {0.0, 0.0, 0.0};
+							float dir[3] = {0.0, 0.0, 0.0};
 							
 							TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
 							TE_SendToAll();
@@ -1001,16 +1001,16 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 							
 							EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 							
-							new Float:LightningDamage = 150.0*TF2_GetDPSModifiers(client,CWeapon);
+							float LightningDamage = 150.0*TF2_GetDPSModifiers(client,CWeapon);
 						
-							for(new i = 1; i<MAXENTITIES;i++)
+							for(int i = 1; i<MAXENTITIES;i++)
 							{
 								if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 								{
-									new Float:VictimPos[3];
+									float VictimPos[3];
 									GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 									VictimPos[2] += 30.0;
-									new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+									float Distance = GetVectorDistance(clientpos,VictimPos);
 									if(Distance <= 500.0)
 									{
 										if(IsPointVisible(clientpos,VictimPos))
@@ -1018,12 +1018,12 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 											SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
 											if(IsValidClient3(i))
 											{
-												new Float:velocity[3];
+												float velocity[3];
 												velocity[0]=0.0;
 												velocity[1]=0.0;
 												velocity[2]=1800.0;
 												TeleportEntity(i, NULL_VECTOR, NULL_VECTOR, velocity);
-												new Handle:hPack = CreateDataPack();
+												Handle hPack = CreateDataPack();
 												WritePackCell(hPack, EntIndexToEntRef(i));
 												WritePackCell(hPack, EntIndexToEntRef(client));
 												CreateTimer(0.5,thunderClapPart2,hPack);
@@ -1040,14 +1040,14 @@ public Action:Timer_EveryTenSeconds(Handle:timer)// Self Explanitory.
 		}
 	}
 }
-public Action:BuildingRegeneration(Handle:timer, any:entity) 
+public Action:BuildingRegeneration(Handle timer, any:entity) 
 {
 	entity = EntRefToEntIndex(entity)
 	if(!IsValidEntity(entity) || !IsValidEdict(entity))
 	{
 		return;
 	}
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hBuilder"); 
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hBuilder"); 
 	if(!IsValidEntity(owner) || !IsValidEdict(owner))
 	{
 		return;
@@ -1060,19 +1060,19 @@ public Action:BuildingRegeneration(Handle:timer, any:entity)
 	{
 		return;
 	}
-	new BuildingMaxHealth = GetEntProp(entity, Prop_Send, "m_iMaxHealth");
-	new BuildingHealth = GetEntProp(entity, Prop_Send, "m_iHealth");
+	int BuildingMaxHealth = GetEntProp(entity, Prop_Send, "m_iMaxHealth");
+	int BuildingHealth = GetEntProp(entity, Prop_Send, "m_iHealth");
 	if(BuildingMaxHealth != BuildingHealth)
 	{
-		new mode = 2;
+		int mode = 2;
 		if(mode == 1)
 		{
-			new melee = (GetWeapon(owner,2));
-			new Address:BuildingRegen = TF2Attrib_GetByName(melee, "Projectile speed decreased");
+			int melee = (GetWeapon(owner,2));
+			Address BuildingRegen = TF2Attrib_GetByName(melee, "Projectile speed decreased");
 			if(BuildingRegen != Address_Null)
 			{
-				new Float:buildingHPRegen = TF2Attrib_GetValue(BuildingRegen);
-				new Regeneration = RoundToNearest(((buildingHPRegen*BuildingMaxHealth)/100.0)/7.5);
+				float buildingHPRegen = TF2Attrib_GetValue(BuildingRegen);
+				int Regeneration = RoundToNearest(((buildingHPRegen*BuildingMaxHealth)/100.0)/7.5);
 				if(BuildingHealth < BuildingMaxHealth)
 				{
 					if((Regeneration + BuildingHealth) > BuildingMaxHealth)
@@ -1088,10 +1088,10 @@ public Action:BuildingRegeneration(Handle:timer, any:entity)
 		}
 		if(mode == 2)
 		{
-			new Address:BuildingRegen = TF2Attrib_GetByName(owner, "disguise on backstab");
+			Address BuildingRegen = TF2Attrib_GetByName(owner, "disguise on backstab");
 			if(BuildingRegen != Address_Null)
 			{
-				new Regeneration = RoundToNearest(TF2Attrib_GetValue(BuildingRegen)/3);
+				int Regeneration = RoundToNearest(TF2Attrib_GetValue(BuildingRegen)/3);
 				if(BuildingHealth < BuildingMaxHealth)
 				{
 					if((Regeneration + BuildingHealth) > BuildingMaxHealth)
@@ -1106,24 +1106,24 @@ public Action:BuildingRegeneration(Handle:timer, any:entity)
 			}
 		}
 	}
-	new sentrynumber = EntRefToEntIndex(entity)
-	new String:SentryObject[128];
+	int sentrynumber = EntRefToEntIndex(entity)
+	char SentryObject[128];
 	GetEdictClassname(sentrynumber, SentryObject, sizeof(SentryObject));
 	if (StrEqual(SentryObject, "obj_sentrygun"))
 	{
-		new melee = (GetWeapon(owner,2));
-		new sentryLevel = GetEntLevel(entity);
-		new shells = GetEntProp(entity, Prop_Send, "m_iAmmoShells");
-		new rockets = GetEntProp(entity, Prop_Send, "m_iAmmoRockets");
-		new Address:AmmoRegen = TF2Attrib_GetByName(melee, "disguise on backstab");
-		new Float:maxAmmoMultiplier = 1.0;
-		new Address:ammoMult = TF2Attrib_GetByName(melee, "mvm sentry ammo");
+		int melee = (GetWeapon(owner,2));
+		int sentryLevel = GetEntLevel(entity);
+		int shells = GetEntProp(entity, Prop_Send, "m_iAmmoShells");
+		int rockets = GetEntProp(entity, Prop_Send, "m_iAmmoRockets");
+		Address AmmoRegen = TF2Attrib_GetByName(melee, "disguise on backstab");
+		float maxAmmoMultiplier = 1.0;
+		Address ammoMult = TF2Attrib_GetByName(melee, "mvm sentry ammo");
 		if(ammoMult != Address_Null)
 			maxAmmoMultiplier = TF2Attrib_GetValue(ammoMult);
 
 		if(AmmoRegen != Address_Null)
 		{
-			new AmmoRegeneration = RoundToNearest(TF2Attrib_GetValue(AmmoRegen)/5.0);
+			int AmmoRegeneration = RoundToNearest(TF2Attrib_GetValue(AmmoRegen)/5.0);
 			
 			if(sentryLevel != 1)
 			{
@@ -1161,24 +1161,24 @@ public Action:BuildingRegeneration(Handle:timer, any:entity)
 		}
 	}
 }
-public Action:refreshallweapons(Handle:timer, int client) 
+public Action:refreshallweapons(Handle timer, int client) 
 {
-	for(new i = 0;i < 6;i++)
+	for(int i = 0;i < 6;i++)
 	{
 		refreshUpgrades(client,i);
 	}
 }
-public Action:GiveMaxHealth(Handle:timer, any:userid) 
+public Action:GiveMaxHealth(Handle timer, any:userid) 
 {
-	new client = GetClientOfUserId(userid);
+	int client = GetClientOfUserId(userid);
 	if(IsValidClient3(client) && TF2_GetMaxHealth(client) >= GetClientHealth(client))
 	{
 		SetEntityHealth(client, TF2_GetMaxHealth(client))
 	}
 }
-public Action:SelfDestruct(Handle:timer, any:ref) 
+public Action:SelfDestruct(Handle timer, any:ref) 
 { 
-    new entity = EntRefToEntIndex(ref); 
+    int entity = EntRefToEntIndex(ref); 
 
     if(IsValidEdict(entity)) 
     { 
@@ -1190,7 +1190,7 @@ public Action:SelfDestruct(Handle:timer, any:ref)
 		KillTimer(timer)
 	}
 }
-public Action:DisableSlowdown(Handle:timer, int entity)
+public Action:DisableSlowdown(Handle timer, int entity)
 {
 	entity = EntRefToEntIndex(entity);
 	if(IsValidClient3(entity))
@@ -1199,16 +1199,16 @@ public Action:DisableSlowdown(Handle:timer, int entity)
 		TF2Attrib_SetByName(entity,"major increased jump height", 1.0);
 	}
 }
-public Action:Timer_KillLaser(Handle:timer, int entity)
+public Action:Timer_KillLaser(Handle timer, int entity)
 {
 	TE_SetupKillPlayerAttachments(entity);
 	TE_SendToAll();
 	return Plugin_Stop;
 }
 //On a wave fail:
-public Action:THEREWILLBEBLOOD(Handle:timer)
+public Action:THEREWILLBEBLOOD(Handle timer)
 {
-    new ent, round
+    int ent, round
 
     ent = FindEntityByClassname(-1, "tf_objective_resource");
 	if(IsValidEntity(ent))
@@ -1217,8 +1217,8 @@ public Action:THEREWILLBEBLOOD(Handle:timer)
 		
 		if(round > 0)
 		{
-			new slot,i
-			for (new client = 1; client < MaxClients; client++)
+			int slot,i
+			for (int client = 1; client < MaxClients; client++)
 			{
 				if (IsValidClient(client))
 				{
@@ -1235,7 +1235,7 @@ public Action:THEREWILLBEBLOOD(Handle:timer)
 						}
 						client_spent_money[client][slot] = client_spent_money_mvm_chkp[client][slot];
 						currentupgrades_number[client][slot] = currentupgrades_number_mvm_chkp[client][slot]
-						for(new y = 0;y<5;y++)
+						for(int y = 0;y<5;y++)
 						{
 							currentupgrades_restriction[client][slot][y] = currentupgrades_restriction_mvm_chkp[client][slot][y];
 						}
@@ -1250,7 +1250,7 @@ public Action:THEREWILLBEBLOOD(Handle:timer)
 					client_respawn_checkpoint[client] = 1
 				}
 				CurrencyOwned[client] = CurrencySaved[client];
-				for(new j = 0; j < Max_Attunement_Slots;j++)
+				for(int j = 0; j < Max_Attunement_Slots;j++)
 				{
 					SpellCooldowns[client][j] = 0.0;
 				}
@@ -1261,12 +1261,12 @@ public Action:THEREWILLBEBLOOD(Handle:timer)
 		}
 	}
 }
-public Action:RemoveFire(Handle:timer, any:data)
+public Action:RemoveFire(Handle timer, any:data)
 {
 	ResetPack(data);
 	
-	new client = ReadPackCell(data);
-	new Float:loss = ReadPackFloat(data);
+	int client = ReadPackCell(data);
+	float loss = ReadPackFloat(data);
 	
 	RPS[client] -= loss;
 	
@@ -1276,10 +1276,10 @@ public Action:RemoveFire(Handle:timer, any:data)
 	}
 	CloseHandle(data);
 }
-public Action:LockMission(Handle:timer)
+public Action:LockMission(Handle timer)
 {
-	new String:responseBuffer[4096];
-	new ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
+	char responseBuffer[4096];
+	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
 	GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
 	PrintToServer("%s mission",responseBuffer);
 	if(StrContains(responseBuffer, "IF", false) != -1)
@@ -1287,17 +1287,17 @@ public Action:LockMission(Handle:timer)
 		PrintToServer("Is on a IF mission.");
 		return;
 	}
-	new String:mapName[64];
+	char mapName[64];
 	GetCurrentMap(mapName, sizeof(mapName));
 	StrCat(mapName, sizeof(mapName),"_IF");
 	ServerCommand("tf_mvm_popfile %s", mapName);
 	PrintToServer("Mission was changed to something not Incremental Fortress!");
 	CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You must choose a mission that is made for Incremental Fortress.");
 }
-public Action:ResetMission(Handle:timer)
+public Action:ResetMission(Handle timer)
 {
-	new bool:resetMission = true;
-	for(new i = 1;i<MaxClients;i++)
+	bool resetMission = true;
+	for(int i = 1;i<MaxClients;i++)
 	{
 		if(IsClientInGame(i))
 		{
@@ -1306,7 +1306,7 @@ public Action:ResetMission(Handle:timer)
 	}
 	if(resetMission)
 	{
-		new String:mapName[64]
+		char mapName[64]
 		GetCurrentMap(mapName, sizeof(mapName))
 		StrCat(mapName, sizeof(mapName),"_IF");
 		ServerCommand("tf_mvm_popfile %s", mapName)
@@ -1314,22 +1314,22 @@ public Action:ResetMission(Handle:timer)
 		additionalstartmoney = 0.0
 		StartMoney = GetConVarFloat(cvar_StartMoney);
 		OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
-		for (new client = 0; client < MaxClients; client++)
+		for (int client = 0; client < MaxClients; client++)
 		{
 			CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 		}
 		DeleteSavedPlayerData();
 	}
 }
-public Action:WeaponReGiveUpgrades(Handle:timer, any:userid)
+public Action:WeaponReGiveUpgrades(Handle timer, any:userid)
 {
-	new client = GetClientOfUserId(userid);
+	int client = GetClientOfUserId(userid);
 	if(IsValidClient3(client))
 	{
 		if (IsValidClient(client) && IsPlayerAlive(client))
 		{
 			client_respawn_handled[client] = 1
-			for (new slot = 0; slot < NB_SLOTS_UED; slot++)
+			for (int slot = 0; slot < NB_SLOTS_UED; slot++)
 			{
 				if (slot == 3 && client_new_weapon_ent_id[client])
 				{
@@ -1351,12 +1351,12 @@ public Action:WeaponReGiveUpgrades(Handle:timer, any:userid)
 		client_respawn_handled[client] = 0
 	}
 }
-public Action:Timer_Resetupgrades(Handle:timer, any:userid)
+public Action:Timer_Resetupgrades(Handle timer, any:userid)
 {
-	new client = GetClientOfUserId(userid);
+	int client = GetClientOfUserId(userid);
 	if (IsValidClient(client))
 	{
-		for (new slot = 0; slot < NB_SLOTS_UED; slot++)
+		for (int slot = 0; slot < NB_SLOTS_UED; slot++)
 		{
 			client_spent_money[client][slot] = 0.0
 			client_spent_money_mvm_chkp[client][slot] = 0.0
@@ -1368,18 +1368,18 @@ public Action:Timer_Resetupgrades(Handle:timer, any:userid)
 		}
 	}
 }
-public Action:MvMFailTimer(Handle:timer, any:userid)
+public Action:MvMFailTimer(Handle timer, any:userid)
 {
-	new client = GetClientOfUserId(userid);
+	int client = GetClientOfUserId(userid);
 	
 	if (IsValidClient(client))
 	{
 		TF2Attrib_RemoveAll(client);
 		TF2Attrib_ClearCache(client);
 		TF2_RespawnPlayer(client);
-		for (new slot = 0; slot < NB_SLOTS_UED; slot++)
+		for (int slot = 0; slot < NB_SLOTS_UED; slot++)
 		{
-			new weaponinSlot = GetWeapon(client,slot);
+			int weaponinSlot = GetWeapon(client,slot);
 			if(IsValidEntity(weaponinSlot))
 			{
 				TF2Attrib_RemoveAll(weaponinSlot);
@@ -1391,18 +1391,18 @@ public Action:MvMFailTimer(Handle:timer, any:userid)
 		TF2Attrib_ClearCache(client);
 	}
 }
-public Action:ClChangeClassTimer(Handle:timer, any:userid)
+public Action:ClChangeClassTimer(Handle timer, any:userid)
 {
-	new client = GetClientOfUserId(userid);
+	int client = GetClientOfUserId(userid);
 	
 	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
 		client_respawn_checkpoint[client] = 0;
 		if(AreClientCookiesCached(client))
 		{
-			new String:menuEnabled[64];
+			char menuEnabled[64];
 			GetClientCookie(client, respawnMenu, menuEnabled, sizeof(menuEnabled));
-			new Float:menuValue = StringToFloat(menuEnabled);
+			float menuValue = StringToFloat(menuEnabled);
 			if(menuValue == 0.0)
 			{
 				Menu_BuyUpgrade(client, 0);
@@ -1414,22 +1414,22 @@ public Action:ClChangeClassTimer(Handle:timer, any:userid)
 		}
 	}
 }
-public Action:GiveMaxAmmo(Handle:timer, any:userid) 
+public Action:GiveMaxAmmo(Handle timer, any:userid) 
 {
-	new client = GetClientOfUserId(userid);
+	int client = GetClientOfUserId(userid);
 	//PrintToChatAll("%i gaming", client);
 	if(IsValidClient3(client))
 	{
 		//PrintToChatAll("%N", client);
 		if(IsValidEntity(GetWeapon(client,0)) && HasEntProp(GetWeapon(client,0), Prop_Data, "m_iClip1"))
 		{
-			new primaryAmmo = GetMaxClip(GetWeapon(client,0));
+			int primaryAmmo = GetMaxClip(GetWeapon(client,0));
 			if(primaryAmmo > 1)
 				SetClipAmmo(client, 0, primaryAmmo);
 		}
 		if(IsValidEntity(GetWeapon(client,1)) && HasEntProp(GetWeapon(client,1), Prop_Data, "m_iClip1"))
 		{
-			new secondaryAmmo = GetMaxClip(GetWeapon(client,1));
+			int secondaryAmmo = GetMaxClip(GetWeapon(client,1));
 			if(secondaryAmmo > 1)
 				SetClipAmmo(client, 1, secondaryAmmo);
 		}
@@ -1438,13 +1438,13 @@ public Action:GiveMaxAmmo(Handle:timer, any:userid)
 		{
 			if(current_class[client] == TFClass_Engineer)
 			{
-				new String:TutorialString[32];
+				char TutorialString[32];
 				GetClientCookie(client, EngineerTutorial, TutorialString, sizeof(TutorialString));
 				if(!strcmp("0", TutorialString))
 				{
 					SetClientCookie(client, EngineerTutorial, "1"); 
 					
-					new String:TutorialText[256]
+					char TutorialText[256]
 					Format(TutorialText, sizeof(TutorialText), " | Tutorial | \nAs an engineer, your sentry inherits your survivability upgrades on the body.\nThe sentry upgrades are located on melee upgrades."); 
 					SetHudTextParams(-1.0, -1.0, 15.0, 252, 161, 3, 255, 0, 0.0, 0.0, 0.0);
 					ShowHudText(client, 10, TutorialText);
@@ -1454,13 +1454,13 @@ public Action:GiveMaxAmmo(Handle:timer, any:userid)
 		}
 	}
 }
-public Action:eurekaAttempt(client, const String:command[], argc) 
+public Action:eurekaAttempt(client, const char[] command, argc) 
 {
 	if(IsValidClient3(client) && eurekaActive[client] == false && weaponArtCooldown[client] <= 0.0)
 	{
 		eurekaActive[client] = true;
-		new Float:tauntDelay = 2.3;
-		new Address:TauntSpeedActive = TF2Attrib_GetByName(client, "gesture speed increase");
+		float tauntDelay = 2.3;
+		Address TauntSpeedActive = TF2Attrib_GetByName(client, "gesture speed increase");
 		if(TauntSpeedActive != Address_Null)
 		{
 			tauntDelay /= TF2Attrib_GetValue(TauntSpeedActive);
@@ -1468,14 +1468,14 @@ public Action:eurekaAttempt(client, const String:command[], argc)
 		CreateTimer(tauntDelay,eurekaDelayed,EntIndexToEntRef(client));
 	}
 }
-public Action:thunderClapPart2(Handle:timer, any:data) 
+public Action:thunderClapPart2(Handle timer, any:data) 
 {  
 	ResetPack(data);
-	new victim = EntRefToEntIndex(ReadPackCell(data));
-	new client = EntRefToEntIndex(ReadPackCell(data));
+	int victim = EntRefToEntIndex(ReadPackCell(data));
+	int client = EntRefToEntIndex(ReadPackCell(data));
 	if(IsValidClient3(client) && IsValidClient3(victim))
 	{
-		new Float:velocity[3];
+		float velocity[3];
 		velocity[0]=0.0;
 		velocity[1]=0.0;
 		velocity[2]=-3000.0;
@@ -1485,33 +1485,33 @@ public Action:thunderClapPart2(Handle:timer, any:data)
 	}
 	CloseHandle(data);
 }
-public Action:eurekaDelayed(Handle:timer, int client) 
+public Action:eurekaDelayed(Handle timer, int client) 
 {
 	client = EntRefToEntIndex(client);
 	eurekaActive[client] = false;
 	if(IsValidClient3(client))
 	{
-		new melee = (GetPlayerWeaponSlot(client,2));
+		int melee = (GetPlayerWeaponSlot(client,2));
 		if(IsValidEntity(melee))
 		{
-			new weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
+			int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
 			if(weaponIndex == 589)
 			{
-				new Float:clientpos[3];
+				float clientpos[3];
 				GetClientAbsOrigin(client,clientpos);
 				clientpos[0] += GetRandomFloat(-200.0,200.0);
 				clientpos[1] += GetRandomFloat(-200.0,200.0);
 				clientpos[2] = getLowestPosition(clientpos);
 				// define where the lightning strike starts
-				new Float:startpos[3];
+				float startpos[3];
 				startpos[0] = clientpos[0];
 				startpos[1] = clientpos[1];
 				startpos[2] = clientpos[2] + 1600;
 				
 				// define the color of the strike
-				new iTeam = GetClientTeam(client);
+				int iTeam = GetClientTeam(client);
 				//PrintToChat(client, "%i", iTeam);
-				new color[4];
+				int color[4];
 				if(iTeam == 2)
 				{
 					color = {255, 0, 0, 255};
@@ -1522,7 +1522,7 @@ public Action:eurekaDelayed(Handle:timer, int client)
 				}
 				
 				// define the direction of the sparks
-				new Float:dir[3] = {0.0, 0.0, 0.0};
+				float dir[3] = {0.0, 0.0, 0.0};
 				
 				TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
 				TE_SendToAll();
@@ -1543,51 +1543,51 @@ public Action:eurekaDelayed(Handle:timer, int client)
 				
 				EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 				
-				new Float:LightningDamage = 500.0;
+				float LightningDamage = 500.0;
 				
-				new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
+					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 					if(SentryDmgActive != Address_Null)
 					{
 						LightningDamage *= TF2Attrib_GetValue(SentryDmgActive);
 					}
 				}
-				new Address:SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
+				Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
 				if(SentryDmgActive1 != Address_Null)
 				{
 					LightningDamage *= TF2Attrib_GetValue(SentryDmgActive1);
 				}
-				new Address:SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
+				Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
 				if(SentryDmgActive2 != Address_Null)
 				{
 					LightningDamage *= TF2Attrib_GetValue(SentryDmgActive2);
 				}
-				new Address:damageActive = TF2Attrib_GetByName(melee, "ubercharge");
+				Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
 				if(damageActive != Address_Null)
 				{
 					LightningDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
 				}
-				new Address:damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
+				Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
 				if(damageActive2 != Address_Null)
 				{
 					LightningDamage *= TF2Attrib_GetValue(damageActive2);
 				}
-				new Address:fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
+				Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
 				if(fireRateActive != Address_Null)
 				{
 					LightningDamage /= TF2Attrib_GetValue(fireRateActive);
 				}
 				
-				for(new i = 1; i<MAXENTITIES;i++)
+				for(int i = 1; i<MAXENTITIES;i++)
 				{
 					if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 					{
-						new Float:VictimPos[3];
+						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 						VictimPos[2] += 30.0;
-						new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+						float Distance = GetVectorDistance(clientpos,VictimPos);
 						if(Distance <= 1000.0)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
@@ -1595,12 +1595,12 @@ public Action:eurekaDelayed(Handle:timer, int client)
 								SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
 								if(IsValidClient3(i))
 								{
-									new Float:velocity[3];
+									float velocity[3];
 									velocity[0]=0.0;
 									velocity[1]=0.0;
 									velocity[2]=1800.0;
 									TeleportEntity(i, NULL_VECTOR, NULL_VECTOR, velocity);
-									new Handle:hPack = CreateDataPack();
+									Handle hPack = CreateDataPack();
 									WritePackCell(hPack, EntIndexToEntRef(i));
 									WritePackCell(hPack, EntIndexToEntRef(client));
 									CreateTimer(0.5,thunderClapPart2,hPack);
@@ -1611,7 +1611,7 @@ public Action:eurekaDelayed(Handle:timer, int client)
 				}
 				weaponArtCooldown[client] = 0.55;
 			}
-			new Address:teleportBuffActive = TF2Attrib_GetByName(melee, "zoom speed mod disabled");
+			Address teleportBuffActive = TF2Attrib_GetByName(melee, "zoom speed mod disabled");
 			if(teleportBuffActive != Address_Null && TF2Attrib_GetValue(teleportBuffActive) != 0.0)
 			{
 				TF2_AddCondition(client, TFCond_RuneAgility, 4.0);
@@ -1621,14 +1621,14 @@ public Action:eurekaDelayed(Handle:timer, int client)
 		}
 	}
 }
-public Action:CreateBloodTracer(Handle:timer,any:data)
+public Action:CreateBloodTracer(Handle timer,any:data)
 {
 	ResetPack(data);
-	new weapon = EntRefToEntIndex(ReadPackCell(data));
-	new client = EntRefToEntIndex(ReadPackCell(data));
+	int weapon = EntRefToEntIndex(ReadPackCell(data));
+	int client = EntRefToEntIndex(ReadPackCell(data));
 	if(IsValidEntity(client) && IsValidEntity(weapon))
 	{
-		decl Float:fAngles[3], Float:fOrigin[3], Float:vBuffer[3], Float:fOriginEnd[3], Float:fwd[3], Float:opposite[3], Float:PlayerOrigin[3];
+		float fAngles[3], fOrigin[3], vBuffer[3], fOriginEnd[3], fwd[3], opposite[3], PlayerOrigin[3];
 		TracePlayerAimRanged(client, 800.0, fOrigin);
 		GetClientEyePosition(client, PlayerOrigin);
 		GetClientEyeAngles(client, fAngles);
@@ -1645,22 +1645,22 @@ public Action:CreateBloodTracer(Handle:timer,any:data)
 		opposite[1] = GetRandomFloat( -500.0, 500.0 );
 		opposite[2] = GetRandomFloat( -100.0, 100.0 );
 		
-		new Float:mult = 1.0
-		new Address:multiHitActive = TF2Attrib_GetByName(weapon, "taunt move acceleration time");
+		float mult = 1.0
+		Address multiHitActive = TF2Attrib_GetByName(weapon, "taunt move acceleration time");
 		if(multiHitActive != Address_Null)
 		{
 			mult *= TF2Attrib_GetValue(multiHitActive) + 1.0;
 		}
 		mult *= TF2_GetDPSModifiers(client, weapon, false, false) * 10.0;
-		for(new i = 1; i<MAXENTITIES;i++)
+		for(int i = 1; i<MAXENTITIES;i++)
 		{
 			if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 			{
-				new Float:VictimPos[3];
+				float VictimPos[3];
 				GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 				VictimPos[2] += 30.0;
-				new Float:Distance = GetVectorDistance(fOrigin,VictimPos);
-				new Float:Range = 500.0;
+				float Distance = GetVectorDistance(fOrigin,VictimPos);
+				float Range = 500.0;
 				if(Distance <= Range)
 				{
 					if(IsPointVisible(PlayerOrigin,VictimPos))
@@ -1680,7 +1680,7 @@ public Action:CreateBloodTracer(Handle:timer,any:data)
 		fOriginEnd[1] -= opposite[1]
 		fOriginEnd[2] -= opposite[2]
 
-		new color[4];
+		int color[4];
 		color = {255, 0, 0, 255}
 		TE_SetupBeamPoints(fOrigin,fOriginEnd,Laser,Laser,0,5,2.5,4.0,8.0,3,1.0,color,10);
 		TE_SendToAll();
@@ -1691,7 +1691,7 @@ public Action:CreateBloodTracer(Handle:timer,any:data)
 	}
 	CloseHandle(data);
 }
-public Action:removeBulletsPerShot(Handle:timer, int client) 
+public Action:removeBulletsPerShot(Handle timer, int client) 
 {  
     if(IsValidClient3(client)) 
     { 
@@ -1701,12 +1701,12 @@ public Action:removeBulletsPerShot(Handle:timer, int client)
 		StunShotBPS[client] = false;
     }
 }
-public Action:AttackTwice(Handle:timer, any:data) 
+public Action:AttackTwice(Handle timer, any:data) 
 {  
 	ResetPack(data);
-	new client = EntRefToEntIndex(ReadPackCell(data));
-	new CWeapon = EntRefToEntIndex(ReadPackCell(data));
-	new timesLeft = ReadPackCell(data);
+	int client = EntRefToEntIndex(ReadPackCell(data));
+	int CWeapon = EntRefToEntIndex(ReadPackCell(data));
+	int timesLeft = ReadPackCell(data);
 	if(IsValidClient3(client) && IsValidEntity(CWeapon))
 	{
 		timesLeft--;
@@ -1715,7 +1715,7 @@ public Action:AttackTwice(Handle:timer, any:data)
 		
 		if(timesLeft > 0)
 		{
-			new Handle:hPack = CreateDataPack();
+			Handle hPack = CreateDataPack();
 			WritePackCell(hPack, EntIndexToEntRef(client));
 			WritePackCell(hPack, EntIndexToEntRef(CWeapon));
 			WritePackCell(hPack, timesLeft);
@@ -1728,28 +1728,28 @@ public Action:AttackTwice(Handle:timer, any:data)
 	}
 	CloseHandle(data);
 }
-public Action:orbitalStrike(Handle:timer,any:data)
+public Action:orbitalStrike(Handle timer,any:data)
 {
 	ResetPack(data);
-	new client = ReadPackCell(data);
-	new iTeam = ReadPackCell(data);
-	new Float:ProjectileDamage = ReadPackFloat(data);
-	new Float:ClientPos[3];
+	int client = ReadPackCell(data);
+	int iTeam = ReadPackCell(data);
+	float ProjectileDamage = ReadPackFloat(data);
+	float ClientPos[3];
 	ClientPos[0] = ReadPackFloat(data);
 	ClientPos[1] = ReadPackFloat(data);
 	ClientPos[2] = ReadPackFloat(data);
-	new Float:ClientOrigin[3];
+	float ClientOrigin[3];
 	ClientOrigin[0] = ReadPackFloat(data);
 	ClientOrigin[1] = ReadPackFloat(data);
 	ClientOrigin[2] = ReadPackFloat(data);
-	new iEntity = CreateEntityByName("tf_projectile_rocket");
+	int iEntity = CreateEntityByName("tf_projectile_rocket");
 	if (IsValidEdict(iEntity)) 
 	{
-		new Float:fAngles[3]
-		new Float:fOrigin[3]
-		new Float:vBuffer[3]
-		new Float:fVelocity[3]
-		new Float:EndVector[3]
+		float fAngles[3]
+		float fOrigin[3]
+		float vBuffer[3]
+		float fVelocity[3]
+		float EndVector[3]
 		SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 		SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
@@ -1766,7 +1766,7 @@ public Action:orbitalStrike(Handle:timer,any:data)
 		GetVectorAngles(EndVector, fAngles);
 		GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 		
-		new Float:Speed = 4500.0;
+		float Speed = 4500.0;
 		fVelocity[0] = vBuffer[0]*Speed;
 		fVelocity[1] = vBuffer[1]*Speed;
 		fVelocity[2] = vBuffer[2]*Speed;
@@ -1776,7 +1776,7 @@ public Action:orbitalStrike(Handle:timer,any:data)
 	}
 	CloseHandle(data);
 }
-public Action:SetTankTeleporter(Handle:timer, int entity) 
+public Action:SetTankTeleporter(Handle timer, int entity) 
 {  
 	entity = EntRefToEntIndex(entity)
 	if(IsValidEntity(entity))
@@ -1784,31 +1784,31 @@ public Action:SetTankTeleporter(Handle:timer, int entity)
 		TankTeleporter = entity;
 	}
 }
-public Action:ShootTwice(Handle:timer, any:data) 
+public Action:ShootTwice(Handle timer, any:data) 
 {  
 	ResetPack(data);
-	new inflictor = EntRefToEntIndex(ReadPackCell(data));
-	new client = EntRefToEntIndex(ReadPackCell(data));
-	new timesLeft = ReadPackCell(data);
+	int inflictor = EntRefToEntIndex(ReadPackCell(data));
+	int client = EntRefToEntIndex(ReadPackCell(data));
+	int timesLeft = ReadPackCell(data);
 	if(!IsValidClient3(inflictor) && IsValidEntity(inflictor) && HasEntProp(inflictor,Prop_Send,"m_hBuilder") && timesLeft > 0)
 	{
 		if(IsValidClient3(client))
 		{
-			new melee = (GetPlayerWeaponSlot(client,2));
+			int melee = (GetPlayerWeaponSlot(client,2));
 			if(IsValidEntity(melee))
 			{
-				new Address:doubleShotActive = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");
+				Address doubleShotActive = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");
 				if(doubleShotActive != Address_Null && TF2Attrib_GetValue(doubleShotActive) > 0.0)
 				{
-					new iEntity = CreateEntityByName("tf_projectile_sentryrocket");
+					int iEntity = CreateEntityByName("tf_projectile_sentryrocket");
 					if (IsValidEdict(iEntity)) 
 					{
-						new Float:fAngles[3]
-						new Float:fOrigin[3]
-						new Float:vBuffer[3]
-						new Float:fVelocity[3]
-						new Float:fwd[3]
-						new iTeam = GetClientTeam(client);
+						float fAngles[3]
+						float fOrigin[3]
+						float vBuffer[3]
+						float fVelocity[3]
+						float fwd[3]
+						int iTeam = GetClientTeam(client);
 						SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
@@ -1816,7 +1816,7 @@ public Action:ShootTwice(Handle:timer, any:data)
 						SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
 						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
 									
-						new angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
+						int angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
 						GetEntPropVector( inflictor, Prop_Send, "m_vecOrigin", fOrigin );
 						fOrigin[2] += 55.0;
 						GetEntDataVector( inflictor, angleOffsetB, fAngles );
@@ -1827,9 +1827,9 @@ public Action:ShootTwice(Handle:timer, any:data)
 						
 						AddVectors(fOrigin, fwd, fOrigin);
 						
-						new Float:Speed = 1100.0;
-						new Address:projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
-						new Address:projspeed1 = TF2Attrib_GetByName(melee, "Projectile speed decreased");
+						float Speed = 1100.0;
+						Address projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
+						Address projspeed1 = TF2Attrib_GetByName(melee, "Projectile speed decreased");
 						if(projspeed != Address_Null){
 							Speed *= TF2Attrib_GetValue(projspeed)
 						}
@@ -1840,9 +1840,9 @@ public Action:ShootTwice(Handle:timer, any:data)
 						fVelocity[1] = vBuffer[1]*Speed;
 						fVelocity[2] = vBuffer[2]*Speed;
 						
-						new Float:ProjectileDamage = 100.0;
+						float ProjectileDamage = 100.0;
 						
-						new Address:SentryDmgActive = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
+						Address SentryDmgActive = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
 						if(SentryDmgActive != Address_Null)
 						{
 							ProjectileDamage *= TF2Attrib_GetValue(SentryDmgActive);
@@ -1854,7 +1854,7 @@ public Action:ShootTwice(Handle:timer, any:data)
 						timesLeft--;
 						if(timesLeft > 0)
 						{
-							new Handle:hPack = CreateDataPack();
+							Handle hPack = CreateDataPack();
 							WritePackCell(hPack, EntIndexToEntRef(inflictor));
 							WritePackCell(hPack, EntIndexToEntRef(client));
 							WritePackCell(hPack, timesLeft);
@@ -1871,9 +1871,9 @@ public Action:ShootTwice(Handle:timer, any:data)
 	}
 	CloseHandle(data);
 }
-public Action:ReEnable(Handle:timer, any:ref) 
+public Action:ReEnable(Handle timer, any:ref) 
 { 
-    new entity = EntRefToEntIndex(ref); 
+    int entity = EntRefToEntIndex(ref); 
 
     if(IsValidEdict(entity)) 
     { 
@@ -1885,9 +1885,9 @@ public Action:ReEnable(Handle:timer, any:ref)
 		KillTimer(timer)
 	}
 }
-public Action:ArrowThink(Handle:timer, any:ref) 
+public Action:ArrowThink(Handle timer, any:ref) 
 { 
-	new entity = EntRefToEntIndex(ref); 
+	int entity = EntRefToEntIndex(ref); 
     if(IsValidEdict(entity) && !gravChanges[entity]) 
     { 
 		SetEntityGravity(entity, 0.001);
@@ -1897,35 +1897,35 @@ public Action:ArrowThink(Handle:timer, any:ref)
 		KillTimer(timer)
 	}
 }
-public Action:HeadshotHomingThink(Handle:timer, any:ref) 
+public Action:HeadshotHomingThink(Handle timer, any:ref) 
 { 
-	new entity = EntRefToEntIndex(ref); 
-	new bool:flag = false;
+	int entity = EntRefToEntIndex(ref); 
+	bool flag = false;
 	if(IsValidEntity(entity))
     {
-		new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
 		{
-			new Target = GetClosestTarget(entity, owner); 
+			int Target = GetClosestTarget(entity, owner); 
 			if(IsValidClient3(Target))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
+					Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
 					if(homingActive != Address_Null)
 					{
-						new Float:maxDistance = TF2Attrib_GetValue(homingActive)
+						float maxDistance = TF2Attrib_GetValue(homingActive)
 						if(owner != Target)
 						{
-							new Float:EntityPos[3], Float:TargetPos[3]; 
+							float EntityPos[3], TargetPos[3]; 
 							GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", EntityPos ); 
 							GetClientAbsOrigin( Target, TargetPos ); 
-							new Float:distance = GetVectorDistance( EntityPos, TargetPos ); 
+							float distance = GetVectorDistance( EntityPos, TargetPos ); 
 							
 							if( distance <= maxDistance )
 							{
-								new Float:ProjLocation[3], Float:ProjVector[3], Float:BaseSpeed, Float:NewSpeed, Float:ProjAngle[3], Float:AimVector[3], Float:InitialSpeed[3]; 
+								float ProjLocation[3], ProjVector[3], BaseSpeed, NewSpeed, ProjAngle[3], AimVector[3], InitialSpeed[3]; 
 								
 								GetEntPropVector( entity, Prop_Send, "m_vInitialVelocity", InitialSpeed ); 
 								if ( GetVectorLength( InitialSpeed ) < 10.0 ) GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", InitialSpeed ); 
@@ -1970,38 +1970,38 @@ public Action:HeadshotHomingThink(Handle:timer, any:ref)
 		KillTimer(timer);
 	}
 }
-public Action:ThrowableHomingThink(Handle:timer, any:ref) 
+public Action:ThrowableHomingThink(Handle timer, any:ref) 
 { 
-	new entity = EntRefToEntIndex(ref); 
-	new bool:flag = false;
+	int entity = EntRefToEntIndex(ref); 
+	bool flag = false;
 	if(IsValidEntity(entity))
     {
-		new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(!IsValidClient3(owner) && HasEntProp(entity, Prop_Data, "m_hThrower"))
 			owner = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
 
 		if(IsValidClient3(owner))
 		{
-			new Target = GetClosestTarget(entity, owner); 
+			int Target = GetClosestTarget(entity, owner); 
 			if(IsValidClient3(Target))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
+					Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
 					if(homingActive != Address_Null)
 					{
-						new Float:maxDistance = TF2Attrib_GetValue(homingActive)
+						float maxDistance = TF2Attrib_GetValue(homingActive)
 						if(owner != Target)
 						{
-							new Float:EntityPos[3], Float:TargetPos[3]; 
+							float EntityPos[3], TargetPos[3]; 
 							GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", EntityPos ); 
 							GetClientAbsOrigin( Target, TargetPos ); 
-							new Float:distance = GetVectorDistance( EntityPos, TargetPos ); 
+							float distance = GetVectorDistance( EntityPos, TargetPos ); 
 							
 							if( distance <= maxDistance )
 							{
-								new Float:ProjLocation[3], Float:ProjVector[3], Float:NewSpeed, Float:ProjAngle[3], Float:AimVector[3]; 
+								float ProjLocation[3], ProjVector[3], NewSpeed, ProjAngle[3], AimVector[3]; 
 								
 								
 								GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", ProjLocation ); 
@@ -2044,20 +2044,20 @@ public Action:ThrowableHomingThink(Handle:timer, any:ref)
 		KillTimer(timer);
 	}
 }
-public Action:Timer_PlayerGrenadeMines(Handle:timer, any:ref) 
+public Action:Timer_PlayerGrenadeMines(Handle timer, any:ref) 
 {
-    new entity = EntRefToEntIndex(ref);
-	new bool:flag = false;
+    int entity = EntRefToEntIndex(ref);
+	bool flag = false;
 	if(IsValidEntity(entity))
 	{
-		new client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
+		int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
 		if(IsValidClient3(client))
 		{
-			new Float:distance = GetEntPropFloat(entity, Prop_Send, "m_DmgRadius")
-			new Float:damage = GetEntPropFloat(entity, Prop_Send, "m_flDamage")
-			new Float:grenadevec[3], Float:targetvec[3];
+			float distance = GetEntPropFloat(entity, Prop_Send, "m_DmgRadius")
+			float damage = GetEntPropFloat(entity, Prop_Send, "m_flDamage")
+			float grenadevec[3], targetvec[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", grenadevec);
-			for(new i=0; i<=MaxClients; i++)
+			for(int i=0; i<=MaxClients; i++)
 			{
 				if(!IsValidClient3(i)){continue;}
 				GetClientAbsOrigin(i, targetvec);
@@ -2087,20 +2087,20 @@ public Action:Timer_PlayerGrenadeMines(Handle:timer, any:ref)
 		KillTimer(timer);
 	}
 }
-public Action:Timer_KillPlayer(Handle:timer,Handle:datapack)
+public Action:Timer_KillPlayer(Handle timer,Handle datapack)
 {
 	ResetPack(datapack);
-	new victim = EntRefToEntIndex(ReadPackCell(datapack));
-	new attacker = EntRefToEntIndex(ReadPackCell(datapack));
+	int victim = EntRefToEntIndex(ReadPackCell(datapack));
+	int attacker = EntRefToEntIndex(ReadPackCell(datapack));
 	if(IsValidClient3(victim) && IsValidClient3(attacker) && StrangeFarming[victim][attacker] > 0)
 	{
-		new currentWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
+		int currentWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(currentWeapon))
 		{
 			SDKHooks_TakeDamage(victim,attacker,attacker,100000000.0, DMG_GENERIC,currentWeapon,NULL_VECTOR,NULL_VECTOR)
 			TF2_RespawnPlayer(victim);
 			
-			new Handle:Newdatapack = CreateDataPack();
+			Handle Newdatapack = CreateDataPack();
 			WritePackCell(Newdatapack,EntIndexToEntRef(victim));
 			WritePackCell(Newdatapack,EntIndexToEntRef(attacker));
 			CreateTimer(0.1,Timer_KillPlayer,Newdatapack);

@@ -1,4 +1,4 @@
-public MenuHandler_AccessDenied(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_AccessDenied(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select)
 	{
@@ -9,26 +9,26 @@ public MenuHandler_AccessDenied(Handle:menu, MenuAction:action, client, param2)
 }
 
 
-public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select)
 	{
 		client_respawn_handled[client] = 0
-		new slot = current_slot_used[client]
-		new w_id = current_w_list_id[client]
-		new cat_id = current_w_c_list_id[client]
-		new subcat_id = current_w_sc_list_id[client]
-		new upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
-		new inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
+		int slot = current_slot_used[client]
+		int w_id = current_w_list_id[client]
+		int cat_id = current_w_c_list_id[client]
+		int subcat_id = current_w_sc_list_id[client]
+		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
+		int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
 		
-		new rate = 1;
+		int rate = 1;
 
 
 		if(upgrades_requirement[upgrade_choice] > (StartMoney + additionalstartmoney))
 		{
-			decl String:fstr2[100]
-			decl String:fstr[40]
-			decl String:fstr3[20]
+			char fstr2[100]
+			char fstr[40]
+			char fstr3[20]
 			if (slot != 4)
 			{
 				Format(fstr, sizeof(fstr), "%t", given_upgrd_classnames[w_id][cat_id], 
@@ -79,7 +79,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				if(upgrades_description[upgrade_choice][0])
 				{
 					disableIFMiniHud[client] = 8.0;
-					decl String:upgradeDescription[1024]
+					char upgradeDescription[1024]
 					Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 					upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
 					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
@@ -98,15 +98,15 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				currentupgrades_idx[client][slot][inum] = upgrade_choice 
 				currentupgrades_val[client][slot][inum] = upgrades_i_val[upgrade_choice];
 			}
-			new idx_currentupgrades_val
+			int idx_currentupgrades_val
 			if(currentupgrades_i[client][slot][inum] != 0.0){
 				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - currentupgrades_i[client][slot][inum])/ upgrades_ratio[upgrade_choice])
 			}
 			else{
 				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - upgrades_i_val[upgrade_choice])/ upgrades_ratio[upgrade_choice])
 			}
-			new Float:upgrades_val = currentupgrades_val[client][slot][inum];
-			new Float:up_cost = float(upgrades_costs[upgrade_choice]);
+			float upgrades_val = currentupgrades_val[client][slot][inum];
+			float up_cost = float(upgrades_costs[upgrade_choice]);
 			up_cost /= 2.0;
 			if (slot == 1)
 			{
@@ -114,12 +114,12 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 			}
 			if (inum != 20000 && upgrades_ratio[upgrade_choice])
 			{
-				new Float:t_up_cost = 0.0;
-				new times = 0;
-				new bool:notEnough = false;
-				for (new idx = 0; idx < rate; idx++)
+				float t_up_cost = 0.0;
+				int times = 0;
+				bool notEnough = false;
+				for (int idx = 0; idx < rate; idx++)
 				{
-					new Float:nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice])
+					float nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice])
 					if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] > 0.0 && 
 					(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 < upgrades_m_val[upgrade_choice]))
 					{
@@ -145,7 +145,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				{
 					if(canBypassRestriction[client] == false && upgrades_restriction_category[upgrade_choice] != 0)
 					{
-						for(new i = 1;i<5;i++)
+						for(int i = 1;i<5;i++)
 						{
 							if(currentupgrades_restriction[client][slot][i] == upgrades_restriction_category[upgrade_choice])
 							{
@@ -180,7 +180,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 					if(upgrades_description[upgrade_choice][0])
 					{
 						disableIFMiniHud[client] = 8.0;
-						decl String:upgradeDescription[1024]
+						char upgradeDescription[1024]
 						Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 						upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
 						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
@@ -192,7 +192,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 		}
 		else if(rate < 0)
 		{
-			new yeah = IntAbs(rate);
+			int yeah = IntAbs(rate);
 			if (inum == 20000)
 			{
 				inum = currentupgrades_number[client][slot]
@@ -201,7 +201,7 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				currentupgrades_idx[client][slot][inum] = upgrade_choice 
 				currentupgrades_val[client][slot][inum] = upgrades_i_val[upgrade_choice];
 			}
-			new idx_currentupgrades_val
+			int idx_currentupgrades_val
 			if(currentupgrades_i[client][slot][inum] != 0.0){
 				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - currentupgrades_i[client][slot][inum])/ upgrades_ratio[upgrade_choice])
 			}
@@ -210,8 +210,8 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 			}
 			if(idx_currentupgrades_val > 0)
 			{
-				new Float:upgrades_val = currentupgrades_val[client][slot][inum];
-				new Float:up_cost = float(upgrades_costs[upgrade_choice]);
+				float upgrades_val = currentupgrades_val[client][slot][inum];
+				float up_cost = float(upgrades_costs[upgrade_choice]);
 				up_cost /= 2.0;
 				if (slot == 1)
 				{
@@ -219,9 +219,9 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				}
 				if (inum != 20000 && upgrades_ratio[upgrade_choice])
 				{
-					new Float:t_up_cost = 0.0;
-					new times = 0;
-					for (new idx = 0; idx < yeah; idx++)
+					float t_up_cost = 0.0;
+					int times = 0;
+					for (int idx = 0; idx < yeah; idx++)
 					{
 						if(idx_currentupgrades_val > 0 && upgrades_ratio[upgrade_choice] > 0.0 && 
 						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 <= upgrades_m_val[upgrade_choice]
@@ -257,9 +257,9 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 				}
 			}
 		}
-		decl String:fstr2[100]
-		decl String:fstr[40]
-		decl String:fstr3[20]
+		char fstr2[100]
+		char fstr[40]
+		char fstr3[20]
 		if (slot != 4)
 		{
 			Format(fstr, sizeof(fstr), "%t", given_upgrd_classnames[w_id][cat_id], 
@@ -284,16 +284,16 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 		{
 			if (current_slot_used[client] == 4)
 			{
-				decl String:fstr[30]
-				decl String:fstr2[128]
+				char fstr[30]
+				char fstr2[128]
 				Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
 				Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
 				Menu_ChooseSubcat(client, current_w_c_list_id[client], fstr2)
 			}
 			else
 			{
-				decl String:fstr[30]
-				decl String:fstr2[128]
+				char fstr[30]
+				char fstr2[128]
 				Format(fstr, sizeof(fstr), "%T", current_slot_name[current_slot_used[client]], client)
 				Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
 																,fstr)
@@ -304,16 +304,16 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 		{
 			if (current_slot_used[client] == 4)
 			{
-				decl String:fstr[30]
-				decl String:fstr2[128]
+				char fstr[30]
+				char fstr2[128]
 				Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
 				Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
 				Menu_ChooseCategory(client, fstr2)
 			}
 			else
 			{
-				decl String:fstr[30]
-				decl String:fstr2[128]
+				char fstr[30]
+				char fstr2[128]
 				Format(fstr, sizeof(fstr), "%T", current_slot_name[current_slot_used[client]], client)
 				Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
 																,fstr)
@@ -328,22 +328,22 @@ public MenuHandler_UpgradeChoice(Handle:menu, MenuAction:action, client, param2)
 }
 
 
-public MenuHandler_SpeMenubuy(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_SpeMenubuy(Handle menu, MenuAction:action, client, param2)
 {
 	CloseHandle(menu);
 	return; 
 }
-public MenuHandler_ChooseSubcat(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_ChooseSubcat(Handle menu, MenuAction:action, client, param2)
 {
-	new Handle:buymenusel = CreateMenu(MenuHandler_BuyUpgrade);
+	Handle buymenusel = CreateMenu(MenuHandler_BuyUpgrade);
 	if (action == MenuAction_Select)
 	{
-		decl String:fstr2[100]
-		decl String:fstr[40]
-		decl String:fstr3[20]
-		new slot = current_slot_used[client]
-		new cat_id = current_w_sc_list_id[client];
-		new w_id = current_w_list_id[client]
+		char fstr2[100]
+		char fstr[40]
+		char fstr3[20]
+		int slot = current_slot_used[client]
+		int cat_id = current_w_sc_list_id[client];
+		int w_id = current_w_list_id[client]
 		if (slot != 4)
 		{
 			Format(fstr, sizeof(fstr), "%T", given_upgrd_classnames[w_id][cat_id], client)
@@ -362,16 +362,16 @@ public MenuHandler_ChooseSubcat(Handle:menu, MenuAction:action, client, param2)
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
 		if(current_slot_used[client] == 4)
 		{
-			decl String:fstr[30]
-			decl String:fstr2[128]
+			char fstr[30]
+			char fstr2[128]
 			Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
 			Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
 			Menu_ChooseCategory(client, fstr2)
 		}
 		else
 		{
-			decl String:fstr[30]
-			decl String:fstr2[128]
+			char fstr[30]
+			char fstr2[128]
 			Format(fstr, sizeof(fstr), "%T", current_slot_used[client], client)
 			Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
 																,fstr)
@@ -383,16 +383,16 @@ public MenuHandler_ChooseSubcat(Handle:menu, MenuAction:action, client, param2)
 	SetMenuExitBackButton(buymenusel, true);
 	return; 
 }
-public MenuHandler_Choosecat(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_Choosecat(Handle menu, MenuAction:action, client, param2)
 {
-	new Handle:buymenusel = CreateMenu(MenuHandler_BuyUpgrade);
+	Handle buymenusel = CreateMenu(MenuHandler_BuyUpgrade);
 	if (action == MenuAction_Select)
 	{
-		decl String:fstr2[100]
-		decl String:fstr[40]
-		decl String:fstr3[20]
-		new slot = current_slot_used[client]
-		new cat_id = currentitem_catidx[client][slot]
+		char fstr2[100]
+		char fstr[40]
+		char fstr3[20]
+		int slot = current_slot_used[client]
+		int cat_id = currentitem_catidx[client][slot]
 		if (slot != 4)
 		{
 			Format(fstr, sizeof(fstr), "%T", given_upgrd_classnames[cat_id][param2], client)
@@ -438,13 +438,13 @@ public MenuHandler_Choosecat(Handle:menu, MenuAction:action, client, param2)
 			{
 				if(param2 == 0)
 				{
-					new String:TutorialString[32];
+					char TutorialString[32];
 					GetClientCookie(client, ArmorTutorial, TutorialString, sizeof(TutorialString));
 					if(!strcmp("0", TutorialString))
 					{
 						SetClientCookie(client, ArmorTutorial, "1"); 
 						
-						new String:TutorialText[256]
+						char TutorialText[256]
 						Format(TutorialText, sizeof(TutorialText), " | Tutorial | \nArmor is exponential in power.\nDamage Reduction is a to the power of 2.35 reduction.\nDamage Reduction Multiplier multiplies the calculated Damage Reduction."); 
 						SetHudTextParams(-1.0, -1.0, 15.0, 252, 161, 3, 255, 0, 0.0, 0.0, 0.0);
 						ShowHudText(client, 10, TutorialText);
@@ -453,13 +453,13 @@ public MenuHandler_Choosecat(Handle:menu, MenuAction:action, client, param2)
 				}
 				else if(param2 == 3)
 				{
-					new String:TutorialString[32];
+					char TutorialString[32];
 					GetClientCookie(client, ArcaneTutorial, TutorialString, sizeof(TutorialString));
 					if(!strcmp("0", TutorialString))
 					{
 						SetClientCookie(client, ArcaneTutorial, "1"); 
 						
-						new String:TutorialText[256]
+						char TutorialText[256]
 						Format(TutorialText, sizeof(TutorialText), " | Tutorial | \nArcane Damage boosts damage exponentially.\nArcane Power increases all stats & boosts Arcane Damage to the power of 4.\nArcane spells can be used at the front of the buy menu."); 
 						SetHudTextParams(-1.0, -1.0, 15.0, 252, 161, 3, 255, 0, 0.0, 0.0, 0.0);
 						ShowHudText(client, 10, TutorialText);
@@ -479,7 +479,7 @@ public MenuHandler_Choosecat(Handle:menu, MenuAction:action, client, param2)
 }
 
 
-public MenuHandler_BuyUpgrade(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_BuyUpgrade(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select)
 	{
@@ -487,8 +487,8 @@ public MenuHandler_BuyUpgrade(Handle:menu, MenuAction:action, client, param2)
 		{
 			case 0:
 			{//Buy body upgrades.
-				decl String:fstr[30]
-				decl String:fstr2[128]
+				char fstr[30]
+				char fstr2[128]
 				current_slot_used[client] = 4;
 				Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
 				Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
@@ -507,15 +507,15 @@ public MenuHandler_BuyUpgrade(Handle:menu, MenuAction:action, client, param2)
 				Menu_ShowArcane(client);
 			}
 			case 7:
-			{//Upgrade / buy new weapon.
+			{//Upgrade / buy int weapon.
 				if(currentitem_level[client][3] != 242)
 				{
 					Menu_BuyNewWeapon(client);
 				}
 				else
 				{
-					decl String:fstr[30]
-					decl String:fstr2[128]
+					char fstr[30]
+					char fstr2[128]
 					current_slot_used[client] = 3
 					Format(fstr, sizeof(fstr), "%T", current_slot_name[3], client)
 					Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
@@ -533,8 +533,8 @@ public MenuHandler_BuyUpgrade(Handle:menu, MenuAction:action, client, param2)
 			}
 			default:
 			{
-				decl String:fstr[30]
-				decl String:fstr2[128]
+				char fstr[30]
+				char fstr2[128]
 				param2 -= 1
 				current_slot_used[client] = param2
 				Format(fstr, sizeof(fstr), "%T", current_slot_name[param2], client)
@@ -543,13 +543,13 @@ public MenuHandler_BuyUpgrade(Handle:menu, MenuAction:action, client, param2)
 				Menu_ChooseCategory(client, fstr2)
 				/*if(AreClientCookiesCached(client))
 				{
-					new String:TutorialString[32];
+					char TutorialString[32];
 					GetClientCookie(client, WeaponTutorial, TutorialString, sizeof(TutorialString));
 					if(!strcmp("0", TutorialString))
 					{
 						SetClientCookie(client, WeaponTutorial, "1"); 
 
-						new String:TutorialText[512]
+						char TutorialText[512]
 						Format(TutorialText, sizeof(TutorialText), " | Tutorial | \nDamage upgrades will show many different damage multipliers.\nThey all stack multiplicatively.\nExponential Damage Bonus is a damage bonus to the power of 5."); 
 						SetHudTextParams(-1.0, -1.0, 15.0, 252, 161, 3, 255, 0, 0.0, 0.0, 0.0);
 						ShowHudText(client, 10, TutorialText);
@@ -561,7 +561,7 @@ public MenuHandler_BuyUpgrade(Handle:menu, MenuAction:action, client, param2)
     if (action == MenuAction_End)
         CloseHandle(menu);
 }
-public MenuHandler_ConfirmNewWeapon(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_ConfirmNewWeapon(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select)
 	{
@@ -585,10 +585,10 @@ public MenuHandler_ConfirmNewWeapon(Handle:menu, MenuAction:action, client, para
 }
 public Action:Menu_ConfirmWeapon(client, param2)
 {
-	new Handle:menu = CreateMenu(MenuHandler_BuyNewWeapon);
+	Handle menu = CreateMenu(MenuHandler_BuyNewWeapon);
 
-	new String:TitleStr[64]
-	new String:Description[512]
+	char TitleStr[64]
+	char Description[512]
 	Format(TitleStr, sizeof(TitleStr), "%s - Costs $%.0f", upgrades_weapon[param2],upgrades_weapon_cost[param2])
 	Format(Description, sizeof(Description), "%s",upgrades_weapon_description[param2])
 	ReplaceString(Description, sizeof(Description), "\\n", "\n");
@@ -601,17 +601,17 @@ public Action:Menu_ConfirmWeapon(client, param2)
 		DisplayMenu(menu, client, MENU_TIME_FOREVER);
 	}
 }
-public Action:Timer_giveactionslot(Handle:timer, int client)
+public Action:Timer_giveactionslot(Handle timer, int client)
 {
 	client = EntRefToEntIndex(client)
 	GiveNewWeapon(client, 3);
 }
 
-public MenuHandler_BuyNewWeapon(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_BuyNewWeapon(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select)
 	{
-		new selection = upgrades_weapon_lookingat[client];
+		int selection = upgrades_weapon_lookingat[client];
 		upgrades_weapon_lookingat[client] = -1
 		if (CurrencyOwned[client] >= upgrades_weapon_cost[selection] && client_spent_money[client][3] == 0.0 && currentitem_level[client][3] != 242)
 		{
@@ -637,7 +637,7 @@ public MenuHandler_BuyNewWeapon(Handle:menu, MenuAction:action, client, param2)
 		CloseHandle(menu);
 	}
 }
-public MenuHandler_AttributesTweak(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_AttributesTweak(Handle menu, MenuAction:action, client, param2)
 {
 	SetMenuExitBackButton(menu, true);
 	if (IsValidClient(client) && IsPlayerAlive(client) && !client_respawn_checkpoint[client])
@@ -652,23 +652,23 @@ public MenuHandler_AttributesTweak(Handle:menu, MenuAction:action, client, param
         CloseHandle(menu);
 	return; 
 }
-public MenuHandler_AttributesTweak_action(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client, param2)
 {
 	SetMenuExitBackButton(menu, true);
 	if (IsValidClient(client) && IsPlayerAlive(client) && !client_respawn_checkpoint[client])
 	{
-		new s = current_slot_used[client];
+		int s = current_slot_used[client];
 		if (s >= 0 && s < 5 && param2 < MAX_ATTRIBUTES_ITEM)
 		{
 			if (param2 >= 0)
 			{
-				new u = currentupgrades_idx[client][s][param2]
+				int u = currentupgrades_idx[client][s][param2]
 				if (u != 20000)
 				{
 					if(upgrades_costs[u] < -0.1)
 					{
-						new nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][param2]) / upgrades_ratio[u])
-						new Float:up_cost = upgrades_costs[u] * nb_time_upgraded * 3.0;
+						int nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][param2]) / upgrades_ratio[u])
+						float up_cost = upgrades_costs[u] * nb_time_upgraded * 3.0;
 						if(up_cost > 200.0)
 						{
 							if (CurrencyOwned[client] >= up_cost)
@@ -686,7 +686,7 @@ public MenuHandler_AttributesTweak_action(Handle:menu, MenuAction:action, client
 					}
 					if (upgrades_costs[u] > 1.0)
 					{
-						new nb_time_upgraded;
+						int nb_time_upgraded;
 						if(currentupgrades_i[client][s][param2] != 0.0)
 						{
 							nb_time_upgraded = RoundToNearest((currentupgrades_i[client][s][param2] - currentupgrades_val[client][s][param2]) / upgrades_ratio[u])
@@ -696,7 +696,7 @@ public MenuHandler_AttributesTweak_action(Handle:menu, MenuAction:action, client
 							nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][param2]) / upgrades_ratio[u])
 						}
 						nb_time_upgraded *= -1
-						new Float:up_cost = ((upgrades_costs[u]+((upgrades_costs_inc_ratio[u]*upgrades_costs[u])*(nb_time_upgraded-1))/2)*nb_time_upgraded)
+						float up_cost = ((upgrades_costs[u]+((upgrades_costs_inc_ratio[u]*upgrades_costs[u])*(nb_time_upgraded-1))/2)*nb_time_upgraded)
 						up_cost /= 2
 						if(s == 1)
 							up_cost *= SecondaryCostReduction;
@@ -727,21 +727,21 @@ public MenuHandler_AttributesTweak_action(Handle:menu, MenuAction:action, client
 		Menu_TweakUpgrades(client);
 	}
 }
-public MenuHandler_SpecialUpgradeChoice(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select)
 	{
 		client_respawn_handled[client] = 0
-		new String:fstr[100]
-		new got_req = 1
-		new slot = current_slot_used[client]
-		new w_id = current_w_list_id[client]
-		new cat_id = current_w_c_list_id[client]
-		new spTweak = given_upgrd_list[w_id][cat_id][0][param2]
-		for (new i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
+		char fstr[100]
+		int got_req = 1
+		int slot = current_slot_used[client]
+		int w_id = current_w_list_id[client]
+		int cat_id = current_w_c_list_id[client]
+		int spTweak = given_upgrd_list[w_id][cat_id][0][param2]
+		for (int i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
 		{
-			new upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
-			new inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
+			int upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
+			int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
 
 			if(canBypassRestriction[client])
 				break;
@@ -787,9 +787,9 @@ public MenuHandler_SpecialUpgradeChoice(Handle:menu, MenuAction:action, client, 
 			{
 				client_tweak_highest_requirement[client][slot] = upgrades_tweaks_requirement[spTweak];
 			}
-			decl String:clname[255]
+			char clname[255]
 			GetClientName(client, clname, sizeof(clname))
-			for (new i = 1; i < MaxClients; i++)
+			for (int i = 1; i < MaxClients; i++)
 			{
 				if (IsValidClient(i) && !client_no_d_team_upgrade[i])
 				{
@@ -797,16 +797,16 @@ public MenuHandler_SpecialUpgradeChoice(Handle:menu, MenuAction:action, client, 
 					clname, upgrades_tweaks[spTweak], current_slot_name[slot]);
 				}
 			}
-			for (new i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
+			for (int i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
 			{
-				new upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
+				int upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
 				UpgradeItem(client, upgrade_choice, upgrades_ref_to_idx[client][slot][upgrade_choice], upgrades_tweaks_att_ratio[spTweak][i], slot)
 			}
 			GiveNewUpgradedWeapon_(client, slot)
 			CurrencyOwned[client] -= upgrades_tweaks_cost[spTweak];
 			client_spent_money[client][slot] += upgrades_tweaks_cost[spTweak];
 		}
-		new String:buf[128]
+		char buf[128]
 		Format(buf, sizeof(buf), "%T", current_slot_name[slot], client);
 		Format(fstr, sizeof(fstr), "$%.0f [%s] - %s", CurrencyOwned[client], buf, 
 				given_upgrd_classnames[w_id][cat_id])
@@ -815,8 +815,8 @@ public MenuHandler_SpecialUpgradeChoice(Handle:menu, MenuAction:action, client, 
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
 		if (current_slot_used[client] == 4)
 		{
-			decl String:fstr[30]
-			decl String:fstr2[128]
+			char fstr[30]
+			char fstr2[128]
 			Format(fstr, sizeof(fstr), "%T", "Body Upgrades", client)
 			Format(fstr2, sizeof(fstr2), "$%.0f [ - %s - ]", CurrencyOwned[client], fstr)
 			Menu_ChooseCategory(client, fstr2)
@@ -824,8 +824,8 @@ public MenuHandler_SpecialUpgradeChoice(Handle:menu, MenuAction:action, client, 
 		}
 		else
 		{
-			decl String:fstr[30]
-			decl String:fstr2[128]
+			char fstr[30]
+			char fstr2[128]
 			Format(fstr, sizeof(fstr), "%T", current_slot_name[current_slot_used[client]], client)
 			Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
 															  ,fstr)
@@ -835,7 +835,7 @@ public MenuHandler_SpecialUpgradeChoice(Handle:menu, MenuAction:action, client, 
     if (action == MenuAction_End)
         CloseHandle(menu);
 }
-public MenuHandler_Preferences(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_Preferences(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select && IsValidClient(client) && IsPlayerAlive(client))
 	{
@@ -845,45 +845,45 @@ public MenuHandler_Preferences(Handle:menu, MenuAction:action, client, param2)
 			{
 				case 0:
 				{
-					new String:XPos[64];
+					char XPos[64];
 					GetClientCookie(client, hArmorXPos, XPos, sizeof(XPos));
-					new Float:XPosNum = StringToFloat(XPos);
+					float XPosNum = StringToFloat(XPos);
 					FloatToString(XPosNum + 0.01, XPos, sizeof(XPos));
 					SetClientCookie(client, hArmorXPos, XPos);
 					PrintHintText(client, "new XPos = %s", XPos);
 				}
 				case 1:
 				{
-					new String:XPos[64];
+					char XPos[64];
 					GetClientCookie(client, hArmorXPos, XPos, sizeof(XPos));
-					new Float:XPosNum = StringToFloat(XPos);
+					float XPosNum = StringToFloat(XPos);
 					FloatToString(XPosNum - 0.01, XPos, sizeof(XPos));
 					SetClientCookie(client, hArmorXPos, XPos);
 					PrintHintText(client, "new XPos = %s", XPos);
 				}
 				case 2:
 				{
-					new String:YPos[64];
+					char YPos[64];
 					GetClientCookie(client, hArmorYPos, YPos, sizeof(YPos));
-					new Float:YPosNum = StringToFloat(YPos);
+					float YPosNum = StringToFloat(YPos);
 					FloatToString(YPosNum + 0.01, YPos, sizeof(YPos));
 					SetClientCookie(client, hArmorYPos, YPos);
 					PrintHintText(client, "new YPos = %s", YPos);
 				}
 				case 3:
 				{
-					new String:YPos[64];
+					char YPos[64];
 					GetClientCookie(client, hArmorYPos, YPos, sizeof(YPos));
-					new Float:YPosNum = StringToFloat(YPos);
+					float YPosNum = StringToFloat(YPos);
 					FloatToString(YPosNum - 0.01, YPos, sizeof(YPos));
 					SetClientCookie(client, hArmorYPos, YPos);
 					PrintHintText(client, "new YPos = %s", YPos);
 				}
 				case 4:
 				{
-					new String:menuEnabled[64];
+					char menuEnabled[64];
 					GetClientCookie(client, respawnMenu, menuEnabled, sizeof(menuEnabled));
-					new Float:menuValue = StringToFloat(menuEnabled);
+					float menuValue = StringToFloat(menuEnabled);
 					if(menuValue == 1.0){
 						SetClientCookie(client, respawnMenu, "0");
 						PrintHintText(client, "Respawn menu is now enabled.");
@@ -894,9 +894,9 @@ public MenuHandler_Preferences(Handle:menu, MenuAction:action, client, param2)
 				}
 				case 5:
 				{
-					new String:particleToggleEnabled[64];
+					char particleToggleEnabled[64];
 					GetClientCookie(client, particleToggle, particleToggleEnabled, sizeof(particleToggleEnabled));
-					new Float:particleToggleValue = StringToFloat(particleToggleEnabled);
+					float particleToggleValue = StringToFloat(particleToggleEnabled);
 					
 					if(particleToggleValue == 0.0){
 						SetClientCookie(client, particleToggle, "1");
@@ -930,7 +930,7 @@ public MenuHandler_Preferences(Handle:menu, MenuAction:action, client, param2)
         CloseHandle(menu);
 	return; 
 }
-public MenuHandler_Wiki(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select && IsValidClient(client) && IsPlayerAlive(client))
 	{
@@ -1053,15 +1053,15 @@ public MenuHandler_Wiki(Handle:menu, MenuAction:action, client, param2)
 	}
 	return; 
 }
-public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
+public MenuHandler_StatsViewer(Handle menu, MenuAction:action, client, param2)
 {
 	if(action == MenuAction_Select)
 	{
 		RemoveAllMenuItems(menu);
 		
-		new primary = -1;
-		new secondary = -1;
-		new melee = -1;
+		int primary = -1;
+		int secondary = -1;
+		int melee = -1;
 		if(TF2_GetPlayerClass(client) == TFClass_Spy)
 		{
 			primary = GetWeapon(client,1);
@@ -1074,13 +1074,13 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			secondary = GetWeapon(client,1);
 			melee = GetWeapon(client,2);
 		}
-		new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 		if(param2 == 0)
 		{
 			SetMenuTitle(menu, "Displaying Body Stats");
-			decl String:Description[512];
-			new Float:DelayAmount = 1.0;
-			new Address:armorDelay = TF2Attrib_GetByName(client, "tmp dmgbuff on hit");
+			char Description[512];
+			float DelayAmount = 1.0;
+			Address armorDelay = TF2Attrib_GetByName(client, "tmp dmgbuff on hit");
 			if(armorDelay != Address_Null)
 			{
 				DelayAmount /= TF2Attrib_GetValue(armorDelay) + 1.0;
@@ -1093,79 +1093,79 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			GetAlphabetForm(GetEntPropFloat(client, Prop_Data, "m_flMaxspeed")),
 			GetAlphabetForm(fl_RegenFocus[client]*66.6)); 
 			
-			new Address:zapActive = TF2Attrib_GetByName(client, "arcane zap");
+			Address zapActive = TF2Attrib_GetByName(client, "arcane zap");
 			if(zapActive != Address_Null && TF2Attrib_GetValue(zapActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nZap Damage = %s", 
 				Description, GetAlphabetForm(20.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 3.0)))
 			}
-			new Address:lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
+			Address lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
 			if(lightningActive != Address_Null && TF2Attrib_GetValue(lightningActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nLightning Strike Damage = %s", 
 				Description, GetAlphabetForm(200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 80.0)))
 			}
-			new Address:callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
+			Address callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
 			if(callBeyondActive != Address_Null && TF2Attrib_GetValue(callBeyondActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nA Call Beyond Damage = %s x 25", 
 				Description, GetAlphabetForm(200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 120.0)))
 			}
-			new Address:BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
+			Address BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
 			if(BlackskyEyeActive != Address_Null && TF2Attrib_GetValue(BlackskyEyeActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nBlacksky Eye Damage = %s", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 7.5)))
 			}
-			new Address:SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
+			Address SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
 			if(SunlightSpearActive != Address_Null && TF2Attrib_GetValue(SunlightSpearActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nSunlight Spear Damage = %s", 
 				Description, GetAlphabetForm(100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 40.0)))
 			}
-			new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
+			Address lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
 			if(lightningenchantmentActive != Address_Null && TF2Attrib_GetValue(lightningenchantmentActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nLightning Enchantment DPS = %s", 
 				Description, GetAlphabetForm(20.0*(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.0))))
 			}
-			new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
+			Address darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
 			if(darkmoonbladeActive != Address_Null && TF2Attrib_GetValue(darkmoonbladeActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nDarkmoon Blade Damage = %s", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.5)))
 			}
-			new Address:snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
+			Address snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
 			if(snapfreezeActive != Address_Null && TF2Attrib_GetValue(snapfreezeActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nSnap Freeze Damage = %s", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0)))
 			}
-			new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
+			Address arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
 			if(arcaneprisonActive != Address_Null && TF2Attrib_GetValue(arcaneprisonActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nArcane Prison Damage = %s", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 5.0)))
 			}
-			new Address:classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
+			Address classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
 			if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nAerial Strike Damage = %s x 30", 
 				Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 25.0)))
 			}
-			new Address:classSpecificActive2 = TF2Attrib_GetByName(client, "arcane inferno");
+			Address classSpecificActive2 = TF2Attrib_GetByName(client, "arcane inferno");
 			if(classSpecificActive2 != Address_Null && TF2Attrib_GetValue(classSpecificActive2) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nInferno Damage = %s x 20", 
 				Description, GetAlphabetForm(20.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 12.5)))
 			}
-			new Address:classSpecificActive3 = TF2Attrib_GetByName(client, "arcane mine field");
+			Address classSpecificActive3 = TF2Attrib_GetByName(client, "arcane mine field");
 			if(classSpecificActive3 != Address_Null && TF2Attrib_GetValue(classSpecificActive3) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nMine Field Damage = %s x 20", 
 				Description, GetAlphabetForm(90.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 6.5)))
 			}
-			new Address:classSpecificActive4 = TF2Attrib_GetByName(client, "arcane hunter");
+			Address classSpecificActive4 = TF2Attrib_GetByName(client, "arcane hunter");
 			if(classSpecificActive4 != Address_Null && TF2Attrib_GetValue(classSpecificActive4) > 0.0)
 			{
 				Format(Description, sizeof(Description), "%s\nArcane Hunter Damage = %s x 5", 
@@ -1175,12 +1175,12 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 		}
 		else if(param2 == 1 && IsValidWeapon(primary))
 		{
-			decl String:strName[64];
+			char strName[64];
 			GetEntityClassname(primary, strName, 64)
 			if(StrContains(strName, "weapon") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Primary Stats");
-				decl String:Description[1024];
+				char Description[1024];
 				
 				Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
 				GetAlphabetForm(TF2_GetDamageModifiers(client, primary)),
@@ -1191,7 +1191,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 				if(weaponFireRate[primary] != -1.0)
 				{
 					Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[primary]);
-					new Float:tickRate = 1.0/GetTickInterval();
+					float tickRate = 1.0/GetTickInterval();
 
 					for(int i = 1 ; i < 6 ; i++)
 					{
@@ -1209,7 +1209,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			else
 			{
 				SetMenuTitle(menu, "Displaying Primary Wearable Stats");
-				decl String:Description[512];
+				char Description[512];
 				Format(Description, sizeof(Description), "Look in chat for a list of attributes."); 
 				TF2_AttribListAttributesBySlot(client,0);
 				AddMenuItem(menu, "primary_description", Description, ITEMDRAW_DISABLED);
@@ -1217,31 +1217,31 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 		}
 		else if(param2 == 2 && IsValidWeapon(secondary))
 		{
-			decl String:strName[64];
+			char strName[64];
 			GetEntityClassname(secondary, strName, 64)
 			if(StrContains(strName, "medigun") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Medigun Stats");
-				decl String:Description[512];
+				char Description[512];
 				
-				new Float:healRateMult = 1.0;
-				new Float:armorRateMult = 1.0;
-				new Address:Healrate1 = TF2Attrib_GetByName(secondary, "heal rate bonus");
+				float healRateMult = 1.0;
+				float armorRateMult = 1.0;
+				Address Healrate1 = TF2Attrib_GetByName(secondary, "heal rate bonus");
 				if(Healrate1 != Address_Null)
 				{
 					healRateMult *= TF2Attrib_GetValue(Healrate1);
 				}
-				new Address:Healrate2 = TF2Attrib_GetByName(secondary, "heal rate penalty");
+				Address Healrate2 = TF2Attrib_GetByName(secondary, "heal rate penalty");
 				if(Healrate2 != Address_Null)
 				{
 					healRateMult *= TF2Attrib_GetValue(Healrate2);
 				}
-				new Address:Healrate3 = TF2Attrib_GetByName(secondary, "overheal fill rate reduced");
+				Address Healrate3 = TF2Attrib_GetByName(secondary, "overheal fill rate reduced");
 				if(Healrate3 != Address_Null)
 				{
 					healRateMult *= TF2Attrib_GetValue(Healrate3);
 				}
-				new Address:overhealBonus = TF2Attrib_GetByName(secondary, "overheal bonus");
+				Address overhealBonus = TF2Attrib_GetByName(secondary, "overheal bonus");
 				if(overhealBonus != Address_Null)
 				{
 					armorRateMult *= TF2Attrib_GetValue(overhealBonus);
@@ -1255,7 +1255,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			else if(StrContains(strName, "weapon") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Secondary Stats");
-				decl String:Description[1024];
+				char Description[1024];
 				
 				Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
 				GetAlphabetForm(TF2_GetDamageModifiers(client, secondary)),
@@ -1266,7 +1266,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 				if(weaponFireRate[secondary] != -1.0)
 				{
 					Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[secondary]);
-					new Float:tickRate = 1.0/GetTickInterval();
+					float tickRate = 1.0/GetTickInterval();
 
 					for(int i = 1 ; i < 6 ; i++)
 					{
@@ -1284,7 +1284,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			else if(StrContains(strName, "demoshield") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Secondary Wearable Stats");
-				decl String:Description[512];
+				char Description[512];
 				
 				Format(Description, sizeof(Description), "Shield Explosion Damage = %s\nLook in chat for a list of attributes.",
 				GetAlphabetForm(TF2_GetDPSModifiers(client,CWeapon)*70.0));
@@ -1294,7 +1294,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			else
 			{
 				SetMenuTitle(menu, "Displaying Secondary Wearable Stats");
-				decl String:Description[512];
+				char Description[512];
 				Format(Description, sizeof(Description), "Look in chat for a list of attributes."); 
 				TF2_AttribListAttributesBySlot(client,1);
 				AddMenuItem(menu, "secondary_description", Description, ITEMDRAW_DISABLED);
@@ -1302,12 +1302,12 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 		}
 		else if(param2 == 3 && IsValidWeapon(melee))
 		{
-			decl String:strName[64];
+			char strName[64];
 			GetEntityClassname(melee, strName, 64)
 			if(StrContains(strName, "weapon") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Melee Stats");
-				decl String:Description[1024];
+				char Description[1024];
 				
 				Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
 				GetAlphabetForm(TF2_GetDamageModifiers(client, melee)),
@@ -1317,16 +1317,16 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 				
 				if(current_class[client] == TFClass_Engineer)
 				{
-					new Float:SentryDPS = 160.0;
+					float SentryDPS = 160.0;
 					
-					new Address:miniSentryActive = TF2Attrib_GetByName(melee, "mod wrench builds minisentry");
+					Address miniSentryActive = TF2Attrib_GetByName(melee, "mod wrench builds minisentry");
 					if(miniSentryActive != Address_Null && TF2Attrib_GetValue(miniSentryActive) > 0.0)
 					{
 						SentryDPS = 120.0;
 					}
 					else
 					{
-						new Address:sentryRocketMult = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");
+						Address sentryRocketMult = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");
 						if(sentryRocketMult != Address_Null)
 						{
 							SentryDPS += 30.0*TF2Attrib_GetValue(sentryRocketMult);
@@ -1335,33 +1335,33 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 					
 					if(IsValidEntity(CWeapon))
 					{
-						new Address:SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
+						Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 						if(SentryDmgActive != Address_Null)
 						{
 							SentryDPS *= TF2Attrib_GetValue(SentryDmgActive);
 						}
 					}
-					new Address:SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
+					Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
 					if(SentryDmgActive1 != Address_Null)
 					{
 						SentryDPS *= TF2Attrib_GetValue(SentryDmgActive1);
 					}
-					new Address:SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
+					Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
 					if(SentryDmgActive2 != Address_Null)
 					{
 						SentryDPS *= TF2Attrib_GetValue(SentryDmgActive2);
 					}
-					new Address:damageActive = TF2Attrib_GetByName(melee, "ubercharge");
+					Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
 					if(damageActive != Address_Null)
 					{
 						SentryDPS *= Pow(1.05,TF2Attrib_GetValue(damageActive));
 					}
-					new Address:damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
+					Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
 					if(damageActive2 != Address_Null)
 					{
 						SentryDPS *= TF2Attrib_GetValue(damageActive2);
 					}
-					new Address:fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
+					Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
 					if(fireRateActive != Address_Null)
 					{
 						SentryDPS /= TF2Attrib_GetValue(fireRateActive);
@@ -1372,7 +1372,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 				if(weaponFireRate[melee] != -1.0)
 				{
 					Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[melee]);
-					new Float:tickRate = 1.0/GetTickInterval();
+					float tickRate = 1.0/GetTickInterval();
 
 					for(int i = 1 ; i < 6 ; i++)
 					{
@@ -1390,7 +1390,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			else
 			{
 				SetMenuTitle(menu, "Displaying Melee Wearable Stats");
-				decl String:Description[512];
+				char Description[512];
 				Format(Description, sizeof(Description), "Look in chat for a list of attributes."); 
 				TF2_AttribListAttributesBySlot(client,2);
 				AddMenuItem(menu, "melee_description", Description, ITEMDRAW_DISABLED);
@@ -1398,13 +1398,13 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 		}
 		else if(param2 == 4 && IsValidWeapon(client_new_weapon_ent_id[client]))
 		{
-			decl String:strName[64];
-			new weapon = client_new_weapon_ent_id[client];
+			char strName[64];
+			int weapon = client_new_weapon_ent_id[client];
 			GetEntityClassname(weapon, strName, 64)
 			if(StrContains(strName, "weapon") != -1)
 			{
 				SetMenuTitle(menu, "Displaying Bought Weapon Stats");
-				decl String:Description[1024];
+				char Description[1024];
 				
 				Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
 				GetAlphabetForm(TF2_GetDamageModifiers(client, weapon)),
@@ -1415,7 +1415,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 				if(weaponFireRate[weapon] != -1.0)
 				{
 					Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[weapon]);
-					new Float:tickRate = 1.0/GetTickInterval();
+					float tickRate = 1.0/GetTickInterval();
 
 					for(int i = 1 ; i < 6 ; i++)
 					{
@@ -1433,7 +1433,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 			else
 			{
 				SetMenuTitle(menu, "Displaying Bought Wearable Stats");
-				decl String:Description[512];
+				char Description[512];
 				Format(Description, sizeof(Description), "Look in chat for a list of attributes."); 
 				TF2_AttribListAttributesBySlot(client,0);
 				AddMenuItem(menu, "primary_description", Description, ITEMDRAW_DISABLED);
@@ -1447,7 +1447,7 @@ public MenuHandler_StatsViewer(Handle:menu, MenuAction:action, client, param2)
 	}
 	if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
 	{
-		new String:MenuTitle[64];
+		char MenuTitle[64];
 		GetMenuTitle(menu, MenuTitle, sizeof(MenuTitle));
 		if(!StrEqual(MenuTitle, "Display weapon stats by slot."))
 		{

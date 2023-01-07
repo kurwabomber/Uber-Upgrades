@@ -1,6 +1,6 @@
 public Action:AddArrowCollisionFunction(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
 	if(IsValidClient3(client) || !StrContains(strName,"tank_boss",false))
 	{
@@ -13,7 +13,7 @@ public Action:AddArrowCollisionFunction(entity, client)
 	{	
 		if(StrEqual(strName,"tf_projectile_arrow",false))
 		{
-			new Float:origin[3];
+			float origin[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 			origin[0] += GetRandomFloat(-4.0,4.0)
 			origin[1] += GetRandomFloat(-4.0,4.0)
@@ -24,16 +24,16 @@ public Action:AddArrowCollisionFunction(entity, client)
 }
 public Action:OnSunlightSpearCollision(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsOnDifferentTeams(owner,client))
 			{
-				new Float:ProjectileDamage = (140.0 + (Pow(ArcaneDamage[owner] * Pow(ArcanePower[owner], 4.0), 2.45) * 35.0));
+				float ProjectileDamage = (140.0 + (Pow(ArcaneDamage[owner] * Pow(ArcanePower[owner], 4.0), 2.45) * 35.0));
 				SDKHooks_TakeDamage(client, owner, owner, ProjectileDamage, DMG_SHOCK, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
 				RemoveEntity(entity);
 				CreateParticle(client, "dragons_fury_effect_parent", true, "", 2.0);
@@ -44,7 +44,7 @@ public Action:OnSunlightSpearCollision(entity, client)
 	{	
 		if(StrEqual(strName,"tf_projectile_arrow",false))
 		{
-			new Float:origin[3];
+			float origin[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 			origin[0] += GetRandomFloat(-4.0,4.0)
 			origin[1] += GetRandomFloat(-4.0,4.0)
@@ -61,28 +61,28 @@ public Action:BlackskyEyeCollision(entity, client)
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		return Plugin_Continue;
 	
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 		
 	if(owner == entity || entity == client)
 		return Plugin_Continue;
 		
-	decl String:strName[32];
+	char strName[32];
 	GetEntityClassname(client, strName, 32);
 	if(StrEqual(strName,"tf_projectile_arrow",false))
 		return Plugin_Continue;
 
-	new Address:BlackskyEyeActive = TF2Attrib_GetByName(owner, "arcane blacksky eye");
+	Address BlackskyEyeActive = TF2Attrib_GetByName(owner, "arcane blacksky eye");
 	int spellLevel = BlackskyEyeActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(BlackskyEyeActive));
 	
 	if(spellLevel < 1)
 		return Plugin_Continue;
 
-	new Float:projvec[3];
-	new Float:radius[] = {0.0, 300.0,500.0,800.0};
-	new Float:scaling[] = {0.0, 7.5, 8.5, 12.0};
-	new Float:ProjectileDamage = 10.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
+	float projvec[3];
+	float radius[] = {0.0, 300.0,500.0,800.0};
+	float scaling[] = {0.0, 7.5, 8.5, 12.0};
+	float ProjectileDamage = 10.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
@@ -99,22 +99,22 @@ public Action:CallBeyondCollision(entity, client)
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		return Plugin_Continue;
 	
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 	
 	if(owner == entity || entity == client)
 		return Plugin_Continue;
 		
-	decl String:strName[32];
+	char strName[32];
 	GetEntityClassname(client, strName, 32);
 	if(StrEqual(strName,"tf_projectile_arrow",false))
 		return Plugin_Continue;
 		
-	new Float:projvec[3];
+	float projvec[3];
 	
-	new Float:level = ArcaneDamage[owner];
-	new Float:ProjectileDamage = 90.0 + (Pow(level*Pow(ArcanePower[owner], 4.0),2.45) * 120.0);
+	float level = ArcaneDamage[owner];
+	float ProjectileDamage = 90.0 + (Pow(level*Pow(ArcanePower[owner], 4.0),2.45) * 120.0);
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
@@ -131,31 +131,31 @@ public Action:ProjectedHealingCollision(entity, client)
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		return Plugin_Continue;
 	
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 	
 	if(owner == entity || entity == client)
 		return Plugin_Continue;
 		
-	decl String:strName[32];
+	char strName[32];
 	GetEntityClassname(client, strName, 32);
 	if(StrEqual(strName,"tf_projectile_arrow",false))
 		return Plugin_Continue;
 		
-	new Float:projvec[3];
+	float projvec[3];
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
-		new Float:AmountHealing = (TF2_GetMaxHealth(owner) * 0.2);
+		float AmountHealing = (TF2_GetMaxHealth(owner) * 0.2);
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
-		for(new i = 1; i<MaxClients;i++)
+		for(int i = 1; i<MaxClients;i++)
 		{
 			if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(owner))
 			{
-				new Float:VictimPos[3];
+				float VictimPos[3];
 				GetClientEyePosition(i,VictimPos);
-				new Float:Distance = GetVectorDistance(projvec,VictimPos);
-				new Float:Range = 1000.0;
+				float Distance = GetVectorDistance(projvec,VictimPos);
+				float Range = 1000.0;
 				if(Distance <= Range)
 				{
 					AddPlayerHealth(i, RoundToCeil(AmountHealing), 2.0 * ArcanePower[owner], true, owner);
@@ -177,25 +177,25 @@ public Action:IgnitionArrowCollision(entity, client)
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		return Plugin_Continue;
 	
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 		
-	new Float:projvec[3];
+	float projvec[3];
 	
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
-		new CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
+		int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
 		if(IsValidEntity(CWeapon))
 		{
-			new Float:damageDealt = 0.0,Float:Radius=144.0;
-			new Address:ignitionExplosion = TF2Attrib_GetByName(CWeapon, "damage applies to sappers");
+			float damageDealt = 0.0, Radius=144.0;
+			Address ignitionExplosion = TF2Attrib_GetByName(CWeapon, "damage applies to sappers");
 			if(ignitionExplosion != Address_Null)
 			{
 				damageDealt = TF2Attrib_GetValue(ignitionExplosion);
 			}
-			new Address:ignitionExplosionRadius = TF2Attrib_GetByName(CWeapon, "building cost reduction");
+			Address ignitionExplosionRadius = TF2Attrib_GetByName(CWeapon, "building cost reduction");
 			if(ignitionExplosionRadius != Address_Null)
 			{
 				Radius *= TF2Attrib_GetValue(ignitionExplosionRadius);
@@ -213,16 +213,16 @@ public Action:ExplosiveArrowCollision(entity, client)
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		return Plugin_Continue;
 	
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 		
-	new Float:projvec[3];
+	float projvec[3];
 	
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
-		new CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
+		int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
 		if(IsValidEntity(CWeapon))
 		{
 			EntityExplosion(owner, TF2_GetDamageModifiers(owner, CWeapon) * 250.0, 400.0, projvec, 1, _,entity,1.0,_,_,0.75);
@@ -234,15 +234,15 @@ public Action:ExplosiveArrowCollision(entity, client)
 public Action:projectileCollision(entity, client)
 {
 	if(!IsValidEntity(entity)) return Plugin_Stop;
-	decl String:strName[64];
+	char strName[64];
 	GetEntityClassname(client, strName, 64)
-	decl String:entName[64]
+	char entName[64]
 	GetEntityClassname(entity, entName, 64);
 	if(StrEqual(strName,entName,false))
 	{	
 		if(StrEqual(strName,entName,false))
 		{
-			new Float:origin[3];
+			float origin[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 			origin[0] += GetRandomFloat(-4.0,4.0)
 			origin[1] += GetRandomFloat(-4.0,4.0)
@@ -251,7 +251,7 @@ public Action:projectileCollision(entity, client)
 	}
 	if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 	{
-		new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+		int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 		if(owner != client && (IsValidClient3(client) || client == 0 || StrEqual(strName,"func_door",false) || StrEqual(strName,"prop_dynamic",false)
 		|| StrEqual(strName,"prop_physics",false) || StrContains(strName,"tf",false)))
 		{
@@ -262,22 +262,22 @@ public Action:projectileCollision(entity, client)
 }
 public Action:OnCollisionWarriorArrow(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsOnDifferentTeams(owner,client))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Float:damageDealt = 30.0;
-					new Address:multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
+					float damageDealt = 30.0;
+					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
 					if(multiHitActive != Address_Null)
 					{
 						damageDealt *= TF2Attrib_GetValue(multiHitActive) + 1.0;
@@ -292,21 +292,21 @@ public Action:OnCollisionWarriorArrow(entity, client)
 }
 public Action:OnCollisionBossArrow(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsOnDifferentTeams(owner,client))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Float:damageDealt = 240.0*TF2_GetDamageModifiers(owner, CWeapon, false);
+					float damageDealt = 240.0*TF2_GetDamageModifiers(owner, CWeapon, false);
 					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
 					if(IsValidClient3(client))
 					{
@@ -322,16 +322,16 @@ public Action:OnCollisionBossArrow(entity, client)
 }
 public Action:OnCollisionArrow(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
-			new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
 				SDKHooks_TakeDamage(client, owner, owner, 50.0*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
@@ -343,7 +343,7 @@ public Action:OnCollisionArrow(entity, client)
 	{	
 		if(StrEqual(strName,strName1,false))
 		{
-			new Float:origin[3];
+			float origin[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 			origin[0] += GetRandomFloat(-4.0,4.0)
 			origin[1] += GetRandomFloat(-4.0,4.0)
@@ -354,22 +354,22 @@ public Action:OnCollisionArrow(entity, client)
 }
 public Action:OnCollisionPhotoViscerator(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsOnDifferentTeams(owner,client))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Float:damage = TF2_GetDPSModifiers(owner,CWeapon)*10.0;
-					new Address:lameMult = TF2Attrib_GetByName(CWeapon, "dmg penalty vs players");
+					float damage = TF2_GetDPSModifiers(owner,CWeapon)*10.0;
+					Address lameMult = TF2Attrib_GetByName(CWeapon, "dmg penalty vs players");
 					if(lameMult != Address_Null)//lame. AP applies twice.
 					{
 						damage /= TF2Attrib_GetValue(lameMult);
@@ -378,7 +378,7 @@ public Action:OnCollisionPhotoViscerator(entity, client)
 					SDKHooks_TakeDamage(client,owner,owner,damage,DMG_BURN,CWeapon, NULL_VECTOR, NULL_VECTOR);
 				}
 				RemoveEntity(entity);
-				new Float:pos[3]
+				float pos[3]
 				GetEntPropVector(entity, Prop_Data, "m_vecOrigin", pos);
 				EmitSoundToAll("weapons/cow_mangler_explosion_normal_01.wav", entity,_,100,_,0.85);
 				CreateParticle(-1, "drg_cow_explosioncore_charged_blue", false, "", 0.1, pos);
@@ -387,9 +387,9 @@ public Action:OnCollisionPhotoViscerator(entity, client)
 	}
 	else
 	{
-		new Float:origin[3];
-		new Float:ProjAngle[3];
-		new Float:vBuffer[3];
+		float origin[3];
+		float ProjAngle[3];
+		float vBuffer[3];
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 		GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
 		GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
@@ -402,22 +402,22 @@ public Action:OnCollisionPhotoViscerator(entity, client)
 }
 public Action:OnCollisionMoonveil(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsOnDifferentTeams(owner,client))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Float:mult = 1.0
-					new Address:multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
+					float mult = 1.0
+					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
 					if(multiHitActive != Address_Null)
 					{
 						mult *= TF2Attrib_GetValue(multiHitActive) + 1.0;
@@ -428,7 +428,7 @@ public Action:OnCollisionMoonveil(entity, client)
 			}
 		}
 	}
-	new Float:pos[3]
+	float pos[3]
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", pos);
 	EmitSoundToAll("weapons/cow_mangler_explosion_normal_01.wav", entity,_,100,_,0.85);
 	CreateParticle(-1, "drg_cow_explosioncore_charged_blue", false, "", 0.1, pos);
@@ -436,22 +436,22 @@ public Action:OnCollisionMoonveil(entity, client)
 }
 public Action:OnCollisionBoomerang(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsValidClient3(owner) && IsOnDifferentTeams(owner,client))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Float:damageDealt = 120.0 * TF2_GetDamageModifiers(owner, CWeapon);
-					new Address:multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
+					float damageDealt = 120.0 * TF2_GetDamageModifiers(owner, CWeapon);
+					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
 					if(multiHitActive != Address_Null)
 					{
 						damageDealt *= TF2Attrib_GetValue(multiHitActive) + 1.0;
@@ -459,9 +459,9 @@ public Action:OnCollisionBoomerang(entity, client)
 					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_CLUB, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
 				}
 			}
-			new Float:origin[3];
-			new Float:ProjAngle[3];
-			new Float:vBuffer[3];
+			float origin[3];
+			float ProjAngle[3];
+			float vBuffer[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 			GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
 			GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
@@ -477,20 +477,20 @@ public Action:OnCollisionBoomerang(entity, client)
 }
 public Action:OnCollisionPiercingRocket(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsValidClient3(owner) && IsOnDifferentTeams(entity,client))
 			{
-				new Float:origin[3];
-				new Float:ProjAngle[3];
-				new Float:vBuffer[3];
+				float origin[3];
+				float ProjAngle[3];
+				float vBuffer[3];
 				GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 				GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
 				GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
@@ -499,28 +499,28 @@ public Action:OnCollisionPiercingRocket(entity, client)
 				TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
 				RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
 				
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Float:damageDealt = 70.0 * TF2_GetDamageModifiers(owner, CWeapon);
+					float damageDealt = 70.0 * TF2_GetDamageModifiers(owner, CWeapon);
 					
-					new Float:clientpos[3],Float:targetpos[3];
+					float clientpos[3], targetpos[3];
 					GetEntPropVector(owner, Prop_Data, "m_vecAbsOrigin", clientpos);
 					GetEntPropVector(client, Prop_Data, "m_vecAbsOrigin", targetpos);
-					new Float:distance = GetVectorDistance(clientpos, targetpos);
+					float distance = GetVectorDistance(clientpos, targetpos);
 					if(distance > 512.0)
 					{
-						new Float:Max = 1024.0; //the maximum units that the player and target is at (assuming you've already gotten the vectors)
+						float Max = 1024.0; //the maximum units that the player and target is at (assuming you've already gotten the vectors)
 						if(distance > Max)
 						{
 							distance = Max;
 						}
-						new Float:MinFallOffDist = 512.0 / (2.0 - 0.48); //the minimum units that the player and target is at (assuming you've already gotten the vectors) 
-						new Float:base = damageDealt; //base becomes the initial damage
-						new Float:multiplier = (MinFallOffDist / Max); //divides the minimal distance with the maximum you've set
-						new Float:falloff = (multiplier * base);  //this is to get how much the damage will be at maximum distance
-						new Float:Sinusoidal = ((falloff-base) / (Max-MinFallOffDist));  //does slope formula to get a sinusoidal fall off
-						new Float:intercept = (base - (Sinusoidal*MinFallOffDist));  //this calculation gets the 'y-intercept' to determine damage ramp up
+						float MinFallOffDist = 512.0 / (2.0 - 0.48); //the minimum units that the player and target is at (assuming you've already gotten the vectors) 
+						float base = damageDealt; //base becomes the initial damage
+						float multiplier = (MinFallOffDist / Max); //divides the minimal distance with the maximum you've set
+						float falloff = (multiplier * base);  //this is to get how much the damage will be at maximum distance
+						float Sinusoidal = ((falloff-base) / (Max-MinFallOffDist));  //does slope formula to get a sinusoidal fall off
+						float intercept = (base - (Sinusoidal*MinFallOffDist));  //this calculation gets the 'y-intercept' to determine damage ramp up
 						damageDealt = ((Sinusoidal*distance)+intercept); //gets final damage by taking the slope formula, multiplying it by your vectors, and adds the damage ramp up Y intercept. 
 					}
 					EntityExplosion(owner, damageDealt, 144.0, origin, 0, true, entity, _, _,_,0.5)
@@ -533,9 +533,9 @@ public Action:OnCollisionPiercingRocket(entity, client)
 	}
 	if(IsValidEntity(entity))
 	{
-		new Float:origin[3];
-		new Float:ProjAngle[3];
-		new Float:vBuffer[3];
+		float origin[3];
+		float ProjAngle[3];
+		float vBuffer[3];
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 		GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
 		GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
@@ -553,25 +553,26 @@ public Action:OnStartTouchJars(entity, other)
 }
 public Action:OnTouchExplodeJar(entity, other)
 {
-	new Float:clientvec[3],Float:Radius=144.0,mode=jarateType[entity];
+	float clientvec[3], Radius=144.0;
+	int mode=jarateType[entity];
 	GetEntPropVector(entity, Prop_Send, "m_vecOrigin", clientvec);
-	new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity"); 
+	int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity"); 
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(other, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 
 	if(StrEqual(strName, strName1))
 		return Plugin_Continue;
 	
-	new CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
+	int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
 	if(IsValidEntity(CWeapon))
 	{
-		new Address:blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
-		new Address:blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
+		Address blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
+		Address blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
 		if(blastRadius1 != Address_Null){
 			Radius *= TF2Attrib_GetValue(blastRadius1)
 		}
@@ -579,11 +580,11 @@ public Action:OnTouchExplodeJar(entity, other)
 			Radius *= TF2Attrib_GetValue(blastRadius2)
 		}
 		
-		for(new i=1; i<=MAXENTITIES; i++)
+		for(int i=1; i<=MAXENTITIES; i++)
 		{
 			if(IsValidForDamage(i))
 			{
-				new Float:VictimPos[3];
+				float VictimPos[3];
 				GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 				VictimPos[2] += 30.0;
 
@@ -613,10 +614,10 @@ public Action:OnTouchExplodeJar(entity, other)
 							}//corrosiveDOT
 							if(isPlayer)
 							{
-								new Address:jarCorrosive = TF2Attrib_GetByName(CWeapon, "building cost reduction");
+								Address jarCorrosive = TF2Attrib_GetByName(CWeapon, "building cost reduction");
 								if(jarCorrosive != Address_Null)
 								{
-									new Float:damageDealt = TF2_GetDPSModifiers(owner,CWeapon)*TF2Attrib_GetValue(jarCorrosive);
+									float damageDealt = TF2_GetDPSModifiers(owner,CWeapon)*TF2Attrib_GetValue(jarCorrosive);
 									corrosiveDOT[i][owner][0] = damageDealt;
 									corrosiveDOT[i][owner][1] = 2.0
 								}
@@ -626,22 +627,22 @@ public Action:OnTouchExplodeJar(entity, other)
 						{
 							if(isPlayer && i != owner)
 							{
-								new Address:jarAfterburnImmunity = TF2Attrib_GetByName(CWeapon, "overheal decay disabled");
+								Address jarAfterburnImmunity = TF2Attrib_GetByName(CWeapon, "overheal decay disabled");
 								if(jarAfterburnImmunity != Address_Null)
 								{
 									TF2_AddCondition(i,TFCond_AfterburnImmune,TF2Attrib_GetValue(jarAfterburnImmunity));
 								}
-								new Address:jarKingBuff = TF2Attrib_GetByName(CWeapon, "no crit vs nonburning");
+								Address jarKingBuff = TF2Attrib_GetByName(CWeapon, "no crit vs nonburning");
 								if(jarKingBuff != Address_Null)
 								{
 									TF2_AddCondition(i,TFCond_KingAura,TF2Attrib_GetValue(jarKingBuff));
 								}
-								new Address:jarPreventDeath = TF2Attrib_GetByName(CWeapon, "fists have radial buff");
+								Address jarPreventDeath = TF2Attrib_GetByName(CWeapon, "fists have radial buff");
 								if(jarPreventDeath != Address_Null)
 								{
 									TF2_AddCondition(i,TFCond_PreventDeath,TF2Attrib_GetValue(jarPreventDeath));
 								}
-								new Address:jarDefensiveBuff = TF2Attrib_GetByName(CWeapon, "set cloak is feign death");
+								Address jarDefensiveBuff = TF2Attrib_GetByName(CWeapon, "set cloak is feign death");
 								if(jarDefensiveBuff != Address_Null)
 								{
 									TF2_AddCondition(i,TFCond_DefenseBuffNoCritBlock,TF2Attrib_GetValue(jarDefensiveBuff));
@@ -653,20 +654,20 @@ public Action:OnTouchExplodeJar(entity, other)
 				}
 			}
 		}
-		new Address:jarFragsToggle = TF2Attrib_GetByName(CWeapon, "overheal decay penalty");
+		Address jarFragsToggle = TF2Attrib_GetByName(CWeapon, "overheal decay penalty");
 		if(jarFragsToggle != Address_Null)
 		{
-			for(new i = 0;i<RoundToNearest(TF2Attrib_GetValue(jarFragsToggle));i++)
+			for(int i = 0;i<RoundToNearest(TF2Attrib_GetValue(jarFragsToggle));i++)
 			{
-				new iEntity = CreateEntityByName("tf_projectile_syringe");
+				int iEntity = CreateEntityByName("tf_projectile_syringe");
 				if (IsValidEdict(iEntity)) 
 				{
-					new iTeam = GetClientTeam(owner);
-					new Float:fAngles[3]
-					new Float:fOrigin[3];
-					new Float:vBuffer[3]
-					new Float:fVelocity[3]
-					new Float:fwd[3]
+					int iTeam = GetClientTeam(owner);
+					float fAngles[3]
+					float fOrigin[3];
+					float vBuffer[3]
+					float fVelocity[3]
+					float fwd[3]
 					SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
 					SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 					fOrigin = clientvec;
@@ -679,7 +680,7 @@ public Action:OnTouchExplodeJar(entity, other)
 					AddVectors(fOrigin, fwd, fOrigin);
 					GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 					
-					new Float:velocity = 2000.0;
+					float velocity = 2000.0;
 					fVelocity[0] = vBuffer[0]*velocity;
 					fVelocity[1] = vBuffer[1]*velocity;
 					fVelocity[2] = vBuffer[2]*velocity;
@@ -732,31 +733,31 @@ public Action:OnTouchExplodeJar(entity, other)
 }
 public Action:OnCollisionJarateFrag(entity, client)
 {
-	decl String:strName[128];
+	char strName[128];
 	GetEntityClassname(client, strName, 128)
-	decl String:strName1[128];
+	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
-	new CWeapon = EntRefToEntIndex(jarateWeapon[entity])
+	int CWeapon = EntRefToEntIndex(jarateWeapon[entity])
 	if(IsValidEntity(CWeapon))
 	{
-		new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+		int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 		if(IsValidClient3(owner))
 		{
 			if(IsValidForDamage(client))
 			{
 				if(IsOnDifferentTeams(owner,client))
 				{
-					new Float:damageDealt = 15.0*TF2_GetDamageModifiers(owner, CWeapon, false);
+					float damageDealt = 15.0*TF2_GetDamageModifiers(owner, CWeapon, false);
 					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
 				}
 			}
-			new Address:fragmentExplosion = TF2Attrib_GetByName(CWeapon, "overheal decay bonus");
+			Address fragmentExplosion = TF2Attrib_GetByName(CWeapon, "overheal decay bonus");
 			if(fragmentExplosion != Address_Null && TF2Attrib_GetValue(fragmentExplosion) > 0.0)
 			{
-				new Float:Radius = 50.0,Float:clientvec[3];
+				float Radius = 50.0, clientvec[3];
 				GetEntPropVector(entity, Prop_Send, "m_vecOrigin", clientvec)
-				new Address:blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
-				new Address:blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
+				Address blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
+				Address blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
 				if(blastRadius1 != Address_Null){
 					Radius *= TF2Attrib_GetValue(blastRadius1)
 				}
@@ -778,19 +779,19 @@ public Action:meteorCollision(entity, client)
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		return Plugin_Continue;
 	
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 	
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
-		new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(CWeapon))
 		{
 			int iItemDefinitionIndex = GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex");
 			if(iItemDefinitionIndex == 595)
 			{
-				new Float:position[3];
+				float position[3];
 				GetEntPropVector(entity, Prop_Send, "m_vecOrigin", position);
 				EntityExplosion(owner, TF2_GetDamageModifiers(owner,CWeapon) * 45.0, 250.0, position, 0, _, entity);
 				return Plugin_Continue;
@@ -818,17 +819,17 @@ public Action:OnStartTouch(entity, other)
 	if (other > 0 && other <= MaxClients)
 		return Plugin_Continue;
 		
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
-	new maxBounces = 0;
+	int maxBounces = 0;
 	
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
-		new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(CWeapon))
 		{
-			new Address:bounceActive = TF2Attrib_GetByName(CWeapon, "ReducedCloakFromAmmo")
+			Address bounceActive = TF2Attrib_GetByName(CWeapon, "ReducedCloakFromAmmo")
 			if(bounceActive != Address_Null)
 			{
 				maxBounces = RoundToNearest(TF2Attrib_GetValue(bounceActive));
@@ -847,11 +848,11 @@ public Action:OnStartTouchDragonsBreath(entity, other)
 	if (other > 0 && other <= MaxClients)
 		return Plugin_Continue;
 		
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 	
-	new maxBounces = 6;
+	int maxBounces = 6;
 	
 	if (g_nBounces[entity] >= maxBounces)
 		return Plugin_Continue;
@@ -861,7 +862,7 @@ public Action:OnStartTouchDragonsBreath(entity, other)
 }
 public Action:OnStartTouchChaos(entity, other)
 {
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
 
@@ -870,13 +871,13 @@ public Action:OnStartTouchChaos(entity, other)
 }
 public Action:OnTouchChaos(entity, other)
 {
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(IsValidClient(owner))
 	{
-		new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(CWeapon))
 		{
-			decl Float:vOrigin[3];
+			float vOrigin[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vOrigin);
 			CreateParticle(-1, "heavy_ring_of_fire", false, "", 0.2, vOrigin);
 			vOrigin[2]+= 30.0;
@@ -889,16 +890,16 @@ public Action:OnTouchChaos(entity, other)
 }
 public Action:OnTouchDrag(entity, other)
 {
-	decl Float:vOrigin[3];
+	float vOrigin[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vOrigin);
 	
-	decl Float:vAngles[3];
+	float vAngles[3];
 	GetEntPropVector(entity, Prop_Data, "m_angRotation", vAngles);
 	
-	decl Float:vVelocity[3];
+	float vVelocity[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", vVelocity);
 	
-	new Handle:trace = TR_TraceRayFilterEx(vOrigin, vAngles, MASK_SHOT, RayType_Infinite, TEF_ExcludeEntity, entity);
+	Handle trace = TR_TraceRayFilterEx(vOrigin, vAngles, MASK_SHOT, RayType_Infinite, TEF_ExcludeEntity, entity);
 	
 	if(!TR_DidHit(trace))
 	{
@@ -906,30 +907,30 @@ public Action:OnTouchDrag(entity, other)
 		return Plugin_Continue;
 	}
 	
-	decl Float:vNormal[3];
+	float vNormal[3];
 	TR_GetPlaneNormal(trace, vNormal);
 	
 	//PrintToServer("Surface Normal: [%.2f, %.2f, %.2f]", vNormal[0], vNormal[1], vNormal[2]);
 	
 	CloseHandle(trace);
 	
-	new Float:dotProduct = GetVectorDotProduct(vNormal, vVelocity);
+	float dotProduct = GetVectorDotProduct(vNormal, vVelocity);
 	
 	ScaleVector(vNormal, dotProduct);
 	ScaleVector(vNormal, 2.0);
 	
-	decl Float:vBounceVec[3];
+	float vBounceVec[3];
 	SubtractVectors(vVelocity, vNormal, vBounceVec);
 	
-	decl Float:vNewAngles[3];
+	float vNewAngles[3];
 	GetVectorAngles(vBounceVec, vNewAngles);
 	
 	//PrintToServer("Angles: [%.2f, %.2f, %.2f] -> [%.2f, %.2f, %.2f]", vAngles[0], vAngles[1], vAngles[2], vNewAngles[0], vNewAngles[1], vNewAngles[2]);
 	//PrintToServer("Velocity: [%.2f, %.2f, %.2f] |%.2f| -> [%.2f, %.2f, %.2f] |%.2f|", vVelocity[0], vVelocity[1], vVelocity[2], GetVectorLength(vVelocity), vBounceVec[0], vBounceVec[1], vBounceVec[2], GetVectorLength(vBounceVec));
 	
-	new Handle:datapack = CreateDataPack();
+	Handle datapack = CreateDataPack();
 	WritePackCell(datapack,EntIndexToEntRef(entity));
-	for(new i=0;i<3;i++)
+	for(int i=0;i<3;i++)
 	{
 		WritePackFloat(datapack,0.0);
 		WritePackFloat(datapack,vNewAngles[i]);
@@ -937,10 +938,10 @@ public Action:OnTouchDrag(entity, other)
 	}
 	
 	RequestFrame(DelayedTeleportEntity,datapack);
-	new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(IsValidClient(owner))
 	{
-		new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(CWeapon))
 		{
 			vOrigin[2]+= 30.0;
@@ -953,16 +954,16 @@ public Action:OnTouchDrag(entity, other)
 }
 public Action:OnTouch(entity, other)
 {
-	decl Float:vOrigin[3];
+	float vOrigin[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vOrigin);
 	
-	decl Float:vAngles[3];
+	float vAngles[3];
 	GetEntPropVector(entity, Prop_Data, "m_angRotation", vAngles);
 	
-	decl Float:vVelocity[3];
+	float vVelocity[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", vVelocity);
 	
-	new Handle:trace = TR_TraceRayFilterEx(vOrigin, vAngles, MASK_SHOT, RayType_Infinite, TEF_ExcludeEntity, entity);
+	Handle trace = TR_TraceRayFilterEx(vOrigin, vAngles, MASK_SHOT, RayType_Infinite, TEF_ExcludeEntity, entity);
 	
 	if(!TR_DidHit(trace))
 	{
@@ -970,30 +971,30 @@ public Action:OnTouch(entity, other)
 		return Plugin_Continue;
 	}
 	
-	decl Float:vNormal[3];
+	float vNormal[3];
 	TR_GetPlaneNormal(trace, vNormal);
 	
 	//PrintToServer("Surface Normal: [%.2f, %.2f, %.2f]", vNormal[0], vNormal[1], vNormal[2]);
 	
 	CloseHandle(trace);
 	
-	new Float:dotProduct = GetVectorDotProduct(vNormal, vVelocity);
+	float dotProduct = GetVectorDotProduct(vNormal, vVelocity);
 	
 	ScaleVector(vNormal, dotProduct);
 	ScaleVector(vNormal, 2.0);
 	
-	decl Float:vBounceVec[3];
+	float vBounceVec[3];
 	SubtractVectors(vVelocity, vNormal, vBounceVec);
 	
-	decl Float:vNewAngles[3];
+	float vNewAngles[3];
 	GetVectorAngles(vBounceVec, vNewAngles);
 	
 	//PrintToServer("Angles: [%.2f, %.2f, %.2f] -> [%.2f, %.2f, %.2f]", vAngles[0], vAngles[1], vAngles[2], vNewAngles[0], vNewAngles[1], vNewAngles[2]);
 	//PrintToServer("Velocity: [%.2f, %.2f, %.2f] |%.2f| -> [%.2f, %.2f, %.2f] |%.2f|", vVelocity[0], vVelocity[1], vVelocity[2], GetVectorLength(vVelocity), vBounceVec[0], vBounceVec[1], vBounceVec[2], GetVectorLength(vBounceVec));
 	
-	new Handle:datapack = CreateDataPack();
+	Handle datapack = CreateDataPack();
 	WritePackCell(datapack,EntIndexToEntRef(entity));
-	for(new i=0;i<3;i++)
+	for(int i=0;i<3;i++)
 	{
 		WritePackFloat(datapack,0.0);
 		WritePackFloat(datapack,vNewAngles[i]);

@@ -2,18 +2,18 @@ SavePlayerData(client)
 {
 	if (IsValidClient(client))
 	{
-		new String:queryString[2048];
-		new String:steamid[64];
+		char queryString[2048];
+		char steamid[64];
 		
 		GetClientAuthId(client, AuthId_SteamID64, steamid, sizeof(steamid));
 		
-		new DataPack:pack = CreateDataPack();
+		DataPack pack = CreateDataPack();
 		pack.Reset();
 		if(!IsMvM())
 		{
-			for(new s = 0; s < NB_SLOTS_UED; s++)
+			for(int s = 0; s < NB_SLOTS_UED; s++)
 			{
-				for(new i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
+				for(int i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
 				{
 					pack.WriteCell(currentupgrades_idx[client][s][i]);
 					pack.WriteFloat(currentupgrades_val[client][s][i]);
@@ -27,7 +27,7 @@ SavePlayerData(client)
 				pack.WriteCell(currentitem_level[client][s]);
 				pack.WriteString(currentitem_classname[client][s]);
 				
-				for(new y = 0; y<5; y++)
+				for(int y = 0; y<5; y++)
 				{
 					pack.WriteCell(currentupgrades_restriction[client][s][y]);
 				}
@@ -35,9 +35,9 @@ SavePlayerData(client)
 		}
 		else
 		{
-			for(new s = 0; s < NB_SLOTS_UED; s++)
+			for(int s = 0; s < NB_SLOTS_UED; s++)
 			{
-				for(new i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
+				for(int i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
 				{
 					pack.WriteCell(currentupgrades_idx_mvm_chkp[client][s][i]);
 					pack.WriteFloat(currentupgrades_val_mvm_chkp[client][s][i]);
@@ -50,7 +50,7 @@ SavePlayerData(client)
 				pack.WriteCell(currentitem_idx[client][s]);
 				pack.WriteCell(currentitem_level[client][s]);
 				pack.WriteString(currentitem_classname[client][s]);
-				for(new y = 0; y<5; y++)
+				for(int y = 0; y<5; y++)
 				{
 					pack.WriteCell(currentupgrades_restriction_mvm_chkp[client][s][y]);
 				}
@@ -67,7 +67,7 @@ SavePlayerData(client)
 		}
 		pack.WriteCell(upgrades_weapon_current[client]);
 		Format(queryString, sizeof(queryString), "REPLACE INTO PlayerList (steamid, datapack) VALUES ('%s', '%i')", steamid, pack);
-		new Handle:queryH = SQL_Query(DB, queryString);
+		Handle queryH = SQL_Query(DB, queryString);
 		if(IsValidHandle(queryH))
 		{
 			PrintToServer("IF : Successfully saved player upgrades.");
@@ -82,27 +82,27 @@ GivePlayerData(client)
 {
 	if(IsValidClient(client))
 	{
-		new String:steamid[64], String:queryDelete[256], String:queryString[2048];
+		char steamid[64], queryDelete[256], queryString[2048];
 		GetClientAuthId(client, AuthId_SteamID64, steamid, sizeof(steamid))
 
 		Format(queryString, sizeof(queryString), "SELECT steamid, datapack FROM PlayerList WHERE steamid='%s'", steamid);
 		Format(queryDelete, sizeof(queryDelete), "DELETE FROM PlayerList WHERE steamid='%s'", steamid);
 		
-		new Handle:queryH = SQL_Query(DB, queryString);
+		Handle queryH = SQL_Query(DB, queryString);
 		if(IsValidHandle(queryH))
 		{
 			if(SQL_FetchRow(queryH))
 			{
-				new Float:CurrencyFormulated = (StartMoney + additionalstartmoney);
+				float CurrencyFormulated = (StartMoney + additionalstartmoney);
 				DataPack pack = view_as<DataPack>(SQL_FetchInt(queryH, 1));
 				if(IsValidHandle(pack))
 				{
 					pack.Reset();
 					PrintToServer("IF : Successfully gave player upgrades to %N.", client);
-					new Float:spentMoney = 0.0;
-					for(new s = 0; s < NB_SLOTS_UED; s++)
+					float spentMoney = 0.0;
+					for(int s = 0; s < NB_SLOTS_UED; s++)
 					{
-						for(new i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
+						for(int i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
 						{
 							currentupgrades_idx[client][s][i] = pack.ReadCell();
 							currentupgrades_val[client][s][i] = pack.ReadFloat();
@@ -119,7 +119,7 @@ GivePlayerData(client)
 						currentitem_level[client][s] = pack.ReadCell();
 						pack.ReadString(currentitem_classname[client][s], 128);
 						
-						for(new y = 0; y<5; y++)
+						for(int y = 0; y<5; y++)
 						{
 							currentupgrades_restriction[client][s][y] = pack.ReadCell();
 							currentupgrades_restriction_mvm_chkp[client][s][y] = currentupgrades_restriction[client][s][y];
@@ -172,9 +172,9 @@ GivePlayerData(client)
 }
 DeleteSavedPlayerData()
 {
-	new String:queryString[2048];
+	char queryString[2048];
 	Format(queryString, sizeof(queryString), "DELETE FROM PlayerList");
-	new Handle:queryH = SQL_Query(DB, queryString);
+	Handle queryH = SQL_Query(DB, queryString);
 	if(IsValidHandle(queryH))
 	{
 		PrintToServer("IF : Deleted all saved data.");
@@ -185,9 +185,9 @@ DeleteSavedPlayerData()
 }
 DeleteDatabase()
 {
-	new String:queryString[2048];
+	char queryString[2048];
 	Format(queryString, sizeof(queryString), "DROP TABLE PlayerList");
-	new Handle:queryH = SQL_Query(DB, queryString);
+	Handle queryH = SQL_Query(DB, queryString);
 	if(IsValidHandle(queryH))
 	{
 		PrintToServer("IF : Deleted database.");

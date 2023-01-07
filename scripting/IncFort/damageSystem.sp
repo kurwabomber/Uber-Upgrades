@@ -1,4 +1,4 @@
-public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &damagetype, &weapon, Float:damageForce[3], Float:damagePosition[3], damagecustom)
+public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom)
 {
 	if(IsValidClient3(victim))
 	{
@@ -21,7 +21,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		}
 		if(IsValidClient3(attacker) && victim != attacker && IsValidEntity(inflictor))
 		{
-			new String:classname[128]; 
+			char classname[128]; 
 			GetEdictClassname(inflictor, classname, sizeof(classname));
 			if(!strcmp("tf_projectile_lightningorb", classname))
 			{
@@ -33,12 +33,12 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				if(damagetype == (DMG_BURN | DMG_PREVENT_PHYSICS_FORCE))
 				{
 					damage = 0.0;
-					new Float:burndmgMult = 1.0;
-					new Address:burnMult1 = TF2Attrib_GetByName(weapon, "shot penetrate all players");
-					new Address:burnMult2 = TF2Attrib_GetByName(weapon, "weapon burn dmg increased");
-					new Address:burnMult3 = TF2Attrib_GetByName(weapon, "weapon burn dmg reduced");
-					new Address:burnMult4 = TF2Attrib_GetByName(attacker, "weapon burn dmg increased");
-					new Address:burnDivide = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
+					float burndmgMult = 1.0;
+					Address burnMult1 = TF2Attrib_GetByName(weapon, "shot penetrate all players");
+					Address burnMult2 = TF2Attrib_GetByName(weapon, "weapon burn dmg increased");
+					Address burnMult3 = TF2Attrib_GetByName(weapon, "weapon burn dmg reduced");
+					Address burnMult4 = TF2Attrib_GetByName(attacker, "weapon burn dmg increased");
+					Address burnDivide = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
 					if(burnMult1 != Address_Null) {
 					burndmgMult*=TF2Attrib_GetValue(burnMult1)
 					}
@@ -60,7 +60,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
 				{
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
-					new Address:lameMult = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
+					Address lameMult = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
 					if(lameMult != Address_Null)//lame. AP applies twice.
 					{
 						damage /= TF2Attrib_GetValue(lameMult);
@@ -79,12 +79,12 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 						damage += DarkmoonBlade[attacker];
 					}
 				}
-				new Address:arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
+				Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
 				if(arcaneWeaponScaling != Address_Null)
 				{
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
 				}
-				new Float:tickRate = 1.0/GetTickInterval();
+				float tickRate = 1.0/GetTickInterval();
 
 				for(int i = 1 ; i < 6 ; i++)
 				{
@@ -98,21 +98,21 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 			}
 		}
 		//PrintToServer("triggered OnTakeDamageAlive");
-		new Address:DamageMultiplier = TF2Attrib_GetByName(victim, "sniper zoom penalty");
+		Address DamageMultiplier = TF2Attrib_GetByName(victim, "sniper zoom penalty");
 		if(DamageMultiplier != Address_Null)
 		{
 			damage *= TF2Attrib_GetValue(DamageMultiplier);
 		}
-		new Address:DamageMultiplier2 = TF2Attrib_GetByName(victim, "crit mod disabled hidden");
+		Address DamageMultiplier2 = TF2Attrib_GetByName(victim, "crit mod disabled hidden");
 		if(DamageMultiplier2 != Address_Null)
 		{
 			damage *= TF2Attrib_GetValue(DamageMultiplier2);
 		}
 	
-		new Address:bossType = TF2Attrib_GetByName(victim, "damage force increase text");
+		Address bossType = TF2Attrib_GetByName(victim, "damage force increase text");
 		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 		{
-			new Float:bossValue = TF2Attrib_GetValue(bossType);
+			float bossValue = TF2Attrib_GetValue(bossType);
 			switch(bossValue)
 			{
 				case 1.0:
@@ -152,7 +152,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 						{
 							if(IsValidClient3(i) && IsOnDifferentTeams(victim,i) && !IsClientObserver(i) && IsPlayerAlive(i))
 							{
-								new Float:fOrigin[3],Float:fVictimPos[3];
+								float fOrigin[3], fVictimPos[3];
 								GetClientAbsOrigin(i, fOrigin)
 								GetClientAbsOrigin(victim,fVictimPos);
 								if(GetVectorDistance(fOrigin,fVictimPos) <= 1000.0)
@@ -161,7 +161,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 									if (IsValidEdict(iEntity)) 
 									{
 										new iTeam = GetClientTeam(victim)
-										new Float:fAngles[3]
+										float fAngles[3]
 										SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", victim);
 
 										SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
@@ -186,7 +186,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 	}
 	if(IsValidClient(victim))
 	{
-		new Float:pctArmor = (fl_AdditionalArmor[victim] + fl_CurrentArmor[victim])/fl_MaxArmor[victim];
+		float pctArmor = (fl_AdditionalArmor[victim] + fl_CurrentArmor[victim])/fl_MaxArmor[victim];
 		if(pctArmor <= 0.0)
 		{
 			pctArmor = 0.01
@@ -199,16 +199,16 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		new VictimCWeapon = GetEntPropEnt(victim, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(VictimCWeapon))
 		{
-			new Address:ResistanceWhileHeld = TF2Attrib_GetByName(VictimCWeapon, "SET BONUS: mystery solving time decrease");
+			Address ResistanceWhileHeld = TF2Attrib_GetByName(VictimCWeapon, "SET BONUS: mystery solving time decrease");
 			if(ResistanceWhileHeld != Address_Null)
 			{
-				new Float:dmgDivisor = TF2Attrib_GetValue(ResistanceWhileHeld);
+				float dmgDivisor = TF2Attrib_GetValue(ResistanceWhileHeld);
 				damage = (damage / dmgDivisor);
 			}	
-			new Address:DodgeWhileHeld = TF2Attrib_GetByName(VictimCWeapon, "SET BONUS: chance of hunger decrease");
+			Address DodgeWhileHeld = TF2Attrib_GetByName(VictimCWeapon, "SET BONUS: chance of hunger decrease");
 			if(DodgeWhileHeld != Address_Null)
 			{
-				new Float:dodgeChance = TF2Attrib_GetValue(DodgeWhileHeld);
+				float dodgeChance = TF2Attrib_GetValue(DodgeWhileHeld);
 				if(dodgeChance >= GetRandomFloat(0.0, 1.0))
 				{
 					damage *= 0.0;
@@ -217,10 +217,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				}
 			}	
 		}
-		new Address:DodgeBody = TF2Attrib_GetByName(victim, "SET BONUS: chance of hunger decrease");
+		Address DodgeBody = TF2Attrib_GetByName(victim, "SET BONUS: chance of hunger decrease");
 		if(DodgeBody != Address_Null)
 		{
-			new Float:dodgeChance = TF2Attrib_GetValue(DodgeBody);
+			float dodgeChance = TF2Attrib_GetValue(DodgeBody);
 			if(dodgeChance >= GetRandomFloat(0.0, 1.0))
 			{
 				damage *= 0.0;
@@ -228,7 +228,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				return Plugin_Changed;
 			}
 		}
-		new Address:rootedDamage = TF2Attrib_GetByName(victim, "rooted damage taken");
+		Address rootedDamage = TF2Attrib_GetByName(victim, "rooted damage taken");
 		if(rootedDamage != Address_Null && TF2Attrib_GetValue(rootedDamage) > 1.0)
 		{
 			damage = Pow(damage, (1.0/TF2Attrib_GetValue(rootedDamage)));
@@ -241,19 +241,19 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 
 		if(StrEqual(damageCategory, "direct"))
 		{
-			new Address:dmgTakenMultAddr = TF2Attrib_GetByName(victim, "direct damage taken reduced");
+			Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "direct damage taken reduced");
 			if(dmgTakenMultAddr != Address_Null)
 				damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
 		}
 
 		if(StrEqual(damageCategory, "arcane"))
 		{
-			new Address:dmgTakenMultAddr = TF2Attrib_GetByName(victim, "arcane damage taken reduced");
+			Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "arcane damage taken reduced");
 			if(dmgTakenMultAddr != Address_Null)
 				damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
 		}
 
-		new String:weaponClassName[128]; 
+		char weaponClassName[128]; 
 		GetEntityClassname(weapon, weaponClassName, sizeof(weaponClassName));
 		if(StrContains(weaponClassName, "tf_weapon") != -1)
 		{
@@ -277,10 +277,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 					}
 				}
 			}
-			new Address:MadMilkOnhit = TF2Attrib_GetByName(weapon, "armor piercing");
+			Address MadMilkOnhit = TF2Attrib_GetByName(weapon, "armor piercing");
 			if(MadMilkOnhit != Address_Null)
 			{
-				new Float:value = TF2Attrib_GetValue(MadMilkOnhit);
+				float value = TF2Attrib_GetValue(MadMilkOnhit);
 				if(MadmilkDuration[victim] < value)
 				{
 					MadmilkDuration[victim] = value
@@ -297,19 +297,19 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		}
 		if(damagetype != (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM))
 		{
-			new bool:delayBool = true;
-			new Address:regenerationPowerup = TF2Attrib_GetByName(victim, "regeneration powerup");
+			bool delayBool = true;
+			Address regenerationPowerup = TF2Attrib_GetByName(victim, "regeneration powerup");
 			if(regenerationPowerup != Address_Null)
 			{
-				new Float:regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
+				float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
 				if(regenerationPowerupValue > 0.0){delayBool = false;}
 			}
 			if(delayBool)
 			{
-				new Address:armorDelay = TF2Attrib_GetByName(victim, "tmp dmgbuff on hit");
+				Address armorDelay = TF2Attrib_GetByName(victim, "tmp dmgbuff on hit");
 				if(armorDelay != Address_Null)
 				{
-					new Float:DelayAmount = TF2Attrib_GetValue(armorDelay) + 1.0;
+					float DelayAmount = TF2Attrib_GetValue(armorDelay) + 1.0;
 					TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 1.5/DelayAmount);
 				}
 				else
@@ -318,10 +318,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				}
 			}
 		}
-		new Address:resistancePowerup = TF2Attrib_GetByName(victim, "resistance powerup");
+		Address resistancePowerup = TF2Attrib_GetByName(victim, "resistance powerup");
 		if(resistancePowerup != Address_Null)
 		{
-			new Float:resistancePowerupValue = TF2Attrib_GetValue(resistancePowerup);
+			float resistancePowerupValue = TF2Attrib_GetValue(resistancePowerup);
 			if(resistancePowerupValue > 0.0)
 			{
 				if(critStatus[victim] == true){
@@ -335,44 +335,44 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				damage /= 2.0;
 			}
 		}
-		new Address:vampirePowerup = TF2Attrib_GetByName(victim, "vampire powerup");//Vampire Powerup
+		Address vampirePowerup = TF2Attrib_GetByName(victim, "vampire powerup");//Vampire Powerup
 		if(vampirePowerup != Address_Null)
 		{
-			new Float:vampirePowerupValue = TF2Attrib_GetValue(vampirePowerup);
+			float vampirePowerupValue = TF2Attrib_GetValue(vampirePowerup);
 			if(vampirePowerupValue > 0.0)
 			{
 				damage *= 0.75;
 			}
 		}
-		new Address:revengePowerup = TF2Attrib_GetByName(victim, "revenge powerup");//Vampire Powerup
+		Address revengePowerup = TF2Attrib_GetByName(victim, "revenge powerup");//Vampire Powerup
 		if(revengePowerup != Address_Null)
 		{
-			new Float:revengePowerupValue = TF2Attrib_GetValue(revengePowerup);
+			float revengePowerupValue = TF2Attrib_GetValue(revengePowerup);
 			if(revengePowerupValue > 0.0)
 			{
 				damage *= 0.8;
 			}
 		}
-		new Address:regenerationPowerup = TF2Attrib_GetByName(victim, "regeneration powerup");//Regeneration powerup
+		Address regenerationPowerup = TF2Attrib_GetByName(victim, "regeneration powerup");//Regeneration powerup
 		if(regenerationPowerup != Address_Null)
 		{
-			new Float:regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
+			float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
 			if(regenerationPowerupValue > 0.0)
 			{
 				damage *= 0.75;
 			}
 		}
 
-		new Address:knockoutPowerupVictim = TF2Attrib_GetByName(victim, "knockout powerup");
+		Address knockoutPowerupVictim = TF2Attrib_GetByName(victim, "knockout powerup");
 		if(knockoutPowerupVictim != Address_Null)
 		{
-			new Float:knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerupVictim);
+			float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerupVictim);
 			if(knockoutPowerupValue > 0.0){
 				damage *= 0.8;
 			}
 		}
 		
-		new Address:kingPowerup = TF2Attrib_GetByName(victim, "king powerup");
+		Address kingPowerup = TF2Attrib_GetByName(victim, "king powerup");
 		if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
 		{
 			damage *= 0.8;
@@ -382,10 +382,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		{
 			if(IsValidClient3(plagueAttacker[attacker]))
 			{
-				new Address:plaguePowerup = TF2Attrib_GetByName(plagueAttacker[attacker], "plague powerup");
+				Address plaguePowerup = TF2Attrib_GetByName(plagueAttacker[attacker], "plague powerup");
 				if(plaguePowerup != Address_Null)
 				{
-					new Float:plaguePowerupValue = TF2Attrib_GetValue(plaguePowerup);
+					float plaguePowerupValue = TF2Attrib_GetValue(plaguePowerup);
 					if(plaguePowerupValue > 0.0)
 					{
 						damage /= 2.0;
@@ -393,29 +393,29 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				}
 			}
 		}
-		new Address:plaguePowerup = TF2Attrib_GetByName(victim, "plague powerup");
+		Address plaguePowerup = TF2Attrib_GetByName(victim, "plague powerup");
 		if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 		{
 			damage *= 0.7;
 		}
 		
-		new Address:supernovaPowerupVictim = TF2Attrib_GetByName(victim, "supernova powerup");
+		Address supernovaPowerupVictim = TF2Attrib_GetByName(victim, "supernova powerup");
 		if(supernovaPowerupVictim != Address_Null && TF2Attrib_GetValue(supernovaPowerupVictim) > 0.0)
 		{
 			damage *= 0.8;
 		}
 		
-		new Address:strengthPowerup = TF2Attrib_GetByName(attacker, "strength powerup");
+		Address strengthPowerup = TF2Attrib_GetByName(attacker, "strength powerup");
 		if(strengthPowerup != Address_Null)
 		{
-			new Float:strengthPowerupValue = TF2Attrib_GetValue(strengthPowerup);
+			float strengthPowerupValue = TF2Attrib_GetValue(strengthPowerup);
 			if(strengthPowerupValue > 0.0){
 				damagetype |= DMG_NOCLOSEDISTANCEMOD;
 				damage *= 2.0;
 			}
 		}
 		
-		new Address:revengePowerupAttacker = TF2Attrib_GetByName(attacker, "revenge powerup");
+		Address revengePowerupAttacker = TF2Attrib_GetByName(attacker, "revenge powerup");
 		if(revengePowerupAttacker != Address_Null)
 		{
 			if(RageActive[attacker] == true && TF2Attrib_GetValue(revengePowerupAttacker) > 0.0)
@@ -430,19 +430,19 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 			}
 		}
 		
-		new Address:precisionPowerup = TF2Attrib_GetByName(attacker, "precision powerup");
+		Address precisionPowerup = TF2Attrib_GetByName(attacker, "precision powerup");
 		if(precisionPowerup != Address_Null)
 		{
-			new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
+			float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
 			if(precisionPowerupValue > 0.0){
 				damage *= 1.35;
 			}
 		}
 		
 		new clientTeam = GetClientTeam(attacker);
-		new Float:clientPos[3];
+		float clientPos[3];
 		GetEntPropVector(attacker, Prop_Data, "m_vecOrigin", clientPos);
-		new Float:highestKingDMG = 1.0;
+		float highestKingDMG = 1.0;
 		for(new i = 1;i<MaxClients;i++)
 		{
 			if(IsValidClient3(i) && IsPlayerAlive(i))
@@ -450,13 +450,13 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				new iTeam = GetClientTeam(i);
 				if(clientTeam == iTeam)
 				{
-					new Float:VictimPos[3];
+					float VictimPos[3];
 					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 					VictimPos[2] += 30.0;
-					new Float:Distance = GetVectorDistance(clientPos,VictimPos);
+					float Distance = GetVectorDistance(clientPos,VictimPos);
 					if(Distance <= 600.0)
 					{
-						new Address:kingPowerupAttacker = TF2Attrib_GetByName(i, "king powerup");
+						Address kingPowerupAttacker = TF2Attrib_GetByName(i, "king powerup");
 						if(kingPowerupAttacker != Address_Null && TF2Attrib_GetValue(kingPowerupAttacker) > 0.0)
 						{
 							highestKingDMG = 1.2;
@@ -471,10 +471,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 			damage *= highestKingDMG;
 		}
 		
-		new Address:knockoutPowerup = TF2Attrib_GetByName(attacker, "knockout powerup");
+		Address knockoutPowerup = TF2Attrib_GetByName(attacker, "knockout powerup");
 		if(knockoutPowerup != Address_Null)
 		{
-			new Float:knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
+			float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
 			if(knockoutPowerupValue > 0.0){
 				if(_:TF2II_GetListedItemSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 				{
@@ -482,7 +482,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				}
 			}
 		}
-		new Address:bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
+		Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
 		if(bleedBuild != Address_Null)
 		{
 			BleedBuildup[victim] += TF2Attrib_GetValue(bleedBuild);
@@ -490,8 +490,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 			{
 				BleedBuildup[victim] = 0.0;
 				
-				new Float:bleedBonus = 1.0;
-				new Address:vampirePowerupAttacker = TF2Attrib_GetByName(attacker, "unlimited quantity");
+				float bleedBonus = 1.0;
+				Address vampirePowerupAttacker = TF2Attrib_GetByName(attacker, "unlimited quantity");
 				if(vampirePowerupAttacker != Address_Null && TF2Attrib_GetValue(vampirePowerupAttacker) > 0.0)
 				{
 					bleedBonus += 0.25;
@@ -501,20 +501,20 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				CreateParticle(victim, "env_sawblood", true, "", 2.0);
 			}
 		}
-		new Address:radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");
+		Address radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");
 		if(radiationBuild != Address_Null)
 		{
 			RadiationBuildup[victim] += TF2Attrib_GetValue(radiationBuild);
 			checkRadiation(victim,attacker);
 		}
-		new Address:Skill = TF2Attrib_GetByName(weapon, "apply look velocity on damage");
+		Address Skill = TF2Attrib_GetByName(weapon, "apply look velocity on damage");
 		if(Skill != Address_Null)
 		{
 			switch(TF2Attrib_GetValue(Skill))
 			{
 				case 13.0: //Bloodlust
 				{
-					new Float:offset[3]
+					float offset[3]
 					offset[2] += 40.0;
 					CreateParticle(victim, "env_sawblood", true, "", 2.0, offset);
 				}
@@ -527,28 +527,28 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		}
 		if(!(damagetype & DMG_ENERGYBEAM))
 		{
-			new Float:clientpos[3],Float:targetpos[3];
+			float clientpos[3], targetpos[3];
 			GetClientAbsOrigin(attacker, clientpos);
 			GetClientAbsOrigin(victim, targetpos);
-			new Float:distance = GetVectorDistance(clientpos, targetpos);
+			float distance = GetVectorDistance(clientpos, targetpos);
 			if(distance > 512.0)
 			{
-				new Address:FalloffIncrease = TF2Attrib_GetByName(weapon, "dmg falloff increased");
+				Address FalloffIncrease = TF2Attrib_GetByName(weapon, "dmg falloff increased");
 				if(FalloffIncrease != Address_Null)
 				{
 					if(TF2Attrib_GetValue(FalloffIncrease) != 1.0)
 					{
-						new Float:Max = 1024.0; //the maximum units that the player and target is at (assuming you've already gotten the vectors)
+						float Max = 1024.0; //the maximum units that the player and target is at (assuming you've already gotten the vectors)
 						if(distance > Max)
 						{
 							distance = Max;
 						}
-						new Float:MinFallOffDist = 512.0 / (TF2Attrib_GetValue(FalloffIncrease) - 0.48); //the minimum units that the player and target is at (assuming you've already gotten the vectors) 
-						new Float:base = damage; //base becomes the initial damage
-						new Float:multiplier = (MinFallOffDist / Max); //divides the minimal distance with the maximum you've set
-						new Float:falloff = (multiplier * base);  //this is to get how much the damage will be at maximum distance
-						new Float:Sinusoidal = ((falloff-base) / (Max-MinFallOffDist));  //does slope formula to get a sinusoidal fall off
-						new Float:intercept = (base - (Sinusoidal*MinFallOffDist));  //this calculation gets the 'y-intercept' to determine damage ramp up
+						float MinFallOffDist = 512.0 / (TF2Attrib_GetValue(FalloffIncrease) - 0.48); //the minimum units that the player and target is at (assuming you've already gotten the vectors) 
+						float base = damage; //base becomes the initial damage
+						float multiplier = (MinFallOffDist / Max); //divides the minimal distance with the maximum you've set
+						float falloff = (multiplier * base);  //this is to get how much the damage will be at maximum distance
+						float Sinusoidal = ((falloff-base) / (Max-MinFallOffDist));  //does slope formula to get a sinusoidal fall off
+						float intercept = (base - (Sinusoidal*MinFallOffDist));  //this calculation gets the 'y-intercept' to determine damage ramp up
 						damage = ((Sinusoidal*distance)+intercept); //gets final damage by taking the slope formula, multiplying it by your vectors, and adds the damage ramp up Y intercept. 
 					}
 					//Debug.
@@ -560,14 +560,14 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 				}
 			}
 		}
-		new Address:ReflectActive = TF2Attrib_GetByName(victim, "extinguish restores health");
+		Address ReflectActive = TF2Attrib_GetByName(victim, "extinguish restores health");
 		if(ReflectActive != Address_Null)
 		{
-			new Float:ReflectDamage = damage;
-			new Address:ReflectDamageMultiplier = TF2Attrib_GetByName(victim, "set cloak is movement based");
+			float ReflectDamage = damage;
+			Address ReflectDamageMultiplier = TF2Attrib_GetByName(victim, "set cloak is movement based");
 			if(ReflectDamageMultiplier != Address_Null && GetRandomInt(1, 100) < TF2Attrib_GetValue(ReflectActive) * 33.0)
 			{
-				new Float:ReflectMult = TF2Attrib_GetValue(ReflectDamageMultiplier);
+				float ReflectMult = TF2Attrib_GetValue(ReflectDamageMultiplier);
 				ReflectDamage *= ReflectMult
 				SDKHooks_TakeDamage(attacker, victim, victim, ReflectDamage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
 			}
@@ -577,16 +577,16 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, &Float:damage, &d
 		{
 			if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(victim) && i != victim)
 			{
-				new Float:victimPos[3];
-				new Float:guardianPos[3];
+				float victimPos[3];
+				float guardianPos[3];
 				GetClientEyePosition(victim,victimPos);
 				GetClientEyePosition(i,guardianPos);
 				if(GetVectorDistance(victimPos,guardianPos, false) < 1400.0)
 				{
-					new Address:RedirectActive = TF2Attrib_GetByName(i, "mult cloak meter regen rate");
+					Address RedirectActive = TF2Attrib_GetByName(i, "mult cloak meter regen rate");
 					if(RedirectActive != Address_Null)
 					{
-						new Float:redirect = TF2Attrib_GetValue(RedirectActive);
+						float redirect = TF2Attrib_GetValue(RedirectActive);
 						SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
 						damage *= (1-redirect);
 					}
@@ -637,7 +637,7 @@ int damagecustom, CritType &critType)
 		damage = lastDamageTaken[victim] * 1.25;
 		if(IsValidWeapon(weapon))
 		{
-			new Address:critDamageMult = TF2Attrib_GetByName(weapon, "mod medic killed marked for death ");
+			Address critDamageMult = TF2Attrib_GetByName(weapon, "mod medic killed marked for death ");
 			if(critDamageMult != Address_Null)
 				damage *= TF2Attrib_GetValue(critDamageMult);
 		}
@@ -663,7 +663,7 @@ int damagecustom, CritType &critType)
 	//PrintToServer("triggered ModifyRules");
 	return Plugin_Continue;
 }
-public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damagetype, &weapon, Float:damageForce[3], Float:damagePosition[3], damagecustom)
+public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom)
 {
 	if(damagetype & DMG_CRIT)
 	{
@@ -690,7 +690,7 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damage
 
 	return Plugin_Changed;
 }
-public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, &Float:damage, &damagetype, &weapon, Float:damageForce[3], Float:damagePosition[3], damagecustom) 
+public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom) 
 {
 	if(IsValidEntity(victim) && IsValidClient3(attacker))
 	{
@@ -713,7 +713,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, &Float:damage,
 	return Plugin_Changed;
 }
 
-public Action:OnTakeDamagePre_Sapper(victim, &attacker, &inflictor, &Float:damage, &damagetype, &weapon, Float:damageForce[3], Float:damagePosition[3], damagecustom) 
+public Action:OnTakeDamagePre_Sapper(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom) 
 {
 	new owner = GetEntPropEnt(victim, Prop_Send, "m_hBuilder"); 
 	if(!IsClientInGame(owner))
@@ -726,25 +726,25 @@ public Action:OnTakeDamagePre_Sapper(victim, &attacker, &inflictor, &Float:damag
 	}
 	damage = 50.0;
 	new melee = (GetWeapon(attacker,2));
-	new Address:firerate = TF2Attrib_GetByName(melee, "fire rate bonus HIDDEN");
+	Address firerate = TF2Attrib_GetByName(melee, "fire rate bonus HIDDEN");
 	if(firerate != Address_Null)
 	{
-		new Float:dmgpenalty = TF2Attrib_GetValue(firerate);
+		float dmgpenalty = TF2Attrib_GetValue(firerate);
 		damage *= dmgpenalty;
 	}
-	new Address:firerate1 = TF2Attrib_GetByName(melee, "fire rate bonus");
+	Address firerate1 = TF2Attrib_GetByName(melee, "fire rate bonus");
 	if(firerate1 != Address_Null)
 	{
-		new Float:dmgpenalty = TF2Attrib_GetValue(firerate1);
+		float dmgpenalty = TF2Attrib_GetValue(firerate1);
 		damage *= dmgpenalty;
 	}
 	return Plugin_Changed;
 }
 
-public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, &Float:damage, &damagetype, &weapon, Float:damageForce[3], Float:damagePosition[3], damagecustom) 
+public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom) 
 {
 	new owner = GetEntPropEnt(victim, Prop_Send, "m_hBuilder");
-	new String:SapperObject[128];
+	char SapperObject[128];
 	GetEdictClassname(attacker, SapperObject, sizeof(SapperObject));
 	if (StrEqual(SapperObject, "obj_attachment_sapper"))
 	{
@@ -757,14 +757,14 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, &Float:damag
 			new sapperItem = GetWeapon(SapperOwner, 6);
 			if(IsValidEntity(sapperItem))
 			{
-				new Address:LifestealActive = TF2Attrib_GetByName(sapperItem,"mult airblast refire time");
+				Address LifestealActive = TF2Attrib_GetByName(sapperItem,"mult airblast refire time");
 				if(LifestealActive != Address_Null)
 				{
 					new HealthGained = RoundToCeil(damage * TF2Attrib_GetValue(LifestealActive))
 					AddPlayerHealth(SapperOwner, HealthGained, 1.0, true, attacker);
 					fl_CurrentArmor[SapperOwner] += float(HealthGained) * 0.2;
 				}
-				new Address:DamageActive = TF2Attrib_GetByName(sapperItem,"sapper damage bonus");
+				Address DamageActive = TF2Attrib_GetByName(sapperItem,"sapper damage bonus");
 				if(DamageActive != Address_Null)
 				{
 					damage *= TF2Attrib_GetValue(DamageActive);
@@ -799,18 +799,18 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, &Float:damag
 			if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
 			{
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
-				new Address:lameMult = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
+				Address lameMult = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
 				if(lameMult != Address_Null)//lame. AP applies twice.
 				{
 					damage /= TF2Attrib_GetValue(lameMult);
 				}
 			}
-			new Address:arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
+			Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
 			if(arcaneWeaponScaling != Address_Null)
 			{
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
 			}
-			new Float:tickRate = 1.0/GetTickInterval();
+			float tickRate = 1.0/GetTickInterval();
 
 			for(int i = 1 ; i < 6 ; i++)
 			{
@@ -837,7 +837,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, &Float:damag
 						new sapper = GetWeapon(i,6);
 						if(IsValidEntity(sapper))
 						{
-							new Address:SappedPlayerVuln = TF2Attrib_GetByName(sapper, "scattergun knockback mult");
+							Address SappedPlayerVuln = TF2Attrib_GetByName(sapper, "scattergun knockback mult");
 							if(SappedPlayerVuln != Address_Null)
 							{
 								damage *= TF2Attrib_GetValue(SappedPlayerVuln);
@@ -850,14 +850,14 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, &Float:damag
 	}
 	if(IsValidClient(owner))
 	{
-		new Float:pctArmor = (fl_AdditionalArmor[owner] + fl_CurrentArmor[owner])/fl_MaxArmor[owner];
+		float pctArmor = (fl_AdditionalArmor[owner] + fl_CurrentArmor[owner])/fl_MaxArmor[owner];
 		if(pctArmor <= 0.0)
 		{
 			pctArmor = 0.01
 		}
-		new Float:armorAmt = fl_ArmorCap[owner] * 2.0;
+		float armorAmt = fl_ArmorCap[owner] * 2.0;
 		damage /= ((1-armorAmt)-((1-armorAmt)*pctArmor) + armorAmt);
-		new Address:sentryRes = TF2Attrib_GetByName(owner, "blast dmg to self increased");
+		Address sentryRes = TF2Attrib_GetByName(owner, "blast dmg to self increased");
 		if(sentryRes != Address_Null)
 		{
 			damage /= TF2Attrib_GetValue(sentryRes);
@@ -870,7 +870,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, &Float:damag
 }
 public float genericPlayerDamageModification(victim, attacker, inflictor, float damage, weapon, damagetype, damagecustom)
 {
-	new bool:isVictimPlayer = IsValidClient3(victim);
+	bool isVictimPlayer = IsValidClient3(victim);
 
 	if(isVictimPlayer)
 	{
@@ -887,7 +887,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			new secondary = GetWeapon(attacker,1);
 			if(IsValidEntity(secondary) && weapon == secondary)
 			{
-				new Address:gasExplosionDamage = TF2Attrib_GetByName(weapon, "ignition explosion damage bonus");
+				Address gasExplosionDamage = TF2Attrib_GetByName(weapon, "ignition explosion damage bonus");
 				if(gasExplosionDamage != Address_Null)
 				{
 					damage *= TF2Attrib_GetValue(gasExplosionDamage);
@@ -896,7 +896,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(TF2_GetPlayerClass(victim) == TFClass_Spy && (TF2_IsPlayerInCondition(victim, TFCond_Cloaked) || TF2_IsPlayerInCondition(victim, TFCond_Stealthed)))
 		{
-			new Address:CloakResistance = TF2Attrib_GetByName(GetPlayerWeaponSlot(victim,4), "absorb damage while cloaked");
+			Address CloakResistance = TF2Attrib_GetByName(GetPlayerWeaponSlot(victim,4), "absorb damage while cloaked");
 			if(CloakResistance != Address_Null)
 			{
 				damage *= TF2Attrib_GetValue(CloakResistance);
@@ -926,8 +926,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if (damagecustom == TF_CUSTOM_BACKSTAB)
 		{
-			new bool:ToggleBackstab = true;
-			new Address:canBeBackstabbed = TF2Attrib_GetByName(victim, "set item tint RGB");
+			bool ToggleBackstab = true;
+			Address canBeBackstabbed = TF2Attrib_GetByName(victim, "set item tint RGB");
 			if(canBeBackstabbed != Address_Null && TF2Attrib_GetValue(canBeBackstabbed) != 0.0)
 			{
 				ToggleBackstab = false;
@@ -936,13 +936,13 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			{
 				damage = 450.0 * TF2_GetDamageModifiers(attacker,weapon);
 				
-				new Address:backstabRadiation = TF2Attrib_GetByName(weapon, "no double jump");
+				Address backstabRadiation = TF2Attrib_GetByName(weapon, "no double jump");
 				if(backstabRadiation != Address_Null)
 				{
 					RadiationBuildup[victim] += TF2Attrib_GetValue(backstabRadiation);
 					checkRadiation(victim,attacker);
 				}
-				new Address:stealthedBackstab = TF2Attrib_GetByName(weapon, "airblast cost increased");
+				Address stealthedBackstab = TF2Attrib_GetByName(weapon, "airblast cost increased");
 				if(stealthedBackstab != Address_Null)
 				{
 					TF2_AddCondition(attacker, TFCond_StealthedUserBuffFade, TF2Attrib_GetValue(stealthedBackstab));
@@ -954,13 +954,13 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(isVictimPlayer && attacker != victim)
 		{
-			new Address:minicritVictimOnHit = TF2Attrib_GetByName(weapon, "recipe component defined item 1");
+			Address minicritVictimOnHit = TF2Attrib_GetByName(weapon, "recipe component defined item 1");
 			if(minicritVictimOnHit != Address_Null)
 			{
 				miniCritStatusVictim[victim] = TF2Attrib_GetValue(minicritVictimOnHit)
 			}
 			
-			new Address:rageOnHit = TF2Attrib_GetByName(weapon, "mod rage on hit bonus");
+			Address rageOnHit = TF2Attrib_GetByName(weapon, "mod rage on hit bonus");
 			if(rageOnHit != Address_Null)
 			{
 				if(GetEntPropFloat(attacker, Prop_Send, "m_flRageMeter") < 150.0)
@@ -972,7 +972,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			new hitgroup = GetEntProp(victim, Prop_Data, "m_LastHitGroup");
 			if(hitgroup == 1)
 			{
-				new Address:HeadshotsActive = TF2Attrib_GetByName(weapon, "charge time decreased");
+				Address HeadshotsActive = TF2Attrib_GetByName(weapon, "charge time decreased");
 				if(HeadshotsActive != Address_Null)
 				{
 					critStatus[victim] = true;
@@ -980,7 +980,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					damage *= TF2Attrib_GetValue(HeadshotsActive);
 				}
 				//Fix The Classic's "Cannot Headshot Without Full Charge" while not scoped.
-				new Address:classicDebuff = TF2Attrib_GetByName(weapon, "sniper no headshot without full charge");
+				Address classicDebuff = TF2Attrib_GetByName(weapon, "sniper no headshot without full charge");
 				{
 					if(classicDebuff != Address_Null && TF2Attrib_GetValue(classicDebuff) == 0.0 && !TF2_IsPlayerInCondition(attacker, TFCond_Zoomed))
 					{
@@ -988,10 +988,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						damagecustom = 1;
 					}
 				}
-				new Address:precisionPowerup = TF2Attrib_GetByName(attacker, "precision powerup");
+				Address precisionPowerup = TF2Attrib_GetByName(attacker, "precision powerup");
 				if(precisionPowerup != Address_Null)
 				{
-					new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
+					float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
 					if(precisionPowerupValue > 0.0){
 						miniCritStatus[victim] = true;
 						damage *= precisionPowerupValue * 1.35;
@@ -1014,7 +1014,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 							new sapper = GetWeapon(i,6);
 							if(IsValidEntity(sapper))
 							{
-								new Address:SappedPlayerVuln = TF2Attrib_GetByName(sapper, "scattergun knockback mult");
+								Address SappedPlayerVuln = TF2Attrib_GetByName(sapper, "scattergun knockback mult");
 								if(SappedPlayerVuln != Address_Null)
 								{
 									damage *= TF2Attrib_GetValue(SappedPlayerVuln);
@@ -1027,7 +1027,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(TF2_GetPlayerClass(attacker) == TFClass_Medic)
 		{
-			new String:classname[128]; 
+			char classname[128]; 
 			GetEdictClassname(weapon, classname, sizeof(classname)); 
 			if(weapon == GetPlayerWeaponSlot(attacker,0) && StrContains(classname, "crossbow") == -1)
 			{
@@ -1035,12 +1035,12 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				damage *= 1.8;
 			}
 		}
-		new Address:dmgBoost = TF2Attrib_GetByName(weapon, "mod demo buff type");
+		Address dmgBoost = TF2Attrib_GetByName(weapon, "mod demo buff type");
 		if(dmgBoost != Address_Null)
 		{
 			damage *= TF2Attrib_GetValue(dmgBoost);
 		}
-		new Float:medicDMGBonus = 1.0;
+		float medicDMGBonus = 1.0;
 		new healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
 		if(healers > 0)
 		{
@@ -1055,7 +1055,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						{
 							if(IsValidEntity(healerweapon))
 							{
-								new Address:dmgActive = TF2Attrib_GetByName(healerweapon, "hidden secondary max ammo penalty");
+								Address dmgActive = TF2Attrib_GetByName(healerweapon, "hidden secondary max ammo penalty");
 								if(dmgActive != Address_Null)
 								{
 									medicDMGBonus += TF2Attrib_GetValue(dmgActive);
@@ -1067,7 +1067,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			}
 		}
 		damage *= medicDMGBonus;
-		new Address:SniperChargingFactorActive = TF2Attrib_GetByName(weapon, "no charge impact range");
+		Address SniperChargingFactorActive = TF2Attrib_GetByName(weapon, "no charge impact range");
 		if(SniperChargingFactorActive != Address_Null)
 		{
 			if(LastCharge[attacker] > 50.0)
@@ -1075,52 +1075,52 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				damage *= TF2Attrib_GetValue(SniperChargingFactorActive);
 			}
 		}
-		new Address:CleaverdamageActive = TF2Attrib_GetByName(weapon, "disguise damage reduction");
+		Address CleaverdamageActive = TF2Attrib_GetByName(weapon, "disguise damage reduction");
 		if(CleaverdamageActive != Address_Null)
 		{
 			damage *= TF2Attrib_GetValue(CleaverdamageActive);
 		}
-		new Address:damageModifierActive = TF2Attrib_GetByName(weapon, "throwable healing");
+		Address damageModifierActive = TF2Attrib_GetByName(weapon, "throwable healing");
 		if(damageModifierActive != Address_Null)
 		{
 			damage *= TF2Attrib_GetValue(damageModifierActive);
 		}
-		new Address:damageModifierActive2 = TF2Attrib_GetByName(weapon, "taunt is highfive");
+		Address damageModifierActive2 = TF2Attrib_GetByName(weapon, "taunt is highfive");
 		if(damageModifierActive2 != Address_Null)
 		{
 			damage *= TF2Attrib_GetValue(damageModifierActive2);
 		}
-		new Address:HiddenDamageActive = TF2Attrib_GetByName(weapon, "throwable damage");
+		Address HiddenDamageActive = TF2Attrib_GetByName(weapon, "throwable damage");
 		if(HiddenDamageActive != Address_Null)
 		{
 			damage *= TF2Attrib_GetValue(HiddenDamageActive);
 		}
-		new Address:expodamageActive = TF2Attrib_GetByName(weapon, "taunt turn speed");
+		Address expodamageActive = TF2Attrib_GetByName(weapon, "taunt turn speed");
 		if(expodamageActive != Address_Null)
 		{
 			damage *= Pow(TF2Attrib_GetValue(expodamageActive), 6.0);
 		}
-		new Address:HeadshotDamage = TF2Attrib_GetByName(weapon, "overheal penalty");
+		Address HeadshotDamage = TF2Attrib_GetByName(weapon, "overheal penalty");
 		if(HeadshotDamage != Address_Null && damagecustom == 1)
 		{
 			damage *= TF2Attrib_GetValue(HeadshotDamage);
 		}
 		if(isVictimPlayer)
 		{
-			new Float:burndmgMult = 1.0;
-			new Address:burnMult10 = TF2Attrib_GetByName(weapon, "shot penetrate all players");
-			new Address:burnMult11 = TF2Attrib_GetByName(weapon, "weapon burn dmg increased");
+			float burndmgMult = 1.0;
+			Address burnMult10 = TF2Attrib_GetByName(weapon, "shot penetrate all players");
+			Address burnMult11 = TF2Attrib_GetByName(weapon, "weapon burn dmg increased");
 
 			if(burnMult10 != Address_Null) {burndmgMult*=TF2Attrib_GetValue(burnMult10);}
 			if(burnMult11 != Address_Null) {burndmgMult*=TF2Attrib_GetValue(burnMult11);}
 
-			new Address:FireDamageActive = TF2Attrib_GetByName(weapon, "flame_ignore_player_velocity");
+			Address FireDamageActive = TF2Attrib_GetByName(weapon, "flame_ignore_player_velocity");
 			if(GetClientTeam(attacker) != GetClientTeam(victim) && FireDamageActive != Address_Null && TF2Attrib_GetValue(FireDamageActive) > 0.1 &&
 			TF2_GetDPSModifiers(attacker, weapon)*burndmgMult >= fl_HighestFireDamage[victim] && 
 			!(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE) && !(damagetype & DMG_ENERGYBEAM)) // New afterburn system.
 			{
-				new Float:afterburnDuration = 2.0;
-				new Address:FireDurationActive = TF2Attrib_GetByName(weapon, "weapon burn time increased");
+				float afterburnDuration = 2.0;
+				Address FireDurationActive = TF2Attrib_GetByName(weapon, "weapon burn time increased");
 				if(FireDurationActive != Address_Null)
 				{
 					afterburnDuration *= TF2Attrib_GetValue(FireDurationActive);
@@ -1130,16 +1130,16 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				fl_HighestFireDamage[victim] = TF2_GetDPSModifiers(attacker, weapon)*burndmgMult;
 			}
 		}
-		new Address:overrideproj = TF2Attrib_GetByName(weapon, "override projectile type");
-		new Address:energyWeapActive = TF2Attrib_GetByName(weapon, "energy weapon penetration");
+		Address overrideproj = TF2Attrib_GetByName(weapon, "override projectile type");
+		Address energyWeapActive = TF2Attrib_GetByName(weapon, "energy weapon penetration");
 		if(overrideproj != Address_Null)
 		{
-			new Float:override = TF2Attrib_GetValue(overrideproj);
+			float override = TF2Attrib_GetValue(overrideproj);
 			if((override > 1.0 && override <= 2.0) || (override > 5.0 && override <= 6.0))
 			{
-				new Address:bulletspershot = TF2Attrib_GetByName(weapon, "bullets per shot bonus");
-				new Address:bulletspershotBody = TF2Attrib_GetByName(attacker, "bullets per shot bonus");
-				new Address:accscales = TF2Attrib_GetByName(weapon, "accuracy scales damage");
+				Address bulletspershot = TF2Attrib_GetByName(weapon, "bullets per shot bonus");
+				Address bulletspershotBody = TF2Attrib_GetByName(attacker, "bullets per shot bonus");
+				Address accscales = TF2Attrib_GetByName(weapon, "accuracy scales damage");
 
 				if(accscales != Address_Null)
 				{
@@ -1156,11 +1156,11 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			}
 			if(override == 31)
 			{
-				new Address:DamageBonusHidden = TF2Attrib_GetByName(weapon, "damage bonus HIDDEN");
-				new Address:DamagePenalty = TF2Attrib_GetByName(weapon, "damage penalty");
-				new Address:DamageBonus = TF2Attrib_GetByName(weapon, "damage bonus");
-				new Address:bulletspershot = TF2Attrib_GetByName(weapon, "bullets per shot bonus");
-				new Address:accscales = TF2Attrib_GetByName(weapon, "accuracy scales damage");
+				Address DamageBonusHidden = TF2Attrib_GetByName(weapon, "damage bonus HIDDEN");
+				Address DamagePenalty = TF2Attrib_GetByName(weapon, "damage penalty");
+				Address DamageBonus = TF2Attrib_GetByName(weapon, "damage bonus");
+				Address bulletspershot = TF2Attrib_GetByName(weapon, "bullets per shot bonus");
+				Address accscales = TF2Attrib_GetByName(weapon, "accuracy scales damage");
 				
 				if(DamageBonusHidden != Address_Null)
 				{
@@ -1186,8 +1186,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(energyWeapActive != Address_Null && TF2Attrib_GetValue(energyWeapActive) != 0.0)
 		{
-			new Address:bulletspershot = TF2Attrib_GetByName(weapon, "bullets per shot bonus");
-			new Address:accscales = TF2Attrib_GetByName(weapon, "accuracy scales damage");
+			Address bulletspershot = TF2Attrib_GetByName(weapon, "bullets per shot bonus");
+			Address accscales = TF2Attrib_GetByName(weapon, "accuracy scales damage");
 			if(accscales != Address_Null)
 			{
 				damage *= Pow(TF2Attrib_GetValue(accscales),0.95);
@@ -1200,7 +1200,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		if(damagecustom == TF_CUSTOM_PLASMA_CHARGED)
 		{
 			PrintToConsole(attacker, "Full charge hit!");
-			new Address:clipActive = TF2Attrib_GetByName(weapon, "clip size bonus upgrade");
+			Address clipActive = TF2Attrib_GetByName(weapon, "clip size bonus upgrade");
 			if(clipActive != Address_Null)
 			{
 				damage *= Pow(TF2Attrib_GetValue(clipActive)+1.0, 0.9);
@@ -1209,10 +1209,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if (damagecustom == 46 && damagetype & DMG_SHOCK)
 		{
-			new Address:dmgMult1 = TF2Attrib_GetByName(weapon, "damage bonus");
-			new Address:dmgMult2 = TF2Attrib_GetByName(weapon, "bullets per shot bonus");
-			new Address:dmgMult3 = TF2Attrib_GetByName(weapon, "damage bonus HIDDEN");
-			new Address:dmgMult4 = TF2Attrib_GetByName(weapon, "damage penalty");
+			Address dmgMult1 = TF2Attrib_GetByName(weapon, "damage bonus");
+			Address dmgMult2 = TF2Attrib_GetByName(weapon, "bullets per shot bonus");
+			Address dmgMult3 = TF2Attrib_GetByName(weapon, "damage bonus HIDDEN");
+			Address dmgMult4 = TF2Attrib_GetByName(weapon, "damage penalty");
 			damage = 10.0;
 			if(dmgMult1 != Address_Null)
 			{
@@ -1233,10 +1233,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(damagecustom == TF_CUSTOM_BASEBALL)
 		{
-			new Address:dmgMult1 = TF2Attrib_GetByName(weapon, "damage bonus");
-			new Address:dmgMult2 = TF2Attrib_GetByName(weapon, "damage bonus HIDDEN");
-			new Address:dmgMult3 = TF2Attrib_GetByName(weapon, "damage penalty");
-			new Address:dmgAdd = TF2Attrib_GetByName(weapon, "has pipboy build interface");
+			Address dmgMult1 = TF2Attrib_GetByName(weapon, "damage bonus");
+			Address dmgMult2 = TF2Attrib_GetByName(weapon, "damage bonus HIDDEN");
+			Address dmgMult3 = TF2Attrib_GetByName(weapon, "damage penalty");
+			Address dmgAdd = TF2Attrib_GetByName(weapon, "has pipboy build interface");
 			damage = 45.0;
 			if(dmgAdd != Address_Null)
 			{
@@ -1255,7 +1255,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				damage *= TF2Attrib_GetValue(dmgMult3);
 			}
 		}
-		new Address:DealsNoKBActive = TF2Attrib_GetByName(weapon, "apply z velocity on damage");
+		Address DealsNoKBActive = TF2Attrib_GetByName(weapon, "apply z velocity on damage");
 		if(DealsNoKBActive != Address_Null)
 		{
 			if(TF2Attrib_GetValue(DealsNoKBActive) == 3.0)
@@ -1263,7 +1263,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				damagetype |= DMG_PREVENT_PHYSICS_FORCE;
 			}
 		}
-		new Address:damageActive = TF2Attrib_GetByName(weapon, "ubercharge");
+		Address damageActive = TF2Attrib_GetByName(weapon, "ubercharge");
 		if(damageActive != Address_Null)
 		{
 			damage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
@@ -1278,7 +1278,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(damagetype & DMG_CLUB)
 		{
-			new Address:multiHitActive = TF2Attrib_GetByName(weapon, "taunt move acceleration time");
+			Address multiHitActive = TF2Attrib_GetByName(weapon, "taunt move acceleration time");
 			if(multiHitActive != Address_Null)
 			{
 				DOTStock(victim,attacker,damage,weapon,damagetype + DMG_VEHICLE,RoundToNearest(TF2Attrib_GetValue(multiHitActive)),0.4,0.15,true);
@@ -1286,20 +1286,20 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(isVictimPlayer)
 		{
-			new Address:bouncingBullets = TF2Attrib_GetByName(weapon, "flame size penalty");
+			Address bouncingBullets = TF2Attrib_GetByName(weapon, "flame size penalty");
 			if(bouncingBullets != Address_Null && LastCharge[attacker] >= 150.0)
 			{
-				new Float:DOTDmg = damage;
-				new Address:damageVsPlayersActive = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
+				float DOTDmg = damage;
+				Address damageVsPlayersActive = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
 				if(damageVsPlayersActive != Address_Null)
 				{
 					DOTDmg *= TF2Attrib_GetValue(damageVsPlayersActive);
 				}
 				//PrintToChat(attacker, "%s dmg", GetAlphabetForm(DOTDmg));
-				new bool:isBounced[MAXPLAYERS+1];
+				bool isBounced[MAXPLAYERS+1];
 				isBounced[victim] = true
 				new lastBouncedTarget = victim;
-				new Float:lastBouncedPosition[3];
+				float lastBouncedPosition[3];
 				GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
 				LastCharge[attacker] = 0.0;
 				new i = 0
@@ -1308,9 +1308,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				{
 					if(IsValidClient3(client) && IsPlayerAlive(client) && IsOnDifferentTeams(client,attacker) && isBounced[client] == false && i < maxBounces)
 					{
-						new Float:VictimPos[3]; 
+						float VictimPos[3]; 
 						GetClientEyePosition(client, VictimPos); 
-						new Float:distance = GetVectorDistance(lastBouncedPosition, VictimPos);
+						float distance = GetVectorDistance(lastBouncedPosition, VictimPos);
 						if(distance <= 350.0)
 						{
 							isBounced[client] = true;
@@ -1321,16 +1321,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 
 							if (IsValidEntity(iParti) && IsValidEntity(iPart2))
 							{ 
-								decl String:szCtrlParti[32];
-								new String:particleName[32];
-								if(GetClientTeam(attacker) == 2)
-								{
-									particleName = "dxhr_sniper_rail_red"
-								}
-								else
-								{
-									particleName = "dxhr_sniper_rail_blue"
-								}
+								char szCtrlParti[32];
+								char particleName[32];
+								particleName = GetClientTeam(attacker) == 2 ? "dxhr_sniper_rail_red" : "dxhr_sniper_rail_blue";
 								Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
 								DispatchKeyValue(iPart2, "targetname", szCtrlParti);
 
@@ -1342,10 +1335,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 								ActivateEntity(iParti);
 								AcceptEntityInput(iParti, "Start");
 								
-								new Handle:pack;
+								Handle pack;
 								CreateDataTimer(1.0, Timer_KillParticle, pack);
 								WritePackCell(pack, iParti);
-								new Handle:pack2;
+								Handle pack2;
 								CreateDataTimer(1.0, Timer_KillParticle, pack2);
 								WritePackCell(pack2, iPart2);
 							}
@@ -1356,10 +1349,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				}
 			}
 		}
-		new Address:supernovaPowerup = TF2Attrib_GetByName(attacker, "supernova powerup");
+		Address supernovaPowerup = TF2Attrib_GetByName(attacker, "supernova powerup");
 		if(supernovaPowerup != Address_Null)
 		{
-			new Float:supernovaPowerupValue = TF2Attrib_GetValue(supernovaPowerup);
+			float supernovaPowerupValue = TF2Attrib_GetValue(supernovaPowerup);
 			if(supernovaPowerupValue > 0.0){
 				if(StrEqual(getDamageCategory(damagetype),"blast",false))
 				{
@@ -1368,7 +1361,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				else
 				{
 					damage *= 1.35;
-					new Float:victimPosition[3];
+					float victimPosition[3];
 					GetEntPropVector(victim, Prop_Data, "m_vecAbsOrigin", victimPosition); 
 					
 					EntityExplosion(attacker, damage, 300.0,victimPosition,_,weaponArtParticle[attacker] <= 0.0 ? true : false, victim,_,_,weapon, 0.5, 70);
@@ -1380,21 +1373,14 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 
 						if (IsValidEntity(iParti) && IsValidEntity(iPart2))
 						{
-							decl String:particleName[32];
-							if(GetClientTeam(attacker) == 2)
-							{
-								particleName = "powerup_supernova_strike_red";
-							}
-							else
-							{
-								particleName = "powerup_supernova_strike_blue";
-							}
+							char particleName[32];
+							particleName = GetClientTeam(attacker) == 2 ? "powerup_supernova_strike_red" : "powerup_supernova_strike_blue";
 							
-							new Float:clientPos[3], Float:clientAng[3];
+							float clientPos[3], clientAng[3];
 							GetClientEyePosition(attacker, clientPos);
 							GetClientEyeAngles(attacker,clientAng);
 							
-							decl String:szCtrlParti[32];
+							char szCtrlParti[32];
 							Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
 							DispatchKeyValue(iPart2, "targetname", szCtrlParti);
 							DispatchKeyValue(iParti, "effect_name", particleName);
@@ -1405,10 +1391,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 							ActivateEntity(iParti);
 							AcceptEntityInput(iParti, "Start");
 							
-							new Handle:pack;
+							Handle pack;
 							CreateDataTimer(0.2, Timer_KillParticle, pack);
 							WritePackCell(pack, EntIndexToEntRef(iParti));
-							new Handle:pack2;
+							Handle pack2;
 							CreateDataTimer(0.2, Timer_KillParticle, pack2);
 							WritePackCell(pack2, EntRefToEntIndex(iPart2));
 						}
@@ -1422,11 +1408,11 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 }
 public float genericSentryDamageModification(victim, attacker, inflictor, float damage, weapon, damagetype, damagecustom)
 {
-	new String:classname[128]; 
+	char classname[128]; 
 	GetEdictClassname(inflictor, classname, sizeof(classname)); 
 	new weaponIdx = (IsValidWeapon(weapon) ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
 
-	new bool:isVictimPlayer = IsValidClient3(victim);
+	bool isVictimPlayer = IsValidClient3(victim);
 
 	if (isVictimPlayer && StrEqual(classname, "obj_attachment_sapper"))
 	{
@@ -1454,7 +1440,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 		}
 		if(IsValidForDamage(owner))
 		{
-			new String:Ownerclassname[128]; 
+			char Ownerclassname[128]; 
 			GetEdictClassname(owner, Ownerclassname, sizeof(Ownerclassname)); 
 			if(StrEqual(Ownerclassname, "tank_boss"))
 			{
@@ -1471,10 +1457,10 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 				
 				if(IsValidEntity(melee))
 				{
-					new Address:sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
+					Address sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
 					if(sentryOverrideActive != Address_Null)
 					{
-						new Float:sentryOverride = TF2Attrib_GetValue(sentryOverrideActive);
+						float sentryOverride = TF2Attrib_GetValue(sentryOverrideActive);
 						switch(sentryOverride)
 						{
 							case 34.0:
@@ -1487,11 +1473,11 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 										if (IsValidEdict(iEntity)) 
 										{
 											new iTeam = GetClientTeam(owner);
-											new Float:fAngles[3]
-											new Float:fOrigin[3]
-											new Float:vBuffer[3]
-											new Float:fVelocity[3]
-											new Float:fwd[3]
+											float fAngles[3]
+											float fOrigin[3]
+											float vBuffer[3]
+											float fVelocity[3]
+											float fwd[3]
 											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
 											SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 											new angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
@@ -1517,8 +1503,8 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											AddVectors(fOrigin, fwd, fOrigin);
 											fAngles[0] -= 5.0;
 											GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-											new Float:Speed[3];
-											new bool:movementType = false;
+											float Speed[3];
+											bool movementType = false;
 											if(HasEntProp(iEntity, Prop_Data, "m_vecAbsVelocity"))
 											{
 												GetEntPropVector(iEntity, Prop_Data, "m_vecAbsVelocity", Speed);
@@ -1532,16 +1518,16 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											}
 											if(movementType == false)
 											{
-												new Float:velocity = 2000.0;
-												new Address:projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
-												new Address:projspeed1 = TF2Attrib_GetByName(melee, "Projectile speed decreased");
+												float velocity = 2000.0;
+												Address projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
+												Address projspeed1 = TF2Attrib_GetByName(melee, "Projectile speed decreased");
 												if(projspeed != Address_Null){
 													velocity *= TF2Attrib_GetValue(projspeed)
 												}
 												if(projspeed1 != Address_Null){
 													velocity *= TF2Attrib_GetValue(projspeed1)
 												}
-												new Float:vecAngImpulse[3];
+												float vecAngImpulse[3];
 												GetCleaverAngularImpulse(vecAngImpulse);
 												fVelocity[0] = vBuffer[0]*velocity;
 												fVelocity[1] = vBuffer[1]*velocity;
@@ -1565,11 +1551,11 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 										if (IsValidEdict(iEntity)) 
 										{
 											new iTeam = GetClientTeam(owner);
-											new Float:fAngles[3]
-											new Float:fOrigin[3]
-											new Float:vBuffer[3]
-											new Float:fVelocity[3]
-											new Float:fwd[3]
+											float fAngles[3]
+											float fOrigin[3]
+											float vBuffer[3]
+											float fVelocity[3]
+											float fwd[3]
 											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
 											SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 											new angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
@@ -1594,8 +1580,8 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											
 											AddVectors(fOrigin, fwd, fOrigin);
 											GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-											new Float:Speed[3];
-											new bool:movementType = false;
+											float Speed[3];
+											bool movementType = false;
 											if(HasEntProp(iEntity, Prop_Data, "m_vecAbsVelocity"))
 											{
 												GetEntPropVector(iEntity, Prop_Data, "m_vecAbsVelocity", Speed);
@@ -1609,8 +1595,8 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											}
 											if(movementType == false)
 											{
-												new Float:velocity = 11000.0;
-												new Float:vecAngImpulse[3];
+												float velocity = 11000.0;
+												float vecAngImpulse[3];
 												GetCleaverAngularImpulse(vecAngImpulse);
 												fVelocity[0] = vBuffer[0]*velocity;
 												fVelocity[1] = vBuffer[1]*velocity;
@@ -1640,10 +1626,10 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 										if (IsValidEdict(iEntity)) 
 										{
 											new iTeam = GetClientTeam(owner);
-											new Float:fAngles[3]
-											new Float:fOrigin[3]
-											new Float:vBuffer[3]
-											new Float:fVelocity[3]
+											float fAngles[3]
+											float fOrigin[3]
+											float vBuffer[3]
+											float fVelocity[3]
 											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
 											SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 											new angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
@@ -1663,8 +1649,8 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											GetEntDataVector( inflictor, angleOffsetB, fAngles );
 											fAngles[0] -= 5.0;
 											GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-											new Float:Speed[3];
-											new bool:movementType = false;
+											float Speed[3];
+											bool movementType = false;
 											if(HasEntProp(iEntity, Prop_Data, "m_vecAbsVelocity"))
 											{
 												GetEntPropVector(iEntity, Prop_Data, "m_vecAbsVelocity", Speed);
@@ -1678,16 +1664,16 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											}
 											if(movementType == false)
 											{
-												new Float:velocity = 2000.0;
-												new Address:projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
-												new Address:projspeed1 = TF2Attrib_GetByName(melee, "Projectile speed decreased");
+												float velocity = 2000.0;
+												Address projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
+												Address projspeed1 = TF2Attrib_GetByName(melee, "Projectile speed decreased");
 												if(projspeed != Address_Null){
 													velocity *= TF2Attrib_GetValue(projspeed)
 												}
 												if(projspeed1 != Address_Null){
 													velocity *= TF2Attrib_GetValue(projspeed1)
 												}
-												new Float:vecAngImpulse[3];
+												float vecAngImpulse[3];
 												GetCleaverAngularImpulse(vecAngImpulse);
 												fVelocity[0] = vBuffer[0]*velocity;
 												fVelocity[1] = vBuffer[1]*velocity;
@@ -1708,7 +1694,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 			new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
-				new Address:SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
+				Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 				if(SentryDmgActive != Address_Null)
 				{
 					damage *= TF2Attrib_GetValue(SentryDmgActive);
@@ -1716,17 +1702,17 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 			}
 			if(IsValidEntity(melee))
 			{
-				new Address:SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
+				Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
 				if(SentryDmgActive1 != Address_Null)
 				{
 					damage *= TF2Attrib_GetValue(SentryDmgActive1);
 				}
-				new Address:SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
+				Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
 				if(SentryDmgActive2 != Address_Null)
 				{
 					damage *= TF2Attrib_GetValue(SentryDmgActive2);
 				}
-				new Address:damageActive = TF2Attrib_GetByName(melee, "ubercharge");
+				Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
 				if(damageActive != Address_Null)
 				{
 					damage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
@@ -1745,10 +1731,10 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 				new melee = GetPlayerWeaponSlot(attacker,2)
 				if(IsValidEntity(melee))
 				{
-					new Address:sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
+					Address sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
 					if(sentryOverrideActive != Address_Null)
 					{
-						new Float:sentryOverride = TF2Attrib_GetValue(sentryOverrideActive);
+						float sentryOverride = TF2Attrib_GetValue(sentryOverrideActive);
 						if(sentryOverride == 32.0)
 						{
 							damage = 20.0;
@@ -1762,9 +1748,9 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 					}
 					
 					
-					new Address:SentryDmgActive = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
-					new Address:SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
-					new Address:SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
+					Address SentryDmgActive = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
+					Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
+					Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
 					if(SentryDmgActive != Address_Null)
 					{
 						damage *= TF2Attrib_GetValue(SentryDmgActive);
@@ -1777,7 +1763,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 					{
 						damage *= TF2Attrib_GetValue(SentryDmgActive2);
 					}
-					new Address:damageActive = TF2Attrib_GetByName(melee, "ubercharge");
+					Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
 					if(damageActive != Address_Null)
 					{
 						damage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
@@ -1785,7 +1771,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 				}
 				if(IsValidEntity(primary))
 				{
-					new Address:SentryDmgActive2 = TF2Attrib_GetByName(primary, "engy sentry damage bonus");
+					Address SentryDmgActive2 = TF2Attrib_GetByName(primary, "engy sentry damage bonus");
 					if(SentryDmgActive2 != Address_Null)
 					{
 						damage *= TF2Attrib_GetValue(SentryDmgActive2);
@@ -1794,7 +1780,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 				new CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
+					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 					if(SentryDmgActive != Address_Null)
 					{
 						damage *= TF2Attrib_GetValue(SentryDmgActive);

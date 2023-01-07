@@ -1,7 +1,7 @@
 public Action:DisplayCurrentUps(client, args)
 {
-	new String:arg1[128];
-	new arg;
+	char arg1[64];
+	int arg;
 	if (GetCmdArg(1, arg1, sizeof(arg1)))
 	{
 		arg = StringToInt(arg1);
@@ -13,10 +13,10 @@ public Action:DisplayCurrentUps(client, args)
 }
 public Action:Command_ShowStats(client, args)
 {
-	new String:args2[128];
-	new slot;
-	
-	new String:strTarget[MAX_TARGET_LENGTH], String:target_name[MAX_TARGET_LENGTH],target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
+	char args2[64], strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH];
+	int target_list[MAXPLAYERS], target_count, slot;
+	bool tn_is_ml;
+
 	GetCmdArg(1, strTarget, sizeof(strTarget));
 	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, 0, target_name, sizeof(target_name), tn_is_ml)) <= 0)
 	{
@@ -24,7 +24,7 @@ public Action:Command_ShowStats(client, args)
 		return Plugin_Handled;
 	}
 
-	for(new i = 0; i < target_count; i++)
+	for(int i = 0; i < target_count; i++)
 	{
 		if(GetCmdArg(2, args2, sizeof(args2)))
 		{
@@ -44,8 +44,10 @@ public Action:Command_SetCash(client, args)
 		ReplyToCommand(client, "[SM] Usage: sm_setcash \"target\" \"amount\"");
 		return Plugin_Handled;
 	}
-
-	new String:strTarget[MAX_TARGET_LENGTH], String:strCash[128], Float:GivenCash, String:target_name[MAX_TARGET_LENGTH],target_list[128], target_count, bool:tn_is_ml;
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strCash[128];
+	int target_list[MAXPLAYERS], target_count;
+	bool tn_is_ml;
+	float GivenCash;
 	GetCmdArg(1, strTarget, sizeof(strTarget));
 	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, COMMAND_FILTER_NO_BOTS, target_name, sizeof(target_name), tn_is_ml)) <= 0)
 	{
@@ -56,7 +58,7 @@ public Action:Command_SetCash(client, args)
 	GetCmdArg(2, strCash, sizeof(strCash));
 	GivenCash = StringToFloat(strCash);
 
-	for(new i = 0; i < target_count; i++)
+	for(int i = 0; i < target_count; i++)
 	{
 		CurrencyOwned[target_list[i]] = GivenCash;
 	}
@@ -70,8 +72,12 @@ public Action:Command_AddCash(client, args)
 		ReplyToCommand(client, "[SM] Usage: sm_addcash \"target\" \"amount\"");
 		return Plugin_Handled;
 	}
-	
-	new String:strTarget[MAX_TARGET_LENGTH], String:strCash[128], Float:GivenCash, String:target_name[MAX_TARGET_LENGTH],target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
+
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strCash[128];
+	int target_list[MAXPLAYERS], target_count;
+	bool tn_is_ml;
+	float GivenCash;
+
 	GetCmdArg(1, strTarget, sizeof(strTarget));
 	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, COMMAND_FILTER_NO_BOTS, target_name, sizeof(target_name), tn_is_ml)) <= 0)
 	{
@@ -81,7 +87,7 @@ public Action:Command_AddCash(client, args)
 	
 	GetCmdArg(2, strCash, sizeof(strCash));
 	GivenCash = StringToFloat(strCash);
-	for(new i = 0; i < target_count; i++)
+	for(int i = 0; i < target_count; i++)
 	{
 		
 		CurrencyOwned[target_list[i]] += GivenCash;
@@ -95,8 +101,10 @@ public Action:Command_RemoveCash(client, args)
 		ReplyToCommand(client, "[SM] Usage: sm_removecash \"target\" \"amount\"");
 		return Plugin_Handled;
 	}
-	
-	new String:strTarget[MAX_TARGET_LENGTH], String:strCash[128], Float:GivenCash, String:target_name[MAX_TARGET_LENGTH],target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strCash[128];
+	int target_list[MAXPLAYERS], target_count;
+	bool tn_is_ml;
+	float GivenCash;
 	GetCmdArg(1, strTarget, sizeof(strTarget));
 	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, COMMAND_FILTER_NO_BOTS, target_name, sizeof(target_name), tn_is_ml)) <= 0)
 	{
@@ -107,7 +115,7 @@ public Action:Command_RemoveCash(client, args)
 	GetCmdArg(2, strCash, sizeof(strCash));
 	GivenCash = StringToFloat(strCash);
 
-	for(new i = 0; i < target_count; i++)
+	for(int i = 0; i < target_count; i++)
 	{
 		CurrencyOwned[target_list[i]] -= GivenCash;
 	}
@@ -120,8 +128,9 @@ public Action:Command_SetIFAdmin(client, args)
 		ReplyToCommand(client, "[SM] Usage: sm_setifadmin \"target\" \"bool\"");
 		return Plugin_Handled;
 	}
-	
-	new String:strTarget[MAX_TARGET_LENGTH], String:strToggle[128], bool:toggle, String:target_name[MAX_TARGET_LENGTH],target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strToggle[64];
+	int target_list[MAXPLAYERS], target_count;
+	bool tn_is_ml, toggle;
 	GetCmdArg(1, strTarget, sizeof(strTarget));
 	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, COMMAND_FILTER_NO_BOTS, target_name, sizeof(target_name), tn_is_ml)) <= 0)
 	{
@@ -132,7 +141,7 @@ public Action:Command_SetIFAdmin(client, args)
 	GetCmdArg(2, strToggle, sizeof(strToggle));
 	toggle = view_as<bool>(StringToInt(strToggle));
 
-	for(new i = 0; i < target_count; i++)
+	for(int i = 0; i < target_count; i++)
 	{
 		canBypassRestriction[target_list[i]] = toggle;
 	}
@@ -154,8 +163,8 @@ public Action:AdjustHud(client, args)
 {
 	if(IsValidClient3(client))
 	{
-		new String:args1[128];
-		new String:args2[128];
+		char args1[128];
+		char args2[128];
 		if(GetCmdArg(1, args1, sizeof(args1)))
 		{
 			SetClientCookie(client, hArmorXPos, args1);
@@ -174,16 +183,16 @@ public Action:AdjustHud(client, args)
 public Action:Menu_QuickBuyUpgrade(client, args)
 {
 	/*
-	new String:arg1[32];
-	new arg1_ = -1;
-	new String:arg2[32];
-	new arg2_ = -1;
-	new String:arg3[32];
-	new arg3_ = -1;
-	new String:arg4[32];
-	new arg3_ = -1;
-	new String:arg5[32];
-	new arg5_ = 0;
+	char arg1[32];
+	int arg1_ = -1;
+	char arg2[32];
+	int arg2_ = -1;
+	char arg3[32];
+	int arg3_ = -1;
+	char arg4[32];
+	int arg3_ = -1;
+	char arg5[32];
+	int arg5_ = 0;
 	new	bool:flag = false
 	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
@@ -208,7 +217,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 			}
 			if (arg1_ > -1 && arg1_ < 6 && GetCmdArg(2, arg2, sizeof(arg2)))
 			{
-				new w_id = currentitem_catidx[client][arg1_]
+				int w_id = currentitem_catidx[client][arg1_]
 				arg2_ = StringToInt(arg2)-1;
 				if (GetCmdArg(3, arg3, sizeof(arg3)))
 				{
@@ -239,23 +248,23 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 					refreshUpgrades(client, arg1_)
 					if(w_id != -1 && arg2_ == given_upgrd_classnames_tweak_idx[w_id])
 					{
-						new loopBroke = 0;
-						new got_req = 1
-						new spTweak = given_upgrd_list[w_id][arg2_][arg3_]
+						int loopBroke = 0;
+						int got_req = 1
+						int spTweak = given_upgrd_list[w_id][arg2_][arg3_]
 						if(upgrades_tweaks_requirement[spTweak] <= client_spent_money[client][arg1_])
 						{
 							if(upgrades_tweaks_requirement[spTweak] > 1.0 && client_tweak_highest_requirement[client][arg1_] < upgrades_tweaks_requirement[spTweak])
 							{
 								client_tweak_highest_requirement[client][arg1_] = upgrades_tweaks_requirement[spTweak];
 							}
-							for(new timesUpgraded = 0; timesUpgraded < arg5_ && loopBroke == 0; timesUpgraded++)
+							for(int timesUpgraded = 0; timesUpgraded < arg5_ && loopBroke == 0; timesUpgraded++)
 							{
 								if(CurrencyOwned[client] >= upgrades_tweaks_cost[spTweak])
 								{
-									for (new i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
+									for (int i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
 									{
-										new upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
-										new inum = upgrades_ref_to_idx[client][arg1_][upgrade_choice]
+										int upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
+										int inum = upgrades_ref_to_idx[client][arg1_][upgrade_choice]
 										if (inum != 20000)
 										{
 											if (currentupgrades_val[client][arg1_][inum] == upgrades_m_val[upgrade_choice])
@@ -275,9 +284,9 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 									}
 									if (got_req)
 									{
-										for (new i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
+										for (int i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
 										{
-											new upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
+											int upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
 											UpgradeItem(client, upgrade_choice, upgrades_ref_to_idx[client][arg1_][upgrade_choice], upgrades_tweaks_att_ratio[spTweak][i], arg1_)
 											CurrencyOwned[client] -= upgrades_tweaks_cost[spTweak];
 											client_spent_money[client][arg1_] += upgrades_tweaks_cost[spTweak]
@@ -310,13 +319,13 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 					{
 						if (arg3_ >= 0)
 						{
-							new u = currentupgrades_idx[client][arg2_][arg3_]
+							int u = currentupgrades_idx[client][arg2_][arg3_]
 							if (u != 20000)
 							{
 								if (upgrades_costs[u] < -0.1)
 								{
-									new nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][arg2_][arg3_]) / upgrades_ratio[u])
-									new Float:up_cost = upgrades_costs[u] * nb_time_upgraded * 3.0
+									int nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][arg2_][arg3_]) / upgrades_ratio[u])
+									float up_cost = upgrades_costs[u] * nb_time_upgraded * 3.0
 									if(up_cost > 200.0)
 									{
 										if (CurrencyOwned[client] >= up_cost)
@@ -335,7 +344,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 								}
 								if (upgrades_costs[u] > 1.0)
 								{
-									new nb_time_upgraded;
+									int nb_time_upgraded;
 									if(currentupgrades_i[client][arg2_][arg3_] != 0.0)
 									{
 										nb_time_upgraded = RoundToNearest((currentupgrades_i[client][arg2_][arg3_] - currentupgrades_val[client][arg2_][arg3_]) / upgrades_ratio[u])
@@ -345,7 +354,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 										nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][arg2_][arg3_]) / upgrades_ratio[u])
 									}
 									nb_time_upgraded *= -1
-									new Float:up_cost = ((upgrades_costs[u]+((upgrades_costs_inc_ratio[u]*upgrades_costs[u])*(nb_time_upgraded-1))/2)*nb_time_upgraded)
+									float up_cost = ((upgrades_costs[u]+((upgrades_costs_inc_ratio[u]*upgrades_costs[u])*(nb_time_upgraded-1))/2)*nb_time_upgraded)
 									up_cost /= 2
 									if(arg2_ == 1)
 										up_cost *= SecondaryCostReduction;
@@ -372,14 +381,14 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 					}
 					if (arg2_ > -1 && arg2_ < given_upgrd_list_nb[w_id] && given_upgrd_list[w_id][arg2_][arg3_])
 					{
-						new upgrade_choice = given_upgrd_list[w_id][arg2_][arg3_]
-						new inum = upgrades_ref_to_idx[client][arg1_][upgrade_choice]
+						int upgrade_choice = given_upgrd_list[w_id][arg2_][arg3_]
+						int inum = upgrades_ref_to_idx[client][arg1_][upgrade_choice]
 						
 						if (inum == 20000)
 						{
 							if(upgrades_restriction_category[upgrade_choice] != 0)
 							{
-								for(new i = 1;i<5;i++)
+								for(int i = 1;i<5;i++)
 								{
 									if(currentupgrades_restriction[client][arg1_][i] == upgrades_restriction_category[upgrade_choice])
 									{
@@ -398,7 +407,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 						}
 						else if(currentupgrades_val[client][arg1_][inum] - upgrades_i_val[upgrade_choice] == 0.0 && upgrades_restriction_category[upgrade_choice] != 0)
 						{
-							for(new i = 1;i<5;i++)
+							for(int i = 1;i<5;i++)
 							{
 								if(currentupgrades_restriction[client][arg1_][i] == upgrades_restriction_category[upgrade_choice])
 								{
@@ -409,15 +418,15 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 							}
 							currentupgrades_restriction[client][arg1_][upgrades_restriction_category[upgrade_choice]] = upgrades_restriction_category[upgrade_choice];
 						}
-						new idx_currentupgrades_val
+						int idx_currentupgrades_val
 						if(currentupgrades_i[client][arg1_][inum] != 0.0){
 							idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][arg1_][inum] - currentupgrades_i[client][arg1_][inum])/ upgrades_ratio[upgrade_choice])
 						}
 						else{
 							idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][arg1_][inum] - upgrades_i_val[upgrade_choice])/ upgrades_ratio[upgrade_choice])
 						}
-						new Float:upgrades_val = currentupgrades_val[client][arg1_][inum];
-						new Float:up_cost = float(upgrades_costs[upgrade_choice]);
+						float upgrades_val = currentupgrades_val[client][arg1_][inum];
+						float up_cost = float(upgrades_costs[upgrade_choice]);
 						up_cost /= 2.0;
 						if (arg1_ == 1)
 						{
@@ -425,12 +434,12 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 						}
 						if (inum != 20000 && upgrades_ratio[upgrade_choice])
 						{
-							new Float:t_up_cost = 0.0;
-							new times = 0;
-							new bool:notEnough = false;
-							for (new idx = 0; idx < arg5_; idx++)
+							float t_up_cost = 0.0;
+							int times = 0;
+							bool notEnough = false;
+							for (int idx = 0; idx < arg5_; idx++)
 							{
-								new Float:nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice])
+								float nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice])
 								if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] > 0.0 && RoundFloat(upgrades_val*100.0)/100.0 < upgrades_m_val[upgrade_choice])
 								{
 									t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[upgrade_choice]))
@@ -491,7 +500,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 public Action:ReloadCfgFiles(client, args)
 {
 	CreateTimer(0.1, Timer_WaitForTF2Econ, _);	   
-	for (new cl = 0; cl < MaxClients; cl++)
+	for (int cl = 0; cl < MaxClients; cl++)
 	{
 		if(IsValidClient3(cl))
 		{
@@ -505,13 +514,13 @@ public Action:ReloadCfgFiles(client, args)
 	}
 	return Plugin_Handled;
 }
-public Action:jointeam_callback(client, const String:command[], argc) 
+public Action:jointeam_callback(client, const char[] command, argc) 
 {
 	CancelClientMenu(client);
 }
 public Action:ResetPlayers(client, args)
 {
-	for (new i = 1; i <= MaxClients; i++) 
+	for (int i = 1; i <= MaxClients; i++) 
 	{ 
 		if (IsClientInGame(i)) 
 		{
@@ -523,12 +532,12 @@ public Action:ResetPlayers(client, args)
 }
 public Action:GiveAllMoney(client, args)
 {
-	new String:arg1[128];
-	new Float:arg;
+	char arg1[128];
+	float arg;
 	if(GetCmdArg(1, arg1, sizeof(arg1)))
 	{
 		arg = StringToFloat(arg1);
-		for (new i = 0; i <= MaxClients; i++) 
+		for (int i = 0; i <= MaxClients; i++) 
 		{ 
 			CurrencyOwned[i] = arg;
 		}
@@ -538,14 +547,14 @@ public Action:GiveAllMoney(client, args)
 
 public Action:ShowSpentMoney(client, args)
 {
-	for(new i = 0; i < MaxClients; i++)
+	for(int i = 0; i < MaxClients; i++)
 	{
 		if (IsValidClient(i))
 		{
-			decl String:cstr[255]
+			char cstr[255]
 			GetClientName(i, cstr, 255)
 			PrintToChat(client, "**%s**\n**", cstr)
-			for (new s = 0; s < 5; s++)
+			for (int s = 0; s < 5; s++)
 			{
 				PrintToChat(client, "%s : $%d of upgrades", current_slot_name[s], client_spent_money[i][s])
 			}
@@ -555,11 +564,11 @@ public Action:ShowSpentMoney(client, args)
 }
 public Action:ShowStats(client, args)
 {
-	for(new i = 0; i < MaxClients; i++)
+	for(int i = 0; i < MaxClients; i++)
 	{
 		if (IsValidClient(i))
 		{
-			decl String:cstr[255]
+			char cstr[255]
 			GetClientName(i, cstr, 255)
 			PrintToConsole(client, "\n%s:\n--------------\nHealed: %.0f\nDamage: %.0f\nKills: %.0f\nDeaths: %.0f\n", cstr, Healed[i], DamageDealt[i], Kills[i], Deaths[i])
 		}
@@ -569,14 +578,14 @@ public Action:ShowStats(client, args)
 }
 public Action:ShowTeamMoneyRatio(admid, args)
 {
-	for(new i = 0; i < MaxClients; i++)
+	for(int i = 0; i < MaxClients; i++)
 	{
 		if (IsValidClient(i))
 		{
-			decl String:cstr[255]
+			char cstr[255]
 			GetClientName(i, cstr, 255)
 			PrintToChat(admid, "**%s**\n**", cstr)
-			for (new s = 0; s < 5; s++)
+			for (int s = 0; s < 5; s++)
 			{
 				PrintToChat(admid, "%s : $%.0f of upgrades", current_slot_name[s], client_spent_money[i][s])
 			}
@@ -586,10 +595,10 @@ public Action:ShowTeamMoneyRatio(admid, args)
 }
 public Action:TestCommand(client, args)
 {
-	for(new s = 0; s < NB_SLOTS_UED; s++)
+	for(int s = 0; s < NB_SLOTS_UED; s++)
 	{
 		PrintToChat(client, "---Slot #%i---",s);
-		for(new i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
+		for(int i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
 		{
 			PrintToChat(client, "currentUpgradesIDX %i", currentupgrades_idx[client][s][i]);
 			PrintToChat(client, "upgrades_ref_to_idx %i", upgrades_ref_to_idx[client][s][currentupgrades_idx[client][s][i]]);
@@ -603,7 +612,7 @@ public Action:TestCommand(client, args)
 	return Plugin_Handled;
 }
 
-public OnCvarChanged(Handle:cvar, const String:oldVal[], const String:newVal[])
+public OnCvarChanged(Handle:cvar, const char[] oldVal, const char[] newVal)
 {
 	if(cvar == cvar_MoneyBonusKill)
 	{
@@ -616,7 +625,7 @@ public OnCvarChanged(Handle:cvar, const String:oldVal[], const String:newVal[])
 	else if(cvar == cvar_BotMultiplier)
 	{
 		OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
-		for(new i=1;i<MaxClients;i++)
+		for(int i=1;i<MaxClients;i++)
 		{
 			if(IsValidClient3(i) && IsFakeClient(i))
 			{
@@ -631,7 +640,7 @@ public OnCvarChanged(Handle:cvar, const String:oldVal[], const String:newVal[])
 	else if(cvar == cvar_DisableBotUpgrade)
 	{
 		DisableBotUpgrades = GetConVarInt(cvar_DisableBotUpgrade);
-		for(new i=1;i<MaxClients;i++)
+		for(int i=1;i<MaxClients;i++)
 		{
 			if(IsValidClient3(i) && IsFakeClient(i))
 			{
@@ -642,13 +651,13 @@ public OnCvarChanged(Handle:cvar, const String:oldVal[], const String:newVal[])
 	else if(cvar == cvar_DisableCooldowns)
 	{
 		DisableCooldowns = GetConVarInt(cvar_DisableCooldowns);
-		for(new client=1;client<MaxClients;client++)
+		for(int client=1;client<MaxClients;client++)
 		{
 			if(IsValidClient(client))
 			{
 				if(CheckForAttunement(client))
 				{
-					for(new i = 0; i < Max_Attunement_Slots;i++)
+					for(int i = 0; i < Max_Attunement_Slots;i++)
 					{
 						SpellCooldowns[client][i] = 0.0;
 					}
@@ -664,8 +673,10 @@ public Action:Command_DealDamage(client, args)
 		ReplyToCommand(client, "[SM] Usage: sm_damage \"target\" \"amount\"");
 		return Plugin_Handled;
 	}
-
-	new String:strTarget[MAX_TARGET_LENGTH], String:strDmg[128], Float:Damage, String:target_name[MAX_TARGET_LENGTH],target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strDmg[64];
+	int target_list[MAXPLAYERS], target_count;
+	bool tn_is_ml;
+	float Damage;
 	GetCmdArg(1, strTarget, sizeof(strTarget));
 	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, COMMAND_FILTER_NO_BOTS, target_name, sizeof(target_name), tn_is_ml)) <= 0)
 	{
@@ -675,7 +686,7 @@ public Action:Command_DealDamage(client, args)
 
 	GetCmdArg(2, strDmg, sizeof(strDmg));
 	Damage = StringToFloat(strDmg);	
-	for(new i = 0; i < target_count; i++)
+	for(int i = 0; i < target_count; i++)
 	{
 		if(IsValidClient3(target_list[i]))
 		{
@@ -686,11 +697,13 @@ public Action:Command_DealDamage(client, args)
 }
 public Action:Command_GiveKills(client, args)
 {
-	new String:args3[128];
-	new kills;
-	new victim;
+	char args3[128];
+	int kills;
+	int victim;
 	
-	new String:strTarget[MAX_TARGET_LENGTH], String:target_name[MAX_TARGET_LENGTH],target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH]
+	int target_list[MAXPLAYERS], target_count;
+	bool tn_is_ml;
 	GetCmdArg(1, strTarget, sizeof(strTarget));
 	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, 0, target_name, sizeof(target_name), tn_is_ml)) <= 0)
 	{
@@ -698,7 +711,9 @@ public Action:Command_GiveKills(client, args)
 		return Plugin_Handled;
 	}
 	
-	new String:strTarget2[MAX_TARGET_LENGTH], String:target_name2[MAX_TARGET_LENGTH],target_list2[MAXPLAYERS], target_count2, bool:tn_is_ml2;
+	char strTarget2[MAX_TARGET_LENGTH], target_name2[MAX_TARGET_LENGTH];
+	int target_list2[MAXPLAYERS], target_count2;
+	bool tn_is_ml2;
 	GetCmdArg(2, strTarget2, sizeof(strTarget2));
 	if((target_count2 = ProcessTargetString(strTarget2, client, target_list2, MAXPLAYERS, 0, target_name2, sizeof(target_name2), tn_is_ml2)) <= 0)
 	{
@@ -707,7 +722,7 @@ public Action:Command_GiveKills(client, args)
 	}
 	
 	PrintToServer("Attempting to give kills.");
-	for(new i = 0; i < target_count; i++)
+	for(int i = 0; i < target_count; i++)
 	{
 		if(GetCmdArg(3, args3, sizeof(args3)) && IsValidClient3(target_list[i]) && IsValidClient3(target_list2[i]))
 		{
@@ -716,7 +731,7 @@ public Action:Command_GiveKills(client, args)
 			PrintToServer("Attempting to give %i kills to %N. %N is the victim.",kills,target_list[i],target_list2[i]);
 			if(IsValidClient3(target_list[i]) && IsPlayerAlive(target_list[i]) && IsValidClient3(victim) && IsPlayerAlive(victim))
 			{
-				new Handle:datapack = CreateDataPack();
+				Handle datapack = CreateDataPack();
 				WritePackCell(datapack,EntIndexToEntRef(victim));
 				WritePackCell(datapack,EntIndexToEntRef(target_list[i]));
 				CreateTimer(0.1,Timer_KillPlayer,datapack);

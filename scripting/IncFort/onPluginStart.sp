@@ -1,6 +1,6 @@
-public Action:Timer_WaitForTF2Econ(Handle:timer)
+public Action:Timer_WaitForTF2Econ(Handle timer)
 {
-	new i = 0
+	int i = 0
 	if (TF2II_IsValidAttribID(1))
 	{
 		for (i = 0; i < 7000; i++)
@@ -35,13 +35,13 @@ public Action:Timer_WaitForTF2Econ(Handle:timer)
 
 public UberShopDefineUpgradeTabs()
 {
-	new i = 0
+	int i = 0
 	while (i < MaxClients)
 	{
 		client_respawn_handled[i] = 0
 		client_respawn_checkpoint[i] = 0
 		up_menus[i] = INVALID_HANDLE
-		new j = 0
+		int j = 0
 		while (j < NB_SLOTS_UED)
 		{
 			currentupgrades_number[i][j] = 0
@@ -49,7 +49,7 @@ public UberShopDefineUpgradeTabs()
 			currentitem_idx[i][j] = 20000
 			client_spent_money[i][j] = 0.0
 			client_tweak_highest_requirement[i][j] = 0.0;
-			new k = 0
+			int k = 0
 			while (k < MAX_ATTRIBUTES)
 			{
 				upgrades_ref_to_idx[i][j][k] = 20000
@@ -150,13 +150,13 @@ public OnMapStart()
 {
 	if(IsMvM())
 	{
-		new String:mapName[64]
+		char mapName[64]
 		GetCurrentMap(mapName, sizeof(mapName))
 		StrCat(mapName, sizeof(mapName),"_IF");
 		ServerCommand("tf_mvm_popfile %s", mapName)
 	}
 	GameRules_SetProp("m_bPlayingMedieval", 0)
-	for(new i=0; i<=MaxClients; i++)
+	for(int i=0; i<=MaxClients; i++)
 	{
 		if(!IsValidClient3(i)){continue;}
 		if(b_Hooked[i] == false) {continue;}
@@ -168,7 +168,7 @@ public OnMapStart()
 		fl_CurrentArmor[i] = 300.0;
 		fl_MaxFocus[i] = 100.0;
 		fl_CurrentFocus[i] = 100.0;
-		for(new i1 = 0; i1 < Max_Attunement_Slots; i1++)
+		for(int i1 = 0; i1 < Max_Attunement_Slots; i1++)
 		{
 			AttunedSpells[i][i1] = 0.0;
 		}
@@ -216,7 +216,7 @@ public OnMapStart()
 	PrecacheModel("materials/effects/animatedsheen/animatedsheen0.vmt");
 	PrecacheModel("models/weapons/w_models/w_stickybomb3.mdl");
 	//AltLaser = PrecacheModel("materials/sprites/arrow.vmt");
-	new entity = FindEntityByClassname(-1, "func_upgradestation");
+	int entity = FindEntityByClassname(-1, "func_upgradestation");
 	if (entity > -1)
 	{
 		RemoveEntity(entity);
@@ -434,9 +434,9 @@ public void OnPluginStart()
 	SetConVarInt(FindConVar("tf_parachute_deploy_toggle_allowed"), 0, true, false);
 	SetConVarInt(FindConVar("sv_unlag_fixstuck"), 1, true, false);
 	//Database
-	new String:queryString[512];
+	char queryString[512];
 	Format(queryString, sizeof(queryString), "CREATE TABLE 'PlayerList' ('steamid' VARCHAR(64), 'datapack' INT)");
-	new Handle:queryH = SQL_Query(DB, queryString);
+	Handle queryH = SQL_Query(DB, queryString);
 	if(queryH != INVALID_HANDLE)
 	{
 		PrintToServer("IF : Successfully created a table.");
@@ -445,7 +445,7 @@ public void OnPluginStart()
 		PrintToServer("IF : Was unable to create a table. | SQLERROR : %s.", Error);
 	}
 	//Refresh
-	for (new client = 1; client < MaxClients; client++)
+	for (int client = 1; client < MaxClients; client++)
 	{
 		if(IsValidClient(client))
 		{
@@ -461,7 +461,7 @@ public void OnPluginStart()
 			}
 			CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 		}
-		for(new i = 0; i < Max_Attunement_Slots; i++)
+		for(int i = 0; i < Max_Attunement_Slots; i++)
 		{
 			AttunedSpells[client][i] = 0.0;
 		}
@@ -481,7 +481,7 @@ public OnPluginEnd()
 	hudSpells.Close();
 	hudAbility.Close();
 	hudStatus.Close();
-	for(new i=0; i<=MaxClients; i++)
+	for(int i=0; i<=MaxClients; i++)
 	{
 		if(!IsValidClient3(i)){continue;}
 		fl_MaxArmor[i] = 300.0;

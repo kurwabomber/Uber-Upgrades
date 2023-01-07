@@ -1,6 +1,6 @@
-public GetUpgrade_CatList(String:WCName[])
+public GetUpgrade_CatList(char[] WCName)
 {
-	new i, wis, w_id
+	int i, wis, w_id
 	
 	wis = 0
 	
@@ -21,8 +21,8 @@ public GetUpgrade_CatList(String:WCName[])
 }
 CheckForAttunement(client)
 {
-	new bool:flag = false;
-	for(new i = 0;i<Max_Attunement_Slots;i++)
+	bool flag = false;
+	for(int i = 0;i<Max_Attunement_Slots;i++)
 	{
 		if(AttunedSpells[client][i] != 0.0)
 		{
@@ -34,10 +34,10 @@ CheckForAttunement(client)
 }
 public bool:GiveNewWeapon(client, slot)
 {
-	new Handle:newItem = TF2Items_CreateItem(PRESERVE_ATTRIBUTES+FORCE_GENERATION);
-	new Flags = 0;
+	Handle newItem = TF2Items_CreateItem(PRESERVE_ATTRIBUTES+FORCE_GENERATION);
+	int Flags = 0;
 	
-	new itemDefinitionIndex = currentitem_idx[client][slot]
+	int itemDefinitionIndex = currentitem_idx[client][slot]
 	TF2Items_SetItemIndex(newItem, itemDefinitionIndex);
 	
 	TF2Items_SetLevel(newItem, 242);
@@ -49,7 +49,7 @@ public bool:GiveNewWeapon(client, slot)
 	
 	TF2Items_SetClassname(newItem, currentitem_classname[client][slot]);
 	
-	new entity = TF2Items_GiveNamedItem(client, newItem);
+	int entity = TF2Items_GiveNamedItem(client, newItem);
 	if (IsValidEntity(entity))
 	{
 		client_new_weapon_ent_id[client] = entity;
@@ -68,8 +68,8 @@ public GiveNewUpgradedWeapon_(client, slot)
 	if(IsValidClient(client))
 		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.001);
 		
-	new iNumAttributes;
-	new iEnt;
+	int iNumAttributes;
+	int iEnt;
 	iNumAttributes = currentupgrades_number[client][slot]
 	if (slot == 4 && IsValidClient(client))
 	{
@@ -88,9 +88,9 @@ public GiveNewUpgradedWeapon_(client, slot)
 	{
 		if( iNumAttributes > 0 )
 		{
-			for(new a = 0; a < iNumAttributes ; a++ )
+			for(int a = 0; a < iNumAttributes ; a++ )
 			{
-				new ifid = upgrades_to_a_id[currentupgrades_idx[client][slot][a]]
+				int ifid = upgrades_to_a_id[currentupgrades_idx[client][slot][a]]
 				if (strcmp(upgradesWorkNames[ifid], ""))
 				{
 					TF2Attrib_SetByName(iEnt, upgradesWorkNames[ifid],currentupgrades_val[client][slot][a]);
@@ -100,14 +100,14 @@ public GiveNewUpgradedWeapon_(client, slot)
 		refreshUpgrades(client, slot)
 	}
 }
-stock is_client_got_req(client, upgrade_choice, slot, inum, Float:rate = 1.0)
+stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 {
 
 	if (canBypassRestriction[client])
 		return 1;
 
-	new Float:up_cost = float(upgrades_costs[upgrade_choice]) * rate;
-	new max_ups = currentupgrades_number[client][slot];
+	float up_cost = float(upgrades_costs[upgrade_choice]) * rate;
+	int max_ups = currentupgrades_number[client][slot];
 	up_cost /= 2.0;
 	if (slot == 1)
 	{
@@ -148,7 +148,7 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, Float:rate = 1.0)
 			if(inum == 20000)//havent upgraded
 			{
 				//PrintToChat(client, "E");
-				for(new i = 1;i<5;i++)
+				for(int i = 1;i<5;i++)
 				{
 					if(currentupgrades_restriction[client][slot][i] == upgrades_restriction_category[upgrade_choice])
 					{
@@ -161,7 +161,7 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, Float:rate = 1.0)
 			}
 			else if(currentupgrades_val[client][slot][inum] - upgrades_i_val[upgrade_choice] == 0.0)
 			{
-				for(new i = 1;i<5;i++)
+				for(int i = 1;i<5;i++)
 				{
 					if(currentupgrades_restriction[client][slot][i] == upgrades_restriction_category[upgrade_choice])
 					{
@@ -211,7 +211,7 @@ public	check_apply_maxvalue(client, slot, inum, upgrade_choice)
 
 public ResetClientUpgrade_slot(client, slot)
 {
-	new iNumAttributes = currentupgrades_number[client][slot]
+	int iNumAttributes = currentupgrades_number[client][slot]
 	
 	
 	if (client_spent_money[client][slot])
@@ -225,14 +225,14 @@ public ResetClientUpgrade_slot(client, slot)
 	currentupgrades_number_mvm_chkp[client][slot] = 0;
 	client_tweak_highest_requirement[client][slot] = 0.0;
 	
-	for(new y = 0; y<5;y++)
+	for(int y = 0; y<5;y++)
 	{
 		currentupgrades_restriction[client][slot][y] = 0;
 		currentupgrades_restriction_mvm_chkp[client][slot][y] = 0;
 	}
 	
 	
-	for (new i = 0; i < iNumAttributes; i++)
+	for (int i = 0; i < iNumAttributes; i++)
 	{
 		currentupgrades_val_mvm_chkp[client][slot][i] = 0.0;
 		currentupgrades_val[client][slot][i] = 0.0;
@@ -242,7 +242,7 @@ public ResetClientUpgrade_slot(client, slot)
 	}
 	//I AM THE STORM THAT IS APPROACHING
 	//Thank you retard MR L
-	for(new i = 0; i < MAX_ATTRIBUTES; i++)
+	for(int i = 0; i < MAX_ATTRIBUTES; i++)
 	{
 		upgrades_ref_to_idx[client][slot][i] = 20000;
 		upgrades_ref_to_idx_mvm_chkp[client][slot][i] = 20000;
@@ -271,7 +271,7 @@ public ResetClientUpgrade_slot(client, slot)
 	{
 		currentitem_idx[client][slot] = 20000
 		GiveNewUpgradedWeapon_(client, slot)
-		for(new i = 0; i < Max_Attunement_Slots; i++)
+		for(int i = 0; i < Max_Attunement_Slots; i++)
 		{
 			AttunedSpells[client][i] = 0.0;
 		}
@@ -280,7 +280,7 @@ public ResetClientUpgrade_slot(client, slot)
 
 public ResetClientUpgrades(client)
 {
-	new slot
+	int slot
 	
 	client_respawn_handled[client] = 0
 	for (slot = 0; slot < NB_SLOTS_UED; slot++)
@@ -292,14 +292,14 @@ public DefineAttributesTab(client, itemidx, slot)
 {	
 	if (currentitem_idx[client][slot] == 20000)
 	{
-		new a, a2, i, a_i
+		int a, a2, i, a_i
 		currentitem_idx[client][slot] = itemidx
 		if(currentitem_level[client][slot] != 242)
 		{
-			new inumAttr = TF2II_GetItemNumAttributes(itemidx);
+			int inumAttr = TF2II_GetItemNumAttributes(itemidx);
 			for( a = 0, a2 = 0; a < inumAttr && a < 42; a++ )
 			{
-				decl String:Buf[64]
+				char Buf[64]
 				a_i = TF2II_GetItemAttributeID( itemidx, a);
 				TF2II_GetAttribName( a_i, Buf, 64);
 				if (GetTrieValue(_upg_names, Buf, i))
@@ -333,15 +333,15 @@ public DefineAttributesTab(client, itemidx, slot)
 		{
 			ResetClientUpgrade_slot(client, slot)
 			//PrintToServer("Gave %N upgrade lists and reset their upgrades.", client);
-			new a, a2, i, a_i
+			int a, a2, i, a_i
 		
 			currentitem_idx[client][slot] = itemidx
 			if(currentitem_level[client][slot] != 242)
 			{
-				new inumAttr = TF2II_GetItemNumAttributes(itemidx);
+				int inumAttr = TF2II_GetItemNumAttributes(itemidx);
 				for( a = 0, a2 = 0; a < inumAttr && a < 42; a++ )
 				{
-					decl String:Buf[64]
+					char Buf[64]
 					a_i = TF2II_GetItemAttributeID( itemidx, a);
 					TF2II_GetAttribName( a_i, Buf, 64);
 					if (GetTrieValue(_upg_names, Buf, i))
@@ -364,7 +364,7 @@ applyArcaneCooldownReduction(client, attuneSlot)
 {
 	float cdReduction = 1.0/ArcanePower[client];
 
-	new Address:cdMult = TF2Attrib_GetByName(client, "arcane cooldown rate");
+	Address cdMult = TF2Attrib_GetByName(client, "arcane cooldown rate");
 	if(cdMult != Address_Null)
 		cdReduction *= TF2Attrib_GetValue(cdMult);
 
@@ -372,7 +372,7 @@ applyArcaneCooldownReduction(client, attuneSlot)
 }
 DisplayItemChange(client,itemidx)
 {
-	new String:ChangeString[256];
+	char ChangeString[256];
 	switch(itemidx)
 	{
 		//scout primaries
@@ -670,7 +670,7 @@ DisplayItemChange(client,itemidx)
 		CPrintToChat(client, "{valve}Incremental Fortress {default}| {steelblue}Weapon Changes{default} | %s", ChangeString)
 	}
 }
-public UpgradeItem(client, upgrade_choice, inum, Float:ratio, slot)
+public UpgradeItem(client, upgrade_choice, inum, float ratio, slot)
 {
 	if (inum == 20000)
 	{
@@ -693,7 +693,7 @@ public UpgradeItem(client, upgrade_choice, inum, Float:ratio, slot)
 }
 public remove_attribute(client, inum)
 {
-	new slot = current_slot_used[client];
+	int slot = current_slot_used[client];
 	if(currentupgrades_i[client][slot][inum] != 0.0 && upgrades_costs[currentupgrades_idx[client][slot][inum]] > 1.0)
 	{
 		currentupgrades_val[client][slot][inum] = currentupgrades_i[client][slot][inum];
@@ -702,12 +702,12 @@ public remove_attribute(client, inum)
 	{
 		currentupgrades_val[client][slot][inum] = upgrades_i_val[currentupgrades_idx[client][slot][inum]];
 	}
-	new u = currentupgrades_idx[client][slot][inum]
+	int u = currentupgrades_idx[client][slot][inum]
 	if (u != 20000)
 	{
 		if(upgrades_restriction_category[u] != 0)
 		{
-			for(new i = 1;i<5;i++)
+			for(int i = 1;i<5;i++)
 			{
 				if(i == upgrades_restriction_category[u])
 				{
@@ -776,12 +776,12 @@ public Action Timer_SetNextAttackTime(Handle timer, DataPack hPack)
 	}
 	return Plugin_Continue;
 }
-public Action:RemoveDamage(Handle:timer, any:data)
+public Action:RemoveDamage(Handle timer, any:data)
 {
 	ResetPack(data);
 	
-	new client = EntRefToEntIndex(ReadPackCell(data));
-	new Float:damage = ReadPackFloat(data);
+	int client = EntRefToEntIndex(ReadPackCell(data));
+	float damage = ReadPackFloat(data);
 	if(IsValidClient(client))
 	{
 		dps[client] -= damage;
@@ -842,7 +842,7 @@ refreshUpgrades(client, slot)
 	if(IsValidClient3(client) && IsPlayerAlive(client))
 	{
 		current_class[client] = TF2_GetPlayerClass(client);
-		new slotItem;
+		int slotItem;
 		if(slot == 3 && IsValidEntity(client_new_weapon_ent_id[client]) && client_new_weapon_ent_id[client] > 0)
 		{
 			slotItem = client_new_weapon_ent_id[client];
@@ -853,20 +853,20 @@ refreshUpgrades(client, slot)
 		}
 		if(slot == 4)
 		{
-			new bool:isUsed[32];
-			for(new i = 0; i<Max_Attunement_Slots;i++)
+			bool isUsed[32];
+			for(int i = 0; i<Max_Attunement_Slots;i++)
 			{
 				AttunedSpells[client][i] = 0.0;
-				new Address:zapActive = TF2Attrib_GetByName(client, "arcane zap");
-				new Address:lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
-				new Address:healingAuraActive = TF2Attrib_GetByName(client, "arcane projected healing");
-				new Address:callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
-				new Address:blackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
-				new Address:sunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
-				new Address:lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
-				new Address:snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
-				new Address:arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
-				new Address:darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
+				Address zapActive = TF2Attrib_GetByName(client, "arcane zap");
+				Address lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
+				Address healingAuraActive = TF2Attrib_GetByName(client, "arcane projected healing");
+				Address callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
+				Address blackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
+				Address sunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
+				Address lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
+				Address snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
+				Address arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
+				Address darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
 				if(zapActive != Address_Null && !isUsed[1])
 				{
 					if(TF2Attrib_GetValue(zapActive) > 0.1)
@@ -963,7 +963,7 @@ refreshUpgrades(client, slot)
 				{
 					case TFClass_Scout:
 					{
-						new Address:speedAuraActive = TF2Attrib_GetByName(client, "arcane speed aura");//Scout
+						Address speedAuraActive = TF2Attrib_GetByName(client, "arcane speed aura");//Scout
 						if(speedAuraActive != Address_Null && !isUsed[11])
 						{
 							if(TF2Attrib_GetValue(speedAuraActive) > 0.1)
@@ -976,7 +976,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Soldier:
 					{
-						new Address:aerialStrikeActive = TF2Attrib_GetByName(client, "arcane aerial strike");
+						Address aerialStrikeActive = TF2Attrib_GetByName(client, "arcane aerial strike");
 						if(aerialStrikeActive != Address_Null && !isUsed[12])
 						{
 							if(TF2Attrib_GetValue(aerialStrikeActive) > 0.1)
@@ -989,7 +989,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Pyro:
 					{
-						new Address:infernoActive = TF2Attrib_GetByName(client, "arcane inferno");
+						Address infernoActive = TF2Attrib_GetByName(client, "arcane inferno");
 						if(infernoActive != Address_Null && !isUsed[13])
 						{
 							if(TF2Attrib_GetValue(infernoActive) > 0.1)
@@ -1002,7 +1002,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_DemoMan:
 					{
-						new Address:mineFieldActive = TF2Attrib_GetByName(client, "arcane mine field");
+						Address mineFieldActive = TF2Attrib_GetByName(client, "arcane mine field");
 						if(mineFieldActive != Address_Null && !isUsed[14])
 						{
 							if(TF2Attrib_GetValue(mineFieldActive) > 0.1)
@@ -1015,7 +1015,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Heavy:
 					{
-						new Address:shockwaveActive = TF2Attrib_GetByName(client, "arcane shockwave");
+						Address shockwaveActive = TF2Attrib_GetByName(client, "arcane shockwave");
 						if(shockwaveActive != Address_Null && !isUsed[15])
 						{
 							if(TF2Attrib_GetValue(shockwaveActive) > 0.1)
@@ -1028,7 +1028,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Engineer:
 					{
-						new Address:autoSentryActive = TF2Attrib_GetByName(client, "arcane autosentry");
+						Address autoSentryActive = TF2Attrib_GetByName(client, "arcane autosentry");
 						if(autoSentryActive != Address_Null && !isUsed[16])
 						{
 							if(TF2Attrib_GetValue(autoSentryActive) > 0.1)
@@ -1041,7 +1041,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Medic:
 					{
-						new Address:soothingSunlightActive = TF2Attrib_GetByName(client, "arcane soothing sunlight");
+						Address soothingSunlightActive = TF2Attrib_GetByName(client, "arcane soothing sunlight");
 						if(soothingSunlightActive != Address_Null && !isUsed[17])
 						{
 							if(TF2Attrib_GetValue(soothingSunlightActive) > 0.1)
@@ -1054,7 +1054,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Sniper:
 					{
-						new Address:arcaneHunterActive = TF2Attrib_GetByName(client, "arcane hunter");
+						Address arcaneHunterActive = TF2Attrib_GetByName(client, "arcane hunter");
 						if(arcaneHunterActive != Address_Null && !isUsed[18])
 						{
 							if(TF2Attrib_GetValue(arcaneHunterActive) > 0.1)
@@ -1067,7 +1067,7 @@ refreshUpgrades(client, slot)
 					}
 					case TFClass_Spy:
 					{
-						new Address:markForDeathActive = TF2Attrib_GetByName(client, "arcane mark for death");
+						Address markForDeathActive = TF2Attrib_GetByName(client, "arcane mark for death");
 						if(markForDeathActive != Address_Null && !isUsed[19])
 						{
 							if(TF2Attrib_GetValue(markForDeathActive) > 0.1)
@@ -1080,11 +1080,11 @@ refreshUpgrades(client, slot)
 					}
 				}
 			}
-			new Address:healthActive = TF2Attrib_GetByName(client, "health from packs decreased");		
+			Address healthActive = TF2Attrib_GetByName(client, "health from packs decreased");		
 			if(healthActive != Address_Null)
 			{
-				new Float:healthMultiplier = TF2Attrib_GetValue(healthActive);
-				new Float:MaxHealth = GetClientBaseHP(client)*healthMultiplier;
+				float healthMultiplier = TF2Attrib_GetValue(healthActive);
+				float MaxHealth = GetClientBaseHP(client)*healthMultiplier;
 				TF2Attrib_SetByName(client,"max health additive bonus", MaxHealth);
 				if(TF2Spawn_IsClientInSpawn(client))
 				{
@@ -1097,8 +1097,8 @@ refreshUpgrades(client, slot)
 			}
 			if(fl_AdditionalArmor[client] > 0.0)
 			{
-				new Float:postArmorAmount = 300.0
-				new Address:armorActive = TF2Attrib_GetByName(client, "obsolete ammo penalty")
+				float postArmorAmount = 300.0
+				Address armorActive = TF2Attrib_GetByName(client, "obsolete ammo penalty")
 				if(armorActive != Address_Null)
 				{
 					postArmorAmount = TF2Attrib_GetValue(armorActive)+300.0;
@@ -1110,10 +1110,10 @@ refreshUpgrades(client, slot)
 			}
 			
 			//Powerups
-			new Address:kingPowerup = TF2Attrib_GetByName(client, "king powerup");
+			Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
 			if(kingPowerup != Address_Null)
 			{
-				new Float:kingPowerupValue = TF2Attrib_GetValue(kingPowerup);
+				float kingPowerupValue = TF2Attrib_GetValue(kingPowerup);
 				if(kingPowerupValue > 0.0)
 				{
 					TF2Attrib_SetByName(client,"ubercharge rate bonus", 1.5);
@@ -1126,10 +1126,10 @@ refreshUpgrades(client, slot)
 				}
 			}
 			
-			new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
+			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 			if(precisionPowerup != Address_Null)
 			{
-				new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
+				float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
 				if(precisionPowerupValue > 0.0){
 					TF2Attrib_SetByName(client,"weapon spread bonus", 0.05);
 					TF2Attrib_SetByName(client,"Projectile speed increased", 2.0);
@@ -1137,7 +1137,7 @@ refreshUpgrades(client, slot)
 					TF2Attrib_SetByName(client,"blast dmg to self increased", 0.001);
 					if(current_class[client] == TFClass_DemoMan)
 					{
-						new secondary = GetWeapon(client,1);
+						int secondary = GetWeapon(client,1);
 						if(IsValidEntity(secondary))
 						{
 							TF2Attrib_SetByName(secondary,"sticky arm time penalty", -2.0);
@@ -1150,7 +1150,7 @@ refreshUpgrades(client, slot)
 					TF2Attrib_RemoveByName(client,"blast dmg to self increased");
 					if(current_class[client] == TFClass_DemoMan)
 					{
-						new secondary = GetWeapon(client,1);
+						int secondary = GetWeapon(client,1);
 						if(IsValidEntity(secondary))
 						{
 							TF2Attrib_SetByName(secondary,"sticky arm time penalty", -2.0);
@@ -1159,10 +1159,10 @@ refreshUpgrades(client, slot)
 				}
 			}
 			
-			new Address:agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
+			Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
 			if(agilityPowerup != Address_Null)
 			{
-				new Float:agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
+				float agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
 				if(agilityPowerupValue > 0.0)
 				{
 					TF2Attrib_SetByName(client,"major move speed bonus", 1.4);
@@ -1184,23 +1184,23 @@ refreshUpgrades(client, slot)
 		}
 		if(slot != 4 && IsValidEntity(slotItem) && slotItem > 0 && HasEntProp(slotItem, Prop_Data, "m_iClip1"))
 		{
-			new Float:Spread = 0.0;
-			new Address:spread1 = TF2Attrib_GetByName(slotItem, "spread penalty");
+			float Spread = 0.0;
+			Address spread1 = TF2Attrib_GetByName(slotItem, "spread penalty");
 			if(spread1 != Address_Null)
 			{
 				Spread += 1.0;
 				Spread *= (TF2Attrib_GetValue(spread1)*2.0);
 			}
-			new Address:spread2 = TF2Attrib_GetByName(slotItem, "weapon spread bonus");
+			Address spread2 = TF2Attrib_GetByName(slotItem, "weapon spread bonus");
 			if(spread2 != Address_Null)
 			{
 				Spread -= 0.1
 				Spread *= TF2Attrib_GetValue(spread2);
 			}
-			new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
+			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 			if(precisionPowerup != Address_Null)
 			{
-				new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
+				float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
 				if(precisionPowerupValue > 0.0){
 					Spread = 0.0;
 				}
@@ -1209,18 +1209,18 @@ refreshUpgrades(client, slot)
 			{
 				TF2Attrib_SetByName(slotItem, "projectile spread angle penalty", Spread);
 			}
-			new Address:reloadActive = TF2Attrib_GetByName(slotItem, "multiple sentries");
+			Address reloadActive = TF2Attrib_GetByName(slotItem, "multiple sentries");
 			if(reloadActive!=Address_Null)
 			{
 				SetEntProp(slotItem, Prop_Data, "m_bReloadsSingly", 0);
 			}
-			new Address:firerateActive = TF2Attrib_GetByName(slotItem, "disguise speed penalty");
-			new Address:heavyweaponActive = TF2Attrib_GetByName(slotItem, "SET BONUS: special dsp");//Implement "Heavy" Weapons
+			Address firerateActive = TF2Attrib_GetByName(slotItem, "disguise speed penalty");
+			Address heavyweaponActive = TF2Attrib_GetByName(slotItem, "SET BONUS: special dsp");//Implement "Heavy" Weapons
 			if(heavyweaponActive != Address_Null && TF2Attrib_GetValue(heavyweaponActive) != 0.0)
 			{
-				new Address:firerateActive2 = TF2Attrib_GetByName(slotItem, "fire rate bonus HIDDEN");
-				new Address:firerateActive3 = TF2Attrib_GetByName(slotItem, "fire rate penalty HIDDEN");
-				new Float:damageModifier = 1.0;
+				Address firerateActive2 = TF2Attrib_GetByName(slotItem, "fire rate bonus HIDDEN");
+				Address firerateActive3 = TF2Attrib_GetByName(slotItem, "fire rate penalty HIDDEN");
+				float damageModifier = 1.0;
 				if(firerateActive != Address_Null)
 				{
 					damageModifier *= TF2Attrib_GetValue(firerateActive);
@@ -1239,10 +1239,10 @@ refreshUpgrades(client, slot)
 				//If their weapon doesn't have a clip, reload rate also affects fire rate.
 				if((HasEntProp(slotItem, Prop_Data, "m_iClip1") && GetEntProp(slotItem,Prop_Data,"m_iClip1")  == -1) || TF2Attrib_GetValue(heavyweaponActive) > 1.0)
 				{
-					new Address:DPSMult12 = TF2Attrib_GetByName(slotItem, "faster reload rate");
-					new Address:DPSMult13 = TF2Attrib_GetByName(slotItem, "Reload time increased");
-					new Address:DPSMult14 = TF2Attrib_GetByName(slotItem, "Reload time decreased");
-					new Address:DPSMult15 = TF2Attrib_GetByName(slotItem, "reload time increased hidden");
+					Address DPSMult12 = TF2Attrib_GetByName(slotItem, "faster reload rate");
+					Address DPSMult13 = TF2Attrib_GetByName(slotItem, "Reload time increased");
+					Address DPSMult14 = TF2Attrib_GetByName(slotItem, "Reload time decreased");
+					Address DPSMult15 = TF2Attrib_GetByName(slotItem, "reload time increased hidden");
 					
 					if(DPSMult12 != Address_Null) {
 					damageModifier /= TF2Attrib_GetValue(DPSMult12);
@@ -1264,7 +1264,7 @@ refreshUpgrades(client, slot)
 				if(damageModifier != 1.0)
 				{
 					TF2Attrib_SetByName(slotItem,"throwable healing", damageModifier);
-					//PrintToChat(client,"new mult = %.2f",damageModifier);
+					//PrintToChat(client,"int mult = %.2f",damageModifier);
 				}
 			}
 			else if(firerateActive != Address_Null)
@@ -1275,14 +1275,14 @@ refreshUpgrades(client, slot)
 		}
 	}
 }
-public Action:GiveBotUpgrades(Handle:timer, any:userid) 
+public Action:GiveBotUpgrades(Handle timer, any:userid) 
 {
-	new client = GetClientOfUserId(userid);
+	int client = GetClientOfUserId(userid);
 	if(DisableBotUpgrades != 1 && IsValidClient3(client) && IsPlayerAlive(client))
 	{
-		new primary = (GetWeapon(client,0));
-		new secondary = (GetWeapon(client,1));
-		new melee = (GetWeapon(client,2));
+		int primary = (GetWeapon(client,0));
+		int secondary = (GetWeapon(client,1));
+		int melee = (GetWeapon(client,2));
 		if(TF2_GetPlayerClass(client) == TFClass_Spy)
 		{
 			melee = GetPlayerWeaponSlot(client,2);
@@ -1300,7 +1300,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 			return Plugin_Continue;
 		}
 		
-		new i = 0;
+		int i = 0;
 		
 		TF2Attrib_RemoveAll(client);
 		TF2Attrib_RemoveAll(primary);
@@ -1334,7 +1334,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 		}
 		for(i=0;i<3;i++)
 		{
-			new weap = GetWeapon(client,i);
+			int weap = GetWeapon(client,i);
 			if((additionalstartmoney+StartMoney) >= 1000000){
 			
 				TF2Attrib_SetByName(weap,"damage penalty",1+((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
@@ -1386,7 +1386,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 				}
 				for(i=0;i<3;i++)
 				{
-					new weap = GetWeapon(client,i);
+					int weap = GetWeapon(client,i);
 					if((additionalstartmoney+StartMoney) <= 400000/OverAllMultiplier)
 					{
 						TF2Attrib_SetByName(weap,"fire rate bonus",(20000.0/(additionalstartmoney+StartMoney))/OverAllMultiplier);
@@ -1413,7 +1413,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 				}
 				for(i=0;i<3;i++)
 				{
-					new weap = GetWeapon(client,i);
+					int weap = GetWeapon(client,i);
 					if(i != 2)
 					{
 						if((additionalstartmoney+StartMoney) <= 750000 / OverAllMultiplier)
@@ -1464,7 +1464,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 				}
 				for(i=0;i<3;i++)
 				{
-					new weap = GetWeapon(client,i);
+					int weap = GetWeapon(client,i);
 					if((additionalstartmoney+StartMoney) <= 1000000 / OverAllMultiplier)
 					{
 						TF2Attrib_SetByName(weap,"fire rate bonus",(25000.0/(additionalstartmoney+StartMoney)) / OverAllMultiplier);
@@ -1503,7 +1503,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 				TF2Attrib_SetByName(secondary,"Projectile speed increased",(3.5));
 				for(i=0;i<3;i++)
 				{
-					new weap = GetWeapon(client,i);
+					int weap = GetWeapon(client,i);
 					if(i != 2)
 					{
 						if((additionalstartmoney+StartMoney) <= 750000 / OverAllMultiplier)
@@ -1539,7 +1539,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 				}
 				for(i=0;i<3;i++)
 				{
-					new weap = GetWeapon(client,i);
+					int weap = GetWeapon(client,i);
 					if((additionalstartmoney+StartMoney) > 90000)
 					{
 						if((additionalstartmoney+StartMoney) <= 1500000 / OverAllMultiplier)
@@ -1569,7 +1569,7 @@ public Action:GiveBotUpgrades(Handle:timer, any:userid)
 				}
 				for(i=0;i<3;i++)
 				{
-					new weap = GetWeapon(client,i);
+					int weap = GetWeapon(client,i);
 					if((additionalstartmoney+StartMoney) <= 800000/OverAllMultiplier)
 					{
 						TF2Attrib_SetByName(weap,"fire rate bonus",(40000.0/(additionalstartmoney+StartMoney))/OverAllMultiplier);
@@ -1662,20 +1662,20 @@ ExplosiveArrow(entity)
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
-			new owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity");
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity");
 			if(IsValidClient(owner))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:ignitionChance = TF2Attrib_GetByName(CWeapon, "Wrench index");
+					Address ignitionChance = TF2Attrib_GetByName(CWeapon, "Wrench index");
 					if(ignitionChance != Address_Null)
 					{
 						if(TF2Attrib_GetValue(ignitionChance) >= GetRandomFloat(0.0, 1.0))
 						{
 							SetEntProp(entity, Prop_Send, "m_bArrowAlight", 1);
 							
-							new Address:ignitionExplosion = TF2Attrib_GetByName(CWeapon, "damage applies to sappers");
+							Address ignitionExplosion = TF2Attrib_GetByName(CWeapon, "damage applies to sappers");
 							if(ignitionExplosion != Address_Null && TF2Attrib_GetValue(ignitionExplosion) > 0.0)
 							{
 								jarateWeapon[entity] = EntIndexToEntRef(CWeapon)
@@ -1695,12 +1695,12 @@ ExplosiveArrow(entity)
 }
 disableWeapon(client)
 {
-	new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime() + 1.0);
 }
 StunShotFunc(client)
 {
-	new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime() + 0.6);
 	CreateTimer(0.5, removeBulletsPerShot, client);
 }
@@ -1712,7 +1712,7 @@ AirblastPatch(client)
 	if( TF2_GetPlayerClass(client) != TFClass_Pyro )
 		return;
 
-	new iNextTickTime = RoundToNearest(GetGameTime()/GetTickInterval())+ 5;
+	int iNextTickTime = RoundToNearest(GetGameTime()/GetTickInterval())+ 5;
 	SetEntProp( client, Prop_Data, "m_nNextThinkTick", iNextTickTime );
 	
 	if( GetEntProp( client, Prop_Data, "m_nWaterLevel" ) > 1 )
@@ -1721,11 +1721,11 @@ AirblastPatch(client)
 	if( (GetClientButtons(client) & IN_ATTACK2) != IN_ATTACK2 )
 		return;
 
-	new iWeapon = GetEntPropEnt( client, Prop_Send, "m_hActiveWeapon" );
+	int iWeapon = GetEntPropEnt( client, Prop_Send, "m_hActiveWeapon" );
 	if( !IsValidEntity(iWeapon) )
 		return;
 	
-	decl String:strClassname[64];
+	char strClassname[64];
 	GetEntityClassname( iWeapon, strClassname, sizeof(strClassname) );
 	if( !StrEqual( strClassname, "tf_weapon_flamethrower", false ) &&  !StrEqual( strClassname, "tf_weapon_rocketlauncher_fireball", false ) )
 		return;
@@ -1735,16 +1735,12 @@ AirblastPatch(client)
 		
 	flNextSecondaryAttack[client] = GetEntPropFloat( iWeapon, Prop_Send, "m_flNextSecondaryAttack" );
 	
-	new Float:SlowForce = 2.0;
-	new Float:AirblastDamage = 80.0;
-	new Float:TotalRange = 600.0;
-	new Float:Duration = 1.25;
-	new Float:ConeRadius = 40.0;
-	new Address:SlowActive = TF2Attrib_GetByName(iWeapon, "airblast vertical pushback scale");
-	new Address:DamageActive = TF2Attrib_GetByName(iWeapon, "airblast pushback scale");
-	new Address:RangeActive = TF2Attrib_GetByName(iWeapon, "deflection size multiplier");
-	new Address:DurationActive = TF2Attrib_GetByName(iWeapon, "melee range multiplier");
-	new Address:RadiusActive = TF2Attrib_GetByName(iWeapon, "melee bounds multiplier");
+	float SlowForce = 2.0,AirblastDamage = 80.0,TotalRange = 600.0,Duration = 1.25,ConeRadius = 40.0;
+	Address SlowActive = TF2Attrib_GetByName(iWeapon, "airblast vertical pushback scale");
+	Address DamageActive = TF2Attrib_GetByName(iWeapon, "airblast pushback scale");
+	Address RangeActive = TF2Attrib_GetByName(iWeapon, "deflection size multiplier");
+	Address DurationActive = TF2Attrib_GetByName(iWeapon, "melee range multiplier");
+	Address RadiusActive = TF2Attrib_GetByName(iWeapon, "melee bounds multiplier");
 
 	if(SlowActive != Address_Null){
 		SlowForce *= TF2Attrib_GetValue(SlowActive)
@@ -1763,12 +1759,12 @@ AirblastPatch(client)
 	}	
 	AirblastDamage *= TF2_GetDamageModifiers(client, iWeapon);
 	
-	new Address:lameMult = TF2Attrib_GetByName(iWeapon, "dmg penalty vs players");
+	Address lameMult = TF2Attrib_GetByName(iWeapon, "dmg penalty vs players");
 	if(lameMult != Address_Null)//lame. AP applies twice.
 	{
 		AirblastDamage /= TF2Attrib_GetValue(lameMult);
 	}
-	for(new i=1; i<=MaxClients; i++)
+	for(int i=1; i<=MaxClients; i++)
 	{
 		if(IsValidClient3(i) && IsClientInGame(i) && IsPlayerAlive(i))
 		{
@@ -1781,9 +1777,9 @@ AirblastPatch(client)
 						CurrentSlowTimer[i] = Duration;
 						SDKHooks_TakeDamage(i,client,client,AirblastDamage,DMG_BLAST,iWeapon, NULL_VECTOR, NULL_VECTOR);
 						
-						new bool:immune = false;
+						bool immune = false;
 						
-						new Address:agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
+						Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
 						if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
 						{
 							immune = true;
@@ -1814,10 +1810,7 @@ public BoomerangThink(entity)
 { 
 	if(IsValidEntity(entity) && GetGameTime() - entitySpawnTime[entity] > 0.3 && GetGameTime() - entitySpawnTime[entity] < 0.92)
 	{
-		new Float:ProjAngle[3];
-		new Float:ProjVelocity[3];
-		new Float:vBuffer[3];
-		new Float:speed;
+		float ProjAngle[3],ProjVelocity[3],vBuffer[3],speed;
 		GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
 		ProjAngle[1] += 5.5;
 		ProjAngle[0] = 0.0;
@@ -1837,18 +1830,18 @@ checkRadiation(victim,attacker)
 		RadiationBuildup[victim] = 0.0;
 		if(!IsFakeClient(victim))
 		{
-			new Float:victimMaxArmor = 300.0;
-			new Address:armorActive = TF2Attrib_GetByName(victim, "obsolete ammo penalty")
+			float victimMaxArmor = 300.0;
+			Address armorActive = TF2Attrib_GetByName(victim, "obsolete ammo penalty")
 			if(armorActive != Address_Null)
 			{
-				new Float:armorAmount = TF2Attrib_GetValue(armorActive);
+				float armorAmount = TF2Attrib_GetValue(armorActive);
 				victimMaxArmor += armorAmount;
 			}
-			new armorLost = RoundToNearest(victimMaxArmor/2.0);
+			int armorLost = RoundToNearest(victimMaxArmor/2.0);
 			DealFakeDamage(victim,attacker,-1, armorLost);
 			TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 5.0);
 			
-			new Float:particleOffset[3] = {0.0,0.0,10.0};
+			float particleOffset[3] = {0.0,0.0,10.0};
 			CreateParticle(victim, "utaunt_electricity_cloud_electricity_WY", true, "", 5.0, particleOffset);
 			CreateParticle(victim, "utaunt_auroraglow_green_parent", true, "", 5.0);
 			CreateParticle(victim, "merasmus_blood", true, "", 2.0);
@@ -1859,7 +1852,7 @@ checkRadiation(victim,attacker)
 			TF2_AddCondition(victim, TFCond_Bleeding, 7.5);
 			TF2_AddCondition(victim, TFCond_AirCurrent, 7.5);
 			TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 7.5);
-			new Float:particleOffset[3] = {0.0,0.0,10.0};
+			float particleOffset[3] = {0.0,0.0,10.0};
 			CreateParticle(victim, "utaunt_electricity_cloud_electricity_WY", true, "", 7.5, particleOffset);
 			CreateParticle(victim, "utaunt_auroraglow_green_parent", true, "", 7.5);
 			CreateParticle(victim, "merasmus_blood", true, "", 7.5);
@@ -1874,25 +1867,20 @@ monoculusBonus(entity)
 		int monoculus = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidEntity(monoculus))
 		{
-			new client = EntRefToEntIndex(jarateWeapon[monoculus]);
+			int client = EntRefToEntIndex(jarateWeapon[monoculus]);
 			if(IsValidClient3(client))
 			{
-				new Float:vAngles[3];
-				new Float:vPosition[3];
-				new Float:vBuffer[3];
-				new Float:vVelocity[3];
-				new Float:vel[3];
+				float vAngles[3],vPosition[3],vBuffer[3],vVelocity[3],vel[3],projspd = 3.0;
 				GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vPosition);
 				GetEntPropVector(entity, Prop_Data, "m_angRotation", vAngles);
 				GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", vel);
 				GetAngleVectors(vAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-				new Float:projspd = 3.0;
 				vVelocity[0] = vBuffer[0]*projspd*GetVectorLength(vel);
 				vVelocity[1] = vBuffer[1]*projspd*GetVectorLength(vel);
 				vVelocity[2] = vBuffer[2]*projspd*GetVectorLength(vel);
 				TeleportEntity(entity, NULL_VECTOR, NULL_VECTOR, vVelocity);
 				
-				new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
 					SetEntDataFloat(entity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, 90.0 * TF2_GetDamageModifiers(client,CWeapon), true);  
@@ -1908,13 +1896,13 @@ checkEnabledSentry(entity)
 	{
 		if(HasEntProp(entity,Prop_Send,"m_hBuilder"))
 		{
-			new owner = GetEntPropEnt(entity,Prop_Send,"m_hBuilder" );
+			int owner = GetEntPropEnt(entity,Prop_Send,"m_hBuilder" );
 			if(IsValidClient3(owner))
 			{
-				new melee = (GetPlayerWeaponSlot(owner,2));
+				int melee = (GetPlayerWeaponSlot(owner,2));
 				if(IsValidEntity(melee))
 				{
-					new weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
+					int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
 					if(weaponIndex == 589)
 					{
 						PrintToChat(owner, "Your sentry is disabled (Eureka Effect).");
@@ -1930,18 +1918,18 @@ randomizeTankSpecialty(entity)
 	entity = EntRefToEntIndex(entity);
 	if(IsValidEntity(entity))//In case if the tank somehow instantly despawns.
 	{
-		new specialtyID = GetRandomInt(0,1);
+		int specialtyID = GetRandomInt(0,1);
 		switch(specialtyID)
 		{
 			case 0:
 			{
-				new iEntity = CreateEntityByName("obj_sentrygun");
+				int iEntity = CreateEntityByName("obj_sentrygun");
 				if(IsValidEntity(iEntity))
 				{
-					new Float:position[3];
+					float position[3];
 					GetEntPropVector(entity, Prop_Data, "m_vecOrigin", position);
 					
-					new iLink = CreateLink(entity);
+					int iLink = CreateLink(entity);
 					
 					SetVariantString("!activator");
 					AcceptEntityInput(iEntity, "SetParent", iLink);  
@@ -1964,13 +1952,8 @@ randomizeTankSpecialty(entity)
 					SetEntProp(iEntity, Prop_Send, "m_iTeamNum", 3)
 					if(IsValidEntity(logic))
 					{
-						new round = GetEntProp(logic, Prop_Send, "m_nMannVsMachineWaveCount");
-						new Float:currency = 60000.0;
-						for(new i = 1;i<round;i++)
-						{
-							currency += (currency*0.2)+20000.0;
-						}
-						TankSentryDamageMod = Pow((currency/11000), DamageMod + (round * 0.03)) * 1.8 * OverallMod;
+						int round = GetEntProp(logic, Prop_Send, "m_nMannVsMachineWaveCount");
+						TankSentryDamageMod = Pow((waveToCurrency[round]/11000.0), DamageMod + (round * 0.03)) * 1.8 * OverallMod;
 					}
 				}
 			}
@@ -1978,13 +1961,13 @@ randomizeTankSpecialty(entity)
 			{
 				if(!IsValidEntity(TankTeleporter))
 				{
-					new iEntity = CreateEntityByName("obj_teleporter");
+					int iEntity = CreateEntityByName("obj_teleporter");
 					if(IsValidEntity(iEntity))
 					{
-						new Float:position[3];
+						float position[3];
 						GetEntPropVector(entity, Prop_Data, "m_vecOrigin", position);
 						
-						new iLink = CreateLink(entity);
+						int iLink = CreateLink(entity);
 						
 						SetVariantString("!activator");
 						AcceptEntityInput(iEntity, "SetParent", iLink);  
@@ -2015,7 +1998,7 @@ ChangeProjModel(entity)
 	entity = EntRefToEntIndex(entity);
 	if(IsValidEntity(entity))
 	{
-		new client;
+		int client;
 		if(HasEntProp(entity, Prop_Data, "m_hThrower"))
 		{
 			client = GetEntPropEnt(entity, Prop_Data, "m_hThrower");
@@ -2026,10 +2009,10 @@ ChangeProjModel(entity)
 		}
 		if(IsValidClient(client))
 		{
-			new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
-				new iItemDefinitionIndex = GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex");
+				int iItemDefinitionIndex = GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex");
 				switch(iItemDefinitionIndex)
 				{
 					case 222:
@@ -2087,29 +2070,24 @@ SentryDelay(entity)
 		if(!IsValidClient3(building) && IsValidEntity(building) && HasEntProp(building,Prop_Send,"m_hBuilder"))
 		{
 			//PrintToChatAll("2");
-			new owner = GetEntPropEnt(building,Prop_Send,"m_hBuilder" );
+			int owner = GetEntPropEnt(building,Prop_Send,"m_hBuilder" );
 			if(IsValidClient3(owner))
 			{
 				//PrintToChatAll("3");
-				new melee = GetWeapon(owner,2);
+				int melee = GetWeapon(owner,2);
 				if(IsValidEntity(melee))
 				{
 					//PrintToChatAll("4");
-					new Address:projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
-					new Address:projspeed1 = TF2Attrib_GetByName(melee, "Projectile speed decreased");
+					Address projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
+					Address projspeed1 = TF2Attrib_GetByName(melee, "Projectile speed decreased");
 					if(projspeed != Address_Null || projspeed1 != Address_Null)
 					{
 						//PrintToChatAll("5");
-						new Float:vAngles[3];
-						new Float:vPosition[3];
-						new Float:vBuffer[3];
-						new Float:vVelocity[3];
-						new Float:vel[3];
+						float vAngles[3],vPosition[3],vBuffer[3],vVelocity[3],vel[3],projspd = 1.0;
 						GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vPosition);
 						GetEntPropVector(entity, Prop_Data, "m_angRotation", vAngles);
 						GetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", vel); 
 						GetAngleVectors(vAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-						new Float:projspd = 1.0;
 						if(projspeed != Address_Null){
 							projspd *= TF2Attrib_GetValue(projspeed)
 						}
@@ -2132,12 +2110,12 @@ SentryDelay(entity)
 	entity = EntRefToEntIndex(entity);
 	if(IsValidEntity(entity))
 	{
-		new Float:EntityPos[3];
-		new Float:distance = 30000.0;
-		new Float:ClientPosition[3];
-		new ClosestClient = -1;
+		float EntityPos[3];
+		float distance = 30000.0;
+		float ClientPosition[3];
+		int ClosestClient = -1;
 		GetEntPropVector(entity, Prop_Data, "m_vecAbsOrigin", EntityPos); 
-		for( new client = 1; client <= MaxClients; client++ )
+		for( int client = 1; client <= MaxClients; client++ )
 		{
 			if(IsValidClient(client) && !IsClientObserver(client) && IsPlayerAlive(client))
 			{ 
@@ -2147,7 +2125,7 @@ SentryDelay(entity)
 					ClosestClient = client;
 					break;
 				}
-				new Float:CalcDistance = GetVectorDistance(EntityPos,ClientPosition); 
+				float CalcDistance = GetVectorDistance(EntityPos,ClientPosition); 
 				if(distance > CalcDistance)
 				{
 					distance = CalcDistance;
@@ -2161,22 +2139,40 @@ SentryDelay(entity)
 		}
 	}
 }*/
-SetZeroGravity(ref)
+public int getClientParticleStatus(int array[33], int client){
+	bool particleEnabler = false;
+	if(AreClientCookiesCached(client)){
+		char particleEnabled[64];
+		GetClientCookie(client, particleToggle, particleEnabled, sizeof(particleEnabled));
+		float menuValue = StringToFloat(particleEnabled);
+		if(menuValue == 1.0){
+			particleEnabler = true;
+		}
+	}
+	int numClients;
+	for(int i=1;i<MaxClients;i++){
+		if(IsValidClient3(i) && (i != client || particleEnabler == true)){
+			array[numClients++] = i;
+		}
+	}
+	return numClients;
+}
+public void SetZeroGravity(ref)
 {
-	new entity = EntRefToEntIndex(ref); 
+	int entity = EntRefToEntIndex(ref); 
     if(IsValidEdict(entity)) 
     { 
 		SetEntityGravity(entity, -0.003);
     }
 }
-public OnHomingThink(entity) 
+public void OnHomingThink(entity) 
 { 
 	if(IsValidEntity(entity))
 	{
-		new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
 		{
-			new Target = GetClosestTarget(entity, owner); 
+			int Target = GetClosestTarget(entity, owner); 
 			if(IsValidClient3(Target))
 			{
 				if(owner != Target)
@@ -2186,11 +2182,11 @@ public OnHomingThink(entity)
 					TargetPos[2]+=40.0;
 					float flRocketPos[3];
 					GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
-					new Float:distance = GetVectorDistance( flRocketPos, TargetPos ); 
+					float distance = GetVectorDistance( flRocketPos, TargetPos ); 
 					
 					if( distance <= projectileHomingDegree[entity] && GetGameTime() - entitySpawnTime[entity] < 3.0 )
 					{
-						new Float:ProjVector[3], Float:BaseSpeed, Float:NewSpeed, Float:ProjAngle[3], Float:AimVector[3], Float:InitialSpeed[3]; 
+						float ProjVector[3],BaseSpeed,NewSpeed,ProjAngle[3],AimVector[3],InitialSpeed[3]; 
 						
 						GetEntPropVector( entity, Prop_Send, "m_vInitialVelocity", InitialSpeed ); 
 						if ( GetVectorLength( InitialSpeed ) < 10.0 ) GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", InitialSpeed ); 
@@ -2229,19 +2225,19 @@ public OnThinkPost(entity)
 { 
 	if(IsValidEntity(entity))
 	{
-		new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
 		{
-			new Target = GetClosestTarget(entity, owner); 
+			int Target = GetClosestTarget(entity, owner); 
 			if(IsValidClient3(Target))
 			{
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
+					Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
 					if(homingActive != Address_Null)
 					{
-						new Float:maxDistance = TF2Attrib_GetValue(homingActive)
+						float maxDistance = TF2Attrib_GetValue(homingActive)
 						if(owner != Target)
 						{
 							float flTargetPos[3];
@@ -2249,11 +2245,11 @@ public OnThinkPost(entity)
 							flTargetPos[2]+=40.0;
 							float flRocketPos[3];
 							GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
-							new Float:distance = GetVectorDistance( flRocketPos, flTargetPos ); 
+							float distance = GetVectorDistance( flRocketPos, flTargetPos ); 
 							
 							if( distance <= maxDistance )
 							{
-								new Float:flVelocityChange[3];
+								float flVelocityChange[3];
 								TeleportEntity(entity, flTargetPos, NULL_VECTOR, flVelocityChange);
 							}
 						}
@@ -2271,7 +2267,7 @@ public OnEntityHomingThink(entity)
 	if(!HasEntProp(entity,Prop_Send,"m_vInitialVelocity"))
 		return;
 
-	new owner = GetEntPropEnt( entity, Prop_Data, "m_hOwnerEntity" ); 
+	int owner = GetEntPropEnt( entity, Prop_Data, "m_hOwnerEntity" ); 
 	if(!IsValidClient3(owner) && IsValidEntity(owner) && HasEntProp(owner,Prop_Send,"m_hBuilder"))
 	{
 		owner = GetEntPropEnt(owner,Prop_Send,"m_hBuilder" );
@@ -2280,22 +2276,22 @@ public OnEntityHomingThink(entity)
 	if (!IsValidClient3(owner))
 		return;
 
-	new Target = GetClosestTarget(entity, owner); 
+	int Target = GetClosestTarget(entity, owner); 
 	if(!IsValidClient3(Target) || owner == Target)
 		return;
 
 
-	new Float:EntityPos[3], Float:TargetPos[3]; 
+	float EntityPos[3], TargetPos[3]; 
 	GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", EntityPos ); 
 	GetClientAbsOrigin( Target, TargetPos ); 
-	new Float:distance = GetVectorDistance( EntityPos, TargetPos ); 
+	float distance = GetVectorDistance( EntityPos, TargetPos ); 
 
 	if( distance > homingRadius[entity] )
 		return;
 
 	if(homingTicks[entity] & homingTickRate[entity] == 1 || homingTickRate[entity] == 0)
 	{
-		new Float:ProjLocation[3], Float:ProjVector[3], Float:BaseSpeed, Float:NewSpeed, Float:ProjAngle[3], Float:AimVector[3], Float:InitialSpeed[3]; 
+		float ProjLocation[3], ProjVector[3], BaseSpeed, NewSpeed, ProjAngle[3], AimVector[3], InitialSpeed[3]; 
 		
 		GetEntPropVector( entity, Prop_Send, "m_vInitialVelocity", InitialSpeed ); 
 		if ( GetVectorLength( InitialSpeed ) < 10.0 ) GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", InitialSpeed ); 
@@ -2324,25 +2320,25 @@ public OnEntityHomingThink(entity)
 }
 CheckGrenadeMines(ref)
 {
-	new entity = EntRefToEntIndex(ref); 
+	int entity = EntRefToEntIndex(ref); 
 	if(IsValidEntity(entity) && HasEntProp(entity, Prop_Data, "m_hThrower") == true)
     {
-        new client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
+        int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
         if (IsValidClient(client) && IsPlayerAlive(client))
 		{
-			new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
-				new Address:minesActive = TF2Attrib_GetByName(CWeapon, "enables aoe heal");
+				Address minesActive = TF2Attrib_GetByName(CWeapon, "enables aoe heal");
 				if(minesActive != Address_Null && TF2Attrib_GetValue(minesActive) <= 0.01)
 				{
-					new Float:damage = 90.0 * TF2_GetDamageModifiers(client,CWeapon);
-					new Float:radius = 100.8;
+					float damage = 90.0 * TF2_GetDamageModifiers(client,CWeapon);
+					float radius = 100.8;
 					CreateTimer(0.04,Timer_PlayerGrenadeMines,  EntIndexToEntRef(entity), TIMER_REPEAT);
 					CreateTimer(TF2Attrib_GetValue(minesActive) * -3.0,SelfDestruct,  EntIndexToEntRef(entity));
 					
-					new Address:blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
-					new Address:blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
+					Address blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
+					Address blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
 					if(blastRadius1 != Address_Null){
 						radius *= TF2Attrib_GetValue(blastRadius1)
 					}
@@ -2360,12 +2356,12 @@ CheckGrenadeMines(ref)
 }
 MultiShot(ref) 
 { 
-    new entity = EntRefToEntIndex(ref);
+    int entity = EntRefToEntIndex(ref);
     if(IsValidEdict(entity)) 
     {
 		if(debugMode)
 			PrintToChatAll("Multishot | ValidEntity");
-		new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(HasEntProp(entity, Prop_Data, "m_hThrower"))
 		{
 			owner = GetEntPropEnt(entity, Prop_Data, "m_hThrower");
@@ -2379,36 +2375,32 @@ MultiShot(ref)
 				if(debugMode)
 					PrintToChatAll("Multishot | Can Shoot");
 				canShootAgain[owner] = false
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:projActive = TF2Attrib_GetByName(CWeapon, "deflection size multiplier");
-					new Address:spread1 = TF2Attrib_GetByName(CWeapon, "projectile spread angle penalty");
+					Address projActive = TF2Attrib_GetByName(CWeapon, "deflection size multiplier");
+					Address spread1 = TF2Attrib_GetByName(CWeapon, "projectile spread angle penalty");
 					if(projActive != Address_Null)
 					{
-						new Float:spread = 3.0;
+						float spread = 3.0;
 						if(spread1 != Address_Null)
 						{
 							spread += TF2Attrib_GetValue(spread1)
 						}
-						new Float:projShoot = TF2Attrib_GetValue(projActive)
-						for (new v = 0; v < projShoot+1; v++)
+						float projShoot = TF2Attrib_GetValue(projActive)
+						for (int v = 0; v < projShoot+1; v++)
 						{
 							if(RoundToCeil(projShoot+1)/2 != v)
 							{
-								new String:projName[32];
+								char projName[32];
 								GetEntityClassname(entity, projName, 32)
 								if(debugMode)
 									PrintToChatAll(projName);
-								new iEntity = CreateEntityByName(projName);
+								int iEntity = CreateEntityByName(projName);
 								if (IsValidEdict(iEntity)) 
 								{
-									new iTeam = GetClientTeam(owner);
-									new Float:fAngles[3]
-									new Float:fOrigin[3]
-									new Float:vBuffer[3]
-									new Float:fVelocity[3]
-									new Float:fwd[3]
+									int iTeam = GetClientTeam(owner);
+									float fAngles[3],fOrigin[3],vBuffer[3],fVelocity[3],fwd[3]
 									SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
 
 									//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
@@ -2427,8 +2419,8 @@ MultiShot(ref)
 									GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
 									ScaleVector(fwd, 100.0);
 									AddVectors(fOrigin, fwd, fOrigin);
-									new Float:Speed[3];
-									new bool:movementType = false;
+									float Speed[3];
+									bool movementType = false;
 									if(HasEntProp(entity, Prop_Data, "m_vecAbsVelocity"))
 									{
 										GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", Speed);
@@ -2444,22 +2436,22 @@ MultiShot(ref)
 									}
 									if(movementType == false)
 									{
-										new Float:velocity = 2000.0;
-										new Address:projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-										new Address:projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+										float velocity = 2000.0;
+										Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+										Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
 										if(projspeed != Address_Null){
 											velocity *= TF2Attrib_GetValue(projspeed)
 										}
 										if(projspeed1 != Address_Null){
 											velocity *= TF2Attrib_GetValue(projspeed1)
 										}
-										new Float:vecAngImpulse[3];
+										float vecAngImpulse[3];
 										GetCleaverAngularImpulse(vecAngImpulse);
 										fVelocity[0] = vBuffer[0]*velocity;
 										fVelocity[1] = vBuffer[1]*velocity;
 										fVelocity[2] = vBuffer[2]*velocity;
 										
-										//new Float:vecUnknown2[3];
+										//float vecUnknown2[3];
 										//vecUnknown2[1] = GetRandomFloat(0.0, 100.0);
 										TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR); // fuck it, i'll do it later
 										DispatchSpawn(iEntity);
@@ -2477,25 +2469,25 @@ MultiShot(ref)
 									//Damage Systems.....
 									if(StrEqual(projName, "tf_projectile_rocket", false) || StrEqual(projName, "tf_projectile_pipe", false))
 									{
-										new Float:ProjectileDamage = 90.0;
+										float ProjectileDamage = 90.0;
 										
-										new Address:DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
-										new Address:DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
-										new Address:DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
+										Address DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
+										Address DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
+										Address DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
 										
 										if(DamagePenalty != Address_Null)
 										{
-											new Float:dmgmult2 = TF2Attrib_GetValue(DamagePenalty);
+											float dmgmult2 = TF2Attrib_GetValue(DamagePenalty);
 											ProjectileDamage *= dmgmult2;
 										}
 										if(DamageBonus != Address_Null)
 										{
-											new Float:dmgmult3 = TF2Attrib_GetValue(DamageBonus);
+											float dmgmult3 = TF2Attrib_GetValue(DamageBonus);
 											ProjectileDamage *= dmgmult3;
 										}
 										if(DamageBonusHidden != Address_Null)
 										{
-											new Float:dmgmult4 = TF2Attrib_GetValue(DamageBonusHidden);
+											float dmgmult4 = TF2Attrib_GetValue(DamageBonusHidden);
 											ProjectileDamage *= dmgmult4;
 										}
 										if(StrEqual(projName, "tf_projectile_rocket", false))
@@ -2504,9 +2496,9 @@ MultiShot(ref)
 										}
 										if(StrEqual(projName, "tf_projectile_pipe", false))
 										{
-											new Float:radiusMult = 1.0;
-											new Address:blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
-											new Address:blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
+											float radiusMult = 1.0;
+											Address blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
+											Address blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
 											if(blastRadius1 != Address_Null){
 												radiusMult *= TF2Attrib_GetValue(blastRadius1)
 											}
@@ -2562,7 +2554,7 @@ PrecisionHoming(entity)
 		int client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(client))
 		{
-			new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
+			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 			if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
 			{
 				projectileHomingDegree[entity] = 200.0;
@@ -2578,22 +2570,18 @@ ProjSpeedDelay(entity)
 		int client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient(client))
 		{
-			new ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(ClientWeapon))
 			{
-				new Address:projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
+				Address projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
 				if(projspeed != Address_Null)
 				{
-					new Float:vAngles[3];
-					new Float:vPosition[3];
-					new Float:vBuffer[3];
-					new Float:vVelocity[3];
-					new Float:vel[3];
+					float vAngles[3],vPosition[3],vBuffer[3],vVelocity[3],vel[3];
 					GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vPosition);
 					GetEntPropVector(entity, Prop_Data, "m_angRotation", vAngles);
 					GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", vel);
 					GetAngleVectors(vAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-					new Float:projspd = TF2Attrib_GetValue(projspeed);
+					float projspd = TF2Attrib_GetValue(projspeed);
 					vVelocity[0] = vBuffer[0]*projspd*GetVectorLength(vel);
 					vVelocity[1] = vBuffer[1]*projspd*GetVectorLength(vel);
 					vVelocity[2] = vBuffer[2]*projspd*GetVectorLength(vel);
@@ -2610,7 +2598,7 @@ projGravity(entity)
     { 
 	//PrintToChatAll("START | movetype = %i | gravity = %.2f", GetEntityMoveType(entity), GetEntityGravity(entity));
 		//PrintToChatAll("0");
-		new client;
+		int client;
 		if(HasEntProp(entity, Prop_Data, "m_hThrower"))
 		{
 			client = GetEntPropEnt(entity, Prop_Data, "m_hThrower");
@@ -2622,13 +2610,13 @@ projGravity(entity)
 		if(IsValidClient3(client))
 		{
 			//PrintToChatAll("1");
-			new ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(ClientWeapon))
 			{
 				//PrintToChatAll("2");
-				new Address:projgravity = TF2Attrib_GetByName(ClientWeapon, "cloak_consume_on_feign_death_activate");
+				Address projgravity = TF2Attrib_GetByName(ClientWeapon, "cloak_consume_on_feign_death_activate");
 
-				decl String:strClassname[64];
+				char strClassname[64];
 				GetEntityClassname( entity, strClassname, sizeof(strClassname) );
 
 				if(projgravity != Address_Null && TF2Attrib_GetValue(projgravity) != 0.0)
@@ -2644,10 +2632,10 @@ projGravity(entity)
 					{
 						if(StrEqual(strClassname, "tf_projectile_pipe") || StrEqual(strClassname, "tf_projectile_pipe_remote"))
 						{
-							new Float:flAng[3],Float:fVelocity[3],Float:vBuffer[3];
-							new Float:velocity = 3000.0;
+							float flAng[3],fVelocity[3],vBuffer[3];
+							float velocity = 3000.0;
 
-							new Address:projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
+							Address projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
 							if(projspeed != Address_Null)
 								velocity *= TF2Attrib_GetValue(projspeed);
 
@@ -2666,12 +2654,12 @@ projGravity(entity)
 						}
 						else if(StrEqual(strClassname, "tf_projectile_cleaver"))
 						{
-							new Float:flAng[3],Float:fVelocity[3],Float:vBuffer[3];
-							new Float:vecAngImpulse[3];
+							float flAng[3],fVelocity[3],vBuffer[3];
+							float vecAngImpulse[3];
 							GetCleaverAngularImpulse(vecAngImpulse);
-							new Float:velocity = 3000.0;
+							float velocity = 3000.0;
 
-							new Address:projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
+							Address projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
 							if(projspeed != Address_Null)
 								velocity *= TF2Attrib_GetValue(projspeed);
 
@@ -2693,7 +2681,7 @@ projGravity(entity)
 		}
     } 
 }
-setProjGravity(entity, Float:gravity) 
+setProjGravity(entity, float gravity) 
 {
     if(IsValidEntity(entity)) 
     {
@@ -2708,22 +2696,18 @@ instantProjectile(entity)
 		int client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient(client))
 		{
-			new ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(ClientWeapon))
 			{
-				new Address:projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
+				Address projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
 				if(projspeed != Address_Null && TF2Attrib_GetValue(projspeed) >= 100.0)
 				{
-					new Float:vAngles[3];
-					new Float:vPosition[3];
-					new Float:vBuffer[3];
-					new Float:vVelocity[3];
-					new Float:vel[3];
+					float vAngles[3],vPosition[3],vBuffer[3],vVelocity[3],vel[3];
 					GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vPosition);
 					GetEntPropVector(entity, Prop_Data, "m_angRotation", vAngles);
 					GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", vel);
 					GetAngleVectors(vAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-					new Float:projspd = 500.0;
+					float projspd = 500.0;
 					vVelocity[0] = vBuffer[0]*projspd*GetVectorLength(vel);
 					vVelocity[1] = vBuffer[1]*projspd*GetVectorLength(vel);
 					vVelocity[2] = vBuffer[2]*projspd*GetVectorLength(vel);
@@ -2758,14 +2742,13 @@ stock ResizeProjectile(entity)
 		int client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(client))
 		{
-			new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
-				new Address:sizeActive = TF2Attrib_GetByName(CWeapon, "SET BONUS: no death from headshots")
+				Address sizeActive = TF2Attrib_GetByName(CWeapon, "SET BONUS: no death from headshots")
 				if(sizeActive != Address_Null)
-				{
-					new Float:size = TF2Attrib_GetValue(sizeActive);					
-					ResizeHitbox(entity, size);
+				{				
+					ResizeHitbox(entity, TF2Attrib_GetValue(sizeActive));
 				}
 			}
 		}
@@ -2783,13 +2766,13 @@ stock SentryMultishot(entity)
 			client = GetEntPropEnt(inflictor, Prop_Send, "m_hBuilder");
 			if(IsValidClient3(client))
 			{
-				new melee = (GetPlayerWeaponSlot(client,2));
+				int melee = (GetPlayerWeaponSlot(client,2));
 				if(IsValidEntity(melee))
 				{
-					new Address:doubleShotActive = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");		
+					Address doubleShotActive = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");		
 					if(doubleShotActive != Address_Null && TF2Attrib_GetValue(doubleShotActive) > 0.0)
 					{
-						new Handle:hPack = CreateDataPack();
+						Handle hPack = CreateDataPack();
 						WritePackCell(hPack, EntIndexToEntRef(inflictor));
 						WritePackCell(hPack, EntIndexToEntRef(client));
 						WritePackCell(hPack, RoundToCeil(TF2Attrib_GetValue(doubleShotActive)));
@@ -2806,11 +2789,7 @@ stock fixPiercingVelocity(entity)
 	entity = EntRefToEntIndex(entity)
 	if(IsValidEntity(entity))
 	{
-		new Float:origin[3];
-		new Float:ProjAngle[3];
-		new Float:vBuffer[3];
-		new Float:fVelocity[3];
-		new Float:speed = 3000.0;
+		float origin[3],ProjAngle[3],vBuffer[3],fVelocity[3],speed = 3000.0;
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
 		GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
 		GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);

@@ -1,9 +1,9 @@
-public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 	
-	new Float:damage = GetEventFloat(event, "damageamount");	
+	float damage = GetEventFloat(event, "damageamount");	
 	lastDamageTaken[client] = 0.0;
 	if(critStatus[client])
 	{
@@ -23,17 +23,17 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 			SetEventInt(event, "damageamount", 0);
 			PrintCenterText(attacker, "OVERLOAD DMG | %s |", GetAlphabetForm(damage));
 		}
-		new Handle:hPack = CreateDataPack();
+		Handle hPack = CreateDataPack();
 		WritePackCell(hPack, EntIndexToEntRef(attacker));
 		WritePackFloat(hPack, damage);
 		CreateTimer(1.01, RemoveDamage, hPack);
 
-		new Address:knockoutPowerup = TF2Attrib_GetByName(attacker, "knockout powerup");
+		Address knockoutPowerup = TF2Attrib_GetByName(attacker, "knockout powerup");
 		if(knockoutPowerup != Address_Null)
 		{
-			new Float:knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
+			float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
 			if(knockoutPowerupValue > 0.0){
-				new CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 				if (IsValidEntity(CWeapon))
 				{
 					if(getWeaponSlot(client,CWeapon) == 2)
@@ -50,7 +50,7 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 			}
 		}
 	}
-	new Float:armorLoss = damage/fl_ArmorRes[client];
+	float armorLoss = damage/fl_ArmorRes[client];
 	if(IsValidClient3(attacker))
 	{
 		if(TF2_IsPlayerInCondition(attacker, TFCond_CritCanteen))
@@ -58,10 +58,10 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 	}
 	if(IsValidClient3(client))
 	{
-		new Address:revengePowerup = TF2Attrib_GetByName(client, "revenge powerup");
+		Address revengePowerup = TF2Attrib_GetByName(client, "revenge powerup");
 		if(revengePowerup != Address_Null)
 		{
-			new Float:revengePowerupValue = TF2Attrib_GetValue(revengePowerup);
+			float revengePowerupValue = TF2Attrib_GetValue(revengePowerup);
 			if(revengePowerupValue > 0.0)
 			{
 				RageBuildup[client] += (damage/float(TF2_GetMaxHealth(client)))*0.667;
@@ -69,7 +69,7 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 					RageBuildup[client]= 1.0;
 			}
 		}
-		new Address:supernovaPowerupVictim = TF2Attrib_GetByName(client, "supernova powerup");
+		Address supernovaPowerupVictim = TF2Attrib_GetByName(client, "supernova powerup");
 		if(supernovaPowerupVictim != Address_Null && TF2Attrib_GetValue(supernovaPowerupVictim) > 0.0)
 		{
 			SupernovaBuildup[client] += (damage/float(TF2_GetMaxHealth(client)));
@@ -103,55 +103,55 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 
 		if(IsValidClient3(attacker) && damage > 0.0 && attacker != client && IsValidClient3(client))
 		{
-			new CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
-				new Float:lifestealFactor = 1.0;
-				new Float:maximumOverheal = 1.5;
+				float lifestealFactor = 1.0;
+				float maximumOverheal = 1.5;
 				if(IsFakeClient(client))
 					lifestealFactor = 0.3;
 				
-				new Address:maximumOverhealModifier = TF2Attrib_GetByName(attacker, "patient overheal penalty");
+				Address maximumOverhealModifier = TF2Attrib_GetByName(attacker, "patient overheal penalty");
 				if(maximumOverhealModifier != Address_Null)
 				{
 					maximumOverheal *= TF2Attrib_GetValue(maximumOverhealModifier);
 				}
 				
-				new Address:LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");//Lifesteal attribute
+				Address LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");//Lifesteal attribute
 				if(LifestealActive != Address_Null)
 				{
-					new HealthGained = RoundToCeil(0.1 * damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
+					int HealthGained = RoundToCeil(0.1 * damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
 					fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 				}
 				
-				new Address:vampirePowerup = TF2Attrib_GetByName(attacker, "vampire powerup");//Vampire Powerup
+				Address vampirePowerup = TF2Attrib_GetByName(attacker, "vampire powerup");//Vampire Powerup
 				if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
 				{
-					new HealthGained = RoundToCeil(0.8 * damage * lifestealFactor);
+					int HealthGained = RoundToCeil(0.8 * damage * lifestealFactor);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal*2.0, true, attacker);
 					fl_CurrentArmor[attacker] += float(HealthGained);
 				}
 				
 				if(TF2_IsPlayerInCondition(attacker, TFCond_MedigunDebuff))// Conch
 				{
-					new HealthGained = RoundToCeil(damage * 0.15 * lifestealFactor);
+					int HealthGained = RoundToCeil(damage * 0.15 * lifestealFactor);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
 					fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 				}
 				if(GetEventInt(event, "custom") == 2)//backstab
 				{
-					new Address:BackstabLifestealActive = TF2Attrib_GetByName(CWeapon, "sanguisuge"); //Kunai
+					Address BackstabLifestealActive = TF2Attrib_GetByName(CWeapon, "sanguisuge"); //Kunai
 					if(BackstabLifestealActive != Address_Null && TF2Attrib_GetValue(BackstabLifestealActive) > 0.0)
 					{
-						new HealthGained = RoundToCeil(damage * 0.5 * TF2Attrib_GetValue(BackstabLifestealActive));
+						int HealthGained = RoundToCeil(damage * 0.5 * TF2Attrib_GetValue(BackstabLifestealActive));
 						AddPlayerHealth(attacker, HealthGained, maximumOverheal*1.5, true, attacker);
 						fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 					}
 				}
 				if(MadmilkDuration[client] > 0.0)
 				{
-					new HealthGained = RoundToCeil(lifestealFactor * damage * MadmilkDuration[client] * 1.66 / 100.0);
+					int HealthGained = RoundToCeil(lifestealFactor * damage * MadmilkDuration[client] * 1.66 / 100.0);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
 					fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 				}
@@ -162,18 +162,18 @@ public Event_Playerhurt(Handle:event, const String:name[], bool:dontBroadcast)
 	{
 		if(IsValidClient3(attacker) && damage > 0.0 && attacker != client && IsValidClient3(client))
 		{
-			new CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
-				new Address:LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");
+				Address LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");
 				if(LifestealActive != Address_Null)
 				{
-					new HealthGained = RoundToCeil(1.25 * damage * TF2Attrib_GetValue(LifestealActive));
+					int HealthGained = RoundToCeil(1.25 * damage * TF2Attrib_GetValue(LifestealActive));
 					AddPlayerHealth(attacker, HealthGained, 1.5, true, attacker);
 				}
 				if(TF2_IsPlayerInCondition(attacker, TFCond_MedigunDebuff))
 				{
-					new HealthGained = RoundToCeil(damage * 0.5)
+					int HealthGained = RoundToCeil(damage * 0.5)
 					AddPlayerHealth(attacker, HealthGained, 1.5, true, attacker);
 				}
 			}
@@ -188,13 +188,13 @@ public MRESReturn OnModifyRagePre(Address pPlayerShared, Handle hParams) {
 		{
 			float flMultiplier = 1.0;
 			
-			new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if (IsValidEntity(CWeapon))
 			{
-				new Address:FireRate1 = TF2Attrib_GetByName(CWeapon, "fire rate bonus");
-				new Address:FireRate2 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
-				new Address:FireRate3 = TF2Attrib_GetByName(CWeapon, "fire rate penalty HIDDEN");
-				new Address:FireRate4 = TF2Attrib_GetByName(CWeapon, "fire rate bonus HIDDEN");
+				Address FireRate1 = TF2Attrib_GetByName(CWeapon, "fire rate bonus");
+				Address FireRate2 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
+				Address FireRate3 = TF2Attrib_GetByName(CWeapon, "fire rate penalty HIDDEN");
+				Address FireRate4 = TF2Attrib_GetByName(CWeapon, "fire rate bonus HIDDEN");
 				
 				if(FireRate1 != Address_Null)
 				{
@@ -222,7 +222,7 @@ public MRESReturn OnModifyRagePre(Address pPlayerShared, Handle hParams) {
 	}
 	if(TF2_GetPlayerClass(client) == TFClass_Sniper)
 	{
-		new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 		if (IsValidEntity(CWeapon))
 		{
 			if(GetWeapon(client,1) == CWeapon)
@@ -239,10 +239,10 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 	TFCond cond = view_as<TFCond>(DHookGetParam(hParams, 1));
 	if(IsValidClient3(client))
 	{
-		new Address:agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
+		Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
 		if(agilityPowerup != Address_Null)
 		{
-			new Float:agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
+			float agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
 			if(agilityPowerupValue > 0.0)
 			{
 				switch(cond)
@@ -287,7 +287,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 				{
 					return MRES_Supercede;
 				}
-				new Address:attribute1 = TF2Attrib_GetByName(client, "absorb damage while cloaked");
+				Address attribute1 = TF2Attrib_GetByName(client, "absorb damage while cloaked");
 				if (attribute1 != Address_Null) 
 				{
 					if(GetRandomFloat(0.0,1.0) <= TF2Attrib_GetValue(attribute1))
@@ -298,7 +298,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			}
 			case TFCond_Bleeding:
 			{
-				new Address:attribute2 = TF2Attrib_GetByName(client, "always_transmit_so");
+				Address attribute2 = TF2Attrib_GetByName(client, "always_transmit_so");
 				if (attribute2 != Address_Null) 
 				{
 					if(GetRandomFloat(0.0,1.0) <= TF2Attrib_GetValue(attribute2))
@@ -310,7 +310,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			}
 			case TFCond_Slowed:
 			{
-				new Address:slowResistance = TF2Attrib_GetByName(client, "slow resistance");
+				Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
 				if(slowResistance != Address_Null)
 				{
 					DHookSetParam(hParams, 2, duration * TF2Attrib_GetValue(slowResistance));
@@ -325,21 +325,21 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			}
 			case TFCond_Taunting:
 			{
-				new Address:TauntSpeedActive = TF2Attrib_GetByName(client, "gesture speed increase");
+				Address TauntSpeedActive = TF2Attrib_GetByName(client, "gesture speed increase");
 				if(TauntSpeedActive != Address_Null)
 				{
 					SetTauntAttackSpeed(client, TF2Attrib_GetValue(TauntSpeedActive));
 				}
-				new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new String:classname[64];
+					char classname[64];
 					GetEdictClassname(CWeapon, classname, sizeof(classname)); 
 					if(StrContains(classname, "tf_weapon_lunchbox",false) == 0)
 					{//Hook onto all sandvich stuff or something to that effect
-						new Address:ArmorGain = TF2Attrib_GetByName(CWeapon, "squad surplus claimer id DEPRECATED");
-						new Address:ArmorRegen = TF2Attrib_GetByName(CWeapon, "mvm completed challenges bitmask");
-						new Address:ShieldingActive = TF2Attrib_GetByName(CWeapon, "energy weapon charged shot");
+						Address ArmorGain = TF2Attrib_GetByName(CWeapon, "squad surplus claimer id DEPRECATED");
+						Address ArmorRegen = TF2Attrib_GetByName(CWeapon, "mvm completed challenges bitmask");
+						Address ShieldingActive = TF2Attrib_GetByName(CWeapon, "energy weapon charged shot");
 						if(ArmorGain != Address_Null)
 						{
 							fl_CurrentArmor[client] += TF2Attrib_GetValue(ArmorGain)
@@ -364,14 +364,14 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 								fl_AdditionalArmor[client] = TF2Attrib_GetValue(ShieldingActive)
 							}
 						}
-						new Address:MiniCritActive = TF2Attrib_GetByName(CWeapon, "duel loser account id");
+						Address MiniCritActive = TF2Attrib_GetByName(CWeapon, "duel loser account id");
 						if(MiniCritActive != Address_Null)
 						{
 							miniCritStatusVictim[client] = 16.0;
 							miniCritStatusAttacker[client] = 16.0;
 							TF2_AddCondition(client, TFCond_RestrictToMelee, 16.0);
 							TF2_AddCondition(client, TFCond_SpeedBuffAlly, 16.0);
-							new melee = GetWeapon(client, 2)
+							int melee = GetWeapon(client, 2)
 							if(IsValidEntity(melee) && HasEntProp(melee, Prop_Send, "m_iItemDefinitionIndex"))
 							{
 								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",melee);
@@ -553,7 +553,7 @@ public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
 	float amount = DHookGetParam(hParams, 1);
 
 	additionalstartmoney += amount;
-	for (new i = 1; i < MaxClients; i++) 
+	for (int i = 1; i < MaxClients; i++) 
 	{
 		CurrencyOwned[i] += amount;
 
@@ -578,18 +578,18 @@ public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
 public MRESReturn OnFireRateCall(int entity, Handle hReturn, Handle hParams)  {
 	if(IsValidWeapon(entity))
 	{
-		new Float:rate = DHookGetReturn(hReturn);
+		float rate = DHookGetReturn(hReturn);
 
 		//If their weapon doesn't have a clip, reload rate also affects fire rate.
 		if(HasEntProp(entity, Prop_Data, "m_iClip1") && GetEntProp(entity,Prop_Data,"m_iClip1")  == -1)
 		{
-			new Address:ModClip = TF2Attrib_GetByName(entity, "mod max primary clip override");
+			Address ModClip = TF2Attrib_GetByName(entity, "mod max primary clip override");
 			if(ModClip == Address_Null)
 			{
-				new Address:apsMult12 = TF2Attrib_GetByName(entity, "faster reload rate");
-				new Address:apsMult13 = TF2Attrib_GetByName(entity, "Reload time increased");
-				new Address:apsMult14 = TF2Attrib_GetByName(entity, "Reload time decreased");
-				new Address:apsMult15 = TF2Attrib_GetByName(entity, "reload time increased hidden");
+				Address apsMult12 = TF2Attrib_GetByName(entity, "faster reload rate");
+				Address apsMult13 = TF2Attrib_GetByName(entity, "Reload time increased");
+				Address apsMult14 = TF2Attrib_GetByName(entity, "Reload time decreased");
+				Address apsMult15 = TF2Attrib_GetByName(entity, "reload time increased hidden");
 				
 				if(apsMult12 != Address_Null) {
 				rate *= TF2Attrib_GetValue(apsMult12);
@@ -612,11 +612,11 @@ public MRESReturn OnFireRateCall(int entity, Handle hReturn, Handle hParams)  {
 public MRESReturn OnBotJumpLogic(int entity, Handle hReturn, Handle hParams)  {
 	return MRES_Supercede;
 }
-public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_PlayerHealed(Handle event, const char[] name, bool:dontBroadcast)
 {
-	//new client = GetClientOfUserId(GetEventInt(event, "patient"));
-	new healer = GetClientOfUserId(GetEventInt(event, "healer"));
-	new amount = GetEventInt(event, "amount");
+	//int client = GetClientOfUserId(GetEventInt(event, "patient"));
+	int healer = GetClientOfUserId(GetEventInt(event, "healer"));
+	int amount = GetEventInt(event, "amount");
 	
 	Healed[healer] += float(amount);
 }
@@ -624,7 +624,7 @@ public TF2Spawn_EnterSpawn(int client, int spawn)
 {
 	if(IsValidClient(client) && IsPlayerAlive(client))
 	{
-		new melee = GetWeapon(client,2);
+		int melee = GetWeapon(client,2);
 		if(IsValidEntity(melee))
 		{
 			TF2Attrib_SetByName(melee,"airblast vulnerability multiplier hidden", 0.0);
@@ -636,7 +636,7 @@ public TF2Spawn_LeaveSpawn(int client, int spawn)
 {
 	if(IsValidClient(client) && IsPlayerAlive(client))
 	{
-		new melee = GetWeapon(client,2);
+		int melee = GetWeapon(client,2);
 		if(IsValidEntity(melee))
 		{
 			TF2Attrib_SetByName(melee,"airblast vulnerability multiplier hidden", 1.0);
@@ -644,9 +644,9 @@ public TF2Spawn_LeaveSpawn(int client, int spawn)
 		}
 	}
 }
-public Event_BuffDeployed( Handle:event, const String:name[], bool:broadcast )
+public Event_BuffDeployed( Handle event, const char[] name, bool:broadcast )
 {
-	new client = GetClientOfUserId( GetEventInt( event, "buff_owner" ) );
+	int client = GetClientOfUserId( GetEventInt( event, "buff_owner" ) );
 	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
 		isBuffActive[client] = true;
@@ -671,17 +671,17 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 		fl_HighestFireDamage[client] = 0.0;
 	}
 	if(cond == TFCond_Charging){
-		new Float:grenadevec[3], Float:distance;
+		float grenadevec[3], distance;
 		distance = 500.0;
 		GetClientEyePosition(client, grenadevec);
-		new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(CWeapon))
 		{
-			new Float:damage = TF2_GetDPSModifiers(client,CWeapon,false,false) * 70.0;
-			new secondary = GetWeapon(client,1);
+			float damage = TF2_GetDPSModifiers(client,CWeapon,false,false) * 70.0;
+			int secondary = GetWeapon(client,1);
 			if(IsValidEntity(secondary))
 			{
-				new Address:bashBonusActive = TF2Attrib_GetByName(secondary, "charge impact damage increased")
+				Address bashBonusActive = TF2Attrib_GetByName(secondary, "charge impact damage increased")
 				if(bashBonusActive != Address_Null)
 				{
 					damage *= TF2Attrib_GetValue(bashBonusActive);
@@ -814,9 +814,9 @@ public OnEntityDestroyed(entity)
 	if(!IsValidEntity(entity) || entity < 0 || entity > 2048)
 		return;
 
-	new String:classname[32];
+	char classname[32];
 	GetEntityClassname(entity, classname, 32)
-	for(new i=1;i<MaxClients;i++)
+	for(int i=1;i<MaxClients;i++)
 	{
 		ShouldNotHome[entity][i] = false;
 	}
@@ -846,9 +846,9 @@ public OnEntityDestroyed(entity)
 	if(debugMode)
 		PrintToServer("debugLog | %s was deleted.", classname)
 }
-public Event_PlayerChangeTeam(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_PlayerChangeTeam(Handle event, const char[] name, bool:dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	if (IsValidClient(client) && IsClientObserver(client) == false && IsPlayerAlive(client))
 	{
 		current_class[client] = TF2_GetPlayerClass(client)
@@ -860,7 +860,7 @@ public Event_PlayerChangeTeam(Handle:event, const String:name[], bool:dontBroadc
 		Menu_BuyUpgrade(client, 0);
 	}
 }
-public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 {
 	if(isFailHooked == true)
 	{
@@ -873,21 +873,21 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 	additionalstartmoney = 0.0;
 	StartMoneySaved = 0.0;
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
-	for (new client = 1; client < MaxClients; client++)
+	for (int client = 1; client < MaxClients; client++)
 	{
 		if (IsValidClient(client) && !IsFakeClient(client))
 		{
-			new primary = (GetWeapon(client,0));
+			int primary = (GetWeapon(client,0));
 			if(IsValidEntity(primary))
 			{
 				TF2Attrib_RemoveAll(primary);
 			}
-			new secondary = (GetWeapon(client,1));
+			int secondary = (GetWeapon(client,1));
 			if(IsValidEntity(secondary))
 			{
 				TF2Attrib_RemoveAll(secondary);
 			}
-			new melee = (GetWeapon(client,2));
+			int melee = (GetWeapon(client,2));
 			if(IsValidEntity(melee))
 			{
 				TF2Attrib_RemoveAll(melee);
@@ -907,7 +907,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 		additionalstartmoney = 0.0;
 		StartMoneySaved = 0.0;
 		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
-		for(new j = 0; j < Max_Attunement_Slots;j++)
+		for(int j = 0; j < Max_Attunement_Slots;j++)
 		{
 			SpellCooldowns[client][j] = 0.0;
 		}
@@ -915,8 +915,8 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 	additionalstartmoney = 0.0;
 	DeleteSavedPlayerData();
 
-	new String:responseBuffer[4096];
-	new ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
+	char responseBuffer[4096];
+	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
 	GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
 	if(StrContains(responseBuffer, "IF", false) != -1)
 	{
@@ -986,7 +986,7 @@ public Event_ResetStats(Handle:event, const String:name[], bool:dontBroadcast)
 		}
 	}
 }
-public Event_mvm_wave_failed(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_mvm_wave_failed(Handle event, const char[] name, bool:dontBroadcast)
 {
 	if(isFailHooked == true)
 	{
@@ -995,12 +995,12 @@ public Event_mvm_wave_failed(Handle:event, const String:name[], bool:dontBroadca
 	}
 	CreateTimer(0.75, THEREWILLBEBLOOD);
 }
-public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_RoundStart(Handle event, const char[] name, bool:dontBroadcast)
 {
 	MoneyForTeamRatio[RED] = 1.0
 	MoneyForTeamRatio[BLUE] = 1.0
 }
-public Event_mvm_wave_complete(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_mvm_wave_complete(Handle event, const char[] name, bool:dontBroadcast)
 {
 	if(isFailHooked == true)
 	{
@@ -1008,9 +1008,9 @@ public Event_mvm_wave_complete(Handle:event, const String:name[], bool:dontBroad
 		isFailHooked = false;
 	}
 }
-public Event_mvm_wave_begin(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_mvm_wave_begin(Handle event, const char[] name, bool:dontBroadcast)
 {
-	new client, slot, a;
+	int client, slot, a;
 	PrintToServer("mvm wave begin");
 	if(isFailHooked == false)
 	{
@@ -1036,7 +1036,7 @@ public Event_mvm_wave_begin(Handle:event, const String:name[], bool:dontBroadcas
 				}
 				client_spent_money_mvm_chkp[client][slot] = client_spent_money[client][slot];
 				currentupgrades_number_mvm_chkp[client][slot] = currentupgrades_number[client][slot];
-				for(new y = 0;y<5;y++)
+				for(int y = 0;y<5;y++)
 				{
 					currentupgrades_restriction_mvm_chkp[client][slot][y] = currentupgrades_restriction[client][slot][y];
 				}
@@ -1046,21 +1046,21 @@ public Event_mvm_wave_begin(Handle:event, const String:name[], bool:dontBroadcas
 	}
 	StartMoneySaved = StartMoney + additionalstartmoney;
 }
-public Action:Event_PlayerCollectMoney(Handle:event, const String:name[], bool:dontBroadcast)
+public Action:Event_PlayerCollectMoney(Handle event, const char[] name, bool:dontBroadcast)
 {
-	new money = GetEventInt(event, "currency");
+	int money = GetEventInt(event, "currency");
 	additionalstartmoney += float(money);
-	for (new i = 0; i <= MaxClients; i++) 
+	for (int i = 0; i <= MaxClients; i++) 
 	{
 		CurrencyOwned[i] += money;
 	}
 }
-public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
+public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
 	CancelClientMenu(client);
-	new attack = GetClientOfUserId(GetEventInt(event, "attacker"));
+	int attack = GetClientOfUserId(GetEventInt(event, "attacker"));
 	fanOfKnivesCount[client] = 0;
 	if(IsValidClient(client))
 	{
@@ -1079,13 +1079,13 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	{
 		if((StartMoney + additionalstartmoney) < 50000000.0)
 		{
-			new Float:BotMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((StartMoney + additionalstartmoney), 0.985))) * ServerMoneyMult) * 3.0);
-			new Float:PlayerMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((additionalstartmoney + StartMoney), 1.125))) * ServerMoneyMult) * 3.0);
+			float BotMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((StartMoney + additionalstartmoney), 0.985))) * ServerMoneyMult) * 3.0);
+			float PlayerMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((additionalstartmoney + StartMoney), 1.125))) * ServerMoneyMult) * 3.0);
 			
 			
 			if (IsValidClient(attack) && IsValidClient(client) && attack != client)
 			{
-				for (new i = 0; i <= MaxClients; i++) 
+				for (int i = 0; i <= MaxClients; i++) 
 				{ 
 					CurrencyOwned[i] += PlayerMoneyKill
 					if(IsValidClient(i) && IsClientInGame(i))
@@ -1097,7 +1097,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			}
 			if(!IsValidClient(client) && attack != client)
 			{
-				for (new i = 0; i <= MaxClients; i++) 
+				for (int i = 0; i <= MaxClients; i++) 
 				{ 
 					CurrencyOwned[i] += BotMoneyKill
 					if (IsValidClient(i) && IsClientInGame(i)) 
@@ -1116,21 +1116,21 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			if((StartMoney + additionalstartmoney) > 1000000.0 && gameStage == 0)
 			{
 				gameStage = 1;
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Vector stage! New upgrades unlocked.");
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Vector stage! int upgrades unlocked.");
 
 				UpdateMaxValuesStage(gameStage);
 			}
 			else if((StartMoney + additionalstartmoney) > 5000000.0 && gameStage == 1)
 			{
 				gameStage = 2;
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Dyad stage! New upgrades unlocked.");
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Dyad stage! int upgrades unlocked.");
 
 				UpdateMaxValuesStage(gameStage);
 			}
 			else if((StartMoney + additionalstartmoney) > 25000000.0 && gameStage == 2)
 			{
 				gameStage = 3;
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Triad stage! New upgrades unlocked.");
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Triad stage! int upgrades unlocked.");
 
 				UpdateMaxValuesStage(gameStage);
 			}
@@ -1146,10 +1146,10 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 //Called on player CMD (~almost every tick, but varies based on response rate)
 public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
 {
-	new Float:tickRate = GetTickInterval();
+	float tickRate = GetTickInterval();
 	if (IsValidClient(client))
 	{
-		new flags = GetEntityFlags(client)
+		int flags = GetEntityFlags(client)
 		if(shouldAttack[client] == true){
 			shouldAttack[client] = false;
 			buttons |= IN_ATTACK;
@@ -1176,10 +1176,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				EquipPlayerWeapon(client, client_new_weapon_ent_id[client]);
 			}
 		}
-		new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(CWeapon))
 		{
-			decl String:strName[32];
+			char strName[32];
 			GetEntityClassname(CWeapon, strName, 32)
 			if(StrContains(strName, "tf_weapon_minigun", false) == 0)
 			{
@@ -1190,18 +1190,18 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			}
 			if(HasEntProp(CWeapon, Prop_Send, "m_flChargedDamage"))
 			{
-				new Float:charging = GetEntPropFloat(CWeapon, Prop_Send, "m_flChargedDamage");
+				float charging = GetEntPropFloat(CWeapon, Prop_Send, "m_flChargedDamage");
 				if(charging > 0.0)
 				{
-					new Address:charge = TF2Attrib_GetByName(CWeapon, "Repair rate increased");
+					Address charge = TF2Attrib_GetByName(CWeapon, "Repair rate increased");
 					if(charge != Address_Null)
 					{
 						charging += TF2Attrib_GetValue(charge)*tickRate;
 					}
-					new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
+					Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 					if(precisionPowerup != Address_Null)
 					{
-						new Float:precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
+						float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
 						if(precisionPowerupValue > 0.0){
 							charging += 90.0*tickRate;
 						}
@@ -1209,7 +1209,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					
 					SetEntPropFloat(CWeapon, Prop_Send, "m_flChargedDamage", charging);
 					
-					new Address:tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
+					Address tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
 					LastCharge[client] = charging;
 					//PrintToChat(client,"a %.2f",LastCharge[client]);
 					if(LastCharge[client] >= 150.0 && tracer != Address_Null && TF2Attrib_GetValue(tracer) == 0.0)
@@ -1222,12 +1222,12 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			{
 				if(!(buttons & IN_ATTACK) && globalButtons[client] & IN_ATTACK && fanOfKnivesCount[client] > 1)
 				{
-					new Float:fOrigin[3], Float:fAngles[3];
+					float fOrigin[3], fAngles[3];
 					GetClientEyePosition(client, fOrigin);
 
 					GetClientEyeAngles(client, fAngles);
 					fAngles[1] -= 15.0;
-					for(new i = 0; i < fanOfKnivesCount[client]; i++)
+					for(int i = 0; i < fanOfKnivesCount[client]; i++)
 					{
 						fAngles[1] += 30.0/fanOfKnivesCount[client]
 						TeleportEntity(client, NULL_VECTOR, fAngles, NULL_VECTOR);
@@ -1258,7 +1258,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						EmitSoundToAll(SOUND_SUPERNOVA, client, -1, 150, 0, 1.0);
 						EmitSoundToAll(SOUND_SUPERNOVA, client, -1, 150, 0, 1.0);
 						
-						new iTeam = GetClientTeam(client);
+						int iTeam = GetClientTeam(client);
 						if(iTeam == 2)
 						{
 							CreateParticle(client, "powerup_supernova_explode_red", false, "", 1.0);
@@ -1267,16 +1267,16 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							CreateParticle(client, "powerup_supernova_explode_blue", false, "", 1.0);
 						}
-						new Float:clientpos[3];
+						float clientpos[3];
 						GetClientEyePosition(client,clientpos);
-						for(new i = 1; i<MAXENTITIES;i++)
+						for(int i = 1; i<MAXENTITIES;i++)
 						{
 							if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 							{
-								new Float:VictimPos[3];
+								float VictimPos[3];
 								GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 								VictimPos[2] += 30.0;
-								new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+								float Distance = GetVectorDistance(clientpos,VictimPos);
 								if(Distance <= 800.0)
 								{
 									if(IsValidClient3(i))
@@ -1299,18 +1299,18 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				{
 					if(trueVel[client][2] <= -500.0)
 					{
-						new Float:targetvec[3],Float:clientvec[3],Float:stompDamage;
+						float targetvec[3], clientvec[3], stompDamage;
 						
 						stompDamage = TF2_GetDPSModifiers(client, CWeapon, false, false) * 80.0;
 						stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 500.0)/1000.0)
-						new Address:multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
+						Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
 						if(multiHitActive != Address_Null)
 						{
 							stompDamage *= TF2Attrib_GetValue(multiHitActive) + 1.0;
 						}
 						
 						GetClientAbsOrigin(client, clientvec);
-						for(new i=1; i<=MaxClients; i++)
+						for(int i=1; i<=MaxClients; i++)
 						{
 							if(IsValidClient3(i) && IsClientInGame(i) && IsPlayerAlive(i))
 							{
@@ -1322,10 +1322,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							}
 						}
 					}
-					new Address:bossType = TF2Attrib_GetByName(client, "damage force increase text");
+					Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
 					if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 					{
-						new Float:bossValue = TF2Attrib_GetValue(bossType);
+						float bossValue = TF2Attrib_GetValue(bossType);
 						switch(bossValue)
 						{
 							case 2.0:
@@ -1346,10 +1346,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				}
 				else if((lastFlag[client] & FL_ONGROUND) && !(flags & FL_ONGROUND))
 				{
-					new Address:bossType = TF2Attrib_GetByName(client, "damage force increase text");
+					Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
 					if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 					{
-						new Float:bossValue = TF2Attrib_GetValue(bossType);
+						float bossValue = TF2Attrib_GetValue(bossType);
 						switch(bossValue)
 						{
 							case 2.0:
@@ -1371,7 +1371,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				{
 					if(buttons & IN_DUCK)
 					{
-						new Address:weighDownAbility = TF2Attrib_GetByName(client, "noise maker");
+						Address weighDownAbility = TF2Attrib_GetByName(client, "noise maker");
 						if(weighDownAbility != Address_Null && TF2Attrib_GetValue(weighDownAbility) > 0.0)
 						{
 							SetEntityGravity(client, TF2Attrib_GetValue(weighDownAbility) + 1.0);
@@ -1386,28 +1386,28 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				if(powerupParticle[client] <= 0.0 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 				{
 					
-					new Address:strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");
+					Address strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");
 					if(strengthPowerup != Address_Null && TF2Attrib_GetValue(strengthPowerup) > 0.0)
 					{
 						CreateParticle(client, "utaunt_tarotcard_orange_wind", true, "", 5.0);
 						powerupParticle[client] = 5.0;
 					}
-					new Address:resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
+					Address resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
 					if(resistancePowerup != Address_Null && TF2Attrib_GetValue(resistancePowerup) > 0.0)
 					{
 						CreateParticle(client, "soldierbuff_red_spikes", true, "", 2.0);
 						powerupParticle[client] = 2.0;
 					}
-					new Address:vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
+					Address vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
 					if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
 					{
 						CreateParticle(client, "spell_batball_red", true, "", 2.0);
 						powerupParticle[client] = 8.0;
 					}
-					new Address:regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
+					Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
 					if(regenerationPowerup != Address_Null && TF2Attrib_GetValue(regenerationPowerup) > 0.0)
 					{
-						new iTeam = GetClientTeam(client);
+						int iTeam = GetClientTeam(client);
 						if(iTeam == 2)
 						{
 							CreateParticle(client, "medic_megaheal_red_shower", true, "", 5.0);
@@ -1418,7 +1418,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						powerupParticle[client] = 5.0;
 					}
-					new Address:precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
+					Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 					if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
 					{
 						if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
@@ -1431,35 +1431,35 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						powerupParticle[client] = 5.0;
 					}
-					new Address:agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");
+					Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");
 					if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
 					{
 						CreateParticle(client, "medic_resist_bullet", true, "", 5.0);
 						powerupParticle[client] = 5.0;
 					}
-					new Address:knockoutPowerup = TF2Attrib_GetByName(client, "knockout powerup");
+					Address knockoutPowerup = TF2Attrib_GetByName(client, "knockout powerup");
 					if(knockoutPowerup != Address_Null && TF2Attrib_GetValue(knockoutPowerup) > 0.0)
 					{
 						CreateParticle(client, "medic_resist_blast", true, "", 5.0);
 						powerupParticle[client] = 5.0;
 					}
-					new Address:kingPowerup = TF2Attrib_GetByName(client, "king powerup");
+					Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
 					if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
 					{
-						new clientTeam = GetClientTeam(client);
-						new Float:clientPos[3];
+						int clientTeam = GetClientTeam(client);
+						float clientPos[3];
 						GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
-						for(new i = 1;i<MaxClients;i++)
+						for(int i = 1;i<MaxClients;i++)
 						{
 							if(IsValidClient3(i) && IsPlayerAlive(i))
 							{
-								new iTeam = GetClientTeam(i);
+								int iTeam = GetClientTeam(i);
 								if(clientTeam == iTeam)
 								{
-									new Float:VictimPos[3];
+									float VictimPos[3];
 									GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 									VictimPos[2] += 30.0;
-									new Float:Distance = GetVectorDistance(clientPos,VictimPos);
+									float Distance = GetVectorDistance(clientPos,VictimPos);
 									if(Distance <= 600.0)
 									{
 										if(iTeam == 2)
@@ -1477,13 +1477,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						powerupParticle[client] = 2.0;
 					}
-					new Address:plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
+					Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
 					if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 					{
 						CreateParticle(client, "powerup_plague_carrier", true, "", 5.0);
 						powerupParticle[client] = 5.0;
 					}
-					new Address:supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
+					Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
 					if(supernovaPowerup != Address_Null && TF2Attrib_GetValue(supernovaPowerup) > 0.0)
 					{
 						CreateParticle(client, "powerup_supernova_ready", true, "", 5.0);
@@ -1492,35 +1492,35 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				}
 				
 				GetEntPropVector(client, Prop_Data, "m_vecAbsVelocity", trueVel[client]);
-				new Address:Skill = TF2Attrib_GetByName(CWeapon, "apply look velocity on damage");
+				Address Skill = TF2Attrib_GetByName(CWeapon, "apply look velocity on damage");
 				if(Skill != Address_Null)
 				{
-					new Float:SkillNumber = TF2Attrib_GetValue(Skill);
-					new Float:x = 0.8;
-					new Float:y = 0.9;
-					new red = 0;
-					new blue = 101;
-					new green = 189;
+					float SkillNumber = TF2Attrib_GetValue(Skill);
+					float x = 0.8;
+					float y = 0.9;
+					int red = 0;
+					int blue = 101;
+					int green = 189;
 					
-					new Readyred = 0;
-					new Readyblue = 219;
-					new Readygreen = 15;
+					int Readyred = 0;
+					int Readyblue = 219;
+					int Readygreen = 15;
 					
-					new alpha = 255;
+					int alpha = 255;
 					switch(SkillNumber)
 					{
 						case 1.0: //Teleport
 						{
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: READY (MOUSE3)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1547,14 +1547,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Explosive Shot: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Explosive Shot: READY (MOUSE3)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1574,14 +1574,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: READY (MOUSE3)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1606,14 +1606,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: READY (MOUSE3)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1632,14 +1632,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dragon's Breath: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dragon's Breath: READY (MOUSE3)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1650,17 +1650,17 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										weaponArtCooldown[client] = 15.0;
 										fl_GlobalCoolDown[client] = 0.8;
 										
-										for(new i = 0;i<5;i++)
+										for(int i = 0;i<5;i++)
 										{
-											new iEntity = CreateEntityByName("tf_projectile_spellfireball");
+											int iEntity = CreateEntityByName("tf_projectile_spellfireball");
 											if (IsValidEdict(iEntity)) 
 											{
-												new iTeam = GetClientTeam(client);
-												new Float:fAngles[3]
-												new Float:fOrigin[3]
-												new Float:vBuffer[3]
-												new Float:fVelocity[3]
-												new Float:fwd[3]
+												int iTeam = GetClientTeam(client);
+												float fAngles[3]
+												float fOrigin[3]
+												float vBuffer[3]
+												float fVelocity[3]
+												float fwd[3]
 												SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 												SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 												GetClientEyeAngles(client, fAngles);
@@ -1675,8 +1675,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 												AddVectors(fOrigin, fwd, fOrigin);
 												GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 												
-												new Float:velocity = 300.0;
-												new Float:vecAngImpulse[3];
+												float velocity = 300.0;
+												float vecAngImpulse[3];
 												GetCleaverAngularImpulse(vecAngImpulse);
 												fVelocity[0] = vBuffer[0]*velocity;
 												fVelocity[1] = vBuffer[1]*velocity;
@@ -1697,14 +1697,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: READY (MOUSE3)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1715,12 +1715,12 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										weaponArtCooldown[client] = 0.2;
 										fl_GlobalCoolDown[client] = 0.2;
 										
-										new Float:damageMult = TF2_GetDamageModifiers(client,CWeapon)
-										new Float:m_fOrigin[3];
-										new entity = -1; 
+										float damageMult = TF2_GetDamageModifiers(client,CWeapon)
+										float m_fOrigin[3];
+										int entity = -1; 
 										while((entity = FindEntityByClassname(entity, "tf_projectile_flare"))!=INVALID_ENT_REFERENCE)
 										{
-											new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+											int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 											if(!IsValidClient(owner)) continue;
 											if(owner == client)
 											{
@@ -1737,14 +1737,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dash: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dash: READY (MOUSE2)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1755,8 +1755,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										weaponArtCooldown[client] = 1.0;
 										fl_GlobalCoolDown[client] = 0.2;
 										
-										new Float:flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
-										new Float:flVel[3],Float:flAng[3], Float:vBuffer[3]
+										float flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
+										float flVel[3],flAng[3], vBuffer[3]
 										GetClientEyeAngles(client,flAng)
 										GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR)
 										flVel[0] = flSpeed * vBuffer[0] * 1.5;
@@ -1774,38 +1774,19 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								weaponArtParticle[client] = 3.0;
 								CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, "", 5.0,_,_,1);
-								bool particleEnabler = false;
-								if(AreClientCookiesCached(client))
-								{
-									new String:particleEnabled[64];
-									GetClientCookie(client, particleToggle, particleEnabled, sizeof(particleEnabled));
-									new Float:menuValue = StringToFloat(particleEnabled);
-									if(menuValue == 1.0)
-									{
-										particleEnabler = true;
-									}
-								}
-								int[] clients = new int[MaxClients];
-								int numClients;
-								for(new i=1;i<MaxClients;i++)
-								{
-									if(IsValidClient3(i) && (i != client || particleEnabler == true))
-									{
-										clients[numClients++] = i;
-									}
-								}
+								int clients[33], numClients = getClientParticleStatus(clients, client);
 								TE_Send(clients,numClients)
 							}
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: R (MOUSE2)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1816,13 +1797,12 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										weaponArtCooldown[client] = 6.0;
 										fl_GlobalCoolDown[client] = 0.2;
 										
-										decl Float:fAngles[3], Float:fVelocity[3], Float:fOrigin[3], Float:vBuffer[3];
-										new String:projName[32] = "tf_projectile_arrow";
-										new iEntity = CreateEntityByName(projName);
+										float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3], fwd[3];
+										char projName[32] = "tf_projectile_arrow";
+										int iEntity = CreateEntityByName(projName);
 										if (IsValidEdict(iEntity)) 
 										{
-											new iTeam = GetClientTeam(client);
-											new Float:fwd[3]
+											int iTeam = GetClientTeam(client);
 											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 											//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
@@ -1836,7 +1816,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 											GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
 											ScaleVector(fwd, 50.0);
 											AddVectors(fOrigin, fwd, fOrigin);
-											new Float:velocity = 5000.0;
+											float velocity = 5000.0;
 											fVelocity[0] = vBuffer[0]*velocity;
 											fVelocity[1] = vBuffer[1]*velocity;
 											fVelocity[2] = vBuffer[2]*velocity;
@@ -1901,14 +1881,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							}
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: READY (MOUSE2)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1923,9 +1903,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime());
 										RequestFrame(disableWeapon,client);
 										
-										for(new i=0;i<20;i++)
+										for(int i=0;i<20;i++)
 										{
-											new Handle:hPack = CreateDataPack();
+											Handle hPack = CreateDataPack();
 											WritePackCell(hPack, EntIndexToEntRef(CWeapon));
 											WritePackCell(hPack, EntIndexToEntRef(client));
 											CreateTimer(0.06*i, CreateBloodTracer, hPack);
@@ -1950,14 +1930,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							}
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: READY (MOUSE2)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -1967,18 +1947,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 									{
 										weaponArtCooldown[client] = 3.0;
 										fl_GlobalCoolDown[client] = 0.2;
-										new iTeam = GetClientTeam(client);
-										for(new i=0;i<3;i++)
+										int iTeam = GetClientTeam(client);
+										float fAngles[3],fOrigin[3],vBuffer[3],vRight[3],fVelocity[3],fwd[3]
+										for(int i=0;i<3;i++)
 										{
-											new iEntity = CreateEntityByName("tf_projectile_flare");
+											int iEntity = CreateEntityByName("tf_projectile_flare");
 											if (IsValidEdict(iEntity)) 
 											{
-												new Float:fAngles[3]
-												new Float:fOrigin[3]
-												new Float:vBuffer[3]
-												new Float:vRight[3]
-												new Float:fVelocity[3]
-												new Float:fwd[3]
 												SetEntityRenderColor(iEntity, 255, 255, 255, 0);
 												SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
@@ -2000,7 +1975,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 												AddVectors(fOrigin, vRight, fOrigin);
 												AddVectors(fOrigin, fwd, fOrigin);
 												
-												new Float:Speed = 1200.0;
+												float Speed = 1200.0;
 												fVelocity[0] = vBuffer[0]*Speed;
 												fVelocity[1] = vBuffer[1]*Speed;
 												fVelocity[2] = vBuffer[2]*Speed;
@@ -2036,14 +2011,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							}
 							if(weaponArtCooldown[client] > 0.0)
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: %.1fs", weaponArtCooldown[client]); 
 								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
-								decl String:CooldownTime[32]
+								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: READY (MOUSE3)"); 
 								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
@@ -2054,8 +2029,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										weaponArtCooldown[client] = 1.0;
 										fl_GlobalCoolDown[client] = 0.2;
 										
-										new Float:flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
-										new Float:flVel[3],Float:flAng[3], Float:vBuffer[3]
+										float flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
+										float flVel[3],flAng[3],vBuffer[3]
 										GetClientEyeAngles(client,flAng)
 										GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR)
 										flVel[0] = flSpeed * vBuffer[0] * 1.5;
@@ -2092,9 +2067,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 //Called on server thinking, 66.6/s
 public OnGameFrame()
 {
-	new Float:tickRate = GetTickInterval();
-	new Float:time = GetGameTime();
-	for(new i=MaxClients; i < MAXENTITIES; i++)
+	float tickRate = GetTickInterval();
+	float time = GetGameTime();
+	for(int i=MaxClients; i < MAXENTITIES; i++)
 	{
 		if(IsValidEntity(i))
 		{
@@ -2121,7 +2096,7 @@ public OnGameFrame()
 			}
 		}
 	}
-	for(new client=1; client<=MaxClients; client++)
+	for(int client=1; client<=MaxClients; client++)
 	{
 		if(MadmilkDuration[client] > 0.0)
 			MadmilkDuration[client]-=tickRate;
@@ -2181,17 +2156,17 @@ public OnGameFrame()
 					CurrentSlowTimer[client] = -2000.0;
 				}
 				//Firerate for Secondaries
-				new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				new melee = GetPlayerWeaponSlot(client,2)
-				new primary = GetPlayerWeaponSlot(client,0)
+				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+				int melee = GetPlayerWeaponSlot(client,2)
+				int primary = GetPlayerWeaponSlot(client,0)
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:overAllFireRate= TF2Attrib_GetByName(CWeapon, "ubercharge overheal rate penalty");
+					Address overAllFireRate= TF2Attrib_GetByName(CWeapon, "ubercharge overheal rate penalty");
 					if(overAllFireRate != Address_Null)
 					{
-						new Float:Amount = TF2Attrib_GetValue(overAllFireRate)
-						new Float:m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
-						new Float:m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
+						float Amount = TF2Attrib_GetValue(overAllFireRate)
+						float m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
+						float m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
 						/*if (Amount > 12)
 						{
 							SetEntPropFloat(CWeapon, Prop_Send, "m_flPlaybackRate", 12.0);
@@ -2201,64 +2176,64 @@ public OnGameFrame()
 							SetEntPropFloat(CWeapon, Prop_Send, "m_flPlaybackRate", Amount);
 						}*/
 						
-						new Float:GameTime = GetGameTime();
+						float GameTime = GetGameTime();
 						
-						new Float:PeTime = (m_flNextPrimaryAttack - GameTime) - ((Amount - 1.0) * GetTickInterval());
-						new Float:SeTime = (m_flNextSecondaryAttack - GameTime) - ((Amount - 1.0) * GetTickInterval());
-						new Float:FinalP = PeTime+GameTime;
-						new Float:FinalS = SeTime+GameTime;
+						float PeTime = (m_flNextPrimaryAttack - GameTime) - ((Amount - 1.0) * GetTickInterval());
+						float SeTime = (m_flNextSecondaryAttack - GameTime) - ((Amount - 1.0) * GetTickInterval());
+						float FinalP = PeTime+GameTime;
+						float FinalS = SeTime+GameTime;
 						
 						
 						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", FinalP);
 						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", FinalS);
 					}
-					new bool:flag = true;
+					bool flag = true;
 					if(IsValidEntity(melee) && CWeapon == melee && TF2_GetPlayerClass(client) == TFClass_Heavy ){flag=false;}
 					if(IsValidEntity(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Sniper){flag=false;}
 					if((IsValidEntity(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Heavy)){flag=false;}
 
 					if(flag)
 					{
-						new Float:SecondaryROF = 1.0;
-						new Address:Firerate1 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
-						new Address:Firerate2 = TF2Attrib_GetByName(CWeapon, "fire rate bonus HIDDEN");
-						new Address:Firerate3 = TF2Attrib_GetByName(CWeapon, "fire rate penalty HIDDEN");
-						new Address:Firerate4 = TF2Attrib_GetByName(CWeapon, "fire rate bonus");
+						float SecondaryROF = 1.0;
+						Address Firerate1 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
+						Address Firerate2 = TF2Attrib_GetByName(CWeapon, "fire rate bonus HIDDEN");
+						Address Firerate3 = TF2Attrib_GetByName(CWeapon, "fire rate penalty HIDDEN");
+						Address Firerate4 = TF2Attrib_GetByName(CWeapon, "fire rate bonus");
 						if(Firerate1 != Address_Null)
 						{
-							new Float:Firerate1Amount = TF2Attrib_GetValue(Firerate1);
+							float Firerate1Amount = TF2Attrib_GetValue(Firerate1);
 							SecondaryROF =  SecondaryROF/Firerate1Amount;
 						}
 						if(Firerate2 != Address_Null)
 						{
-							new Float:Firerate2Amount = TF2Attrib_GetValue(Firerate2);
+							float Firerate2Amount = TF2Attrib_GetValue(Firerate2);
 							SecondaryROF =  SecondaryROF/Firerate2Amount;
 						}
 						if(Firerate3 != Address_Null)
 						{
-							new Float:Firerate3Amount = TF2Attrib_GetValue(Firerate3);
+							float Firerate3Amount = TF2Attrib_GetValue(Firerate3);
 							SecondaryROF =  SecondaryROF/Firerate3Amount;
 						}
 						if(Firerate4 != Address_Null)
 						{
-							new Float:Firerate4Amount = TF2Attrib_GetValue(Firerate4);
+							float Firerate4Amount = TF2Attrib_GetValue(Firerate4);
 							SecondaryROF =  SecondaryROF/Firerate4Amount;
 						}
 						SecondaryROF = Pow(SecondaryROF, 0.4);
-						new Float:m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
-						new Float:SeTime = (m_flNextSecondaryAttack - GetGameTime()) - ((SecondaryROF - 1.0) * GetTickInterval());
-						new Float:FinalS = SeTime+GetGameTime();
+						float m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
+						float SeTime = (m_flNextSecondaryAttack - GetGameTime()) - ((SecondaryROF - 1.0) * GetTickInterval());
+						float FinalS = SeTime+GetGameTime();
 						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", FinalS);
 						//Remove fire rate bonuses for reload rate on no clip size weapons.
-						new Address:ModClip = TF2Attrib_GetByName(CWeapon, "mod max primary clip override");
+						Address ModClip = TF2Attrib_GetByName(CWeapon, "mod max primary clip override");
 						if(ModClip != Address_Null)
 						{
 							if(TF2Attrib_GetValue(ModClip) == -1.0)
 							{
-								new Float:PrimaryROF = 1.0;
-								new Address:ReloadRate = TF2Attrib_GetByName(CWeapon, "faster reload rate");
-								new Address:ReloadRate1 = TF2Attrib_GetByName(CWeapon, "reload time increased hidden");
-								new Address:ReloadRate2 = TF2Attrib_GetByName(CWeapon, "Reload time increased");
+								float PrimaryROF = 1.0;
+								Address ReloadRate = TF2Attrib_GetByName(CWeapon, "faster reload rate");
+								Address ReloadRate1 = TF2Attrib_GetByName(CWeapon, "reload time increased hidden");
+								Address ReloadRate2 = TF2Attrib_GetByName(CWeapon, "Reload time increased");
 								if(ReloadRate != Address_Null)
 								{
 									PrimaryROF *= TF2Attrib_GetValue(ReloadRate);
@@ -2271,9 +2246,9 @@ public OnGameFrame()
 								{
 									PrimaryROF *= TF2Attrib_GetValue(ReloadRate2);
 								}
-								new Float:m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
-								new Float:Time = (m_flNextPrimaryAttack - GetGameTime()) - ((PrimaryROF - 1.0) / (1/GetTickInterval()));
-								new Float:FinalROF = Time+GetGameTime();
+								float m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
+								float Time = (m_flNextPrimaryAttack - GetGameTime()) - ((PrimaryROF - 1.0) / (1/GetTickInterval()));
+								float FinalROF = Time+GetGameTime();
 								SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", FinalROF);
 								//PrintToChat(client, "%.1f NextPrimaryAttack", FinalROF);
 							}
@@ -2285,32 +2260,13 @@ public OnGameFrame()
 			if(LightningEnchantmentDuration[client] > 0.0)
 			{
 				LightningEnchantmentDuration[client] -= tickRate; 
-				new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon) && CWeapon != 0 && DarkmoonBladeDuration[client] <= 0.0)
 				{
 					if(weaponTrailTimer[client] <= 0.0)
 					{
 						CreateParticle(CWeapon, "utaunt_auroraglow_orange_parent", true, "", 5.0,_,_,1);
-						bool particleEnabler = false;
-						if(AreClientCookiesCached(client))
-						{
-							new String:particleEnabled[64];
-							GetClientCookie(client, particleToggle, particleEnabled, sizeof(particleEnabled));
-							new Float:menuValue = StringToFloat(particleEnabled);
-							if(menuValue == 1.0)
-							{
-								particleEnabler = true;
-							}
-						}
-						int[] clients = new int[MaxClients];
-						int numClients;
-						for(new i=1;i<MaxClients;i++)
-						{
-							if(IsValidClient3(i) && (i != client || particleEnabler == true))
-							{
-								clients[numClients++] = i;
-							}
-						}
+						int clients[33], numClients = getClientParticleStatus(clients, client);
 						TE_Send(clients,numClients)
 						CreateParticle(client, "utaunt_arcane_yellow_parent", true, "", 5.0);
 						
@@ -2321,33 +2277,14 @@ public OnGameFrame()
 			if(DarkmoonBladeDuration[client] > 0.0)
 			{
 				DarkmoonBladeDuration[client] -= tickRate; 
-				new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				new melee = GetWeapon(client,2);
+				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+				int melee = GetWeapon(client,2);
 				if(IsValidEntity(CWeapon) && IsValidEntity(melee) && CWeapon == melee)
 				{
 					if(weaponTrailTimer[client] <= 0.0)
 					{
 						CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, "", 5.0,_,_,1);
-						bool particleEnabler = false;
-						if(AreClientCookiesCached(client))
-						{
-							new String:particleEnabled[64];
-							GetClientCookie(client, particleToggle, particleEnabled, sizeof(particleEnabled));
-							new Float:menuValue = StringToFloat(particleEnabled);
-							if(menuValue == 1.0)
-							{
-								particleEnabler = true;
-							}
-						}
-						int[] clients = new int[MaxClients];
-						int numClients;
-						for(new i=1;i<MaxClients;i++)
-						{
-							if(IsValidClient3(i) && (i != client || particleEnabler == true))
-							{
-								clients[numClients++] = i;
-							}
-						}
+						int clients[33], numClients = getClientParticleStatus(clients, client);
 						TE_Send(clients,numClients)
 						CreateParticle(client, "utaunt_arcane_purple_parent", true, "", 5.0);
 						weaponTrailTimer[client] = 5.1;
@@ -2391,7 +2328,7 @@ public OnGameFrame()
 			}
 			if(CheckForAttunement(client))
 			{
-				for(new i = 0; i < Max_Attunement_Slots;i++)
+				for(int i = 0; i < Max_Attunement_Slots;i++)
 				{
 					if(SpellCooldowns[client][i] > 0.0)
 					{
@@ -2413,7 +2350,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 	if(IsValidClient3(client))//Players
 	{
 		canShootAgain[client] = true;
-		new CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 		if(IsValidWeapon(CWeapon))
 		{
 			meleeLimiter[client]++;
@@ -2422,7 +2359,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 				if(getWeaponSlot(client,CWeapon) == 2)
 				{
 					RPS[client] += 0.5;
-					new Handle:hPack = CreateDataPack();
+					Handle hPack = CreateDataPack();
 					WritePackCell(hPack, client);
 					WritePackFloat(hPack, 0.5);
 					CreateTimer(1.0, RemoveFire, hPack);
@@ -2435,29 +2372,29 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 				else
 				{
 					RPS[client] += 1.0;
-					new Handle:hPack = CreateDataPack();
+					Handle hPack = CreateDataPack();
 					WritePackCell(hPack, client);
 					WritePackFloat(hPack, 1.0);
 					CreateTimer(1.0, RemoveFire, hPack);
-					new String:classname[64]; 
+					char classname[64]; 
 					GetEdictClassname(CWeapon, classname, sizeof(classname)); 
 
 					if(StrEqual(classname, "tf_weapon_cleaver"))
 					{
 						if(weaponFireRate[CWeapon] > 5.0)
 						{
-							new Address:override = TF2Attrib_GetByName(CWeapon, "override projectile type");
+							Address override = TF2Attrib_GetByName(CWeapon, "override projectile type");
 							if(override == Address_Null)
 								SDKCall(g_SDKCallJar, CWeapon);
 						}
 					}
 				}
 			}
-			decl Float:fAngles[3], Float:fVelocity[3], Float:fOrigin[3], Float:vBuffer[3];
-			new Address:bossType = TF2Attrib_GetByName(client, "damage force increase text");
+			float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3];
+			Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
 			if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 			{
-				new Float:bossValue = TF2Attrib_GetValue(bossType);
+				float bossValue = TF2Attrib_GetValue(bossType);
 				switch(bossValue)
 				{
 					case 1.0:
@@ -2465,15 +2402,15 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 						if(meleeLimiter[client] > 20)
 						{
 							meleeLimiter[client] = 0;
-							for(new i=-3;i<=3;i+=1)
+							for(int i=-3;i<=3;i+=1)
 							{
-								new String:projName[32] = "tf_projectile_arrow";
-								new iEntity = CreateEntityByName(projName);
+								char projName[32] = "tf_projectile_arrow";
+								int iEntity = CreateEntityByName(projName);
 								if (IsValidEdict(iEntity)) 
 								{
-									new iTeam = GetClientTeam(client);
-									new Float:fwd[3]
-									new Float:right[3]
+									int iTeam = GetClientTeam(client);
+									float fwd[3]
+									float right[3]
 									SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 									//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
@@ -2490,16 +2427,16 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 									ScaleVector(fwd, 50.0);
 									AddVectors(fOrigin, fwd, fOrigin);
 									AddVectors(fOrigin, right, fOrigin);
-									new Float:velocity = 5000.0;
-									new Address:projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-									new Address:projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+									float velocity = 5000.0;
+									Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+									Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
 									if(projspeed != Address_Null){
 										velocity *= TF2Attrib_GetValue(projspeed)
 									}
 									if(projspeed1 != Address_Null){
 										velocity *= TF2Attrib_GetValue(projspeed1)
 									}
-									new Float:vecAngImpulse[3];
+									float vecAngImpulse[3];
 									GetCleaverAngularImpulse(vecAngImpulse);
 									fVelocity[0] = vBuffer[0]*velocity;
 									fVelocity[1] = vBuffer[1]*velocity;
@@ -2536,35 +2473,35 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					}
 				}
 			}
-			new Address:meleeAttacks = TF2Attrib_GetByName(CWeapon, "duck rating");
+			Address meleeAttacks = TF2Attrib_GetByName(CWeapon, "duck rating");
 			if(meleeAttacks != Address_Null && meleeLimiter[client] > RoundToNearest(TF2Attrib_GetValue(meleeAttacks) * 2.0))
 			{
-				new Handle:hPack = CreateDataPack();
+				Handle hPack = CreateDataPack();
 				WritePackCell(hPack, EntIndexToEntRef(client));
 				WritePackCell(hPack, EntIndexToEntRef(CWeapon));
 				WritePackCell(hPack, RoundToNearest(TF2Attrib_GetValue(meleeAttacks)));
 				CreateTimer(0.1,AttackTwice,hPack);
 				meleeLimiter[client] = 0;
 			}
-			new Address:tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
+			Address tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
 			if(LastCharge[client] >= 150.0 && tracer != Address_Null && TF2Attrib_GetValue(tracer) == 1.0)
 			{
 				TF2Attrib_SetByName(CWeapon, "sniper fires tracer", 0.0);
 			}
 			
-			new Address:projActive = TF2Attrib_GetByName(CWeapon, "sapper damage penalty hidden");
-			new Address:override = TF2Attrib_GetByName(CWeapon, "override projectile type");
+			Address projActive = TF2Attrib_GetByName(CWeapon, "sapper damage penalty hidden");
+			Address override = TF2Attrib_GetByName(CWeapon, "override projectile type");
 			if(override != Address_Null)
 			{
-				new Float:projnum = TF2Attrib_GetValue(override);
+				float projnum = TF2Attrib_GetValue(override);
 				switch(projnum)
 				{
 					case 27.0:
 					{
-						new iEntity = CreateEntityByName("tf_projectile_sentryrocket");
+						int iEntity = CreateEntityByName("tf_projectile_sentryrocket");
 						if (IsValidEdict(iEntity)) 
 						{
-							new iTeam = GetClientTeam(client);
+							int iTeam = GetClientTeam(client);
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
@@ -2578,8 +2515,8 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							fAngles = fEyeAngles[client];
 							
 							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-							new Float:Speed = 2000.0;
-							new Address:projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+							float Speed = 2000.0;
+							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
 							if(projspeed != Address_Null)
 							{
 								Speed *= TF2Attrib_GetValue(projspeed);
@@ -2588,15 +2525,15 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							fVelocity[1] = vBuffer[1]*Speed;
 							fVelocity[2] = vBuffer[2]*Speed;
 							
-							new Float:ProjectileDamage = 90.0;
+							float ProjectileDamage = 90.0;
 							
-							new Address:DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "dmg penalty vs players");
-							new Address:DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
-							new Address:DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
-							new Address:DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
-							new Address:BulletsPerShot = TF2Attrib_GetByName(CWeapon, "bullets per shot bonus");
-							new Address:AccuracyScales = TF2Attrib_GetByName(CWeapon, "accuracy scales damage");
-							new Address:damageActive = TF2Attrib_GetByName(CWeapon, "ubercharge");
+							Address DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "dmg penalty vs players");
+							Address DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
+							Address DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
+							Address DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
+							Address BulletsPerShot = TF2Attrib_GetByName(CWeapon, "bullets per shot bonus");
+							Address AccuracyScales = TF2Attrib_GetByName(CWeapon, "accuracy scales damage");
+							Address damageActive = TF2Attrib_GetByName(CWeapon, "ubercharge");
 							
 							if(damageActive != Address_Null)
 							{
@@ -2638,15 +2575,15 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 						if(meleeLimiter[client] >= 2)
 						{
 							meleeLimiter[client] = 0;
-							for(new i=-1;i<=1;i+=2)
+							for(int i=-1;i<=1;i+=2)
 							{
-								new String:projName[32] = "tf_projectile_arrow";
-								new iEntity = CreateEntityByName(projName);
+								char projName[32] = "tf_projectile_arrow";
+								int iEntity = CreateEntityByName(projName);
 								if (IsValidEdict(iEntity)) 
 								{
-									new iTeam = GetClientTeam(client);
-									new Float:fwd[3]
-									new Float:right[3]
+									int iTeam = GetClientTeam(client);
+									float fwd[3]
+									float right[3]
 									SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 									//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
@@ -2663,16 +2600,16 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 									ScaleVector(fwd, 50.0);
 									AddVectors(fOrigin, fwd, fOrigin);
 									AddVectors(fOrigin, right, fOrigin);
-									new Float:velocity = 5000.0;
-									new Address:projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-									new Address:projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+									float velocity = 5000.0;
+									Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+									Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
 									if(projspeed != Address_Null){
 										velocity *= TF2Attrib_GetValue(projspeed)
 									}
 									if(projspeed1 != Address_Null){
 										velocity *= TF2Attrib_GetValue(projspeed1)
 									}
-									new Float:vecAngImpulse[3];
+									float vecAngImpulse[3];
 									GetCleaverAngularImpulse(vecAngImpulse);
 									fVelocity[0] = vBuffer[0]*velocity;
 									fVelocity[1] = vBuffer[1]*velocity;
@@ -2712,12 +2649,12 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 						if(meleeLimiter[client] >= 2)
 						{
 							meleeLimiter[client] = 0;
-							new String:projName[32] = "tf_projectile_arrow";
-							new iEntity = CreateEntityByName(projName);
+							char projName[32] = "tf_projectile_arrow";
+							int iEntity = CreateEntityByName(projName);
 							if (IsValidEdict(iEntity)) 
 							{
-								new iTeam = GetClientTeam(client);
-								new Float:fwd[3]
+								int iTeam = GetClientTeam(client);
+								float fwd[3]
 								SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 								//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
@@ -2731,16 +2668,16 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 								GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
 								ScaleVector(fwd, 30.0);
 								AddVectors(fOrigin, fwd, fOrigin);
-								new Float:velocity = 4000.0;
-								new Address:projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-								new Address:projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+								float velocity = 4000.0;
+								Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+								Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
 								if(projspeed != Address_Null){
 									velocity *= TF2Attrib_GetValue(projspeed)
 								}
 								if(projspeed1 != Address_Null){
 									velocity *= TF2Attrib_GetValue(projspeed1)
 								}
-								new Float:vecAngImpulse[3];
+								float vecAngImpulse[3];
 								GetCleaverAngularImpulse(vecAngImpulse);
 								fVelocity[0] = vBuffer[0]*velocity;
 								fVelocity[1] = vBuffer[1]*velocity;
@@ -2777,12 +2714,12 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					}
 					case 42.0:
 					{
-						new String:projName[32] = "tf_projectile_rocket";
-						new iEntity = CreateEntityByName(projName);
+						char projName[32] = "tf_projectile_rocket";
+						int iEntity = CreateEntityByName(projName);
 						if (IsValidEdict(iEntity)) 
 						{
-							new iTeam = GetClientTeam(client);
-							new Float:fwd[3]
+							int iTeam = GetClientTeam(client);
+							float fwd[3]
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 							//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
@@ -2796,16 +2733,16 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
 							ScaleVector(fwd, 35.0);
 							AddVectors(fOrigin, fwd, fOrigin);
-							new Float:velocity = 3000.0;
-							new Address:projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-							new Address:projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+							float velocity = 3000.0;
+							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+							Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
 							if(projspeed != Address_Null){
 								velocity *= TF2Attrib_GetValue(projspeed)
 							}
 							if(projspeed1 != Address_Null){
 								velocity *= TF2Attrib_GetValue(projspeed1)
 							}
-							new Float:vecAngImpulse[3];
+							float vecAngImpulse[3];
 							GetCleaverAngularImpulse(vecAngImpulse);
 							fVelocity[0] = vBuffer[0]*velocity;
 							fVelocity[1] = vBuffer[1]*velocity;
@@ -2830,11 +2767,11 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					}
 					case 43.0:
 					{
-						new iEntity = CreateEntityByName("tf_projectile_spellfireball");
+						int iEntity = CreateEntityByName("tf_projectile_spellfireball");
 						if (IsValidEdict(iEntity)) 
 						{
-							new iTeam = GetClientTeam(client);
-							new Float:fwd[3]
+							int iTeam = GetClientTeam(client);
+							float fwd[3]
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 							GetClientEyeAngles(client, fAngles);
@@ -2846,7 +2783,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							AddVectors(fOrigin, fwd, fOrigin);
 							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 							
-							new Float:velocity = 900.0;
+							float velocity = 900.0;
 							fVelocity[0] = vBuffer[0]*velocity;
 							fVelocity[1] = vBuffer[1]*velocity;
 							fVelocity[2] = 150.0 + vBuffer[2]*velocity;
@@ -2860,12 +2797,12 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					}
 					case 45.0:
 					{
-						new String:projName[32] = "tf_projectile_pipe";
-						new iEntity = CreateEntityByName(projName);
+						char projName[32] = "tf_projectile_pipe";
+						int iEntity = CreateEntityByName(projName);
 						if (IsValidEdict(iEntity)) 
 						{
-							new iTeam = GetClientTeam(client);
-							new Float:fwd[3]
+							int iTeam = GetClientTeam(client);
+							float fwd[3]
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 							//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
@@ -2879,16 +2816,16 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
 							ScaleVector(fwd, 30.0);
 							AddVectors(fOrigin, fwd, fOrigin);
-							new Float:velocity = 20000.0;
-							new Address:projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-							new Address:projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+							float velocity = 20000.0;
+							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+							Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
 							if(projspeed != Address_Null){
 								velocity *= TF2Attrib_GetValue(projspeed)
 							}
 							if(projspeed1 != Address_Null){
 								velocity *= TF2Attrib_GetValue(projspeed1)
 							}
-							new Float:vecAngImpulse[3];
+							float vecAngImpulse[3];
 							GetCleaverAngularImpulse(vecAngImpulse);
 							fVelocity[0] = vBuffer[0]*velocity;
 							fVelocity[1] = vBuffer[1]*velocity;
@@ -2911,20 +2848,20 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 						if(fanOfKnivesCount[client] < 100)
 							fanOfKnivesCount[client]++;
 						/*
-						new Float:fwd[3]
+						float fwd[3]
 						GetClientEyePosition(client, fOrigin);
 						GetClientEyeAngles(client, fAngles);
-						new Float:tempAngle[3] = fAngles;
-						new Float:velocity = 6000.0;
-						new Float:vecAngImpulse[3];
+						float tempAngle[3] = fAngles;
+						float velocity = 6000.0;
+						float vecAngImpulse[3];
 						GetCleaverAngularImpulse(vecAngImpulse);
-						for(new i = 0; i < fanOfKnivesCount[client]; i++)
+						for(int i = 0; i < fanOfKnivesCount[client]; i++)
 						{
-							new String:projName[32] = "tf_projectile_cleaver";
-							new iEntity = CreateEntityByName(projName);
+							char projName[32] = "tf_projectile_cleaver";
+							int iEntity = CreateEntityByName(projName);
 							if (IsValidEdict(iEntity)) 
 							{
-								new iTeam = GetClientTeam(client);
+								int iTeam = GetClientTeam(client);
 								SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
@@ -2955,10 +2892,10 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 			{
 				if(ShotsLeft[client] < 1)
 				{
-					new iEntity = CreateEntityByName("tf_projectile_sentryrocket");
+					int iEntity = CreateEntityByName("tf_projectile_sentryrocket");
 					if (IsValidEdict(iEntity)) 
 					{
-						new iTeam = GetClientTeam(client);
+						int iTeam = GetClientTeam(client);
 						SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
 						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
@@ -2972,20 +2909,20 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 						fAngles = fEyeAngles[client];
 						
 						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-						new Float:Speed = 2000.0;
+						float Speed = 2000.0;
 						fVelocity[0] = vBuffer[0]*Speed;
 						fVelocity[1] = vBuffer[1]*Speed;
 						fVelocity[2] = vBuffer[2]*Speed;
 						SetEntPropVector( iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-						new Float:ProjectileDamage = 20.0;
+						float ProjectileDamage = 20.0;
 						
-						new Address:DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "taunt is highfive");
-						new Address:DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
-						new Address:DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
-						new Address:DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
-						new Address:BulletsPerShot = TF2Attrib_GetByName(CWeapon, "bullets per shot bonus");
-						new Address:AccuracyScales = TF2Attrib_GetByName(CWeapon, "disguise damage reduction");
-						new Address:damageActive = TF2Attrib_GetByName(CWeapon, "ubercharge");
+						Address DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "taunt is highfive");
+						Address DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
+						Address DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
+						Address DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
+						Address BulletsPerShot = TF2Attrib_GetByName(CWeapon, "bullets per shot bonus");
+						Address AccuracyScales = TF2Attrib_GetByName(CWeapon, "disguise damage reduction");
+						Address damageActive = TF2Attrib_GetByName(CWeapon, "ubercharge");
 						
 						if(damageActive != Address_Null)
 						{
@@ -3059,7 +2996,7 @@ public OnClientDisconnect(client)
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
-	for(new i = 0; i < Max_Attunement_Slots; i++)
+	for(int i = 0; i < Max_Attunement_Slots; i++)
 	{
 		AttunedSpells[client][i] = 0.0;
 	}
@@ -3085,7 +3022,7 @@ public OnClientPutInServer(client)
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
-	for(new i = 0; i < Max_Attunement_Slots; i++)
+	for(int i = 0; i < Max_Attunement_Slots; i++)
 	{
 		AttunedSpells[client][i] = 0.0;
 	}
@@ -3104,7 +3041,7 @@ public OnClientPostAdminCheck(client)
 {
 	if(IsValidClient(client))
 	{
-		decl String:clname[255]
+		char clname[255]
 		GetClientName(client, clname, sizeof(clname))
 		client_no_d_team_upgrade[client] = 1
 		if (!client_respawn_handled[client])
@@ -3120,30 +3057,30 @@ public void Hook_PreThink(int client)
 		return;
 	if(DragonsFurySpeedValue[client] != 0.0)
 	{
-		new String:dragonFurySpeed[32];
+		char dragonFurySpeed[32];
 		FloatToString(DragonsFurySpeedValue[client],dragonFurySpeed,sizeof(dragonFurySpeed));
 		SendConVarValue(client, FindConVar("tf_fireball_distance"), dragonFurySpeed);
 		SetConVarFloat(FindConVar("tf_fireball_distance"), DragonsFurySpeedValue[client]);
 	}
 	if(isParachuteReOpenable[client] == 1 || isParachuteReOpenable[client] == 2)
 	{
-		new finalValue = isParachuteReOpenable[client] - 1;
-		new String:parachuteCVAR[32];
+		int finalValue = isParachuteReOpenable[client] - 1;
+		char parachuteCVAR[32];
 		IntToString(finalValue,parachuteCVAR,sizeof(parachuteCVAR));
 		SendConVarValue(client, FindConVar("tf_parachute_deploy_toggle_allowed"), parachuteCVAR);
 		SetConVarInt(FindConVar("tf_parachute_deploy_toggle_allowed"), finalValue);
 	}
 	if(shieldVelocity[client] != 0.0)
 	{
-		new String:chargeSpeed[32];
+		char chargeSpeed[32];
 		FloatToString(shieldVelocity[client],chargeSpeed,sizeof(chargeSpeed));
 		SendConVarValue(client, FindConVar("tf_max_charge_speed"), chargeSpeed);
 		SetConVarFloat(FindConVar("tf_max_charge_speed"), shieldVelocity[client]);
 	}
 }
-public Event_PlayerreSpawn(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	bossPhase[client] = 0;
 	if(IsClientInGame(client) && IsValidClient(client))
 	{
@@ -3158,9 +3095,9 @@ public Event_PlayerreSpawn(Handle:event, const String:name[], bool:dontBroadcast
 		SetClientViewEntity(client, client);
 		if(AreClientCookiesCached(client))
 		{
-			new String:menuEnabled[64];
+			char menuEnabled[64];
 			GetClientCookie(client, respawnMenu, menuEnabled, sizeof(menuEnabled));
-			new Float:menuValue = StringToFloat(menuEnabled);
+			float menuValue = StringToFloat(menuEnabled);
 			if(menuValue == 0.0)
 			{
 				Menu_BuyUpgrade(client, 0);
@@ -3185,7 +3122,7 @@ public Event_PlayerreSpawn(Handle:event, const String:name[], bool:dontBroadcast
 		meleeLimiter[client] = 0;
 		lastDamageTaken[client] = 0.0;
 		SetEntityRenderColor(client, 255,255,255,255);
-		for(new i=1;i<MaxClients;i++)
+		for(int i=1;i<MaxClients;i++)
 		{
 			corrosiveDOT[client][i][0] = 0.0;
 			corrosiveDOT[client][i][1] = 0.0;
@@ -3200,11 +3137,11 @@ public Event_PlayerreSpawn(Handle:event, const String:name[], bool:dontBroadcast
 		BotTimer[client] = 120.0;
 		if(IsValidForDamage(TankTeleporter))
 		{
-			new String:classname[128]; 
+			char classname[128]; 
 			GetEdictClassname(TankTeleporter, classname, sizeof(classname)); 
 			if(!strcmp("tank_boss", classname))
 			{
-				new Float:telePos[3];
+				float telePos[3];
 				GetEntPropVector(TankTeleporter,Prop_Send, "m_vecOrigin",telePos);
 				telePos[2]+= 250.0;
 				TeleportEntity(client, telePos, NULL_VECTOR, NULL_VECTOR);
@@ -3212,10 +3149,10 @@ public Event_PlayerreSpawn(Handle:event, const String:name[], bool:dontBroadcast
 		}
 	}
 }
-public Event_PlayerChangeClass(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_PlayerChangeClass(Handle event, const char[] name, bool:dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	new nextclass = GetEventInt(event,"class");
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int nextclass = GetEventInt(event,"class");
 	if (IsValidClient(client))
 	{
 		if(current_class[client] != view_as<TFClassType>(nextclass))
@@ -3229,7 +3166,7 @@ public Event_PlayerChangeClass(Handle:event, const String:name[], bool:dontBroad
 			}
 			CancelClientMenu(client);
 			CurrencyOwned[client] = (StartMoney + additionalstartmoney);
-			new slot;
+			int slot;
 			for(slot = 0; slot < 5;slot++)
 			{
 				currentupgrades_idx[client][slot] = blankArray1[client][slot]
@@ -3237,7 +3174,7 @@ public Event_PlayerChangeClass(Handle:event, const String:name[], bool:dontBroad
 				currentupgrades_i[client][slot] = blankArray2[client][slot]
 				currentupgrades_number[client][slot] = blankArray[client][slot]
 			}
-			for(new i = 0; i < Max_Attunement_Slots; i++)
+			for(int i = 0; i < Max_Attunement_Slots; i++)
 			{
 				AttunedSpells[client][i] = 0.0;
 			}
@@ -3249,33 +3186,33 @@ public Event_PlayerChangeClass(Handle:event, const String:name[], bool:dontBroad
 		CreateTimer(0.4, GiveBotUpgrades, GetClientUserId(client));
 	}
 }
-public Event_Teleported(Handle:event, const String:name[], bool:dontBroadcast)
+public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	new owner = GetClientOfUserId(GetEventInt(event, "builderid"));
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int owner = GetClientOfUserId(GetEventInt(event, "builderid"));
 	if(IsValidClient3(client) && IsValidClient3(owner))
 	{
-		new melee = (GetPlayerWeaponSlot(owner,2));
+		int melee = (GetPlayerWeaponSlot(owner,2));
 		if(IsValidEntity(melee))
 		{
-			new weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
+			int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
 			if(weaponIndex == 589)
 			{
-				new Float:clientpos[3];
+				float clientpos[3];
 				GetClientAbsOrigin(client,clientpos);
 				clientpos[0] += GetRandomFloat(-200.0,200.0);
 				clientpos[1] += GetRandomFloat(-200.0,200.0);
 				clientpos[2] = getLowestPosition(clientpos);
 				// define where the lightning strike starts
-				new Float:startpos[3];
+				float startpos[3];
 				startpos[0] = clientpos[0];
 				startpos[1] = clientpos[1];
 				startpos[2] = clientpos[2] + 1600;
 				
 				// define the color of the strike
-				new iTeam = GetClientTeam(client);
+				int iTeam = GetClientTeam(client);
 				//PrintToChat(client, "%i", iTeam);
-				new color[4];
+				int color[4];
 				if(iTeam == 2)
 				{
 					color = {255, 0, 0, 255};
@@ -3286,7 +3223,7 @@ public Event_Teleported(Handle:event, const String:name[], bool:dontBroadcast)
 				}
 				
 				// define the direction of the sparks
-				new Float:dir[3] = {0.0, 0.0, 0.0};
+				float dir[3] = {0.0, 0.0, 0.0};
 				
 				TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
 				TE_SendToAll();
@@ -3307,51 +3244,51 @@ public Event_Teleported(Handle:event, const String:name[], bool:dontBroadcast)
 				
 				EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 				
-				new Float:LightningDamage = 325.0;
+				float LightningDamage = 325.0;
 				
-				new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					new Address:SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
+					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 					if(SentryDmgActive != Address_Null)
 					{
 						LightningDamage *= TF2Attrib_GetValue(SentryDmgActive);
 					}
 				}
-				new Address:SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
+				Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
 				if(SentryDmgActive1 != Address_Null)
 				{
 					LightningDamage *= TF2Attrib_GetValue(SentryDmgActive1);
 				}
-				new Address:SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
+				Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
 				if(SentryDmgActive2 != Address_Null)
 				{
 					LightningDamage *= TF2Attrib_GetValue(SentryDmgActive2);
 				}
-				new Address:damageActive = TF2Attrib_GetByName(melee, "ubercharge");
+				Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
 				if(damageActive != Address_Null)
 				{
 					LightningDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
 				}
-				new Address:damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
+				Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
 				if(damageActive2 != Address_Null)
 				{
 					LightningDamage *= TF2Attrib_GetValue(damageActive2);
 				}
-				new Address:fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
+				Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
 				if(fireRateActive != Address_Null)
 				{
 					LightningDamage /= TF2Attrib_GetValue(fireRateActive);
 				}
 				
-				for(new i = 1; i<MAXENTITIES;i++)
+				for(int i = 1; i<MAXENTITIES;i++)
 				{
 					if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 					{
-						new Float:VictimPos[3];
+						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 						VictimPos[2] += 30.0;
-						new Float:Distance = GetVectorDistance(clientpos,VictimPos);
+						float Distance = GetVectorDistance(clientpos,VictimPos);
 						if(Distance <= 500.0)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
@@ -3359,12 +3296,12 @@ public Event_Teleported(Handle:event, const String:name[], bool:dontBroadcast)
 								SDKHooks_TakeDamage(i, client, client, LightningDamage, DMG_GENERIC, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
 								if(IsValidClient3(i))
 								{
-									new Float:velocity[3];
+									float velocity[3];
 									velocity[0]=0.0;
 									velocity[1]=0.0;
 									velocity[2]=1800.0;
 									TeleportEntity(i, NULL_VECTOR, NULL_VECTOR, velocity);
-									new Handle:hPack = CreateDataPack();
+									Handle hPack = CreateDataPack();
 									WritePackCell(hPack, EntIndexToEntRef(i));
 									WritePackCell(hPack, EntIndexToEntRef(client));
 									CreateTimer(0.5,thunderClapPart2,hPack);
@@ -3374,7 +3311,7 @@ public Event_Teleported(Handle:event, const String:name[], bool:dontBroadcast)
 					}
 				}
 			}
-			new Address:teleportBuffActive = TF2Attrib_GetByName(melee, "zoom speed mod disabled");
+			Address teleportBuffActive = TF2Attrib_GetByName(melee, "zoom speed mod disabled");
 			if(teleportBuffActive != Address_Null && TF2Attrib_GetValue(teleportBuffActive) != 0.0)
 			{
 				TF2_AddCondition(client, TFCond_RuneAgility, 4.0);
@@ -3384,13 +3321,13 @@ public Event_Teleported(Handle:event, const String:name[], bool:dontBroadcast)
 		}
 	}
 }
-public TF2Items_OnGiveNamedItem_Post(client, String:classname[], itemDefinitionIndex, itemLevel, itemQuality, entityIndex)
+public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionIndex, itemLevel, itemQuality, entityIndex)
 {
 	if (IsValidClient(client) && !TF2_IsPlayerInCondition(client, TFCond_Disguised))
 	{
 		if (itemLevel == 242)
 		{
-			new slot = 3
+			int slot = 3
 			current_class[client] = TF2_GetPlayerClass(client)
 			currentitem_ent_idx[client][slot] = entityIndex;
 			currentitem_level[client][slot] = 242;
@@ -3405,7 +3342,7 @@ public TF2Items_OnGiveNamedItem_Post(client, String:classname[], itemDefinitionI
 		}
 		else
 		{
-			new slot = _:TF2II_GetItemSlot(itemDefinitionIndex, TF2_GetPlayerClass(client));
+			int slot = _:TF2II_GetItemSlot(itemDefinitionIndex, TF2_GetPlayerClass(client));
 			if (current_class[client] == TFClass_Spy)
 			{
 				if (!strcmp(classname, "tf_weapon_pda_spy"))

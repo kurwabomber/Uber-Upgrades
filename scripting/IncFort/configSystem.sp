@@ -1,7 +1,7 @@
-GetWeaponsCatKVSize(Handle:kv)
+GetWeaponsCatKVSize(Handle kv)
 {
-	new siz = 0
-	do
+	int siz = 0
+	while (KvGotoNextKey(kv, false))
 	{
 		if (!KvGotoFirstSubKey(kv, false))
 		{
@@ -12,14 +12,13 @@ GetWeaponsCatKVSize(Handle:kv)
 			}
 		}
 	}
-	while (KvGotoNextKey(kv, false));
 	return siz
 }
 
-BrowseWeaponsCatKV(Handle:kv)
+BrowseWeaponsCatKV(Handle kv)
 {
-	new u_id = 0
-	new t_idx = 0
+	int u_id = 0
+	int t_idx = 0
 	SetTrieValue(_weaponlist_names, "body_scout" , t_idx, true);
 	t_idx++;
 	SetTrieValue(_weaponlist_names, "body_sniper" , t_idx, true);
@@ -38,8 +37,9 @@ BrowseWeaponsCatKV(Handle:kv)
 	t_idx++;
 	SetTrieValue(_weaponlist_names, "body_engie" , t_idx, true);
 	t_idx++;
-	decl String:Buf[128];
-	do
+
+	char Buf[128];
+	while (KvGotoNextKey(kv, false))
 	{
 		if (KvGotoFirstSubKey(kv, false))
 		{
@@ -65,13 +65,12 @@ BrowseWeaponsCatKV(Handle:kv)
 			}
 		}
 	}
-	while (KvGotoNextKey(kv, false));
 }
 
-BrowseAttributesKV(Handle:kv)
+BrowseAttributesKV(Handle kv)
 {
-	decl String:Buf[512];
-	do
+	char Buf[512];
+	while (KvGotoNextKey(kv, false))
 	{
 		if (KvGotoFirstSubKey(kv, false))
 		{
@@ -98,7 +97,7 @@ BrowseAttributesKV(Handle:kv)
 					{
 						
 						
-						for (new i_ = 1; i_ < MAX_ATTRIBUTES; i_++)
+						for (int i_ = 1; i_ < MAX_ATTRIBUTES; i_++)
 						{
 							if (!strcmp(upgradesWorkNames[i_], Buf))
 							{
@@ -171,17 +170,16 @@ BrowseAttributesKV(Handle:kv)
 			}
 		}
 	}
-	while (KvGotoNextKey(kv, false));
 	return (_u_id)
 }
 
 
-BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_att_idx = -1, level = 0)
+BrowseAttListKV(Handle kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_att_idx = -1, level = 0)
 {
-	decl String:Buf[128];
-	do
+	char Buf[128];
+	while (KvGotoNextKey(kv, false))
 	{
-		new bool:incrementLater = false;
+		bool incrementLater = false;
 		KvGetSectionName(kv, Buf, sizeof(Buf));
 		if (level == 1)
 		{
@@ -233,7 +231,7 @@ BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_at
 		{
 			if (KvGetDataType(kv, NULL_STRING) != KvData_None)
 			{
-				new attr_id
+				int attr_id
 				KvGetSectionName(kv, Buf, sizeof(Buf));
 			
 				if (strcmp(Buf, "special_tweaks_listid"))
@@ -262,13 +260,12 @@ BrowseAttListKV(Handle:kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_at
 		if(incrementLater)
 			w_subcat_id++;
 	}
-	while (KvGotoNextKey(kv, false));
 }
-BrowseSpeTweaksKV(Handle:kv, &u_id = -1, att_id = -1, level = 0)
+BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 {
-	decl String:Buf[128];
-	new attr_ref
-	do
+	char Buf[128];
+	int attr_ref
+	while (KvGotoNextKey(kv, false))
 	{
 		if (level == 2)
 		{
@@ -315,14 +312,14 @@ BrowseSpeTweaksKV(Handle:kv, &u_id = -1, att_id = -1, level = 0)
 			KvGoBack(kv);
 		}
 	}
-	while (KvGotoNextKey(kv, false));
+
 	return (u_id)
 }
-BrowseWeaponsListKV(Handle:kv, &u_id = -1, att_id = -1, level = 0)
+BrowseWeaponsListKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 {
-	decl String:Buf[128];
-	new attr_ref
-	do
+	char Buf[128];
+	int attr_ref
+	while (KvGotoNextKey(kv, false))
 	{
 		if (level == 1)
 		{
@@ -359,7 +356,7 @@ BrowseWeaponsListKV(Handle:kv, &u_id = -1, att_id = -1, level = 0)
 			}
 			else if(!strcmp("description", Buf))
 			{
-				decl String:Description[512];
+				char Description[512];
 				KvGetString(kv, "", Description, 512);
 				upgrades_weapon_description[u_id] = Description
 			}
@@ -389,7 +386,6 @@ BrowseWeaponsListKV(Handle:kv, &u_id = -1, att_id = -1, level = 0)
 			KvGoBack(kv);
 		}
 	}
-	while (KvGotoNextKey(kv, false));
 	return (u_id)
 }
 public _load_cfg_files()
@@ -398,14 +394,14 @@ public _load_cfg_files()
 	_weaponlist_names = CreateTrie();
 	_spetweaks_names = CreateTrie();
 
-	new Handle:kv = CreateKeyValues("if_weapons");
+	Handle kv = CreateKeyValues("if_weapons");
 	kv = CreateKeyValues("weapons");
 	FileToKeyValues(kv, "addons/sourcemod/configs/if_weapons.txt");
 	if (!KvGotoFirstSubKey(kv))
 	{
 		return false;
 	}
-	new siz = GetWeaponsCatKVSize(kv)
+	int siz = GetWeaponsCatKVSize(kv)
 	PrintToServer("[UberUpgrades] %d weapons loaded", siz)
 	KvRewind(kv);
 	BrowseWeaponsCatKV(kv)
@@ -422,7 +418,7 @@ public _load_cfg_files()
 
 
 
-	new static_uid = 1
+	int static_uid = 1
 	kv = CreateKeyValues("special_tweaks");
 	FileToKeyValues(kv, "addons/sourcemod/configs/if_specialtweaks.txt");
 	BrowseSpeTweaksKV(kv, static_uid)
