@@ -1,7 +1,7 @@
 GetWeaponsCatKVSize(Handle kv)
 {
 	int siz = 0
-	while (KvGotoNextKey(kv, false))
+	do
 	{
 		if (!KvGotoFirstSubKey(kv, false))
 		{
@@ -12,6 +12,7 @@ GetWeaponsCatKVSize(Handle kv)
 			}
 		}
 	}
+	while (KvGotoNextKey(kv, false));
 	return siz
 }
 
@@ -37,9 +38,8 @@ BrowseWeaponsCatKV(Handle kv)
 	t_idx++;
 	SetTrieValue(_weaponlist_names, "body_engie" , t_idx, true);
 	t_idx++;
-
 	char Buf[128];
-	while (KvGotoNextKey(kv, false))
+	do
 	{
 		if (KvGotoFirstSubKey(kv, false))
 		{
@@ -65,12 +65,13 @@ BrowseWeaponsCatKV(Handle kv)
 			}
 		}
 	}
+	while (KvGotoNextKey(kv, false));
 }
 
 BrowseAttributesKV(Handle kv)
 {
 	char Buf[512];
-	while (KvGotoNextKey(kv, false))
+	do
 	{
 		if (KvGotoFirstSubKey(kv, false))
 		{
@@ -170,6 +171,7 @@ BrowseAttributesKV(Handle kv)
 			}
 		}
 	}
+	while (KvGotoNextKey(kv, false));
 	return (_u_id)
 }
 
@@ -177,7 +179,7 @@ BrowseAttributesKV(Handle kv)
 BrowseAttListKV(Handle kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_att_idx = -1, level = 0)
 {
 	char Buf[128];
-	while (KvGotoNextKey(kv, false))
+	do
 	{
 		bool incrementLater = false;
 		KvGetSectionName(kv, Buf, sizeof(Buf));
@@ -260,12 +262,13 @@ BrowseAttListKV(Handle kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_at
 		if(incrementLater)
 			w_subcat_id++;
 	}
+	while (KvGotoNextKey(kv, false));
 }
 BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 {
 	char Buf[128];
 	int attr_ref
-	while (KvGotoNextKey(kv, false))
+	do
 	{
 		if (level == 2)
 		{
@@ -312,14 +315,14 @@ BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 			KvGoBack(kv);
 		}
 	}
-
+	while (KvGotoNextKey(kv, false));
 	return (u_id)
 }
 BrowseWeaponsListKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 {
 	char Buf[128];
 	int attr_ref
-	while (KvGotoNextKey(kv, false))
+	do
 	{
 		if (level == 1)
 		{
@@ -386,6 +389,7 @@ BrowseWeaponsListKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 			KvGoBack(kv);
 		}
 	}
+	while (KvGotoNextKey(kv, false));
 	return (u_id)
 }
 public _load_cfg_files()

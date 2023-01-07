@@ -73,7 +73,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 				else if(DarkmoonBladeDuration[attacker] > 0.0)
 				{
-					new melee = GetWeapon(attacker,2);
+					int melee = GetWeapon(attacker,2);
 					if(IsValidEntity(melee) && melee == weapon)
 					{
 						damage += DarkmoonBlade[attacker];
@@ -148,7 +148,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 						damage = GetClientHealth(victim) - (TF2_GetMaxHealth(victim) - (TF2_GetMaxHealth(victim)*(0.25*(bossPhase[victim]+1))));
 						TF2_AddCondition(victim, TFCond_MegaHeal, 5.0);
 						TF2_AddCondition(victim, TFCond_UberchargedHidden, 0.5);
-						for(new i=1;i<MaxClients;i++)
+						for(int i=1;i<MaxClients;i++)
 						{
 							if(IsValidClient3(i) && IsOnDifferentTeams(victim,i) && !IsClientObserver(i) && IsPlayerAlive(i))
 							{
@@ -157,10 +157,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 								GetClientAbsOrigin(victim,fVictimPos);
 								if(GetVectorDistance(fOrigin,fVictimPos) <= 1000.0)
 								{
-									new iEntity = CreateEntityByName("tf_projectile_lightningorb");
+									int iEntity = CreateEntityByName("tf_projectile_lightningorb");
 									if (IsValidEdict(iEntity)) 
 									{
-										new iTeam = GetClientTeam(victim)
+										int iTeam = GetClientTeam(victim)
 										float fAngles[3]
 										SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", victim);
 
@@ -196,7 +196,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			fl_ArmorCap[victim] = 1.0;
 		}
 		damage /= ((1-fl_ArmorCap[victim])-((1-fl_ArmorCap[victim])*pctArmor) + fl_ArmorCap[victim]);
-		new VictimCWeapon = GetEntPropEnt(victim, Prop_Send, "m_hActiveWeapon");
+		int VictimCWeapon = GetEntPropEnt(victim, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(VictimCWeapon))
 		{
 			Address ResistanceWhileHeld = TF2Attrib_GetByName(VictimCWeapon, "SET BONUS: mystery solving time decrease");
@@ -259,7 +259,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		{
 			if(attacker != victim)
 			{
-				new itemIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
+				int itemIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 				if(StrEqual(weaponClassName,"tf_weapon_jar",false))
 				{
 					TF2_AddCondition(victim, TFCond_Jarated, 0.01);
@@ -439,15 +439,15 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 		
-		new clientTeam = GetClientTeam(attacker);
+		int clientTeam = GetClientTeam(attacker);
 		float clientPos[3];
 		GetEntPropVector(attacker, Prop_Data, "m_vecOrigin", clientPos);
 		float highestKingDMG = 1.0;
-		for(new i = 1;i<MaxClients;i++)
+		for(int i = 1;i<MaxClients;i++)
 		{
 			if(IsValidClient3(i) && IsPlayerAlive(i))
 			{
-				new iTeam = GetClientTeam(i);
+				int iTeam = GetClientTeam(i);
 				if(clientTeam == iTeam)
 				{
 					float VictimPos[3];
@@ -573,7 +573,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 		
-		for(new i = 1; i < MaxClients; i++)
+		for(int i = 1; i < MaxClients; i++)
 		{
 			if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(victim) && i != victim)
 			{
@@ -706,7 +706,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 	}
 	if(IsValidEntity(logic))
 	{
-		new round = GetEntProp(logic, Prop_Send, "m_nMannVsMachineWaveCount");
+		int round = GetEntProp(logic, Prop_Send, "m_nMannVsMachineWaveCount");
 		damage *= (Pow(7500.0/waveToCurrency[round], DefenseMod + (DefenseIncreasePerWaveMod * round)) * 6.0)/OverallMod;
 		//PrintToChat(attacker,"%.2f", damage);
 	}
@@ -715,7 +715,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 
 public Action:OnTakeDamagePre_Sapper(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom) 
 {
-	new owner = GetEntPropEnt(victim, Prop_Send, "m_hBuilder"); 
+	int owner = GetEntPropEnt(victim, Prop_Send, "m_hBuilder"); 
 	if(!IsClientInGame(owner))
 	{
 		return Plugin_Continue;
@@ -725,7 +725,7 @@ public Action:OnTakeDamagePre_Sapper(victim, &attacker, &inflictor, float &damag
 		return Plugin_Continue;
 	}
 	damage = 50.0;
-	new melee = (GetWeapon(attacker,2));
+	int melee = (GetWeapon(attacker,2));
 	Address firerate = TF2Attrib_GetByName(melee, "fire rate bonus HIDDEN");
 	if(firerate != Address_Null)
 	{
@@ -743,24 +743,24 @@ public Action:OnTakeDamagePre_Sapper(victim, &attacker, &inflictor, float &damag
 
 public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom) 
 {
-	new owner = GetEntPropEnt(victim, Prop_Send, "m_hBuilder");
+	int owner = GetEntPropEnt(victim, Prop_Send, "m_hBuilder");
 	char SapperObject[128];
 	GetEdictClassname(attacker, SapperObject, sizeof(SapperObject));
 	if (StrEqual(SapperObject, "obj_attachment_sapper"))
 	{
-		new BuildingMaxHealth = GetEntProp(victim, Prop_Send, "m_iMaxHealth");
+		int BuildingMaxHealth = GetEntProp(victim, Prop_Send, "m_iMaxHealth");
 		damage = float(RoundToCeil(BuildingMaxHealth/110.0)); // in 150 ticks the sentry will be destroyed.
 
-		new SapperOwner = GetEntPropEnt(attacker, Prop_Send, "m_hBuilder");
+		int SapperOwner = GetEntPropEnt(attacker, Prop_Send, "m_hBuilder");
 		if(IsValidClient3(SapperOwner))
 		{
-			new sapperItem = GetWeapon(SapperOwner, 6);
+			int sapperItem = GetWeapon(SapperOwner, 6);
 			if(IsValidEntity(sapperItem))
 			{
 				Address LifestealActive = TF2Attrib_GetByName(sapperItem,"mult airblast refire time");
 				if(LifestealActive != Address_Null)
 				{
-					new HealthGained = RoundToCeil(damage * TF2Attrib_GetValue(LifestealActive))
+					int HealthGained = RoundToCeil(damage * TF2Attrib_GetValue(LifestealActive))
 					AddPlayerHealth(SapperOwner, HealthGained, 1.0, true, attacker);
 					fl_CurrentArmor[SapperOwner] += float(HealthGained) * 0.2;
 				}
@@ -789,7 +789,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 			}
 			else if(DarkmoonBladeDuration[attacker] > 0.0)
 			{
-				new melee = GetWeapon(attacker,2);
+				int melee = GetWeapon(attacker,2);
 				if(IsValidWeapon(melee) && melee == weapon)
 				{
 					damage += DarkmoonBlade[attacker];
@@ -828,13 +828,13 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		}
 		if(GetEntProp(victim, Prop_Send, "m_bDisabled") == 1)
 		{
-			for(new i = 1;i<MaxClients;i++)
+			for(int i = 1;i<MaxClients;i++)
 			{
 				if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(attacker))
 				{
 					if(TF2_GetPlayerClass(i) == TFClass_Spy)
 					{
-						new sapper = GetWeapon(i,6);
+						int sapper = GetWeapon(i,6);
 						if(IsValidEntity(sapper))
 						{
 							Address SappedPlayerVuln = TF2Attrib_GetByName(sapper, "scattergun knockback mult");
@@ -884,7 +884,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(damagetype == 4 && damagecustom == 3 && TF2_GetPlayerClass(attacker) == TFClass_Pyro)
 		{
-			new secondary = GetWeapon(attacker,1);
+			int secondary = GetWeapon(attacker,1);
 			if(IsValidEntity(secondary) && weapon == secondary)
 			{
 				Address gasExplosionDamage = TF2Attrib_GetByName(weapon, "ignition explosion damage bonus");
@@ -913,7 +913,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 	}
 	if(IsValidWeapon(weapon))
 	{
-		new weaponIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
+		int weaponIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		switch(weaponIndex)
 		{
 			case 141,1004:
@@ -969,7 +969,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				}
 				//PrintToChat(attacker, "%.2f Rage",  GetEntPropFloat(attacker, Prop_Send, "m_flRageMeter"))
 			}
-			new hitgroup = GetEntProp(victim, Prop_Data, "m_LastHitGroup");
+			int hitgroup = GetEntProp(victim, Prop_Data, "m_LastHitGroup");
 			if(hitgroup == 1)
 			{
 				Address HeadshotsActive = TF2Attrib_GetByName(weapon, "charge time decreased");
@@ -1005,13 +1005,13 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			}
 			if(TF2_IsPlayerInCondition(victim, TFCond_Sapped))
 			{
-				for(new i = 1;i<MaxClients;i++)
+				for(int i = 1;i<MaxClients;i++)
 				{
 					if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(attacker))
 					{
 						if(TF2_GetPlayerClass(i) == TFClass_Spy)
 						{
-							new sapper = GetWeapon(i,6);
+							int sapper = GetWeapon(i,6);
 							if(IsValidEntity(sapper))
 							{
 								Address SappedPlayerVuln = TF2Attrib_GetByName(sapper, "scattergun knockback mult");
@@ -1041,14 +1041,14 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			damage *= TF2Attrib_GetValue(dmgBoost);
 		}
 		float medicDMGBonus = 1.0;
-		new healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
+		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
 		if(healers > 0)
 		{
-			for (new i = 1; i < MaxClients; i++)
+			for (int i = 1; i < MaxClients; i++)
 			{
 				if (IsValidClient(i))
 				{
-					new healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
+					int healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
 					if(IsValidEntity(healerweapon))
 					{
 						if(HasEntProp(healerweapon, Prop_Send, "m_hHealingTarget") && GetEntPropEnt(healerweapon, Prop_Send, "m_hHealingTarget") == attacker)
@@ -1117,7 +1117,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			Address FireDamageActive = TF2Attrib_GetByName(weapon, "flame_ignore_player_velocity");
 			if(GetClientTeam(attacker) != GetClientTeam(victim) && FireDamageActive != Address_Null && TF2Attrib_GetValue(FireDamageActive) > 0.1 &&
 			TF2_GetDPSModifiers(attacker, weapon)*burndmgMult >= fl_HighestFireDamage[victim] && 
-			!(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE) && !(damagetype & DMG_ENERGYBEAM)) // New afterburn system.
+			!(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE) && !(damagetype & DMG_ENERGYBEAM)) // int afterburn system.
 			{
 				float afterburnDuration = 2.0;
 				Address FireDurationActive = TF2Attrib_GetByName(weapon, "weapon burn time increased");
@@ -1298,13 +1298,13 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				//PrintToChat(attacker, "%s dmg", GetAlphabetForm(DOTDmg));
 				bool isBounced[MAXPLAYERS+1];
 				isBounced[victim] = true
-				new lastBouncedTarget = victim;
+				int lastBouncedTarget = victim;
 				float lastBouncedPosition[3];
 				GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
 				LastCharge[attacker] = 0.0;
-				new i = 0
-				new maxBounces = RoundToNearest(TF2Attrib_GetValue(bouncingBullets));
-				for(new client=1;client<MaxClients;client++)
+				int i = 0
+				int maxBounces = RoundToNearest(TF2Attrib_GetValue(bouncingBullets));
+				for(int client=1;client<MaxClients;client++)
 				{
 					if(IsValidClient3(client) && IsPlayerAlive(client) && IsOnDifferentTeams(client,attacker) && isBounced[client] == false && i < maxBounces)
 					{
@@ -1316,8 +1316,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 							isBounced[client] = true;
 							GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
 							lastBouncedTarget = client
-							new iParti = CreateEntityByName("info_particle_system");
-							new iPart2 = CreateEntityByName("info_particle_system");
+							int iParti = CreateEntityByName("info_particle_system");
+							int iPart2 = CreateEntityByName("info_particle_system");
 
 							if (IsValidEntity(iParti) && IsValidEntity(iPart2))
 							{ 
@@ -1368,8 +1368,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					//PARTICLES
 					if(weaponArtParticle[attacker] <= 0.0)
 					{
-						new iParti = CreateEntityByName("info_particle_system");
-						new iPart2 = CreateEntityByName("info_particle_system");
+						int iParti = CreateEntityByName("info_particle_system");
+						int iPart2 = CreateEntityByName("info_particle_system");
 
 						if (IsValidEntity(iParti) && IsValidEntity(iPart2))
 						{
@@ -1410,7 +1410,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 {
 	char classname[128]; 
 	GetEdictClassname(inflictor, classname, sizeof(classname)); 
-	new weaponIdx = (IsValidWeapon(weapon) ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
+	int weaponIdx = (IsValidWeapon(weapon) ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
 
 	bool isVictimPlayer = IsValidClient3(victim);
 
@@ -1421,7 +1421,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 	//PrintToChatAll("classname %s",classname);
 	if ((!strcmp("obj_sentrygun", classname) || !strcmp("tf_projectile_sentryrocket", classname)) || weaponIdx == 140)
 	{
-		new owner; 
+		int owner; 
 		if(!strcmp("tf_projectile_sentryrocket", classname))
 		{
 			owner = attacker;
@@ -1450,7 +1450,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 		}
 		if(IsValidClient3(owner))
 		{
-			new melee = GetPlayerWeaponSlot(owner,2);
+			int melee = GetPlayerWeaponSlot(owner,2);
 			if((GetEntPropFloat(inflictor, Prop_Send, "m_flModelScale") != 0.3))
 			{
 				damagetype |= DMG_PREVENT_PHYSICS_FORCE;
@@ -1469,10 +1469,10 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 								{
 									if(0.1 >= GetRandomFloat(0.0, 1.0))
 									{
-										new iEntity = CreateEntityByName("tf_projectile_cleaver");
+										int iEntity = CreateEntityByName("tf_projectile_cleaver");
 										if (IsValidEdict(iEntity)) 
 										{
-											new iTeam = GetClientTeam(owner);
+											int iTeam = GetClientTeam(owner);
 											float fAngles[3]
 											float fOrigin[3]
 											float vBuffer[3]
@@ -1480,7 +1480,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											float fwd[3]
 											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
 											SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-											new angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
+											int angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
 											GetEntPropVector( inflictor, Prop_Send, "m_vecOrigin", fOrigin );
 											if(GetEntProp(inflictor, Prop_Send, "m_iUpgradeLevel") == 0)
 											{
@@ -1547,10 +1547,10 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 								{
 									if(firestormCounter[owner] >= 4)
 									{
-										new iEntity = CreateEntityByName("tf_projectile_spellfireball");
+										int iEntity = CreateEntityByName("tf_projectile_spellfireball");
 										if (IsValidEdict(iEntity)) 
 										{
-											new iTeam = GetClientTeam(owner);
+											int iTeam = GetClientTeam(owner);
 											float fAngles[3]
 											float fOrigin[3]
 											float vBuffer[3]
@@ -1558,7 +1558,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											float fwd[3]
 											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
 											SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-											new angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
+											int angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
 											GetEntPropVector( inflictor, Prop_Send, "m_vecOrigin", fOrigin );
 											if(GetEntProp(inflictor, Prop_Send, "m_iUpgradeLevel") == 0)
 											{
@@ -1622,17 +1622,17 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 								{
 									if(0.025 >= GetRandomFloat(0.0, 1.0))
 									{
-										new iEntity = CreateEntityByName("tf_projectile_spellmeteorshower");
+										int iEntity = CreateEntityByName("tf_projectile_spellmeteorshower");
 										if (IsValidEdict(iEntity)) 
 										{
-											new iTeam = GetClientTeam(owner);
+											int iTeam = GetClientTeam(owner);
 											float fAngles[3]
 											float fOrigin[3]
 											float vBuffer[3]
 											float fVelocity[3]
 											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
 											SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-											new angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
+											int angleOffsetB = FindSendPropInfo("CObjectSentrygun", "m_iAmmoShells") - 16;
 											GetEntPropVector( inflictor, Prop_Send, "m_vecOrigin", fOrigin );
 											if(GetEntProp(inflictor, Prop_Send, "m_iUpgradeLevel") == 0)
 											{
@@ -1691,7 +1691,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 					}
 				}
 			}
-			new CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEntity(CWeapon))
 			{
 				Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
@@ -1727,8 +1727,8 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 		{
 			if(!strcmp("tf_projectile_spellfireball", classname))
 			{
-				new primary = GetPlayerWeaponSlot(attacker,0)
-				new melee = GetPlayerWeaponSlot(attacker,2)
+				int primary = GetPlayerWeaponSlot(attacker,0)
+				int melee = GetPlayerWeaponSlot(attacker,2)
 				if(IsValidEntity(melee))
 				{
 					Address sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
@@ -1777,7 +1777,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 						damage *= TF2Attrib_GetValue(SentryDmgActive2);
 					}
 				}
-				new CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
+				int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
 					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");

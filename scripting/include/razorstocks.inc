@@ -47,12 +47,12 @@ stock int IntAbs(int val)
 } 
 stock bool IsOnDifferentTeams(entity1,entity2)
 {
-	new iTeam = -10;
+	int iTeam = -10;
 	if(HasEntProp(entity1, Prop_Send, "m_iTeamNum"))
 	{
 		iTeam = GetEntProp(entity1, Prop_Send, "m_iTeamNum");
 	}
-	new team = -10;
+	int team = -10;
 	if(HasEntProp(entity2, Prop_Send, "m_iTeamNum"))
 	{
 		team = GetEntProp(entity2, Prop_Send, "m_iTeamNum");
@@ -222,9 +222,9 @@ stock Entity_SetName(entity, const char[] name, any:...)
 stock refreshAllWeapons(client)
 {
 	TF2Attrib_ClearCache(client);
-	for(new i=0;i<5;i++)
+	for(int i=0;i<5;i++)
 	{
-		new weapon = GetWeapon(client,i);
+		int weapon = GetWeapon(client,i);
 		if(IsValidEntity(weapon))
 		{
 			TF2Attrib_ClearCache(weapon);
@@ -235,7 +235,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 {
 	if(entity == -1 || !IsValidEntity(entity))
 		entity = owner;
-	for(new i = 1; i < MAXENTITIES; i++)
+	for(int i = 1; i < MAXENTITIES; i++)
 	{
 		if(IsValidForDamage(i) && IsOnDifferentTeams(owner,i) && i != entity)
 		{
@@ -273,7 +273,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 	}
 	if(visual)
 	{
-		/*new particle = CreateEntityByName( "info_particle_system" );
+		/*int particle = CreateEntityByName( "info_particle_system" );
 		if ( IsValidEntity( particle ) )
 		{
 			TeleportEntity( particle, pos, NULL_VECTOR, NULL_VECTOR );
@@ -288,7 +288,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 		}*/
 		CreateParticle(-1, "ExplosionCore_MidAir", false, "", 0.1, pos);
 	}
-	new random = GetRandomInt(1,3)
+	int random = GetRandomInt(1,3)
 	switch(soundType)
 	{
 		case 1:
@@ -385,8 +385,8 @@ stock MoveForward(const float vPos[3], const float vAng[3], float vReturn[3], fl
 stock GetClosestTarget(entity, owner, bool isFriendly = false, bool pierceWalls = false)
 {
 	float TargetDistance = 0.0;
-	new ClosestTarget = 0;
-	for(new i = 1; i <= MaxClients; i++) 
+	int ClosestTarget = 0;
+	for(int i = 1; i <= MaxClients; i++) 
 	{
 		if(ShouldNotHome[entity][i] || !IsValidClient3(i) || !IsValidClient3(owner) || i == owner || (!isFriendly && GetClientTeam(owner) == GetClientTeam(i)) || (isFriendly && GetClientTeam(owner) != GetClientTeam(i)) || !IsValidForHoming( i, owner, entity) || !IsAbleToSee(owner, i)) continue;
 		float EntityLocation[3], TargetLocation[3];
@@ -442,7 +442,7 @@ stock GetClosestTarget(entity, owner, bool isFriendly = false, bool pierceWalls 
 }
 stock CreateLaser(float StartPos[3],int times,float length,int BeamSprite,int HaloSprite, int color[4])
 {
-	for(new i=0;i<times;i++)
+	for(int i=0;i<times;i++)
 	{
 		float EndPos[3];
 		EndPos[0] = StartPos[0];
@@ -459,7 +459,7 @@ stock CreateLaser(float StartPos[3],int times,float length,int BeamSprite,int Ha
 }
 stock CreateSmoke(float location[3],float time,int red,int green, int blue,char[] SmokeTransparency,char[] SmokeDensity)
 {
-	new SmokeEnt = CreateEntityByName("env_smokestack");
+	int SmokeEnt = CreateEntityByName("env_smokestack");
 
 	char originData[64];
 	Format(originData, sizeof(originData), "%f %f %f", location[0], location[1], location[2]);
@@ -507,7 +507,7 @@ stock CreateSmoke(float location[3],float time,int red,int green, int blue,char[
 public Action:Timer_KillSmoke(Handle timer, Handle pack)
 {	
 	ResetPack(pack)
-	new SmokeEnt = ReadPackCell(pack)
+	int SmokeEnt = ReadPackCell(pack)
 	
 	StopSmokeEnt(SmokeEnt);
 }
@@ -524,7 +524,7 @@ StopSmokeEnt(target)
 public Action:Timer_StopSmoke(Handle timer, Handle pack)
 {	
 	ResetPack(pack)
-	new SmokeEnt = ReadPackCell(pack)
+	int SmokeEnt = ReadPackCell(pack)
 	
 	RemoveSmokeEnt(SmokeEnt);
 }
@@ -551,7 +551,7 @@ stock bool IsValidForHoming( client, owner, entity)
         float distance_d = GetVectorDistance( OwnerPos, TargetPos ); 
         if ( distance_d <= 146.0 ) return false; 
     
-        new team = GetEntProp( entity, Prop_Send, "m_iTeamNum" ); 
+        int team = GetEntProp( entity, Prop_Send, "m_iTeamNum" ); 
         if (IsPlayerAlive( client ) && client != owner)
         {
             if ( !TF2_IsPlayerInCondition( client, TFCond_Cloaked ) && !TF2_IsPlayerInCondition( client, TFCond_Ubercharged )
@@ -567,7 +567,7 @@ stock bool IsValidForHoming( client, owner, entity)
 }
 public Action:HomingFlareThink(Handle timer, any:ref) 
 {
-	new entity = EntRefToEntIndex(ref); 
+	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
 	if(IsValidEntity(entity))
     {
@@ -575,14 +575,14 @@ public Action:HomingFlareThink(Handle timer, any:ref)
 		{
 			flag = true;
 		}
-		new owner = GetEntPropEnt( entity, Prop_Data, "m_hOwnerEntity" ); 
+		int owner = GetEntPropEnt( entity, Prop_Data, "m_hOwnerEntity" ); 
 		if(!IsValidClient3(owner) && IsValidEntity(owner) && HasEntProp(owner,Prop_Send,"m_hBuilder"))
 		{
 			owner = GetEntPropEnt(owner,Prop_Send,"m_hBuilder" );
 		}
 		if (IsValidClient3(owner))
 		{
-			new Target = GetClosestTarget(entity, owner, false, true); 
+			int Target = GetClosestTarget(entity, owner, false, true); 
 			if(IsValidClient3(Target))
 			{
 				if(owner != Target)
@@ -635,17 +635,17 @@ public Action:HomingFlareThink(Handle timer, any:ref)
 
 public Action:HomingThink(Handle timer, any:ref) 
 { 
-	new entity = EntRefToEntIndex(ref); 
+	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
 	if(IsValidEntity(entity))
     {
-		new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
 		{
-			new Target = GetClosestTarget(entity, owner); 
+			int Target = GetClosestTarget(entity, owner); 
 			if(IsValidClient3(Target))
 			{
-				new hClientWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+				int hClientWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(hClientWeapon))
 				{
 					Address homingActive = TF2Attrib_GetByName(hClientWeapon, "crit from behind");
@@ -709,14 +709,14 @@ public Action:HomingThink(Handle timer, any:ref)
 }
 public Action:HeavyFriendlyHoming(Handle timer, any:ref) 
 { 
-	new entity = EntRefToEntIndex(ref); 
+	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
 	if(IsValidEntity(entity))
     {
-		new owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
 		{
-			new Target = GetClosestTarget(entity, owner, true); 
+			int Target = GetClosestTarget(entity, owner, true); 
 			if(IsValidClient3(Target))
 			{
 				if(owner != Target)
@@ -852,7 +852,7 @@ public bool TEF_ExcludeEntity(entity, contentsMask, any:data)
 }
 stock int GetWeapon(int client, int slot)
 {
-	new itemID;
+	int itemID;
 	if(IsValidClient3(client))
 	{
 		switch(slot)
@@ -1163,7 +1163,7 @@ bool IsRectangleVisible(const float start[3], const float end[3], const float mi
     }
 
     // Run traces on all corners.
-    for (new i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
     {
         if (IsPointVisible(start, vRectangle[i]))
         {
@@ -1184,7 +1184,7 @@ stock bool IsMvM(bool forceRecalc = false)
 	}
 	if (!found)
 	{
-		new i = FindEntityByClassname(-1, "tf_logic_mann_vs_machine");
+		int i = FindEntityByClassname(-1, "tf_logic_mann_vs_machine");
 		if (i > MaxClients && IsValidEntity(i)) ismvm = true;
 		found = true;
 	}
@@ -1192,9 +1192,9 @@ stock bool IsMvM(bool forceRecalc = false)
 }
 stock AddPlayerHealth(client, iAdd, float flOverheal = 1.5, bool bEvent = false, healer = -1)
 {
-    new iHealth = GetClientHealth(client);
-    new iNewHealth = iHealth + iAdd;
-    new iMax = RoundFloat(float(TF2_GetMaxHealth(client)) * flOverheal)
+    int iHealth = GetClientHealth(client);
+    int iNewHealth = iHealth + iAdd;
+    int iMax = RoundFloat(float(TF2_GetMaxHealth(client)) * flOverheal)
 	if(iNewHealth > iMax && iHealth < iMax)
 	{
 		iNewHealth = iMax;
@@ -1222,7 +1222,7 @@ stock VisualHealing(patient, healer, amount)
 }
 stock ShowHealthGain(iPatient, iHealth, iHealer = -1)
 {
-    new iUserId = GetClientUserId(iPatient);
+    int iUserId = GetClientUserId(iPatient);
     Handle hEvent = CreateEvent("player_healed", true);
     SetEventBool(hEvent, "sourcemod", true);
     SetEventInt(hEvent, "patient", iUserId);
@@ -1238,7 +1238,7 @@ stock ShowHealthGain(iPatient, iHealth, iHealer = -1)
 }
 stock TF2_GetMaxHealth(client)
 {
-    new maxhealth = GetEntProp(GetPlayerResourceEntity(), Prop_Send, "m_iMaxHealth", _, client);
+    int maxhealth = GetEntProp(GetPlayerResourceEntity(), Prop_Send, "m_iMaxHealth", _, client);
     return ((maxhealth == -1 || maxhealth == 80896) ? GetEntProp(client, Prop_Data, "m_iMaxHealth") : maxhealth);
 }
 //==== [ OTHERS ] ==================================================
@@ -1872,14 +1872,14 @@ stock float TF2_GetDamageModifiers(client,weapon,status=true)
 			if(status)
 			{
 				float medicDMGBonus = 1.0;
-				new healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
+				int healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
 				if(healers > 0)
 				{
-					for (new i = 1; i < MaxClients; i++)
+					for (int i = 1; i < MaxClients; i++)
 					{
 						if (IsValidClient(i))
 						{
-							new healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
+							int healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
 							if(IsValidEntity(healerweapon))
 							{
 								char classname[128]; 
@@ -2000,7 +2000,7 @@ stock bool PlayerRazorbackIsActive(client)
 
 stock GetIndexOfWeaponSlot(client, slot)
 {
-	new weapon=GetPlayerWeaponSlot(client, slot);
+	int weapon=GetPlayerWeaponSlot(client, slot);
 	return (weapon>MaxClients && IsValidEntity(weapon) ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
 }
 stock int TF2_GetPlayerMaxHealth(int client) {
@@ -2025,7 +2025,7 @@ stock AttachTrail(ent, client)
 }
 stock CreateSpriteTrail(int iEntity, char[] lifetime, char[] startwidth, char[] endwidth, char[] spritename, char[] rendercolor)
 {
-	new spriteTrail = CreateEntityByName("env_spritetrail");
+	int spriteTrail = CreateEntityByName("env_spritetrail");
 	if (IsValidEdict(spriteTrail))
 	{
 		SetEntPropFloat(spriteTrail, Prop_Send, "m_flTextureRes", 0.05);
@@ -2050,7 +2050,7 @@ stock CreateSprite(iClient, char[] sprite, float offset)
 	float vOrigin[3];
 	GetClientAbsOrigin(iClient, vOrigin);
 	vOrigin[2] += offset;
-	new ent = CreateEntityByName("env_sprite_oriented");
+	int ent = CreateEntityByName("env_sprite_oriented");
 	if (ent)
 	{
 		DispatchKeyValue(ent, "model", sprite);
@@ -2085,7 +2085,7 @@ stock char[] GetAlphabetForm(float number)
 		IntToString(RoundToNearest(number), output, sizeof(output));
 		return output;
 	}
-	new digits = RoundToFloor(Logarithm(number))+1;
+	int digits = RoundToFloor(Logarithm(number))+1;
 	
 	switch(digits)
 	{
@@ -2187,7 +2187,7 @@ stock char[] GetAlphabetForm(float number)
 //Attributes
 stock bool TF2_AttribListAttributesBySlot(client, iSlot = -1) 
 { 
-    new iAttribList[128]; 
+    int iAttribList[128]; 
     float flAttribValues[128]; 
     Address aAttr; 
     decl iEntity; 
@@ -2211,10 +2211,10 @@ stock bool TF2_AttribListAttributesBySlot(client, iSlot = -1)
 
     PrintToChat(client, "----- Listing attributes for (%N) in slot (%i) -----", client, iSlot); 
 
-    new iCount = TF2Attrib_ListDefIndices(iEntity, iAttribList); 
+    int iCount = TF2Attrib_ListDefIndices(iEntity, iAttribList); 
     if (iCount > 0) 
     { 
-        for (new i = 0; i < iCount; i++) 
+        for (int i = 0; i < iCount; i++) 
         {
             aAttr = TF2Attrib_GetByDefIndex(iEntity, iAttribList[i]); 
             flAttribValues[i] = TF2Attrib_GetValue(aAttr); 
@@ -2225,7 +2225,7 @@ stock bool TF2_AttribListAttributesBySlot(client, iSlot = -1)
     { 
         PrintToChat(client, "----- No attributes found for (%N) in slot (%i) -----", client, iSlot); 
     }
-	//new weapon = GetWeapon(client,iSlot);
+	//int weapon = GetWeapon(client,iSlot);
 	//PrintToChatAll("%i weapon",weapon);
     return true; 
 }
@@ -2234,10 +2234,10 @@ stock SetCarriedAmmo( client, slot, newAmmo )
 {
     if ( IsValidClient3( client ) )
     {
-        new weapon = GetPlayerWeaponSlot( client, slot ); 
+        int weapon = GetPlayerWeaponSlot( client, slot ); 
         if ( IsValidEntity( weapon ) )
         {
-            new type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
+            int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
             if ( type > 0 || type < 31 ) SetEntProp( client, Prop_Send, "m_iAmmo", newAmmo, _, type ); 
         }
     }
@@ -2246,10 +2246,10 @@ stock GetCarriedAmmo( client, slot )
 {
     if ( IsValidClient3( client ) )
     {
-        new weapon = GetPlayerWeaponSlot( client, slot ); 
+        int weapon = GetPlayerWeaponSlot( client, slot ); 
         if ( IsValidEntity( weapon ) )
         {
-            new type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
+            int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
             if ( type > 0 || type < 31 )
                 return GetEntProp( client, Prop_Send, "m_iAmmo", _, type ); 
         }
@@ -2260,7 +2260,7 @@ stock SetClipAmmo( client, slot, ammo )
 {
     if ( IsValidClient3( client ) )
     {
-        new weapon = GetPlayerWeaponSlot( client, slot ); 
+        int weapon = GetPlayerWeaponSlot( client, slot ); 
         if ( IsValidEntity( weapon ) )
             SetEntProp( weapon, Prop_Send, "m_iClip1", ammo ); 
     }
@@ -2269,7 +2269,7 @@ stock GetClipAmmo( client, slot )
 {
     if ( IsValidClient3( client ) )
     {
-        new weapon = GetPlayerWeaponSlot( client, slot ); 
+        int weapon = GetPlayerWeaponSlot( client, slot ); 
         if ( IsValidEntity( weapon ) )
             return GetEntProp( weapon, Prop_Data, "m_iClip1" ); 
     }
@@ -2279,7 +2279,7 @@ stock SetLoadedAmmo( client, slot, ammo = -1, ammo2 = -1 )
 {
     if ( IsValidClient3( client ) )
     {
-        new weapon = GetPlayerWeaponSlot( client, slot ); 
+        int weapon = GetPlayerWeaponSlot( client, slot ); 
         if( IsValidEntity( weapon ) )
         {
             if ( ammo >= 0 ) SetEntData( client, FindSendPropInfo( "CTFPlayer", "m_iAmmo" )+4, ammo ); 
@@ -2292,11 +2292,11 @@ stock GetLoadedAmmo( client, slot )
 {
     if ( IsValidClient3( client ) )
     {
-        new weapon = GetPlayerWeaponSlot( client, slot ); 
+        int weapon = GetPlayerWeaponSlot( client, slot ); 
         if ( IsValidEntity( weapon ) )
         {
-            new iOffset = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType", 1 )*4; 
-            new iAmmoTable = FindSendPropInfo( "CTFPlayer", "m_iAmmo" ); 
+            int iOffset = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType", 1 )*4; 
+            int iAmmoTable = FindSendPropInfo( "CTFPlayer", "m_iAmmo" ); 
             return GetEntData( client, iAmmoTable+iOffset ); 
         }
     }
@@ -2310,7 +2310,7 @@ stock void SendItemInfo(int client, const char[] text)
 	EndMessage();
 }
 stock GetClientBaseHP(client){
-	new HP;
+	int HP;
 	if(TF2_GetPlayerClass(client) == TFClass_Scout || TF2_GetPlayerClass(client) == TFClass_Engineer || TF2_GetPlayerClass(client) == TFClass_Spy || TF2_GetPlayerClass(client) == TFClass_Sniper){
 		HP = 125;
 	}
@@ -2355,7 +2355,7 @@ stock GetClientBaseHP(client){
 		}
 	}
 	
-	new weap = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Primary)
+	int weap = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Primary)
 	if(IsValidEntity(weap))
 	{
 		Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
@@ -2457,12 +2457,12 @@ stock void DOTStock(int victim,int attacker,float damage,int weapon = -1,int dam
 public Action:DOTDamage(Handle timer,any:data)
 {
 	ResetPack(data);
-	new victim = EntRefToEntIndex(ReadPackCell(data));
-	new attacker = EntRefToEntIndex(ReadPackCell(data));
+	int victim = EntRefToEntIndex(ReadPackCell(data));
+	int attacker = EntRefToEntIndex(ReadPackCell(data));
 	float damage = ReadPackFloat(data);
-	new weapon = EntRefToEntIndex(ReadPackCell(data));
-	new damagetype = ReadPackCell(data);
-	new repeats = ReadPackCell(data);
+	int weapon = EntRefToEntIndex(ReadPackCell(data));
+	int damagetype = ReadPackCell(data);
+	int repeats = ReadPackCell(data);
 	bool stackable = view_as<bool>(ReadPackCell(data));
 	float tickspeed = ReadPackFloat(data);
 	if(repeats >= 1)
@@ -2509,7 +2509,7 @@ stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] s
 {
 	if(attachType == 0)
 	{
-		new iParticle = CreateEntityByName("info_particle_system");
+		int iParticle = CreateEntityByName("info_particle_system");
 		if (IsValidEdict(iParticle))
 		{
 			float fPosition[3], fAngles[3];
@@ -2575,7 +2575,7 @@ stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] s
 public Action:Timer_MoveParticle(Handle timer, Handle pack)
 {
 	ResetPack(pack);	
-	new entity = EntRefToEntIndex(ReadPackCell(pack));
+	int entity = EntRefToEntIndex(ReadPackCell(pack));
 	
 	if (IsValidEdict(entity))
 	{
@@ -2588,7 +2588,7 @@ public Action:Timer_MoveParticle(Handle timer, Handle pack)
 public Action:Timer_KillParticle(Handle timer, Handle pack)
 {
 	ResetPack(pack);	
-	new entity = EntRefToEntIndex(ReadPackCell(pack));
+	int entity = EntRefToEntIndex(ReadPackCell(pack));
 	
 	if (IsValidEdict(entity))
 	{
@@ -2602,7 +2602,7 @@ public Action:Timer_KillParticle(Handle timer, Handle pack)
 public Action:Timer_KillTEParticle(Handle timer, Handle pack)
 {
 	ResetPack(pack);	
-	new entity = EntRefToEntIndex(ReadPackCell(pack));
+	int entity = EntRefToEntIndex(ReadPackCell(pack));
 	
 	if (IsValidEdict(entity))
 	{
@@ -2614,20 +2614,20 @@ public Action:Timer_KillTEParticle(Handle timer, Handle pack)
 }
 stock SetAmmo_Weapon(weapon, newAmmo)
 {
-	new owner = GetEntPropEnt(weapon, Prop_Send, "m_hOwnerEntity");
+	int owner = GetEntPropEnt(weapon, Prop_Send, "m_hOwnerEntity");
 	if (owner == -1) return;
-	new iOffset = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
-	new iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
+	int iOffset = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
+	int iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
 	SetEntData(owner, iAmmoTable+iOffset, newAmmo, 4, true);
 }
 stock DelayedTeleportEntity(Handle pack)
 {
 	ResetPack(pack);	
-	new entity = EntRefToEntIndex(ReadPackCell(pack));
+	int entity = EntRefToEntIndex(ReadPackCell(pack));
 	float origin[3]
 	float angles[3] 
 	float velocity[3]
-	for(new i=0;i<3;i++)
+	for(int i=0;i<3;i++)
 	{
 		origin[i] = ReadPackFloat(pack);
 		angles[i] = ReadPackFloat(pack);
@@ -2656,8 +2656,8 @@ stock TE_SetupKillPlayerAttachments(client) {
 }
 stock bool IsStringBlank(const char[] input)
 {
-	new len = strlen(input);
-	for (new i=0; i<len; i++)
+	int len = strlen(input);
+	for (int i=0; i<len; i++)
 	{
 		if (!IsCharSpace(input[i]))
 		{
