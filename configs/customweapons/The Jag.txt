@@ -23,7 +23,7 @@
 			"plugin"	"tf2attributes"
 			"value"		"0.85"
 		}
-		"disguise damage reduction"
+		"damage mult 13"
 		{
 			"plugin"	"tf2attributes"
 			"value"		"0.8"

@@ -915,7 +915,7 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 	additionalstartmoney = 0.0;
 	DeleteSavedPlayerData();
 
-	char responseBuffer[4096];
+	char responseBuffer[256];
 	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
 	GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
 	if(StrContains(responseBuffer, "IF", false) != -1)

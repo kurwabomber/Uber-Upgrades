@@ -34,7 +34,7 @@
 			"plugin"	"tf2attributes"
 			"value"		"7.0"
 		}
-		"throwable damage"
+		"damage mult 13"
 		{
 			"plugin"	"tf2attributes"
 			"value"		"3.0"

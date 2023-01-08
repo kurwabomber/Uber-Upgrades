@@ -1913,6 +1913,26 @@ checkEnabledSentry(entity)
 		}
 	}
 }
+public bool applyArcaneRestrictions(int client, int attuneSlot, float focusCost, float cooldown)
+{
+	focusCost /= ArcanePower[client];
+	if(fl_CurrentFocus[client] < focusCost)
+	{
+		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
+		EmitSoundToClient(client, SOUND_FAIL);
+		return true;
+	}
+	if(SpellCooldowns[client][attuneSlot] > 0.0)
+		return true;
+
+	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[RoundToNearest(AttunedSpells[client][attuneSlot])],focusCost);
+	fl_CurrentFocus[client] -= focusCost;
+	if(DisableCooldowns != 1)
+		SpellCooldowns[client][attuneSlot] = 25.0;
+	applyArcaneCooldownReduction(client, attuneSlot);
+
+	return false;
+}
 randomizeTankSpecialty(entity)
 {
 	entity = EntRefToEntIndex(entity);

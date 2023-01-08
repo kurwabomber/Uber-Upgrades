@@ -104,6 +104,14 @@ stock char[] getDamageCategory(int damagetype)
 	}
 	return damageCategory;
 }
+stock float GetAttribute(int entity, char[] attrName, float value = 1.0)
+{
+	Address attribute_address = TF2Attrib_GetByName(entity, attrName);
+	if(attribute_address != Address_Null)
+		value = TF2Attrib_GetValue(attribute_address);
+
+	return value;
+}
 stock bool IsValidWeapon(int entity)
 {
 	return (entity > 0 && IsValidEntity(entity) && HasEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"));

@@ -4,8 +4,7 @@ public Menu_ShowArcane(client)
 	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
 		Handle menu = CreateMenu(MenuHandler_ArcaneCast);
-		Address attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
-		int attunement = 1 + (attuneActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(attuneActive)));
+		int attunement = 1 + RoundToNearest(GetAttribute(client, "arcane attunement slots",0.0));
 		
 		SetMenuExitBackButton(menu, true);
 		SetMenuTitle(menu, "Use Arcane Spells");
@@ -257,22 +256,8 @@ CastMarkForDeath(client, attuneSlot)
 	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
 	if(spellLevel < 1)
 		return;
-
-	float focusCost = (fl_MaxFocus[client]*0.50)
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[18],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 25.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
+	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client]*0.5, 25.0))
+		return; 
 
 	float clientpos[3];
 	TracePlayerAim(client, clientpos);

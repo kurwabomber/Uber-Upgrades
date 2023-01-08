@@ -18,7 +18,7 @@
 			"plugin"	"tf2attributes"
 			"value"		"12"
 		}
-		"throwable healing"
+		"damage mult 13"
 		{
 			"plugin"	"tf2attributes"
 			"value"		"0.75"
