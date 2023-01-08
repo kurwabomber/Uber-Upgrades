@@ -4,7 +4,6 @@ Yeah.
 #include <tf2wearables>
 #include <sdkhooks>
 #include <tf2attributes>
-#include <tf2itemsinfo>
 #include <tf_econ_data>
 #pragma tabsize 0
 #define ExplosionSound1 "weapons/explode1.wav"
@@ -122,7 +121,7 @@ stock int getOwner(int entity)
 }
 stock int getWeaponSlot(int client, int entity)
 {
-	return _:TF2II_GetListedItemSlot(GetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(client));
+	return TF2Econ_GetItemLoadoutSlot(GetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(client));
 }
 void GetCleaverAngularImpulse(float vecAngImpulse[3]) {
 	vecAngImpulse[0] = 0.0;

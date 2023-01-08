@@ -254,7 +254,7 @@ public ResetClientUpgrade_slot(client, slot)
 	{
 		currentitem_idx[client][slot] = 20000
 		GiveNewUpgradedWeapon_(client, slot)
-		DefineAttributesTab(client, GetWeapon(client,slot), slot);
+		DefineAttributesTab(client, GetEntProp(GetWeapon(client,slot), Prop_Send, "m_iItemDefinitionIndex"), slot);
 	}
 	
 
@@ -289,25 +289,31 @@ public ResetClientUpgrades(client)
 	}
 }
 public DefineAttributesTab(client, itemidx, slot)
-{	
+{
+	int entity = GetWeapon(client,slot);
 	if (currentitem_idx[client][slot] == 20000)
 	{
 		int a, a2, i, a_i
 		currentitem_idx[client][slot] = itemidx
 		if(currentitem_level[client][slot] != 242)
 		{
-			int inumAttr = TF2II_GetItemNumAttributes(itemidx);
-			for( a = 0, a2 = 0; a < inumAttr && a < 42; a++ )
+			int attributeList[21];
+			int inumAttr = TF2Attrib_ListDefIndices(entity, attributeList);
+			Address attr;
+			for( a = 0, a2 = 0; a < inumAttr && a < 21; a++ )
 			{
+				attr = TF2Attrib_GetByDefIndex(entity, attributeList[a]);
+				if(attr == Address_Null)
+					continue;
+
 				char Buf[64]
-				a_i = TF2II_GetItemAttributeID( itemidx, a);
-				TF2II_GetAttribName( a_i, Buf, 64);
+				a_i = attributeList[a];
+				TF2Econ_GetAttributeName( a_i, Buf, 64);
 				if (GetTrieValue(_upg_names, Buf, i))
 				{
 					currentupgrades_idx[client][slot][a2] = i
-				
 					upgrades_ref_to_idx[client][slot][i] = a2;
-					currentupgrades_val[client][slot][a2] = TF2II_GetItemAttributeValue( itemidx, a );
+					currentupgrades_val[client][slot][a2] = TF2Attrib_GetValue(attr);
 					currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
 					a2++
 				}
@@ -338,18 +344,23 @@ public DefineAttributesTab(client, itemidx, slot)
 			currentitem_idx[client][slot] = itemidx
 			if(currentitem_level[client][slot] != 242)
 			{
-				int inumAttr = TF2II_GetItemNumAttributes(itemidx);
-				for( a = 0, a2 = 0; a < inumAttr && a < 42; a++ )
+				int attributeList[21];
+				int inumAttr = TF2Attrib_ListDefIndices(entity, attributeList);
+				Address attr;
+				for( a = 0, a2 = 0; a < inumAttr && a < 21; a++ )
 				{
+					attr = TF2Attrib_GetByDefIndex(entity, attributeList[a]);
+					if(attr == Address_Null)
+						continue;
+
 					char Buf[64]
-					a_i = TF2II_GetItemAttributeID( itemidx, a);
-					TF2II_GetAttribName( a_i, Buf, 64);
+					a_i = attributeList[a];
+					TF2Econ_GetAttributeName( a_i, Buf, 64);
 					if (GetTrieValue(_upg_names, Buf, i))
 					{
 						currentupgrades_idx[client][slot][a2] = i
-					
 						upgrades_ref_to_idx[client][slot][i] = a2;
-						currentupgrades_val[client][slot][a2] = TF2II_GetItemAttributeValue( itemidx, a );
+						currentupgrades_val[client][slot][a2] = TF2Attrib_GetValue(attr);
 						currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
 						a2++
 					}

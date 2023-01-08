@@ -3342,7 +3342,7 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 		}
 		else
 		{
-			int slot = _:TF2II_GetItemSlot(itemDefinitionIndex, TF2_GetPlayerClass(client));
+			int slot = TF2Econ_GetItemLoadoutSlot(itemDefinitionIndex, TF2_GetPlayerClass(client));
 			if (current_class[client] == TFClass_Spy)
 			{
 				if (!strcmp(classname, "tf_weapon_pda_spy"))

@@ -1,13 +1,13 @@
 public Action:Timer_WaitForTF2Econ(Handle timer)
 {
 	int i = 0
-	if (TF2II_IsValidAttribID(1))
+	if (TF2Econ_IsValidAttributeDefinition(1))
 	{
 		for (i = 0; i < 7000; i++)
 		{
-			if(TF2II_IsValidAttribID(i))
+			if(TF2Econ_IsValidAttributeDefinition(i))
 			{
-				TF2II_GetAttribName( i, upgradesWorkNames[i], 96 );
+				TF2Econ_GetAttributeName( i, upgradesWorkNames[i], 96 );
 			}
 		}
 		for (i = 0; i < MAX_ATTRIBUTES; i++)

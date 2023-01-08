@@ -1,16 +1,12 @@
 #include <tf2>
 #include <tf2_stocks>
 #include <tf2items>
-#include <tf2attributes>
-#include <tf2itemsinfo>
-#include <tf2wearables>
 #include <tf2_isPlayerInSpawn>
 #include <tf_ontakedamage>
 #include <sourcemod>
 #include <functions>
 #include <keyvalues>
 #include <sdktools>
-#include <sdkhooks>
 #include <dhooks>
 #include <weapondata>
 #include <clientprefs>
