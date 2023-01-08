@@ -252,8 +252,7 @@ public Action:Command_UseArcane(client, args)
 //Arcane Spells
 CastMarkForDeath(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane mark for death");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane mark for death", 0.0));
 	if(spellLevel < 1)
 		return;
 	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client]*0.5, 25.0))
@@ -296,26 +295,11 @@ CastMarkForDeath(client, attuneSlot)
 }
 CastSunlightSpear(client, attuneSlot)
 {
-	Address SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
-	int spellLevel = SunlightSpearActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(SunlightSpearActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane sunlight spear", 0.0));
 	if(spellLevel < 1)
 		return;
-	float level = ArcaneDamage[client];
-	float focusCost = (30.0 + (20.0 * level))/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 0.4;
-	applyArcaneCooldownReduction(client, attuneSlot);
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[5],focusCost);
+	if(applyArcaneRestrictions(client, attuneSlot, 30.0 + (20.0 * ArcaneDamage[client]), 0.4))
+		return; 
 
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
@@ -372,85 +356,39 @@ CastSunlightSpear(client, attuneSlot)
 }
 CastLightningEnchantment(client, attuneSlot)
 {
-	Address lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
-	int spellLevel = lightningenchantmentActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(lightningenchantmentActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane lightning enchantment", 0.0));
 	if(spellLevel < 1)
 		return;
-
-	float focusCost = (150.0 + (40.0 * ArcaneDamage[client]))/ArcanePower[client];
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, 150.0 + (40.0 * ArcaneDamage[client]), 30.0))
+		return; 
 		
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 30.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[6],focusCost);
-	
 	LightningEnchantment[client] = (10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.0));
 	LightningEnchantmentDuration[client] = 20.0 * ArcanePower[client];	
 }
 CastDarkmoonBlade(client, attuneSlot)
 {
-	Address darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
-	int spellLevel = darkmoonbladeActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(darkmoonbladeActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane darkmoon blade", 0.0));
 	if(spellLevel < 1)
 		return;
-
-	float focusCost = (100.0 + (20.0 * ArcaneDamage[client]))/ArcanePower[client];
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
-
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 25.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[9],focusCost);
+	if(applyArcaneRestrictions(client, attuneSlot, 100.0 + (20.0 * ArcaneDamage[client]), 25.0))
+		return; 
 	
 	DarkmoonBlade[client] = (10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.5));
 	DarkmoonBladeDuration[client] = 20.0 * ArcanePower[client];
 }
 CastSnapFreeze(client, attuneSlot)
 {
-	Address snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
-	int spellLevel = snapfreezeActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(snapfreezeActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane snap freeze", 0.0));
 	if(spellLevel < 1)
 		return;
 
-	float level = ArcaneDamage[client];
-	float focusCost = (40.0 + (20.0 * level))/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (20.0 * ArcaneDamage[client]), 9.0))
+		return; 
 
 	float clientpos[3];
 	GetClientEyePosition(client, clientpos);
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[7],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 9.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
-
 	EmitSoundToAll(SOUND_FREEZE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
-	float damage = 100.0 + (Pow(level * Pow(ArcanePower[client], 4.0), 2.45) * 60.0);
+	float damage = 100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0);
 	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
@@ -483,20 +421,11 @@ CastSnapFreeze(client, attuneSlot)
 }
 CastArcanePrison(client, attuneSlot)
 {
-	Address arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
-	int spellLevel = arcaneprisonActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(arcaneprisonActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane prison", 0.0));
 	if(spellLevel < 1)
 		return;
-	float level = ArcaneDamage[client];
-	float focusCost = (60.0 + (35.0 * level))/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (35.0 * ArcaneDamage[client]), 20.0))
+		return; 
 
 	float ClientPos[3];
 	float ClientAngle[3];
@@ -504,13 +433,6 @@ CastArcanePrison(client, attuneSlot)
 	GetClientEyeAngles(client,ClientAngle);
 	int iTeam = GetClientTeam(client)
 	ClientPos[2] -= 20.0;
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[8],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 20.0;
-
-	applyArcaneCooldownReduction(client, attuneSlot);
 	EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 	
 	int iEntity = CreateEntityByName("tf_projectile_lightningorb");
@@ -547,30 +469,16 @@ CastArcanePrison(client, attuneSlot)
 }
 CastSpeedAura(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane speed aura");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane speed aura", 0.0));
 	if(spellLevel < 1)
 		return;
-	float focusCost = (fl_MaxFocus[client]*0.4)/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client]*0.4, 15.0))
+		return; 
 
 	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	int iTeam = GetClientTeam(client)
 	ClientPos[2] -= 20.0;
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[10],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 35.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
 	for(int i = 1; i<MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
@@ -592,32 +500,17 @@ CastSpeedAura(client, attuneSlot)
 }
 CastAerialStrike(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane aerial strike", 0.0));
 	if(spellLevel < 1)
 		return;
 
-	float level = ArcaneDamage[client];
-	float focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{			
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (45.0 * ArcaneDamage[client]), 50.0))
+		return; 
 
 	float ClientPos[3];
 	TracePlayerAim(client, ClientPos);
 	int iTeam = GetClientTeam(client)
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[11],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 60.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
-	float ProjectileDamage = 90.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 25.0);
+	float ProjectileDamage = 90.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),2.45) * 25.0);
 	Handle hPack = CreateDataPack();
 	WritePackCell(hPack, client);
 	WritePackCell(hPack, iTeam);
@@ -691,30 +584,15 @@ public Action:aerialStrike(Handle timer,any:data)
 }
 CastInferno(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane inferno");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane inferno", 0.0));
 	if(spellLevel < 1)
 		return;
-	float level = ArcaneDamage[client];
-	float focusCost = (150.0 + (45.0 * level))/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (45.0 * ArcaneDamage[client]), 50.0))
 		return;
 
 	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	ClientPos[2] -= 20.0;
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[12],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 60.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
 		
 	EmitSoundToAll(SOUND_INFERNO, _, client, SNDLEVEL_ROCKET, _, 1.0, _,_,ClientPos);
 	
@@ -750,7 +628,7 @@ CastInferno(client, attuneSlot)
 	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
 	
 	
-	float DMGDealt = 20.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 12.5);
+	float DMGDealt = 20.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),2.45) * 12.5);
 	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
@@ -772,34 +650,20 @@ CastInferno(client, attuneSlot)
 
 CastMineField(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane mine field");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane mine field", 0.0));
 	if(spellLevel < 1)
 		return;
 
-	float level = ArcaneDamage[client];
-	float focusCost = (120.0 + (50.0 * level))/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{			
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (45.0 * ArcaneDamage[client]), 50.0))
 		return;
 		
 	float ClientPos[3];
 	TracePlayerAim(client, ClientPos);
 	int iTeam = GetClientTeam(client)
 	
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[13],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 50.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
 		
 	float radius = 300.0*ArcanePower[client];
-	float damage = 90.0 + (Pow(level*Pow(ArcanePower[client], 4.0),2.45) * 6.5);
+	float damage = 90.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),2.45) * 6.5);
 	for(int i = 0;i<20;i++)
 	{
 		int iEntity = CreateEntityByName("tf_projectile_pipe_remote");
@@ -902,29 +766,16 @@ public Action:Timer_GrenadeMines(Handle timer, any:ref)
 }
 CastShockwave(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane shockwave");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane shockwave", 0.0));
 	if(spellLevel < 1)
 		return;
-	float focusCost = (50.0 + (30.0 * ArcaneDamage[client]))/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{			
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (30.0 * ArcaneDamage[client]), 20.0))
+		return; 
+
 
 	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	ClientPos[2] -= 20.0;
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[14],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 20.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
 		
 	float damageDealt = (100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0));
 	for(int i = 1; i<MAXENTITIES;i++)
@@ -958,27 +809,12 @@ CastShockwave(client, attuneSlot)
 }
 CastAutoSentry(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane autosentry");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane autosentry", 0.0));
 	if(spellLevel < 1)
 		return;
-	float focusCost = (fl_MaxFocus[client])
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
-	
+	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client], 80.0))
+		return; 
 	int iTeam = GetClientTeam(client)
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[15],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 120.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
 		
 	int iEntity = CreateEntityByName("obj_sentrygun");
 	if(!IsValidEntity(iEntity))
@@ -1032,30 +868,16 @@ public Action:RemoveAutoSentryID(Handle timer, any:ref)
 }
 CastSoothingSunlight(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane soothing sunlight");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane soothing sunlight", 0.0));
 	if(spellLevel < 1)
 		return;
 
-	float focusCost = (fl_MaxFocus[client])/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client], 180.0))
+		return; 
 
 	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	ClientPos[2] -= 40.0;
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[16],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 200.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
 		
 	CreateTimer(4.0,SoothingSunlight,EntIndexToEntRef(client));
 	TF2_StunPlayer(client,5.0,0.0,TF_STUNFLAGS_BIGBONK,0);
@@ -1099,26 +921,12 @@ public Action:SoothingSunlight(Handle timer, client)
 }
 CastArcaneHunter(client, attuneSlot)
 {
-	Address classSpecificActive = TF2Attrib_GetByName(client, "arcane hunter");
-	int spellLevel = classSpecificActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(classSpecificActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane hunter", 0.0));
 	if(spellLevel < 1)
 		return;
-	
-	float focusCost = (200.0 + (65.0 * ArcaneDamage[client]))/ArcanePower[client]
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, 200.0 + (70.0 * ArcaneDamage[client]), 40.0))
+		return; 
 
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[17],focusCost);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 30.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
 	float CPOS[3];
 	GetClientEyePosition(client,CPOS)
 	
@@ -1242,30 +1050,13 @@ public Action:ArcaneHunter(Handle timer, client)
 }
 CastBlackskyEye(client, attuneSlot)
 {
-	Address BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
-	int spellLevel = BlackskyEyeActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(BlackskyEyeActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane blacksky eye", 0.0));
 
 	if(spellLevel < 1)
 		return;
 
-	float level = ArcaneDamage[client];
-	float focusCost = (8.0 + (3.0 * level))/ArcanePower[client]
-
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
-
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 0.3;
-
-	applyArcaneCooldownReduction(client, attuneSlot);
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[4],focusCost);
+	if(applyArcaneRestrictions(client, attuneSlot, 8.0 + (3.0 * ArcaneDamage[client]), 0.3))
+		return; 
 
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
@@ -1339,31 +1130,15 @@ CastBlackskyEye(client, attuneSlot)
 }
 CastACallBeyond(client, attuneSlot)
 {
-	Address callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
-	int spellLevel = callBeyondActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(callBeyondActive));
-
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane a call beyond", 0.0));
 	if(spellLevel < 1)
 		return;
-	
-	float level = ArcaneDamage[client];
-	float focusCost = (200.0 + (70.0 * level))/ArcanePower[client]
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (70.0 * ArcaneDamage[client]), 50.0))
+		return; 
 
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
 
 	TF2_StunPlayer(client,1.5,0.0,TF_STUNFLAGS_BIGBONK,0);
 	TF2_AddCondition(client, TFCond_FreezeInput, 1.5);
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 50.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[3],focusCost);
 	CreateTimer(1.5, ACallBeyond, EntIndexToEntRef(client));
 	
 	float clientpos[3];
@@ -1379,8 +1154,7 @@ public Action:ACallBeyond(Handle timer, client)
 	if(!IsPlayerAlive(client))
 		return;
 	
-	Address callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
-	int spellLevel = callBeyondActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(callBeyondActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane a call beyond", 0.0));
 
 	int projCount[] = {0,15,25,40};
 	float radius[] = {0.0,1500.0,2500.0,2500.0};
@@ -1443,14 +1217,12 @@ public Action:ACallBeyond(Handle timer, client)
 }
 CastZap(client, attuneSlot)
 {
-	Address zapActive = TF2Attrib_GetByName(client, "arcane zap");
-	int spellLevel = zapActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(zapActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane zap", 0.0));
 
 	if(spellLevel < 1)
 		return;
 
-	float level = ArcaneDamage[client];
-	float focusCost = (3.0 + (0.5 * level))/ArcanePower[client]
+	float focusCost = (3.0 + (0.5 * ArcaneDamage[client]))/ArcanePower[client]
 	if(fl_CurrentFocus[client] < focusCost)
 	{
 		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
@@ -1556,27 +1328,14 @@ public Action:zapAgain(Handle timer,any:data)
 }
 CastLightning(client, attuneSlot)
 {
-	Address lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
-	int spellLevel = lightningActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(lightningActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane lightning strike", 0.0));
 
 	if(spellLevel < 1)
 		return;
 
-	float focusCost = (60.0 + (30.0 * ArcaneDamage[client]))/ArcanePower[client];
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (30.0 * ArcaneDamage[client]), 11.0))
+		return; 
 
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 11.0;
-	applyArcaneCooldownReduction(client, attuneSlot);
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[1],focusCost);
 	float clientpos[3];
 	TracePlayerAim(client, clientpos);
 	float temppos[3];
@@ -1655,28 +1414,14 @@ CastLightning(client, attuneSlot)
 }
 CastHealing(client, attuneSlot)//Projected Healing
 {
-	Address healAuraActive = TF2Attrib_GetByName(client, "arcane projected healing");
-	int spellLevel = healAuraActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(healAuraActive));
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane projected healing", 0.0));
 
 	if(spellLevel < 1)
 		return;
 
-	float focusCost = (fl_MaxFocus[client]*0.65)/ArcanePower[client];
-	
-	if(fl_CurrentFocus[client] < focusCost)
-	{
-		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
-		EmitSoundToClient(client, SOUND_FAIL);
-		return;
-	}
-	if(SpellCooldowns[client][attuneSlot] > 0.0)
-		return;
+	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client]*0.65, 15.0))
+		return; 
 
-	fl_CurrentFocus[client] -= focusCost;
-	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 15.0;
-
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[2],focusCost);
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	int iTeam = GetClientTeam(client);
