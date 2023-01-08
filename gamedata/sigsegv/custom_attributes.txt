@@ -3258,4 +3258,34 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "6020"
+    {
+        "name"  "damage taken mult 1"
+        "attribute_class"	"dmg_incoming_mult"
+        "description_string"	"(+-)%p% damage taken"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6021"
+    {
+        "name"  "damage taken mult 2"
+        "attribute_class"	"dmg_incoming_mult"
+        "description_string"	"(+-)%p% damage taken"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6022"
+    {
+        "name"  "damage taken mult 3"
+        "attribute_class"	"dmg_incoming_mult"
+        "description_string"	"(+-)%p% damage taken"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
 }

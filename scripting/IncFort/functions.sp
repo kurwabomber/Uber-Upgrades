@@ -1315,21 +1315,21 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 		if((additionalstartmoney+StartMoney) >= 500000)
 		{
 			TF2Attrib_SetByName(client,"damage bonus HIDDEN",(2.0));
-			TF2Attrib_SetByName(client,"mult_dmgtaken_active",(0.5));
+			TF2Attrib_SetByName(client,"damage taken mult 2",(0.5));
 		}
 		if((additionalstartmoney+StartMoney) >= 1500000)
 		{
 			TF2Attrib_SetByName(client,"damage bonus HIDDEN",(3.0));
-			TF2Attrib_SetByName(client,"mult_dmgtaken_active",(0.33));
+			TF2Attrib_SetByName(client,"damage taken mult 2",(0.33));
 		}
 		if((additionalstartmoney+StartMoney) <= 750000)
 		{
-			TF2Attrib_SetByName(client,"sniper zoom penalty",Pow(7600.0/(additionalstartmoney+StartMoney)/ OverAllMultiplier, 1.6));
+			TF2Attrib_SetByName(client,"damage taken mult 1",Pow(7600.0/(additionalstartmoney+StartMoney)/ OverAllMultiplier, 1.6));
 			TF2Attrib_SetByName(client,"damage force increase",1/(additionalstartmoney+StartMoney)/9000.0);
 		}
 		if((additionalstartmoney+StartMoney) > 750000)
 		{
-			TF2Attrib_SetByName(client,"sniper zoom penalty",Pow(7400.0/(additionalstartmoney+StartMoney)/ OverAllMultiplier, 1.78));
+			TF2Attrib_SetByName(client,"damage taken mult 1",Pow(7400.0/(additionalstartmoney+StartMoney)/ OverAllMultiplier, 1.78));
 			TF2Attrib_SetByName(client,"damage force increase",1/(additionalstartmoney+StartMoney)/6000.0);
 		}
 		for(i=0;i<3;i++)
@@ -1338,12 +1338,12 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 			if((additionalstartmoney+StartMoney) >= 1000000){
 			
 				TF2Attrib_SetByName(weap,"damage penalty",1+((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(weap,"taunt is highfive",1+((additionalstartmoney+StartMoney)/20000.0)*OverAllMultiplier);
+				TF2Attrib_SetByName(weap,"damage mult 1",1+((additionalstartmoney+StartMoney)/20000.0)*OverAllMultiplier);
 			}
 			else
 			{
 				TF2Attrib_SetByName(weap,"damage penalty",1+((additionalstartmoney+StartMoney)/15000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(weap,"taunt is highfive",1+((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
+				TF2Attrib_SetByName(weap,"damage mult 1",1+((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
 			}
 			if(i != 2)
 			{
@@ -1601,16 +1601,16 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				}
 				if((additionalstartmoney+StartMoney) >= 1000000){
 				TF2Attrib_SetByName(primary,"damage penalty",((additionalstartmoney+StartMoney)/17000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(primary,"taunt is highfive",((additionalstartmoney+StartMoney)/22000.0)*OverAllMultiplier);
+				TF2Attrib_SetByName(primary,"damage mult 1",((additionalstartmoney+StartMoney)/22000.0)*OverAllMultiplier);
 				TF2Attrib_SetByName(melee,"damage penalty",((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(melee,"taunt is highfive",((additionalstartmoney+StartMoney)/20000.0)*OverAllMultiplier);
+				TF2Attrib_SetByName(melee,"damage mult 1",((additionalstartmoney+StartMoney)/20000.0)*OverAllMultiplier);
 				}
 				else
 				{
 					TF2Attrib_SetByName(primary,"damage penalty",((additionalstartmoney+StartMoney)/15000.0)*OverAllMultiplier);
-					TF2Attrib_SetByName(primary,"taunt is highfive",((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
+					TF2Attrib_SetByName(primary,"damage mult 1",((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
 					TF2Attrib_SetByName(melee,"damage penalty",((additionalstartmoney+StartMoney)/14000.0)*OverAllMultiplier);
-					TF2Attrib_SetByName(melee,"taunt is highfive",((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
+					TF2Attrib_SetByName(melee,"damage mult 1",((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
 				}
 				if((additionalstartmoney+StartMoney) >= 60000/OverAllMultiplier)
 				{

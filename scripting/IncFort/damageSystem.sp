@@ -34,56 +34,28 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				{
 					damage = 0.0;
 					float burndmgMult = 1.0;
-					Address burnMult1 = TF2Attrib_GetByName(weapon, "shot penetrate all players");
-					Address burnMult2 = TF2Attrib_GetByName(weapon, "weapon burn dmg increased");
-					Address burnMult3 = TF2Attrib_GetByName(weapon, "weapon burn dmg reduced");
-					Address burnMult4 = TF2Attrib_GetByName(attacker, "weapon burn dmg increased");
-					Address burnDivide = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
-					if(burnMult1 != Address_Null) {
-					burndmgMult*=TF2Attrib_GetValue(burnMult1)
-					}
-					if(burnMult2 != Address_Null) {
-					burndmgMult*=TF2Attrib_GetValue(burnMult2)
-					}
-					if(burnMult3 != Address_Null) {
-					burndmgMult*=TF2Attrib_GetValue(burnMult3)
-					}
-					if(burnMult4 != Address_Null) {
-					burndmgMult*=TF2Attrib_GetValue(burnMult4)
-					}
-					if(burnDivide != Address_Null) {
-					burndmgMult/=TF2Attrib_GetValue(burnDivide)
-					}
+					burndmgMult *= GetAttribute(weapon, "shot penetrate all players");
+					burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
+					burndmgMult *= GetAttribute(weapon, "weapon burn dmg reduced");
+					burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
+					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
 				}
-				//PrintToServer("%i damagebit", damagetype);
 				if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
-				{
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
-					Address lameMult = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
-					if(lameMult != Address_Null)//lame. AP applies twice.
-					{
-						damage /= TF2Attrib_GetValue(lameMult);
-					}
-				}
 				if(LightningEnchantmentDuration[attacker] > 0.0 && !(damagetype & DMG_VEHICLE))
-				{
-					//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
+				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
 					damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
-				}
 				else if(DarkmoonBladeDuration[attacker] > 0.0)
 				{
 					int melee = GetWeapon(attacker,2);
-					if(IsValidEntity(melee) && melee == weapon)
-					{
+					if(melee == weapon)
 						damage += DarkmoonBlade[attacker];
-					}
 				}
-				Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
-				if(arcaneWeaponScaling != Address_Null)
-				{
-					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
-				}
+				float arcaneWeaponScaling = GetAttribute(weapon,"arcane weapon scaling",0.0);
+				if(arcaneWeaponScaling != 0.0)
+					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * arcaneWeaponScaling));
+				
 				float tickRate = 1.0/GetTickInterval();
 
 				for(int i = 1 ; i < 6 ; i++)
@@ -97,17 +69,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		//PrintToServer("triggered OnTakeDamageAlive");
-		Address DamageMultiplier = TF2Attrib_GetByName(victim, "sniper zoom penalty");
-		if(DamageMultiplier != Address_Null)
-		{
-			damage *= TF2Attrib_GetValue(DamageMultiplier);
-		}
-		Address DamageMultiplier2 = TF2Attrib_GetByName(victim, "crit mod disabled hidden");
-		if(DamageMultiplier2 != Address_Null)
-		{
-			damage *= TF2Attrib_GetValue(DamageMultiplier2);
-		}
+		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", victim);
 	
 		Address bossType = TF2Attrib_GetByName(victim, "damage force increase text");
 		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
@@ -848,23 +810,22 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 			}
 		}
 	}
-	if(IsValidClient(owner))
+	if(IsValidClient3(owner))
 	{
-		float pctArmor = (fl_AdditionalArmor[owner] + fl_CurrentArmor[owner])/fl_MaxArmor[owner];
-		if(pctArmor <= 0.0)
+		if(!IsFakeClient(owner))
 		{
-			pctArmor = 0.01
+			float pctArmor = (fl_AdditionalArmor[owner] + fl_CurrentArmor[owner])/fl_MaxArmor[owner];
+			if(pctArmor <= 0.0)
+			{
+				pctArmor = 0.01
+			}
+			float armorAmt = fl_ArmorCap[owner] * 2.0;
+			damage /= ((1-armorAmt)-((1-armorAmt)*pctArmor) + armorAmt);
+			fl_CurrentArmor[owner] -= damage*0.8;
+			if(fl_CurrentArmor[owner] < 0.0)
+				fl_CurrentArmor[owner] = 0.0
 		}
-		float armorAmt = fl_ArmorCap[owner] * 2.0;
-		damage /= ((1-armorAmt)-((1-armorAmt)*pctArmor) + armorAmt);
-		Address sentryRes = TF2Attrib_GetByName(owner, "blast dmg to self increased");
-		if(sentryRes != Address_Null)
-		{
-			damage /= TF2Attrib_GetValue(sentryRes);
-		}
-		fl_CurrentArmor[owner] -= damage*0.8;
-		if(fl_CurrentArmor[owner] < 0.0)
-			fl_CurrentArmor[owner] = 0.0
+		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", victim);
 	}
 	return Plugin_Changed;
 }
