@@ -323,8 +323,14 @@ public DefineAttributesTab(client, itemidx, slot, entity)
 			ArrayList inumAttr = TF2Econ_GetItemStaticAttributes(itemidx);
 			for( a=0; a < inumAttr.Length && a < 21; a++ )
 			{
-				char Buf[64]
+				bool cancel = false;
 				a_i = inumAttr.Get(a,0);
+				for(int e = 0;e<sizeof(attributeIndexes);e++){
+					if(attributeIndexes[e] == a_i){cancel = true;break;}
+				}
+				if(cancel){continue;}
+
+				char Buf[64]
 				TF2Econ_GetAttributeName( a_i, Buf, 64);
 				if (GetTrieValue(_upg_names, Buf, i))
 				{
@@ -388,8 +394,13 @@ public DefineAttributesTab(client, itemidx, slot, entity)
 				ArrayList inumAttr = TF2Econ_GetItemStaticAttributes(itemidx);
 				for(a = 0; a < inumAttr.Length && a < 21; a++ )
 				{
-					char Buf[64]
+					bool cancel = false;
 					a_i = inumAttr.Get(a,0);
+					for(int e = 0;e<sizeof(attributeIndexes);e++){
+						if(attributeIndexes[e] == a_i){cancel = true;break;}
+					}
+					if(cancel){continue;}
+					char Buf[64]
 					TF2Econ_GetAttributeName( a_i, Buf, 64);
 					if (GetTrieValue(_upg_names, Buf, i))
 					{
@@ -472,7 +483,7 @@ DisplayItemChange(client,itemidx)
 		//Soldier Primary
 		case 127:
 		{
-			ChangeString = "The Direct Hit | 1.25x damage.";
+			ChangeString = "The Direct Hit | 1.7x damage.";
 		}
 		case 228,1085:
 		{

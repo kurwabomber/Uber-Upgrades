@@ -229,5 +229,10 @@
 			"preserve_attributes"	"1"
 			"1"				"6023 ; 1.0"
 		}
+		"127"//Direct Hit
+		{
+			"preserve_attributes"	"1"
+			"1"				"2 ; 1.7"
+		}
 	}
 }
