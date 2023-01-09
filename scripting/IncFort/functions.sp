@@ -1972,10 +1972,10 @@ public bool applyArcaneRestrictions(int client, int attuneSlot, float focusCost,
 	if(SpellCooldowns[client][attuneSlot] > 0.0)
 		return true;
 
-	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[RoundToNearest(AttunedSpells[client][attuneSlot])],focusCost);
+	PrintHintText(client, "Used %s! -%.2f focus.",SpellList[RoundToNearest(AttunedSpells[client][attuneSlot])-1],focusCost);
 	fl_CurrentFocus[client] -= focusCost;
 	if(DisableCooldowns != 1)
-		SpellCooldowns[client][attuneSlot] = 25.0;
+		SpellCooldowns[client][attuneSlot] = cooldown;
 	applyArcaneCooldownReduction(client, attuneSlot);
 
 	return false;

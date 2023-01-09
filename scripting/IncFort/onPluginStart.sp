@@ -316,13 +316,13 @@ public void OnPluginStart()
 
 
 	//disable bot jumping
-	/*Handle g_DHookPlayerLocomotionJump = DHookCreateFromConf(hConf, "PlayerLocomotion::Jump()");
+	Handle g_DHookPlayerLocomotionJump = DHookCreateFromConf(hConf, "PlayerLocomotion::Jump()");
 	
 	if(g_DHookPlayerLocomotionJump == INVALID_HANDLE)
 	{
 		PrintToServer("CustomAttrs | bot locomotion jump function error");
 	}
-	DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);*/
+	DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);
 
 	//fire rate?
 	Handle g_DHookFireRateCall = DHookCreateFromConf(hConf, "CTFWeaponBase::ApplyFireDelay(float)");

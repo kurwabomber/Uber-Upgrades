@@ -24,7 +24,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int rate = 1;
 
 
-		if(upgrades_requirement[upgrade_choice] > (StartMoney + additionalstartmoney))
+		if(canBypassRestriction[client] == false && upgrades_requirement[upgrade_choice] > (StartMoney + additionalstartmoney))
 		{
 			char fstr2[100]
 			char fstr[40]
