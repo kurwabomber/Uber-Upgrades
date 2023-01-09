@@ -3288,4 +3288,14 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "6023"
+    {
+        "name"  "Converts Firerate to Damage"
+        "attribute_class"   "convert_firerate_to_damage"
+        "description_string"	"Converts fire rate to damage bonus"
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
 }

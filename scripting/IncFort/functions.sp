@@ -1262,7 +1262,7 @@ refreshUpgrades(client, slot)
 				SetEntProp(slotItem, Prop_Data, "m_bReloadsSingly", 0);
 			}
 			Address firerateActive = TF2Attrib_GetByName(slotItem, "disguise speed penalty");
-			Address heavyweaponActive = TF2Attrib_GetByName(slotItem, "SET BONUS: special dsp");//Implement "Heavy" Weapons
+			Address heavyweaponActive = TF2Attrib_GetByName(slotItem, "Converts Firerate to Damage");//Implement "Heavy" Weapons
 			if(heavyweaponActive != Address_Null && TF2Attrib_GetValue(heavyweaponActive) != 0.0)
 			{
 				Address firerateActive2 = TF2Attrib_GetByName(slotItem, "fire rate bonus HIDDEN");

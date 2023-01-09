@@ -3379,7 +3379,7 @@
 	}
 	"damage penalty"
 	{
-		"en"		"Damage Multiplier"
+		"en"		"Damage Penalty"
 	}
 	"Thick Building Armor"
 	{

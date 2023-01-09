@@ -5923,7 +5923,7 @@
 		}
 		"1561"
 		{
-			"name"		"SET BONUS: special dsp"
+			"name"		"Converts Firerate to Damage"
 			"ref"		"Converts Firerate to Damage"
 			"cost"		"0"
 			"value"		"1"
