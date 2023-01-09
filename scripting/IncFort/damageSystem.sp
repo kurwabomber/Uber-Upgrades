@@ -1024,7 +1024,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			burndmgMult *= GetAttribute(weapon, "shot penetrate all players");
 			burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
 
-			if(GetClientTeam(attacker) != GetClientTeam(victim) && GetAttribute(weapon, "flame_ignore_player_velocity") &&
+			if(GetClientTeam(attacker) != GetClientTeam(victim) && GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) &&
 			TF2_GetDPSModifiers(attacker, weapon)*burndmgMult >= fl_HighestFireDamage[victim] && 
 			!(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE) && !(damagetype & DMG_ENERGYBEAM)) // int afterburn system.
 			{
