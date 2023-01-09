@@ -69,7 +69,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", victim);
+		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
 	
 		Address bossType = TF2Attrib_GetByName(victim, "damage force increase text");
 		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
