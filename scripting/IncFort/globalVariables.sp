@@ -7,7 +7,7 @@ Handle cvar_StartMoney
 Handle cvar_DisableBotUpgrade
 Handle cvar_DisableCooldowns
 Handle cvar_debug;
-Handle _upg_names
+Handle _upg_names;
 Handle _weaponlist_names
 Handle _spetweaks_names
 Handle cvar_BotMultiplier

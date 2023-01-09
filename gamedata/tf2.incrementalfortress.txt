@@ -22,28 +22,8 @@
 			}
 			"CBasePlayer::OnMyWeaponFired"
 			{
-				"windows"	"356"
+				"windows"	"357"
 				"linux"		"358"
-			}
-			"CTFWeaponBase::GetWeaponID()"
-			{
-				"windows"	"379"
-				"linux"		"385"
-			}
-			"CTFWeaponBase::GetDamageType()"
-			{
-				"windows"	"133"
-				"linux"		"134"
-			}
-			"CTFWeaponBase::CanFireCriticalShot()"
-			{
-				"windows"	"435"
-				"linux"		"442"
-			}
-			"CBaseCombatCharacter::Weapon_ShootPosition()"
-			{
-				"windows"	"275"
-				"linux"		"276"
 			}
 		}
 		"Functions"

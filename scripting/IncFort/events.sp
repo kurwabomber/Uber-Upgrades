@@ -3062,14 +3062,13 @@ public void Hook_PreThink(int client)
 		SendConVarValue(client, FindConVar("tf_fireball_distance"), dragonFurySpeed);
 		SetConVarFloat(FindConVar("tf_fireball_distance"), DragonsFurySpeedValue[client]);
 	}
-	if(isParachuteReOpenable[client] == 1 || isParachuteReOpenable[client] == 2)
-	{
-		int finalValue = isParachuteReOpenable[client] - 1;
-		char parachuteCVAR[32];
-		IntToString(finalValue,parachuteCVAR,sizeof(parachuteCVAR));
-		SendConVarValue(client, FindConVar("tf_parachute_deploy_toggle_allowed"), parachuteCVAR);
-		SetConVarInt(FindConVar("tf_parachute_deploy_toggle_allowed"), finalValue);
-	}
+
+	int finalValue = isParachuteReOpenable[client] != 0 ? 1 : 0;
+	char parachuteCVAR[32];
+	IntToString(finalValue,parachuteCVAR,sizeof(parachuteCVAR));
+	SendConVarValue(client, FindConVar("tf_parachute_deploy_toggle_allowed"), parachuteCVAR);
+	SetConVarInt(FindConVar("tf_parachute_deploy_toggle_allowed"), finalValue);
+
 	if(shieldVelocity[client] != 0.0)
 	{
 		char chargeSpeed[32];
@@ -3335,7 +3334,7 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 			{
 				currentitem_idx[client][slot] = 20000
 			}
-			DefineAttributesTab(client, itemDefinitionIndex, slot)
+			DefineAttributesTab(client, itemDefinitionIndex, slot, entityIndex)
 			GetEntityClassname(entityIndex, currentitem_classname[client][slot], 64);
 			currentitem_catidx[client][slot] = GetUpgrade_CatList(upgrades_weapon_class_menu[upgrades_weapon_current[client]]);
 			//PrintToServer("OGiveItem slot %d: [%s] #%d CAT[%d] qual%d", slot, classname, itemDefinitionIndex, currentitem_catidx[client][slot], itemLevel)
@@ -3350,7 +3349,7 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 					current_class[client] = TF2_GetPlayerClass(client)
 					currentitem_classname[client][1] = "tf_weapon_pda_spy"
 					currentitem_ent_idx[client][1] = entityIndex
-					DefineAttributesTab(client, 735, 1)
+					DefineAttributesTab(client, 735, 1, entityIndex)
 					currentitem_catidx[client][1] = GetUpgrade_CatList("tf_weapon_pda_spy")
 					GiveNewUpgradedWeapon_(client, 1)
 				}
@@ -3358,10 +3357,13 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 			currentitem_catidx[client][4] = _:TF2_GetPlayerClass(client) - 1;
 			if (slot != 3 && slot <= NB_SLOTS_UED)
 			{
+				if (!strcmp(classname, "tf_weapon_revolver"))
+					slot =0;
+				
 				GetEntityClassname(entityIndex, currentitem_classname[client][slot], 64);
 				currentitem_ent_idx[client][slot] = entityIndex
 				current_class[client] = TF2_GetPlayerClass(client)
-				DefineAttributesTab(client, itemDefinitionIndex, slot)
+				DefineAttributesTab(client, itemDefinitionIndex, slot, entityIndex)
 				currentitem_catidx[client][slot] = GetUpgrade_CatList(classname)
 				
 				switch(current_class[client])

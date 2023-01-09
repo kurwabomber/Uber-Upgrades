@@ -254,7 +254,8 @@ public ResetClientUpgrade_slot(client, slot)
 	{
 		currentitem_idx[client][slot] = 20000
 		GiveNewUpgradedWeapon_(client, slot)
-		DefineAttributesTab(client, GetEntProp(GetWeapon(client,slot), Prop_Send, "m_iItemDefinitionIndex"), slot);
+		if(IsValidWeapon(currentitem_ent_idx[client][slot]))
+			DefineAttributesTab(client, GetEntProp(currentitem_ent_idx[client][slot], Prop_Send, "m_iItemDefinitionIndex"), slot, currentitem_ent_idx[client][slot]);
 	}
 	
 
@@ -288,29 +289,28 @@ public ResetClientUpgrades(client)
 		ResetClientUpgrade_slot(client, slot)
 	}
 }
-public DefineAttributesTab(client, itemidx, slot)
+public DefineAttributesTab(client, itemidx, slot, entity)
 {
-	int entity = GetWeapon(client,slot);
 	if (currentitem_idx[client][slot] == 20000)
 	{
 		int a, a2, i, a_i
 		currentitem_idx[client][slot] = itemidx
 		if(currentitem_level[client][slot] != 242)
 		{
-			int attributeList[21];
-			int inumAttr = TF2Attrib_ListDefIndices(entity, attributeList);
+			int attributeIndexes[21];
+			int attributeCount = TF2Attrib_ListDefIndices(entity, attributeIndexes);
 			Address attr;
-			for( a = 0, a2 = 0; a < inumAttr && a < 21; a++ )
+			for( a = 0, a2 = 0; a < attributeCount && a < 21; a++ )
 			{
-				attr = TF2Attrib_GetByDefIndex(entity, attributeList[a]);
+				attr = TF2Attrib_GetByDefIndex(entity, attributeIndexes[a]);
 				if(attr == Address_Null)
 					continue;
 
 				char Buf[64]
-				a_i = attributeList[a];
+				a_i = attributeIndexes[a];
 				TF2Econ_GetAttributeName( a_i, Buf, 64);
 				if (GetTrieValue(_upg_names, Buf, i))
-				{
+				{	
 					currentupgrades_idx[client][slot][a2] = i
 					upgrades_ref_to_idx[client][slot][i] = a2;
 					currentupgrades_val[client][slot][a2] = TF2Attrib_GetValue(attr);
@@ -318,6 +318,24 @@ public DefineAttributesTab(client, itemidx, slot)
 					a2++
 				}
 			}
+
+
+			ArrayList inumAttr = TF2Econ_GetItemStaticAttributes(itemidx);
+			for( a=0; a < inumAttr.Length && a < 21; a++ )
+			{
+				char Buf[64]
+				a_i = inumAttr.Get(a,0);
+				TF2Econ_GetAttributeName( a_i, Buf, 64);
+				if (GetTrieValue(_upg_names, Buf, i))
+				{
+					currentupgrades_idx[client][slot][a2] = i
+					upgrades_ref_to_idx[client][slot][i] = a2;
+					currentupgrades_val[client][slot][a2] = inumAttr.Get(a,1);
+					currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
+					a2++
+				}
+			}
+			delete inumAttr;
 			currentupgrades_number[client][slot] = a2
 		}
 		else
@@ -344,20 +362,20 @@ public DefineAttributesTab(client, itemidx, slot)
 			currentitem_idx[client][slot] = itemidx
 			if(currentitem_level[client][slot] != 242)
 			{
-				int attributeList[21];
-				int inumAttr = TF2Attrib_ListDefIndices(entity, attributeList);
+				int attributeIndexes[21];
+				int attributeCount = TF2Attrib_ListDefIndices(entity, attributeIndexes);
 				Address attr;
-				for( a = 0, a2 = 0; a < inumAttr && a < 21; a++ )
+				for( a = 0, a2 = 0; a < attributeCount && a < 21; a++ )
 				{
-					attr = TF2Attrib_GetByDefIndex(entity, attributeList[a]);
+					attr = TF2Attrib_GetByDefIndex(entity, attributeIndexes[a]);
 					if(attr == Address_Null)
 						continue;
 
 					char Buf[64]
-					a_i = attributeList[a];
+					a_i = attributeIndexes[a];
 					TF2Econ_GetAttributeName( a_i, Buf, 64);
 					if (GetTrieValue(_upg_names, Buf, i))
-					{
+					{	
 						currentupgrades_idx[client][slot][a2] = i
 						upgrades_ref_to_idx[client][slot][i] = a2;
 						currentupgrades_val[client][slot][a2] = TF2Attrib_GetValue(attr);
@@ -365,6 +383,24 @@ public DefineAttributesTab(client, itemidx, slot)
 						a2++
 					}
 				}
+
+
+				ArrayList inumAttr = TF2Econ_GetItemStaticAttributes(itemidx);
+				for(a = 0; a < inumAttr.Length && a < 21; a++ )
+				{
+					char Buf[64]
+					a_i = inumAttr.Get(a,0);
+					TF2Econ_GetAttributeName( a_i, Buf, 64);
+					if (GetTrieValue(_upg_names, Buf, i))
+					{
+						currentupgrades_idx[client][slot][a2] = i
+						upgrades_ref_to_idx[client][slot][i] = a2;
+						currentupgrades_val[client][slot][a2] = inumAttr.Get(a,1);
+						currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
+						a2++
+					}
+				}
+				delete inumAttr;
 				currentupgrades_number[client][slot] = a2
 				DisplayItemChange(client,itemidx);
 			}

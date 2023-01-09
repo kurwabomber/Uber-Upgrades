@@ -136,18 +136,17 @@ public Action:Timer_Second(Handle timer)
 					DragonsFurySpeedValue[client] = 0.0;
 				}
 			}
-			int secondary = GetWeapon(client,1);
-			if(IsValidEntity(secondary))
+			isParachuteReOpenable[client] = 0;
+			int primary = GetWeapon(client, 0);
+			if(IsValidWeapon(primary))
 			{
-				Address parachuteActive = TF2Attrib_GetByName(secondary, "powerup max charges")
-				if(parachuteActive != Address_Null)
-				{
-					isParachuteReOpenable[client] = RoundToNearest(TF2Attrib_GetValue(parachuteActive));
-				}
-				else
-				{
-					isParachuteReOpenable[client] = 0;
-				}
+				isParachuteReOpenable[client] += RoundToNearest(GetAttribute(primary,"powerup max charges", 0.0));
+			}
+			int secondary = GetWeapon(client,1);
+			if(IsValidWeapon(secondary))
+			{
+				isParachuteReOpenable[client] += RoundToNearest(GetAttribute(secondary,"powerup max charges", 0.0));
+
 				Address shieldSpeedActive = TF2Attrib_GetByName(secondary, "powerup charges")
 				if(shieldSpeedActive != Address_Null)
 				{

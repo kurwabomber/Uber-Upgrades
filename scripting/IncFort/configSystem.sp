@@ -89,15 +89,12 @@ BrowseAttributesKV(Handle kv)
 					KvGetString(kv, "", Buf, 64);
 					strcopy(upgradesNames[_u_id], 64, Buf);
 					SetTrieValue(_upg_names, Buf, _u_id, true);
-				
 				}
 				else if (!strcmp(Buf,"name"))
 				{
 					KvGetString(kv, "", Buf, 64);
 					if (strcmp(Buf,""))
 					{
-						
-						
 						for (int i_ = 1; i_ < MAX_ATTRIBUTES; i_++)
 						{
 							if (!strcmp(upgradesWorkNames[i_], Buf))

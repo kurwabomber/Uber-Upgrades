@@ -1,0 +1,240 @@
+"custom_weapons_v3"
+{
+	"*"//Which steam id this applies to? * = All players
+	{
+		"460"//item ID (Enforcer)
+		{	
+			//attr#			attrID ; float value
+			"1"				"336 ; 1"
+		}
+		"526"//The Machina
+		{
+			"1"				"305 ; 0"
+			"2"				"304 ; 1.15"
+			"3"				"297 ; 1"
+			"4"				"308 ; 1"
+		}
+		"30665"//The Shooting Star
+		{
+			"1"				"305 ; 0"
+			"2"				"304 ; 1.15"
+			"3"				"297 ; 1"
+			"4"				"308 ; 1"			
+		}
+		"1098"//The Classic
+		{
+			
+			"1"				"647 ; 0"
+			"2"				"2030 ; 1"
+		}
+		"441"//The Cow Mangler
+		{
+			"1"				"281 ; 1"
+			"2"				"282 ; 1"
+			"3"				"27 ; 1"
+		}
+		"642"//Cozy Camper
+		{
+			"preserve_attributes"	"1"
+			
+			"1"				"800 ; 1.75"
+			"2"				"377 ; 0"
+			"3"				"489 ; 1.15"
+			"4"				"610 ; 1.50"
+		}
+		"231"//Darwin's Danger Shield
+		{
+			"preserve_attributes"	"1"//makes it so the vanilla stats stay.
+			
+			"1"				"412 ; 0.75"
+			"2"				"377 ; 0"
+			"3"				"376 ; 1"
+		}
+		"140"//The Wrangler
+		{
+			"preserve_attributes"	"1"
+			
+			"1"				"488 ; 1"
+			"2"				"343 ; 0.80"
+		}
+		"30668"//The Gigar Counter
+		{
+			"preserve_attributes"	"1"
+			
+			"1"				"488 ; 1"
+			"2"				"343 ; 0.80"
+		}
+		"812"//The Flying Guillotine
+		{
+			"preserve_attributes"	"1"
+		
+			"1"				"437 ; 65536"
+		}
+		"833"//The Flying Guillotine (Genuine)
+		{
+			"preserve_attributes"	"1"
+		
+			"1"				"437 ; 65536"
+		}
+		"831"//The Red Tape Recorder (Genuine)
+		{
+			"1"				"425 ; 2.0"
+			"2"				"840 ; 0.1"
+		}
+		"810"//The Red Tape Recorder
+		{
+			"1"				"425 ; 2.0"
+			"2"				"840 ; 0.1"
+		}
+		"735"//The Sapper
+		{
+			"preserve_attributes"	"1"
+			"1"				"840 ; 0.1"
+		}
+		"736"//The Sapper (Unique)
+		{
+			"preserve_attributes"	"1"
+			"1"				"840 ; 0.1"
+		}
+		"933"//The Sapper (Ap-Sap)
+		{
+			"preserve_attributes"	"1"
+			"1"				"840 ; 0.1"
+		}
+		"1080"//The Sapper (Festive)
+		{
+			"preserve_attributes"	"1"
+			"1"				"840 ; 0.1"
+		}
+		"1102"//The Sapper (Snack Attack)
+		{
+			"preserve_attributes"	"1"
+			"1"				"840 ; 0.1"
+		}
+		"131"//The Chargin' Targe
+		{
+			"preserve_attributes"	"1"
+		
+			"1"				"26 ; 35"
+			"2"				"271 ; 750.0"
+		}
+		"1144"//Festive Targe
+		{
+			"preserve_attributes"	"1"
+		
+			"1"				"26 ; 35"
+			"2"				"271 ; 750.0"
+		}
+		"406"//Splendid Screen
+		{
+			"preserve_attributes"	"1"
+			
+			"1"				"271 ; 750.0"
+		}
+		"1099"//Tide Turner
+		{
+			"preserve_attributes"	"1"
+			"1"				"271 ; 750.0"
+		}
+		"39"//The Flare Gun
+		{
+			"preserve_attributes"	"1"
+			
+			"1"				"362 ; 35"
+		}
+		"1081"//Festive Flare Gun
+		{
+			"preserve_attributes"	"1"
+			
+			"1"				"362 ; 35"
+		}
+		"59"//The Dead Ringer
+		{
+			"preserve_attributes"	"1"
+			
+			"1"				"50 ; 0.2"
+		}
+		"45;1078"//Force-A-Nature
+		{
+			"preserve_attributes"	"1"
+			
+			"1"				"518 ; 2.0"
+		}
+		"1178"//Dragon's Fury
+		{
+			"preserve_attributes"	"1"
+			"1"				"273 ; 500.0"
+		}
+		"1151"//The Iron Bomber
+		{
+			"1"				"476 ; 1.15"
+		}
+		"426"//Eviction Notice
+		{
+			"preserve_attributes"	"1"
+			"1"				"348 ; 0.5"
+		}
+		"1101"//B.A.S.E Jumper
+		{
+			"preserve_attributes"	"1"
+			"1"				"66 ; 0.8"
+			"2"				"270 ; 1"
+		}
+		"133"//Gunboats
+		{
+			"preserve_attributes"	"1"
+			"1"				"64 ; 0.8"
+		}
+		"411"//The Quick-Fix
+		{
+			"preserve_attributes"	"1"
+			"1"				"90 ; 0.03"
+		}
+		"311"//Buffalo Steak Sandvich
+		{
+			"preserve_attributes"	"1"
+			"1"				"144 ; 0.0"
+			"2"				"184 ; 1"
+		}
+		"159"//Dalakohs Bar
+		{
+			"preserve_attributes"	"1"
+			"1"				"282 ; 15.0"
+		}
+		"433"//Fishcake
+		{
+			"preserve_attributes"	"1"
+			"1"				"282 ; 200.0"
+		}
+		"449"//Winger
+		{
+			"preserve_attributes"	"1"
+			"1"				"241 ; 3.0"
+			"2"				"216 ; 7.0"
+		}
+		"173"//Vita-Saw
+		{
+			"preserve_attributes"	"1"
+			"1"				"144 ; 0.0"
+		}
+		"129"//Buff Banner
+		{
+			"preserve_attributes"	"1"
+			"1"				"116 ; 2.0"
+		}
+		"163"//Crit-a-Cola
+		{
+			"preserve_attributes"	"1"
+			"1"				"814 ; 0.001"
+		}
+		"230"//Sydney Sleeper
+		{
+			"1"				"2000 ; 2.0"
+		}
+		"355"// Fan O'War
+		{
+			"1"				"2000 ; 4.0"
+		}
+
+	}
+}
