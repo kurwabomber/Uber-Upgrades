@@ -1333,6 +1333,39 @@ refreshUpgrades(client, slot)
 		}
 	}
 }
+stock int getUpgradeRate(client)
+{
+	int rate = 1;
+	if(globalButtons[client] & IN_DUCK)
+		rate *= 10;
+	if(globalButtons[client] & IN_RELOAD)
+		rate *= 100;
+	if(globalButtons[client] & IN_JUMP)
+		rate *= -1;
+
+	return rate;
+}
+public void getUpgradeMenuTitle(int client, int w_id, int cat_id, int slot, char fstr2[100])
+{
+	char fstr[40]
+	char fstr3[20]
+	if (slot != 4)
+	{
+		Format(fstr, sizeof(fstr), "%t", given_upgrd_classnames[w_id][cat_id], 
+				client)
+		Format(fstr3, sizeof(fstr3), "%T", current_slot_name[slot], client)
+		Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client], fstr3,
+			fstr)
+	}
+	else
+	{
+		Format(fstr, sizeof(fstr), "%t", given_upgrd_classnames[_:current_class[client] - 1][cat_id], 
+				client)
+		Format(fstr3, sizeof(fstr3), "%T", "Body Upgrades", client)
+		Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client], fstr3,
+			fstr)
+	}
+}
 public Action:GiveBotUpgrades(Handle timer, any:userid) 
 {
 	int client = GetClientOfUserId(userid);

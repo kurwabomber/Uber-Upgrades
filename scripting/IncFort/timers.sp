@@ -147,7 +147,7 @@ public Action:Timer_Second(Handle timer)
 			{
 				isParachuteReOpenable[client] += RoundToNearest(GetAttribute(secondary,"powerup max charges", 0.0));
 
-				Address shieldSpeedActive = TF2Attrib_GetByName(secondary, "powerup charges")
+				Address shieldSpeedActive = TF2Attrib_GetByName(secondary, "Charging Velocity")
 				if(shieldSpeedActive != Address_Null)
 				{
 					shieldVelocity[client] = TF2Attrib_GetValue(shieldSpeedActive);
@@ -156,15 +156,9 @@ public Action:Timer_Second(Handle timer)
 				{
 					shieldVelocity[client] = 0.0;
 				}
-				Address agilityPowerup = TF2Attrib_GetByName(client, "store sort override DEPRECATED");		
-				if(agilityPowerup != Address_Null)
-				{
-					float agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
-					if(agilityPowerupValue > 0.0)
-					{
-						shieldVelocity[client] *= 1.8;
-					}
-				}
+				float agilityPowerup = GetAttribute(client, "agility powerup");		
+				if(agilityPowerup != 0.0)
+					shieldVelocity[client] *= 1.8;
 			}
 		}
 	}
@@ -207,6 +201,19 @@ public Action:Timer_FixedVariables(Handle timer)
 			}
 			if(inScore[client] == false)
 			{
+				int delta = (globalButtons[client] ^ oldPlayerButtons[client]) & globalButtons[client];
+				int inverseDelta = (oldPlayerButtons[client] ^ globalButtons[client]) & oldPlayerButtons[client];
+				if(delta & IN_DUCK || delta & IN_JUMP || delta & IN_RELOAD || inverseDelta & IN_DUCK
+				|| inverseDelta & IN_JUMP || inverseDelta & IN_RELOAD)
+				{//Update menu based on operators
+					if(IsValidHandle(view_as<Menu>(playerUpgradeMenus[client])))
+					{
+						char fstr2[100];
+						getUpgradeMenuTitle(client, current_w_list_id[client], current_w_c_list_id[client], current_slot_used[client], fstr2);
+						Menu_UpgradeChoice(client, current_w_sc_list_id[client], current_w_c_list_id[client], fstr2, playerUpgradeMenuPage[client]);
+					}
+				}
+
 				if(disableIFMiniHud[client] <= 0.0)
 				{
 					char Startcash[128]
@@ -214,7 +221,7 @@ public Action:Timer_FixedVariables(Handle timer)
 					SendItemInfo(client, Startcash);
 				}
 				SetEntProp(client, Prop_Send, "m_nCurrency", 0);
-				char ArmorLeft[96]
+				char ArmorLeft[64]
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
@@ -222,7 +229,7 @@ public Action:Timer_FixedVariables(Handle timer)
 					if(CheckForAttunement(client))
 					{
 						Format(ArmorLeft, sizeof(ArmorLeft), "%s\nFocus  | %.0f / %.0f", ArmorLeft, fl_CurrentFocus[client],fl_MaxFocus[client]); 
-						char spellHUD[2048]
+						char spellHUD[1024]
 						Format(spellHUD, sizeof(spellHUD), "Current Spells Active | \n");
 						int activeSpells = 0;
 						int attunement = 1;
@@ -237,7 +244,7 @@ public Action:Timer_FixedVariables(Handle timer)
 							{
 								activeSpells++;
 								int spellID = RoundToNearest(AttunedSpells[client][i]-1.0)
-								char spellnum[2048]
+								char spellnum[64]
 								Format(spellnum, sizeof(spellnum),"%i - %s | Cooldown %.1f\n", i+1, SpellList[spellID], SpellCooldowns[client][i]);
 								StrCat(spellHUD,sizeof(spellHUD),spellnum);
 							}
@@ -290,6 +297,8 @@ public Action:Timer_FixedVariables(Handle timer)
 					}
 				}
 			}
+
+			oldPlayerButtons[client] = globalButtons[client];
 		}
 		if(IsValidClient3(client))
 		{

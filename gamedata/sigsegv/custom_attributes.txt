@@ -3125,7 +3125,16 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
-
+    "4632"
+    {
+        "name"  "Charging Velocity"
+        "attribute_class"   "shield_charge_velocity"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
 
     //filler
     "6000"

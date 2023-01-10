@@ -32,6 +32,9 @@ Handle ArmorTutorial;
 Handle ArcaneTutorial;
 Handle WeaponTutorial;
 //Integers
+int playerUpgradeMenus[MAXPLAYERS+1];
+int playerUpgradeMenuPage[MAXPLAYERS+1];
+int oldPlayerButtons[MAXPLAYERS+1];
 int DisableBotUpgrades
 int DisableCooldowns
 int gameStage;

@@ -105,25 +105,25 @@
 			"preserve_attributes"	"1"
 		
 			"1"				"26 ; 35"
-			"2"				"271 ; 750.0"
+			"2"				"4632 ; 750.0"
 		}
 		"1144"//Festive Targe
 		{
 			"preserve_attributes"	"1"
 		
 			"1"				"26 ; 35"
-			"2"				"271 ; 750.0"
+			"2"				"2714632 ; 750.0"
 		}
 		"406"//Splendid Screen
 		{
 			"preserve_attributes"	"1"
 			
-			"1"				"271 ; 750.0"
+			"1"				"4632 ; 750.0"
 		}
 		"1099"//Tide Turner
 		{
 			"preserve_attributes"	"1"
-			"1"				"271 ; 750.0"
+			"1"				"4632 ; 750.0"
 		}
 		"39"//The Flare Gun
 		{

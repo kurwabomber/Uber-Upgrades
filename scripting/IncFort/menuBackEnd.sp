@@ -11,7 +11,56 @@ public MenuHandler_AccessDenied(Handle menu, MenuAction:action, client, param2)
 
 public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 {
-	if (action == MenuAction_Select)
+	if(action == MenuAction_DisplayItem)
+	{
+		char desc_str[128];
+		char info_str[16];
+		int style;
+		GetMenuItem(menu, param2, info_str, sizeof(info_str), style, desc_str, sizeof(desc_str));
+		int slot = current_slot_used[client]
+		int w_id = current_w_list_id[client]
+		int cat_id = current_w_c_list_id[client]
+		int subcat_id = current_w_sc_list_id[client]
+		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
+		if(upgrades_display_style[upgrade_choice] != 0)
+		{
+			int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
+			if(inum != 20000)
+			{
+				int up_cost = upgrades_costs[upgrade_choice] / 2
+				if (slot == 1)
+				{
+					up_cost = RoundFloat((up_cost * 1.0) * SecondaryCostReduction)
+				}
+
+				switch(upgrades_display_style[upgrade_choice])
+				{
+					case 1:
+					{		
+						if(upgrades_efficiency_list[client][slot][upgrade_choice])
+							Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+					}
+					case 6:
+					{
+						if(upgrades_efficiency_list[client][slot][upgrade_choice])
+							Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+					}
+					case 2:
+					{
+						if(upgrades_efficiency_list[client][slot][upgrade_choice])
+							Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+					}
+					case 3:
+					{
+						if(upgrades_efficiency_list[client][slot][upgrade_choice])
+							Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+					}
+				}
+				return RedrawMenuItem(desc_str);
+			}
+		}
+	}
+	else if (action == MenuAction_Select)
 	{
 		client_respawn_handled[client] = 0
 		int slot = current_slot_used[client]
@@ -20,8 +69,8 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int subcat_id = current_w_sc_list_id[client]
 		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
 		int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
-		
-		int rate = 1;
+		playerUpgradeMenuPage[client] = GetMenuSelectionPosition();
+		int rate = getUpgradeRate(client);
 
 
 		if(canBypassRestriction[client] == false && upgrades_requirement[upgrade_choice] > (StartMoney + additionalstartmoney))
@@ -47,20 +96,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 			}
 			Menu_UpgradeChoice(client, subcat_id, cat_id, fstr2, GetMenuSelectionPosition())
 			PrintToChat(client,"The server has not reached this level yet.")
-			return;
-		}
-		
-		if(globalButtons[client] & IN_DUCK)
-		{
-			rate *= 10;
-		}
-		if(globalButtons[client] & IN_RELOAD)
-		{
-			rate *= 100;
-		}
-		if(globalButtons[client] & IN_JUMP)
-		{
-			rate *= -1;
+			return param2;
 		}
 		if(rate == 1)
 		{
@@ -79,7 +115,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 				if(upgrades_description[upgrade_choice][0])
 				{
 					disableIFMiniHud[client] = 8.0;
-					char upgradeDescription[1024]
+					char upgradeDescription[512]
 					Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 					upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
 					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
@@ -180,7 +216,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 					if(upgrades_description[upgrade_choice][0])
 					{
 						disableIFMiniHud[client] = 8.0;
-						char upgradeDescription[1024]
+						char upgradeDescription[512]
 						Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 						upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
 						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
@@ -257,25 +293,8 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 				}
 			}
 		}
-		char fstr2[100]
-		char fstr[40]
-		char fstr3[20]
-		if (slot != 4)
-		{
-			Format(fstr, sizeof(fstr), "%t", given_upgrd_classnames[w_id][cat_id], 
-					client)
-			Format(fstr3, sizeof(fstr3), "%T", current_slot_name[slot], client)
-			Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client], fstr3,
-				fstr)
-		}
-		else
-		{
-			Format(fstr, sizeof(fstr), "%t", given_upgrd_classnames[_:current_class[client] - 1][cat_id], 
-					client)
-			Format(fstr3, sizeof(fstr3), "%T", "Body Upgrades", client)
-			Format(fstr2, sizeof(fstr2), "$%.0f [%s] - %s", CurrencyOwned[client], fstr3,
-				fstr)
-		}
+		char fstr2[100];
+		getUpgradeMenuTitle(client, w_id, cat_id, slot, fstr2);
 		Menu_UpgradeChoice(client, subcat_id, cat_id, fstr2, GetMenuSelectionPosition())
 	}
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
@@ -325,6 +344,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 	{
         CloseHandle(menu);
 	}
+	return 0;
 }
 
 

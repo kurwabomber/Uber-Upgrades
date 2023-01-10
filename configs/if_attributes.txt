@@ -5833,7 +5833,7 @@
 		}
 		"1554"
 		{
-			"name"		"powerup charges"
+			"name"		"Charging Velocity"
 			"ref"		"Charging Velocity"
 			"cost"		"600"
 			"increase_ratio"	"0.4"
