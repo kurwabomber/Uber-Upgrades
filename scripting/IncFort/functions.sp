@@ -860,7 +860,7 @@ RespawnEffect(client)
 		fl_CurrentArmor[client] = fl_MaxArmor[client];
 		fl_AdditionalArmor[client] = 0.0;
 		LightningEnchantmentDuration[client] = 0.0;
-		CreateTimer(0.2,GiveMaxAmmo,GetClientUserId(client));
+		CreateTimer(0.4,GiveMaxAmmo,GetClientUserId(client));
 	}
 	TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
 	TF2Attrib_SetByName(client,"crit_dmg_falloff", 1.0);
@@ -2460,7 +2460,9 @@ TF2_Override_ChargeSpeed(client)
 	{
 		float velocity = GetAttribute(secondary, "Charging Velocity", 750.0);
 		velocity *= GetAttribute(client, "agility powerup") != 0.0 ? 1.8 : 1.0;
+		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.01);
 		SetEntPropFloat(client, Prop_Data, "m_flMaxspeed", velocity);
+		
 	}
 }
 CheckGrenadeMines(ref)

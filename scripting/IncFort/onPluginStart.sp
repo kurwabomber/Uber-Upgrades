@@ -408,6 +408,15 @@ public void OnPluginStart()
 	}
 	DHookEnableDetour(g_DHookFireballRange, false, OnFireballRangeThink);
 
+	//Charge Speed Override
+	Handle g_DHookChargeMove = DHookCreateFromConf(hConf, "CTFGameMovement::ChargeMove()");
+	
+	if(g_DHookChargeMove == INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | g_DHookChargeMove fucked up.");
+	}
+	DHookEnableDetour(g_DHookChargeMove, false, OnShieldChargeMove);
+
 	//Weapon Fired
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	

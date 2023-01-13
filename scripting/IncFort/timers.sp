@@ -1391,18 +1391,25 @@ public Action:GiveMaxAmmo(Handle timer, any:userid)
 	//PrintToChatAll("%i gaming", client);
 	if(IsValidClient3(client))
 	{
-		//PrintToChatAll("%N", client);
-		if(IsValidEntity(GetWeapon(client,0)) && HasEntProp(GetWeapon(client,0), Prop_Data, "m_iClip1"))
+		int primary = GetWeapon(client,0);
+		int secondary = GetWeapon(client,1);
+		if(IsValidWeapon(primary) && HasEntProp(primary, Prop_Data, "m_iClip1"))
 		{
-			int primaryAmmo = GetMaxClip(GetWeapon(client,0));
+			int primaryAmmo = GetMaxClip(primary);
 			if(primaryAmmo > 1)
 				SetClipAmmo(client, 0, primaryAmmo);
+			
+			if(HasEntProp(primary, Prop_Send, "m_flEnergy"))
+				SetEntPropFloat(primary, Prop_Send, "m_flEnergy", float(primaryAmmo));
 		}
-		if(IsValidEntity(GetWeapon(client,1)) && HasEntProp(GetWeapon(client,1), Prop_Data, "m_iClip1"))
+		if(IsValidWeapon(secondary) && HasEntProp(secondary, Prop_Data, "m_iClip1"))
 		{
-			int secondaryAmmo = GetMaxClip(GetWeapon(client,1));
+			int secondaryAmmo = GetMaxClip(secondary);
 			if(secondaryAmmo > 1)
 				SetClipAmmo(client, 1, secondaryAmmo);
+
+			if(HasEntProp(secondary, Prop_Send, "m_flEnergy"))
+				SetEntPropFloat(secondary, Prop_Send, "m_flEnergy", float(secondaryAmmo));
 		}
 		
 		if(!IsFakeClient(client) && AreClientCookiesCached(client))

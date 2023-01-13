@@ -148,6 +148,13 @@
 				"return"		"void"
 				"this"			"entity"
 			}
+			"CTFGameMovement::ChargeMove()"
+			{
+				"signature"		"CTFGameMovement::ChargeMove()"
+				"callconv"		"thiscall"
+				"return"		"bool"
+				"this"			"address"
+			}
 		}
 		"Signatures"
 		{
@@ -229,6 +236,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN24CTFProjectile_BallOfFire18DistanceLimitThinkEv"
+			}
+			"CTFGameMovement::ChargeMove()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN15CTFGameMovement10ChargeMoveEv"
 			}
 		}
 	}

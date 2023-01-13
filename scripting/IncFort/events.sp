@@ -534,6 +534,10 @@ public MRESReturn OnFireballRangeThink(int entity)  {
 	isProjectileFireball[entity] = true;
 	return MRES_Supercede;
 }
+public MRESReturn OnShieldChargeMove(Address address, Handle hReturn){
+	DHookSetReturn(hReturn, false);
+	return MRES_Supercede;
+}
 public MRESReturn IsInWorldCheck(int entity, Handle hReturn, Handle hParams)  {
 	if(IsValidEntity(entity))
 	{
