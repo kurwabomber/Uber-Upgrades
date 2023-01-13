@@ -36,7 +36,12 @@
 		"fire rate penalty HIDDEN"
 		{
 			"plugin"	"tf2attributes"
-			"value"		"5.0"
+			"value"		"3.0"
+		}
+		"mini rockets"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"1.0"
 		}
 	}
 }

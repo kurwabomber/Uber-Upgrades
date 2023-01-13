@@ -840,9 +840,9 @@ public OnEntityDestroyed(entity)
 	char classname[32];
 	GetEntityClassname(entity, classname, 32)
 	for(int i=1;i<MaxClients;i++)
-	{
-		ShouldNotHome[entity][i] = false;
-	}
+	{ShouldNotHome[entity][i] = false;}
+	for(int i=0;i<MAXENTITIES;i++)
+	{ShouldNotHit[entity][i] = false;}
 	isEntitySentry[entity] = false;
 	isProjectileHoming[entity] = false;
 	isProjectileBoomerang[entity] = false;
@@ -1868,7 +1868,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 											SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
 											SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
 											SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13);
-											SDKHook(iEntity, SDKHook_Touch, OnCollisionMoonveil);
+											SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchMoonveil);
 											
 											float vecBossMin[3], vecBossMax[3];
 											GetEntPropVector(iEntity, Prop_Send, "m_vecMins", vecBossMin);
@@ -2668,7 +2668,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 									SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
 									if(StrEqual(projName, "tf_projectile_arrow", false))
 									{
-										SDKHook(iEntity, SDKHook_Touch, OnCollisionWarriorArrow);
+										SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchWarriorArrow);
 										
 										if(iTeam == 2)
 										{
@@ -2737,7 +2737,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 								SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
 								SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.4);
 								ResizeHitbox(iEntity, 2.0)
-								SDKHook(iEntity, SDKHook_Touch, OnCollisionBoomerang);
+								SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchBoomerang);
 								
 								if(iTeam == 2)
 								{
@@ -2770,7 +2770,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							GetClientEyeAngles(client, fAngles);
 							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 							GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-							ScaleVector(fwd, 35.0);
+							ScaleVector(fwd, 50.0);
 							AddVectors(fOrigin, fwd, fOrigin);
 							float velocity = 3000.0;
 							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
@@ -2796,8 +2796,8 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
 							}
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-							SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.2);
-							SDKHook(iEntity, SDKHook_Touch, OnCollisionPiercingRocket);
+							SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.7);
+							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchPiercingRocket);
 							SDKUnhook(iEntity, SDKHook_Touch, projectileCollision);
 							SetEntityModel(iEntity, "models/weapons/w_models/w_rocket_airstrike/w_rocket_airstrike.mdl");
 							CreateTimer(3.0, SelfDestruct, EntIndexToEntRef(iEntity));

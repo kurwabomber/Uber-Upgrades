@@ -337,7 +337,7 @@ CastSunlightSpear(client, attuneSlot)
 	SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
 	TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 	DispatchSpawn(iEntity);
-	SDKHook(iEntity, SDKHook_Touch, OnSunlightSpearCollision);
+	SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchSunlightSpear);
 	
 	for(int it = 0;it < 3;it++)
 	{

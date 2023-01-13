@@ -22,6 +22,11 @@ public Action:AddArrowCollisionFunction(entity, client)
 	}
 	return Plugin_Stop;
 }
+public Action:OnStartTouchSunlightSpear(entity, other)
+{
+	SDKHook(entity, SDKHook_Touch, OnSunlightSpearCollision);
+	return Plugin_Handled;
+}
 public Action:OnSunlightSpearCollision(entity, client)
 {
 	char strName[128];
@@ -51,6 +56,7 @@ public Action:OnSunlightSpearCollision(entity, client)
 			TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
 		}
 	}
+	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
 	return Plugin_Stop;
 }
 public Action:BlackskyEyeCollision(entity, client)
@@ -247,6 +253,7 @@ public Action:projectileCollision(entity, client)
 			origin[0] += GetRandomFloat(-4.0,4.0)
 			origin[1] += GetRandomFloat(-4.0,4.0)
 			TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
+			RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
 		}
 	}
 	if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -259,6 +266,11 @@ public Action:projectileCollision(entity, client)
 		}
 	}
 	return Plugin_Stop;
+}
+public Action:OnStartTouchWarriorArrow(entity, other)
+{
+	SDKHook(entity, SDKHook_Touch, OnCollisionWarriorArrow);
+	return Plugin_Handled;
 }
 public Action:OnCollisionWarriorArrow(entity, client)
 {
@@ -288,6 +300,7 @@ public Action:OnCollisionWarriorArrow(entity, client)
 			}
 		}
 	}
+	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
 	return Plugin_Stop;
 }
 public Action:OnCollisionBossArrow(entity, client)
@@ -400,6 +413,11 @@ public Action:OnCollisionPhotoViscerator(entity, client)
 	}
 	return Plugin_Stop;
 }
+public Action:OnStartTouchMoonveil(entity, other)
+{
+	SDKHook(entity, SDKHook_Touch, OnCollisionMoonveil);
+	return Plugin_Handled;
+}
 public Action:OnCollisionMoonveil(entity, client)
 {
 	char strName[128];
@@ -432,7 +450,13 @@ public Action:OnCollisionMoonveil(entity, client)
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", pos);
 	EmitSoundToAll("weapons/cow_mangler_explosion_normal_01.wav", entity,_,100,_,0.85);
 	CreateParticle(-1, "drg_cow_explosioncore_charged_blue", false, "", 0.1, pos);
+	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
 	return Plugin_Continue;
+}
+public Action:OnStartTouchBoomerang(entity, other)
+{
+	SDKHook(entity, SDKHook_Touch, OnCollisionBoomerang);
+	return Plugin_Handled;
 }
 public Action:OnCollisionBoomerang(entity, client)
 {
@@ -473,15 +497,25 @@ public Action:OnCollisionBoomerang(entity, client)
 				ShouldNotHome[entity][client] = true;
 		}
 	}
+	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
+	if(client == 0)
+		RemoveEntity(entity);
 	return Plugin_Stop;
+}
+public Action:OnStartTouchPiercingRocket(entity, other)
+{
+	SDKHook(entity, SDKHook_Touch, OnCollisionPiercingRocket);
+	return Plugin_Handled;
 }
 public Action:OnCollisionPiercingRocket(entity, client)
 {
+	Action action = Plugin_Continue;
 	char strName[128];
 	GetEntityClassname(client, strName, 128)
 	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
-	if(IsValidForDamage(client))
+	
+	if(!StrEqual(strName, strName1) && IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 		{
@@ -502,7 +536,7 @@ public Action:OnCollisionPiercingRocket(entity, client)
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEntity(CWeapon))
 				{
-					float damageDealt = 70.0 * TF2_GetDamageModifiers(owner, CWeapon);
+					float damageDealt = 150.0 * TF2_GetDamageModifiers(owner, CWeapon);
 					
 					float clientpos[3], targetpos[3];
 					GetEntPropVector(owner, Prop_Data, "m_vecAbsOrigin", clientpos);
@@ -527,7 +561,7 @@ public Action:OnCollisionPiercingRocket(entity, client)
 				}
 				if(IsValidClient3(client))
 					ShouldNotHome[entity][client] = true;
-				return Plugin_Stop;
+				action = Plugin_Stop;
 			}
 		}
 	}
@@ -543,8 +577,11 @@ public Action:OnCollisionPiercingRocket(entity, client)
 		AddVectors(origin, vBuffer, origin);
 		TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
 		RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
+		action = Plugin_Stop;
 	}
-	return Plugin_Continue;
+	if(client == 0)
+		action = Plugin_Continue;
+	return action;
 }
 public Action:OnStartTouchJars(entity, other)
 {

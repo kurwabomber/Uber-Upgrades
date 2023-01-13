@@ -591,7 +591,7 @@ DisplayItemChange(client,itemidx)
 		//Heavy Primaries
 		case 312:
 		{
-			ChangeString = "The Brass Beast | Shoots rockets that have 70 base damage and 144HU blast radius and can penetrate enemies. Each penetration triggers an explosion. 5x slower fire rate.";
+			ChangeString = "The Brass Beast | Shoots rockets that have 150 base damage and 144HU blast radius and can penetrate enemies. Each penetration triggers an explosion. Cannot hit enemies multiple times. 3x slower fire rate.";
 		}
 		case 811,832:
 		{

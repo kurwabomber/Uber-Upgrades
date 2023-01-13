@@ -18,6 +18,7 @@ Yeah.
 
 bool DOTStacked[MAXENTITIES][MAXENTITIES];
 bool ShouldNotHome[MAXENTITIES][MAXPLAYERS+1];
+bool ShouldNotHit[MAXENTITIES][MAXENTITIES];
 stock bool IsValidClient(client)
 {
     if ( client <= 0 || client > MaxClients ) return false; 
@@ -263,6 +264,9 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 		entity = owner;
 	for(int i = 1; i < MAXENTITIES; i++)
 	{
+		if(ShouldNotHit[entity][entity])
+			continue;
+
 		if(IsValidForDamage(i) && IsOnDifferentTeams(owner,i) && i != entity)
 		{
 			float targetvec[3];
