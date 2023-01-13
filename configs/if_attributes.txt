@@ -1729,7 +1729,7 @@
 			"name"		"charge time increased"
 			"ref"		"charge time increased"
 			"cost"		"1500"
-			"value"		"0.15"
+			"value"		"0.25"
 			"increase_ratio" 	"0.7"
 			"init"		"1.00"
 			"max"		"2.00"
@@ -4232,7 +4232,7 @@
 		}
 		"386.75"
 		{
-			"name"		"critboost"
+			"name"		"fireball distance"
 			"ref"		"Projectile Distance Increased"
 			"cost"		"700"
 			"value"		"100"
@@ -5828,8 +5828,8 @@
 			"cost"		"6000"
 			"increase_ratio"	"0.0"
 			"value"		"1"
-			"init"		"1"
-			"max"		"2"
+			"init"		"0"
+			"max"		"1"
 		}
 		"1554"
 		{
@@ -5839,7 +5839,7 @@
 			"increase_ratio"	"0.4"
 			"value"		"100.0"
 			"init"		"750.0"
-			"max"		"2300.0"
+			"max"		"2550.0"
 		}
 		"1555"
 		{

@@ -123,43 +123,6 @@ public Action:Timer_Second(Handle timer)
 			{
 				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.00015 *  Pow(arcanePower, 2.0);
 			}
-			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
-			{
-				Address distanceActive = TF2Attrib_GetByName(CWeapon, "critboost")
-				if(distanceActive != Address_Null)
-				{
-					DragonsFurySpeedValue[client] = TF2Attrib_GetValue(distanceActive);
-				}
-				else
-				{
-					DragonsFurySpeedValue[client] = 0.0;
-				}
-			}
-			isParachuteReOpenable[client] = 0;
-			int primary = GetWeapon(client, 0);
-			if(IsValidWeapon(primary))
-			{
-				isParachuteReOpenable[client] += RoundToNearest(GetAttribute(primary,"powerup max charges", 0.0));
-			}
-			int secondary = GetWeapon(client,1);
-			if(IsValidWeapon(secondary))
-			{
-				isParachuteReOpenable[client] += RoundToNearest(GetAttribute(secondary,"powerup max charges", 0.0));
-
-				Address shieldSpeedActive = TF2Attrib_GetByName(secondary, "Charging Velocity")
-				if(shieldSpeedActive != Address_Null)
-				{
-					shieldVelocity[client] = TF2Attrib_GetValue(shieldSpeedActive);
-				}
-				else
-				{
-					shieldVelocity[client] = 0.0;
-				}
-				float agilityPowerup = GetAttribute(client, "agility powerup");		
-				if(agilityPowerup != 0.0)
-					shieldVelocity[client] *= 1.8;
-			}
 		}
 	}
 	if(IsMvM())

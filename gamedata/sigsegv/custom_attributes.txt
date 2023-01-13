@@ -3135,7 +3135,16 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
-
+    "4633"
+    {
+        "name"  "fireball distance"
+        "attribute_class"   "fireball_distance"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
     //filler
     "6000"
     {

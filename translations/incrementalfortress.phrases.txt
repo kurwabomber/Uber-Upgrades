@@ -488,7 +488,7 @@
 	}
 	"Projectile Distance Increased"
 	{
-		"en"		"Projectile Distance Increased"
+		"en"		"Fireball Distance Increased"
 	}
 	"Maximum Caber Charges"
 	{

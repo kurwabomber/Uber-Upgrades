@@ -76,7 +76,6 @@ int g_SmokeSprite;
 int g_LightningSprite;
 int spriteIndex
 int Laser;
-int isParachuteReOpenable[MAXPLAYERS+1];
 int autoSentryID[MAXPLAYERS+1];
 int upgrades_weapon_nb;
 int upgrades_weapon_current[MAXPLAYERS+1];
@@ -159,8 +158,6 @@ float DarkmoonBlade[MAXPLAYERS + 1];
 float DarkmoonBladeDuration[MAXPLAYERS + 1];
 float RPS[MAXPLAYERS+1];
 float lastMinesTime[MAXPLAYERS+1];
-float DragonsFurySpeedValue[MAXPLAYERS+1];
-float shieldVelocity[MAXPLAYERS+1];
 float weaponTrailTimer[MAXPLAYERS+1];
 float upgrades_tweaks_requirement[_NB_SP_TWEAKS]
 float upgrades_tweaks_cost[_NB_SP_TWEAKS]
@@ -187,6 +184,7 @@ float trueVel[MAXPLAYERS+1][3];
 float miniCritStatusVictim[MAXPLAYERS+1];
 float miniCritStatusAttacker[MAXPLAYERS+1];
 float corrosiveDOT[MAXPLAYERS+1][MAXPLAYERS+1][2]
+float entitySpawnPositions[MAXENTITIES][3];
 
 //String
 char given_upgrd_classnames[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][128]
@@ -259,6 +257,7 @@ float RadiationMaximum[MAXPLAYERS+1];
 //Projectile Properties
 bool isProjectileHoming[MAXENTITIES];
 bool isProjectileBoomerang[MAXENTITIES];
+bool isProjectileFireball[MAXENTITIES];
 float projectileHomingDegree[MAXENTITIES];
 float entitySpawnTime[MAXENTITIES];
 /*-- homing shit --*/

@@ -141,6 +141,13 @@
 					}
 				}
 			}
+			"CTFProjectile_BallOfFire::DistanceLimitThink()"
+			{
+				"signature"		"CTFProjectile_BallOfFire::DistanceLimitThink()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"entity"
+			}
 		}
 		"Signatures"
 		{
@@ -217,6 +224,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN13CCurrencyPack9SetAmountEf"
+			}
+			"CTFProjectile_BallOfFire::DistanceLimitThink()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN24CTFProjectile_BallOfFire18DistanceLimitThinkEv"
 			}
 		}
 	}

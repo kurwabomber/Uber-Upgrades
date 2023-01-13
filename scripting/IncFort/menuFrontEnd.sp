@@ -110,7 +110,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 				}
 				if(rate > 0)
 				{
-					for (int idx = 0; idx < rate; idx++)
+					for (; times < rate; ++times)
 					{
 						float nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[tmp_up_idx])
 						if(nextcost < CurrencyOwned[client] && upgrades_ratio[tmp_up_idx] > 0.0 && 
@@ -119,21 +119,30 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 							t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[tmp_up_idx]))
 							idx_currentupgrades_val++		
 							upgrades_val += upgrades_ratio[tmp_up_idx]
-							times++;
 						}
-						if(nextcost < CurrencyOwned[client] && upgrades_ratio[tmp_up_idx] < 0.0 && 
+						else if(nextcost < CurrencyOwned[client] && upgrades_ratio[tmp_up_idx] < 0.0 && 
 						(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 > upgrades_m_val[tmp_up_idx]))
 						{
 							t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[tmp_up_idx]))
 							idx_currentupgrades_val++		
 							upgrades_val += upgrades_ratio[tmp_up_idx]
-							times++;
+						}
+						else{
+							break;
 						}
 					}
 				}
 				else
 				{
-					for (int idx = 0; idx < IntAbs(rate); idx++)
+					if(upgrades_val == upgrades_m_val[tmp_up_idx])
+					{
+						idx_currentupgrades_val--
+						float temp = currentupgrades_i[client][slot][tmp_ref_idx] != 0.0 ? currentupgrades_i[client][slot][tmp_ref_idx] : upgrades_i_val[tmp_up_idx];
+						t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[tmp_up_idx]));
+						upgrades_val = temp+(idx_currentupgrades_val * upgrades_ratio[tmp_up_idx]);
+						times--;
+					}
+					for (; times < rate;)
 					{
 						if(idx_currentupgrades_val > 0 && upgrades_ratio[tmp_up_idx] > 0.0 && 
 						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 <= upgrades_m_val[tmp_up_idx]
@@ -142,17 +151,19 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 							idx_currentupgrades_val--
 							t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[tmp_up_idx]))		
 							upgrades_val -= upgrades_ratio[tmp_up_idx]
-							times--;
 						}
-						if(idx_currentupgrades_val > 0 && upgrades_ratio[tmp_up_idx] < 0.0 && 
+						else if(idx_currentupgrades_val > 0 && upgrades_ratio[tmp_up_idx] < 0.0 && 
 						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 >= upgrades_m_val[tmp_up_idx]
 						&& client_spent_money[client][slot] + t_up_cost > client_tweak_highest_requirement[client][slot] - 1.0)))
 						{
 							idx_currentupgrades_val--
 							t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[tmp_up_idx]))	
 							upgrades_val -= upgrades_ratio[tmp_up_idx]
-							times--;
 						}
+						else{
+							break;
+						}
+						times--;
 					}
 				}
 			}
@@ -182,10 +193,12 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 				tmp_ratio *= -1.0
 				plus_sign = "-"
 			}
+
+
 			char buf[256]
 			bool itemDisabled;
 			Format(buf, sizeof(buf), "%T", upgradesNames[tmp_up_idx], client)
-			if (tmp_ratio < 0.99)
+			if (FloatAbs(tmp_ratio) < 0.99)
 			{
 				if(RoundFloat(val*100.0)/100.0 == upgrades_m_val[tmp_up_idx])
 				{

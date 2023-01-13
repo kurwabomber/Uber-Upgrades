@@ -2370,6 +2370,30 @@ public OnThinkPost(entity)
 		}
 	}
 }
+public getProjOrigin(entity)
+{
+	entity = EntRefToEntIndex(entity);
+	if(IsValidEntity(entity))
+		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", entitySpawnPositions[entity]);
+}
+public OnFireballThink(entity)
+{
+	if(IsValidEntity(entity))
+	{
+		int owner = getOwner(entity);
+		if(!IsValidClient3(owner))
+			return;
+		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+		if(!IsValidWeapon(CWeapon))
+			return;
+
+		float distance = GetAttribute(CWeapon, "fireball distance", 500.0);
+		float origin[3];
+		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
+		if(GetVectorDistance(entitySpawnPositions[entity], origin) > distance)
+			{RemoveEntity(entity);}
+	}
+}
 public OnEntityHomingThink(entity) 
 { 
 	if(!IsValidEntity(entity))
@@ -2428,6 +2452,16 @@ public OnEntityHomingThink(entity)
 		SetEntityGravity(entity, 0.001);
 	}
 	homingTicks[entity]++;
+}
+TF2_Override_ChargeSpeed(client)
+{
+	int secondary = GetWeapon(client,1);
+	if(IsValidWeapon(secondary))
+	{
+		float velocity = GetAttribute(secondary, "Charging Velocity", 750.0);
+		velocity *= GetAttribute(client, "agility powerup") != 0.0 ? 1.8 : 1.0;
+		SetEntPropFloat(client, Prop_Data, "m_flMaxspeed", velocity);
+	}
 }
 CheckGrenadeMines(ref)
 {

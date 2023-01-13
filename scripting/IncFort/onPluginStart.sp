@@ -399,6 +399,15 @@ public void OnPluginStart()
 	}
 	DHookEnableDetour(g_DHookRecoil, false, OnRecoilApplied);
 
+	//Dragon's Fury Range Upgrade
+	Handle g_DHookFireballRange = DHookCreateFromConf(hConf, "CTFProjectile_BallOfFire::DistanceLimitThink()");
+	
+	if(g_DHookFireballRange == INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | g_DHookFireballRange fucked up.");
+	}
+	DHookEnableDetour(g_DHookFireballRange, false, OnFireballRangeThink);
+
 	//Weapon Fired
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	
@@ -424,14 +433,12 @@ public void OnPluginStart()
 	SetConVarFloat(FindConVar("sv_maxvelocity"), 1000000000.0, true, false);
 	SetConVarFloat(FindConVar("tf_scout_bat_launch_delay"), -0.1, true, false);
 	SetConVarFloat(FindConVar("sv_maxunlag"), 0.3, true, false);
-	SetConVarFloat(FindConVar("tf_parachute_aircontrol"), 5000.0, true, false);
-	SetConVarFloat(FindConVar("tf_parachute_maxspeed_xy"), 10000.0, true, false);
+	SetConVarFloat(FindConVar("tf_parachute_aircontrol"), 50000.0, true, false);
+	SetConVarFloat(FindConVar("tf_parachute_maxspeed_xy"), 100000.0, true, false);
 	SetConVarFloat(FindConVar("tf_parachute_maxspeed_z"), -50.0, true, false);
 	SetConVarFloat(FindConVar("tf_stealth_damage_reduction"), 0.75, true, false);
 	SetConVarFloat(FindConVar("tf_feign_death_damage_scale"), 0.1, true, false);
 	SetConVarFloat(FindConVar("tf_feign_death_activate_damage_scale"), 0.05, true, false);
-
-	SetConVarInt(FindConVar("tf_parachute_deploy_toggle_allowed"), 0, true, false);
 	SetConVarInt(FindConVar("sv_unlag_fixstuck"), 1, true, false);
 	//Database
 	char queryString[512];

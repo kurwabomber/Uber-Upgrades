@@ -504,6 +504,12 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
 					return MRES_Supercede;
 			}
+			case TFCond_ParachuteDeployed:
+			{
+				int canRedeploy = RoundToNearest(GetAttributeAccumulateAdditive(client, "powerup max charges", 0.0));
+				if(canRedeploy > 0)
+					return MRES_Supercede;
+			}
 		}
 	}
 	return MRES_Ignored;
@@ -521,6 +527,11 @@ public MRESReturn OnSentryThink(int entity)  {
 			return MRES_Ignored;
 		}
 	}
+	return MRES_Supercede;
+}
+//This one is a recursive per tick think essentially, so if you return to override it'll stop the thinking.
+public MRESReturn OnFireballRangeThink(int entity)  {
+	isProjectileFireball[entity] = true;
 	return MRES_Supercede;
 }
 public MRESReturn IsInWorldCheck(int entity, Handle hReturn, Handle hParams)  {
@@ -657,37 +668,43 @@ public Event_BuffDeployed( Handle event, const char[] name, bool:broadcast )
 public void TF2_OnConditionAdded(client, TFCond:cond)
 {
 	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.01);
+	if(cond == TFCond_Charging)
+	{
+		TF2_Override_ChargeSpeed(client);
+	}
 }
 public void TF2_OnConditionRemoved(client, TFCond:cond)
 {
-	if(cond == TFCond_Bleeding)
+	switch(cond)
 	{
-		TF2Attrib_SetByName(client, "health from healers reduced", 1.0);
-	}
-	if(cond == TFCond_TeleportedGlow){
-		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.0);
-	}
-	if(cond == TFCond_OnFire){
-		fl_HighestFireDamage[client] = 0.0;
-	}
-	if(cond == TFCond_Charging){
-		float grenadevec[3], distance;
-		distance = 500.0;
-		GetClientEyePosition(client, grenadevec);
-		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEntity(CWeapon))
-		{
-			float damage = TF2_GetDPSModifiers(client,CWeapon,false,false) * 70.0;
-			int secondary = GetWeapon(client,1);
-			if(IsValidEntity(secondary))
+		case TFCond_Bleeding:{
+			TF2Attrib_SetByName(client, "health from healers reduced", 1.0);
+		}
+		case TFCond_TeleportedGlow:{
+			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.0);
+		}
+		case TFCond_OnFire:{
+			fl_HighestFireDamage[client] = 0.0;
+		}
+		case TFCond_Charging:{
+			float grenadevec[3], distance;
+			distance = 500.0;
+			GetClientEyePosition(client, grenadevec);
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			if(IsValidEntity(CWeapon))
 			{
-				Address bashBonusActive = TF2Attrib_GetByName(secondary, "charge impact damage increased")
-				if(bashBonusActive != Address_Null)
+				float damage = TF2_GetDPSModifiers(client,CWeapon,false,false) * 70.0;
+				int secondary = GetWeapon(client,1);
+				if(IsValidEntity(secondary))
 				{
-					damage *= TF2Attrib_GetValue(bashBonusActive);
+					Address bashBonusActive = TF2Attrib_GetByName(secondary, "charge impact damage increased")
+					if(bashBonusActive != Address_Null)
+					{
+						damage *= TF2Attrib_GetValue(bashBonusActive);
+					}
 				}
+				EntityExplosion(client, damage, distance, grenadevec, 1);
 			}
-			EntityExplosion(client, damage, distance, grenadevec, 1);
 		}
 	}
 	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.001);
@@ -734,6 +751,8 @@ public OnEntityCreated(entity, const char[] classname)
 	{
 		entitySpawnTime[entity] = GetGameTime();
 		g_nBounces[entity] = 0;
+		RequestFrame(getProjOrigin, EntIndexToEntRef(entity));
+
 		if(StrEqual(classname, "tf_projectile_energy_ball") || StrEqual(classname, "tf_projectile_energy_ring")
 		|| StrEqual(classname, "tf_projectile_balloffire"))
 		{
@@ -823,6 +842,7 @@ public OnEntityDestroyed(entity)
 	isEntitySentry[entity] = false;
 	isProjectileHoming[entity] = false;
 	isProjectileBoomerang[entity] = false;
+	isProjectileFireball[entity] = false;
 	projectileHomingDegree[entity] = 0.0;
 	gravChanges[entity] = false;
 	homingRadius[entity] = 0.0;
@@ -1147,9 +1167,65 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
 {
 	float tickRate = GetTickInterval();
-	if (IsValidClient(client))
+	int flags = GetEntityFlags(client)
+	if(!IsPlayerAlive(client) || !IsValidClient3(client))
+		return Plugin_Continue;
+
+	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	if(IsValidEntity(CWeapon))
 	{
-		int flags = GetEntityFlags(client)
+		if(!(lastFlag[client] & FL_ONGROUND) && flags & FL_ONGROUND)
+		{
+			Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
+			if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
+			{
+				float bossValue = TF2Attrib_GetValue(bossType);
+				switch(bossValue)
+				{
+					case 2.0:
+					{
+						miniCritStatusVictim[client] = 10.0;
+						TF2Attrib_SetByName(CWeapon, "fire rate penalty", 1.0)
+						TF2Attrib_SetByName(CWeapon, "dmg taken increased", 2.0)
+						TF2Attrib_SetByName(CWeapon, "faster reload rate", 1.0)
+						TF2Attrib_SetByName(CWeapon, "Blast radius increased", 0.5)
+						TF2Attrib_SetByName(CWeapon, "cannot pick up intelligence", 1.0)
+						TF2Attrib_SetByName(CWeapon, "increased jump height", 2.5)
+						SetEntProp(CWeapon, Prop_Data, "m_bReloadsSingly", 1);
+					}
+				}
+				//PrintToChatAll("ground")
+			}
+			SetEntityGravity(client, 1.0);
+		}
+		else if((lastFlag[client] & FL_ONGROUND) && !(flags & FL_ONGROUND))
+		{
+			Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
+			if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
+			{
+				float bossValue = TF2Attrib_GetValue(bossType);
+				switch(bossValue)
+				{
+					case 2.0:
+					{
+						miniCritStatusVictim[client] = 0.0;
+						TF2Attrib_SetByName(CWeapon, "fire rate penalty", 0.1)
+						TF2Attrib_SetByName(CWeapon, "dmg taken increased", 0.1)
+						TF2Attrib_SetByName(CWeapon, "faster reload rate", 0.0)
+						TF2Attrib_SetByName(CWeapon, "Blast radius increased", 1.75)
+						SetEntityGravity(client, 0.2);
+						SetEntProp(CWeapon, Prop_Data, "m_bReloadsSingly", 0);
+						CreateParticle(client, "ExplosionCore_MidAir", false, "", 0.1);
+					}
+				}
+				//PrintToChatAll("air")
+			}
+		}
+		if(TF2_IsPlayerInCondition(client, TFCond_Charging))
+			TF2_Override_ChargeSpeed(client);
+	}
+	if (!IsFakeClient(client))
+	{
 		if(shouldAttack[client] == true){
 			shouldAttack[client] = false;
 			buttons |= IN_ATTACK;
@@ -1176,7 +1252,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				EquipPlayerWeapon(client, client_new_weapon_ent_id[client]);
 			}
 		}
-		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEntity(CWeapon))
 		{
 			char strName[32];
@@ -1321,50 +1396,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								}
 							}
 						}
-					}
-					Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
-					if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
-					{
-						float bossValue = TF2Attrib_GetValue(bossType);
-						switch(bossValue)
-						{
-							case 2.0:
-							{
-								miniCritStatusVictim[client] = 10.0;
-								TF2Attrib_SetByName(CWeapon, "fire rate penalty", 1.0)
-								TF2Attrib_SetByName(CWeapon, "dmg taken increased", 2.0)
-								TF2Attrib_SetByName(CWeapon, "faster reload rate", 1.0)
-								TF2Attrib_SetByName(CWeapon, "Blast radius increased", 0.5)
-								TF2Attrib_SetByName(CWeapon, "cannot pick up intelligence", 1.0)
-								TF2Attrib_SetByName(CWeapon, "increased jump height", 2.5)
-								SetEntProp(CWeapon, Prop_Data, "m_bReloadsSingly", 1);
-							}
-						}
-						//PrintToChatAll("ground")
-					}
-					SetEntityGravity(client, 1.0);
-				}
-				else if((lastFlag[client] & FL_ONGROUND) && !(flags & FL_ONGROUND))
-				{
-					Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
-					if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
-					{
-						float bossValue = TF2Attrib_GetValue(bossType);
-						switch(bossValue)
-						{
-							case 2.0:
-							{
-								miniCritStatusVictim[client] = 0.0;
-								TF2Attrib_SetByName(CWeapon, "fire rate penalty", 0.2)
-								TF2Attrib_SetByName(CWeapon, "dmg taken increased", 0.1)
-								TF2Attrib_SetByName(CWeapon, "faster reload rate", 0.0)
-								TF2Attrib_SetByName(CWeapon, "Blast radius increased", 1.75)
-								SetEntityGravity(client, 0.5);
-								SetEntProp(CWeapon, Prop_Data, "m_bReloadsSingly", 0);
-								CreateParticle(client, "ExplosionCore_MidAir", false, "", 0.1);
-							}
-						}
-						//PrintToChatAll("air")
 					}
 				}
 				else if(!(flags & FL_ONGROUND))
@@ -2073,11 +2104,11 @@ public OnGameFrame()
 	{
 		if(IsValidEntity(i))
 		{
-			if(isProjectileHoming[i] == true)
+			if(isProjectileHoming[i])
 			{
 				OnThinkPost(i);
 			}
-			if(isProjectileBoomerang[i] == true)
+			if(isProjectileBoomerang[i])
 			{
 				BoomerangThink(i);
 			}
@@ -2085,7 +2116,7 @@ public OnGameFrame()
 			{
 				OnHomingThink(i);
 			}
-			if(isEntitySentry[i] == true)
+			if(isEntitySentry[i])
 			{
 				sentryThought[i] = false;
 				SDKCall(g_SDKCallSentryThink, i);
@@ -2093,6 +2124,10 @@ public OnGameFrame()
 			if(homingRadius[i] > 0.0 && homingDelay[i] < time - entitySpawnTime[i])
 			{
 				OnEntityHomingThink(i);
+			}
+			if(isProjectileFireball[i])
+			{
+				OnFireballThink(i);
 			}
 		}
 	}
@@ -3033,7 +3068,6 @@ public OnClientPutInServer(client)
 		b_Hooked[client] = true;
 		SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage);
 		SDKHook(client, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
-		SDKHook(client, SDKHook_PreThinkPost, Hook_PreThink);
 	}
 	ClientCommand(client, "sm_showhelp");
 }
@@ -3049,32 +3083,6 @@ public OnClientPostAdminCheck(client)
 			CreateTimer(0.0, ClChangeClassTimer, GetClientUserId(client));
 		}
 		GivePlayerData(client);
-	}
-}
-public void Hook_PreThink(int client)
-{
-	if(IsFakeClient(client) || !IsPlayerAlive(client) || IsClientObserver(client))
-		return;
-	if(DragonsFurySpeedValue[client] != 0.0)
-	{
-		char dragonFurySpeed[32];
-		FloatToString(DragonsFurySpeedValue[client],dragonFurySpeed,sizeof(dragonFurySpeed));
-		SendConVarValue(client, FindConVar("tf_fireball_distance"), dragonFurySpeed);
-		SetConVarFloat(FindConVar("tf_fireball_distance"), DragonsFurySpeedValue[client]);
-	}
-
-	int finalValue = isParachuteReOpenable[client] != 0 ? 1 : 0;
-	char parachuteCVAR[32];
-	IntToString(finalValue,parachuteCVAR,sizeof(parachuteCVAR));
-	SendConVarValue(client, FindConVar("tf_parachute_deploy_toggle_allowed"), parachuteCVAR);
-	SetConVarInt(FindConVar("tf_parachute_deploy_toggle_allowed"), finalValue);
-
-	if(shieldVelocity[client] != 0.0)
-	{
-		char chargeSpeed[32];
-		FloatToString(shieldVelocity[client],chargeSpeed,sizeof(chargeSpeed));
-		SendConVarValue(client, FindConVar("tf_max_charge_speed"), chargeSpeed);
-		SetConVarFloat(FindConVar("tf_max_charge_speed"), shieldVelocity[client]);
 	}
 }
 public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
