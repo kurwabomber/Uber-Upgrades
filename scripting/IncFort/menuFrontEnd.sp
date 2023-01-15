@@ -584,7 +584,7 @@ public	Menu_TweakUpgrades_slot(client, arg, page)
 				Format(buf, sizeof(buf), "%T", upgradesNames[u], client)
 				if (upgrades_costs[u] < -0.1)
 				{
-					int nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][i]) / upgrades_ratio[u])
+					int nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][i]) / upgrades_ratio[u]);
 					float up_cost = upgrades_costs[u] * nb_time_upgraded * 3.0
 					if(up_cost > 200.0)
 					{

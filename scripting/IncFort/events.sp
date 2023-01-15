@@ -773,14 +773,18 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
 			CreateTimer(4.0, SelfDestruct, EntIndexToEntRef(entity));
 			CreateTimer(0.1, ArrowThink, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-			CreateTimer(0.03, HeadshotHomingThink, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+			DataPack pack = CreateDataPack();
+			pack.WriteCell(EntIndexToEntRef(entity));
+			pack.WriteFloat(0.1);
+			pack.WriteCell(1);
+			pack.WriteCell(1);
+			RequestFrame(ApplyHomingCharacteristics, pack);
 		}
 		if(StrEqual(classname, "tf_projectile_syringe") || StrEqual(classname, "tf_projectile_rocket")
 		|| StrEqual(classname, "tf_projectile_flare")|| StrEqual(classname, "tf_projectile_pipe")
 		|| StrEqual(classname, "tf_projectile_pipe_remote"))
 		{
 			RequestFrame(MultiShot, EntIndexToEntRef(entity));
-			CreateTimer(0.03, HomingThink, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 			SDKHook(entity, SDKHook_StartTouch, OnStartTouch);
 			RequestFrame(projGravity, EntIndexToEntRef(entity));
 			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
@@ -792,6 +796,12 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(instantProjectile, EntIndexToEntRef(entity));
 			RequestFrame(monoculusBonus, EntIndexToEntRef(entity));
 			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
+			DataPack pack = CreateDataPack();
+			pack.WriteCell(EntIndexToEntRef(entity));
+			pack.WriteFloat(0.1);
+			pack.WriteCell(1);
+			pack.WriteCell(0);
+			RequestFrame(ApplyHomingCharacteristics, pack);
 		}
 		if(StrEqual(classname, "tf_projectile_stun_ball") || StrEqual(classname, "tf_projectile_ball_ornament") || StrEqual(classname, "tf_projectile_cleaver"))
 		{
@@ -799,8 +809,13 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(projGravity, EntIndexToEntRef(entity));
 			RequestFrame(ResizeProjectile, EntIndexToEntRef(entity))
 			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
-			CreateTimer(0.03, ThrowableHomingThink, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 			CreateTimer(1.5, SelfDestruct, EntIndexToEntRef(entity));
+			DataPack pack = CreateDataPack();
+			pack.WriteCell(EntIndexToEntRef(entity));
+			pack.WriteFloat(0.1);
+			pack.WriteCell(1);
+			pack.WriteCell(0);
+			RequestFrame(ApplyHomingCharacteristics, pack);
 		}
 		if(StrEqual(classname, "tf_projectile_pipe") || StrEqual(classname, "tf_projectile_pipe_remote"))
 		{
@@ -853,6 +868,7 @@ public OnEntityDestroyed(entity)
 	homingTickRate[entity] = 0;
 	homingTicks[entity] = 0;
 	homingDelay[entity] = 0.0;
+	homingAimStyle[entity] = -1;
 	//isProjectileSlash[entity][0] = 0.0;
 	//isProjectileSlash[entity][1] = 0.0;
 	jarateWeapon[entity] = -1;

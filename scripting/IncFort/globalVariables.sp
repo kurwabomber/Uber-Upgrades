@@ -264,4 +264,5 @@ float entitySpawnTime[MAXENTITIES];
 float homingRadius[MAXENTITIES];
 float homingDelay[MAXENTITIES];
 int homingTickRate[MAXENTITIES];
+int homingAimStyle[MAXENTITIES];
 int homingTicks[MAXENTITIES];

@@ -591,7 +591,7 @@ DisplayItemChange(client,itemidx)
 		//Heavy Primaries
 		case 312:
 		{
-			ChangeString = "The Brass Beast | Shoots rockets that have 150 base damage and 144HU blast radius and can penetrate enemies. Each penetration triggers an explosion. Cannot hit enemies multiple times. 3x slower fire rate.";
+			ChangeString = "The Brass Beast | Shoots rockets that have 150 base damage and 144HU blast radius and can penetrate enemies. Cannot hit enemies multiple times. 3x slower fire rate.";
 		}
 		case 811,832:
 		{
@@ -1746,6 +1746,32 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 		refreshUpgrades(client,4);
 	}
 }
+ApplyHomingCharacteristics(DataPack pack)//int,float,int,int
+{
+	pack.Reset();
+	int entity = EntRefToEntIndex(pack.ReadCell());
+	if(!IsValidEntity(entity))
+		return;
+
+	int owner = getOwner(entity);
+	if(!IsValidClient3(owner))
+		return;
+
+	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+	if(!IsValidWeapon(CWeapon))
+		return;
+
+	Address homingActive = TF2Attrib_GetByName(CWeapon, "crit_from_behind");
+	if(homingActive == Address_Null)
+		return;
+	
+	homingRadius[entity] = TF2Attrib_GetValue(homingActive);
+	homingDelay[entity] = pack.ReadFloat();
+	homingTickRate[entity] = pack.ReadCell();
+	homingAimStyle[entity] = pack.ReadCell();
+
+	delete pack;
+}
 ExplosiveArrow(entity)
 {
 	entity = EntRefToEntIndex(entity);
@@ -2424,7 +2450,7 @@ public OnEntityHomingThink(entity)
 	if( distance > homingRadius[entity] )
 		return;
 
-	if(homingTicks[entity] & homingTickRate[entity] == 1 || homingTickRate[entity] == 0)
+	if(homingTickRate[entity] == 0 || homingTicks[entity] & homingTickRate[entity] == 1)
 	{
 		float ProjLocation[3], ProjVector[3], BaseSpeed, NewSpeed, ProjAngle[3], AimVector[3], InitialSpeed[3]; 
 		
@@ -2433,8 +2459,18 @@ public OnEntityHomingThink(entity)
 		BaseSpeed = GetVectorLength( InitialSpeed ) * 0.3; 
 		
 		GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", ProjLocation ); 
-		GetClientAbsOrigin( Target, TargetPos ); 
-		TargetPos[2] += 20.0;
+		switch(homingAimStyle[entity])
+		{
+			case 1:
+			{
+				GetClientEyePosition( Target, TargetPos ); 
+			}
+			default:
+			{
+				GetClientAbsOrigin( Target, TargetPos ); 
+				TargetPos[2] += 20.0;
+			}
+		}
 		MakeVectorFromPoints( ProjLocation, TargetPos, AimVector ); 
 		
 		GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", ProjVector ); //50% HOME

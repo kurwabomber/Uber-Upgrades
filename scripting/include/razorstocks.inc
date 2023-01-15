@@ -104,7 +104,7 @@ stock char[] getDamageCategory(int damagetype)
 	}
 	return damageCategory;
 }
-stock float GetAttribute(int entity, char[] attrName, float value = 1.0)
+stock float GetAttribute(int entity, const char[] attrName, float value = 1.0)
 {
 	Address attribute_address = TF2Attrib_GetByName(entity, attrName);
 	if(attribute_address != Address_Null)
@@ -112,23 +112,57 @@ stock float GetAttribute(int entity, char[] attrName, float value = 1.0)
 
 	return value;
 }
-stock float GetAttributeAccumulateAdditive(int client, char[] attrName, float value = 1.0)
+stock float GetAttributeAccumulateAdditive(int client, const char[] attrName, float value = 1.0)
 {
 	Address attribute_address = TF2Attrib_GetByName(client, attrName);
 	if(attribute_address != Address_Null)
 		value += TF2Attrib_GetValue(attribute_address);
 
+	int weapon;
 	for(int i=0;i<3;i++)
 	{
-		int weapon = GetWeapon(client,i);
-		if(IsValidWeapon(weapon))
+		weapon = GetWeapon(client,i);
+		if(IsValidWeapon(weapon) && TF2_IsWearable(weapon))
 		{
 			Address temp_attribute_address = TF2Attrib_GetByName(weapon, attrName);
 			if(temp_attribute_address != Address_Null)
 				value += TF2Attrib_GetValue(temp_attribute_address);
 		}
 	}
+	weapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	if(IsValidWeapon(weapon))
+	{
+		Address temp_attribute_address = TF2Attrib_GetByName(weapon, attrName);
+		if(temp_attribute_address != Address_Null)
+			value *= TF2Attrib_GetValue(temp_attribute_address);
+	}
+	return value;
+}
+stock float GetAttributeAccumulateMultiplicative(int client, const char[] attrName, float value = 1.0)
+{
+	Address attribute_address = TF2Attrib_GetByName(client, attrName);
+	if(attribute_address != Address_Null)
+		value *= TF2Attrib_GetValue(attribute_address);
 
+	int weapon;
+
+	for(int i=0;i<3;i++)
+	{
+		weapon = GetWeapon(client,i);
+		if(IsValidWeapon(weapon) && TF2_IsWearable(weapon))
+		{
+			Address temp_attribute_address = TF2Attrib_GetByName(weapon, attrName);
+			if(temp_attribute_address != Address_Null)
+				value *= TF2Attrib_GetValue(temp_attribute_address);
+		}
+	}
+	weapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	if(IsValidWeapon(weapon))
+	{
+		Address temp_attribute_address = TF2Attrib_GetByName(weapon, attrName);
+		if(temp_attribute_address != Address_Null)
+			value *= TF2Attrib_GetValue(temp_attribute_address);
+	}
 	return value;
 }
 stock bool IsValidWeapon(int entity)
