@@ -472,13 +472,17 @@ CastSpeedAura(client, attuneSlot)
 	int spellLevel = RoundToNearest(GetAttribute(client, "arcane speed aura", 0.0));
 	if(spellLevel < 1)
 		return;
-	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client]*0.4, 15.0))
+	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client]*0.4, 40.0))
 		return; 
 
 	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	int iTeam = GetClientTeam(client)
 	ClientPos[2] -= 20.0;
+
+	float radius[] = {0.0,800.0,100000.0,100000.0}
+	float buffDuration[] = {0.0,8.0,16.0,60.0}
+
 	for(int i = 1; i<MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
@@ -488,13 +492,12 @@ CastSpeedAura(client, attuneSlot)
 		float VictimPos[3];
 		GetClientEyePosition(i,VictimPos);
 		float Distance = GetVectorDistance(ClientPos,VictimPos);
-		float Range = 800.0;
-		if(Distance > Range)
+		if(Distance > radius[spellLevel])
 			continue;
 
-		TF2_AddCondition(i, TFCond_SpeedBuffAlly, 8.0);
-		TF2_AddCondition(i, TFCond_RuneAgility, 8.0);
-		TF2_AddCondition(i, TFCond_DodgeChance, 1.5);
+		TF2_AddCondition(i, TFCond_SpeedBuffAlly, buffDuration[spellLevel]);
+		TF2_AddCondition(i, TFCond_RuneAgility, buffDuration[spellLevel]);
+		TF2_AddCondition(i, TFCond_DodgeChance, 0.5*buffDuration[spellLevel]);
 	}
 	EmitSoundToAll(SOUND_SPEEDAURA, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 }
@@ -504,23 +507,25 @@ CastAerialStrike(client, attuneSlot)
 	if(spellLevel < 1)
 		return;
 
-	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (45.0 * ArcaneDamage[client]), 50.0))
+	float cooldown[] = {0.0,50.0,30.0,10.0}
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (45.0 * ArcaneDamage[client]), cooldown[spellLevel]))
 		return; 
 
+	float delay[] = {0.0,1.0,0.6,0.2}
 	float ClientPos[3];
 	TracePlayerAim(client, ClientPos);
 	int iTeam = GetClientTeam(client)
-	float ProjectileDamage = 90.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),2.45) * 25.0);
+	float ProjectileDamage = 90.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),spellScaling[spellLevel]) * 25.0);
 	Handle hPack = CreateDataPack();
-	WritePackCell(hPack, client);
+	WritePackCell(hPack, GetClientSerial(client));
 	WritePackCell(hPack, iTeam);
+	WritePackCell(hPack, spellLevel)
 	WritePackFloat(hPack, ProjectileDamage);
-	
 	WritePackFloat(hPack, ClientPos[0]);
 	WritePackFloat(hPack, ClientPos[1]);
 	WritePackFloat(hPack, ClientPos[2]);
 	
-	CreateTimer(1.0,aerialStrike,hPack);
+	CreateTimer(delay[spellLevel],aerialStrike,hPack);
 	if(iTeam == 2)
 	{
 		EmitSoundToAll(SOUND_HORN_RED, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
@@ -537,14 +542,20 @@ CastAerialStrike(client, attuneSlot)
 public Action:aerialStrike(Handle timer,any:data)
 {
 	ResetPack(data);
-	int client = ReadPackCell(data);
+	int client = GetClientFromSerial(ReadPackCell(data));
 	int iTeam = ReadPackCell(data);
+	int spellLevel = ReadPackCell(data);
 	float ProjectileDamage = ReadPackFloat(data);
 	float ClientPos[3];
 	ClientPos[0] = ReadPackFloat(data);
 	ClientPos[1] = ReadPackFloat(data);
 	ClientPos[2] = ReadPackFloat(data);
-	for(int i = 0;i<30;i++)
+
+	if(!IsValidClient3(client)){CloseHandle(data);return;}
+
+	int quantity[] = {0,30,40,50}
+	float spread[] = {0.0,300.0,200.0,100.0}
+	for(int i = 0;i<quantity[spellLevel];i++)
 	{
 		int iEntity = CreateEntityByName("tf_projectile_rocket");
 		if (!IsValidEdict(iEntity)) 
@@ -567,8 +578,8 @@ public Action:aerialStrike(Handle timer,any:data)
 		GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 
 		fOrigin = ClientPos;
-		fOrigin[0] += GetRandomFloat(-300.0/ArcanePower[client],300.0/ArcanePower[client]);
-		fOrigin[1] += GetRandomFloat(-300.0/ArcanePower[client],300.0/ArcanePower[client]);
+		fOrigin[0] += GetRandomFloat(-spread[spellLevel]/ArcanePower[client],spread[spellLevel]/ArcanePower[client]);
+		fOrigin[1] += GetRandomFloat(-spread[spellLevel]/ArcanePower[client],spread[spellLevel]/ArcanePower[client]);
 		fOrigin[2] += 1000.0;
 		
 		float Speed = 1500.0;
@@ -587,7 +598,9 @@ CastInferno(client, attuneSlot)
 	int spellLevel = RoundToNearest(GetAttribute(client, "arcane inferno", 0.0));
 	if(spellLevel < 1)
 		return;
-	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (45.0 * ArcaneDamage[client]), 50.0))
+
+	float cooldown[] = {0.0,50.0,40.0,30.0}
+	if(applyArcaneRestrictions(client, attuneSlot, 50.0 + (45.0 * ArcaneDamage[client]), cooldown[spellLevel]))
 		return;
 
 	float ClientPos[3];
@@ -628,7 +641,10 @@ CastInferno(client, attuneSlot)
 	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
 	
 	
-	float DMGDealt = 20.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),2.45) * 12.5);
+	float DMGDealt = 20.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),spellScaling[spellLevel]) * 12.5);
+	float range[] = {0.0,800.0,1200.0,1600.0}
+	float hitRate[] = {0.0,0.15,0.08,0.03}
+	int maxHits[] = {0,20,30,40}
 	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
@@ -639,12 +655,12 @@ CastInferno(client, attuneSlot)
 		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		float Distance = GetVectorDistance(ClientPos,VictimPos);
-		if(Distance > 800.0)
+		if(Distance > range[spellLevel])
 			continue;
 
-		CreateParticle(i, "dragons_fury_effect_parent", true, "", 2.0);
-		CreateParticle(i, "utaunt_glowyplayer_orange_glow", true, "", 2.0,_,_,1);
-		DOTStock(i,client,DMGDealt,-1,DMG_BURN,20,1.0,0.12,true);
+		CreateParticle(i, "dragons_fury_effect_parent", true, "", hitRate[spellLevel]*maxHits[spellLevel]);
+		CreateParticle(i, "utaunt_glowyplayer_orange_glow", true, "", hitRate[spellLevel]*maxHits[spellLevel],_,_,1);
+		DOTStock(i,client,DMGDealt,-1,DMG_BURN,maxHits[spellLevel],1.0,hitRate[spellLevel],true);
 	}
 }
 
@@ -660,11 +676,12 @@ CastMineField(client, attuneSlot)
 	float ClientPos[3];
 	TracePlayerAim(client, ClientPos);
 	int iTeam = GetClientTeam(client)
-	
-		
-	float radius = 300.0*ArcanePower[client];
-	float damage = 90.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),2.45) * 6.5);
-	for(int i = 0;i<20;i++)
+	int quantity[] = {0,20,30,40}
+	float spellRadius[] = {0.0,300.0,500.0,900.0}
+	float spread[] = {0.0,300.0,200.0,100.0}
+	float radius = spellRadius[spellLevel]*ArcanePower[client];
+	float damage = 90.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),spellScaling[spellLevel]) * 6.5);
+	for(int i = 0;i<quantity[spellLevel];i++)
 	{
 		int iEntity = CreateEntityByName("tf_projectile_pipe_remote");
 		if (!IsValidEdict(iEntity)) 
@@ -690,8 +707,8 @@ CastMineField(client, attuneSlot)
 		GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 
 		fOrigin = ClientPos;
-		fOrigin[0] += GetRandomFloat(-300.0/ArcanePower[client],300.0/ArcanePower[client]);
-		fOrigin[1] += GetRandomFloat(-300.0/ArcanePower[client],300.0/ArcanePower[client]);
+		fOrigin[0] += GetRandomFloat(-spread[spellLevel]/ArcanePower[client],spread[spellLevel]/ArcanePower[client]);
+		fOrigin[1] += GetRandomFloat(-spread[spellLevel]/ArcanePower[client],spread[spellLevel]/ArcanePower[client]);
 		fOrigin[2] += 10.0;
 		
 		float Speed = 1500.0;
@@ -731,10 +748,21 @@ public Action:Timer_GrenadeMines(Handle timer, any:ref)
 	int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
 	if(!IsValidClient3(client)){KillTimer(timer);return;}
 
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane mine field", 0.0));
+	if(spellLevel < 1)
+		return;
+
+	float extraRadius[] = {0.0,1.1,1.3,1.5}
+	float damageRate[] = {0.0,0.35,0.5,0.8}
+	float maxDamageBonus[] = {0.0,8.0,9.0,10.0}
+
 	float distance = GetEntPropFloat(entity, Prop_Send, "m_DmgRadius")
 	float damage = GetEntPropFloat(entity, Prop_Send, "m_flDamage")
-	float timeMod = 1.0+((GetGameTime()-lastMinesTime[client])*0.35);
+	float timeMod = 1.0+((GetGameTime()-lastMinesTime[client])*damageRate[spellLevel]);
 	float grenadevec[3], targetvec[3];
+
+	if(timeMod > maxDamageBonus[spellLevel]){timeMod=maxDamageBonus[spellLevel];}
+
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", grenadevec);
 	
 	for(int i=1; i<=MaxClients; i++)
@@ -758,7 +786,7 @@ public Action:Timer_GrenadeMines(Handle timer, any:ref)
 		if(!IsAbleToSee(client,i))
 			continue;
 
-		EntityExplosion(client, damage*timeMod, distance, grenadevec, 0,_,entity);
+		EntityExplosion(client, damage*timeMod, distance*extraRadius[spellLevel], grenadevec, 0,_,entity);
 		RemoveEntity(entity);
 		KillTimer(timer);
 		break;
@@ -872,27 +900,42 @@ CastSoothingSunlight(client, attuneSlot)
 	if(spellLevel < 1)
 		return;
 
-	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client], 180.0))
+	float cooldown[] = {0.0,180.0,120.0,60.0}
+
+	if(applyArcaneRestrictions(client, attuneSlot, fl_MaxFocus[client], cooldown[spellLevel]))
 		return; 
 
 	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
 	ClientPos[2] -= 40.0;
 		
-	CreateTimer(4.0,SoothingSunlight,EntIndexToEntRef(client));
-	TF2_StunPlayer(client,5.0,0.0,TF_STUNFLAGS_BIGBONK,0);
-	TE_SetupBeamRingPoint(ClientPos, 20.0, 800.0, g_LightningSprite, spriteIndex, 0, 5, 4.0, 10.0, 1.0, {255,255,0,180}, 400, 0);
+	float duration[] = {0.0,4.0,3.0,1.0}
+
+	CreateTimer(duration[spellLevel],SoothingSunlight,EntIndexToEntRef(client));
+	TF2_StunPlayer(client,duration[spellLevel],0.0,TF_STUNFLAGS_BIGBONK,0);
+	TE_SetupBeamRingPoint(ClientPos, 20.0, 800.0, g_LightningSprite, spriteIndex, 0, 5, duration[spellLevel], 10.0, 1.0, {255,255,0,180}, 400, 0);
 	TE_SendToAll();
 }
 public Action:SoothingSunlight(Handle timer, client) 
 {
 	client = EntRefToEntIndex(client)
+	if(!IsValidClient3(client))
+		return;
+
 	if(!IsPlayerAlive(client))
+		return;
+
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane soothing sunlight", 0.0));
+	if(spellLevel < 1)
 		return;
 
 	int iTeam = GetClientTeam(client)
 	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
+	float radius[] = {0.0,900.0,1500.0,5000.0}
+	float incHealDuration[] = {0.0,6.5,15.0,30.0}
+	float overhealMax[] = {0.0,3.0,5.0,10.0}
+	float additiveArmorBonus[] = {0.0,1.0,1.5,2.0}
 	for(int i = 1; i<MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
@@ -904,18 +947,18 @@ public Action:SoothingSunlight(Handle timer, client)
 		float VictimPos[3];
 		GetClientEyePosition(i,VictimPos);
 		float Distance = GetVectorDistance(ClientPos,VictimPos);
-		if(Distance > 1350.0)
+		if(Distance > radius[spellLevel])
 			continue;
 
-		float AmountHealing = TF2_GetMaxHealth(i) * 4.0 * ArcanePower[client];
-		AddPlayerHealth(i, RoundToCeil(AmountHealing), 4.0 * ArcanePower[client], true, client);
-		fl_CurrentArmor[i] += AmountHealing * 3.0 * ArcanePower[client];
-		if(fl_AdditionalArmor[i] < fl_MaxArmor[i] * ArcanePower[client])
-			fl_AdditionalArmor[i] = fl_MaxArmor[i] * ArcanePower[client];
-		TF2_AddCondition(i,TFCond_MegaHeal,6.5);
+		float AmountHealing = TF2_GetMaxHealth(i) * ArcanePower[client];
+		AddPlayerHealth(i, RoundToCeil(AmountHealing), overhealMax[spellLevel] * ArcanePower[client], true, client);
+		fl_CurrentArmor[i] += AmountHealing * 2.0 * ArcanePower[client];
+		if(fl_AdditionalArmor[i] < fl_MaxArmor[i] * ArcanePower[client] * additiveArmorBonus[spellLevel])
+			fl_AdditionalArmor[i] = fl_MaxArmor[i] * ArcanePower[client] * additiveArmorBonus[spellLevel];
+		TF2_AddCondition(i,TFCond_MegaHeal,incHealDuration[spellLevel]);
 	
 		float particleOffset[3] = {0.0,0.0,15.0};
-		CreateParticle(i, "utaunt_glitter_parent_gold", true, "", 5.0, particleOffset);
+		CreateParticle(i, "utaunt_glitter_parent_gold", true, "", incHealDuration[spellLevel], particleOffset);
 	}
 	EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 }
@@ -943,24 +986,27 @@ CastArcaneHunter(client, attuneSlot)
 		CreateDataTimer(3.0, Timer_MoveParticle, pack);
 		WritePackCell(pack, EntIndexToEntRef(iParticle));
 	}
-
-	CreateTimer(0.4,ArcaneHunter,client);
-	CreateTimer(0.8,ArcaneHunter,client);
-	CreateTimer(1.2,ArcaneHunter,client);
-	CreateTimer(1.6,ArcaneHunter,client);
-	CreateTimer(2.0,ArcaneHunter,client);
+	
+	int MaxUses[] = {0, 5,10,30}
+	float duration[] = {0.0,0.4,0.3,0.1}
+	for(int i = 1;i<=MaxUses[spellLevel];i++)
+	{
+		CreateTimer(duration[spellLevel]*i,ArcaneHunter,client);
+	}
 }
 public Action:ArcaneHunter(Handle timer, client) 
 {
 	if(!IsPlayerAlive(client))
 		return;
-
-	float clientpos[3];
-	float soundPos[3];
-	float clientAng[3];
-	float fwd[3];
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane hunter", 0.0));
+	if(spellLevel < 1)
+		return;
+	float clientpos[3], soundPos[3], clientAng[3], fwd[3];
 	TracePlayerAim(client, clientpos);
 	
+	float splashRadius[] = {0.0,200.0,350.0,500.0}
+	float aimAssist[] = {0.0,10.0,20.0,40.0}//In degrees
+
 	for(int i=1;i<MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
@@ -969,7 +1015,7 @@ public Action:ArcaneHunter(Handle timer, client)
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 		
-		if(!IsTargetInSightRange(client, i, 10.0, 6000.0, true, false))
+		if(!IsTargetInSightRange(client, i, aimAssist[spellLevel], 6000.0, true, false))
 			continue;
 
 		if(!IsAbleToSee(client,i, false))
@@ -1025,7 +1071,7 @@ public Action:ArcaneHunter(Handle timer, client)
 		WritePackCell(pack2, EntRefToEntIndex(iPart2));
 	}
 
-	float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 80.0));
+	float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
 	for(int i = 1; i<MAXENTITIES;i++)
 	{
 		if(!IsValidForDamage(i))
@@ -1037,9 +1083,8 @@ public Action:ArcaneHunter(Handle timer, client)
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 30.0;
 		float Distance = GetVectorDistance(clientpos,VictimPos);
-		float Range = 200.0;
 
-		if(Distance > Range)
+		if(Distance > splashRadius[spellLevel])
 			continue;
 
 		if(!IsPointVisible(clientpos,VictimPos))

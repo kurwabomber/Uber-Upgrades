@@ -24,12 +24,6 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
 		if(upgrades_display_style[upgrade_choice] != 0)
 		{
-			int up_cost = upgrades_costs[upgrade_choice] / 2
-			if (slot == 1)
-			{
-				up_cost = RoundFloat((up_cost * 1.0) * SecondaryCostReduction)
-			}
-
 			switch(upgrades_display_style[upgrade_choice])
 			{
 				case 1:
@@ -139,11 +133,9 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 			}
 			float upgrades_val = currentupgrades_val[client][slot][inum];
 			float up_cost = float(upgrades_costs[upgrade_choice]);
-			up_cost /= 2.0;
 			if (slot == 1)
-			{
-				up_cost = (up_cost * 1.0) * SecondaryCostReduction;
-			}
+				up_cost *= SecondaryCostReduction;
+			
 			if (inum != 20000 && upgrades_ratio[upgrade_choice])
 			{
 				float t_up_cost = 0.0;
@@ -199,10 +191,8 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 					if (t_up_cost < 0.0)
 					{
 						t_up_cost *= -1;
-						if (t_up_cost < float(upgrades_costs[upgrade_choice] / 2))
-						{
-							t_up_cost = float(upgrades_costs[upgrade_choice] / 2);
-						}
+						if (t_up_cost < upgrades_costs[upgrade_choice])
+							t_up_cost = float(upgrades_costs[upgrade_choice]);
 					}
 					CurrencyOwned[client] -= t_up_cost;
 					currentupgrades_val[client][slot][inum] = upgrades_val
@@ -249,11 +239,9 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 			{
 				float upgrades_val = currentupgrades_val[client][slot][inum];
 				float up_cost = float(upgrades_costs[upgrade_choice]);
-				up_cost /= 2.0;
 				if (slot == 1)
-				{
-					up_cost = (up_cost * 1.0) * SecondaryCostReduction;
-				}
+					up_cost *= SecondaryCostReduction;
+			
 				if (inum != 20000 && upgrades_ratio[upgrade_choice])
 				{
 					float t_up_cost = 0.0;
@@ -699,7 +687,7 @@ public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client
 					if(upgrades_costs[u] < -0.1)
 					{
 						int nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][param2]) / upgrades_ratio[u])
-						float up_cost = upgrades_costs[u] * nb_time_upgraded * 3.0;
+						float up_cost = float(upgrades_costs[u] * nb_time_upgraded);
 						if(up_cost > 200.0)
 						{
 							if (CurrencyOwned[client] >= up_cost)
@@ -728,7 +716,6 @@ public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client
 						}
 						nb_time_upgraded *= -1
 						float up_cost = ((upgrades_costs[u]+((upgrades_costs_inc_ratio[u]*upgrades_costs[u])*(nb_time_upgraded-1))/2)*nb_time_upgraded)
-						up_cost /= 2
 						if(s == 1)
 							up_cost *= SecondaryCostReduction;
 							

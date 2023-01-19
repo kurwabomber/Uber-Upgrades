@@ -1,6 +1,9 @@
 "Phrases"
 {
-
+	"Increased Overall Damage(T)"
+	{
+		"en"		"Compensated Damage Bonus"
+	}
 	"Slow Resistance"
 	{
 		"en"		"Slow Resistance"
@@ -124,11 +127,6 @@
 	"!Tier 3 Arcane Spells"
 	{
 		"en"		"Tier 3 Arcane Spells"
-	}
-	//Failsafe
-	""
-	{
-		"en"		""
 	}
 	"No gravity projectile"
 	{
@@ -954,21 +952,9 @@
 	{
 		"en"		"Health Bonus"
 	}
-	"Splash Radius"
-	{
-		"en"		"Splash Radius"
-	}
-	"Splash Damage Percent"
-	{
-		"en"		"Splash Damage Percent"
-	}
 	"Weapons Deals No Knockback"
 	{
 		"en"		"Weapon Deals No Knockback"
-	}
-	"Crit Chance Percent"
-	{
-		"en"		"Armor Penetration Rating"
 	}
 	"crit damage multiplier"
 	{
@@ -1126,7 +1112,7 @@
 	{
 		"en"		"Melee Damage Taken Reduced"
 	}
-	"consume burn and bonus dmg"
+	"attack_minicrits_and_consumes_burning"
 	{
 		"en"		"Consume Afterburn For Damage"
 	}
@@ -1397,9 +1383,6 @@
 	"dmg from melee reduced(T)"
 	{
 		"en"		"Melee Damage Taken Reduced"
-	}
-	"grenade detonation damage bonus"
-	{
 	}
 	"Display Upgrades/Remove downgrades - Primary Weapon"
 	{
@@ -3680,28 +3663,5 @@
 	"Short charge"
 	{
 		"en"		"Short Charge"
-	}
-	"tf2items_uu.phrases.txt"
-	{
-		"en"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"pt"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"bg"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"nl"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"da"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"fr"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"fi"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"de"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"el"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"hu"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"it"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"lt"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"lv"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"pl"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"ro"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"ru"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"es"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"sk"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"sv"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
-		"zh"		"{\"translations\":[{\"detected_source_language\":\"EN\",\"text\":\"tf2items_uu.phrases.txt\"}]}"
 	}
 }

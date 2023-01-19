@@ -848,7 +848,6 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp4"		"No Reload Necessary"
 			"Sp5"		"Rocket Launcher"
 			"Sp6"		"Lacerating Rounds"
 		}
@@ -893,85 +892,6 @@
 		"Special Tweaks"
 		{
 			"Sp1"		"Rocket Launcher(S)"
-		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
-		}
-	}
-	"sprweap(s)"
-	{
-		"special_tweaks_listid"		"2"
-		"Damage upgrades"
-		{
-			"Attr0"		"damage bonus"
-			"Attr22"	"ap (biggercali)"
-			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr0"		"Overall Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
-			"Attr13"	"Life Steal Ability"
-			"Attr23"	"Set DamageType Ignite"
-			"Attr21"	"afterburn time increased(N)"
-			"Attr7"		"reveal cloaked victim on hit"
-			"Attr8"		"reveal disguised victim on hit"
-		}
-		"Gun specific upgrades"
-		{
-			"Attr0"		"fire rate bonus(multshit)"
-			"Attr1"		"clip size bonus"
-			"Attr2"		"faster reload rate"
-			"Attr3"		"bullets per shot bonus"
-			"Attr4"		"weapon spread bonus"
-		}
-		"Special Tweaks"
-		{
-			"Sp4"		"No Reload Necessary"
-			"Sp5"		"Rocket Launcher"
-			"Sp6"		"Lacerating Rounds"
-		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
-		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Stun Shot"
-		}
-	}
-	"smgweap"
-	{
-		"special_tweaks_listid"		"2"
-		"Damage upgrades"
-		{
-			"Attr0"		"damage bonus(L)"
-			"Attr22"	"ap (biggercali)"
-			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr0"		"Overall Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
-			"Attr13"	"Life Steal Ability"
-			"Attr23"	"Set DamageType Ignite"
-			"Attr21"	"afterburn time increased(N)"
-			"Attr8"		"reveal cloaked victim on hit"
-			"Attr9"		"reveal disguised victim on hit"
-		}
-		"Smg Specific upgrades"
-		{
-			"Attr0"		"fire rate bonus(multshit)"
-			"Attr1"		"clip size bonus"
-			"Attr2"		"faster reload rate"
-			"Attr3"		"bullets per shot bonus (single)"
-			"Attr4"		"weapon spread bonus"
-			"Attr5"		"projectile penetration heavy"
-		}
-		"Special Tweaks"
-		{
-			"Sp5"		"Rocket Launcher(S)"
 		}
 		"Rocket Upgrades"
 		{
@@ -1341,48 +1261,6 @@
 			"Attr4"		"extra fire rate HIDDEN"
 			"Attr2"		"Projectile speed increased(DH)"
 		}		
-	}
-	"shtgpyr"
-	{
-		"special_tweaks_listid"		"2"
-		"Damage upgrades"
-		{
-			"Attr0"		"damage bonus"
-			"Attr24"	"ap (biggercali)"
-			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr0"		"Overall Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			"Attr13"	"Life Steal Ability"
-			"Attr23"	"Set DamageType Ignite"
-			"Attr21"	"afterburn time increased(N)"
-			"Attr11"	"reveal cloaked victim on hit"
-			"Attr12"	"reveal disguised victim on hit"
-		}
-		"Shotgun specific upgrades"
-		{
-			"Attr1"		"fire rate bonus(multshit)"
-			"Attr2"		"faster reload rate"
-			"Attr3"		"bullets per shot bonus"
-			"Attr4"		"clip size bonus"
-			"Attr5"		"weapon spread bonus(H)"
-			"Attr6"		"projectile penetration heavy"
-		}
-		"Special Tweaks"
-		{
-			"Sp4"		"No Reload Necessary"
-			"Sp5"		"Rocket Launcher"
-			"Sp6"		"Lacerating Rounds"
-		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
-		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Stun Shot"
-		}
 	}
 	"scoweap"
 	{
@@ -1786,7 +1664,7 @@
 			"Attr13"	"increase player capture value"
 		}
 	}
-	"scoclea" //dmg upgrades won t work on scout cleaver
+	"scoclea"
 	{
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
@@ -2108,49 +1986,6 @@
 			"Sp1"		"Honor!"
 		}
 	}
-	"sprweapH"
-	{
-		"special_tweaks_listid"		"2"
-		"Damage upgrades"
-		{
-			"Attr0"		"damage bonus"
-			"Attr22"	"ap (biggercali)"
-			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr0"		"Overall Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
-			"Attr13"	"Life Steal Ability"
-			"Attr23"	"Set DamageType Ignite"
-			"Attr21"	"afterburn time increased(N)"
-			"Attr7"		"reveal cloaked victim on hit"
-			"Attr8"		"reveal disguised victim on hit"
-		}
-		"Gun specific upgrades"
-		{
-			"Attr0"		"fire rate bonus(multshit)"
-			"Attr1"		"clip size bonus"
-			"Attr2"		"faster reload rate"
-			"Attr3"		"bullets per shot bonus"
-			"Attr4"		"weapon spread bonus(H)"
-			"Attr5"		"projectile penetration heavy"
-		}
-		"Special Tweaks"
-		{
-			"Sp4"		"No Reload Necessary"
-			"Sp5"		"Rocket Launcher"
-			"Sp6"		"Lacerating Rounds"
-		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
-		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Stun Shot"
-		}
-	}
 	"engweap_c"
 	{
 		"special_tweaks_listid"		"2"
@@ -2178,25 +2013,6 @@
 			"Sp6"		"Lacerating Rounds"
 		}
 	}
-	"grapplinghook"
-	{
-		"special_tweaks_listid"		"-1"
-		"Protection upgrades"
-		{
-			"Attr1"	"Resistance While Held"
-			"Attr2"	"Dodge Chance While Held"
-			"Attr3"	"jarate backstabber"
-		}
-		"Damage upgrades"
-		{
-			"Attr0"		"bleeding duration"
-			"Attr1"		"Set DamageType Ignite"
-			"Attr2"		"minicrit vs burning player"
-			"Attr3"		"damage bonus(IS)"
-			"Attr4"		"afterburn dmg increased (E)"
-			"Attr5"		"afterburn time increased"
-		}
-	}		
 	"fireball"
 	{
 		"special_tweaks_listid"		"-1"

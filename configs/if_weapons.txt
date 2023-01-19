@@ -18,7 +18,6 @@
 		"tf_weapon_wrench"						"engmelweap"	//wrenchs
 		"tf_weapon_robot_arm"					"engmelweap"	//gunslinger
 		"tf_weapon_minigun"						"minigunweap"	//minigun
-		"tf_weapon_shotgun_hwg"					"sprweapH"		//heavy shotguns
 		"tf_weapon_shotgun"						"sprweap2"		//baseclass for shotguns
 		"tf_weapon_lunchbox"					"lunchbox"		//heavy lunchbox
 		"tf_weapon_fists"						"demomel"		//fists
@@ -30,7 +29,7 @@
 		"tf_weapon_flaregun"					"pyroflareg"	//flaregun
 		"detonator"								"pyroflaregd"	//detonator
 		"tf_weapon_flaregun_revenge"			"pyroflareg2"	//mannmelter
-		"tf_weapon_shotgun_pyro"				"shtgpyr"		//shotgun(pyro)
+		"tf_weapon_shotgun_pyro"				"sprweap2"		//shotgun(pyro)
 		"tf_weapon_fireaxe"						"demomel"		//melee
 		"tf_weapon_shovel"						"demomel"		//melee
 		"saxxy"									"demomel"		//melee
@@ -47,7 +46,7 @@
 		"tf_weapon_sniperrifle"					"snipe"			//sniperrifles
 		"tf_weapon_sniperrifle_decap"			"snipe"			//bazaar
 		"tf_weapon_compound_bow"				"c_bow"			//bow
-		"tf_weapon_smg"							"smgweap"		//SMG
+		"tf_weapon_smg"							"sprweap1"		//SMG
 		"tf_weapon_jar"							"jarat"			//Jarate
 		"tf_weapon_jar_milk"					"jarmilk"		//Madmilk
 		"tf_weapon_club"						"demomel"		//Demoman sword
@@ -56,7 +55,7 @@
 		"tf_weapon_rocketlauncher_directhit"	"directhit"		//DH
 		"tf_weapon_rocketlauncher_airstrike"	"airstrike"		//Airstrike
 		"tf_weapon_particle_cannon"				"cow_m"			//Cow Mangler
-		"tf_weapon_shotgun_soldier"				"sprweap(s)"	//Shotgun (soldier)
+		"tf_weapon_shotgun_soldier"				"sprweap2"	//Shotgun (soldier)
 		"tf_weapon_raygun"						"rayweap"		//Rightous Bison
 		"tf_wear_alishoes"						"ali_shoes"		//Demoman booties
 		"tf_weapon_revolver"					"spyweap"		//revolver
@@ -67,7 +66,6 @@
 		"tf_weapon_invis"						"tf_weapon_invis"	//Cloak
 		"tf_weapon_buff_item"					"buffban"		//Banners
 		"tf_weapon_stickbomb"   				"explmel"		//Caber
-		"tf_w_gbt"   							"scomelweap_"	//Scout melee
 		"tf_wearable_razorback"					"wearable"		//Razorback
 		"tf_weapon_sniperrifle_classic"			"classic"		//Classic
 		"tf_weapon_parachute"					"chute"			//B.A.S.E
@@ -75,18 +73,15 @@
 		"tf_wearable"							"wearable"		//wearables
 		"tf_weapon_bonesaw"						"medmel"		//Bonesaw
 		"tf_powerup_bottle"						"bottle"		//MvM Canteen
-		"tf_weapon_grapplinghook"				"grapplinghook"	//Grapplehook
 		"tf_weapon_handgun_scout_primary"		"scoweap2"		//Shortstop
 		"tf_weapon_rocketlauncher_fireball"		"fireball"		//Dragons Fury
 		"tf_weapon_rocketpack"					"rocketpack"	//Thermal Thruster
 		"tf_weapon_shotgun_primary_"			"shotgun_primary_"	//Widowmaker
 		"tf_weapon_bat_giftwrap"				"ball"			//Wrap Assassin
 		"tf_weapon_bat_wood"					"ball"			//Sandman
-		"test"									"test"			//to block broken weapons i guess
-		"tf_weapon_charged_smg"					"smgweap"		//Cleaners Carbine
+		"tf_weapon_charged_smg"					"sprweap1"		//Cleaners Carbine
 		"tf_weapon_jar_gas"						"gas"			//Gas Passer
 		"tf_weapon_slap"						"demomel"		//Hot Hand
-		"l"										"l"				//Revolver is Secondary
 		"tf_weapon_breakable_sign"				"demomel"		//Neon Annihilator
 		"autofirebow"							"autofirebow"	//Fortified Compound
 		"vaccinator"							"vacc"			//Vaccinator
@@ -94,10 +89,10 @@
 		"tf_iron_bomber"						"ironbomber"	//Iron Bomber
 		"tf_quickiebomb"						"quickiebomb"	//Quickiebomb launcher
 		"hitmans"								"hitmans"		//Hitman's Heatmaker
-		"brassBeast"							"brassBeast"
+		"brassBeast"							"brassBeast"	//Brass Beast
 		//Custom Weapons
-		"menuCrossbow"							"menuCrossbow"
-		"menuKatana"							"menuKatana"
-		"menuFireball"							"menuFireball"		//cleaver
+		"menuCrossbow"							"menuCrossbow"	//Repeater Crossbow
+		"menuKatana"							"menuKatana"	//Rivers of Blood & Moonveil
+		"menuFireball"							"menuFireball"	//Chaos Bed Vestige
 	}
 }

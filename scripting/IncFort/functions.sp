@@ -108,7 +108,6 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 
 	float up_cost = float(upgrades_costs[upgrade_choice]) * rate;
 	int max_ups = currentupgrades_number[client][slot];
-	up_cost /= 2.0;
 	if (slot == 1)
 	{
 		up_cost *= SecondaryCostReduction
@@ -128,9 +127,9 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 		if (up_cost < 0.0)
 		{
 			up_cost *= -1.0;
-			if (up_cost < float(upgrades_costs[upgrade_choice] / 2))
+			if (up_cost < upgrades_costs[upgrade_choice])
 			{
-				up_cost = float(upgrades_costs[upgrade_choice] / 2);
+				up_cost = float(upgrades_costs[upgrade_choice]);
 			}
 		}
 	}
@@ -1761,7 +1760,7 @@ ApplyHomingCharacteristics(DataPack pack)//int,float,int,int
 	if(!IsValidWeapon(CWeapon))
 		return;
 
-	Address homingActive = TF2Attrib_GetByName(CWeapon, "crit_from_behind");
+	Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
 	if(homingActive == Address_Null)
 		return;
 	

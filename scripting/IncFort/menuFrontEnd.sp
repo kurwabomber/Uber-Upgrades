@@ -65,11 +65,10 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); i++)
 		{
 			//PrintToServer("%i", tmp_up_idx);
-			up_cost = upgrades_costs[tmp_up_idx] / 2
+			up_cost = upgrades_costs[tmp_up_idx]
 			if (slot == 1)
-			{
-				up_cost = RoundFloat((up_cost * 1.0) * SecondaryCostReduction)
-			}
+				up_cost = RoundToCeil(up_cost*SecondaryCostReduction);
+
 			tmp_ref_idx = upgrades_ref_to_idx[client][slot][tmp_up_idx];
 			if (tmp_ref_idx != 20000)
 			{
@@ -84,18 +83,6 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 				val = 0.0
 			}
 			tmp_ratio = upgrades_ratio[tmp_up_idx]
-			/*if (tmp_val && tmp_ratio)
-			{
-				up_cost += RoundFloat(up_cost * (tmp_val / tmp_ratio) * upgrades_costs_inc_ratio[tmp_up_idx])
-				if (up_cost < 0.0)
-				{
-					up_cost *= -1;
-					if (up_cost < (upgrades_costs[tmp_up_idx] / 2))
-					{
-						up_cost = upgrades_costs[tmp_up_idx] / 2
-					}
-				}
-			}*/
 			float t_up_cost = 0.0;
 			int times = 0;
 			if(tmp_ref_idx != 20000)
@@ -142,7 +129,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 						upgrades_val = temp+(idx_currentupgrades_val * upgrades_ratio[tmp_up_idx]);
 						times--;
 					}
-					for (; times < rate;)
+					for (; times > rate;)
 					{
 						if(idx_currentupgrades_val > 0 && upgrades_ratio[tmp_up_idx] > 0.0 && 
 						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 <= upgrades_m_val[tmp_up_idx]
@@ -173,10 +160,8 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 				if (up_cost < 0.0)
 				{
 					up_cost *= -1;
-					if (up_cost < (upgrades_costs[tmp_up_idx] / 2))
-					{
-						up_cost = upgrades_costs[tmp_up_idx] / 2
-					}
+					if (up_cost < upgrades_costs[tmp_up_idx])
+						up_cost = upgrades_costs[tmp_up_idx]
 				}
 			}
 			if(times == 0){
@@ -585,7 +570,7 @@ public	Menu_TweakUpgrades_slot(client, arg, page)
 				if (upgrades_costs[u] < -0.1)
 				{
 					int nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][i]) / upgrades_ratio[u]);
-					float up_cost = upgrades_costs[u] * nb_time_upgraded * 3.0
+					float up_cost = float(upgrades_costs[u]*nb_time_upgraded);
 					if(up_cost > 200.0)
 					{
 						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.2f\n%.0f", buf, RoundFloat(currentupgrades_val[client][s][i]*100.0)/100.0,up_cost)
@@ -608,7 +593,6 @@ public	Menu_TweakUpgrades_slot(client, arg, page)
 					}
 					nb_time_upgraded *= -1
 					float up_cost = ((upgrades_costs[u]+((upgrades_costs_inc_ratio[u]*upgrades_costs[u])*(nb_time_upgraded-1))/2)*nb_time_upgraded)
-					up_cost /= 2
 					if(s == 1)
 						up_cost *= SecondaryCostReduction;
 						
