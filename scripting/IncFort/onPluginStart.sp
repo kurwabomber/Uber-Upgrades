@@ -440,7 +440,7 @@ public void OnPluginStart()
 	particleToggle = RegClientCookie("particleToggle", "Toggles if you can see particles such as lightning enchantment on yourself.", CookieAccess_Protected);
 	//Config
 	SetConVarFloat(FindConVar("sv_maxvelocity"), 1000000000.0, true, false);
-	SetConVarFloat(FindConVar("tf_scout_bat_launch_delay"), -0.1, true, false);
+	SetConVarFloat(FindConVar("tf_scout_bat_launch_delay"), 0.0, true, false);
 	SetConVarFloat(FindConVar("sv_maxunlag"), 0.3, true, false);
 	SetConVarFloat(FindConVar("tf_parachute_aircontrol"), 50000.0, true, false);
 	SetConVarFloat(FindConVar("tf_parachute_maxspeed_xy"), 100000.0, true, false);

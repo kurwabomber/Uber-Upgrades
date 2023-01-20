@@ -28,8 +28,8 @@
 			"name"		"damage penalty"
 			"ref"		"damage penalty"
 			"increase_ratio" "0.0"
-			"cost"		"1500"
-			"value"		"-0.15"
+			"cost"		"-7000"
+			"value"		"-0.25"
 			"init"		"1.00"
 			"max"		"0.00"
 		}
@@ -97,7 +97,7 @@
 		{
 			"name"		"clip size penalty"
 			"ref"		"clip size penalty"
-			"cost"		"75"
+			"cost"		"-900"
 			"value"		"-0.10"
 			"init"		"1.00"
 			"max"		"5.00"
@@ -136,7 +136,7 @@
 		{
 			"name"		"fire rate penalty"
 			"ref"		"fire rate penalty"
-			"cost"		"125"
+			"cost"		"-1500"
 			"value"		"0.10"
 			"init"		"1.00"
 			"max"		"20.00"
@@ -145,7 +145,7 @@
 		{
 			"name"		"fire rate penalty HIDDEN"
 			"ref"		"fire rate penalty(bow)"
-			"cost"		"133.5"
+			"cost"		"-1602"
 			"value"		"0.10"
 			"init"		"1.00"
 			"max"		"12.00"
@@ -154,7 +154,7 @@
 		{
 			"name"		"fire rate penalty"
 			"ref"		"fire rate penalty(cleaver)"
-			"cost"		"112.5"
+			"cost"		"-1350"
 			"value"		"0.1"
 			"init"		"1.00"
 			"max"		"13.00"
@@ -172,7 +172,7 @@
 		{
 			"name"		"fire rate penalty"
 			"ref"		"fire rate penalty(crossbow)"
-			"cost"		"125"
+			"cost"		"-1500"
 			"value"		"0.10"
 			"init"		"1.00"
 			"max"		"20.00"
@@ -392,7 +392,7 @@
 		{
 			"name"		"spread penalty"
 			"ref"		"spread penalty"
-			"cost"		"200"
+			"cost"		"-2400"
 			"value"		"0.30"
 			"init"		"1.00"
 			"max"		"5.00"
@@ -853,7 +853,7 @@
 		{
 			"name"		"maxammo primary reduced"
 			"ref"		"maxammo primary reduced"
-			"cost"		"225"
+			"cost"		"-2700"
 			"value"		"-0.15"
 			"init"		"1.00"
 			"max"		"0.10"
@@ -871,7 +871,7 @@
 		{
 			"name"		"maxammo secondary reduced"
 			"ref"		"maxammo secondary reduced"
-			"cost"		"375"
+			"cost"		"-4500"
 			"value"		"-0.20"
 			"init"		"1.00"
 			"max"		"0.1"
@@ -889,7 +889,7 @@
 		{
 			"name"		"maxammo metal reduced"
 			"ref"		"maxammo metal reduced"
-			"cost"		"200"
+			"cost"		"-2400"
 			"value"		"-0.05"
 			"init"		"1.00"
 			"max"		"0.3"
@@ -898,7 +898,7 @@
 		{
 			"name"		"minigun spinup time increased"
 			"ref"		"minigun spinup time increased"
-			"cost"		"100"
+			"cost"		"-1200"
 			"value"		"0.25"
 			"init"		"1.00"
 			"max"		"12.00"
@@ -954,7 +954,7 @@
 		{
 			"name"		"Reload time increased"
 			"ref"		"Reload time increased"
-			"cost"		"100"
+			"cost"		"-1200"
 			"value"		"0.10"
 			"init"		"1.00"
 			"max"		"7"
@@ -982,7 +982,7 @@
 		{
 			"name"		"selfdmg on hit for rapidfire"
 			"ref"		"selfdmg on hit for rapidfire"
-			"cost"		"200"
+			"cost"		"-2400"
 			"value"		"-5.00"
 			"init"		"0.00"
 			"max"		"-500000.00"
@@ -1040,7 +1040,7 @@
 		{
 			"name"		"Projectile range decreased"
 			"ref"		"Projectile force decreased"
-			"cost"		"150"
+			"cost"		"-1800"
 			"increase_ratio" "1.00"
 			"value"		"-0.25"
 			"init"		"1.00"
@@ -1050,7 +1050,7 @@
 		{
 			"name"		"Projectile speed decreased"
 			"ref"		"Projectile speed decreased"
-			"cost"		"200"
+			"cost"		"-2400"
 			"value"		"-0.10"
 			"init"		"1.00"
 			"max"		"0.4"
@@ -1366,7 +1366,7 @@
 		{
 			"name"		"flame ammopersec increased"
 			"ref"		"flame ammopersec increased"
-			"cost"		"150"
+			"cost"		"-1800"
 			"value"		"1.00"
 			"init"		"1.00"
 			"max"		"13.00"
@@ -1803,7 +1803,7 @@
 		{
 			"name"		"no crit boost"
 			"ref"		"no crit boost"
-			"cost"		"200"
+			"cost"		"-2400"
 			"value"		"-1.00"
 			"init"		"1.00"
 			"max"		"0.00"
@@ -1812,7 +1812,7 @@
 		{
 			"name"		"no crit boost"
 			"ref"		"crit chance(a)"
-			"cost"		"200"
+			"cost"		"-2400"
 			"value"		"-1.00"
 			"init"		"1.00"
 			"max"		"0.00"
@@ -1830,7 +1830,7 @@
 		{
 			"name"		"mod ammo per shot"
 			"ref"		"mod ammo per shot"
-			"cost"		"200"
+			"cost"		"-2400"
 			"value"		"1.00"
 			"init"		"1.00"
 			"max"		"10.00"
@@ -2047,7 +2047,7 @@
 		{
 			"name"		"melee attack rate bonus"
 			"ref"		"melee attack rate penalty"
-			"cost"		"150"
+			"cost"		"-1800"
 			"increase_ratio" 	"1.2"
 			"value"		"0.15"
 			"init"		"1.00"
@@ -2124,7 +2124,7 @@
 		{
 			"name"		"projectile spread angle penalty"
 			"ref"		"projectile spread angle penalty"
-			"cost"		"200"
+			"cost"		"-2400"
 			"value"		"1.50"
 			"init"		"0.00"
 			"max"		"15.00"
@@ -2142,7 +2142,7 @@
 		{
 			"name"		"can overload"
 			"ref"		"can overload"
-			"cost"		"400"
+			"cost"		"-4800"
 			"value"		"1.00"
 			"init"		"0.00"
 			"max"		"1.00"
@@ -2151,7 +2151,7 @@
 		{
 			"name"		"hype resets on jump"
 			"ref"		"hype resets on jump"
-			"cost"		"100"
+			"cost"		"-1200"
 			"value"		"35.00"
 			"init"		"0.00"
 			"max"		"1.00"
@@ -2160,7 +2160,7 @@
 		{
 			"name"		"clip size penalty HIDDEN"
 			"ref"		"clip size penalty HIDDEN"
-			"cost"		"100"
+			"cost"		"-1200"
 			"value"		"-0.10"
 			"init"		"1.00"
 			"max"		"0.20"
@@ -2196,7 +2196,7 @@
 		{
 			"name"		"uses ammo while aiming"
 			"ref"		"uses ammo while aiming"
-			"cost"		"400"
+			"cost"		"-4800"
 			"value"		"4.00"
 			"init"		"0.00"
 			"max"		"50.00"
@@ -2223,7 +2223,7 @@
 		{
 			"name"		"major move speed bonus"
 			"ref"		"move speed penalty"
-			"cost"		"200"
+			"cost"		"-2400"
 			"increase_ratio" 	"0.75"
 			"value"		"-0.10"
 			"init"		"1.00"
@@ -2352,7 +2352,7 @@
 		{
 			"name"		"use large smoke explosion"
 			"ref"		"use large smoke explosion"
-			"cost"		"1000"
+			"cost"		"-12000"
 			"value"		"1.00"
 			"init"		"0.00"
 			"max"		"1.0"
@@ -2763,7 +2763,7 @@
 		{
 			"name"		"dmg taken from fire increased"
 			"ref"		"dmg taken from fire increased"
-			"cost"		"170"
+			"cost"		"-2040"
 			"increase_ratio" "1"
 			"value"		"0.09"
 			"init"		"1.00"
@@ -2773,7 +2773,7 @@
 		{
 			"name"		"dmg taken from crit increased"
 			"ref"		"dmg taken from crit increased"
-			"cost"		"170"
+			"cost"		"-2040"
 			"increase_ratio" "1"
 			"value"		"0.09"
 			"init"		"1.00"
@@ -2783,7 +2783,7 @@
 		{
 			"name"		"dmg taken from blast increased"
 			"ref"		"dmg taken from blast increased"
-			"cost"		"170"
+			"cost"		"-2040"
 			"increase_ratio" "1"
 			"value"		"0.09"
 			"init"		"1.00"
@@ -2793,7 +2793,7 @@
 		{
 			"name"		"dmg taken from bullets increased"
 			"ref"		"dmg taken from bullets increased"
-			"cost"		"170"
+			"cost"		"-2040"
 			"increase_ratio" "1"
 			"value"		"0.09"
 			"init"		"1.00"
@@ -2803,7 +2803,7 @@
 		{
 			"name"		"dmg taken increased"
 			"ref"		"dmg taken increased"
-			"cost"		"200"
+			"cost"		"-2400"
 			"increase_ratio" "2"
 			"value"		"0.09"
 			"init"		"1.00"
@@ -2871,7 +2871,7 @@
 		{
 			"name"		"weapon burn dmg reduced"
 			"ref"		"weapon burn dmg reduced"
-			"cost"		"217.5"
+			"cost"		"-2610"
 			"increase_ratio"	"0.65"
 			"value"		"-0.10"
 			"init"		"1"
@@ -2881,7 +2881,7 @@
 		{
 			"name"		"dmg penalty while half alive"
 			"ref"		"dmg penalty while half alive"
-			"cost"		"1500"
+			"cost"		"-18000"
 			"value"		"-0.05"
 			"init"		"1.00"
 			"max"		"0.00"
@@ -2989,7 +2989,7 @@
 			"ref"		"Increased Overall Damage(T)"
 			"cost"		"650"
 			"increase_ratio"	"0.7"
-			"value"		"0.1"
+			"value"		"0.25"
 			"init"		"1.00"
 			"display_style" "1"
 			"description"	"1:1 pure damage multiplier.\nIncreases in cost by +$455 per purchase."
@@ -3098,7 +3098,7 @@
 		{
 			"name"		"sniper no charge"
 			"ref"		"sniper no charge"
-			"cost"		"375"
+			"cost"		"-4500"
 			"value"		"1"
 			"init"		"0"
 			"max"		"1"
@@ -3480,7 +3480,7 @@
 		{
 			"name"		"sticky air burst mode"
 			"ref"		"sticky air burst mode"
-			"cost"		"250"
+			"cost"		"-3000"
 			"init"		"0"
 			"value"		"2"
 			"max"		"2"
@@ -3489,7 +3489,7 @@
 		{
 			"name"		"self mark for death"
 			"ref"		"self mark for death"
-			"cost"		"250"
+			"cost"		"-3000"
 			"init"		"0"
 			"value"		"1"
 			"max"		"1"
@@ -3647,7 +3647,7 @@
 		{
 			"name"		"mod_maxhealth_drain_rate"
 			"ref"		"Max Health drain"
-			"cost"		"300"
+			"cost"		"-3600"
 			"value"		"10"
 			"init"		"0"
 			"max"		"10"
@@ -3685,7 +3685,7 @@
 		{
 			"name"		"charge time decreased"
 			"ref"		"charge time decreased"
-			"cost"		"125"
+			"cost"		"-1500"
 			"value"		"-0.10"
 			"init"		"0"
 			"max"		"-1.4"
@@ -3694,7 +3694,7 @@
 		{
 			"name"		"lose demo charge on damage when charging"
 			"ref"		"lose demo charge on damage when charging"
-			"cost"		"1000"
+			"cost"		"-12000"
 			"value"		"1"
 			"init"		"0"
 			"max"		"1"
@@ -3749,7 +3749,7 @@
 		{
 			"name"		"weapon burn time reduced"
 			"ref"		"weapon burn time reduced"
-			"cost"		"225"
+			"cost"		"-2700"
 			"value"		"-0.20"
 			"init"		"1"
 			"max"		"0.2"
@@ -3768,7 +3768,7 @@
 		{
 			"name"		"health from healers reduced"
 			"ref"		"health from healers reduced"
-			"cost"		"500"
+			"cost"		"-6000"
 			"value"		"-0.50"
 			"init"		"1"
 			"max"		"0.30"
@@ -3841,7 +3841,7 @@
 		{
 			"name"		"sniper no headshot without full charge"
 			"ref"		"sniper no headshot without full charge"
-			"cost"		"350"
+			"cost"		"-4200"
 			"value"		"1"
 			"init"		"0"
 			"max"		"1"
@@ -3850,7 +3850,7 @@
 		{
 			"name"		"damage penalty on bodyshot"
 			"ref"		"damage penalty on bodyshot"
-			"cost"		"150"
+			"cost"		"-1800"
 			"value"		"-0.1"
 			"init"		"1"
 			"max"		"1"
@@ -3904,7 +3904,7 @@
 		{
 			"name"		"mult_health_fromhealers_penalty_active"
 			"ref"		"Healing Disabled"
-			"cost"		"5000"
+			"cost"		"-60000"
 			"value"		"-1"
 			"init"		"1"
 			"max"		"0"
@@ -3953,7 +3953,7 @@
 		{
 			"name"		"single wep deploy time increased"
 			"ref"		"single wep deploy time increased"
-			"cost"		"2.5"
+			"cost"		"-30"
 			"init"		"1"
 			"value"		"0.1"
 			"max"		"1"
@@ -3962,7 +3962,7 @@
 		{
 			"name"		"single wep holster time increased"
 			"ref"		"single wep holster time increased"
-			"cost"		"50"
+			"cost"		"-600"
 			"init"		"1"
 			"value"		"0.1"
 			"max"		"1"
