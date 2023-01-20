@@ -122,12 +122,20 @@ stock float GetAttributeAccumulateAdditive(int client, const char[] attrName, fl
 	for(int i=0;i<3;i++)
 	{
 		weapon = GetWeapon(client,i);
-		if(IsValidWeapon(weapon) && TF2_IsWearable(weapon))
-		{
-			Address temp_attribute_address = TF2Attrib_GetByName(weapon, attrName);
-			if(temp_attribute_address != Address_Null)
-				value += TF2Attrib_GetValue(temp_attribute_address);
-		}
+		if(!IsValidWeapon(weapon))
+			continue;
+
+		char sClass[32];
+		GetEntityClassname(weapon, sClass, sizeof(sClass));
+
+		if(StrContains(sClass,"tf_wearable") == -1
+		&& StrContains(sClass,"tf_weapon_parachute") == -1)
+			continue;
+
+		Address temp_attribute_address = TF2Attrib_GetByName(weapon, attrName);
+		if(temp_attribute_address != Address_Null)
+			value += TF2Attrib_GetValue(temp_attribute_address);
+		
 	}
 	weapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	if(IsValidWeapon(weapon))
@@ -149,12 +157,20 @@ stock float GetAttributeAccumulateMultiplicative(int client, const char[] attrNa
 	for(int i=0;i<3;i++)
 	{
 		weapon = GetWeapon(client,i);
-		if(IsValidWeapon(weapon) && TF2_IsWearable(weapon))
-		{
-			Address temp_attribute_address = TF2Attrib_GetByName(weapon, attrName);
-			if(temp_attribute_address != Address_Null)
-				value *= TF2Attrib_GetValue(temp_attribute_address);
-		}
+		if(!IsValidWeapon(weapon))
+			continue;
+
+		char sClass[32];
+		GetEntityClassname(weapon, sClass, sizeof(sClass));
+
+		if(StrContains(sClass,"tf_wearable") == -1
+		&& StrContains(sClass,"tf_weapon_parachute") == -1)
+			continue;
+
+		Address temp_attribute_address = TF2Attrib_GetByName(weapon, attrName);
+		if(temp_attribute_address != Address_Null)
+			value *= TF2Attrib_GetValue(temp_attribute_address);
+
 	}
 	weapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	if(IsValidWeapon(weapon))

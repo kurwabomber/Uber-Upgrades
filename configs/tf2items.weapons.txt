@@ -167,7 +167,6 @@
 		{
 			"preserve_attributes"	"1"
 			"1"				"66 ; 0.8"
-			"2"				"270 ; 1"
 		}
 		"133"//Gunboats
 		{
