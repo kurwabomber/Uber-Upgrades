@@ -379,6 +379,9 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 							}
 						}
 					}
+					float damageReduction = GetAttribute(CWeapon, "energy buff dmg taken multiplier", 1.0);
+					if(damageReduction != 1.0)
+						TF2Attrib_AddCustomPlayerAttribute(client, "damage taken mult 3", damageReduction, 16.0);
 				}
 			}
 			case TFCond_Milked:
