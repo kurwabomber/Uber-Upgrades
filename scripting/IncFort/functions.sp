@@ -1774,39 +1774,43 @@ ApplyHomingCharacteristics(DataPack pack)//int,float,int,int
 ExplosiveArrow(entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))
+
+	if(!IsValidEntity(entity))
+		return;
+
+	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
+		return;
+
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity");
+	if(!IsValidClient(owner))
+		return;
+
+	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+	if(!IsValidWeapon(CWeapon))
+		return;
+
+	if(!HasEntProp(entity, Prop_Send, "m_bArrowAlight"))
+		return;
+
+	Address ignitionChance = TF2Attrib_GetByName(CWeapon, "Wrench index");
+	if(ignitionChance != Address_Null)
+		if(TF2Attrib_GetValue(ignitionChance) >= GetRandomFloat(0.0, 1.0))
+			SetEntProp(entity,Prop_Send, "m_bArrowAlight", 1);
+
+	if(GetEntProp(entity, Prop_Send, "m_bArrowAlight") == 1)
 	{
-		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
+		Address ignitionExplosion = TF2Attrib_GetByName(CWeapon, "damage applies to sappers");
+		if(ignitionExplosion != Address_Null && TF2Attrib_GetValue(ignitionExplosion) > 0.0)
 		{
-			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity");
-			if(IsValidClient(owner))
-			{
-				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
-				{
-					Address ignitionChance = TF2Attrib_GetByName(CWeapon, "Wrench index");
-					if(ignitionChance != Address_Null)
-					{
-						if(TF2Attrib_GetValue(ignitionChance) >= GetRandomFloat(0.0, 1.0))
-						{
-							SetEntProp(entity, Prop_Send, "m_bArrowAlight", 1);
-							
-							Address ignitionExplosion = TF2Attrib_GetByName(CWeapon, "damage applies to sappers");
-							if(ignitionExplosion != Address_Null && TF2Attrib_GetValue(ignitionExplosion) > 0.0)
-							{
-								jarateWeapon[entity] = EntIndexToEntRef(CWeapon)
-								SDKHook(entity, SDKHook_StartTouchPost, IgnitionArrowCollision);
-							}
-						}
-					}
-					if(fl_ArrowStormDuration[owner] > 0.0)
-					{
-						jarateWeapon[entity] = EntIndexToEntRef(CWeapon)
-						SDKHook(entity, SDKHook_StartTouchPost, ExplosiveArrowCollision);
-					}
-				}
-			}
+			jarateWeapon[entity] = EntIndexToEntRef(CWeapon)
+			SDKHook(entity, SDKHook_StartTouchPost, IgnitionArrowCollision);
 		}
+	}
+
+	if(fl_ArrowStormDuration[owner] > 0.0)
+	{
+		jarateWeapon[entity] = EntIndexToEntRef(CWeapon)
+		SDKHook(entity, SDKHook_StartTouchPost, ExplosiveArrowCollision);
 	}
 }
 disableWeapon(client)

@@ -208,7 +208,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			Format(buf, sizeof(buf), "%T", upgradesNames[tmp_up_idx], client)
 			if (FloatAbs(tmp_ratio) < 0.99)
 			{
-				if(RoundFloat(val*100.0)/100.0 == upgrades_m_val[tmp_up_idx])
+				if(val == upgrades_m_val[tmp_up_idx])
 				{
 					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%i%%\t(%i%%) MAXED %s",
 						t_up_cost, buf,
@@ -256,7 +256,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			}
 			else
 			{
-				if(RoundFloat(val*100.0)/100.0 == upgrades_m_val[tmp_up_idx])
+				if(val == upgrades_m_val[tmp_up_idx])
 				{
 					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%3.1f\t(%.1f) MAXED %s",
 						t_up_cost, buf,

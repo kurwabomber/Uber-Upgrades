@@ -1728,13 +1728,13 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 	}
 	return 1.0;
 }
-stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true, bool critMod = true)
+stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true, bool critMod = true, bool onlyModifiers = false)
 {
 	if(IsValidClient3(client))
     {
 		if(IsValidEntity(weapon))
 		{
-			float dpsMult = TF2_GetDamageModifiers(client,weapon);
+			float dpsMult = onlyModifiers ? 1.0 : TF2_GetDamageModifiers(client,weapon);
 			Address DPSMult1 = TF2Attrib_GetByName(weapon, "fire rate bonus HIDDEN");
 			Address DPSMult2 = TF2Attrib_GetByName(weapon, "fire rate penalty HIDDEN");
 			Address DPSMult3 = TF2Attrib_GetByName(weapon, "fire rate bonus");

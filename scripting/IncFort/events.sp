@@ -1318,6 +1318,11 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			}
 			if(IsPlayerAlive(client))
 			{
+				int viewmodel = GetEntPropEnt(client, Prop_Send, "m_hViewModel");
+				if(IsValidEntity(viewmodel))
+				{
+					SetEntPropFloat(viewmodel, Prop_Send, "m_flPlaybackRate", 1.0 + (TF2_GetDPSModifiers(client,CWeapon,true,false,true)/3.0));
+				}
 				if(!(buttons & IN_ATTACK) && globalButtons[client] & IN_ATTACK && fanOfKnivesCount[client] > 1)
 				{
 					float fOrigin[3], fAngles[3];
@@ -1619,7 +1624,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										weaponArtCooldown[client] = 7.0;
 										fl_GlobalCoolDown[client] = 0.8;
 										fl_ArrowStormDuration[client] = 1.0;
-										PrintToChat(client, "Your next shot will explode!");
+										SetEntProp(CWeapon, Prop_Send, "m_bArrowAlight", 1);
 									}
 								}
 							}
@@ -2531,6 +2536,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					}
 				}
 			}
+
 			Address meleeAttacks = TF2Attrib_GetByName(CWeapon, "duck rating");
 			if(meleeAttacks != Address_Null && meleeLimiter[client] > RoundToNearest(TF2Attrib_GetValue(meleeAttacks) * 2.0))
 			{

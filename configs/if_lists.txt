@@ -1589,7 +1589,6 @@
 		{
 			"Attr0"		"damage bonus"
 			"Attr20"	"ap (armyofnotmany)"
-			"Attr17"	"stickybomb charge rate"
 			"Attr18"	"Increased Overall Damage"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
@@ -1603,6 +1602,7 @@
 			"Attr1"		"fire rate bonus(multshit)"
 			"Attr2"		"clip size bonus"
 			"Attr4"		"faster reload rate"
+			"stickybomb charge rate"
 			"Attr6"		"reload clip all at once"
 			"Attr9"		"sticky arm time bonus"
 			"Attr6"		"rocket jump damage reduction"
