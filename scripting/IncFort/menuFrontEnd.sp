@@ -66,7 +66,6 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 
 	Handle menu = CreateMenu(MenuHandler_UpgradeChoice, MENU_ACTIONS_DEFAULT|MenuAction_DisplayItem);
 	playerUpgradeMenus[client] = view_as<int>(menu);
-	PrintToServer("%i", playerUpgradeMenus[client])
 	int rate = getUpgradeRate(client);
 	if (cat_choice != -1)
 	{
