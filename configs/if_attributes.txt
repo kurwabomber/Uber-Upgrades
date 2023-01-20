@@ -2989,7 +2989,7 @@
 			"ref"		"Increased Overall Damage(T)"
 			"cost"		"650"
 			"increase_ratio"	"0.7"
-			"value"		"0.25"
+			"value"		"0.1"
 			"init"		"1.00"
 			"display_style" "1"
 			"description"	"1:1 pure damage multiplier.\nIncreases in cost by +$455 per purchase."

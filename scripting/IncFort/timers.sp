@@ -173,7 +173,7 @@ public Action:Timer_FixedVariables(Handle timer)
 					{
 						char fstr2[100];
 						getUpgradeMenuTitle(client, current_w_list_id[client], current_w_c_list_id[client], current_slot_used[client], fstr2);
-						Menu_UpgradeChoice(client, current_w_sc_list_id[client], current_w_c_list_id[client], fstr2, playerUpgradeMenuPage[client]);
+						Menu_UpgradeChoice(client, current_w_sc_list_id[client], current_w_c_list_id[client], fstr2, RoundToFloor(playerUpgradeMenuPage[client]/7.0)*7);
 					}
 				}
 

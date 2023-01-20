@@ -22,6 +22,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int cat_id = current_w_c_list_id[client]
 		int subcat_id = current_w_sc_list_id[client]
 		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
+		playerUpgradeMenuPage[client] = param2;
 		if(upgrades_display_style[upgrade_choice] != 0)
 		{
 			switch(upgrades_display_style[upgrade_choice])
@@ -59,9 +60,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int subcat_id = current_w_sc_list_id[client]
 		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
 		int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
-		playerUpgradeMenuPage[client] = GetMenuSelectionPosition();
 		int rate = getUpgradeRate(client);
-
 
 		if(canBypassRestriction[client] == false && upgrades_requirement[upgrade_choice] > (StartMoney + additionalstartmoney))
 		{

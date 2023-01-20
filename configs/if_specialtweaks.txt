@@ -56,7 +56,7 @@
 		"Lacerating Rounds"
 		{
 			"requirement"							"250000.0"
-			"fire rate penalty(unremoveable)"		"1.5"
+			"fire rate penalty(unremoveable)"		"3.0"
 			"bleeding duration"						"5"
 			"Bleed Per Hit"							"2"
 		}
