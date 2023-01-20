@@ -36,6 +36,29 @@ public Action:Menu_BuyUpgrade(client, args)
 		DisplayMenuAtItem(menuBuy, client, args, MENU_TIME_FOREVER)
 	}
 }
+public Action:Menu_ConfirmWeapon(client, param2)
+{
+	Handle menu = CreateMenu(MenuHandler_BuyNewWeapon);
+
+	char TitleStr[64]
+	char Description[512]
+	Format(TitleStr, sizeof(TitleStr), "%s - Costs $%.0f", upgrades_weapon[param2],upgrades_weapon_cost[param2])
+	Format(Description, sizeof(Description), "%s",upgrades_weapon_description[param2])
+	ReplaceString(Description, sizeof(Description), "\\n", "\n");
+	AddMenuItem(menu, "buyWeapon", "Confirm Purchase");
+
+	SetMenuTitle(menu, "%s\n \n%s\n",TitleStr,Description);
+	SetMenuExitBackButton(menu, true);
+	if (IsValidClient(client) && IsPlayerAlive(client))
+	{
+		DisplayMenu(menu, client, MENU_TIME_FOREVER);
+	}
+}
+public Action:Timer_giveactionslot(Handle timer, int client)
+{
+	client = EntRefToEntIndex(client)
+	GiveNewWeapon(client, 3);
+}
 //When you purchase an upgrade
 Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, int page = 0)
 {
@@ -43,6 +66,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 
 	Handle menu = CreateMenu(MenuHandler_UpgradeChoice, MENU_ACTIONS_DEFAULT|MenuAction_DisplayItem);
 	playerUpgradeMenus[client] = view_as<int>(menu);
+	PrintToServer("%i", playerUpgradeMenus[client])
 	int rate = getUpgradeRate(client);
 	if (cat_choice != -1)
 	{

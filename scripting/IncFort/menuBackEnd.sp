@@ -8,7 +8,7 @@ public MenuHandler_AccessDenied(Handle menu, MenuAction:action, client, param2)
         CloseHandle(menu);
 }
 
-
+//Memory Leak here?
 public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 {
 	if(action == MenuAction_DisplayItem)
@@ -353,7 +353,6 @@ public MenuHandler_SpeMenubuy(Handle menu, MenuAction:action, client, param2)
 }
 public MenuHandler_ChooseSubcat(Handle menu, MenuAction:action, client, param2)
 {
-	Handle buymenusel = CreateMenu(MenuHandler_BuyUpgrade);
 	if (action == MenuAction_Select)
 	{
 		char fstr2[100]
@@ -398,12 +397,10 @@ public MenuHandler_ChooseSubcat(Handle menu, MenuAction:action, client, param2)
 	}
     if (action == MenuAction_End)
         CloseHandle(menu);
-	SetMenuExitBackButton(buymenusel, true);
 	return; 
 }
 public MenuHandler_Choosecat(Handle menu, MenuAction:action, client, param2)
 {
-	Handle buymenusel = CreateMenu(MenuHandler_BuyUpgrade);
 	if (action == MenuAction_Select)
 	{
 		char fstr2[100]
@@ -492,7 +489,6 @@ public MenuHandler_Choosecat(Handle menu, MenuAction:action, client, param2)
 	}
     if (action == MenuAction_End)
         CloseHandle(menu);
-	SetMenuExitBackButton(buymenusel, true);
 	return; 
 }
 
@@ -601,29 +597,6 @@ public MenuHandler_ConfirmNewWeapon(Handle menu, MenuAction:action, client, para
 	if(action == MenuAction_End)
 		CloseHandle(menu);
 }
-public Action:Menu_ConfirmWeapon(client, param2)
-{
-	Handle menu = CreateMenu(MenuHandler_BuyNewWeapon);
-
-	char TitleStr[64]
-	char Description[512]
-	Format(TitleStr, sizeof(TitleStr), "%s - Costs $%.0f", upgrades_weapon[param2],upgrades_weapon_cost[param2])
-	Format(Description, sizeof(Description), "%s",upgrades_weapon_description[param2])
-	ReplaceString(Description, sizeof(Description), "\\n", "\n");
-	AddMenuItem(menu, "buyWeapon", "Confirm Purchase");
-
-	SetMenuTitle(menu, "%s\n \n%s\n",TitleStr,Description);
-	SetMenuExitBackButton(menu, true);
-	if (IsValidClient(client) && IsPlayerAlive(client))
-	{
-		DisplayMenu(menu, client, MENU_TIME_FOREVER);
-	}
-}
-public Action:Timer_giveactionslot(Handle timer, int client)
-{
-	client = EntRefToEntIndex(client)
-	GiveNewWeapon(client, 3);
-}
 
 public MenuHandler_BuyNewWeapon(Handle menu, MenuAction:action, client, param2)
 {
@@ -657,7 +630,6 @@ public MenuHandler_BuyNewWeapon(Handle menu, MenuAction:action, client, param2)
 }
 public MenuHandler_AttributesTweak(Handle menu, MenuAction:action, client, param2)
 {
-	SetMenuExitBackButton(menu, true);
 	if (IsValidClient(client) && IsPlayerAlive(client) && !client_respawn_checkpoint[client])
 	{
 		Menu_TweakUpgrades_slot(client, param2, 0)
@@ -672,7 +644,6 @@ public MenuHandler_AttributesTweak(Handle menu, MenuAction:action, client, param
 }
 public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client, param2)
 {
-	SetMenuExitBackButton(menu, true);
 	if (IsValidClient(client) && IsPlayerAlive(client) && !client_respawn_checkpoint[client])
 	{
 		int s = current_slot_used[client];
@@ -743,6 +714,8 @@ public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client
 	{
 		Menu_TweakUpgrades(client);
 	}
+	if(action == MenuAction_End)
+		CloseHandle(menu);
 }
 public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, param2)
 {
@@ -1068,6 +1041,8 @@ public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 	{
 		Menu_BuyUpgrade(client, 7);
 	}
+	if(action == MenuAction_End)
+		CloseHandle(menu);
 	return; 
 }
 public MenuHandler_StatsViewer(Handle menu, MenuAction:action, client, param2)
@@ -1475,5 +1450,7 @@ public MenuHandler_StatsViewer(Handle menu, MenuAction:action, client, param2)
 			ClientCommand(client, "buy");
 		}
 	}
+	if(action == MenuAction_End)
+		CloseHandle(menu);
 	return; 
 }
