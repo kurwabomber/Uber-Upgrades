@@ -582,6 +582,7 @@ public	Menu_TweakUpgrades_slot(client, arg, page)
 		s = arg;
 		current_slot_used[client] = s;
 		SetMenuTitle(menu, "$%.0f ***%s - Choose attribute:", CurrencyOwned[client], current_slot_name[s]);
+		SetMenuExitBackButton(menu, true);
 		char buf[256]
 		char fstr[512]
 		if(currentupgrades_number[client][s] != 0)
@@ -633,10 +634,6 @@ public	Menu_TweakUpgrades_slot(client, arg, page)
 					Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.2f", buf, RoundFloat(currentupgrades_val[client][s][i]*100.0)/100.0)
 				}
 				AddMenuItem(menu, "yep", fstr);
-			}
-			if (IsValidClient(client) && IsPlayerAlive(client))
-			{
-				DisplayMenu(menu, client, 20);
 			}
 			DisplayMenuAtItem(menu, client, page, MENU_TIME_FOREVER);
 		}
