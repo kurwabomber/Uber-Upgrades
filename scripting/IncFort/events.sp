@@ -1318,11 +1318,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			}
 			if(IsPlayerAlive(client))
 			{
-				int viewmodel = GetEntPropEnt(client, Prop_Send, "m_hViewModel");
-				if(IsValidEntity(viewmodel))
-				{
-					SetEntPropFloat(viewmodel, Prop_Send, "m_flPlaybackRate", 1.0 + (TF2_GetDPSModifiers(client,CWeapon,true,false,true)/3.0));
-				}
 				if(!(buttons & IN_ATTACK) && globalButtons[client] & IN_ATTACK && fanOfKnivesCount[client] > 1)
 				{
 					float fOrigin[3], fAngles[3];

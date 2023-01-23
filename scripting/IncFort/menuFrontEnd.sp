@@ -741,6 +741,396 @@ public Menu_ShowStatsMenu(client)
 	}
 	return;
 }
+public Menu_ShowStatsSlot(client, param2)
+{
+	Handle menu = CreateMenu(MenuHandler_StatsSlotViewer);
+	SetMenuExitBackButton(menu, true);
+	int primary = -1;
+	int secondary = -1;
+	int melee = -1;
+	if(TF2_GetPlayerClass(client) == TFClass_Spy)
+	{
+		primary = GetWeapon(client,1);
+		secondary = GetWeapon(client,2);
+		melee = GetPlayerWeaponSlot(client,2);
+	}
+	else 
+	{
+		primary = GetWeapon(client,0);
+		secondary = GetWeapon(client,1);
+		melee = GetWeapon(client,2);
+	}
+	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	if(param2 == 0)
+	{
+		SetMenuTitle(menu, "Displaying Body Stats");
+		char Description[512];
+		float DelayAmount = 1.0;
+		Address armorDelay = TF2Attrib_GetByName(client, "tmp dmgbuff on hit");
+		if(armorDelay != Address_Null)
+		{
+			DelayAmount /= TF2Attrib_GetValue(armorDelay) + 1.0;
+		}
+
+		Format(Description, sizeof(Description), "Body Health = %s\nBody Total Resistance = %s\nArmor Recharge Delay = %.2f\nMovespeed = %sHU/S\nFocus Regeneration = %s/S",
+		GetAlphabetForm(float(TF2_GetMaxHealth(client))),
+		GetAlphabetForm(GetResistance(client, true)),
+		DelayAmount,
+		GetAlphabetForm(GetEntPropFloat(client, Prop_Data, "m_flMaxspeed")),
+		GetAlphabetForm(fl_RegenFocus[client]*66.6)); 
+		
+		Address zapActive = TF2Attrib_GetByName(client, "arcane zap");
+		if(zapActive != Address_Null && TF2Attrib_GetValue(zapActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nZap Damage = %s", 
+			Description, GetAlphabetForm(20.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 3.0)))
+		}
+		Address lightningActive = TF2Attrib_GetByName(client, "arcane lightning strike");
+		if(lightningActive != Address_Null && TF2Attrib_GetValue(lightningActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nLightning Strike Damage = %s", 
+			Description, GetAlphabetForm(200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 80.0)))
+		}
+		Address callBeyondActive = TF2Attrib_GetByName(client, "arcane a call beyond");
+		if(callBeyondActive != Address_Null && TF2Attrib_GetValue(callBeyondActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nA Call Beyond Damage = %s x 25", 
+			Description, GetAlphabetForm(200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 120.0)))
+		}
+		Address BlackskyEyeActive = TF2Attrib_GetByName(client, "arcane blacksky eye");
+		if(BlackskyEyeActive != Address_Null && TF2Attrib_GetValue(BlackskyEyeActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nBlacksky Eye Damage = %s", 
+			Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 7.5)))
+		}
+		Address SunlightSpearActive = TF2Attrib_GetByName(client, "arcane sunlight spear");
+		if(SunlightSpearActive != Address_Null && TF2Attrib_GetValue(SunlightSpearActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nSunlight Spear Damage = %s", 
+			Description, GetAlphabetForm(100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 40.0)))
+		}
+		Address lightningenchantmentActive = TF2Attrib_GetByName(client, "arcane lightning enchantment");
+		if(lightningenchantmentActive != Address_Null && TF2Attrib_GetValue(lightningenchantmentActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nLightning Enchantment DPS = %s", 
+			Description, GetAlphabetForm(20.0*(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.0))))
+		}
+		Address darkmoonbladeActive = TF2Attrib_GetByName(client, "arcane darkmoon blade");
+		if(darkmoonbladeActive != Address_Null && TF2Attrib_GetValue(darkmoonbladeActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nDarkmoon Blade Damage = %s", 
+			Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.5)))
+		}
+		Address snapfreezeActive = TF2Attrib_GetByName(client, "arcane snap freeze");
+		if(snapfreezeActive != Address_Null && TF2Attrib_GetValue(snapfreezeActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nSnap Freeze Damage = %s", 
+			Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0)))
+		}
+		Address arcaneprisonActive = TF2Attrib_GetByName(client, "arcane prison");
+		if(arcaneprisonActive != Address_Null && TF2Attrib_GetValue(arcaneprisonActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nArcane Prison Damage = %s", 
+			Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 5.0)))
+		}
+		Address classSpecificActive = TF2Attrib_GetByName(client, "arcane aerial strike");
+		if(classSpecificActive != Address_Null && TF2Attrib_GetValue(classSpecificActive) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nAerial Strike Damage = %s x 30", 
+			Description, GetAlphabetForm(10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 25.0)))
+		}
+		Address classSpecificActive2 = TF2Attrib_GetByName(client, "arcane inferno");
+		if(classSpecificActive2 != Address_Null && TF2Attrib_GetValue(classSpecificActive2) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nInferno Damage = %s x 20", 
+			Description, GetAlphabetForm(20.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 12.5)))
+		}
+		Address classSpecificActive3 = TF2Attrib_GetByName(client, "arcane mine field");
+		if(classSpecificActive3 != Address_Null && TF2Attrib_GetValue(classSpecificActive3) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nMine Field Damage = %s x 20", 
+			Description, GetAlphabetForm(90.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 6.5)))
+		}
+		Address classSpecificActive4 = TF2Attrib_GetByName(client, "arcane hunter");
+		if(classSpecificActive4 != Address_Null && TF2Attrib_GetValue(classSpecificActive4) > 0.0)
+		{
+			Format(Description, sizeof(Description), "%s\nArcane Hunter Damage = %s x 5", 
+			Description, GetAlphabetForm(200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 80.0)))
+		}
+		AddMenuItem(menu, "body_description", Description, ITEMDRAW_DISABLED);
+	}
+	else if(param2 == 1 && IsValidWeapon(primary))
+	{
+		char strName[64];
+		GetEntityClassname(primary, strName, 64)
+		if(StrContains(strName, "weapon") != -1)
+		{
+			SetMenuTitle(menu, "Displaying Primary Stats");
+			char Description[1024];
+			
+			Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
+			GetAlphabetForm(TF2_GetDamageModifiers(client, primary)),
+			GetAlphabetForm(TF2_GetDPSModifiers(client, primary)),
+			TF2_GetWeaponclassDPS(client, primary),
+			GetAlphabetForm(TF2_GetWeaponclassDPS(client, primary) * TF2_GetDPSModifiers(client, primary))); 
+
+			if(weaponFireRate[primary] != -1.0)
+			{
+				Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[primary]);
+				float tickRate = 1.0/GetTickInterval();
+
+				for(int i = 1 ; i < 6 ; i++)
+				{
+					if(weaponFireRate[primary] >= tickRate/i)
+					{
+						tickRate /= i;
+						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[primary]-tickRate)/tickRate));
+						break;
+					}
+				}
+			}
+
+			AddMenuItem(menu, "primary_description", Description, ITEMDRAW_DISABLED);
+		}
+		else
+		{
+			SetMenuTitle(menu, "Displaying Primary Wearable Stats");
+			char Description[512];
+			Format(Description, sizeof(Description), "Look in chat for a list of attributes."); 
+			TF2_AttribListAttributesBySlot(client,0);
+			AddMenuItem(menu, "primary_description", Description, ITEMDRAW_DISABLED);
+		}
+	}
+	else if(param2 == 2 && IsValidWeapon(secondary))
+	{
+		char strName[64];
+		GetEntityClassname(secondary, strName, 64)
+		if(StrContains(strName, "medigun") != -1)
+		{
+			SetMenuTitle(menu, "Displaying Medigun Stats");
+			char Description[512];
+			
+			float healRateMult = 1.0;
+			float armorRateMult = 1.0;
+			Address Healrate1 = TF2Attrib_GetByName(secondary, "heal rate bonus");
+			if(Healrate1 != Address_Null)
+			{
+				healRateMult *= TF2Attrib_GetValue(Healrate1);
+			}
+			Address Healrate2 = TF2Attrib_GetByName(secondary, "heal rate penalty");
+			if(Healrate2 != Address_Null)
+			{
+				healRateMult *= TF2Attrib_GetValue(Healrate2);
+			}
+			Address Healrate3 = TF2Attrib_GetByName(secondary, "overheal fill rate reduced");
+			if(Healrate3 != Address_Null)
+			{
+				healRateMult *= TF2Attrib_GetValue(Healrate3);
+			}
+			Address overhealBonus = TF2Attrib_GetByName(secondary, "overheal bonus");
+			if(overhealBonus != Address_Null)
+			{
+				armorRateMult *= TF2Attrib_GetValue(overhealBonus);
+			}
+			
+			Format(Description, sizeof(Description), "Medigun Base Heal Rate = %s/S\nMedigun Armor Recharge Bonus For Patient = %sx\nMedigun Range = 2k HU",
+			GetAlphabetForm(healRateMult*24.0),
+			GetAlphabetForm(armorRateMult)); 
+			AddMenuItem(menu, "secondary_description", Description, ITEMDRAW_DISABLED);
+		}
+		else if(StrContains(strName, "weapon") != -1)
+		{
+			SetMenuTitle(menu, "Displaying Secondary Stats");
+			char Description[1024];
+			
+			Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
+			GetAlphabetForm(TF2_GetDamageModifiers(client, secondary)),
+			GetAlphabetForm(TF2_GetDPSModifiers(client, secondary)),
+			TF2_GetWeaponclassDPS(client, secondary),
+			GetAlphabetForm(TF2_GetWeaponclassDPS(client, secondary) * TF2_GetDPSModifiers(client, secondary))); 
+
+			if(weaponFireRate[secondary] != -1.0)
+			{
+				Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[secondary]);
+				float tickRate = 1.0/GetTickInterval();
+
+				for(int i = 1 ; i < 6 ; i++)
+				{
+					if(weaponFireRate[secondary] >= tickRate/i)
+					{
+						tickRate /= i;
+						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[secondary]-tickRate)/tickRate));
+						break;
+					}
+				}
+			}
+
+			AddMenuItem(menu, "secondary_description", Description, ITEMDRAW_DISABLED);
+		}
+		else if(StrContains(strName, "demoshield") != -1)
+		{
+			SetMenuTitle(menu, "Displaying Secondary Wearable Stats");
+			char Description[512];
+			
+			Format(Description, sizeof(Description), "Shield Explosion Damage = %s\nLook in chat for a list of attributes.",
+			GetAlphabetForm(TF2_GetDPSModifiers(client,CWeapon)*70.0));
+			TF2_AttribListAttributesBySlot(client,1);
+			AddMenuItem(menu, "secondary_description", Description, ITEMDRAW_DISABLED);
+		}
+		else
+		{
+			SetMenuTitle(menu, "Displaying Secondary Wearable Stats");
+			char Description[512];
+			Format(Description, sizeof(Description), "Look in chat for a list of attributes."); 
+			TF2_AttribListAttributesBySlot(client,1);
+			AddMenuItem(menu, "secondary_description", Description, ITEMDRAW_DISABLED);
+		}
+	}
+	else if(param2 == 3 && IsValidWeapon(melee))
+	{
+		char strName[64];
+		GetEntityClassname(melee, strName, 64)
+		if(StrContains(strName, "weapon") != -1)
+		{
+			SetMenuTitle(menu, "Displaying Melee Stats");
+			char Description[1024];
+			
+			Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
+			GetAlphabetForm(TF2_GetDamageModifiers(client, melee)),
+			GetAlphabetForm(TF2_GetDPSModifiers(client, melee)),
+			TF2_GetWeaponclassDPS(client, melee),
+			GetAlphabetForm(TF2_GetWeaponclassDPS(client, melee) * TF2_GetDPSModifiers(client, melee))); 
+			
+			if(current_class[client] == TFClass_Engineer)
+			{
+				float SentryDPS = 160.0;
+				
+				Address miniSentryActive = TF2Attrib_GetByName(melee, "mod wrench builds minisentry");
+				if(miniSentryActive != Address_Null && TF2Attrib_GetValue(miniSentryActive) > 0.0)
+				{
+					SentryDPS = 120.0;
+				}
+				else
+				{
+					Address sentryRocketMult = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");
+					if(sentryRocketMult != Address_Null)
+					{
+						SentryDPS += 30.0*TF2Attrib_GetValue(sentryRocketMult);
+					}
+				}
+				
+				if(IsValidEntity(CWeapon))
+				{
+					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
+					if(SentryDmgActive != Address_Null)
+					{
+						SentryDPS *= TF2Attrib_GetValue(SentryDmgActive);
+					}
+				}
+				Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
+				if(SentryDmgActive1 != Address_Null)
+				{
+					SentryDPS *= TF2Attrib_GetValue(SentryDmgActive1);
+				}
+				Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
+				if(SentryDmgActive2 != Address_Null)
+				{
+					SentryDPS *= TF2Attrib_GetValue(SentryDmgActive2);
+				}
+				Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
+				if(damageActive != Address_Null)
+				{
+					SentryDPS *= Pow(1.05,TF2Attrib_GetValue(damageActive));
+				}
+				Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
+				if(damageActive2 != Address_Null)
+				{
+					SentryDPS *= TF2Attrib_GetValue(damageActive2);
+				}
+				Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
+				if(fireRateActive != Address_Null)
+				{
+					SentryDPS /= TF2Attrib_GetValue(fireRateActive);
+				}
+				
+				Format(Description, sizeof(Description), "%s\nSentry DPS = %s", Description, GetAlphabetForm(SentryDPS));
+			}
+			if(weaponFireRate[melee] != -1.0)
+			{
+				Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[melee]);
+				float tickRate = 1.0/GetTickInterval();
+
+				for(int i = 1 ; i < 6 ; i++)
+				{
+					if(weaponFireRate[melee] >= tickRate/i)
+					{
+						tickRate /= i;
+						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[melee]-tickRate)/tickRate));
+						break;
+					}
+				}
+			}
+			
+			AddMenuItem(menu, "melee_description", Description, ITEMDRAW_DISABLED);
+		}
+		else
+		{
+			SetMenuTitle(menu, "Displaying Melee Wearable Stats");
+			char Description[512];
+			Format(Description, sizeof(Description), "Look in chat for a list of attributes."); 
+			TF2_AttribListAttributesBySlot(client,2);
+			AddMenuItem(menu, "melee_description", Description, ITEMDRAW_DISABLED);
+		}
+	}
+	else if(param2 == 4 && IsValidWeapon(client_new_weapon_ent_id[client]))
+	{
+		char strName[64];
+		int weapon = client_new_weapon_ent_id[client];
+		GetEntityClassname(weapon, strName, 64)
+		if(StrContains(strName, "weapon") != -1)
+		{
+			SetMenuTitle(menu, "Displaying Bought Weapon Stats");
+			char Description[1024];
+			
+			Format(Description, sizeof(Description), "Weapon Damage Modifier = %s\nWeapon DPS Modifier = %s\nWeapon Base DPS = %.2f\nWeapon DPS = %s",
+			GetAlphabetForm(TF2_GetDamageModifiers(client, weapon)),
+			GetAlphabetForm(TF2_GetDPSModifiers(client, weapon)),
+			TF2_GetWeaponclassDPS(client, weapon),
+			GetAlphabetForm(TF2_GetWeaponclassDPS(client, weapon) * TF2_GetDPSModifiers(client, weapon))); 
+
+			if(weaponFireRate[weapon] != -1.0)
+			{
+				Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[weapon]);
+				float tickRate = 1.0/GetTickInterval();
+
+				for(int i = 1 ; i < 6 ; i++)
+				{
+					if(weaponFireRate[weapon] >= tickRate/i)
+					{
+						tickRate /= i;
+						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[weapon]-tickRate)/tickRate));
+						break;
+					}
+				}
+			}
+
+			AddMenuItem(menu, "primary_description", Description, ITEMDRAW_DISABLED);
+		}
+		else
+		{
+			SetMenuTitle(menu, "Displaying Bought Wearable Stats");
+			char Description[512];
+			Format(Description, sizeof(Description), "Look in chat for a list of attributes."); 
+			TF2_AttribListAttributesBySlot(client,0);
+			AddMenuItem(menu, "primary_description", Description, ITEMDRAW_DISABLED);
+		}
+	}
+	else
+	{
+		PrintToChat(client, "Was unable to display player stats. Most likely that the class doesn't have a weapon in that slot.");
+	}
+	DisplayMenu(menu, client, MENU_TIME_FOREVER);
+}
 public Menu_ShowStats(client)
 {
 	if (IsValidClient(client) && IsPlayerAlive(client))
