@@ -50,7 +50,7 @@ public bool:GiveNewWeapon(client, slot)
 	TF2Items_SetClassname(newItem, currentitem_classname[client][slot]);
 	
 	int entity = TF2Items_GiveNamedItem(client, newItem);
-	if (IsValidEntity(entity))
+	if (IsValidEdict(entity))
 	{
 		client_new_weapon_ent_id[client] = entity;
 		currentitem_level[client][slot] = 242;
@@ -84,7 +84,7 @@ public GiveNewUpgradedWeapon_(client, slot)
 		slot = 3
 		iEnt = client_new_weapon_ent_id[client];
 	}
-	if (IsValidEntity(iEnt) && HasEntProp(iEnt, Prop_Send, "m_AttributeList"))
+	if (IsValidEdict(iEnt) && HasEntProp(iEnt, Prop_Send, "m_AttributeList"))
 	{
 		if( iNumAttributes > 0 )
 		{
@@ -900,7 +900,7 @@ refreshUpgrades(client, slot)
 	{
 		current_class[client] = TF2_GetPlayerClass(client);
 		int slotItem;
-		if(slot == 3 && IsValidEntity(client_new_weapon_ent_id[client]) && client_new_weapon_ent_id[client] > 0)
+		if(slot == 3 && IsValidEdict(client_new_weapon_ent_id[client]) && client_new_weapon_ent_id[client] > 0)
 		{
 			slotItem = client_new_weapon_ent_id[client];
 		}
@@ -1195,7 +1195,7 @@ refreshUpgrades(client, slot)
 					if(current_class[client] == TFClass_DemoMan)
 					{
 						int secondary = GetWeapon(client,1);
-						if(IsValidEntity(secondary))
+						if(IsValidEdict(secondary))
 						{
 							TF2Attrib_SetByName(secondary,"sticky arm time penalty", -2.0);
 						}
@@ -1208,7 +1208,7 @@ refreshUpgrades(client, slot)
 					if(current_class[client] == TFClass_DemoMan)
 					{
 						int secondary = GetWeapon(client,1);
-						if(IsValidEntity(secondary))
+						if(IsValidEdict(secondary))
 						{
 							TF2Attrib_SetByName(secondary,"sticky arm time penalty", -2.0);
 						}
@@ -1239,7 +1239,7 @@ refreshUpgrades(client, slot)
 			}
 
 		}
-		if(slot != 4 && IsValidEntity(slotItem) && slotItem > 0 && HasEntProp(slotItem, Prop_Data, "m_iClip1"))
+		if(slot != 4 && IsValidEdict(slotItem) && slotItem > 0 && HasEntProp(slotItem, Prop_Data, "m_iClip1"))
 		{
 			float Spread = 0.0;
 			Address spread1 = TF2Attrib_GetByName(slotItem, "spread penalty");
@@ -1378,14 +1378,14 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 			melee = GetPlayerWeaponSlot(client,2);
 		}
 		
-		if(!IsValidEntity(primary))
+		if(!IsValidEdict(primary))
 			primary = GetPlayerWeaponSlot(client,0);
-		if(!IsValidEntity(secondary))
+		if(!IsValidEdict(secondary))
 			secondary = GetPlayerWeaponSlot(client,1);
-		if(!IsValidEntity(melee))
+		if(!IsValidEdict(melee))
 			melee = GetPlayerWeaponSlot(client,2);
 		
-		if(!IsValidEntity(primary) || !IsValidEntity(secondary) || !IsValidEntity(melee))
+		if(!IsValidEdict(primary) || !IsValidEdict(secondary) || !IsValidEdict(melee))
 		{
 			return Plugin_Continue;
 		}
@@ -1749,7 +1749,7 @@ ApplyHomingCharacteristics(DataPack pack)//int,float,int,int
 {
 	pack.Reset();
 	int entity = EntRefToEntIndex(pack.ReadCell());
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return;
 
 	int owner = getOwner(entity);
@@ -1775,7 +1775,7 @@ ExplosiveArrow(entity)
 {
 	entity = EntRefToEntIndex(entity);
 
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return;
 
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -1842,7 +1842,7 @@ AirblastPatch(client)
 		return;
 
 	int iWeapon = GetEntPropEnt( client, Prop_Send, "m_hActiveWeapon" );
-	if( !IsValidEntity(iWeapon) )
+	if( !IsValidEdict(iWeapon) )
 		return;
 	
 	char strClassname[64];
@@ -1928,7 +1928,7 @@ AirblastPatch(client)
 }
 public BoomerangThink(entity) 
 { 
-	if(IsValidEntity(entity) && GetGameTime() - entitySpawnTime[entity] > 0.3 && GetGameTime() - entitySpawnTime[entity] < 0.92)
+	if(IsValidEdict(entity) && GetGameTime() - entitySpawnTime[entity] > 0.3 && GetGameTime() - entitySpawnTime[entity] < 0.92)
 	{
 		float ProjAngle[3],ProjVelocity[3],vBuffer[3],speed;
 		GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
@@ -1985,7 +1985,7 @@ monoculusBonus(entity)
     if(IsValidEdict(entity)) 
     { 
 		int monoculus = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
-		if(IsValidEntity(monoculus))
+		if(IsValidEdict(monoculus))
 		{
 			int client = EntRefToEntIndex(jarateWeapon[monoculus]);
 			if(IsValidClient3(client))
@@ -2001,7 +2001,7 @@ monoculusBonus(entity)
 				TeleportEntity(entity, NULL_VECTOR, NULL_VECTOR, vVelocity);
 				
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					SetEntDataFloat(entity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, 90.0 * TF2_GetDamageModifiers(client,CWeapon), true);  
 				}
@@ -2012,7 +2012,7 @@ monoculusBonus(entity)
 checkEnabledSentry(entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		if(HasEntProp(entity,Prop_Send,"m_hBuilder"))
 		{
@@ -2020,7 +2020,7 @@ checkEnabledSentry(entity)
 			if(IsValidClient3(owner))
 			{
 				int melee = (GetPlayerWeaponSlot(owner,2));
-				if(IsValidEntity(melee))
+				if(IsValidEdict(melee))
 				{
 					int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
 					if(weaponIndex == 589)
@@ -2056,7 +2056,7 @@ public bool applyArcaneRestrictions(int client, int attuneSlot, float focusCost,
 randomizeTankSpecialty(entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))//In case if the tank somehow instantly despawns.
+	if(IsValidEdict(entity))//In case if the tank somehow instantly despawns.
 	{
 		int specialtyID = GetRandomInt(0,1);
 		switch(specialtyID)
@@ -2064,7 +2064,7 @@ randomizeTankSpecialty(entity)
 			case 0:
 			{
 				int iEntity = CreateEntityByName("obj_sentrygun");
-				if(IsValidEntity(iEntity))
+				if(IsValidEdict(iEntity))
 				{
 					float position[3];
 					GetEntPropVector(entity, Prop_Data, "m_vecOrigin", position);
@@ -2090,7 +2090,7 @@ randomizeTankSpecialty(entity)
 					SetVariantInt(3);
 					AcceptEntityInput(iEntity, "SetTeam");
 					SetEntProp(iEntity, Prop_Send, "m_iTeamNum", 3)
-					if(IsValidEntity(logic))
+					if(IsValidEdict(logic))
 					{
 						int round = GetEntProp(logic, Prop_Send, "m_nMannVsMachineWaveCount");
 						TankSentryDamageMod = Pow((waveToCurrency[round]/11000.0), DamageMod + (round * 0.03)) * 1.8 * OverallMod;
@@ -2099,10 +2099,10 @@ randomizeTankSpecialty(entity)
 			}
 			case 1:
 			{
-				if(!IsValidEntity(TankTeleporter))
+				if(!IsValidEdict(TankTeleporter))
 				{
 					int iEntity = CreateEntityByName("obj_teleporter");
-					if(IsValidEntity(iEntity))
+					if(IsValidEdict(iEntity))
 					{
 						float position[3];
 						GetEntPropVector(entity, Prop_Data, "m_vecOrigin", position);
@@ -2136,7 +2136,7 @@ randomizeTankSpecialty(entity)
 ChangeProjModel(entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		int client;
 		if(HasEntProp(entity, Prop_Data, "m_hThrower"))
@@ -2150,7 +2150,7 @@ ChangeProjModel(entity)
 		if(IsValidClient(client))
 		{
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				int iItemDefinitionIndex = GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex");
 				switch(iItemDefinitionIndex)
@@ -2207,7 +2207,7 @@ SentryDelay(entity)
     {
 		int building = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		//PrintToChatAll("1");
-		if(!IsValidClient3(building) && IsValidEntity(building) && HasEntProp(building,Prop_Send,"m_hBuilder"))
+		if(!IsValidClient3(building) && IsValidEdict(building) && HasEntProp(building,Prop_Send,"m_hBuilder"))
 		{
 			//PrintToChatAll("2");
 			int owner = GetEntPropEnt(building,Prop_Send,"m_hBuilder" );
@@ -2215,7 +2215,7 @@ SentryDelay(entity)
 			{
 				//PrintToChatAll("3");
 				int melee = GetWeapon(owner,2);
-				if(IsValidEntity(melee))
+				if(IsValidEdict(melee))
 				{
 					//PrintToChatAll("4");
 					Address projspeed = TF2Attrib_GetByName(melee, "Projectile speed increased");
@@ -2248,7 +2248,7 @@ SentryDelay(entity)
 /*TeleportToNearestPlayer(entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		float EntityPos[3];
 		float distance = 30000.0;
@@ -2307,7 +2307,7 @@ public void SetZeroGravity(ref)
 }
 public void OnHomingThink(entity) 
 { 
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
@@ -2363,7 +2363,7 @@ public void OnHomingThink(entity)
 }
 public OnThinkPost(entity) 
 { 
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
@@ -2372,7 +2372,7 @@ public OnThinkPost(entity)
 			if(IsValidClient3(Target))
 			{
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
 					if(homingActive != Address_Null)
@@ -2402,12 +2402,12 @@ public OnThinkPost(entity)
 public getProjOrigin(entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", entitySpawnPositions[entity]);
 }
 public OnFireballThink(entity)
 {
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		int owner = getOwner(entity);
 		if(!IsValidClient3(owner))
@@ -2425,14 +2425,14 @@ public OnFireballThink(entity)
 }
 public OnEntityHomingThink(entity) 
 { 
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return;
 
 	if(!HasEntProp(entity,Prop_Send,"m_vInitialVelocity"))
 		return;
 
 	int owner = GetEntPropEnt( entity, Prop_Data, "m_hOwnerEntity" ); 
-	if(!IsValidClient3(owner) && IsValidEntity(owner) && HasEntProp(owner,Prop_Send,"m_hBuilder"))
+	if(!IsValidClient3(owner) && IsValidEdict(owner) && HasEntProp(owner,Prop_Send,"m_hBuilder"))
 	{
 		owner = GetEntPropEnt(owner,Prop_Send,"m_hBuilder" );
 	}
@@ -2507,13 +2507,13 @@ TF2_Override_ChargeSpeed(client)
 CheckGrenadeMines(ref)
 {
 	int entity = EntRefToEntIndex(ref); 
-	if(IsValidEntity(entity) && HasEntProp(entity, Prop_Data, "m_hThrower") == true)
+	if(IsValidEdict(entity) && HasEntProp(entity, Prop_Data, "m_hThrower") == true)
     {
         int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
         if (IsValidClient(client) && IsPlayerAlive(client))
 		{
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				Address minesActive = TF2Attrib_GetByName(CWeapon, "enables aoe heal");
 				if(minesActive != Address_Null && TF2Attrib_GetValue(minesActive) <= 0.01)
@@ -2562,7 +2562,7 @@ MultiShot(ref)
 					PrintToChatAll("Multishot | Can Shoot");
 				canShootAgain[owner] = false
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					Address projActive = TF2Attrib_GetByName(CWeapon, "deflection size multiplier");
 					Address spread1 = TF2Attrib_GetByName(CWeapon, "projectile spread angle penalty");
@@ -2757,7 +2757,7 @@ ProjSpeedDelay(entity)
 		if(IsValidClient(client))
 		{
 			int ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(ClientWeapon))
+			if(IsValidEdict(ClientWeapon))
 			{
 				Address projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
 				if(projspeed != Address_Null)
@@ -2797,7 +2797,7 @@ projGravity(entity)
 		{
 			//PrintToChatAll("1");
 			int ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(ClientWeapon))
+			if(IsValidEdict(ClientWeapon))
 			{
 				//PrintToChatAll("2");
 				Address projgravity = TF2Attrib_GetByName(ClientWeapon, "cloak_consume_on_feign_death_activate");
@@ -2869,7 +2869,7 @@ projGravity(entity)
 }
 setProjGravity(entity, float gravity) 
 {
-    if(IsValidEntity(entity)) 
+    if(IsValidEdict(entity)) 
     {
 		SetEntityMoveType(entity, MOVETYPE_FLYGRAVITY);
 		SetEntityGravity(entity, gravity);
@@ -2883,7 +2883,7 @@ instantProjectile(entity)
 		if(IsValidClient(client))
 		{
 			int ClientWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(ClientWeapon))
+			if(IsValidEdict(ClientWeapon))
 			{
 				Address projspeed = TF2Attrib_GetByName(ClientWeapon, "Projectile speed increased");
 				if(projspeed != Address_Null && TF2Attrib_GetValue(projspeed) >= 100.0)
@@ -2923,13 +2923,13 @@ stock void ResizeHitbox(int entity, float fScale)
 stock ResizeProjectile(entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		int client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(client))
 		{
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				Address sizeActive = TF2Attrib_GetByName(CWeapon, "SET BONUS: no death from headshots")
 				if(sizeActive != Address_Null)
@@ -2943,17 +2943,17 @@ stock ResizeProjectile(entity)
 stock SentryMultishot(entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		int inflictor = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		int client;
-		if(!IsValidClient3(inflictor) && IsValidEntity(inflictor) && HasEntProp(inflictor,Prop_Send,"m_hBuilder"))
+		if(!IsValidClient3(inflictor) && IsValidEdict(inflictor) && HasEntProp(inflictor,Prop_Send,"m_hBuilder"))
 		{
 			client = GetEntPropEnt(inflictor, Prop_Send, "m_hBuilder");
 			if(IsValidClient3(client))
 			{
 				int melee = (GetPlayerWeaponSlot(client,2));
-				if(IsValidEntity(melee))
+				if(IsValidEdict(melee))
 				{
 					Address doubleShotActive = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");		
 					if(doubleShotActive != Address_Null && TF2Attrib_GetValue(doubleShotActive) > 0.0)
@@ -2973,7 +2973,7 @@ stock SentryMultishot(entity)
 stock fixPiercingVelocity(entity)
 {
 	entity = EntRefToEntIndex(entity)
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		float origin[3],ProjAngle[3],vBuffer[3],fVelocity[3],speed = 3000.0;
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);

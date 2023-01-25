@@ -261,7 +261,8 @@ CastMarkForDeath(client, attuneSlot)
 	float clientpos[3];
 	TracePlayerAim(client, clientpos);
 	float Range = 900.0*ArcanePower[client];
-	for(int i = 1; i<MAXENTITIES;i++)
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
 		if(!IsValidForDamage(i))
 			continue;
@@ -389,7 +390,8 @@ CastSnapFreeze(client, attuneSlot)
 	GetClientEyePosition(client, clientpos);
 	EmitSoundToAll(SOUND_FREEZE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	float damage = 100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0);
-	for(int i = 1; i<MAXENTITIES;i++)
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
 		if(!IsValidForDamage(i))
 			continue;
@@ -645,7 +647,8 @@ CastInferno(client, attuneSlot)
 	float range[] = {0.0,800.0,1200.0,1600.0}
 	float hitRate[] = {0.0,0.15,0.08,0.03}
 	int maxHits[] = {0,20,30,40}
-	for(int i = 1; i<MAXENTITIES;i++)
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
 		if(!IsValidForDamage(i))
 			continue;
@@ -724,7 +727,7 @@ CastMineField(client, attuneSlot)
 public void CheckMines(ref)
 {
 	int entity = EntRefToEntIndex(ref); 
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return;
 	if(!HasEntProp(entity, Prop_Data, "m_hThrower"))
 		return;
@@ -743,7 +746,7 @@ public void CheckMines(ref)
 public Action:Timer_GrenadeMines(Handle timer, any:ref) 
 { 
     int entity = EntRefToEntIndex(ref);
-	if(!IsValidEntity(entity)){KillTimer(timer);return;}
+	if(!IsValidEdict(entity)){KillTimer(timer);return;}
 
 	int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
 	if(!IsValidClient3(client)){KillTimer(timer);return;}
@@ -806,7 +809,8 @@ CastShockwave(client, attuneSlot)
 	ClientPos[2] -= 20.0;
 		
 	float damageDealt = (100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0));
-	for(int i = 1; i<MAXENTITIES;i++)
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
 		if(!IsValidForDamage(i))
 			continue;
@@ -845,7 +849,7 @@ CastAutoSentry(client, attuneSlot)
 	int iTeam = GetClientTeam(client)
 		
 	int iEntity = CreateEntityByName("obj_sentrygun");
-	if(!IsValidEntity(iEntity))
+	if(!IsValidEdict(iEntity))
 		return;
 
 	int iLink = CreateLink(client,true);
@@ -1050,7 +1054,7 @@ public Action:ArcaneHunter(Handle timer, client)
 	int iParti = CreateEntityByName("info_particle_system");
 	int iPart2 = CreateEntityByName("info_particle_system");
 
-	if (IsValidEntity(iParti) && IsValidEntity(iPart2))
+	if (IsValidEdict(iParti) && IsValidEdict(iPart2))
 	{ 
 		char szCtrlParti[32];
 		Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
@@ -1072,7 +1076,8 @@ public Action:ArcaneHunter(Handle timer, client)
 	}
 
 	float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
-	for(int i = 1; i<MAXENTITIES;i++)
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
 		if(!IsValidForDamage(i))
 			continue;
@@ -1286,7 +1291,8 @@ CastZap(client, attuneSlot)
 	int validCount = 0;
 	int maximumTargets[] = {0,1,2,3};
 	float range[] = {0.0,600.0,1500.0,1500.0};
-	for(int i = 1; i<MAXENTITIES;i++)
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
 		if(!IsValidForDamage(i))
 			continue;
@@ -1427,7 +1433,8 @@ CastLightning(client, attuneSlot)
 		TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 		TE_SendToAll();
 		
-		for(int i = 1; i<MAXENTITIES;i++)
+		int i = -1;
+		while ((i = FindEntityByClassname(i, "*")) != -1)
 		{
 			if(!IsValidForDamage(i)) 
 				continue;

@@ -60,11 +60,11 @@ public Action:Timer_Second(Handle timer)
 					if (IsValidClient(i))
 					{
 						int healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
-						if(IsValidEntity(healerweapon))
+						if(IsValidEdict(healerweapon))
 						{
 							if(HasEntProp(healerweapon, Prop_Send, "m_hHealingTarget") && GetEntPropEnt(healerweapon, Prop_Send, "m_hHealingTarget") == client)
 							{
-								if(IsValidEntity(healerweapon))
+								if(IsValidEdict(healerweapon))
 								{
 									Address overhealBonus = TF2Attrib_GetByName(healerweapon, "overheal bonus");
 									if(overhealBonus != Address_Null)
@@ -186,7 +186,7 @@ public Action:Timer_FixedVariables(Handle timer)
 				SetEntProp(client, Prop_Send, "m_nCurrency", 0);
 				char ArmorLeft[64]
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					Format(ArmorLeft, sizeof(ArmorLeft), "Armor | %i / %i", RoundToCeil(fl_CurrentArmor[client] + fl_AdditionalArmor[client]), RoundToNearest(fl_MaxArmor[client])); 
 					if(CheckForAttunement(client))
@@ -309,7 +309,7 @@ public Action:Timer_FixedVariables(Handle timer)
 				}
 			}
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				Address PrecisionActive = TF2Attrib_GetByName(CWeapon, "medic regen bonus");
 				if(PrecisionActive != Address_Null)
@@ -423,13 +423,14 @@ public Action:Timer_Every100MS(Handle timer)
 			if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 			{
 				plaguePower = 1.0;
-				for(int e = MaxClients;e<MAXENTITIES;e++)
+				int e = 33;
+				while ((e = FindEntityByClassname(e, "item_healthkit_*")) != -1)
 				{
-					if(IsValidEntity(e))
+					if(IsValidEdict(e))
 					{
 						char strName[32];
 						GetEntityClassname(e, strName, 32)
-						if(StrContains(strName, "item_healthkit_", false) == 0 && GetEntProp(e, Prop_Data, "m_bDisabled") == 0)
+						if(GetEntProp(e, Prop_Data, "m_bDisabled") == 0)
 						{
 							float VictimPos[3];
 							GetEntPropVector(e, Prop_Data, "m_vecOrigin", VictimPos);
@@ -478,7 +479,7 @@ public Action:Timer_Every100MS(Handle timer)
 					}
 				}
 			}
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				Address infAmmo = TF2Attrib_GetByName(CWeapon, "vision opt in flags")
 				if(infAmmo != Address_Null)
@@ -486,7 +487,7 @@ public Action:Timer_Every100MS(Handle timer)
 					SetAmmo_Weapon(CWeapon,RoundToNearest(TF2Attrib_GetValue(infAmmo)))
 				}
 			}
-			if(IsValidEntity(melee) && GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex") == 307)
+			if(IsValidEdict(melee) && GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex") == 307)
 			{
 				if(CaberUses[client] > 0 && GetEntProp(melee, Prop_Send, "m_iDetonated") == 1)
 				{
@@ -495,7 +496,7 @@ public Action:Timer_Every100MS(Handle timer)
 					CaberUses[client]--;
 				}
 			}
-			if(IsValidEntity(primary))
+			if(IsValidEdict(primary))
 			{
 				if (GetEntPropFloat(client, Prop_Send, "m_flRageMeter") < 1.0)
 					isBuffActive[client] = false;
@@ -527,7 +528,7 @@ public Action:Timer_Every100MS(Handle timer)
 					}
 				}
 			}
-			if(IsValidEntity(secondary))
+			if(IsValidEdict(secondary))
 			{
 				if (GetEntPropFloat(client, Prop_Send, "m_flRageMeter") < 0.1)
 					isBuffActive[client] = false;
@@ -598,7 +599,7 @@ public Action:Timer_Every100MS(Handle timer)
 					//Custom Buff Effects
 					//Lightning Strike banner : lightningCounter : "has pipboy build interface"
 					Address lightningBannerActive = TF2Attrib_GetByName(secondary, "has pipboy build interface");
-					if(lightningBannerActive != Address_Null && TF2Attrib_GetValue(lightningBannerActive) != 0.0 && IsValidEntity(CWeapon))
+					if(lightningBannerActive != Address_Null && TF2Attrib_GetValue(lightningBannerActive) != 0.0 && IsValidEdict(CWeapon))
 					{
 						if(lightningCounter[client] >= 8)
 						{
@@ -649,7 +650,8 @@ public Action:Timer_Every100MS(Handle timer)
 							EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 							
 							float LightningDamage = TF2_GetDPSModifiers(client,CWeapon)*10.0*TF2Attrib_GetValue(lightningBannerActive);
-							for(int i = 1; i<MAXENTITIES;i++)
+							int i = -1;
+							while ((i = FindEntityByClassname(i, "*")) != -1)
 							{
 								if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 								{
@@ -685,7 +687,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory.
 		if (IsValidClient3(client) && IsPlayerAlive(client))
 		{
 			int melee = GetWeapon(client, 2);
-			if(IsValidEntity(melee) && GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex") == 307)
+			if(IsValidEdict(melee) && GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex") == 307)
 			{
 				Address MaxChargesActive = TF2Attrib_GetByName(melee, "zombiezombiezombiezombie");
 				int MaxCharges = 1;
@@ -756,7 +758,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory.
 						if(spellCasted == 0)
 						{
 							int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-							if(IsValidEntity(CWeapon))
+							if(IsValidEdict(CWeapon))
 							{
 								float ClientPos[3];
 								float flamePos[3];
@@ -810,7 +812,8 @@ public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory.
 								
 								
 								float DMGDealt = 3.0 * TF2_GetDPSModifiers(client,CWeapon);
-								for(int i = 1; i<MAXENTITIES;i++)
+								int i = -1;
+								while ((i = FindEntityByClassname(i, "*")) != -1)
 								{
 									if(IsValidForDamage(i))
 									{
@@ -921,7 +924,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory.
 					case 7.0:
 					{
 						int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-						if(IsValidEntity(CWeapon))
+						if(IsValidEdict(CWeapon))
 						{
 							CreateParticle(CWeapon, "utaunt_auroraglow_orange_parent", true, "", 10.0,_,_,1);
 							TE_SendToAll();
@@ -974,7 +977,8 @@ public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory.
 							
 							float LightningDamage = 150.0*TF2_GetDPSModifiers(client,CWeapon);
 						
-							for(int i = 1; i<MAXENTITIES;i++)
+							int i = -1;
+							while ((i = FindEntityByClassname(i, "*")) != -1)
 							{
 								if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 								{
@@ -1014,12 +1018,12 @@ public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory.
 public Action:BuildingRegeneration(Handle timer, any:entity) 
 {
 	entity = EntRefToEntIndex(entity)
-	if(!IsValidEntity(entity) || !IsValidEdict(entity))
+	if(!IsValidEdict(entity) || !IsValidEdict(entity))
 	{
 		return;
 	}
 	int owner = GetEntPropEnt(entity, Prop_Send, "m_hBuilder"); 
-	if(!IsValidEntity(owner) || !IsValidEdict(owner))
+	if(!IsValidEdict(owner) || !IsValidEdict(owner))
 	{
 		return;
 	}
@@ -1182,7 +1186,7 @@ public Action:THEREWILLBEBLOOD(Handle timer)
     int ent, round
 
     ent = FindEntityByClassname(-1, "tf_objective_resource");
-	if(IsValidEntity(ent))
+	if(IsValidEdict(ent))
 	{
 		round = GetEntProp(ent, Prop_Send, "m_nMannVsMachineWaveCount");
 		
@@ -1351,7 +1355,7 @@ public Action:MvMFailTimer(Handle timer, any:userid)
 		for (int slot = 0; slot < NB_SLOTS_UED; slot++)
 		{
 			int weaponinSlot = GetWeapon(client,slot);
-			if(IsValidEntity(weaponinSlot))
+			if(IsValidEdict(weaponinSlot))
 			{
 				TF2Attrib_RemoveAll(weaponinSlot);
 				TF2Attrib_ClearCache(weaponinSlot);
@@ -1470,7 +1474,7 @@ public Action:eurekaDelayed(Handle timer, int client)
 	if(IsValidClient3(client))
 	{
 		int melee = (GetPlayerWeaponSlot(client,2));
-		if(IsValidEntity(melee))
+		if(IsValidEdict(melee))
 		{
 			int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
 			if(weaponIndex == 589)
@@ -1524,7 +1528,7 @@ public Action:eurekaDelayed(Handle timer, int client)
 				float LightningDamage = 500.0;
 				
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 					if(SentryDmgActive != Address_Null)
@@ -1558,7 +1562,8 @@ public Action:eurekaDelayed(Handle timer, int client)
 					LightningDamage /= TF2Attrib_GetValue(fireRateActive);
 				}
 				
-				for(int i = 1; i<MAXENTITIES;i++)
+				int i = -1;
+				while ((i = FindEntityByClassname(i, "*")) != -1)
 				{
 					if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 					{
@@ -1604,7 +1609,7 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 	ResetPack(data);
 	int weapon = EntRefToEntIndex(ReadPackCell(data));
 	int client = EntRefToEntIndex(ReadPackCell(data));
-	if(IsValidEntity(client) && IsValidEntity(weapon))
+	if(IsValidEdict(client) && IsValidEdict(weapon))
 	{
 		float fAngles[3], fOrigin[3], vBuffer[3], fOriginEnd[3], fwd[3], opposite[3], PlayerOrigin[3];
 		TracePlayerAimRanged(client, 800.0, fOrigin);
@@ -1630,7 +1635,8 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 			mult *= TF2Attrib_GetValue(multiHitActive) + 1.0;
 		}
 		mult *= TF2_GetDPSModifiers(client, weapon, false, false) * 10.0;
-		for(int i = 1; i<MAXENTITIES;i++)
+		int i = -1;
+		while ((i = FindEntityByClassname(i, "*")) != -1)
 		{
 			if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 			{
@@ -1685,7 +1691,7 @@ public Action:AttackTwice(Handle timer, any:data)
 	int client = EntRefToEntIndex(ReadPackCell(data));
 	int CWeapon = EntRefToEntIndex(ReadPackCell(data));
 	int timesLeft = ReadPackCell(data);
-	if(IsValidClient3(client) && IsValidEntity(CWeapon))
+	if(IsValidClient3(client) && IsValidEdict(CWeapon))
 	{
 		timesLeft--;
 		shouldAttack[client] = true;
@@ -1757,7 +1763,7 @@ public Action:orbitalStrike(Handle timer,any:data)
 public Action:SetTankTeleporter(Handle timer, int entity) 
 {  
 	entity = EntRefToEntIndex(entity)
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		TankTeleporter = entity;
 	}
@@ -1768,12 +1774,12 @@ public Action:ShootTwice(Handle timer, any:data)
 	int inflictor = EntRefToEntIndex(ReadPackCell(data));
 	int client = EntRefToEntIndex(ReadPackCell(data));
 	int timesLeft = ReadPackCell(data);
-	if(!IsValidClient3(inflictor) && IsValidEntity(inflictor) && HasEntProp(inflictor,Prop_Send,"m_hBuilder") && timesLeft > 0)
+	if(!IsValidClient3(inflictor) && IsValidEdict(inflictor) && HasEntProp(inflictor,Prop_Send,"m_hBuilder") && timesLeft > 0)
 	{
 		if(IsValidClient3(client))
 		{
 			int melee = (GetPlayerWeaponSlot(client,2));
-			if(IsValidEntity(melee))
+			if(IsValidEdict(melee))
 			{
 				Address doubleShotActive = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");
 				if(doubleShotActive != Address_Null && TF2Attrib_GetValue(doubleShotActive) > 0.0)
@@ -1879,7 +1885,7 @@ public Action:Timer_PlayerGrenadeMines(Handle timer, any:ref)
 {
     int entity = EntRefToEntIndex(ref);
 	bool flag = false;
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
 		if(IsValidClient3(client))
@@ -1926,7 +1932,7 @@ public Action:Timer_KillPlayer(Handle timer,Handle datapack)
 	if(IsValidClient3(victim) && IsValidClient3(attacker) && StrangeFarming[victim][attacker] > 0)
 	{
 		int currentWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEntity(currentWeapon))
+		if(IsValidEdict(currentWeapon))
 		{
 			SDKHooks_TakeDamage(victim,attacker,attacker,100000000.0, DMG_GENERIC,currentWeapon,NULL_VECTOR,NULL_VECTOR)
 			TF2_RespawnPlayer(victim);

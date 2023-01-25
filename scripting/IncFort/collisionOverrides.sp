@@ -61,7 +61,7 @@ public Action:OnSunlightSpearCollision(entity, client)
 }
 public Action:BlackskyEyeCollision(entity, client)
 {		
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return Plugin_Continue;
 
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -99,7 +99,7 @@ public Action:BlackskyEyeCollision(entity, client)
 }
 public Action:CallBeyondCollision(entity, client)
 {		
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return Plugin_Continue;
 
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -131,7 +131,7 @@ public Action:CallBeyondCollision(entity, client)
 }
 public Action:ProjectedHealingCollision(entity, client)
 {
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return Plugin_Continue;
 
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -177,7 +177,7 @@ public Action:ProjectedHealingCollision(entity, client)
 }
 public Action:IgnitionArrowCollision(entity, client)
 {		
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return Plugin_Continue;
 
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -193,7 +193,7 @@ public Action:IgnitionArrowCollision(entity, client)
 	{
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
 		int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
-		if(IsValidEntity(CWeapon))
+		if(IsValidEdict(CWeapon))
 		{
 			float damageDealt = 0.0, Radius=144.0;
 			Address ignitionExplosion = TF2Attrib_GetByName(CWeapon, "damage applies to sappers");
@@ -213,7 +213,7 @@ public Action:IgnitionArrowCollision(entity, client)
 }
 public Action:ExplosiveArrowCollision(entity, client)
 {		
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return Plugin_Continue;
 
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -229,7 +229,7 @@ public Action:ExplosiveArrowCollision(entity, client)
 	{
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
 		int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
-		if(IsValidEntity(CWeapon))
+		if(IsValidEdict(CWeapon))
 		{
 			EntityExplosion(owner, TF2_GetDamageModifiers(owner, CWeapon) * 250.0, 400.0, projvec, 1, _,entity,1.0,_,_,0.75);
 		}
@@ -239,7 +239,7 @@ public Action:ExplosiveArrowCollision(entity, client)
 }
 public Action:projectileCollision(entity, client)
 {
-	if(!IsValidEntity(entity)) return Plugin_Stop;
+	if(!IsValidEdict(entity)) return Plugin_Stop;
 	char strName[64];
 	GetEntityClassname(client, strName, 64)
 	char entName[64]
@@ -286,7 +286,7 @@ public Action:OnCollisionWarriorArrow(entity, client)
 			if(IsOnDifferentTeams(owner,client))
 			{
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					float damageDealt = 30.0;
 					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
@@ -317,7 +317,7 @@ public Action:OnCollisionBossArrow(entity, client)
 			if(IsOnDifferentTeams(owner,client))
 			{
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					float damageDealt = 240.0*TF2_GetDamageModifiers(owner, CWeapon, false);
 					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
@@ -345,7 +345,7 @@ public Action:OnCollisionArrow(entity, client)
 		{
 			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				SDKHooks_TakeDamage(client, owner, owner, 50.0*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
 			}
@@ -379,7 +379,7 @@ public Action:OnCollisionPhotoViscerator(entity, client)
 			if(IsOnDifferentTeams(owner,client))
 			{
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					float damage = TF2_GetDPSModifiers(owner,CWeapon)*10.0;
 					Address lameMult = TF2Attrib_GetByName(CWeapon, "dmg penalty vs players");
@@ -432,7 +432,7 @@ public Action:OnCollisionMoonveil(entity, client)
 			if(IsOnDifferentTeams(owner,client))
 			{
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					float mult = 1.0
 					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
@@ -472,7 +472,7 @@ public Action:OnCollisionBoomerang(entity, client)
 			if(IsValidClient3(owner) && IsOnDifferentTeams(owner,client))
 			{
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					float damageDealt = 120.0 * TF2_GetDamageModifiers(owner, CWeapon);
 					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
@@ -534,7 +534,7 @@ public Action:OnCollisionPiercingRocket(entity, client)
 				RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
 				
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					float damageDealt = 150.0 * TF2_GetDamageModifiers(owner, CWeapon);
 					
@@ -565,7 +565,7 @@ public Action:OnCollisionPiercingRocket(entity, client)
 			}
 		}
 	}
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		float origin[3];
 		float ProjAngle[3];
@@ -606,7 +606,7 @@ public Action:OnTouchExplodeJar(entity, other)
 		return Plugin_Continue;
 	
 	int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
-	if(IsValidEntity(CWeapon))
+	if(IsValidEdict(CWeapon))
 	{
 		Address blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
 		Address blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");
@@ -617,7 +617,8 @@ public Action:OnTouchExplodeJar(entity, other)
 			Radius *= TF2Attrib_GetValue(blastRadius2)
 		}
 		
-		for(int i=1; i<=MAXENTITIES; i++)
+		int i = -1;
+		while ((i = FindEntityByClassname(i, "*")) != -1)
 		{
 			if(IsValidForDamage(i))
 			{
@@ -694,7 +695,7 @@ public Action:OnTouchExplodeJar(entity, other)
 		Address jarFragsToggle = TF2Attrib_GetByName(CWeapon, "overheal decay penalty");
 		if(jarFragsToggle != Address_Null)
 		{
-			for(int i = 0;i<RoundToNearest(TF2Attrib_GetValue(jarFragsToggle));i++)
+			for(i = 0;i<RoundToNearest(TF2Attrib_GetValue(jarFragsToggle));i++)
 			{
 				int iEntity = CreateEntityByName("tf_projectile_syringe");
 				if (IsValidEdict(iEntity)) 
@@ -775,7 +776,7 @@ public Action:OnCollisionJarateFrag(entity, client)
 	char strName1[128];
 	GetEntityClassname(entity, strName1, 128)
 	int CWeapon = EntRefToEntIndex(jarateWeapon[entity])
-	if(IsValidEntity(CWeapon))
+	if(IsValidEdict(CWeapon))
 	{
 		int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 		if(IsValidClient3(owner))
@@ -810,7 +811,7 @@ public Action:OnCollisionJarateFrag(entity, client)
 }
 public Action:meteorCollision(entity, client)
 {		
-	if(!IsValidEntity(entity))
+	if(!IsValidEdict(entity))
 		return Plugin_Continue;
 
 	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -823,7 +824,7 @@ public Action:meteorCollision(entity, client)
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
 		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEntity(CWeapon))
+		if(IsValidEdict(CWeapon))
 		{
 			int iItemDefinitionIndex = GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex");
 			if(iItemDefinitionIndex == 595)
@@ -840,7 +841,7 @@ public Action:meteorCollision(entity, client)
 }
 public Action:OnStartTouchDelete(entity, other)
 {
-	if(IsValidEntity(entity) && !IsValidForDamage(other))
+	if(IsValidEdict(entity) && !IsValidForDamage(other))
 	{
 		SDKHook(entity, SDKHook_Touch, OnTouchDelete);
 	}
@@ -864,7 +865,7 @@ public Action:OnStartTouch(entity, other)
 	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
 	{
 		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEntity(CWeapon))
+		if(IsValidEdict(CWeapon))
 		{
 			Address bounceActive = TF2Attrib_GetByName(CWeapon, "ReducedCloakFromAmmo")
 			if(bounceActive != Address_Null)
@@ -912,7 +913,7 @@ public Action:OnTouchChaos(entity, other)
 	if(IsValidClient(owner))
 	{
 		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEntity(CWeapon))
+		if(IsValidEdict(CWeapon))
 		{
 			float vOrigin[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vOrigin);
@@ -979,7 +980,7 @@ public Action:OnTouchDrag(entity, other)
 	if(IsValidClient(owner))
 	{
 		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEntity(CWeapon))
+		if(IsValidEdict(CWeapon))
 		{
 			vOrigin[2]+= 30.0;
 			EntityExplosion(owner, TF2_GetDPSModifiers(owner, CWeapon, false)*35.0, 500.0, vOrigin, 0,_,entity);

@@ -156,7 +156,7 @@ public OnMapStart()
 		ServerCommand("tf_mvm_popfile %s", mapName)
 	}
 	GameRules_SetProp("m_bPlayingMedieval", 0)
-	for(int i=0; i<=MaxClients; i++)
+	for(int i=1; i<=MaxClients; i++)
 	{
 		if(!IsValidClient3(i)){continue;}
 		if(b_Hooked[i] == false) {continue;}
@@ -286,6 +286,7 @@ public void OnPluginStart()
 	{
 		PrintToServer("CustomAttrs | Melee smack signature not found.");
 	}
+
 
 	//Jar Call
 	StartPrepSDKCall(SDKCall_Entity);

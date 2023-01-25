@@ -35,7 +35,7 @@ stock bool IsValidClient3(client)
 }
 stock bool IsValidForDamage(entity)
 {
-    if (!IsValidEntity(entity)) return false; 
+    if (!IsValidEdict(entity)) return false; 
 	if(IsValidClient3(entity) && (!IsPlayerAlive(entity) || IsClientObserver(entity))) return false;	
 	if(HasEntProp(entity, Prop_Data, "m_hActiveWeapon")) return true;
 	if(GetEntProp(entity, Prop_Data, "m_takedamage") == 0) return false;
@@ -183,7 +183,7 @@ stock float GetAttributeAccumulateMultiplicative(int client, const char[] attrNa
 }
 stock bool IsValidWeapon(int entity)
 {
-	return (entity > 0 && IsValidEntity(entity) && HasEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"));
+	return (entity > 0 && IsValidEdict(entity) && HasEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"));
 }
 stock int getOwner(int entity)
 {
@@ -227,7 +227,7 @@ stock int CreateLink(int iClient, bool attach=false)
 }
 stock PushEntity(int entity, int client, float strength=10.0, float heightOverride=0.0)
 {
-    if(IsValidEntity(entity))
+    if(IsValidEdict(entity))
     {
         // get positions of both entity and client 
         float pos1[3], pos2[3];
@@ -287,7 +287,7 @@ stock Entity_GetTargetName(entity, char[] buffer, size)
 }
 stock Entity_IsValid(entity)
 {
-	return IsValidEntity(entity);
+	return IsValidEdict(entity);
 }
 stock Entity_SetName(entity, const char[] name, any:...)
 {
@@ -302,7 +302,7 @@ stock refreshAllWeapons(client)
 	for(int i=0;i<5;i++)
 	{
 		int weapon = GetWeapon(client,i);
-		if(IsValidEntity(weapon))
+		if(IsValidEdict(weapon))
 		{
 			TF2Attrib_ClearCache(weapon);
 		}
@@ -310,9 +310,10 @@ stock refreshAllWeapons(client)
 }
 stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = 0.65,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = 100, bool ignition = false)
 {
-	if(entity == -1 || !IsValidEntity(entity))
+	if(entity == -1 || !IsValidEdict(entity))
 		entity = owner;
-	for(int i = 1; i < MAXENTITIES; i++)
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
 		if(ShouldNotHit[entity][entity])
 			continue;
@@ -337,7 +338,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 						damage *= ratio
 					}
 					
-					if(IsValidEntity(weapon) && IsValidClient3(i))
+					if(IsValidEdict(weapon) && IsValidClient3(i))
 					{
 						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
 						if(ignition)
@@ -354,7 +355,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 	if(visual)
 	{
 		/*int particle = CreateEntityByName( "info_particle_system" );
-		if ( IsValidEntity( particle ) )
+		if ( IsValidEdict( particle ) )
 		{
 			TeleportEntity( particle, pos, NULL_VECTOR, NULL_VECTOR );
 			DispatchKeyValue( particle, "effect_name", "ExplosionCore_MidAir" );
@@ -595,7 +596,7 @@ public Action:Timer_KillSmoke(Handle timer, Handle pack)
 StopSmokeEnt(target)
 {
 
-	if (IsValidEntity(target))
+	if (IsValidEdict(target))
 	{
 		AcceptEntityInput(target, "TurnOff");
 	}
@@ -611,7 +612,7 @@ public Action:Timer_StopSmoke(Handle timer, Handle pack)
 
 RemoveSmokeEnt(target)
 {
-	if (IsValidEntity(target))
+	if (IsValidEdict(target))
 	{
 		AcceptEntityInput(target, "Kill");
 	}
@@ -623,7 +624,7 @@ public bool TraceFilterIgnoreSelf( entity, contentsMask, any:hiok )
 }
 stock bool IsValidForHoming( client, owner, entity)
 {
-    if ( IsValidClient3( owner ) && IsValidClient3( client ) && IsValidEntity( entity ) )
+    if ( IsValidClient3( owner ) && IsValidClient3( client ) && IsValidEdict( entity ) )
     {
         float OwnerPos[3], TargetPos[3]; 
         GetClientAbsOrigin( owner, OwnerPos ); 
@@ -649,14 +650,14 @@ public Action:HomingFlareThink(Handle timer, any:ref)
 {
 	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
     {
 		if(!HasEntProp(entity,Prop_Send,"m_vInitialVelocity"))
 		{
 			flag = true;
 		}
 		int owner = GetEntPropEnt( entity, Prop_Data, "m_hOwnerEntity" ); 
-		if(!IsValidClient3(owner) && IsValidEntity(owner) && HasEntProp(owner,Prop_Send,"m_hBuilder"))
+		if(!IsValidClient3(owner) && IsValidEdict(owner) && HasEntProp(owner,Prop_Send,"m_hBuilder"))
 		{
 			owner = GetEntPropEnt(owner,Prop_Send,"m_hBuilder" );
 		}
@@ -717,7 +718,7 @@ public Action:HomingThink(Handle timer, any:ref)
 { 
 	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
     {
 		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
@@ -726,7 +727,7 @@ public Action:HomingThink(Handle timer, any:ref)
 			if(IsValidClient3(Target))
 			{
 				int hClientWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(hClientWeapon))
+				if(IsValidEdict(hClientWeapon))
 				{
 					Address homingActive = TF2Attrib_GetByName(hClientWeapon, "crit from behind");
 					if(homingActive != Address_Null)
@@ -791,7 +792,7 @@ public Action:HeavyFriendlyHoming(Handle timer, any:ref)
 { 
 	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
     {
 		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		if(IsValidClient3(owner))
@@ -1028,7 +1029,7 @@ stock int GetWeapon(int client, int slot)
 stock int GetHealingTarget(const int client)
 {
     int medigun = GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary);
-    if (!IsValidEdict(medigun) || !IsValidEntity(medigun))
+    if (!IsValidEdict(medigun) || !IsValidEdict(medigun))
         return -1;
 
     char s[32]; GetEdictClassname(medigun, s, sizeof(s));
@@ -1265,7 +1266,7 @@ stock bool IsMvM(bool forceRecalc = false)
 	if (!found)
 	{
 		int i = FindEntityByClassname(-1, "tf_logic_mann_vs_machine");
-		if (i > MaxClients && IsValidEntity(i)) ismvm = true;
+		if (i > MaxClients && IsValidEdict(i)) ismvm = true;
 		found = true;
 	}
 	return ismvm;
@@ -1395,7 +1396,7 @@ stock float TF2_GetWeaponclassDPS(client, weapon)
 {
 	if(IsValidClient3(client))
     {
-		if(IsValidEntity(weapon))
+		if(IsValidEdict(weapon))
 		{
 			float dps;
 			char Classname[64];
@@ -1531,7 +1532,7 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 {
 	if(IsValidClient3(client))
     {
-		if(IsValidEntity(weapon))
+		if(IsValidEdict(weapon))
 		{
 			if(HasEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"))
 			{
@@ -1732,7 +1733,7 @@ stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true,
 {
 	if(IsValidClient3(client))
     {
-		if(IsValidEntity(weapon))
+		if(IsValidEdict(weapon))
 		{
 			float dpsMult = onlyModifiers ? 1.0 : TF2_GetDamageModifiers(client,weapon);
 			Address DPSMult1 = TF2Attrib_GetByName(weapon, "fire rate bonus HIDDEN");
@@ -1838,7 +1839,7 @@ stock float TF2_GetDamageModifiers(client,weapon,status=true)
 {
 	if(IsValidClient3(client))
     {
-		if(IsValidEntity(weapon))
+		if(IsValidEdict(weapon))
 		{
 			//Normal Attributes
 			float dpsMult = 1.0;
@@ -1960,7 +1961,7 @@ stock float TF2_GetDamageModifiers(client,weapon,status=true)
 						if (IsValidClient(i))
 						{
 							int healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
-							if(IsValidEntity(healerweapon))
+							if(IsValidEdict(healerweapon))
 							{
 								char classname[128]; 
 								GetEdictClassname(healerweapon, classname, sizeof(classname)); 
@@ -1968,7 +1969,7 @@ stock float TF2_GetDamageModifiers(client,weapon,status=true)
 								{
 									if(GetEntPropEnt(healerweapon, Prop_Send, "m_hHealingTarget") == client)
 									{
-										if(IsValidEntity(healerweapon))
+										if(IsValidEdict(healerweapon))
 										{
 											Address dmgActive = TF2Attrib_GetByName(healerweapon, "hidden secondary max ammo penalty");
 											if(dmgActive != Address_Null)
@@ -2081,10 +2082,7 @@ stock bool PlayerRazorbackIsActive(client)
 stock GetIndexOfWeaponSlot(client, slot)
 {
 	int weapon=GetPlayerWeaponSlot(client, slot);
-	return (weapon>MaxClients && IsValidEntity(weapon) ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
-}
-stock int TF2_GetPlayerMaxHealth(int client) {
-	return GetEntProp(GetPlayerResourceEntity(), Prop_Send, "m_iMaxHealth", _, client);
+	return (weapon>MaxClients && IsValidEdict(weapon) ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
 }
 stock AttachTrail(ent, client)
 {
@@ -2315,7 +2313,7 @@ stock SetCarriedAmmo( client, slot, newAmmo )
     if ( IsValidClient3( client ) )
     {
         int weapon = GetPlayerWeaponSlot( client, slot ); 
-        if ( IsValidEntity( weapon ) )
+        if ( IsValidEdict( weapon ) )
         {
             int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
             if ( type > 0 || type < 31 ) SetEntProp( client, Prop_Send, "m_iAmmo", newAmmo, _, type ); 
@@ -2327,7 +2325,7 @@ stock GetCarriedAmmo( client, slot )
     if ( IsValidClient3( client ) )
     {
         int weapon = GetPlayerWeaponSlot( client, slot ); 
-        if ( IsValidEntity( weapon ) )
+        if ( IsValidEdict( weapon ) )
         {
             int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
             if ( type > 0 || type < 31 )
@@ -2341,7 +2339,7 @@ stock SetClipAmmo( client, slot, ammo )
     if ( IsValidClient3( client ) )
     {
         int weapon = GetPlayerWeaponSlot( client, slot ); 
-        if ( IsValidEntity( weapon ) )
+        if ( IsValidEdict( weapon ) )
             SetEntProp( weapon, Prop_Send, "m_iClip1", ammo ); 
     }
 }
@@ -2350,7 +2348,7 @@ stock GetClipAmmo( client, slot )
     if ( IsValidClient3( client ) )
     {
         int weapon = GetPlayerWeaponSlot( client, slot ); 
-        if ( IsValidEntity( weapon ) )
+        if ( IsValidEdict( weapon ) )
             return GetEntProp( weapon, Prop_Data, "m_iClip1" ); 
     }
     return 0; 
@@ -2360,7 +2358,7 @@ stock SetLoadedAmmo( client, slot, ammo = -1, ammo2 = -1 )
     if ( IsValidClient3( client ) )
     {
         int weapon = GetPlayerWeaponSlot( client, slot ); 
-        if( IsValidEntity( weapon ) )
+        if( IsValidEdict( weapon ) )
         {
             if ( ammo >= 0 ) SetEntData( client, FindSendPropInfo( "CTFPlayer", "m_iAmmo" )+4, ammo ); 
             if ( ammo >= 0 ) SetEntData( client, FindSendPropInfo( "CTFPlayer", "m_iAmmo" )+8, ammo ); 
@@ -2373,7 +2371,7 @@ stock GetLoadedAmmo( client, slot )
     if ( IsValidClient3( client ) )
     {
         int weapon = GetPlayerWeaponSlot( client, slot ); 
-        if ( IsValidEntity( weapon ) )
+        if ( IsValidEdict( weapon ) )
         {
             int iOffset = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType", 1 )*4; 
             int iAmmoTable = FindSendPropInfo( "CTFPlayer", "m_iAmmo" ); 
@@ -2436,7 +2434,7 @@ stock GetClientBaseHP(client){
 	}
 	
 	int weap = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Primary)
-	if(IsValidEntity(weap))
+	if(IsValidEdict(weap))
 	{
 		Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
 		Address HPActive2 = TF2Attrib_GetByName(weap, "max health additive penalty");
@@ -2449,7 +2447,7 @@ stock GetClientBaseHP(client){
 		}		
 	}
 	weap = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Secondary)
-	if(IsValidEntity(weap))
+	if(IsValidEdict(weap))
 	{
 		Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
 		Address HPActive2 = TF2Attrib_GetByName(weap, "max health additive penalty");
@@ -2462,7 +2460,7 @@ stock GetClientBaseHP(client){
 		}		
 	}
 	weap = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Melee)
-	if(IsValidEntity(weap))
+	if(IsValidEdict(weap))
 	{
 		Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
 		Address HPActive2 = TF2Attrib_GetByName(weap, "max health additive penalty");
@@ -2514,7 +2512,7 @@ stock void DOTStock(int victim,int attacker,float damage,int weapon = -1,int dam
 			WritePackCell(hPack, EntIndexToEntRef(victim));
 			WritePackCell(hPack, EntIndexToEntRef(attacker));
 			WritePackFloat(hPack, damage);
-			if(IsValidEntity(weapon))
+			if(IsValidEdict(weapon))
 			{
 				WritePackCell(hPack, EntIndexToEntRef(weapon));
 			}
@@ -2555,7 +2553,7 @@ public Action:DOTDamage(Handle timer,any:data)
 			WritePackCell(hPack, EntIndexToEntRef(victim));
 			WritePackCell(hPack, EntIndexToEntRef(attacker));
 			WritePackFloat(hPack, damage);
-			if(IsValidEntity(weapon))
+			if(IsValidEdict(weapon))
 			{
 				WritePackCell(hPack, EntIndexToEntRef(weapon));
 			}
@@ -2579,7 +2577,7 @@ public Action:DOTDamage(Handle timer,any:data)
 public Action:ReEnableBuilding(Handle timer, int entity)
 {
 	entity = EntRefToEntIndex(entity);
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		SetEntProp(entity, Prop_Send, "m_bDisabled", 0);
 	}
@@ -2594,7 +2592,7 @@ stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] s
 		{
 			float fPosition[3], fAngles[3];
 			
-			if(IsValidEntity(iEntity))
+			if(IsValidEdict(iEntity))
 			{
 				GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fPosition);
 			}

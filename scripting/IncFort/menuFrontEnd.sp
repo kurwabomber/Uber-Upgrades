@@ -877,14 +877,11 @@ public Menu_ShowStatsSlot(client, param2)
 			if(weaponFireRate[primary] != -1.0)
 			{
 				Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[primary]);
-				float tickRate = 1.0/GetTickInterval();
-
-				for(int i = 1 ; i < 6 ; i++)
+				for(int i = 6 ; i > 0 ; i--)
 				{
-					if(weaponFireRate[primary] >= tickRate/i)
+					if(weaponFireRate[primary] >= TICKINTERVAL*i)
 					{
-						tickRate /= i;
-						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[primary]-tickRate)/tickRate));
+						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[primary]-(TICKINTERVAL*i))/(TICKINTERVAL*i)));
 						break;
 					}
 				}
@@ -952,14 +949,11 @@ public Menu_ShowStatsSlot(client, param2)
 			if(weaponFireRate[secondary] != -1.0)
 			{
 				Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[secondary]);
-				float tickRate = 1.0/GetTickInterval();
-
-				for(int i = 1 ; i < 6 ; i++)
+				for(int i = 6 ; i > 0 ; i--)
 				{
-					if(weaponFireRate[secondary] >= tickRate/i)
+					if(weaponFireRate[secondary] >= TICKINTERVAL*i)
 					{
-						tickRate /= i;
-						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[secondary]-tickRate)/tickRate));
+						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[secondary]-(TICKINTERVAL*i))/(TICKINTERVAL*i)));
 						break;
 					}
 				}
@@ -1019,7 +1013,7 @@ public Menu_ShowStatsSlot(client, param2)
 					}
 				}
 				
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 					if(SentryDmgActive != Address_Null)
@@ -1058,14 +1052,11 @@ public Menu_ShowStatsSlot(client, param2)
 			if(weaponFireRate[melee] != -1.0)
 			{
 				Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[melee]);
-				float tickRate = 1.0/GetTickInterval();
-
-				for(int i = 1 ; i < 6 ; i++)
+				for(int i = 6 ; i > 0 ; i--)
 				{
-					if(weaponFireRate[melee] >= tickRate/i)
+					if(weaponFireRate[melee] >= TICKINTERVAL*i)
 					{
-						tickRate /= i;
-						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[melee]-tickRate)/tickRate));
+						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[melee]-(TICKINTERVAL*i))/(TICKINTERVAL*i)));
 						break;
 					}
 				}
@@ -1101,14 +1092,11 @@ public Menu_ShowStatsSlot(client, param2)
 			if(weaponFireRate[weapon] != -1.0)
 			{
 				Format(Description, sizeof(Description), "%s\nWeapon Fire Rate = %.2f RPS",Description, weaponFireRate[weapon]);
-				float tickRate = 1.0/GetTickInterval();
-
-				for(int i = 1 ; i < 6 ; i++)
+				for(int i = 6 ; i > 0 ; i--)
 				{
-					if(weaponFireRate[weapon] >= tickRate/i)
+					if(weaponFireRate[weapon] >= TICKINTERVAL*i)
 					{
-						tickRate /= i;
-						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[weapon]-tickRate)/tickRate));
+						Format(Description, sizeof(Description), "%s\nWeapon Fire Rate Delta (bonus damage)= %.2fx",Description, 1.0+((weaponFireRate[weapon]-(TICKINTERVAL*i))/(TICKINTERVAL*i)));
 						break;
 					}
 				}

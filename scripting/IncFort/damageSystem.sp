@@ -19,7 +19,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				return Plugin_Changed;
 			}
 		}
-		if(IsValidClient3(attacker) && victim != attacker && IsValidEntity(inflictor))
+		if(IsValidClient3(attacker) && victim != attacker && IsValidEdict(inflictor))
 		{
 			char classname[128]; 
 			GetEdictClassname(inflictor, classname, sizeof(classname));
@@ -56,14 +56,11 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				if(arcaneWeaponScaling != 0.0)
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * arcaneWeaponScaling));
 				
-				float tickRate = 1.0/GetTickInterval();
-
-				for(int i = 1 ; i < 6 ; i++)
+				for(int i = 6 ; i > 0 ; i--)
 				{
-					if(weaponFireRate[weapon] >= tickRate/i)
+					if(weaponFireRate[weapon] >= TICKINTERVAL*i)
 					{
-						tickRate /= i;
-						damage *= 1.0+((weaponFireRate[weapon]-tickRate)/tickRate);
+						damage *= 1.0+((weaponFireRate[weapon]-(TICKINTERVAL*i))/(TICKINTERVAL*i));
 						break;
 					}
 				}
@@ -159,7 +156,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		}
 		damage /= ((1-fl_ArmorCap[victim])-((1-fl_ArmorCap[victim])*pctArmor) + fl_ArmorCap[victim]);
 		int VictimCWeapon = GetEntPropEnt(victim, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEntity(VictimCWeapon))
+		if(IsValidEdict(VictimCWeapon))
 		{
 			Address ResistanceWhileHeld = TF2Attrib_GetByName(VictimCWeapon, "SET BONUS: mystery solving time decrease");
 			if(ResistanceWhileHeld != Address_Null)
@@ -250,7 +247,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		if(IsValidEntity(inflictor))
+		if(IsValidEdict(inflictor))
 			ShouldNotHome[inflictor][victim] = true;
 		if(damagetype == (DMG_RADIATION+DMG_DISSOLVE))//Radiation.
 		{
@@ -654,7 +651,7 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 }
 public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom) 
 {
-	if(IsValidEntity(victim) && IsValidClient3(attacker))
+	if(IsValidEdict(victim) && IsValidClient3(attacker))
 	{
 		if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
 		{
@@ -666,7 +663,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 	{
 		damage = 0.0;
 	}
-	if(IsValidEntity(logic))
+	if(IsValidEdict(logic))
 	{
 		int round = GetEntProp(logic, Prop_Send, "m_nMannVsMachineWaveCount");
 		damage *= (Pow(7500.0/waveToCurrency[round], DefenseMod + (DefenseIncreasePerWaveMod * round)) * 6.0)/OverallMod;
@@ -717,7 +714,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		if(IsValidClient3(SapperOwner))
 		{
 			int sapperItem = GetWeapon(SapperOwner, 6);
-			if(IsValidEntity(sapperItem))
+			if(IsValidEdict(sapperItem))
 			{
 				Address LifestealActive = TF2Attrib_GetByName(sapperItem,"mult airblast refire time");
 				if(LifestealActive != Address_Null)
@@ -772,14 +769,11 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 			{
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
 			}
-			float tickRate = 1.0/GetTickInterval();
-
-			for(int i = 1 ; i < 6 ; i++)
+			for(int i = 6 ; i > 0 ; i--)
 			{
-				if(weaponFireRate[weapon] >= tickRate/i)
+				if(weaponFireRate[weapon] >= TICKINTERVAL*i)
 				{
-					tickRate /= i;
-					damage *= 1.0+((weaponFireRate[weapon]-tickRate)/tickRate);
+					damage *= 1.0+((weaponFireRate[weapon]-(TICKINTERVAL*i))/(TICKINTERVAL*i));
 					break;
 				}
 			}
@@ -797,7 +791,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 					if(TF2_GetPlayerClass(i) == TFClass_Spy)
 					{
 						int sapper = GetWeapon(i,6);
-						if(IsValidEntity(sapper))
+						if(IsValidEdict(sapper))
 						{
 							Address SappedPlayerVuln = TF2Attrib_GetByName(sapper, "scattergun knockback mult");
 							if(SappedPlayerVuln != Address_Null)
@@ -846,7 +840,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		if(damagetype == 4 && damagecustom == 3 && TF2_GetPlayerClass(attacker) == TFClass_Pyro)
 		{
 			int secondary = GetWeapon(attacker,1);
-			if(IsValidEntity(secondary) && weapon == secondary)
+			if(IsValidEdict(secondary) && weapon == secondary)
 			{
 				float gasExplosionDamage = GetAttribute(weapon, "ignition explosion damage bonus");
 				if(gasExplosionDamage != 1.0)
@@ -1124,7 +1118,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					int iParti = CreateEntityByName("info_particle_system");
 					int iPart2 = CreateEntityByName("info_particle_system");
 
-					if (IsValidEntity(iParti) && IsValidEntity(iPart2))
+					if (IsValidEdict(iParti) && IsValidEdict(iPart2))
 					{
 						char szCtrlParti[32];
 						char particleName[32];
@@ -1172,7 +1166,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					int iParti = CreateEntityByName("info_particle_system");
 					int iPart2 = CreateEntityByName("info_particle_system");
 
-					if (IsValidEntity(iParti) && IsValidEntity(iPart2))
+					if (IsValidEdict(iParti) && IsValidEdict(iPart2))
 					{
 						char particleName[32];
 						particleName = GetClientTeam(attacker) == 2 ? "powerup_supernova_strike_red" : "powerup_supernova_strike_blue";
@@ -1255,7 +1249,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 			{
 				damagetype |= DMG_PREVENT_PHYSICS_FORCE;
 				
-				if(IsValidEntity(melee))
+				if(IsValidEdict(melee))
 				{
 					Address sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
 					if(sentryOverrideActive != Address_Null)
@@ -1492,7 +1486,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 				}
 			}
 			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 				if(SentryDmgActive != Address_Null)
@@ -1500,7 +1494,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 					damage *= TF2Attrib_GetValue(SentryDmgActive);
 				}
 			}
-			if(IsValidEntity(melee))
+			if(IsValidEdict(melee))
 			{
 				Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
 				if(SentryDmgActive1 != Address_Null)
@@ -1529,7 +1523,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 			{
 				int primary = GetPlayerWeaponSlot(attacker,0)
 				int melee = GetPlayerWeaponSlot(attacker,2)
-				if(IsValidEntity(melee))
+				if(IsValidEdict(melee))
 				{
 					Address sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
 					if(sentryOverrideActive != Address_Null)
@@ -1569,7 +1563,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 						damage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
 					}
 				}
-				if(IsValidEntity(primary))
+				if(IsValidEdict(primary))
 				{
 					Address SentryDmgActive2 = TF2Attrib_GetByName(primary, "engy sentry damage bonus");
 					if(SentryDmgActive2 != Address_Null)
@@ -1578,7 +1572,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 					}
 				}
 				int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 					if(SentryDmgActive != Address_Null)

@@ -34,7 +34,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
 			if(knockoutPowerupValue > 0.0){
 				int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
-				if (IsValidEntity(CWeapon))
+				if (IsValidEdict(CWeapon))
 				{
 					if(getWeaponSlot(client,CWeapon) == 2)
 					{
@@ -104,7 +104,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		if(IsValidClient3(attacker) && damage > 0.0 && attacker != client && IsValidClient3(client))
 		{
 			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				float lifestealFactor = 1.0;
 				float maximumOverheal = 1.5;
@@ -163,7 +163,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		if(IsValidClient3(attacker) && damage > 0.0 && attacker != client && IsValidClient3(client))
 		{
 			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				Address LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");
 				if(LifestealActive != Address_Null)
@@ -189,7 +189,7 @@ public MRESReturn OnModifyRagePre(Address pPlayerShared, Handle hParams) {
 			float flMultiplier = 1.0;
 			
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if (IsValidEntity(CWeapon))
+			if (IsValidEdict(CWeapon))
 			{
 				Address FireRate1 = TF2Attrib_GetByName(CWeapon, "fire rate bonus");
 				Address FireRate2 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
@@ -223,7 +223,7 @@ public MRESReturn OnModifyRagePre(Address pPlayerShared, Handle hParams) {
 	if(TF2_GetPlayerClass(client) == TFClass_Sniper)
 	{
 		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-		if (IsValidEntity(CWeapon))
+		if (IsValidEdict(CWeapon))
 		{
 			if(GetWeapon(client,1) == CWeapon)
 			{
@@ -331,7 +331,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					SetTauntAttackSpeed(client, TF2Attrib_GetValue(TauntSpeedActive));
 				}
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					char classname[64];
 					GetEdictClassname(CWeapon, classname, sizeof(classname)); 
@@ -372,7 +372,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 							TF2_AddCondition(client, TFCond_RestrictToMelee, 16.0);
 							TF2_AddCondition(client, TFCond_SpeedBuffAlly, 16.0);
 							int melee = GetWeapon(client, 2)
-							if(IsValidEntity(melee) && HasEntProp(melee, Prop_Send, "m_iItemDefinitionIndex"))
+							if(IsValidEdict(melee) && HasEntProp(melee, Prop_Send, "m_iItemDefinitionIndex"))
 							{
 								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",melee);
 								EquipPlayerWeapon(client, melee);
@@ -522,7 +522,7 @@ public MRESReturn OnCalculateBotSpeedPost(int client, Handle hReturn) {
 	return MRES_Supercede;
 }
 public MRESReturn OnSentryThink(int entity)  {
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		if(sentryThought[entity] == false)
 		{
@@ -542,7 +542,7 @@ public MRESReturn OnShieldChargeMove(Address address, Handle hReturn){
 	return MRES_Supercede;
 }
 public MRESReturn IsInWorldCheck(int entity, Handle hReturn, Handle hParams)  {
-	if(IsValidEntity(entity))
+	if(IsValidEdict(entity))
 	{
 		char sClass[32];
 		float position[3];
@@ -643,7 +643,7 @@ public TF2Spawn_EnterSpawn(int client, int spawn)
 	if(IsValidClient(client) && IsPlayerAlive(client))
 	{
 		int melee = GetWeapon(client,2);
-		if(IsValidEntity(melee))
+		if(IsValidEdict(melee))
 		{
 			TF2Attrib_SetByName(melee,"airblast vulnerability multiplier hidden", 0.0);
 			TF2Attrib_SetByName(melee,"damage force increase hidden", 0.0);
@@ -655,7 +655,7 @@ public TF2Spawn_LeaveSpawn(int client, int spawn)
 	if(IsValidClient(client) && IsPlayerAlive(client))
 	{
 		int melee = GetWeapon(client,2);
-		if(IsValidEntity(melee))
+		if(IsValidEdict(melee))
 		{
 			TF2Attrib_SetByName(melee,"airblast vulnerability multiplier hidden", 1.0);
 			TF2Attrib_SetByName(melee,"damage force increase hidden", 1.0);
@@ -698,11 +698,11 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 			distance = 500.0;
 			GetClientEyePosition(client, grenadevec);
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if(IsValidEntity(CWeapon))
+			if(IsValidEdict(CWeapon))
 			{
 				float damage = TF2_GetDPSModifiers(client,CWeapon,false,false) * 70.0;
 				int secondary = GetWeapon(client,1);
-				if(IsValidEntity(secondary))
+				if(IsValidEdict(secondary))
 				{
 					Address bashBonusActive = TF2Attrib_GetByName(secondary, "charge impact damage increased")
 					if(bashBonusActive != Address_Null)
@@ -718,7 +718,7 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 }
 public OnEntityCreated(entity, const char[] classname)
 {
-	if(!IsValidEntity(entity) || entity < 0 || entity > 2048)
+	if(!IsValidEdict(entity) || entity < 0 || entity > 2048)
 		return;
 
 
@@ -852,7 +852,7 @@ public OnEntityCreated(entity, const char[] classname)
 }
 public OnEntityDestroyed(entity)
 {
-	if(!IsValidEntity(entity) || entity < 0 || entity > 2048)
+	if(!IsValidEdict(entity) || entity < 0 || entity > 2048)
 		return;
 
 	char classname[32];
@@ -878,7 +878,7 @@ public OnEntityDestroyed(entity)
 	if(StrEqual(classname, "tank_boss"))
 	{
 		int iLink = GetEntPropEnt(entity, Prop_Send, "m_hEffectEntity");
-		if(IsValidEntity(iLink))
+		if(IsValidEdict(iLink))
 		{
 			AcceptEntityInput(iLink, "ClearParent");
 			AcceptEntityInput(iLink, "Kill");
@@ -921,17 +921,17 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 		if (IsValidClient(client) && !IsFakeClient(client))
 		{
 			int primary = (GetWeapon(client,0));
-			if(IsValidEntity(primary))
+			if(IsValidEdict(primary))
 			{
 				TF2Attrib_RemoveAll(primary);
 			}
 			int secondary = (GetWeapon(client,1));
-			if(IsValidEntity(secondary))
+			if(IsValidEdict(secondary))
 			{
 				TF2Attrib_RemoveAll(secondary);
 			}
 			int melee = (GetWeapon(client,2));
-			if(IsValidEntity(melee))
+			if(IsValidEdict(melee))
 			{
 				TF2Attrib_RemoveAll(melee);
 			}
@@ -1107,7 +1107,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 	fanOfKnivesCount[client] = 0;
 	if(IsValidClient(client))
 	{
-		if(IsValidEntity(autoSentryID[client]) && autoSentryID[client] > 32)
+		if(IsValidEdict(autoSentryID[client]) && autoSentryID[client] > 32)
 		{
 			RemoveEntity(autoSentryID[client]);
 			autoSentryID[client] = -1;
@@ -1189,13 +1189,12 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 //Called on player CMD (~almost every tick, but varies based on response rate)
 public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
 {
-	float tickRate = GetTickInterval();
 	int flags = GetEntityFlags(client)
 	if(!IsPlayerAlive(client) || !IsValidClient3(client))
 		return Plugin_Continue;
 
 	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-	if(IsValidEntity(CWeapon))
+	if(IsValidEdict(CWeapon))
 	{
 		if(!(lastFlag[client] & FL_ONGROUND) && flags & FL_ONGROUND)
 		{
@@ -1267,7 +1266,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			inScore[client] = false;
 		}
 
-		if ((impulse == 201) && ImpulseTimer[client] <= 0.0 && IsValidEntity(client_new_weapon_ent_id[client]))
+		if ((impulse == 201) && ImpulseTimer[client] <= 0.0 && IsValidEdict(client_new_weapon_ent_id[client]))
 		{
 			if(currentitem_level[client][3] == 242)
 			{
@@ -1275,7 +1274,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				EquipPlayerWeapon(client, client_new_weapon_ent_id[client]);
 			}
 		}
-		if(IsValidEntity(CWeapon))
+		if(IsValidEdict(CWeapon))
 		{
 			char strName[32];
 			GetEntityClassname(CWeapon, strName, 32)
@@ -1294,14 +1293,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					Address charge = TF2Attrib_GetByName(CWeapon, "Repair rate increased");
 					if(charge != Address_Null)
 					{
-						charging += TF2Attrib_GetValue(charge)*tickRate;
+						charging += TF2Attrib_GetValue(charge)*TICKINTERVAL;
 					}
 					Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 					if(precisionPowerup != Address_Null)
 					{
 						float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
 						if(precisionPowerupValue > 0.0){
-							charging += 90.0*tickRate;
+							charging += 90.0*TICKINTERVAL;
 						}
 					}
 					
@@ -1367,7 +1366,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						float clientpos[3];
 						GetClientEyePosition(client,clientpos);
-						for(int i = 1; i<MAXENTITIES;i++)
+						int i = -1;
+						while ((i = FindEntityByClassname(i, "*")) != -1)
 						{
 							if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 							{
@@ -1569,14 +1569,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -1603,14 +1603,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Explosive Shot: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Explosive Shot: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -1630,14 +1630,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -1662,14 +1662,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -1688,14 +1688,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dragon's Breath: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dragon's Breath: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -1753,14 +1753,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -1793,14 +1793,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dash: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dash: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
@@ -1835,14 +1835,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: R (MOUSE2)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
@@ -1937,14 +1937,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
@@ -1986,14 +1986,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
@@ -2067,14 +2067,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: %.1fs", weaponArtCooldown[client]); 
-								SetHudTextParams(x, y, tickRate*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, tickRate*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -2121,11 +2121,11 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 //Called on server thinking, 66.6/s
 public OnGameFrame()
 {
-	float tickRate = GetTickInterval();
 	float time = GetGameTime();
-	for(int i=MaxClients; i < MAXENTITIES; i++)
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
-		if(IsValidEntity(i))
+		if(IsValidEdict(i))
 		{
 			if(isProjectileHoming[i])
 			{
@@ -2157,50 +2157,50 @@ public OnGameFrame()
 	for(int client=1; client<=MaxClients; client++)
 	{
 		if(MadmilkDuration[client] > 0.0)
-			MadmilkDuration[client]-=tickRate;
+			MadmilkDuration[client]-=TICKINTERVAL;
 		if(IsValidClient3(client))
 		{
 			if(MenuTimer[client] > 0.0){
-			MenuTimer[client] -= tickRate; }
+			MenuTimer[client] -= TICKINTERVAL; }
 			if(efficiencyCalculationTimer[client] > 0.0){
-			efficiencyCalculationTimer[client] -= tickRate; }
+			efficiencyCalculationTimer[client] -= TICKINTERVAL; }
 			if(ImpulseTimer[client] > 0.0){
-			ImpulseTimer[client] -= tickRate; }
+			ImpulseTimer[client] -= TICKINTERVAL; }
 			if(weaponTrailTimer[client] > 0.0){
-			weaponTrailTimer[client] -= tickRate;}
+			weaponTrailTimer[client] -= TICKINTERVAL;}
 			if(fl_ArmorRegenBonusDuration[client] > 0.0){
-			fl_ArmorRegenBonusDuration[client] -= tickRate;}
+			fl_ArmorRegenBonusDuration[client] -= TICKINTERVAL;}
 			
 			if(IsPlayerAlive(client))
 			{
 				if(fl_GlobalCoolDown[client] > 0.0){
-				fl_GlobalCoolDown[client] -= tickRate; }
+				fl_GlobalCoolDown[client] -= TICKINTERVAL; }
 				if(weaponArtCooldown[client] > 0.0){
-				weaponArtCooldown[client] -= tickRate; }
+				weaponArtCooldown[client] -= TICKINTERVAL; }
 				if(weaponArtParticle[client] > 0.0){
-				weaponArtParticle[client] -= tickRate; }
+				weaponArtParticle[client] -= TICKINTERVAL; }
 				if(powerupParticle[client] > 0.0){
-				powerupParticle[client] -= tickRate; }
+				powerupParticle[client] -= TICKINTERVAL; }
 				if(RadiationBuildup[client] > 0.0){
-				RadiationBuildup[client] -= (RadiationMaximum[client] * 0.0285) * tickRate; }//Fully remove radiation within 35 seconds.
+				RadiationBuildup[client] -= (RadiationMaximum[client] * 0.0285) * TICKINTERVAL; }//Fully remove radiation within 35 seconds.
 				if(CurrentSlowTimer[client] > 0.0){
-				CurrentSlowTimer[client] -= tickRate; }
+				CurrentSlowTimer[client] -= TICKINTERVAL; }
 				if(BleedBuildup[client] > 0.0){
-				BleedBuildup[client] -= (BleedMaximum[client] * 0.143) * tickRate; }//Fully remove bleed within 7 seconds.
+				BleedBuildup[client] -= (BleedMaximum[client] * 0.143) * TICKINTERVAL; }//Fully remove bleed within 7 seconds.
 				if(ConcussionBuildup[client] > 0.0){
-				ConcussionBuildup[client] -= 100.0 * 0.03 * tickRate; }//Fully remove concussion within 30 seconds.
+				ConcussionBuildup[client] -= 100.0 * 0.03 * TICKINTERVAL; }//Fully remove concussion within 30 seconds.
 				if(miniCritStatusVictim[client] > 0.0){
-				miniCritStatusVictim[client] -= tickRate;}
+				miniCritStatusVictim[client] -= TICKINTERVAL;}
 				if(miniCritStatusAttacker[client] > 0.0){
-				miniCritStatusAttacker[client] -= tickRate;}
+				miniCritStatusAttacker[client] -= TICKINTERVAL;}
 				if(disableIFMiniHud[client] > 0.0){
-				disableIFMiniHud[client] -= tickRate;}
+				disableIFMiniHud[client] -= TICKINTERVAL;}
 
 				if(RageActive[client])
 				{
 					if(RageBuildup[client] > 0.0)
 					{
-						RageBuildup[client] -= tickRate / 10.0//Revenge lasts 10 seconds (granted they aren't gaining it at the same time)
+						RageBuildup[client] -= TICKINTERVAL / 10.0//Revenge lasts 10 seconds (granted they aren't gaining it at the same time)
 					}
 					else
 					{
@@ -2217,7 +2217,7 @@ public OnGameFrame()
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				int melee = GetPlayerWeaponSlot(client,2)
 				int primary = GetPlayerWeaponSlot(client,0)
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					Address overAllFireRate= TF2Attrib_GetByName(CWeapon, "ubercharge overheal rate penalty");
 					if(overAllFireRate != Address_Null)
@@ -2246,9 +2246,9 @@ public OnGameFrame()
 						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", FinalS);
 					}
 					bool flag = true;
-					if(IsValidEntity(melee) && CWeapon == melee && TF2_GetPlayerClass(client) == TFClass_Heavy ){flag=false;}
-					if(IsValidEntity(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Sniper){flag=false;}
-					if((IsValidEntity(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Heavy)){flag=false;}
+					if(IsValidEdict(melee) && CWeapon == melee && TF2_GetPlayerClass(client) == TFClass_Heavy ){flag=false;}
+					if(IsValidEdict(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Sniper){flag=false;}
+					if((IsValidEdict(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Heavy)){flag=false;}
 
 					if(flag)
 					{
@@ -2317,9 +2317,9 @@ public OnGameFrame()
 
 			if(LightningEnchantmentDuration[client] > 0.0)
 			{
-				LightningEnchantmentDuration[client] -= tickRate; 
+				LightningEnchantmentDuration[client] -= TICKINTERVAL; 
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon) && CWeapon != 0 && DarkmoonBladeDuration[client] <= 0.0)
+				if(IsValidEdict(CWeapon) && CWeapon != 0 && DarkmoonBladeDuration[client] <= 0.0)
 				{
 					if(weaponTrailTimer[client] <= 0.0)
 					{
@@ -2334,10 +2334,10 @@ public OnGameFrame()
 			}
 			if(DarkmoonBladeDuration[client] > 0.0)
 			{
-				DarkmoonBladeDuration[client] -= tickRate; 
+				DarkmoonBladeDuration[client] -= TICKINTERVAL; 
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				int melee = GetWeapon(client,2);
-				if(IsValidEntity(CWeapon) && IsValidEntity(melee) && CWeapon == melee)
+				if(IsValidEdict(CWeapon) && IsValidEdict(melee) && CWeapon == melee)
 				{
 					if(weaponTrailTimer[client] <= 0.0)
 					{
@@ -2386,11 +2386,11 @@ public OnGameFrame()
 			}
 			if(CheckForAttunement(client))
 			{
-				for(int i = 0; i < Max_Attunement_Slots;i++)
+				for(i = 0; i < Max_Attunement_Slots;i++)
 				{
 					if(SpellCooldowns[client][i] > 0.0)
 					{
-						SpellCooldowns[client][i] -= tickRate;
+						SpellCooldowns[client][i] -= TICKINTERVAL;
 					}
 					if(SpellCooldowns[client][i] < 0.0)
 					{
@@ -2403,7 +2403,7 @@ public OnGameFrame()
 }
 public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 {
-	if(!IsValidClient3(client) || !IsValidEntity(client))
+	if(!IsValidClient3(client) || !IsValidEdict(client))
 		return MRES_Ignored;
 	if(IsValidClient3(client))//Players
 	{
@@ -3224,7 +3224,7 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 	if(IsValidClient3(client) && IsValidClient3(owner))
 	{
 		int melee = (GetPlayerWeaponSlot(owner,2));
-		if(IsValidEntity(melee))
+		if(IsValidEdict(melee))
 		{
 			int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
 			if(weaponIndex == 589)
@@ -3278,7 +3278,7 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 				float LightningDamage = 325.0;
 				
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEntity(CWeapon))
+				if(IsValidEdict(CWeapon))
 				{
 					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 					if(SentryDmgActive != Address_Null)
@@ -3312,7 +3312,8 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 					LightningDamage /= TF2Attrib_GetValue(fireRateActive);
 				}
 				
-				for(int i = 1; i<MAXENTITIES;i++)
+				int i = -1;
+				while ((i = FindEntityByClassname(i, "*")) != -1)
 				{
 					if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
 					{
