@@ -34,6 +34,11 @@
 #define TICKINTERVAL 0.01499
 #define TICKRATE 66.67
 
+#define MAXMONEY 50000000.0
+#define STAGEONE 1000000.0
+#define STAGETWO 5000000.0
+#define STAGETHREE 25000000.0
+
 #define SOUND_THUNDER "ambient/explosions/explode_9.wav"
 #define SOUND_ZAP  "misc/halloween/spell_lightning_ball_impact.wav"
 #define SOUND_HEAL "misc/halloween/spell_overheal.wav"

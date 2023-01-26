@@ -668,10 +668,9 @@ public Menu_TweakUpgrades(client)
 }
 public Menu_ChangePreferences(client)
 {
-	if (IsValidClient(client) && IsPlayerAlive(client))
+	if (IsValidClient3(client))
 	{
 		Handle menu = CreateMenu(MenuHandler_Preferences);
-		
 		SetMenuExitBackButton(menu, true);
 		SetMenuTitle(menu, "Set Preferences");
 		AddMenuItem(menu, "increaseX", "+1 X to armor hud.");
@@ -679,12 +678,25 @@ public Menu_ChangePreferences(client)
 		AddMenuItem(menu, "increaseY", "+1 Y to armor hud.");
 		AddMenuItem(menu, "decreaseY", "-1 Y to armor hud.");
 		AddMenuItem(menu, "ifrespawn", "Toggle buy menu on spawn.");
-		AddMenuItem(menu, "particleToggle", "Toggle Self-Viewable Particles");
+		AddMenuItem(menu, "particleToggle", "Toggle self-viewable particles.");
+		AddMenuItem(menu, "knockbackToggle", "Change knockback preferences.");
 		AddMenuItem(menu, "resetTutorial", "Reset all tutorial HUD elements.");
-		if (IsValidClient(client) && IsPlayerAlive(client))
-		{
-			DisplayMenu(menu, client, MENU_TIME_FOREVER);
-		}
+		DisplayMenu(menu, client, MENU_TIME_FOREVER);
+	}
+}
+public Menu_ChangeKnockbackPreferences(client)
+{
+	if (IsValidClient3(client))
+	{
+		Menu menu = CreateMenu(MenuHandler_KnockbackPreferences, MENU_ACTIONS_DEFAULT|MenuAction_DisplayItem);
+		SetMenuExitBackButton(menu, true);
+		SetMenuTitle(menu, "Set Knockback Resistance Preferences");
+		AddMenuItem(menu, "selfkb", "Self Inflicted: ");
+		AddMenuItem(menu, "playerkb", "Player Damage: ");
+		AddMenuItem(menu, "truekb", "True Knockback: ");
+		AddMenuItem(menu, "horizontal", "Horizontal Axis: ");
+		AddMenuItem(menu, "vertical", "Vertical Axis: ");
+		DisplayMenu(menu, client, MENU_TIME_FOREVER);
 	}
 }
 Menu_ShowWiki(client, int item = 0)

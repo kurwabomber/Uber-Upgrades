@@ -827,8 +827,9 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 }
 public MenuHandler_Preferences(Handle menu, MenuAction:action, client, param2)
 {
-	if (action == MenuAction_Select && IsValidClient(client) && IsPlayerAlive(client))
+	if (action == MenuAction_Select)
 	{
+		Menu_ChangePreferences(client);
 		if(param2 >= 0 && AreClientCookiesCached(client))
 		{
 			switch(param2)
@@ -898,6 +899,10 @@ public MenuHandler_Preferences(Handle menu, MenuAction:action, client, param2)
 				}
 				case 6:
 				{
+					Menu_ChangeKnockbackPreferences(client);
+				}
+				case 7:
+				{
 					SetClientCookie(client, EngineerTutorial, "0");
 					SetClientCookie(client, ArmorTutorial, "0");
 					SetClientCookie(client, ArcaneTutorial, "0");
@@ -910,15 +915,51 @@ public MenuHandler_Preferences(Handle menu, MenuAction:action, client, param2)
 				}
 			}
 		}
-		Menu_ChangePreferences(client);
 	}
 	if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
-	{
 		Menu_BuyUpgrade(client, 7);
-	}
+	
     if (action == MenuAction_End)
         CloseHandle(menu);
 	return; 
+}
+public MenuHandler_KnockbackPreferences(Handle menu, MenuAction:action, client, param2)
+{
+	if (action == MenuAction_Select)
+	{
+		char knockbackToggleEnabled[64];
+		GetClientCookie(client, knockbackToggle, knockbackToggleEnabled, sizeof(knockbackToggleEnabled));
+		int knockbackToggleValue = StringToInt(knockbackToggleEnabled);
+		if(param2 >= 0 && AreClientCookiesCached(client))
+		{
+			knockbackToggleValue ^= 1<<param2;
+			IntToString(knockbackToggleValue, knockbackToggleEnabled, sizeof(knockbackToggleEnabled));
+			SetClientCookie(client, knockbackToggle, knockbackToggleEnabled);
+			knockbackFlags[client] = knockbackToggleValue;
+		}
+		Menu_ChangeKnockbackPreferences(client);
+	}
+	else if(action == MenuAction_DisplayItem)
+	{
+		char knockbackToggleEnabled[64];
+		GetClientCookie(client, knockbackToggle, knockbackToggleEnabled, sizeof(knockbackToggleEnabled));
+		int knockbackToggleValue = StringToInt(knockbackToggleEnabled);
+		char desc_str[128];
+		char info_str[16];
+		int style;
+		GetMenuItem(menu, param2, info_str, sizeof(info_str), style, desc_str, sizeof(desc_str));
+		char toggleSwitch[16] = "Disabled";
+		if(knockbackToggleValue & 1 << param2)
+			toggleSwitch = "Enabled";
+
+		Format(desc_str, sizeof(desc_str), "%s%s", desc_str, toggleSwitch);
+		return RedrawMenuItem(desc_str);
+	}
+	if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
+		Menu_ChangePreferences(client);
+	
+    if (action == MenuAction_End)
+        {CloseHandle(menu);}
 }
 public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 {

@@ -16,6 +16,7 @@ Handle hArmorXPos;
 Handle hArmorYPos;
 Handle respawnMenu;
 Handle particleToggle;
+Handle knockbackToggle;
 Handle g_SDKCallInitGrenade;
 Handle g_SDKCallSmack;
 Handle g_SDKCallJar;
@@ -104,6 +105,8 @@ int meleeLimiter[MAXPLAYERS+1];
 int lightningCounter[MAXPLAYERS+1];
 int plagueAttacker[MAXPLAYERS+1];
 int g_nBounces[MAXENTITIES];
+int lastKBSource[MAXPLAYERS+1];
+int knockbackFlags[MAXPLAYERS+1];
 
 //Floats
 float MoneyBonusKill

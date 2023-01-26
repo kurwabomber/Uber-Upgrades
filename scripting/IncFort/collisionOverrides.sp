@@ -606,7 +606,7 @@ public Action:OnTouchExplodeJar(entity, other)
 		return Plugin_Continue;
 	
 	int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
-	if(IsValidEdict(CWeapon))
+	if(IsValidWeapon(CWeapon))
 	{
 		Address blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
 		Address blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");

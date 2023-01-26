@@ -2,6 +2,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 {
 	if(IsValidClient3(victim))
 	{
+		lastKBSource[victim] = attacker;
 		if(TF2Spawn_IsClientInSpawn(victim))
 		{
 			if(victim == attacker)

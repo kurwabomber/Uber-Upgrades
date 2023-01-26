@@ -235,12 +235,12 @@ public Action:Timer_FixedVariables(Handle timer)
 						{
 							if(fl_AdditionalArmor[client] <= 0.0)
 							{
-								SetHudTextParams(-0.75, -0.2, 0.21, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(-0.75, -0.2, 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudSync, ArmorLeft);
 							}
 							else
 							{
-								SetHudTextParams(-0.75, -0.2, 0.21, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudSync, ArmorLeft);
 							}
 						}
@@ -249,12 +249,12 @@ public Action:Timer_FixedVariables(Handle timer)
 					{
 						if(fl_AdditionalArmor[client] <= 0.0)
 						{
-							SetHudTextParams(-0.75, -0.2, 0.21, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							SetHudTextParams(-0.75, -0.2, 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
 							ShowSyncHudText(client, hudSync, ArmorLeft);
 						}
 						else
 						{
-							SetHudTextParams(-0.75, -0.2, 0.21, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+							SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
 							ShowSyncHudText(client, hudSync, ArmorLeft);
 						}
 					}
@@ -1528,7 +1528,7 @@ public Action:eurekaDelayed(Handle timer, int client)
 				float LightningDamage = 500.0;
 				
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEdict(CWeapon))
+				if(IsValidWeapon(CWeapon))
 				{
 					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
 					if(SentryDmgActive != Address_Null)
@@ -1592,7 +1592,6 @@ public Action:eurekaDelayed(Handle timer, int client)
 						}
 					}
 				}
-				weaponArtCooldown[client] = 0.55;
 			}
 			Address teleportBuffActive = TF2Attrib_GetByName(melee, "zoom speed mod disabled");
 			if(teleportBuffActive != Address_Null && TF2Attrib_GetValue(teleportBuffActive) != 0.0)

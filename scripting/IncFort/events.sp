@@ -517,6 +517,45 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 	}
 	return MRES_Ignored;
 }
+public MRESReturn OnKnockbackApply(int client, Handle hParams) {
+	if(IsValidClient(client))
+	{
+		float initKB[3];
+		DHookGetParamVector(hParams,1,initKB);
+		float KBMult = GetAttributeAccumulateMultiplicative(client, "knockback resistance", 1.0);
+		if(KBMult == 1.0)
+			return MRES_Ignored;
+
+		if(knockbackFlags[client] & 1<<0 && client == lastKBSource[client]){
+			if(knockbackFlags[client] & 1<<3){
+				initKB[0] *= KBMult;
+				initKB[1] *= KBMult;
+			}if(knockbackFlags[client] & 1<<4){
+				initKB[2] *= KBMult;
+				PrintToServer("a");
+			}
+		}
+		else if(knockbackFlags[client] & 1<<1 && client != lastKBSource[client]){
+			if(knockbackFlags[client] & 1<<3){
+				initKB[0] *= KBMult;
+				initKB[1] *= KBMult;
+			}if(knockbackFlags[client] & 1<<4){
+				initKB[2] *= KBMult;
+			}
+		}
+		else if(knockbackFlags[client] & 1<<2 && lastKBSource[client] == 0){
+			if(knockbackFlags[client] & 1<<3){
+				initKB[0] *= KBMult;
+				initKB[1] *= KBMult;
+			}if(knockbackFlags[client] & 1<<4){
+				initKB[2] *= KBMult;
+			}
+		}
+		DHookSetParamVector(hParams, 1,initKB);
+		lastKBSource[client] = 0;
+	}
+	return MRES_Override;
+}
 public MRESReturn OnCalculateBotSpeedPost(int client, Handle hReturn) {
 	DHookSetReturn(hReturn, 3000.0);
 	return MRES_Supercede;
@@ -1102,87 +1141,91 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 {
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
-	CancelClientMenu(client);
+	if((GetEventInt(event, "death_flags") & 32))
+		return;
+
 	int attack = GetClientOfUserId(GetEventInt(event, "attacker"));
 	fanOfKnivesCount[client] = 0;
-	if(IsValidClient(client))
+	RageBuildup[client] = 0.0;
+
+	if(!IsValidClient3(client))
+		return;
+
+	CancelClientMenu(client);
+	if(IsValidEdict(autoSentryID[client]) && autoSentryID[client] > 32)
 	{
-		if(IsValidEdict(autoSentryID[client]) && autoSentryID[client] > 32)
-		{
-			RemoveEntity(autoSentryID[client]);
-			autoSentryID[client] = -1;
-		}
-		if(attack != client && !(GetEventInt(event, "death_flags") & 32))
-		{
-			Kills[attack]++;
-			Deaths[client]++;
-		}
+		RemoveEntity(autoSentryID[client]);
+		autoSentryID[client] = -1;
 	}
-	if ((!IsMvM()) && !(GetEventInt(event, "death_flags") & 32))
+	if(attack != client && !(GetEventInt(event, "death_flags") & 32))
 	{
-		if((StartMoney + additionalstartmoney) < 50000000.0)
+		Kills[attack]++;
+		Deaths[client]++;
+	}
+	
+	if(attack == client)
+		return;
+
+	if (IsMvM())
+		return;
+
+	if(!IsValidClient3(attack))
+		return;
+
+	if((StartMoney + additionalstartmoney) < MAXMONEY)
+	{	
+		if(IsFakeClient(client))
 		{
 			float BotMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((StartMoney + additionalstartmoney), 0.985))) * ServerMoneyMult) * 3.0);
-			float PlayerMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((additionalstartmoney + StartMoney), 1.125))) * ServerMoneyMult) * 3.0);
-			
-			
-			if (IsValidClient(attack) && IsValidClient(client) && attack != client)
+			if((StartMoney + additionalstartmoney + BotMoneyKill) > MAXMONEY)
+				BotMoneyKill = MAXMONEY - StartMoney - additionalstartmoney;
+		
+			for (int i = 1; i < MaxClients; i++) 
 			{
-				for (int i = 0; i <= MaxClients; i++) 
-				{ 
-					CurrencyOwned[i] += PlayerMoneyKill
-					if(IsValidClient(i) && IsClientInGame(i))
-					{
-						PrintToConsole(i, "+$%.0f",  PlayerMoneyKill)
-					}
-				}  
-				additionalstartmoney += PlayerMoneyKill;
-			}
-			if(!IsValidClient(client) && attack != client)
-			{
-				for (int i = 0; i <= MaxClients; i++) 
-				{ 
-					CurrencyOwned[i] += BotMoneyKill
-					if (IsValidClient(i) && IsClientInGame(i)) 
-					{
-						PrintToConsole(i, "+$%.0f", BotMoneyKill);
-					} 
-				}  
-				additionalstartmoney += BotMoneyKill
-			}
-			
-			if((StartMoney + additionalstartmoney) > 50000000.0)
-			{
-				additionalstartmoney = 50000000.0 - StartMoney;
-			}
-
-			if((StartMoney + additionalstartmoney) > 1000000.0 && gameStage == 0)
-			{
-				gameStage = 1;
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Vector stage! int upgrades unlocked.");
-
-				UpdateMaxValuesStage(gameStage);
-			}
-			else if((StartMoney + additionalstartmoney) > 5000000.0 && gameStage == 1)
-			{
-				gameStage = 2;
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Dyad stage! int upgrades unlocked.");
-
-				UpdateMaxValuesStage(gameStage);
-			}
-			else if((StartMoney + additionalstartmoney) > 25000000.0 && gameStage == 2)
-			{
-				gameStage = 3;
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Triad stage! int upgrades unlocked.");
-
-				UpdateMaxValuesStage(gameStage);
-			}
+				CurrencyOwned[i] += BotMoneyKill
+				if (IsValidClient(i))
+					PrintToConsole(i, "+$%.0f", BotMoneyKill);
+			}  
+			additionalstartmoney += BotMoneyKill
 		}
-		else if(hardcapWarning == false)
+		else
 		{
-			hardcapWarning = true;
-			CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You have reached the hardcap for money in PvP!");
+			float PlayerMoneyKill = (100.0+((SquareRoot(MoneyBonusKill + Pow((additionalstartmoney + StartMoney), 1.125))) * ServerMoneyMult) * 3.0);
+			if((StartMoney + additionalstartmoney + PlayerMoneyKill) > MAXMONEY)
+				PlayerMoneyKill = MAXMONEY - StartMoney - additionalstartmoney;
+
+			for (int i = 1; i < MaxClients; i++) 
+			{
+				CurrencyOwned[i] += PlayerMoneyKill
+				if(IsValidClient(i))
+					PrintToConsole(i, "+$%.0f",  PlayerMoneyKill)
+			}  
+			additionalstartmoney += PlayerMoneyKill;
 		}
+	
+		if(gameStage == 0 && (StartMoney + additionalstartmoney) > STAGEONE)
+		{
+			gameStage = 1;
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Vector stage! int upgrades unlocked.");
+			UpdateMaxValuesStage(gameStage);
+		}
+		else if(gameStage == 1 && (StartMoney + additionalstartmoney) > STAGETWO)
+		{
+			gameStage = 2;
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Dyad stage! int upgrades unlocked.");
+			UpdateMaxValuesStage(gameStage);
+		}
+		else if(gameStage == 2 && (StartMoney + additionalstartmoney) > STAGETHREE)
+		{
+			gameStage = 3;
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Triad stage! int upgrades unlocked.");
+			UpdateMaxValuesStage(gameStage);
+		}
+	}
+	else if(hardcapWarning == false)
+	{
+		hardcapWarning = true;
+		CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You have reached the hardcap for money in PvP!");
 	}
 }
 
@@ -1190,9 +1233,9 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
 {
 	int flags = GetEntityFlags(client)
-	if(!IsPlayerAlive(client) || !IsValidClient3(client))
+	if(!IsPlayerAlive(client) || !IsValidClient3(client) || IsClientObserver(client))
 		return Plugin_Continue;
-
+	
 	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	if(IsValidEdict(CWeapon))
 	{
@@ -2401,6 +2444,35 @@ public OnGameFrame()
 		}
 	}
 }
+public MRESReturn OnScattergunReload(int weapon)
+{
+	if(!IsValidWeapon(weapon))
+		return MRES_Ignored;
+
+	if(GetEntProp(weapon, Prop_Data, "m_bReloadsSingly") == 0)
+		return MRES_Ignored;
+
+	int client = getOwner(weapon);
+	if(!IsValidClient3(client))
+		return MRES_Ignored;
+
+	int currentClip = GetEntProp( weapon, Prop_Data, "m_iClip1" );
+	int maxClip = GetMaxClip(weapon);
+	int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
+	int currentAmmo;
+	if ( type > 0 || type < 31 )
+		currentAmmo = GetEntProp( client, Prop_Send, "m_iAmmo", _, type ); 
+
+	int finalAmmo = currentAmmo-(maxClip-currentClip);
+
+	if(finalAmmo < 0){maxClip-=IntAbs(finalAmmo);finalAmmo = 0;}
+
+	SetAmmo_Weapon(weapon, finalAmmo)
+
+	SetEntProp( weapon, Prop_Send, "m_iClip1", maxClip ); 
+
+	return MRES_Supercede;
+}
 public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 {
 	if(!IsValidClient3(client) || !IsValidEdict(client))
@@ -3107,6 +3179,17 @@ public OnClientPostAdminCheck(client)
 			CreateTimer(0.0, ClChangeClassTimer, GetClientUserId(client));
 		}
 		GivePlayerData(client);
+
+		if(AreClientCookiesCached(client))
+		{
+			char knockbackToggleEnabled[64];
+			GetClientCookie(client, knockbackToggle, knockbackToggleEnabled, sizeof(knockbackToggleEnabled));
+			if(StrEqual(knockbackToggleEnabled, "\0"))
+				{knockbackFlags[client] = (1<<0)|(1<<1)|(1<<2)|(1<<3)|(1<<4);
+				IntToString(knockbackFlags[client],knockbackToggleEnabled,sizeof(knockbackToggleEnabled));SetClientCookie(client, knockbackToggle,knockbackToggleEnabled);}
+
+			knockbackFlags[client] = StringToInt(knockbackToggleEnabled);
+		}
 	}
 }
 public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
@@ -3142,7 +3225,6 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 		BleedBuildup[client] = 0.0;
 		RadiationBuildup[client] = 0.0;
 		RageActive[client] = false;
-		RageBuildup[client] = 0.0;
 		SupernovaBuildup[client] = 0.0;
 		ConcussionBuildup[client] = 0.0;
 		fl_HighestFireDamage[client] = 0.0;

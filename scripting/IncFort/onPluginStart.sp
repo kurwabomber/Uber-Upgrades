@@ -305,6 +305,23 @@ public void OnPluginStart()
 	{
 		PrintToServer("CustomAttrs | Sentry think signature not found.");
 	}
+	//Scattergun Proper Clip Replacement
+	Handle g_DHookScattergunReload = DHookCreateFromConf(hConf, "CTFScatterGun::FinishReload()");
+	
+	if(g_DHookScattergunReload == INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | Scattergun Clip Replacement function error");
+	}
+	DHookEnableDetour(g_DHookScattergunReload, false, OnScattergunReload);
+
+	//Knockback Changes
+	Handle g_DHookKnockbackReplacement = DHookCreateFromConf(hConf, "CTFPlayer::ApplyAbsVelocityImpulse()");
+	
+	if(g_DHookKnockbackReplacement == INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | Knockback Changes function error");
+	}
+	DHookEnableDetour(g_DHookKnockbackReplacement, false, OnKnockbackApply);
 
 	//Sentry Think Cap
 	Handle g_DHookSentryThink = DHookCreateFromConf(hConf, "CObjectSentrygun::SentryThink()");
@@ -439,6 +456,7 @@ public void OnPluginStart()
 	ArcaneTutorial = RegClientCookie("tutorial_arcane", "State of Tutorial", CookieAccess_Protected);
 	WeaponTutorial = RegClientCookie("tutorial_weapons", "State of Tutorial", CookieAccess_Protected);
 	particleToggle = RegClientCookie("particleToggle", "Toggles if you can see particles such as lightning enchantment on yourself.", CookieAccess_Protected);
+	knockbackToggle = RegClientCookie("knockbackToggle", "Select what knockback affects you.", CookieAccess_Protected);
 	//Config
 	SetConVarFloat(FindConVar("sv_maxvelocity"), 1000000000.0, true, false);
 	SetConVarFloat(FindConVar("tf_scout_bat_launch_delay"), 0.0, true, false);
@@ -486,10 +504,6 @@ public void OnPluginStart()
 	for (int i = 1 ; i <= MaxClients ; i++)
 		if(IsValidClient3(i))
 			OnClientPutInServer(i);
-}
-public OnAllPluginsLoaded()
-{
-	particleToggle = FindClientCookie("particleToggle");
 }
 public OnPluginEnd()
 {

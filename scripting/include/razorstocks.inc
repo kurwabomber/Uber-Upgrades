@@ -16,6 +16,7 @@ Yeah.
 #define MAXENTITIES 2049
 #define PI 3.142
 
+
 bool DOTStacked[MAXENTITIES][MAXENTITIES];
 bool ShouldNotHome[MAXENTITIES][MAXPLAYERS+1];
 bool ShouldNotHit[MAXENTITIES][MAXENTITIES];

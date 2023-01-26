@@ -1684,8 +1684,8 @@
 		}
 		"144"
 		{
-			"name"		"damage force reduction"
-			"ref"		"damage force reduction"
+			"name"		"knockback resistance"
+			"ref"		"knockback resistance"
 			"cost"		"300"
 			"increase_ratio" 	"0.5"
 			"value"		"-0.1"
