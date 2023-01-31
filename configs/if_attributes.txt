@@ -2987,13 +2987,12 @@
 		{
 			"name"		"damage mult 10"
 			"ref"		"Increased Overall Damage(T)"
-			"cost"		"650"
-			"increase_ratio"	"0.7"
-			"value"		"0.25"
+			"cost"		"0"
+			"value"		"0.1"
 			"init"		"1.00"
 			"display_style" "1"
 			"description"	"1:1 pure damage multiplier.\nIncreases in cost by +$455 per purchase."
-			"max"		"4.0"
+			"max"		"50.0"
 		}
 		"301"
 		{
@@ -5387,6 +5386,7 @@
 			"requirement"		"5000000.0"
 			"value"		"0.1"
 			"staged_max"		"1.5,1.9,2.0"
+			"description"		"Reduces post-damage taken by damage^(1/value)"
 			"init"		"1.0"
 			"max"		"1.5"
 		}
@@ -5400,6 +5400,48 @@
 			"init"		"1.0"
 			"description"	"Decreases the duration of slow effects."
 			"max"		"0.1"
+		}
+		"1602"
+		{
+			"name"		"physical damage affinity"
+			"ref"		"physical damage affinity"
+			"cost"		"10000"
+			"increase_ratio"	"4.0"
+			"requirement"		"5000000.0"
+			"value"		"1.0"
+			"staged_max"		"1.5,1.9,2.0"
+			"init"		"1.0"
+			"description"		"All physical damage is increased to damage^(value)\nBullets are given armor piercing damage\nMelee is given armor debuff on hit\nProjectiles benefit from both"
+			"restriction_category"	"2"
+			"max"		"1.5"
+		}
+		"1603"
+		{
+			"name"		"fire damage affinity"
+			"ref"		"fire damage affinity"
+			"cost"		"10000"
+			"increase_ratio"	"4.0"
+			"requirement"		"5000000.0"
+			"value"		"1.0"
+			"staged_max"		"1.5,1.9,2.0"
+			"init"		"1.0"
+			"description"		"All fire damage is increased to damage^(value)\nFor every second victim is on fire, increases overall damage."
+			"restriction_category"	"2"
+			"max"		"1.5"
+		}
+		"1604"
+		{
+			"name"		"explosive damage affinity"
+			"ref"		"explosive damage affinity"
+			"cost"		"10000"
+			"increase_ratio"	"4.0"
+			"requirement"		"5000000.0"
+			"value"		"1.0"
+			"staged_max"		"1.5,1.9,2.0"
+			"init"		"1.0"
+			"description"		"All explosive damage is increased to damage^(value)\nFor every second victim is on fire, increases overall damage."
+			"restriction_category"	"2"
+			"max"		"1.5"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"

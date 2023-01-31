@@ -3155,6 +3155,38 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+
+    //Compensations
+    "4700"
+    {
+        "name"  "bullets mult"
+        "attribute_class"   "mult_bullets_per_shot"
+        "description_string"    "(+-)%p% bullets per shot"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "4701"
+    {
+        "name"  "clip mult"
+        "attribute_class"   "mult_clipsize"
+        "description_string"    "(+-)%p% bullets per shot"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "4702"
+    {
+        "name"  "firerate mult"
+        "attribute_class"   "mult_postfiredelay"
+        "description_string"    "(+-)%p% bullets per shot"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
     //filler
     "6000"
     {
@@ -3279,6 +3311,16 @@
     "6012"
     {
         "name"  "damage mult 13"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6013"
+    {
+        "name"  "damage mult 14"
         "attribute_class"	"dmg_outgoing_mult"
         "description_string"	"(+-)%p% damage dealt"
         "description_format"	"value_is_percentage"

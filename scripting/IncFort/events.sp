@@ -532,7 +532,6 @@ public MRESReturn OnKnockbackApply(int client, Handle hParams) {
 				initKB[1] *= KBMult;
 			}if(knockbackFlags[client] & 1<<4){
 				initKB[2] *= KBMult;
-				PrintToServer("a");
 			}
 		}
 		else if(knockbackFlags[client] & 1<<1 && client != lastKBSource[client]){
@@ -560,6 +559,7 @@ public MRESReturn OnCalculateBotSpeedPost(int client, Handle hReturn) {
 	DHookSetReturn(hReturn, 3000.0);
 	return MRES_Supercede;
 }
+
 public MRESReturn OnSentryThink(int entity)  {
 	if(IsValidEdict(entity))
 	{
@@ -1206,19 +1206,19 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 		if(gameStage == 0 && (StartMoney + additionalstartmoney) > STAGEONE)
 		{
 			gameStage = 1;
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Vector stage! int upgrades unlocked.");
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Vector stage! New upgrades unlocked.");
 			UpdateMaxValuesStage(gameStage);
 		}
 		else if(gameStage == 1 && (StartMoney + additionalstartmoney) > STAGETWO)
 		{
 			gameStage = 2;
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Dyad stage! int upgrades unlocked.");
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Dyad stage! New upgrades unlocked.");
 			UpdateMaxValuesStage(gameStage);
 		}
 		else if(gameStage == 2 && (StartMoney + additionalstartmoney) > STAGETHREE)
 		{
 			gameStage = 3;
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Triad stage! int upgrades unlocked.");
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Triad stage! New upgrades unlocked.");
 			UpdateMaxValuesStage(gameStage);
 		}
 	}

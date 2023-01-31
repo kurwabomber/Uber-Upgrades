@@ -37,6 +37,6 @@
 		{
 			"plugin"	"tf2attributes"
 			"value"		"25"
-		}
+		}	
 	}
 }

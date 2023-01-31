@@ -305,6 +305,7 @@ public void OnPluginStart()
 	{
 		PrintToServer("CustomAttrs | Sentry think signature not found.");
 	}
+
 	//Scattergun Proper Clip Replacement
 	Handle g_DHookScattergunReload = DHookCreateFromConf(hConf, "CTFScatterGun::FinishReload()");
 	

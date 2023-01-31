@@ -273,6 +273,11 @@
 				"library"	"server"
 				"linux"		"@_ZN9CTFPlayer23ApplyAbsVelocityImpulseERK6Vector"
 			}
+			"CBaseEntity::DispatchTraceAttack()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN11CBaseEntity19DispatchTraceAttackERK15CTakeDamageInfoRK6VectorP10CGameTraceP15CDmgAccumulator"
+			}
 		}
 	}
 }
