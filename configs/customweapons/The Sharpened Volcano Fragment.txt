@@ -28,10 +28,5 @@
 			"plugin"	"tf2attributes"
 			"value"		"0.5"
 		}
-		"SET BONUS: special dsp"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"1"
-		}
 	}
 }

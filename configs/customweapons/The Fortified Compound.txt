@@ -44,11 +44,6 @@
 			"plugin"	"tf2attributes"
 			"value"		"1.5"
 		}
-		"SET BONUS: special dsp"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"2.0"
-		}
 		"fire rate penalty"
 		{
 			"plugin"	"tf2attributes"

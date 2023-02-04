@@ -233,6 +233,40 @@
 			"preserve_attributes"	"1"
 			"1"				"2 ; 1.7"
 		}
-
+		"751"//Cleaner's Carbine
+		{
+			"preserve_attributes"	"1"
+			"1"				"6023 ; 1.0"
+		}
+		"1092"//Fortified Compound
+		{
+			"preserve_attributes"	"1"
+			"1"				"6023 ; 1.0"
+		}
+		"595"//The Manmelter
+		{
+			"preserve_attributes"	"1"
+			"1"				"6023 ; 1.0"
+		}
+		"588"//Pomson 6000
+		{
+			"preserve_attributes"	"1"
+			"1"				"6023 ; 1.0"
+		}
+		"1150"//Quickiebomb
+		{
+			"preserve_attributes"	"1"
+			"1"				"6023 ; 1.0"
+		}
+		"442"//Righteous Bison
+		{
+			"preserve_attributes"	"1"
+			"1"				"6023 ; 1.0"
+		}
+		"348"//Sharpened Volcano Fragment
+		{
+			"preserve_attributes"	"1"
+			"1"				"6023 ; 1.0"
+		}
 	}
 }

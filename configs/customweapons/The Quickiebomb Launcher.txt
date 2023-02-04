@@ -23,11 +23,6 @@
 			"plugin"	"tf2attributes"
 			"value"		"0.75"
 		}
-		"SET BONUS: special dsp"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"1"
-		}
 		"max pipebombs decreased"
 		{
 			"plugin"	"tf2attributes"
