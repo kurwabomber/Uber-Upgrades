@@ -3187,6 +3187,77 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    //Masteries
+    "5000"
+    {
+        "name"  "physical damage affinity"
+        "attribute_class"   "physical_damage_affinity"
+        "description_string"    "(+-)%p% damage mastery"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5001"
+    {
+        "name"  "fire damage affinity"
+        "attribute_class"   "fire_damage_affinity"
+        "description_string"    "(+-)%p% damage mastery"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5002"
+    {
+        "name"  "explosive damage affinity"
+        "attribute_class"   "explosive_damage_affinity"
+        "description_string"    "(+-)%p% damage mastery"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5003"
+    {
+        "name"  "electric damage affinity"
+        "attribute_class"   "electric_damage_affinity"
+        "description_string"    "(+-)%p% damage mastery"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5004"
+    {
+        "name"  "crit damage affinity"
+        "attribute_class"   "crit_damage_affinity"
+        "description_string"    "(+-)%p% damage mastery"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5005"
+    {
+        "name"  "weapon advancement"
+        "attribute_class"   "weapon_advancement"
+        "description_string"    "(+-)%p weapon mastery"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5006"
+    {
+        "name"  "arcane damage affinity"
+        "attribute_class"   "arcane_damage_affinity"
+        "description_string"    "(+-)%p% damage mastery"
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
     //filler
     "6000"
     {

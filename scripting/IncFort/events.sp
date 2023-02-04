@@ -3231,9 +3231,10 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 		miniCritStatusAttacker[client] = 0.0;
 		miniCritStatusVictim[client] = 0.0;
 		CurrentSlowTimer[client] = 0.0;
-		canShootAgain[client] = true
+		canShootAgain[client] = true;
 		meleeLimiter[client] = 0;
 		lastDamageTaken[client] = 0.0;
+		critStatus[client] = false;
 		SetEntityRenderColor(client, 255,255,255,255);
 		for(int i=1;i<MaxClients;i++)
 		{

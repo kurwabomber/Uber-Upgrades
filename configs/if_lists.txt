@@ -98,8 +98,12 @@
 		"Tiered Upgrades"
 		{
 			"Attr0"			"Rooted damage taken"
-			"Attr1"			"Direct Damage Taken Reduced"
-			"Attr2"			"Arcane Damage Taken Reduced"
+			"Attr1"			"weapon advancement"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_sniper"

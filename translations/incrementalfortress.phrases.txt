@@ -1,5 +1,29 @@
 "Phrases"
 {
+	"physical damage affinity"
+	{
+		"en"		"Physical Damage Affinity"
+	}
+	"fire damage affinity"
+	{
+		"en"		"Fire Damage Affinity"
+	}
+	"explosive damage affinity"
+	{
+		"en"		"Explosive Damage Affinity"
+	}
+	"electric damage affinity"
+	{
+		"en"		"Electric Damage Affinity"
+	}
+	"crit damage affinity"
+	{
+		"en"		"Crit Damage Affinity"
+	}
+	"weapon advancement"
+	{
+		"en"		"Weapon Prestige Rank"
+	}
 	"knockback resistance"
 	{
 		"en"		"Knockback Resistance"

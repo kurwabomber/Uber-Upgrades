@@ -15,6 +15,7 @@ Yeah.
 #define DetonatorExplosionSound "weapons/flare_detonator_explode.wav"
 #define MAXENTITIES 2049
 #define PI 3.142
+#define DMG_PIERCING DMG_CRUSH | DMG_BLAST_SURFACE | DMG_AIRBOAT | DMG_DROWNRECOVER
 
 
 bool DOTStacked[MAXENTITIES][MAXENTITIES];
@@ -78,8 +79,13 @@ stock bool IsOnDifferentTeams(entity1,entity2)
 }
 stock char[] getDamageCategory(int damagetype)
 {
+	//int damagebits2;
 	char damageCategory[64];
-	if(damagetype & DMG_BULLET || damagetype & DMG_SLASH || damagetype & DMG_VEHICLE || damagetype & DMG_FALL || damagetype & DMG_CLUB || damagetype & DMG_BUCKSHOT)
+	if(damagetype & DMG_PIERCING)
+	{
+		damageCategory = "piercing"
+	}
+	else if(damagetype & DMG_BULLET || damagetype & DMG_SLASH || damagetype & DMG_VEHICLE || damagetype & DMG_FALL || damagetype & DMG_CLUB || damagetype & DMG_BUCKSHOT)
 	{
 		damageCategory = "direct"
 	}
