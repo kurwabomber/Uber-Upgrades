@@ -65,9 +65,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		PrintToServer("alive-pre %f", damage);
 		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
-		PrintToServer("alive-post %f", damage);
 		Address bossType = TF2Attrib_GetByName(victim, "damage force increase text");
 		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 		{
@@ -612,7 +610,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 }
 public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3],int damagecustom, CritType &critType)
 {
-	PrintToServer("crit-pre %f", damage);
 	attacker = EntRefToEntIndex(attacker);
 	if(critType == CritType_Crit)
 	{
@@ -636,14 +633,12 @@ public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 	}
 	lastDamageTaken[victim] = damage;
 	//PrintToServer("triggered customOnTakeDamage");
-	PrintToServer("crit-post %f", damage);
 	return Plugin_Continue;
 }
 public Action:TF2_OnTakeDamageModifyRules(int victim, int &attacker, int &inflictor, float &damage,
 int &damagetype, int &weapon, float damageForce[3], float damagePosition[3],
 int damagecustom, CritType &critType)
 {
-	PrintToServer("modify-pre %f", damage);
 	attacker = EntRefToEntIndex(attacker);
 	if(critType == CritType_Crit)
 	{
@@ -675,7 +670,6 @@ int damagecustom, CritType &critType)
 		lastDamageTaken[victim] = 0.0;
 		return Plugin_Changed;
 	}
-	PrintToServer("modify-post %f", damage);
 	//PrintToServer("triggered ModifyRules");
 	return Plugin_Continue;
 }
@@ -696,9 +690,7 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 	}
 	if(IsValidClient3(victim) && IsValidClient3(attacker))
 	{
-		PrintToServer("pre-pre %f", damage);
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
-		PrintToServer("pre-post %f", damage);
 	}
 	lastDamageTaken[victim] = damage;
 	if(damage < 0.0)
