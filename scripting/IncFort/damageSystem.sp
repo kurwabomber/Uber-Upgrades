@@ -141,10 +141,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 	}
-	if(IsValidClient(victim))
+	if(!(damagetype & DMG_PIERCING) && IsValidClient(victim))
 	{
 		float pctArmor = (fl_AdditionalArmor[victim] + fl_CurrentArmor[victim])/fl_MaxArmor[victim];
-		if(pctArmor <= 0.0)
+		if(pctArmor <= 0.01)
 		{
 			pctArmor = 0.01
 		}

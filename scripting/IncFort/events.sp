@@ -2262,32 +2262,6 @@ public OnGameFrame()
 				int primary = GetPlayerWeaponSlot(client,0)
 				if(IsValidEdict(CWeapon))
 				{
-					Address overAllFireRate= TF2Attrib_GetByName(CWeapon, "ubercharge overheal rate penalty");
-					if(overAllFireRate != Address_Null)
-					{
-						float Amount = TF2Attrib_GetValue(overAllFireRate)
-						float m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
-						float m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
-						/*if (Amount > 12)
-						{
-							SetEntPropFloat(CWeapon, Prop_Send, "m_flPlaybackRate", 12.0);
-						}
-						else
-						{
-							SetEntPropFloat(CWeapon, Prop_Send, "m_flPlaybackRate", Amount);
-						}*/
-						
-						float GameTime = GetGameTime();
-						
-						float PeTime = (m_flNextPrimaryAttack - GameTime) - ((Amount - 1.0) * GetTickInterval());
-						float SeTime = (m_flNextSecondaryAttack - GameTime) - ((Amount - 1.0) * GetTickInterval());
-						float FinalP = PeTime+GameTime;
-						float FinalS = SeTime+GameTime;
-						
-						
-						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", FinalP);
-						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", FinalS);
-					}
 					bool flag = true;
 					if(IsValidEdict(melee) && CWeapon == melee && TF2_GetPlayerClass(client) == TFClass_Heavy ){flag=false;}
 					if(IsValidEdict(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Sniper){flag=false;}
@@ -2324,6 +2298,9 @@ public OnGameFrame()
 						float m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
 						float SeTime = (m_flNextSecondaryAttack - GetGameTime()) - ((SecondaryROF - 1.0) * GetTickInterval());
 						float FinalS = SeTime+GetGameTime();
+
+						if(FinalS < GetGameTime())
+							FinalS = GetGameTime();
 						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", FinalS);
 						//Remove fire rate bonuses for reload rate on no clip size weapons.
 						Address ModClip = TF2Attrib_GetByName(CWeapon, "mod max primary clip override");
@@ -2493,11 +2470,6 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					WritePackCell(hPack, client);
 					WritePackFloat(hPack, 0.5);
 					CreateTimer(1.0, RemoveFire, hPack);
-
-					if(meleeLimiter[client] & 1 && weaponFireRate[CWeapon] > 5.01)
-					{
-						SDKCall(g_SDKCallSmack, CWeapon);
-					}
 				}
 				else
 				{

@@ -4962,16 +4962,6 @@
 		}
 		"1558"
 		{
-			"name"		"ubercharge overheal rate penalty"
-			"ref"		"Fire Rate Bonus Overall"
-			"cost"		"300"
-			"increase_ratio" 	"0.05"
-			"value"		"0.5"
-			"init"		"1.00"
-			"max"		"5.0"
-		}
-		"1558"
-		{
 			"name"		"has pipboy build interface"
 			"ref"		"Ball Additive Damage Bonus"
 			"cost"		"750"

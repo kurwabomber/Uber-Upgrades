@@ -278,15 +278,6 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | Grenade Creation offset not found.");
 	}
 
-	//Melee Call
-	StartPrepSDKCall(SDKCall_Entity);
-	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CTFWeaponBaseMelee::Smack()");
-	g_SDKCallSmack = EndPrepSDKCall();
-	if(g_SDKCallSmack==INVALID_HANDLE)
-	{
-		PrintToServer("CustomAttrs | Melee smack signature not found.");
-	}
-
 
 	//Jar Call
 	StartPrepSDKCall(SDKCall_Entity);
@@ -304,6 +295,15 @@ public void OnPluginStart()
 	if(g_SDKCallSentryThink==INVALID_HANDLE)
 	{
 		PrintToServer("CustomAttrs | Sentry think signature not found.");
+	}
+
+	//Launch Ball
+	StartPrepSDKCall(SDKCall_Entity);
+	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CTFBat_Wood::LaunchBallThink()");
+	g_SDKCallLaunchBall = EndPrepSDKCall();
+	if(g_SDKCallLaunchBall==INVALID_HANDLE)
+	{
+		PrintToServer("CustomAttrs | ball launch signature not found.");
 	}
 
 	//Scattergun Proper Clip Replacement

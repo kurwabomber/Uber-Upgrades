@@ -380,10 +380,6 @@
 	{
 		"en"		"Gas Passer Explosion Damage"
 	}
-	"Fire Rate Bonus Overall"
-	{
-		"en"		"Fire Rate Bonus Overall"
-	}
 	"Fires More Projectiles(Ball)"
 	{
 		"en"		"Fires More Projectiles"
@@ -1034,7 +1030,7 @@
 	}
 	"Rocket Launcher(S)"
 	{
-		"en"		"Rocket Launcher(S)"
+		"en"		"Rocket Launcher"
 	}
 	"pct rage from being hit"
 	{

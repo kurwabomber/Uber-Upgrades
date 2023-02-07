@@ -2111,7 +2111,7 @@
 		}
 		"Melee specific upgrades"
 		{
-			"Attr0"		"Fire Rate Bonus Overall"
+			"Attr0"		"fire rate bonus(multshit)"
 			"Attr11"	"multihit melee"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"

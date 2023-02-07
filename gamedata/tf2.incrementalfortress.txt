@@ -278,6 +278,16 @@
 				"library"	"server"
 				"linux"		"@_ZN11CBaseEntity19DispatchTraceAttackERK15CTakeDamageInfoRK6VectorP10CGameTraceP15CDmgAccumulator"
 			}
+			"CTFBat_Wood::SendWeaponAnim()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN11CTFBat_Wood19SecondaryAttackAnimEP9CTFPlayer"
+			}
+			"CTFBat_Wood::LaunchBallThink()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN11CTFBat_Wood15LaunchBallThinkEv"
+			}
 		}
 	}
 }

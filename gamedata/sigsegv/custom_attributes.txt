@@ -3155,34 +3155,12 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
-
-    //Compensations
     "4700"
     {
-        "name"  "bullets mult"
-        "attribute_class"   "mult_bullets_per_shot"
-        "description_string"    "(+-)%p% bullets per shot"
-        "description_format"    "value_is_additive"
-        "hidden"    "0"
-        "effect_type"   "positive"
-        "stored_as_integer" "0"
-    }
-    "4701"
-    {
-        "name"  "clip mult"
-        "attribute_class"   "mult_clipsize"
-        "description_string"    "(+-)%p% bullets per shot"
-        "description_format"    "value_is_additive"
-        "hidden"    "0"
-        "effect_type"   "positive"
-        "stored_as_integer" "0"
-    }
-    "4702"
-    {
-        "name"  "firerate mult"
-        "attribute_class"   "mult_postfiredelay"
-        "description_string"    "(+-)%p% bullets per shot"
-        "description_format"    "value_is_additive"
+        "name" "baseball firerate"
+        "attribute_class"   "baseball_firerate"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
         "hidden"    "0"
         "effect_type"   "positive"
         "stored_as_integer" "0"
@@ -3258,7 +3236,7 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
-    //filler
+   //filler
     "6000"
     {
         "name"  "damage mult 1"

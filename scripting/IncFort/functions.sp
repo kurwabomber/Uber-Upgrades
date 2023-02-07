@@ -473,7 +473,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 648:
 		{
-			ChangeString = "The Wrap Assassin | Ball base damage increased to 40.";
+			ChangeString = "The Wrap Assassin | Ball base damage increased to 40. Shoots out grenades at a 15 degree variance with 300HU blast radius. Bounces at 4000HU/s speed.";
 		}
 		case 349:
 		{
@@ -1327,6 +1327,9 @@ refreshUpgrades(client, slot)
 			else if(firerateActive != Address_Null)
 			{
 				TF2Attrib_SetByName(slotItem,"fire rate bonus", 1.0/TF2Attrib_GetValue(firerateActive));
+				if(getWeaponSlot(client,slotItem) == 2)
+					TF2Attrib_SetByName(slotItem,"mult smack time", 1.0/TF2Attrib_GetValue(firerateActive));
+				
 			}
 			TF2Attrib_ClearCache(slotItem);
 		}
