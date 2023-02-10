@@ -2465,11 +2465,39 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 			{
 				if(getWeaponSlot(client,CWeapon) == 2)
 				{
-					RPS[client] += 0.5;
-					Handle hPack = CreateDataPack();
-					WritePackCell(hPack, client);
-					WritePackFloat(hPack, 0.5);
-					CreateTimer(1.0, RemoveFire, hPack);
+					bool flag = true;
+
+					if(meleeLimiter[client] & 1 == 1)
+					{
+						float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
+						if(ballCheck == 0.0)
+							ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
+
+						if(GetCarriedAmmo(client, 2) > 0)
+						{
+							//Sandman
+							if(ballCheck == 10.0)
+							{
+								SDKCall(g_SDKCallLaunchBall, CWeapon);
+							}
+							//Wrap Assassin
+							else if(ballCheck == 11.0)
+							{
+								SDKCall(g_SDKCallLaunchBall, CWeapon);
+							}
+							//Calc crit is called within ball creation
+							meleeLimiter[client]--;
+							flag = false;
+						}
+					}
+					if(flag)
+					{
+						RPS[client] += 0.5;
+						Handle hPack = CreateDataPack();
+						WritePackCell(hPack, client);
+						WritePackFloat(hPack, 0.5);
+						CreateTimer(1.0, RemoveFire, hPack);
+					}
 				}
 				else
 				{

@@ -268,5 +268,17 @@
 			"preserve_attributes"	"1"
 			"1"				"6023 ; 1.0"
 		}
+		"44"//Sandman
+		{
+			"preserve_attributes"	"1"
+			"1"				"38 ; 10.0"
+			"2"				"27 ; 1"
+		}
+		"648"//Wrap Assassin
+		{
+			"preserve_attributes"	"1"
+			"1"				"346 ; 11.0"
+			"2"				"27 ; 1"
+		}
 	}
 }

@@ -953,6 +953,23 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(isVictimPlayer && attacker != victim)
 		{
+			if (damagecustom == 46 && damagetype & DMG_SHOCK)//Short Circuit Balls
+			{
+				damage = 10.0;
+				damage *= GetAttribute(weapon, "damage bonus");
+				damage *= GetAttribute(weapon, "bullets per shot bonus");
+				damage *= GetAttribute(weapon, "damage bonus HIDDEN");
+				damage *= GetAttribute(weapon, "damage penalty");
+			}
+			if(damagecustom == TF_CUSTOM_BASEBALL)
+			{
+				damage = 45.0;
+				damage += GetAttribute(weapon, "has pipboy build interface");
+				damage *= GetAttribute(weapon, "damage bonus");
+				damage *= GetAttribute(weapon, "damage bonus HIDDEN");
+				damage *= GetAttribute(weapon, "damage penalty");
+			}
+
 			float minicritVictimOnHit = GetAttribute(weapon, "recipe component defined item 1", 0.0);
 			if(minicritVictimOnHit != 0.0)
 				miniCritStatusVictim[victim] = minicritVictimOnHit;
@@ -1098,22 +1115,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			PrintToConsole(attacker, "Full charge hit!");
 			damage *= Pow(GetAttribute(weapon, "clip size bonus upgrade")+1.0, 0.9);
 			damagetype |= DMG_CRIT;
-		}
-		if (damagecustom == 46 && damagetype & DMG_SHOCK)
-		{
-			damage = 10.0;
-			damage *= GetAttribute(weapon, "damage bonus");
-			damage *= GetAttribute(weapon, "bullets per shot bonus");
-			damage *= GetAttribute(weapon, "damage bonus HIDDEN");
-			damage *= GetAttribute(weapon, "damage penalty");
-		}
-		if(damagecustom == TF_CUSTOM_BASEBALL)
-		{
-			damage = 45.0;
-			damage += GetAttribute(weapon, "has pipboy build interface");
-			damage *= GetAttribute(weapon, "damage bonus");
-			damage *= GetAttribute(weapon, "damage bonus HIDDEN");
-			damage *= GetAttribute(weapon, "damage penalty");
 		}
 		float DealsNoKBActive = GetAttribute(weapon, "apply z velocity on damage");
 		if(DealsNoKBActive == 3.0)

@@ -1147,23 +1147,14 @@ public Action:GiveMaxHealth(Handle timer, any:userid)
 {
 	int client = GetClientOfUserId(userid);
 	if(IsValidClient3(client) && TF2_GetMaxHealth(client) >= GetClientHealth(client))
-	{
 		SetEntityHealth(client, TF2_GetMaxHealth(client))
-	}
 }
 public Action:SelfDestruct(Handle timer, any:ref) 
 { 
     int entity = EntRefToEntIndex(ref); 
-
     if(IsValidEdict(entity)) 
-    { 
 		RemoveEntity(entity);
-		KillTimer(timer)
-    }
-	else
-	{
-		KillTimer(timer)
-	}
+	KillTimer(timer)
 }
 public Action:DisableSlowdown(Handle timer, int entity)
 {
@@ -1392,13 +1383,16 @@ public Action:ClChangeClassTimer(Handle timer, any:userid)
 public Action:GiveMaxAmmo(Handle timer, any:userid) 
 {
 	int client = GetClientOfUserId(userid);
-	//PrintToChatAll("%i gaming", client);
 	if(IsValidClient3(client))
 	{
 		int primary = GetWeapon(client,0);
 		int secondary = GetWeapon(client,1);
 		if(IsValidWeapon(primary) && HasEntProp(primary, Prop_Data, "m_iClip1"))
 		{
+			float autoFires = GetAttribute(primary, "auto fires full clip", 0.0);
+			if(autoFires != 0.0)
+				return;
+
 			int primaryAmmo = GetMaxClip(primary);
 			if(primaryAmmo > 1)
 				SetClipAmmo(client, 0, primaryAmmo);
@@ -1408,6 +1402,10 @@ public Action:GiveMaxAmmo(Handle timer, any:userid)
 		}
 		if(IsValidWeapon(secondary) && HasEntProp(secondary, Prop_Data, "m_iClip1"))
 		{
+			float autoFires = GetAttribute(secondary, "auto fires full clip", 0.0);
+			if(autoFires != 0.0)
+				return;
+
 			int secondaryAmmo = GetMaxClip(secondary);
 			if(secondaryAmmo > 1)
 				SetClipAmmo(client, 1, secondaryAmmo);
