@@ -752,6 +752,9 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 				EntityExplosion(client, damage, distance, grenadevec, 1);
 			}
 		}
+		case TFCond_Plague:{
+			plagueAttacker[client] = -1;
+		}
 	}
 	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.001);
 }
@@ -1147,11 +1150,12 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 		return;
 
 	int attack = GetClientOfUserId(GetEventInt(event, "attacker"));
-	fanOfKnivesCount[client] = 0;
-	RageBuildup[client] = 0.0;
 
 	if(!IsValidClient3(client))
 		return;
+		
+	fanOfKnivesCount[client] = 0;
+	RageBuildup[client] = 0.0;
 
 	CancelClientMenu(client);
 	if(IsValidEdict(autoSentryID[client]) && autoSentryID[client] > 32)
@@ -3146,6 +3150,7 @@ public OnClientPutInServer(client)
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
+	plagueAttacker[client] = -1;
 	for(int i = 0; i < Max_Attunement_Slots; i++)
 	{
 		AttunedSpells[client][i] = 0.0;
@@ -3228,6 +3233,7 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 		meleeLimiter[client] = 0;
 		lastDamageTaken[client] = 0.0;
 		critStatus[client] = false;
+		plagueAttacker[client] = -1;
 		SetEntityRenderColor(client, 255,255,255,255);
 		for(int i=1;i<MaxClients;i++)
 		{

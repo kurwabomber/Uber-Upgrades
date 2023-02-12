@@ -241,7 +241,7 @@ int client_new_weapon_ent_id_mvm_chkp[MAXPLAYERS + 1]
 int currentupgrades_restriction_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1][5];
 float currentupgrades_val_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]
 float client_spent_money_mvm_chkp[MAXPLAYERS + 1][NB_SLOTS_UED + 1]
-float waveToCurrency[] = {60000.0, 92000.0, 130400.0, 176480.0, 231776.0, 298131.2, 377757.4, 473308.9, 587970.7, 725564.0, 890677.8, 1088813.3, 1326576.0, 1611891.0, 1954269.0, 1954269.0, 2365123.0, 2858148.0}
+float waveToCurrency[] = {60000.0, 60000.0, 92000.0, 130400.0, 176480.0, 231776.0, 298131.2, 377757.4, 473308.9, 587970.7, 725564.0, 890677.8, 1088813.3, 1326576.0, 1611891.0, 1954269.0, 1954269.0, 2365123.0, 2858148.0}
 float OverallMod = 1.0;
 float DefenseMod = 1.75;
 float DamageMod = 2.1;

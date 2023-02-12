@@ -65,7 +65,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
+		if(damagetype & DMG_PIERCING != DMG_PIERCING)
+			damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
 		Address bossType = TF2Attrib_GetByName(victim, "damage force increase text");
 		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 		{
@@ -390,16 +391,15 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		
 		if(TF2_IsPlayerInCondition(attacker, TFCond_Plague))
 		{
-			if(IsValidClient3(plagueAttacker[attacker]))
+			int plagueInflictor = GetClientOfUserId(plagueAttacker[attacker]);
+			if(IsValidClient3(plagueInflictor))
 			{
-				Address plaguePowerup = TF2Attrib_GetByName(plagueAttacker[attacker], "plague powerup");
+				Address plaguePowerup = TF2Attrib_GetByName(plagueInflictor, "plague powerup");
 				if(plaguePowerup != Address_Null)
 				{
 					float plaguePowerupValue = TF2Attrib_GetValue(plaguePowerup);
 					if(plaguePowerupValue > 0.0)
-					{
 						damage /= 2.0;
-					}
 				}
 			}
 		}
@@ -718,7 +718,6 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 	{
 		int round = GetEntProp(logic, Prop_Send, "m_nMannVsMachineWaveCount");
 		damage *= (Pow(7500.0/waveToCurrency[round], DefenseMod + (DefenseIncreasePerWaveMod * round)) * 6.0)/OverallMod;
-		//PrintToChat(attacker,"%.2f", damage);
 	}
 	return Plugin_Changed;
 }
@@ -759,7 +758,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 	if (StrEqual(SapperObject, "obj_attachment_sapper"))
 	{
 		int BuildingMaxHealth = GetEntProp(victim, Prop_Send, "m_iMaxHealth");
-		damage = float(RoundToCeil(BuildingMaxHealth/110.0)); // in 150 ticks the sentry will be destroyed.
+		damage = float(RoundToCeil(BuildingMaxHealth/110.0)); // in 110 ticks the sentry will be destroyed.
 
 		int SapperOwner = GetEntPropEnt(attacker, Prop_Send, "m_hBuilder");
 		if(IsValidClient3(SapperOwner))
@@ -835,21 +834,21 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		{
 			for(int i = 1;i<MaxClients;i++)
 			{
-				if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(attacker))
-				{
-					if(TF2_GetPlayerClass(i) == TFClass_Spy)
-					{
-						int sapper = GetWeapon(i,6);
-						if(IsValidEdict(sapper))
-						{
-							Address SappedPlayerVuln = TF2Attrib_GetByName(sapper, "scattergun knockback mult");
-							if(SappedPlayerVuln != Address_Null)
-							{
-								damage *= TF2Attrib_GetValue(SappedPlayerVuln);
-							}
-						}
-					}
-				}
+				if(!IsValidClient3(i) || GetClientTeam(i) != GetClientTeam(attacker))
+					continue;
+
+				if(TF2_GetPlayerClass(i) != TFClass_Spy)
+					continue;
+
+				int sapper = GetWeapon(i,6);
+				if(!IsValidWeapon(sapper))
+					continue;
+
+				float sapperBonus = GetAttribute(sapper, "scattergun knockback mult");
+				if(sapperBonus == 1.0)
+					continue;
+
+				damage *= GetAttribute(sapper, "scattergun knockback mult");
 			}
 		}
 	}
@@ -961,7 +960,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				damage *= GetAttribute(weapon, "damage bonus HIDDEN");
 				damage *= GetAttribute(weapon, "damage penalty");
 			}
-			if(damagecustom == TF_CUSTOM_BASEBALL)
+			if(damagecustom == TF_CUSTOM_BASEBALL)//Sandman Balls & Wrap Assassin Ornaments
 			{
 				damage = 45.0;
 				damage += GetAttribute(weapon, "has pipboy build interface");
@@ -981,7 +980,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					SetEntPropFloat(attacker, Prop_Send, "m_flRageMeter", GetEntPropFloat(attacker, Prop_Send, "m_flRageMeter") + rageOnHit)
 			}
 			int hitgroup = GetEntProp(victim, Prop_Data, "m_LastHitGroup");
-			if(hitgroup == 1)
+			if(StrEqual(getDamageCategory(damagetype),"direct",false) && hitgroup == 1)
 			{
 				float HeadshotsActive = GetAttribute(weapon, "charge time decreased",0.0);
 				if(HeadshotsActive != 0.0)
@@ -1064,7 +1063,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		damage *= medicDMGBonus;
 		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", attacker);
-		PrintToServer("%.2f", TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", attacker));
 		float SniperChargingFactorActive = GetAttribute(weapon, "no charge impact range");
 		if(SniperChargingFactorActive != 1.0)
 		{

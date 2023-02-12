@@ -464,7 +464,7 @@ public Action:Timer_Every100MS(Handle timer)
 						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],DMG_BLAST,-1, NULL_VECTOR, NULL_VECTOR);
 					}
 				}
-				if(plaguePower > 0.0 && IsValidClient3(i) && IsPlayerAlive(i) && !TF2_IsPlayerInCondition(i,TFCond_Plague))
+				if(plaguePower > 0.0 && IsValidClient3(i) && IsPlayerAlive(i) && plagueAttacker[i] == -1)
 				{
 					if(IsOnDifferentTeams(client,i))
 					{
@@ -472,12 +472,17 @@ public Action:Timer_Every100MS(Handle timer)
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 						if(GetVectorDistance(clientPos,VictimPos) <= 100.0)
 						{
-							plagueAttacker[i] = client;
-							TF2_AddCondition(i, TFCond_Plague, 20.0);
+							plagueAttacker[i] = GetClientUserId(client);
+							TF2_AddCondition(i, TFCond_Plague, 12.0);
 							TF2_AddCondition(i, TFCond_NoTaunting_DEPRECATED, 2.0);
 						}
 					}
 				}
+			}
+			if(IsValidClient3(GetClientOfUserId(plagueAttacker[client])))
+			{
+				//Deal 3 piercing damage to plagued opponents.
+				SDKHooks_TakeDamage(client, GetClientOfUserId(plagueAttacker[client]), GetClientOfUserId(plagueAttacker[client]), 3.0, DMG_PIERCING);
 			}
 			if(IsValidEdict(CWeapon))
 			{

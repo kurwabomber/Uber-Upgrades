@@ -183,6 +183,7 @@ public OnMapStart()
 	PrecacheSound(SOUND_DASH);
 	PrecacheSound(SOUND_JAR_EXPLOSION);
 	PrecacheSound(OrnamentExplosionSound);
+	PrecacheSound(")items/powerup_pickup_plague_infected_loop.wav");
 	PrecacheModel("models/weapons/c_models/c_madmilk/c_madmilk.mdl");
 	PrecacheModel("models/weapons/c_models/urinejar.mdl");
 	PrecacheModel("models/weapons/c_models/c_breadmonster/c_breadmonster.mdl");

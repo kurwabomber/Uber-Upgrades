@@ -210,19 +210,17 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			{
 				if(val == upgrades_m_val[tmp_up_idx])
 				{
-					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%i%%\t(%i%%) MAXED %s",
+					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%i%%\t(%i%%) MAXED",
 						t_up_cost, buf,
-						plus_sign, RoundFloat(tmp_ratio * 100 * times), (RoundFloat(tmp_val * 100)),
-						canBypassRestriction[client] == true ? "swagged" : "")
+						plus_sign, RoundFloat(tmp_ratio * 100 * times), (RoundFloat(tmp_val * 100)))
 					itemDisabled = true;
 					attributeDisabled[tmp_up_idx] = true;
 				}
 				else if(upgrades_requirement[tmp_up_idx] > StartMoney + additionalstartmoney)
 				{
-					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%i%%\t(%i%%) REQ - $%s %s",
+					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%i%%\t(%i%%) REQ - $%s",
 						t_up_cost, buf,
-						plus_sign, RoundFloat(tmp_ratio * 100 * times), RoundFloat(tmp_val * 100), GetAlphabetForm(upgrades_requirement[tmp_up_idx]),
-						canBypassRestriction[client] == true ? "swagged" : "")
+						plus_sign, RoundFloat(tmp_ratio * 100 * times), RoundFloat(tmp_val * 100), GetAlphabetForm(upgrades_requirement[tmp_up_idx]))
 					itemDisabled = true;
 					attributeDisabled[tmp_up_idx] = true;
 				}
@@ -232,10 +230,9 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 					{
 						if(currentupgrades_restriction[client][slot][it] == upgrades_restriction_category[tmp_up_idx])
 						{
-							Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%i%%\t(%i%%) ! %s",
+							Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%i%%\t(%i%%) !",
 								t_up_cost, buf,
-								plus_sign, RoundFloat(tmp_ratio * 100 * times), (RoundFloat(tmp_val * 100)),
-								canBypassRestriction[client] == true ? "swagged" : "")
+								plus_sign, RoundFloat(tmp_ratio * 100 * times), (RoundFloat(tmp_val * 100)))
 							itemDisabled = true;
 							attributeDisabled[tmp_up_idx] = true;
 						}
@@ -258,19 +255,17 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			{
 				if(val == upgrades_m_val[tmp_up_idx])
 				{
-					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%3.1f\t(%.1f) MAXED %s",
+					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%3.1f\t(%.1f) MAXED",
 						t_up_cost, buf,
-						plus_sign, tmp_ratio * times, tmp_val,
-						canBypassRestriction[client] == true ? "swagged" : "")
+						plus_sign, tmp_ratio * times, tmp_val)
 					itemDisabled = true
 					attributeDisabled[tmp_up_idx] = true;
 				}
 				else if(upgrades_requirement[tmp_up_idx] > StartMoney + additionalstartmoney)
 				{
-					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%3.1f\t(%.1f) REQ - $%s %s",
+					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%3.1f\t(%.1f) REQ - $%s",
 						t_up_cost, buf,
-						plus_sign, tmp_ratio * times, tmp_val, GetAlphabetForm(upgrades_requirement[tmp_up_idx]),
-						canBypassRestriction[client] == true ? "swagged" : "")
+						plus_sign, tmp_ratio * times, tmp_val, GetAlphabetForm(upgrades_requirement[tmp_up_idx]))
 					itemDisabled = true
 					attributeDisabled[tmp_up_idx] = true;
 				}
@@ -280,10 +275,9 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 					{
 						if(currentupgrades_restriction[client][slot][it] == upgrades_restriction_category[tmp_up_idx])
 						{
-							Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%3.1f\t(%.1f) ! %s",
+							Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%3.1f\t(%.1f) !",
 								t_up_cost, buf,
-								plus_sign, RoundFloat(tmp_ratio * 100 * times), (RoundFloat(tmp_val * 100)),
-								canBypassRestriction[client] == true ? "swagged" : "")
+								plus_sign, RoundFloat(tmp_ratio * 100 * times), (RoundFloat(tmp_val * 100)))
 							itemDisabled = true;
 							attributeDisabled[tmp_up_idx] = true;
 						}

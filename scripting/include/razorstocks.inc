@@ -82,7 +82,7 @@ stock char[] getDamageCategory(int damagetype)
 {
 	//int damagebits2;
 	char damageCategory[64];
-	if(damagetype & DMG_PIERCING)
+	if(damagetype & DMG_PIERCING == DMG_PIERCING)
 	{
 		damageCategory = "piercing"
 	}

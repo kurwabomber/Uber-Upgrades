@@ -4121,7 +4121,7 @@
 			"increase_ratio"	"0.5"
 			"value"		"1"
 			"init"		"1"
-			"description"	"Divides total damage taken.\nCheck stats page to see effectiveness.\nThe additive value in the menu\nshows how much additional division\nyou get per purchase."
+			"description"	"Divides total damage taken.\nCheck stats page to see effectiveness."
 			"display_style"	"2"
 			"max"		"100000"
 		}
@@ -4484,7 +4484,7 @@
 			"increase_ratio"	"0.5"
 			"value"		"0.1"
 			"init"		"1"
-			"description"	"Divides total damage taken.\nCheck stats page to see effectiveness.\nThe additive value in the menu\nshows how much additional division\nyou get per purchase."
+			"description"	"Divides total damage taken.\nCheck stats page to see effectiveness."
 			"display_style"	"3"
 			"max"		"10000"
 		}
@@ -5727,7 +5727,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"Steals all healthpacks nearby,\ngiving 2s of 2x armor regeneration & 25% max health heal.\nEnemies nearby will get plagued for 20s,\ndecreasing damage dealt by 0.5x.\nAll incoming damage is multiplied by 0.75x."
+			"description"	"Steals all healthpacks nearby,\ngiving 2s of 2x armor regeneration & 25% max health heal.\nEnemies nearby will get plagued for 12s,\ndecreasing damage dealt by 0.5x.\nAll incoming damage is multiplied by 0.75x."
 			"max"		"1.00"
 		}
 		"2100.11"
