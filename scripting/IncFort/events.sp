@@ -761,6 +761,7 @@ public OnEntityCreated(entity, const char[] classname)
 		return;
 
 
+	int reference = EntIndexToEntRef(entity);
 	weaponFireRate[entity] = -1.0;
 	if(StrEqual(classname, "obj_attachment_sapper"))
 	{
@@ -770,18 +771,18 @@ public OnEntityCreated(entity, const char[] classname)
     {
 		isEntitySentry[entity] = true;
 		SDKHook(entity, SDKHook_OnTakeDamage, OnTakeDamagePre_Sentry); 
-		CreateTimer(0.35, BuildingRegeneration, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-		RequestFrame(checkEnabledSentry, EntIndexToEntRef(entity));
+		CreateTimer(0.35, BuildingRegeneration, reference, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		RequestFrame(checkEnabledSentry, reference);
 	}
 	else if(StrEqual(classname, "obj_dispenser"))
     {
 		SDKHook(entity, SDKHook_OnTakeDamage, OnTakeDamagePre_Sentry); 
-		CreateTimer(0.35, BuildingRegeneration, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(0.35, BuildingRegeneration, reference, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	}
 	else if(StrEqual(classname, "obj_teleporter"))
     {
 		SDKHook(entity, SDKHook_OnTakeDamage, OnTakeDamagePre_Sentry); 
-		CreateTimer(0.35, BuildingRegeneration, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(0.35, BuildingRegeneration, reference, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	}
 	else if(StrContains(classname, "item_powerup_rune", false) == 0)
 	{
@@ -790,33 +791,33 @@ public OnEntityCreated(entity, const char[] classname)
 	else if(StrEqual(classname, "tank_boss"))
 	{
 		SDKHook(entity, SDKHook_OnTakeDamage, OnTakeDamagePre_Tank);
-		RequestFrame(randomizeTankSpecialty, EntIndexToEntRef(entity));
+		RequestFrame(randomizeTankSpecialty, reference);
 	}
 	
 	if(StrContains(classname, "tf_projectile_", false) == 0)
 	{
 		entitySpawnTime[entity] = GetGameTime();
 		g_nBounces[entity] = 0;
-		RequestFrame(getProjOrigin, EntIndexToEntRef(entity));
+		RequestFrame(getProjOrigin, reference);
 
 		if(StrEqual(classname, "tf_projectile_energy_ball") || StrEqual(classname, "tf_projectile_energy_ring")
 		|| StrEqual(classname, "tf_projectile_balloffire"))
 		{
-			RequestFrame(ProjSpeedDelay, EntIndexToEntRef(entity));
-			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
+			RequestFrame(ProjSpeedDelay, reference);
+			RequestFrame(PrecisionHoming, reference);
 		}
 		else if(StrEqual(classname, "tf_projectile_arrow") || StrEqual(classname, "tf_projectile_healing_bolt"))
 		{
-			RequestFrame(MultiShot, EntIndexToEntRef(entity));
-			RequestFrame(ProjSpeedDelay, EntIndexToEntRef(entity));
-			RequestFrame(SetZeroGravity, EntIndexToEntRef(entity));
-			RequestFrame(ExplosiveArrow, EntIndexToEntRef(entity));
-			RequestFrame(ChangeProjModel, EntIndexToEntRef(entity));
-			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
-			CreateTimer(4.0, SelfDestruct, EntIndexToEntRef(entity));
-			CreateTimer(0.1, ArrowThink, EntIndexToEntRef(entity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+			RequestFrame(MultiShot, reference);
+			RequestFrame(ProjSpeedDelay, reference);
+			RequestFrame(SetZeroGravity, reference);
+			RequestFrame(ExplosiveArrow, reference);
+			RequestFrame(ChangeProjModel, reference);
+			RequestFrame(PrecisionHoming, reference);
+			CreateTimer(4.0, SelfDestruct, reference);
+			CreateTimer(0.1, ArrowThink, reference, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 			DataPack pack = CreateDataPack();
-			pack.WriteCell(EntIndexToEntRef(entity));
+			pack.WriteCell(reference);
 			pack.WriteFloat(0.1);
 			pack.WriteCell(1);
 			pack.WriteCell(1);
@@ -826,20 +827,20 @@ public OnEntityCreated(entity, const char[] classname)
 		|| StrEqual(classname, "tf_projectile_flare")|| StrEqual(classname, "tf_projectile_pipe")
 		|| StrEqual(classname, "tf_projectile_pipe_remote"))
 		{
-			RequestFrame(MultiShot, EntIndexToEntRef(entity));
+			RequestFrame(MultiShot, reference);
 			SDKHook(entity, SDKHook_StartTouch, OnStartTouch);
-			RequestFrame(projGravity, EntIndexToEntRef(entity));
-			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
+			RequestFrame(projGravity, reference);
+			RequestFrame(PrecisionHoming, reference);
 		}
 		if(StrEqual(classname, "tf_projectile_rocket") || StrEqual(classname, "tf_projectile_flare") || StrEqual(classname, "tf_projectile_sentryrocket"))
 		{
 			SDKHook(entity, SDKHook_Touch, projectileCollision);
 			SDKHook(entity, SDKHook_StartTouchPost, meteorCollision);
-			RequestFrame(instantProjectile, EntIndexToEntRef(entity));
-			RequestFrame(monoculusBonus, EntIndexToEntRef(entity));
-			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
+			RequestFrame(instantProjectile, reference);
+			RequestFrame(monoculusBonus, reference);
+			RequestFrame(PrecisionHoming, reference);
 			DataPack pack = CreateDataPack();
-			pack.WriteCell(EntIndexToEntRef(entity));
+			pack.WriteCell(reference);
 			pack.WriteFloat(0.1);
 			pack.WriteCell(1);
 			pack.WriteCell(0);
@@ -847,13 +848,14 @@ public OnEntityCreated(entity, const char[] classname)
 		}
 		if(StrEqual(classname, "tf_projectile_stun_ball") || StrEqual(classname, "tf_projectile_ball_ornament") || StrEqual(classname, "tf_projectile_cleaver"))
 		{
-			RequestFrame(MultiShot, EntIndexToEntRef(entity));
-			RequestFrame(projGravity, EntIndexToEntRef(entity));
-			RequestFrame(ResizeProjectile, EntIndexToEntRef(entity))
-			RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
-			CreateTimer(1.5, SelfDestruct, EntIndexToEntRef(entity));
+			RequestFrame(MultiShot, reference);
+			RequestFrame(projGravity, reference);
+			RequestFrame(ResizeProjectile, reference);
+			RequestFrame(PrecisionHoming, reference);
+			RequestFrame(SetWeaponOwner, reference);
+			CreateTimer(1.5, SelfDestruct, reference);
 			DataPack pack = CreateDataPack();
-			pack.WriteCell(EntIndexToEntRef(entity));
+			pack.WriteCell(reference);
 			pack.WriteFloat(0.1);
 			pack.WriteCell(1);
 			pack.WriteCell(0);
@@ -861,21 +863,21 @@ public OnEntityCreated(entity, const char[] classname)
 		}
 		if(StrEqual(classname, "tf_projectile_pipe") || StrEqual(classname, "tf_projectile_pipe_remote"))
 		{
-			RequestFrame(CheckGrenadeMines, EntIndexToEntRef(entity));
-			RequestFrame(ChangeProjModel, EntIndexToEntRef(entity));
+			RequestFrame(CheckGrenadeMines, reference);
+			RequestFrame(ChangeProjModel, reference);
 		}
 		if(StrEqual(classname, "tf_projectile_sentryrocket"))
 		{
-			CreateTimer(5.0, SelfDestruct, EntIndexToEntRef(entity));
-			RequestFrame(SentryMultishot, EntIndexToEntRef(entity));
+			CreateTimer(5.0, SelfDestruct, reference);
+			RequestFrame(SentryMultishot, reference);
 			homingRadius[entity] = 900.0;
 			homingTickRate[entity] = 1;
-			RequestFrame(SentryDelay, EntIndexToEntRef(entity));
+			RequestFrame(SentryDelay, reference);
 		}
 		if(StrEqual(classname, "tf_projectile_energy_ring"))
 		{
 			isProjectileHoming[entity] = true;
-			CreateTimer(1.0, SelfDestruct, EntIndexToEntRef(entity));
+			CreateTimer(1.0, SelfDestruct, reference);
 		}
 	}
 
@@ -2475,13 +2477,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 
 						if(GetCarriedAmmo(client, 2) > 0)
 						{
-							//Sandman
 							if(ballCheck == 10.0)
-							{
-								SDKCall(g_SDKCallLaunchBall, CWeapon);
-							}
-							//Wrap Assassin
-							else if(ballCheck == 11.0)
 							{
 								SDKCall(g_SDKCallLaunchBall, CWeapon);
 							}

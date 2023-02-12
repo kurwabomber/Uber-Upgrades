@@ -41,6 +41,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
+					PrintToServer("WTF BOOM: %.2f damage | Attacker = %N | Inflictor = %i | Weapon = %i", damage, attacker, inflictor, weapon);
 				}
 				if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
@@ -141,10 +142,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 	}
-	if(!(damagetype & DMG_PIERCING) && IsValidClient(victim))
+	if(damagetype & DMG_PIERCING != DMG_PIERCING && IsValidClient(victim))
 	{
 		float pctArmor = (fl_AdditionalArmor[victim] + fl_CurrentArmor[victim])/fl_MaxArmor[victim];
-		if(pctArmor <= 0.01)
+		if(pctArmor < 0.01)
 		{
 			pctArmor = 0.01
 		}
@@ -682,7 +683,7 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 		damage *= 2.25
 	}
 	if(damagetype & DMG_USEDISTANCEMOD)
-		damagetype -= DMG_USEDISTANCEMOD;
+		damagetype ^= DMG_USEDISTANCEMOD;
 
 	if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
 	{
@@ -1063,7 +1064,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			}
 		}
 		damage *= medicDMGBonus;
-
+		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", attacker);
+		PrintToServer("%.2f", TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", attacker));
 		float SniperChargingFactorActive = GetAttribute(weapon, "no charge impact range");
 		if(SniperChargingFactorActive != 1.0)
 		{

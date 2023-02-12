@@ -1425,19 +1425,17 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 			TF2Attrib_SetByName(client,"damage taken mult 1",Pow(7400.0/(additionalstartmoney+StartMoney)/ OverAllMultiplier, 1.78));
 			TF2Attrib_SetByName(client,"damage force increase",1/(additionalstartmoney+StartMoney)/6000.0);
 		}
+		if((additionalstartmoney+StartMoney) >= 1000000){
+			TF2Attrib_SetByName(client,"damage mult 2",1+((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
+			TF2Attrib_SetByName(client,"damage mult 1",1+((additionalstartmoney+StartMoney)/20000.0)*OverAllMultiplier);
+		}
+		else{
+			TF2Attrib_SetByName(client,"damage mult 2",1+((additionalstartmoney+StartMoney)/15000.0)*OverAllMultiplier);
+			TF2Attrib_SetByName(client,"damage mult 1",1+((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
+		}
 		for(i=0;i<3;i++)
 		{
 			int weap = GetWeapon(client,i);
-			if((additionalstartmoney+StartMoney) >= 1000000){
-			
-				TF2Attrib_SetByName(weap,"damage penalty",1+((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(weap,"damage mult 1",1+((additionalstartmoney+StartMoney)/20000.0)*OverAllMultiplier);
-			}
-			else
-			{
-				TF2Attrib_SetByName(weap,"damage penalty",1+((additionalstartmoney+StartMoney)/15000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(weap,"damage mult 1",1+((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
-			}
 			if(i != 2)
 			{
 				if (current_class[client] != TFClass_Heavy && current_class[client] != TFClass_Pyro && current_class[client] != TFClass_Sniper )
@@ -2401,6 +2399,18 @@ public OnThinkPost(entity)
 			}
 		}
 	}
+}
+public SetWeaponOwner(entity){
+	entity = EntRefToEntIndex(entity);
+	if(!IsValidEdict(entity))
+		return;
+	int owner = getOwner(entity);
+	if(!IsValidClient3(owner))
+		return;
+	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+	if(!IsValidWeapon(CWeapon))
+		return;
+	jarateWeapon[entity] = CWeapon;
 }
 public getProjOrigin(entity)
 {

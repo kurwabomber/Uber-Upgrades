@@ -13,6 +13,7 @@ Yeah.
 #define SmallExplosionSound2 "weapons/airstrike_small_explosion_02.wav"
 #define SmallExplosionSound3 "weapons/airstrike_small_explosion_03.wav"
 #define DetonatorExplosionSound "weapons/flare_detonator_explode.wav"
+#define OrnamentExplosionSound "weapons/ball_buster_break_01.wav"
 #define MAXENTITIES 2049
 #define PI 3.142
 #define DMG_PIERCING DMG_CRUSH | DMG_BLAST_SURFACE | DMG_AIRBOAT | DMG_DROWNRECOVER
@@ -398,6 +399,10 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 		case 2:
 		{
 			EmitSoundToAll(DetonatorExplosionSound, entity, -1, soundPriority-20, 0, soundLevel-0.15);
+		}
+		case 3:
+		{
+			EmitSoundToAll(OrnamentExplosionSound, entity, -1, soundPriority, 0, soundLevel);
 		}
 		default:
 		{
@@ -2335,7 +2340,7 @@ stock GetCarriedAmmo( client, slot )
         if ( IsValidEdict( weapon ) )
         {
             int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
-            if ( type > 0 || type < 31 )
+            if ( type > 0 && type < 31 )
                 return GetEntProp( client, Prop_Send, "m_iAmmo", _, type ); 
         }
     }
