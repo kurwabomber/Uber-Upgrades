@@ -156,23 +156,6 @@ public OnMapStart()
 		ServerCommand("tf_mvm_popfile %s", mapName)
 	}
 	GameRules_SetProp("m_bPlayingMedieval", 0)
-	for(int i=1; i<=MaxClients; i++)
-	{
-		if(!IsValidClient3(i)){continue;}
-		if(b_Hooked[i] == false) {continue;}
-
-		b_Hooked[i] = true;
-		SDKHook(i, SDKHook_OnTakeDamage, OnTakeDamage);
-		SDKHook(i, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
-		fl_MaxArmor[i] = 300.0;
-		fl_CurrentArmor[i] = 300.0;
-		fl_MaxFocus[i] = 100.0;
-		fl_CurrentFocus[i] = 100.0;
-		for(int i1 = 0; i1 < Max_Attunement_Slots; i1++)
-		{
-			AttunedSpells[i][i1] = 0.0;
-		}
-	}
 	PrecacheSound(SOUND_THUNDER, true);
 	PrecacheSound(SOUND_ZAP, true);
 	PrecacheSound(SOUND_HEAL, true);

@@ -3129,12 +3129,9 @@ public OnClientDisconnect(client)
 	}
 	if(IsClientInGame(client))
 	{
-		if(b_Hooked[client] == true)
-		{
-			b_Hooked[client] = false;
-			SDKUnhook(client, SDKHook_OnTakeDamage, OnTakeDamage);
-			SDKUnhook(client, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
-		}
+		b_Hooked[client] = false;
+		SDKUnhook(client, SDKHook_OnTakeDamage, OnTakeDamage);
+		SDKUnhook(client, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
 	}
 }
 public OnClientPutInServer(client)

@@ -41,7 +41,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
-					PrintToServer("WTF BOOM: %.2f damage | Attacker = %N | Inflictor = %i | Weapon = %i", damage, attacker, inflictor, weapon);
 				}
 				if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
