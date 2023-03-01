@@ -74,25 +74,26 @@
 			"!Offensive Powerups"
 			{
 				"Attr0"		"Strength Powerup"
-				"Attr2"		"Vampire Powerup"
-				"Attr4"		"Revenge Powerup"
-				"Attr6"		"Precision Powerup"
-				"Attr8"		"Knockout Powerup"
-				"Attr11"	"Supernova Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
 			}
 			"!Defensive Powerups"
 			{
-				"Attr1"		"Resistance Powerup"
-				"Attr5"		"Regeneration Powerup"
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
 			}
 			"!Support Powerups"
 			{
-				"Attr9"		"King Powerup"
-				"Attr10"	"Plague Powerup"
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
 			}
 			"!Misc. Powerups"
 			{
-				"Attr7"		"Agility Powerup"
+				"Attr0"		"Agility Powerup"
 			}
 		}
 		"Tiered Upgrades"
@@ -757,7 +758,6 @@
 		"Melee specific upgrades"
 		{
 			"Attr0"		"melee attack rate bonus"
-			"Attr11"	"multihit melee"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
 		}
@@ -971,7 +971,6 @@
 		"Melee specific upgrades"
 		{
 			"Attr0"		"melee attack rate bonus"
-			"Attr11"	"multihit melee"
 			"Attr3"		"melee range multiplier"
 			"Attr11"	"increase player capture value"
 		}
@@ -1509,7 +1508,6 @@
 		"Melee specific upgrades"
 		{
 			"Attr0"		"melee attack rate bonus(spy)"
-			"Attr11"	"multihit melee"
 			"Attr3"		"melee range multiplier"
 			"Attr12"	"increase player capture value"
 		}
@@ -1634,7 +1632,6 @@
 		"Melee specific upgrades"
 		{
 			"Attr0"		"melee attack rate bonus"
-			"Attr11"	"multihit melee"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
 		}
@@ -1663,7 +1660,6 @@
 		"Melee specific upgrades"
 		{
 			"Attr0"		"melee attack rate bonus"
-			"Attr11"	"multihit melee"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
 		}
@@ -1981,7 +1977,6 @@
 		"Melee specific upgrades"
 		{
 			"Attr0"		"melee attack rate bonus"
-			"Attr11"	"multihit melee"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
 		}
@@ -2112,7 +2107,6 @@
 		"Melee specific upgrades"
 		{
 			"Attr0"		"fire rate bonus(multshit)"
-			"Attr11"	"multihit melee"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
 		}

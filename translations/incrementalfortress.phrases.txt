@@ -1,5 +1,25 @@
 "Phrases"
 {
+	"Infernal Powerup"
+	{
+		"en"		"Infernal Powerup"
+	}
+	"Thunderstorm Powerup"
+	{
+		"en"		"Thunderstorm Powerup"
+	}
+	"Martyr Powerup"
+	{
+		"en"		"Martyr Powerup"
+	}
+	"Inverter Powerup"
+	{
+		"en"		"Inverter Powerup"
+	}
+	"Relentless Powerup"
+	{
+		"en"		"Relentless Powerup"
+	}
 	"physical damage affinity"
 	{
 		"en"		"Physical Damage Affinity"
