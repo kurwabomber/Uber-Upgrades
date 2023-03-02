@@ -2432,7 +2432,7 @@ public MRESReturn OnScattergunReload(int weapon)
 	if(!IsValidWeapon(weapon))
 		return MRES_Ignored;
 
-	if(GetEntProp(weapon, Prop_Data, "m_bReloadsSingly") == 0)
+	if(GetEntProp(weapon, Prop_Data, "m_bReloadsSingly") == 1)
 		return MRES_Ignored;
 
 	int client = getOwner(weapon);
@@ -2442,16 +2442,14 @@ public MRESReturn OnScattergunReload(int weapon)
 	int currentClip = GetEntProp( weapon, Prop_Data, "m_iClip1" );
 	int maxClip = GetMaxClip(weapon);
 	int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
-	int currentAmmo;
-	if ( type > 0 || type < 31 )
-		currentAmmo = GetEntProp( client, Prop_Send, "m_iAmmo", _, type ); 
+	int currentAmmo = GetEntProp( client, Prop_Send, "m_iAmmo", _, type ); 
+
+	if(currentAmmo == 0)
+		return MRES_Ignored;
 
 	int finalAmmo = currentAmmo-(maxClip-currentClip);
-
 	if(finalAmmo < 0){maxClip-=IntAbs(finalAmmo);finalAmmo = 0;}
-
 	SetAmmo_Weapon(weapon, finalAmmo)
-
 	SetEntProp( weapon, Prop_Send, "m_iClip1", maxClip ); 
 
 	return MRES_Supercede;

@@ -33,25 +33,13 @@ public Action:Timer_Second(Handle timer)
 			
 			Address armorRecharge = TF2Attrib_GetByName(client, "tmp dmgbuff on hit");
 			float ArmorRechargeMult = 1.0;
-			if(fl_ArmorRegenBonusDuration[client] > 0.0)
-			{
-				ArmorRechargeMult *= fl_ArmorRegenBonus[client]
-			}
 			fl_ArmorRegenConstant[client] = 0.0;
 			if(IsNearSpencer(client) == true)
 			{
-				ArmorRechargeMult *= 2.0
+				ArmorRechargeMult += 1.0;
 				fl_ArmorRegenConstant[client] += 0.05;
 			}
 			Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
-			if(HealingReductionActive != Address_Null)
-			{
-				ArmorRechargeMult *= TF2Attrib_GetValue(HealingReductionActive);
-			}
-			if(armorRecharge != Address_Null)
-			{
-				ArmorRechargeMult *= TF2Attrib_GetValue(armorRecharge);
-			}
 			int healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
 			if(healers > 0)
 			{
@@ -83,11 +71,23 @@ public Action:Timer_Second(Handle timer)
 				}
 			}
 			if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
-			{
+				ArmorRechargeMult += 1.0;
+
+			if(armorRecharge != Address_Null)
+				ArmorRechargeMult += TF2Attrib_GetValue(armorRecharge)-1.0;
+			
+			if(fl_ArmorRegenBonusDuration[client] > 0.0)
+				ArmorRechargeMult += fl_ArmorRegenBonus[client]-1.0;
+			
+			if(GetAttribute(client, "regeneration powerup", 0.0) > 0.0)
 				ArmorRechargeMult *= 2.0;
-			}
+
+			if(HealingReductionActive != Address_Null)
+				ArmorRechargeMult *= TF2Attrib_GetValue(HealingReductionActive);
+		
 			fl_ArmorRegen[client] = (fl_MaxArmor[client]*0.0002);
 			fl_ArmorRegen[client] += (fl_MaxArmor[client]*0.0002*ArmorRechargeMult);
+
 			//Arcane
 			float arcanePower = 1.0;
 			
@@ -276,13 +276,13 @@ public Action:Timer_FixedVariables(Handle timer)
 					RegenPerTick *= TF2Attrib_GetValue(HealingReductionActive);
 				}
 				
-				Address regenerationPowerup = TF2Attrib_GetByName(client, "recall");
+				Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
 				if(regenerationPowerup != Address_Null)
 				{
 					float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
 					if(regenerationPowerupValue > 0.0)
 					{
-						RegenPerTick += TF2_GetMaxHealth(client) / 100.0;
+						RegenPerTick += TF2_GetMaxHealth(client) / 66.7;//+15% maxHPR/s
 					}
 				}
 				

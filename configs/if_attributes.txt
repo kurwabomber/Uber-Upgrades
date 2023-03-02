@@ -5672,7 +5672,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"Disables armor recharge delay.\nAll damage taken is multiplied by 0.75x.\n+10% max health regeneration per second."
+			"description"	"Disables armor recharge delay.\nAll damage taken is multiplied by 0.75x.\n+15% max health regeneration per second and 2x armor regeneration."
 			"max"		"1.00"
 		}
 		"2100.6"
