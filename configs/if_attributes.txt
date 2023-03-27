@@ -5650,7 +5650,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All incoming damage is multiplied by 0.75x.\nGives +25% damage dealt from bleed.\nGives 80% lifesteal."
+			"description"	"All incoming damage is multiplied by 0.75x.\n+25% bleed damage.\nGives 80% lifesteal."
 			"max"		"1.00"
 		}
 		"2100.4"
@@ -5705,7 +5705,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All outgoing melee damage is multiplied by 1.75x.\nAll incoming damage is multiplied by 0.8x.\nDamage causes concussion buildup.\nUnstunnable victims take "
+			"description"	"All outgoing melee damage is multiplied by 1.75x.\nAll incoming damage is multiplied by 0.8x.\nDamage causes concussion buildup.\nUnstunnable victims take minicrits."
 			"max"		"1.00"
 		}
 		"2100.9"
@@ -5727,7 +5727,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"Steals all healthpacks nearby,\ngiving 2s of 2x armor regeneration & 25% max health heal.\nEnemies nearby will get plagued for 12s,\ndecreasing damage dealt by 0.5x.\nAll incoming damage is multiplied by 0.75x."
+			"description"	"Steals all healthpacks nearby,\ngiving 2s of 2x armor regeneration and 25% max health heal.\nEnemies nearby will get plagued for 12s,\ndecreasing damage dealt by 0.5x.\nAll incoming damage is multiplied by 0.75x."
 			"max"		"1.00"
 		}
 		"2100.11"
@@ -5738,7 +5738,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All incoming damage is multiplied by 0.8x\nOn proc:\nStuns all nearby enemies for 6s and buildings for 10s.\nOutgoing splash damage is given 1.8x damage\nnon splash weapons deal 1.35x damage and splash 100% damage dealt with falloff."
+			"description"	"All incoming damage is multiplied by 0.8x\nOutgoing splash damage is given 1.8x damage\nnon splash weapons deal 1.35x damage and splash 100% damage dealt with falloff.\nOn proc:\nStuns all nearby enemies for 6s and buildings for 10s."
 			"max"		"1.00"
 		}
 		"2100.12"
@@ -5749,7 +5749,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"+35% spread on fire, +70% fire damage.\n-35% afterburn tick time & all attacks can ignite."
+			"description"	"+35% spread on fire, +70% fire damage.\n-35% afterburn tick time and all attacks can ignite."
 			"max"		"1.00"
 		}
 		"2100.13"
@@ -5760,7 +5760,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All damage is converted into electric damage.\nFor every enemy tagged: +8% dmg & +10% arc range."
+			"description"	"All damage is converted into electric damage.\nFor every enemy tagged: +8% dmg and +10% arc range."
 			"max"		"1.00"
 		}
 		"2100.13"

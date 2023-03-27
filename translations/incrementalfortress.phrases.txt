@@ -22,23 +22,23 @@
 	}
 	"physical damage affinity"
 	{
-		"en"		"Physical Damage Affinity"
+		"en"		"Physical Affinity"
 	}
 	"fire damage affinity"
 	{
-		"en"		"Fire Damage Affinity"
+		"en"		"Fire Affinity"
 	}
 	"explosive damage affinity"
 	{
-		"en"		"Explosive Damage Affinity"
+		"en"		"Explosive Affinity"
 	}
 	"electric damage affinity"
 	{
-		"en"		"Electric Damage Affinity"
+		"en"		"Electric Affinity"
 	}
 	"crit damage affinity"
 	{
-		"en"		"Crit Damage Affinity"
+		"en"		"Crit Affinity"
 	}
 	"weapon advancement"
 	{

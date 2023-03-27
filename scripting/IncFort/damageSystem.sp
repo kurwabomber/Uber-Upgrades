@@ -647,7 +647,7 @@ int damagecustom, CritType &critType)
 		damage = lastDamageTaken[victim] * 1.25;
 		if(IsValidWeapon(weapon))
 		{
-			Address critDamageMult = TF2Attrib_GetByName(weapon, "mod medic killed marked for death ");
+			Address critDamageMult = TF2Attrib_GetByName(weapon, "mod medic killed marked for death");
 			if(critDamageMult != Address_Null)
 				damage *= TF2Attrib_GetValue(critDamageMult);
 		}
@@ -685,13 +685,11 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 		damagetype ^= DMG_USEDISTANCEMOD;
 
 	if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
-	{
 		damage = genericSentryDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
-	}
+	
 	if(IsValidClient3(victim) && IsValidClient3(attacker))
-	{
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
-	}
+	
 	lastDamageTaken[victim] = damage;
 	if(damage < 0.0)
 	{
@@ -705,10 +703,49 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 	if(IsValidEdict(victim) && IsValidClient3(attacker))
 	{
 		if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
-		{
 			damage = genericSentryDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
-		}
+		
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
+		if(IsValidWeapon(weapon))
+		{
+			if(GetAttribute(attacker, "knockout powerup", 0.0) != 0.0)
+				damage *= 1.35;
+			
+			if(LightningEnchantmentDuration[attacker] > 0.0 && !(damagetype & DMG_VEHICLE))
+			{
+				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
+				damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
+			}
+			else if(DarkmoonBladeDuration[attacker] > 0.0)
+			{
+				int melee = GetWeapon(attacker,2);
+				if(IsValidWeapon(melee) && melee == weapon)
+				{
+					damage += DarkmoonBlade[attacker];
+				}
+			}
+			//PrintToServer("%i damagebit", damagetype);
+			if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
+			{
+				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
+				Address lameMult = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
+				if(lameMult != Address_Null)//lame. AP applies twice.
+				{
+					damage /= TF2Attrib_GetValue(lameMult);
+				}
+			}
+			Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
+			if(arcaneWeaponScaling != Address_Null)
+			{
+				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
+			}
+			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
+			if(i <= 6)
+			{
+				if(i == 0) i = 1;
+				damage *= i*weaponFireRate[weapon]/TICKRATE;
+			}
+		}
 	}
 	if(damage < 0.0)
 	{
@@ -783,14 +820,16 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		return Plugin_Changed; //Prevent any other modification to damage.
 	}
 	if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
-	{
 		damage = genericSentryDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
-	}
+
 	if(IsValidClient3(attacker) && victim != attacker)
 	{
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		if(IsValidWeapon(weapon))
 		{
+			if(GetAttribute(attacker, "knockout powerup", 0.0) != 0.0)
+				damage *= 1.35;
+			
 			if(LightningEnchantmentDuration[attacker] > 0.0 && !(damagetype & DMG_VEHICLE))
 			{
 				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.

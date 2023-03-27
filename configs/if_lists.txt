@@ -80,16 +80,20 @@
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
 				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
 				"Attr0"		"Resistance Powerup"
 				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
 			}
 			"!Support Powerups"
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{

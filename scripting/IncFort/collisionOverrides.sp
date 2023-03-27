@@ -1,3 +1,37 @@
+public Action:OnStartTouchStomp(client, other)
+{
+	//Borrowed from goomba stomp, so don't blame me if it's shit. (jk lel)
+    if(!IsValidClient3(other) || !IsValidClient3(client))
+		return Plugin_Continue;
+
+	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	if (!IsValidWeapon(CWeapon))
+		return Plugin_Continue;
+
+	float ClientPos[3], VictimPos[3], VictimVecMaxs[3], vec[3];
+	GetClientAbsOrigin(client, ClientPos);
+	GetClientAbsOrigin(other, VictimPos);
+	GetEntPropVector(other, Prop_Send, "m_vecMaxs", VictimVecMaxs);
+	float victimHeight = VictimVecMaxs[2];
+	float HeightDiff = ClientPos[2] - VictimPos[2];
+
+	if(HeightDiff <= victimHeight)
+		return Plugin_Continue;
+
+	GetEntPropVector(client, Prop_Data, "m_vecAbsVelocity", vec);
+
+	if(vec[2] > -300.0)
+		return Plugin_Continue;
+
+	float stompDamage = TF2_GetDPSModifiers(client, CWeapon, false, false) * 80.0;
+	stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 300.0)/1000.0)
+	Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
+	if(multiHitActive != Address_Null)
+		stompDamage *= TF2Attrib_GetValue(multiHitActive) + 1.0;
+	
+	SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB+DMG_CRIT,CWeapon, NULL_VECTOR, NULL_VECTOR);
+}
+
 public Action:AddArrowCollisionFunction(entity, client)
 {
 	char strName[128];

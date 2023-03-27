@@ -1442,35 +1442,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					}
 				}
 				
-				if(!(lastFlag[client] & FL_ONGROUND) && flags & FL_ONGROUND)
-				{
-					if(trueVel[client][2] <= -500.0)
-					{
-						float targetvec[3], clientvec[3], stompDamage;
-						
-						stompDamage = TF2_GetDPSModifiers(client, CWeapon, false, false) * 80.0;
-						stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 500.0)/1000.0)
-						Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
-						if(multiHitActive != Address_Null)
-						{
-							stompDamage *= TF2Attrib_GetValue(multiHitActive) + 1.0;
-						}
-						
-						GetClientAbsOrigin(client, clientvec);
-						for(int i=1; i<=MaxClients; i++)
-						{
-							if(IsValidClient3(i) && IsClientInGame(i) && IsPlayerAlive(i))
-							{
-								GetClientEyePosition(i, targetvec);
-								if(!IsClientObserver(i) && GetClientTeam(i) != GetClientTeam(client) && GetVectorDistance(clientvec, targetvec, false) < 75.0)
-								{
-									SDKHooks_TakeDamage(i,client,client,stompDamage,DMG_CLUB+DMG_CRIT,CWeapon, NULL_VECTOR, NULL_VECTOR);
-								}
-							}
-						}
-					}
-				}
-				else if(!(flags & FL_ONGROUND))
+				if(!(flags & FL_ONGROUND))
 				{
 					if(buttons & IN_DUCK)
 					{
@@ -3098,6 +3070,7 @@ public OnClientDisconnect(client)
 		b_Hooked[client] = false;
 		SDKUnhook(client, SDKHook_OnTakeDamage, OnTakeDamage);
 		SDKUnhook(client, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
+		SDKUnhook(client, SDKHook_StartTouch, OnStartTouchStomp);
 	}
 }
 public OnClientPutInServer(client)
@@ -3124,6 +3097,7 @@ public OnClientPutInServer(client)
 		b_Hooked[client] = true;
 		SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage);
 		SDKHook(client, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
+		SDKHook(client, SDKHook_StartTouch, OnStartTouchStomp);
 	}
 	ClientCommand(client, "sm_showhelp");
 }

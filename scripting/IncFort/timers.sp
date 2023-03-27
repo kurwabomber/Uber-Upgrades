@@ -199,27 +199,17 @@ public Action:Timer_FixedVariables(Handle timer)
 					SetEntProp(client, Prop_Data, "m_iHealth", clientMaxHealth);
 				}
 			}
-			if(IsValidEdict(CWeapon))
+		}
+
+		Address conditionToggle = TF2Attrib_GetByName(client, "has pipboy build interface");
+		if(conditionToggle != Address_Null)
+		{
+			if(TF2Attrib_GetValue(conditionToggle) > 1.0)
 			{
-				Address PrecisionActive = TF2Attrib_GetByName(CWeapon, "medic regen bonus");
-				if(PrecisionActive != Address_Null)
-				{
-					if(TF2Attrib_GetValue(PrecisionActive) != 0.0)
-					{
-						TF2_AddCondition(client, TFCond_RunePrecision, 0.2);
-					}
-				}
-			}
-			Address conditionToggle = TF2Attrib_GetByName(client, "has pipboy build interface");
-			if(conditionToggle != Address_Null)
-			{
-				if(TF2Attrib_GetValue(conditionToggle) > 1.0)
-				{
-					TF2_AddCondition(client, view_as<TFCond>(RoundToNearest(TF2Attrib_GetValue(conditionToggle))), 0.2);
-				}
+				TF2_AddCondition(client, view_as<TFCond>(RoundToNearest(TF2Attrib_GetValue(conditionToggle))), 0.2);
 			}
 		}
-		
+
 		if(IsFakeClient(client))
 			continue;
 
@@ -373,7 +363,7 @@ public Action:Timer_Every100MS(Handle timer)
 					SetHudTextParams(0.43, 0.21, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 					ShowSyncHudText(client, hudStatus, StatusEffectText);
 				}
-				if(RageBuildup[client] > 0.0)
+				if(GetAttribute(client, "revenge powerup", 0.0) != 0.0 && RageBuildup[client] > 0.0)
 				{
 					char StatusEffectText[256]
 					if(RageBuildup[client] < 1.0)
