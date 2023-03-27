@@ -44,8 +44,8 @@ enum struct Upgrade{
     int cost;
     int restriction_category;
     int display_style;
-    char name[32]
-    char attr_name[32]
+    char name[64]
+    char attr_name[64]
     char description[256];
 }
 enum struct Tweak{
@@ -54,7 +54,7 @@ enum struct Tweak{
     float att_ratio[NB_SLOTS_UED + 1];
     int nb_att;
     int att_idx[NB_SLOTS_UED + 1];
-    char tweaks[32] //change name later
+    char tweaks[64] //change name later
 }
 
 Upgrade upgrades[MAX_ATTRIBUTES];

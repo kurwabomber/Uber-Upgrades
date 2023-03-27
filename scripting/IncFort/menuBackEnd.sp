@@ -22,7 +22,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
 		playerUpgradeMenuPage[client] = param2;
 		if(upgrades[upgrade_choice].display_style == 0)
-			return param2;
+			return RedrawMenuItem(desc_str);
 		
 		switch(upgrades[upgrade_choice].display_style)
 		{

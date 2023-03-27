@@ -27,7 +27,7 @@
 #define LISTS 200
 #define LISTS_CATEGORIES 9
 #define WCNAMELISTSIZE 100
-#define MAX_TWEAKS 90
+#define MAX_TWEAKS 60
 #define NB_WEAPONS 20
 #define Max_Attunement_Slots 10
 #define MAX_STAGES 5

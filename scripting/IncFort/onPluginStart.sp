@@ -7,7 +7,7 @@ public Action:Timer_WaitForTF2Econ(Handle timer)
 		{
 			if(TF2Econ_IsValidAttributeDefinition(i))
 			{
-				TF2Econ_GetAttributeName( i, upgrades[i].attr_name, 96 );
+				TF2Econ_GetAttributeName( i, upgrades[i].attr_name, 64 );
 			}
 		}
 		for (i = 0; i < MAX_ATTRIBUTES; i++)

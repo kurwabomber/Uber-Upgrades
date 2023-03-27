@@ -81,7 +81,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); i++)
 		{
 			//PrintToServer("%i", tmp_up_idx);
-			up_cost = upgrades[i].cost;
+			up_cost = upgrades[tmp_up_idx].cost;
 			if (slot == 1)
 				up_cost = RoundToCeil(up_cost*SecondaryCostReduction);
 
@@ -196,7 +196,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			}
 
 
-			char buf[256]
+			char buf[128]
 			bool itemDisabled;
 			Format(buf, sizeof(buf), "%T", upgrades[tmp_up_idx].name, client)
 			if (FloatAbs(tmp_ratio) < 0.99)
