@@ -32,6 +32,34 @@ Handle EngineerTutorial;
 Handle ArmorTutorial;
 Handle ArcaneTutorial;
 Handle WeaponTutorial;
+//enum structy style
+enum struct Upgrade{
+    float ratio;
+    float i_val;
+    float m_val;
+    float cost_inc_ratio;
+    float staged_max[MAX_STAGES];
+    float requirement;
+    int to_a_id;
+    int cost;
+    int restriction_category;
+    int display_style;
+    char name[32]
+    char attr_name[32]
+    char description[256];
+}
+enum struct Tweak{
+    float cost;
+    float requirement;
+    float att_ratio[NB_SLOTS_UED + 1];
+    int nb_att;
+    int att_idx[NB_SLOTS_UED + 1];
+    char tweaks[32] //change name later
+}
+
+Upgrade upgrades[MAX_ATTRIBUTES];
+Tweak tweaks[MAX_TWEAKS]
+
 //Integers
 int playerUpgradeMenus[MAXPLAYERS+1];
 int playerUpgradeMenuPage[MAXPLAYERS+1];
@@ -39,13 +67,13 @@ int oldPlayerButtons[MAXPLAYERS+1];
 int DisableBotUpgrades
 int DisableCooldowns
 int gameStage;
-int given_upgrd_list_nb[_NUMBER_DEFINELISTS]
-int given_upgrd_subcat_nb[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT]
-int given_upgrd_list[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][_NUMBER_DEFINELISTS_CAT][128]
+int given_upgrd_list_nb[LISTS]
+int given_upgrd_subcat_nb[LISTS][LISTS_CATEGORIES]
+int given_upgrd_list[LISTS][LISTS_CATEGORIES][LISTS_CATEGORIES][128]
 int upgrades_efficiency_list[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES]
-int given_upgrd_classnames_tweak_idx[_NUMBER_DEFINELISTS]
-int given_upgrd_classnames_tweak_nb[_NUMBER_DEFINELISTS]
-int given_upgrd_subcat[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT]
+int given_upgrd_classnames_tweak_idx[LISTS]
+int given_upgrd_classnames_tweak_nb[LISTS]
+int given_upgrd_subcat[LISTS][LISTS_CATEGORIES]
 int wcname_l_idx[WCNAMELISTSIZE]
 int current_w_list_id[MAXPLAYERS + 1]
 int current_w_c_list_id[MAXPLAYERS + 1]
@@ -65,10 +93,6 @@ int client_last_up_idx[MAXPLAYERS + 1]
 int client_respawn_handled[MAXPLAYERS + 1]
 int client_respawn_checkpoint[MAXPLAYERS + 1]
 int client_no_d_team_upgrade[MAXPLAYERS + 1]
-int upgrades_to_a_id[MAX_ATTRIBUTES]
-int upgrades_costs[MAX_ATTRIBUTES]
-int upgrades_tweaks_nb_att[_NB_SP_TWEAKS]
-int upgrades_tweaks_att_idx[_NB_SP_TWEAKS][NB_SLOTS_UED + 1]
 int blankArray[MAXPLAYERS + 1][16]
 int blankArray1[MAXPLAYERS + 1][16][MAX_ATTRIBUTES_ITEM]
 int g_iOffset;
@@ -85,12 +109,10 @@ int upgrades_weapon_nb_att[NB_WEAPONS];
 int upgrades_weapon_index[NB_WEAPONS];
 int upgrades_weapon_att_idx[NB_WEAPONS][NB_SLOTS_UED + 1];
 int buyableIndexOffParam[MAXPLAYERS+1][NB_WEAPONS]
-int upgrades_restriction_category[MAX_ATTRIBUTES];
 int currentupgrades_restriction[MAXPLAYERS + 1][NB_SLOTS_UED + 1][5];//maximum of 5 restrictions
 int globalButtons[MAXPLAYERS+1];
 int singularBuysPerMinute[MAXPLAYERS+1];
 int bossPhase[MAXPLAYERS+1];
-int upgrades_display_style[MAX_ATTRIBUTES];
 int fanOfKnivesCount[MAXPLAYERS+1];
 int CaberUses[MAXPLAYERS+1];
 int StrangeFarming[MAXPLAYERS+1][MAXPLAYERS+1];
@@ -109,6 +131,7 @@ int lastKBSource[MAXPLAYERS+1];
 int knockbackFlags[MAXPLAYERS+1];
 
 //Floats
+float currentGameTime
 float MoneyBonusKill
 float StartMoney
 float MoneyForTeamRatio[2]
@@ -118,13 +141,6 @@ float currentupgrades_val[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]
 float upgrades_efficiency[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES]
 float client_spent_money[MAXPLAYERS + 1][NB_SLOTS_UED + 1]
 float client_tweak_highest_requirement[MAXPLAYERS + 1][NB_SLOTS_UED + 1]
-float upgrades_ratio[MAX_ATTRIBUTES]
-float upgrades_i_val[MAX_ATTRIBUTES]
-float upgrades_m_val[MAX_ATTRIBUTES]
-float upgrades_requirement[MAX_ATTRIBUTES]
-float upgrades_costs_inc_ratio[MAX_ATTRIBUTES]
-float upgrades_tweaks_att_ratio[_NB_SP_TWEAKS][NB_SLOTS_UED + 1]
-float upgrades_staged_max[MAX_ATTRIBUTES][MAX_STAGES];
 float additionalstartmoney;
 float CurrencyOwned[MAXPLAYERS + 1]
 float ServerMoneyMult = 1.0
@@ -162,8 +178,6 @@ float DarkmoonBladeDuration[MAXPLAYERS + 1];
 float RPS[MAXPLAYERS+1];
 float lastMinesTime[MAXPLAYERS+1];
 float weaponTrailTimer[MAXPLAYERS+1];
-float upgrades_tweaks_requirement[_NB_SP_TWEAKS]
-float upgrades_tweaks_cost[_NB_SP_TWEAKS]
 float fl_ArmorRegenBonusDuration[MAXPLAYERS+1]
 float fl_ArmorRegenBonus[MAXPLAYERS+1]
 float upgrades_weapon_cost[NB_WEAPONS];
@@ -190,21 +204,17 @@ float corrosiveDOT[MAXPLAYERS+1][MAXPLAYERS+1][2]
 float entitySpawnPositions[MAXENTITIES][3];
 
 //String
-char given_upgrd_classnames[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][128]
-char given_upgrd_subclassnames[_NUMBER_DEFINELISTS][_NUMBER_DEFINELISTS_CAT][_NUMBER_DEFINELISTS_CAT][128]
+char given_upgrd_classnames[LISTS][LISTS_CATEGORIES][128]
+char given_upgrd_subclassnames[LISTS][LISTS_CATEGORIES][LISTS_CATEGORIES][128]
 char wcnamelist[WCNAMELISTSIZE][128]
 char current_slot_name[NB_SLOTS_UED + 1][MAXPLAYERS + 1]
 char currentitem_classname[MAXPLAYERS + 1][NB_SLOTS_UED + 1][128]
-char upgradesNames[MAX_ATTRIBUTES][128]
-char upgradesWorkNames[MAX_ATTRIBUTES][96]
-char upgrades_tweaks[_NB_SP_TWEAKS][128]
 char Error[255];
 char upgrades_weapon_class[NB_WEAPONS][128]
 char upgrades_weapon_class_menu[NB_WEAPONS][128]
 char upgrades_weapon_class_restrictions[NB_WEAPONS][128]
 char upgrades_weapon_description[NB_WEAPONS][512]
 char upgrades_weapon[NB_WEAPONS][128];
-char upgrades_description[MAX_ATTRIBUTES][512];
 char ArmorXPos[MAXPLAYERS + 1][64];
 char ArmorYPos[MAXPLAYERS + 1][64];
 char SpellList[][] = {"Zap","Lightning Strike","Projected Healing","A Call Beyond","Blacksky Eye","Sunlight Spear","Lightning Enchantment","Snap Freeze","Arcane Prison","darkmoon blade from dark souls","Speed Aura","Aerial Strike","Inferno","Mine Field","Shockwave","Auto-Sentry","Soothing Sunlight","Arcane Hunter","Sabotage"}
@@ -256,6 +266,7 @@ float SupernovaBuildup[MAXPLAYERS+1];
 float ConcussionBuildup[MAXPLAYERS+1];
 float BleedMaximum[MAXPLAYERS+1];
 float RadiationMaximum[MAXPLAYERS+1];
+
 
 //Projectile Properties
 bool isProjectileHoming[MAXENTITIES];

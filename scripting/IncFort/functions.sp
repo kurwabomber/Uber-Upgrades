@@ -90,11 +90,12 @@ public GiveNewUpgradedWeapon_(client, slot)
 		{
 			for(int a = 0; a < iNumAttributes ; a++ )
 			{
-				int ifid = upgrades_to_a_id[currentupgrades_idx[client][slot][a]]
-				if (strcmp(upgradesWorkNames[ifid], ""))
-				{
-					TF2Attrib_SetByName(iEnt, upgradesWorkNames[ifid],currentupgrades_val[client][slot][a]);
-				}
+				int ifid = upgrades[currentupgrades_idx[client][slot][a]].to_a_id;
+				if (upgrades[ifid].attr_name[0] == '\0')
+					continue;
+				
+				TF2Attrib_SetByName(iEnt, upgrades[ifid].attr_name,currentupgrades_val[client][slot][a]);
+				
 			}
 		}
 		refreshUpgrades(client, slot)
@@ -106,30 +107,30 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 	if (canBypassRestriction[client])
 		return 1;
 
-	float up_cost = float(upgrades_costs[upgrade_choice]) * rate;
+	float up_cost = float(upgrades[upgrade_choice].cost) * rate;
 	int max_ups = currentupgrades_number[client][slot];
 	if (slot == 1)
 	{
 		up_cost *= SecondaryCostReduction
 	}
-	if (inum != 20000 && upgrades_ratio[upgrade_choice])
+	if (inum != 20000 && upgrades[upgrade_choice].ratio)
 	{
 		if(currentupgrades_i[client][slot][inum] != 0.0)
 		{
 			up_cost += up_cost * ((currentupgrades_val[client][slot][inum] - currentupgrades_i[client][slot][inum])
-			/ upgrades_ratio[upgrade_choice]) * upgrades_costs_inc_ratio[upgrade_choice];
+			/ upgrades[upgrade_choice].ratio) * upgrades[upgrade_choice].cost_inc_ratio;
 		}
 		else
 		{
-			up_cost += up_cost * ((currentupgrades_val[client][slot][inum] - upgrades_i_val[upgrade_choice])
-			/ upgrades_ratio[upgrade_choice]) * upgrades_costs_inc_ratio[upgrade_choice];
+			up_cost += up_cost * ((currentupgrades_val[client][slot][inum] - upgrades[upgrade_choice].i_val)
+			/ upgrades[upgrade_choice].ratio) * upgrades[upgrade_choice].cost_inc_ratio;
 		}
 		if (up_cost < 0.0)
 		{
 			up_cost *= -1.0;
-			if (up_cost < upgrades_costs[upgrade_choice])
+			if (up_cost < upgrades[upgrade_choice].cost)
 			{
-				up_cost = float(upgrades_costs[upgrade_choice]);
+				up_cost = float(upgrades[upgrade_choice].cost);
 			}
 		}
 	}
@@ -142,40 +143,40 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 	}
 	else
 	{
-		if(upgrades_restriction_category[upgrade_choice] != 0)
+		if(upgrades[upgrade_choice].restriction_category != 0)
 		{
 			if(inum == 20000)//havent upgraded
 			{
 				//PrintToChat(client, "E");
 				for(int i = 1;i<5;i++)
 				{
-					if(currentupgrades_restriction[client][slot][i] == upgrades_restriction_category[upgrade_choice])
+					if(currentupgrades_restriction[client][slot][i] == upgrades[upgrade_choice].restriction_category)
 					{
 						PrintToChat(client, "You already have something that fits this restriction category.");
 						EmitSoundToClient(client, SOUND_FAIL);
 						return 0;
 					}
 				}
-				currentupgrades_restriction[client][slot][upgrades_restriction_category[upgrade_choice]] = upgrades_restriction_category[upgrade_choice];
+				currentupgrades_restriction[client][slot][upgrades[upgrade_choice].restriction_category] = upgrades[upgrade_choice].restriction_category;
 			}
-			else if(currentupgrades_val[client][slot][inum] - upgrades_i_val[upgrade_choice] == 0.0)
+			else if(currentupgrades_val[client][slot][inum] - upgrades[upgrade_choice].i_val == 0.0)
 			{
 				for(int i = 1;i<5;i++)
 				{
-					if(currentupgrades_restriction[client][slot][i] == upgrades_restriction_category[upgrade_choice])
+					if(currentupgrades_restriction[client][slot][i] == upgrades[upgrade_choice].restriction_category)
 					{
 						PrintToChat(client, "You already have something that fits this restriction category.");
 						EmitSoundToClient(client, SOUND_FAIL);
 						return 0;
 					}
 				}
-				currentupgrades_restriction[client][slot][upgrades_restriction_category[upgrade_choice]] = upgrades_restriction_category[upgrade_choice];
+				currentupgrades_restriction[client][slot][upgrades[upgrade_choice].restriction_category] = upgrades[upgrade_choice].restriction_category;
 			}
 		}
 		
 		if (inum != 20000)
 		{	
-			if (currentupgrades_val[client][slot][inum] == upgrades_m_val[upgrade_choice])
+			if (currentupgrades_val[client][slot][inum] == upgrades[upgrade_choice].m_val)
 			{
 				PrintToChat(client, "You already have reached the maximum upgrade for this category.");
 				EmitSoundToClient(client, SOUND_FAIL);
@@ -199,12 +200,12 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 
 public	check_apply_maxvalue(client, slot, inum, upgrade_choice)
 {
-	if ((upgrades_ratio[upgrade_choice] > 0.0
-		 && currentupgrades_val[client][slot][inum] > upgrades_m_val[upgrade_choice])
-		|| (upgrades_ratio[upgrade_choice] < 0.0 
-			&& currentupgrades_val[client][slot][inum] < upgrades_m_val[upgrade_choice]))
+	if ((upgrades[upgrade_choice].ratio > 0.0
+		 && currentupgrades_val[client][slot][inum] > upgrades[upgrade_choice].m_val)
+		|| (upgrades[upgrade_choice].ratio < 0.0 
+			&& currentupgrades_val[client][slot][inum] < upgrades[upgrade_choice].m_val))
 		{
-			currentupgrades_val[client][slot][inum] = upgrades_m_val[upgrade_choice]
+			currentupgrades_val[client][slot][inum] = upgrades[upgrade_choice].m_val
 		}
 }
 
@@ -734,14 +735,14 @@ public UpgradeItem(client, upgrade_choice, inum, float ratio, slot)
 		inum = currentupgrades_number[client][slot]
 		upgrades_ref_to_idx[client][slot][upgrade_choice] = inum;
 		currentupgrades_idx[client][slot][inum] = upgrade_choice 
-		currentupgrades_val[client][slot][inum] = upgrades_i_val[upgrade_choice];
+		currentupgrades_val[client][slot][inum] = upgrades[upgrade_choice].i_val;
 		currentupgrades_number[client][slot] = currentupgrades_number[client][slot] + 1
 		
-		currentupgrades_val[client][slot][inum] += (upgrades_ratio[upgrade_choice] * ratio);
+		currentupgrades_val[client][slot][inum] += (upgrades[upgrade_choice].ratio * ratio);
 	}
 	else
 	{
-		currentupgrades_val[client][slot][inum] += (upgrades_ratio[upgrade_choice] * ratio);
+		currentupgrades_val[client][slot][inum] += (upgrades[upgrade_choice].ratio * ratio);
 		if(!canBypassRestriction[client])
 		 check_apply_maxvalue(client, slot, inum, upgrade_choice)
 	}
@@ -751,22 +752,22 @@ public UpgradeItem(client, upgrade_choice, inum, float ratio, slot)
 public remove_attribute(client, inum)
 {
 	int slot = current_slot_used[client];
-	if(currentupgrades_i[client][slot][inum] != 0.0 && upgrades_costs[currentupgrades_idx[client][slot][inum]] > 1.0)
+	if(currentupgrades_i[client][slot][inum] != 0.0 && upgrades[currentupgrades_idx[client][slot][inum]].cost > 1.0)
 	{
 		currentupgrades_val[client][slot][inum] = currentupgrades_i[client][slot][inum];
 	}
 	else
 	{
-		currentupgrades_val[client][slot][inum] = upgrades_i_val[currentupgrades_idx[client][slot][inum]];
+		currentupgrades_val[client][slot][inum] = upgrades[currentupgrades_idx[client][slot][inum]].i_val;
 	}
 	int u = currentupgrades_idx[client][slot][inum]
 	if (u != 20000)
 	{
-		if(upgrades_restriction_category[u] != 0)
+		if(upgrades[u].restriction_category != 0)
 		{
 			for(int i = 1;i<5;i++)
 			{
-				if(i == upgrades_restriction_category[u])
+				if(i == upgrades[u].restriction_category)
 				{
 					currentupgrades_restriction[client][slot][i] = 0;
 				}
@@ -796,7 +797,7 @@ public AddEntHealth(entity, amount)
 public void SetTauntAttackSpeed(int client, float speed)
 {
 	float flTauntAttackTime = GetEntDataFloat(client, g_iOffset);
-	float flCurrentTime = GetGameTime();
+	float flCurrentTime = currentGameTime;
 	float flNextTauntAttackTime = flCurrentTime + ((flTauntAttackTime - flCurrentTime) / speed);
 	if (flTauntAttackTime > 0.0)
 	{
@@ -826,7 +827,7 @@ public Action Timer_SetNextAttackTime(Handle timer, DataPack hPack)
 	else
 	{
 		float speed = hPack.ReadFloat();
-		float flCurrentTime = GetGameTime();
+		float flCurrentTime = currentGameTime;
 		float flNextTauntAttackTime = flCurrentTime + ((flTauntAttackTime - flCurrentTime) / speed);
 		SetEntDataFloat(client, g_iOffset, flNextTauntAttackTime, true);
 		g_flLastAttackTime[client] = flNextTauntAttackTime;
@@ -873,9 +874,9 @@ UpdateMaxValuesStage(int stage)
 {
 	for(int i = 0;i<MAX_ATTRIBUTES;i++)
 	{
-		if(upgrades_staged_max[i][stage] != 0.0)
+		if(upgrades[i].staged_max[stage] != 0.0)
 		{
-			upgrades_m_val[i] = upgrades_staged_max[i][stage];
+			upgrades[i].m_val = upgrades[i].staged_max[stage];
 		}
 	}
 }
@@ -1817,12 +1818,12 @@ ExplosiveArrow(entity)
 disableWeapon(client)
 {
 	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-	SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime() + 1.0);
+	SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime + 1.0);
 }
 StunShotFunc(client)
 {
 	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-	SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime() + 0.6);
+	SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime + 0.6);
 	CreateTimer(0.5, removeBulletsPerShot, client);
 }
 AirblastPatch(client)
@@ -1833,7 +1834,7 @@ AirblastPatch(client)
 	if( TF2_GetPlayerClass(client) != TFClass_Pyro )
 		return;
 
-	int iNextTickTime = RoundToNearest(GetGameTime()/GetTickInterval())+ 5;
+	int iNextTickTime = RoundToNearest(currentGameTime/GetTickInterval())+ 5;
 	SetEntProp( client, Prop_Data, "m_nNextThinkTick", iNextTickTime );
 	
 	if( GetEntProp( client, Prop_Data, "m_nWaterLevel" ) > 1 )
@@ -1895,7 +1896,7 @@ AirblastPatch(client)
 				{
 					if(GetClientTeam(i) != GetClientTeam(client))//Enemies debuffed
 					{
-						CurrentSlowTimer[i] = Duration;
+						CurrentSlowTimer[i] = currentGameTime+Duration;
 						SDKHooks_TakeDamage(i,client,client,AirblastDamage,DMG_BLAST,iWeapon, NULL_VECTOR, NULL_VECTOR);
 						
 						bool immune = false;
@@ -1929,7 +1930,7 @@ AirblastPatch(client)
 }
 public BoomerangThink(entity) 
 { 
-	if(IsValidEdict(entity) && GetGameTime() - entitySpawnTime[entity] > 0.3 && GetGameTime() - entitySpawnTime[entity] < 0.92)
+	if(IsValidEdict(entity) && currentGameTime - entitySpawnTime[entity] > 0.3 && currentGameTime - entitySpawnTime[entity] < 0.92)
 	{
 		float ProjAngle[3],ProjVelocity[3],vBuffer[3],speed;
 		GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
@@ -1969,7 +1970,7 @@ checkRadiation(victim,attacker)
 		}
 		else
 		{
-			miniCritStatusVictim[victim] = 7.5;
+			miniCritStatusVictim[victim] = currentGameTime+7.5;
 			TF2_AddCondition(victim, TFCond_Bleeding, 7.5);
 			TF2_AddCondition(victim, TFCond_AirCurrent, 7.5);
 			TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 7.5);
@@ -2325,7 +2326,7 @@ public void OnHomingThink(entity)
 					GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
 					float distance = GetVectorDistance( flRocketPos, TargetPos ); 
 					
-					if( distance <= projectileHomingDegree[entity] && GetGameTime() - entitySpawnTime[entity] < 3.0 )
+					if( distance <= projectileHomingDegree[entity] && currentGameTime - entitySpawnTime[entity] < 3.0 )
 					{
 						float ProjVector[3],BaseSpeed,NewSpeed,ProjAngle[3],AimVector[3],InitialSpeed[3]; 
 						

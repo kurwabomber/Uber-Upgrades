@@ -7,22 +7,22 @@ public Action:Timer_WaitForTF2Econ(Handle timer)
 		{
 			if(TF2Econ_IsValidAttributeDefinition(i))
 			{
-				TF2Econ_GetAttributeName( i, upgradesWorkNames[i], 96 );
+				TF2Econ_GetAttributeName( i, upgrades[i].attr_name, 96 );
 			}
 		}
 		for (i = 0; i < MAX_ATTRIBUTES; i++)
 		{
-			upgrades_ratio[i] = 0.0;
-			upgrades_i_val[i] = 0.0;
-			upgrades_costs[i] = 0;
-			upgrades_costs_inc_ratio[i] = 0.20;
-			upgrades_m_val[i] = 0.0;
-			upgrades_restriction_category[i] = 0;
-			upgrades_display_style[i] = 0;
-			upgrades_description[i] = "";
-			upgrades_requirement[i] = 0.0;
+			upgrades[i].ratio = 0.0;
+			upgrades[i].i_val = 0.0;
+			upgrades[i].cost = 0;
+			upgrades[i].cost_inc_ratio = 0.20;
+			upgrades[i].m_val = 0.0;
+			upgrades[i].restriction_category = 0;
+			upgrades[i].display_style = 0;
+			upgrades[i].description = "";
+			upgrades[i].requirement = 0.0;
 		}
-		for (i = 0; i < _NUMBER_DEFINELISTS; i++)
+		for (i = 0; i < LISTS; i++)
 		{
 			given_upgrd_classnames_tweak_idx[i] = -1
 			given_upgrd_list_nb[i] = 0
@@ -66,7 +66,7 @@ public UberShopDefineUpgradeTabs()
 	current_slot_name[2] = "Melee Weapon"
 	current_slot_name[3] = "Bought Weapon"
 	current_slot_name[4] = "Body"
-	upgradesNames[0] = ""
+	upgrades[0].name = "";
 	CreateTimer(0.3, Timer_WaitForTF2Econ, _);
 }
 public UberShopinitMenusHandlers()

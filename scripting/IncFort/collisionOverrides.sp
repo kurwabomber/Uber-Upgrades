@@ -638,7 +638,7 @@ public Action:OnTouchExplodeJar(entity, other)
 								case 0:
 								{
 									if(isPlayer)
-										miniCritStatusVictim[i] = 8.0;
+										miniCritStatusVictim[i] = currentGameTime+8.0;
 
 									SDKHooks_TakeDamage(i,owner,owner,30.0,DMG_BULLET,CWeapon,NULL_VECTOR,NULL_VECTOR, !isPlayer);
 								}

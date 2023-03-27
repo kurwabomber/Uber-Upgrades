@@ -42,7 +42,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 						if(ConcussionBuildup[client] >= 100.0)
 						{
 							ConcussionBuildup[client] = 0.0;
-							miniCritStatusVictim[client] = 10.0;
+							miniCritStatusVictim[client] = currentGameTime+10.0;
 							TF2_StunPlayer(client, 1.0, 1.0, TF_STUNFLAGS_NORMALBONK, attacker);
 						}
 					}
@@ -149,9 +149,9 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 						fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 					}
 				}
-				if(MadmilkDuration[client] > 0.0)
+				if(MadmilkDuration[client] > currentGameTime)
 				{
-					int HealthGained = RoundToCeil(lifestealFactor * damage * MadmilkDuration[client] * 1.66 / 100.0);
+					int HealthGained = RoundToCeil(lifestealFactor * damage * (MadmilkDuration[client]-currentGameTime) * 1.66 / 100.0);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
 					fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 				}
@@ -351,7 +351,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						if(ArmorRegen != Address_Null)
 						{
 							fl_ArmorRegenBonus[client] = TF2Attrib_GetValue(ArmorRegen)
-							fl_ArmorRegenBonusDuration[client] = 4.0
+							fl_ArmorRegenBonusDuration[client] = currentGameTime+4.0
 						}
 						else
 						{
@@ -367,8 +367,8 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						Address MiniCritActive = TF2Attrib_GetByName(CWeapon, "duel loser account id");
 						if(MiniCritActive != Address_Null)
 						{
-							miniCritStatusVictim[client] = 16.0;
-							miniCritStatusAttacker[client] = 16.0;
+							miniCritStatusVictim[client] = currentGameTime+16.0;
+							miniCritStatusAttacker[client] = currentGameTime+16.0;
 							TF2_AddCondition(client, TFCond_RestrictToMelee, 16.0);
 							TF2_AddCondition(client, TFCond_SpeedBuffAlly, 16.0);
 							int melee = GetWeapon(client, 2)
@@ -410,32 +410,32 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			}
 			case TFCond_Jarated:
 			{
-				miniCritStatusVictim[client] = duration;
+				miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_MarkedForDeath:
 			{
-				miniCritStatusVictim[client] = duration;
+				miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_MarkedForDeathSilent:
 			{
-				miniCritStatusVictim[client] = duration;
+				miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_MiniCritOnKill:
 			{
-				miniCritStatusAttacker[client] = duration;
+				miniCritStatusAttacker[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_CritCola:
 			{
-				miniCritStatusAttacker[client] = duration;
+				miniCritStatusAttacker[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_NoHealingDamageBuff:
 			{
-				miniCritStatusAttacker[client] = duration;
+				miniCritStatusAttacker[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_Sapped:
@@ -763,7 +763,6 @@ public OnEntityCreated(entity, const char[] classname)
 	if(!IsValidEdict(entity) || entity < 0 || entity > 2048)
 		return;
 
-
 	int reference = EntIndexToEntRef(entity);
 	weaponFireRate[entity] = -1.0;
 	if(StrEqual(classname, "obj_attachment_sapper"))
@@ -799,7 +798,7 @@ public OnEntityCreated(entity, const char[] classname)
 	
 	if(StrContains(classname, "tf_projectile_", false) == 0)
 	{
-		entitySpawnTime[entity] = GetGameTime();
+		entitySpawnTime[entity] = currentGameTime;
 		g_nBounces[entity] = 0;
 		RequestFrame(getProjOrigin, reference);
 
@@ -1255,7 +1254,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				{
 					case 2.0:
 					{
-						miniCritStatusVictim[client] = 10.0;
+						miniCritStatusVictim[client] = currentGameTime+10.0;
 						TF2Attrib_SetByName(CWeapon, "fire rate penalty", 1.0)
 						TF2Attrib_SetByName(CWeapon, "dmg taken increased", 2.0)
 						TF2Attrib_SetByName(CWeapon, "faster reload rate", 1.0)
@@ -1304,10 +1303,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		if(buttons & IN_SCORE)
 		{
 			inScore[client] = true;
-			if(MenuTimer[client] <= 0.0)
+			if(MenuTimer[client] < currentGameTime)
 			{
 				Menu_BuyUpgrade(client, 0);
-				MenuTimer[client] = 0.5;
+				MenuTimer[client] = currentGameTime+0.5;
 			}
 		}
 		else
@@ -1315,13 +1314,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			inScore[client] = false;
 		}
 
-		if ((impulse == 201) && ImpulseTimer[client] <= 0.0 && IsValidEdict(client_new_weapon_ent_id[client]))
+		if ((impulse == 201) && ImpulseTimer[client] < currentGameTime && IsValidEdict(client_new_weapon_ent_id[client]))
 		{
 			if(currentitem_level[client][3] == 242)
 			{
 				SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",client_new_weapon_ent_id[client]);
 				EquipPlayerWeapon(client, client_new_weapon_ent_id[client]);
 			}
+			ImpulseTimer[client] = currentGameTime+0.3;
 		}
 		if(IsValidEdict(CWeapon))
 		{
@@ -1486,26 +1486,26 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					}
 				}
 				
-				if(powerupParticle[client] <= 0.0 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
+				if(powerupParticle[client] <= currentGameTime && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 				{
 					
 					Address strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");
 					if(strengthPowerup != Address_Null && TF2Attrib_GetValue(strengthPowerup) > 0.0)
 					{
 						CreateParticle(client, "utaunt_tarotcard_orange_wind", true, "", 5.0);
-						powerupParticle[client] = 5.0;
+						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
 					if(resistancePowerup != Address_Null && TF2Attrib_GetValue(resistancePowerup) > 0.0)
 					{
 						CreateParticle(client, "soldierbuff_red_spikes", true, "", 2.0);
-						powerupParticle[client] = 2.0;
+						powerupParticle[client] = currentGameTime+2.0;
 					}
 					Address vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
 					if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
 					{
 						CreateParticle(client, "spell_batball_red", true, "", 2.0);
-						powerupParticle[client] = 8.0;
+						powerupParticle[client] = currentGameTime+8.0;
 					}
 					Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
 					if(regenerationPowerup != Address_Null && TF2Attrib_GetValue(regenerationPowerup) > 0.0)
@@ -1519,7 +1519,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							CreateParticle(client, "medic_megaheal_blue_shower", true, "", 5.0);
 						}
-						powerupParticle[client] = 5.0;
+						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 					if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
@@ -1532,19 +1532,19 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							CreateParticle(client, "eye_powerup_blue_lvl_4", true, "eyeglow_R", 5.0);
 						}
-						powerupParticle[client] = 5.0;
+						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");
 					if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
 					{
 						CreateParticle(client, "medic_resist_bullet", true, "", 5.0);
-						powerupParticle[client] = 5.0;
+						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address knockoutPowerup = TF2Attrib_GetByName(client, "knockout powerup");
 					if(knockoutPowerup != Address_Null && TF2Attrib_GetValue(knockoutPowerup) > 0.0)
 					{
 						CreateParticle(client, "medic_resist_blast", true, "", 5.0);
-						powerupParticle[client] = 5.0;
+						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
 					if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
@@ -1578,19 +1578,19 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								}
 							}
 						}
-						powerupParticle[client] = 2.0;
+						powerupParticle[client] = currentGameTime+2.0;
 					}
 					Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
 					if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 					{
 						CreateParticle(client, "powerup_plague_carrier", true, "", 5.0);
-						powerupParticle[client] = 5.0;
+						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
 					if(supernovaPowerup != Address_Null && TF2Attrib_GetValue(supernovaPowerup) > 0.0)
 					{
 						CreateParticle(client, "powerup_supernova_ready", true, "", 5.0);
-						powerupParticle[client] = 5.0;
+						powerupParticle[client] = currentGameTime+5.0;
 					}
 				}
 				
@@ -1614,10 +1614,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					{
 						case 1.0: //Teleport
 						{
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1629,13 +1629,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										fl_GlobalCoolDown[client] = 0.3;
-										weaponArtCooldown[client] = 15.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.3;
+										weaponArtCooldown[client] = currentGameTime+15.0;
 										BleedBuildup[client] = 0.0;
 										RadiationBuildup[client] = 0.0;
-										miniCritStatusAttacker[client] = 5.0
+										miniCritStatusAttacker[client] = currentGameTime+5.0
 										TF2_AddCondition(client, TFCond_RestrictToMelee, 5.0);
 										TF2_AddCondition(client, TFCond_DodgeChance, 2.5);
 										TF2_AddCondition(client, TFCond_AfterburnImmune, 2.5);
@@ -1648,10 +1648,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 2.0: //Explosive Shot
 						{
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Explosive Shot: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Explosive Shot: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1663,10 +1663,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 7.0;
-										fl_GlobalCoolDown[client] = 0.8;
+										weaponArtCooldown[client] = currentGameTime+7.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.8;
 										fl_ArrowStormDuration[client] = 1.0;
 										SetEntProp(CWeapon, Prop_Send, "m_bArrowAlight", 1);
 									}
@@ -1675,10 +1675,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 3.0: //Stun Shot
 						{
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1690,13 +1690,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 7.0;
-										fl_GlobalCoolDown[client] = 0.8;
+										weaponArtCooldown[client] = currentGameTime+7.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.8;
 										TF2Attrib_SetByName(client, "bullets per shot bonus", 5.0);
 										refreshAllWeapons(client);
-										SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime());
+										SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
 										buttons |= IN_ATTACK;
 										StunShotBPS[client] = true;
 										StunShotStun[client] = true;
@@ -1707,10 +1707,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 4.0: //Juggernaut
 						{
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1722,10 +1722,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 30.0;
-										fl_GlobalCoolDown[client] = 0.8;
+										weaponArtCooldown[client] = currentGameTime+30.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.8;
 										TF2_AddCondition(client, TFCond_MegaHeal, 5.0);
 									}
 								}
@@ -1733,10 +1733,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 5.0: //Dragon's Breath
 						{
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Dragon's Breath: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Dragon's Breath: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1748,10 +1748,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 15.0;
-										fl_GlobalCoolDown[client] = 0.8;
+										weaponArtCooldown[client] = currentGameTime+15.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.8;
 										
 										for(int i = 0;i<5;i++)
 										{
@@ -1798,10 +1798,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 6.0: //Detonate
 						{
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1813,10 +1813,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 0.2;
-										fl_GlobalCoolDown[client] = 0.2;
+										weaponArtCooldown[client] = currentGameTime+0.2;
+										fl_GlobalCoolDown[client] = currentGameTime+0.2;
 										
 										float damageMult = TF2_GetDamageModifiers(client,CWeapon)
 										float m_fOrigin[3];
@@ -1838,10 +1838,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 7.0: //Weak Dash
 						{
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Dash: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Dash: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1853,10 +1853,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 1.0;
-										fl_GlobalCoolDown[client] = 0.2;
+										weaponArtCooldown[client] = currentGameTime+1.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.2;
 										
 										float flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
 										float flVel[3],flAng[3], vBuffer[3]
@@ -1873,17 +1873,17 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 8.0: //Transient Moonlight
 						{
-							if(weaponArtParticle[client] <= 0.0)
+							if(weaponArtParticle[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = 3.0;
+								weaponArtParticle[client] = currentGameTime+3.0;
 								CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, "", 5.0,_,_,1);
 								int clients[33], numClients = getClientParticleStatus(clients, client);
 								TE_Send(clients,numClients)
 							}
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1895,10 +1895,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 6.0;
-										fl_GlobalCoolDown[client] = 0.2;
+										weaponArtCooldown[client] = currentGameTime+6.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.2;
 										
 										float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3], fwd[3];
 										char projName[32] = "tf_projectile_arrow";
@@ -1975,17 +1975,17 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 9.0: //Corpse Piler
 						{
-							if(weaponArtParticle[client] <= 0.0)
+							if(weaponArtParticle[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = 3.0;
+								weaponArtParticle[client] = currentGameTime+3.0;
 								CreateParticle(CWeapon, "critgun_weaponmodel_red", true, "", 5.0,_,_,1);
 								TE_SendToAll();
 								SetEntityRenderColor(CWeapon, 255,0,0,200);
 							}
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -1997,13 +1997,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 30.0;
-										fl_GlobalCoolDown[client] = 0.2;
+										weaponArtCooldown[client] = currentGameTime+30.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.2;
 										
 										buttons |= IN_ATTACK;
-										SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime());
+										SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
 										RequestFrame(disableWeapon,client);
 										
 										for(int i=0;i<20;i++)
@@ -2019,9 +2019,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 10.0: //Homing Flares
 						{
-							if(weaponArtParticle[client] <= 0.0)
+							if(weaponArtParticle[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = 3.0;
+								weaponArtParticle[client] = currentGameTime+3.0;
 								CreateParticle(CWeapon, "critgun_weaponmodel_red", true, "", 5.0,_,_,1);
 								TE_SendToAll();
 								
@@ -2031,10 +2031,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								TF2Attrib_ClearCache(client);
 								TF2Attrib_ClearCache(CWeapon);
 							}
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -2046,10 +2046,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 3.0;
-										fl_GlobalCoolDown[client] = 0.2;
+										weaponArtCooldown[client] = currentGameTime+3.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.2;
 										int iTeam = GetClientTeam(client);
 										float fAngles[3],fOrigin[3],vBuffer[3],vRight[3],fVelocity[3],fwd[3]
 										for(int i=0;i<3;i++)
@@ -2099,23 +2099,23 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 11.0:
 						{
-							if(weaponArtParticle[client] <= 0.0)
+							if(weaponArtParticle[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = 4.0;
+								weaponArtParticle[client] = currentGameTime+4.0;
 								SetEntityRenderColor(CWeapon, 255, 255, 255, 1);
 							}
 						}
 						case 12.0: //Strong Dash
 						{
-							if(weaponArtParticle[client] <= 0.0)
+							if(weaponArtParticle[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = 7.0;
+								weaponArtParticle[client] = currentGameTime+7.0;
 								SetEntityRenderColor(CWeapon, 0, 0, 0,130);
 							}
-							if(weaponArtCooldown[client] > 0.0)
+							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: %.1fs", weaponArtCooldown[client]); 
+								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
@@ -2127,10 +2127,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
-									if(fl_GlobalCoolDown[client] <= 0.0)
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
 									{
-										weaponArtCooldown[client] = 1.0;
-										fl_GlobalCoolDown[client] = 0.2;
+										weaponArtCooldown[client] = currentGameTime+1.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.2;
 										
 										float flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
 										float flVel[3],flAng[3],vBuffer[3]
@@ -2149,9 +2149,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 13.0:
 						{
-							if(weaponArtParticle[client] <= 0.0)
+							if(weaponArtParticle[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = 3.0;
+								weaponArtParticle[client] = currentGameTime+3.0;
 								CreateParticle(CWeapon, "critgun_weaponmodel_red", true, "", 6.0,_,_,1);
 								TE_SendToAll();
 							}
@@ -2170,80 +2170,46 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 //Called on server thinking, 66.6/s
 public OnGameFrame()
 {
-	float time = GetGameTime();
+	currentGameTime = GetGameTime();
 	int i = -1;
 	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
 		if(IsValidEdict(i))
 		{
 			if(isProjectileHoming[i])
-			{
 				OnThinkPost(i);
-			}
+			
 			if(isProjectileBoomerang[i])
-			{
 				BoomerangThink(i);
-			}
+			
 			if(projectileHomingDegree[i] > 0.0)
-			{
 				OnHomingThink(i);
-			}
+			
 			if(isEntitySentry[i])
 			{
 				sentryThought[i] = false;
 				SDKCall(g_SDKCallSentryThink, i);
 			}
-			if(homingRadius[i] > 0.0 && homingDelay[i] < time - entitySpawnTime[i])
-			{
+
+			if(homingRadius[i] > 0.0 && homingDelay[i] < currentGameTime - entitySpawnTime[i])
 				OnEntityHomingThink(i);
-			}
+			
 			if(isProjectileFireball[i])
-			{
 				OnFireballThink(i);
-			}
 		}
 	}
 	for(int client=1; client<=MaxClients; client++)
 	{
-		if(MadmilkDuration[client] > 0.0)
-			MadmilkDuration[client]-=TICKINTERVAL;
 		if(IsValidClient3(client))
 		{
-			if(MenuTimer[client] > 0.0){
-			MenuTimer[client] -= TICKINTERVAL; }
-			if(efficiencyCalculationTimer[client] > 0.0){
-			efficiencyCalculationTimer[client] -= TICKINTERVAL; }
-			if(ImpulseTimer[client] > 0.0){
-			ImpulseTimer[client] -= TICKINTERVAL; }
-			if(weaponTrailTimer[client] > 0.0){
-			weaponTrailTimer[client] -= TICKINTERVAL;}
-			if(fl_ArmorRegenBonusDuration[client] > 0.0){
-			fl_ArmorRegenBonusDuration[client] -= TICKINTERVAL;}
-			
 			if(IsPlayerAlive(client))
 			{
-				if(fl_GlobalCoolDown[client] > 0.0){
-				fl_GlobalCoolDown[client] -= TICKINTERVAL; }
-				if(weaponArtCooldown[client] > 0.0){
-				weaponArtCooldown[client] -= TICKINTERVAL; }
-				if(weaponArtParticle[client] > 0.0){
-				weaponArtParticle[client] -= TICKINTERVAL; }
-				if(powerupParticle[client] > 0.0){
-				powerupParticle[client] -= TICKINTERVAL; }
 				if(RadiationBuildup[client] > 0.0){
 				RadiationBuildup[client] -= (RadiationMaximum[client] * 0.0285) * TICKINTERVAL; }//Fully remove radiation within 35 seconds.
-				if(CurrentSlowTimer[client] > 0.0){
-				CurrentSlowTimer[client] -= TICKINTERVAL; }
 				if(BleedBuildup[client] > 0.0){
 				BleedBuildup[client] -= (BleedMaximum[client] * 0.143) * TICKINTERVAL; }//Fully remove bleed within 7 seconds.
 				if(ConcussionBuildup[client] > 0.0){
 				ConcussionBuildup[client] -= 100.0 * 0.03 * TICKINTERVAL; }//Fully remove concussion within 30 seconds.
-				if(miniCritStatusVictim[client] > 0.0){
-				miniCritStatusVictim[client] -= TICKINTERVAL;}
-				if(miniCritStatusAttacker[client] > 0.0){
-				miniCritStatusAttacker[client] -= TICKINTERVAL;}
-				if(disableIFMiniHud[client] > 0.0){
-				disableIFMiniHud[client] -= TICKINTERVAL;}
 
 				if(RageActive[client])
 				{
@@ -2256,11 +2222,11 @@ public OnGameFrame()
 						RageActive[client] = false;
 					}
 				}
-				if(CurrentSlowTimer[client] <= 0.0 && CurrentSlowTimer[client] > -1000.0)
+				if(CurrentSlowTimer[client] <= currentGameTime && CurrentSlowTimer[client] > 0.0)
 				{
 					TF2Attrib_SetByName(client,"move speed penalty", 1.0);
 					TF2Attrib_SetByName(client,"major increased jump height", 1.0);
-					CurrentSlowTimer[client] = -2000.0;
+					CurrentSlowTimer[client] = 0.0;
 				}
 				//Firerate for Secondaries
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
@@ -2302,11 +2268,11 @@ public OnGameFrame()
 						}
 						SecondaryROF = Pow(SecondaryROF, 0.4);
 						float m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
-						float SeTime = (m_flNextSecondaryAttack - GetGameTime()) - ((SecondaryROF - 1.0) * GetTickInterval());
-						float FinalS = SeTime+GetGameTime();
+						float SeTime = (m_flNextSecondaryAttack - currentGameTime) - ((SecondaryROF - 1.0) * currentGameTime);
+						float FinalS = SeTime+currentGameTime;
 
-						if(FinalS < GetGameTime())
-							FinalS = GetGameTime();
+						if(FinalS < currentGameTime)
+							FinalS = currentGameTime;
 						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", FinalS);
 						//Remove fire rate bonuses for reload rate on no clip size weapons.
 						Address ModClip = TF2Attrib_GetByName(CWeapon, "mod max primary clip override");
@@ -2331,8 +2297,8 @@ public OnGameFrame()
 									PrimaryROF *= TF2Attrib_GetValue(ReloadRate2);
 								}
 								float m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
-								float Time = (m_flNextPrimaryAttack - GetGameTime()) - ((PrimaryROF - 1.0) / (1/GetTickInterval()));
-								float FinalROF = Time+GetGameTime();
+								float Time = (m_flNextPrimaryAttack - currentGameTime) - ((PrimaryROF - 1.0) / (1/GetTickInterval()));
+								float FinalROF = Time+currentGameTime;
 								SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", FinalROF);
 								//PrintToChat(client, "%.1f NextPrimaryAttack", FinalROF);
 							}
@@ -2343,35 +2309,33 @@ public OnGameFrame()
 
 			if(LightningEnchantmentDuration[client] > 0.0)
 			{
-				LightningEnchantmentDuration[client] -= TICKINTERVAL; 
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEdict(CWeapon) && CWeapon != 0 && DarkmoonBladeDuration[client] <= 0.0)
 				{
-					if(weaponTrailTimer[client] <= 0.0)
+					if(weaponTrailTimer[client] < currentGameTime)
 					{
 						CreateParticle(CWeapon, "utaunt_auroraglow_orange_parent", true, "", 5.0,_,_,1);
 						int clients[33], numClients = getClientParticleStatus(clients, client);
 						TE_Send(clients,numClients)
 						CreateParticle(client, "utaunt_arcane_yellow_parent", true, "", 5.0);
 						
-						weaponTrailTimer[client] = 5.1;
+						weaponTrailTimer[client] = currentGameTime+5.1;
 					}
 				}
 			}
 			if(DarkmoonBladeDuration[client] > 0.0)
 			{
-				DarkmoonBladeDuration[client] -= TICKINTERVAL; 
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				int melee = GetWeapon(client,2);
 				if(IsValidEdict(CWeapon) && IsValidEdict(melee) && CWeapon == melee)
 				{
-					if(weaponTrailTimer[client] <= 0.0)
+					if(weaponTrailTimer[client] < currentGameTime)
 					{
 						CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, "", 5.0,_,_,1);
 						int clients[33], numClients = getClientParticleStatus(clients, client);
 						TE_Send(clients,numClients)
 						CreateParticle(client, "utaunt_arcane_purple_parent", true, "", 5.0);
-						weaponTrailTimer[client] = 5.1;
+						weaponTrailTimer[client] = currentGameTime+5.1;
 					}
 				}
 			}

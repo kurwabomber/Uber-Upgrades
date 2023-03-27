@@ -76,7 +76,7 @@ public Action:Timer_Second(Handle timer)
 			if(armorRecharge != Address_Null)
 				ArmorRechargeMult += TF2Attrib_GetValue(armorRecharge)-1.0;
 			
-			if(fl_ArmorRegenBonusDuration[client] > 0.0)
+			if(fl_ArmorRegenBonusDuration[client] > currentGameTime)
 				ArmorRechargeMult += fl_ArmorRegenBonus[client]-1.0;
 			
 			if(GetAttribute(client, "regeneration powerup", 0.0) > 0.0)
@@ -150,165 +150,55 @@ public Action:Timer_Second(Handle timer)
 }
 public Action:Timer_FixedVariables(Handle timer)
 {
-	for(int client = 0; client < MaxClients; client++)
+	for(int client = 1; client < MaxClients; client++)
 	{
-		if (IsValidClient(client) && IsPlayerAlive(client))
+		if (!IsValidClient3(client) || !IsPlayerAlive(client))
+			continue;
+
+		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+
+		Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
+		if(RegenActive != Address_Null)
 		{
-			if(CurrencyOwned[client] >= 300000000000.0)
+			float RegenPerSecond = TF2Attrib_GetValue(RegenActive);
+			float RegenPerTick = RegenPerSecond/10;
+			Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
+			if(HealingReductionActive != Address_Null)
 			{
-				CurrencyOwned[client] = 300000000000.0;
+				RegenPerTick *= TF2Attrib_GetValue(HealingReductionActive);
 			}
-			if(CurrencyOwned[client] < 0.0)
+			
+			Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
+			if(regenerationPowerup != Address_Null)
 			{
-				CurrencyOwned[client] = 0.0;
-			}
-			if(inScore[client] == false)
-			{
-				int delta = (globalButtons[client] ^ oldPlayerButtons[client]) & globalButtons[client];
-				int inverseDelta = (oldPlayerButtons[client] ^ globalButtons[client]) & oldPlayerButtons[client];
-				if(delta & IN_DUCK || delta & IN_JUMP || delta & IN_RELOAD || inverseDelta & IN_DUCK
-				|| inverseDelta & IN_JUMP || inverseDelta & IN_RELOAD)
-				{//Update menu based on operators
-					if(IsValidHandle(view_as<Menu>(playerUpgradeMenus[client])))
-					{
-						char fstr2[100];
-						getUpgradeMenuTitle(client, current_w_list_id[client], current_w_c_list_id[client], current_slot_used[client], fstr2);
-						Menu_UpgradeChoice(client, current_w_sc_list_id[client], current_w_c_list_id[client], fstr2, RoundToFloor(playerUpgradeMenuPage[client]/7.0)*7);
-					}
-				}
-
-				if(disableIFMiniHud[client] <= 0.0)
+				float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
+				if(regenerationPowerupValue > 0.0)
 				{
-					char Startcash[128]
-					Format(Startcash, sizeof(Startcash), "%.0f Startmoney\n$%.0f\n%0.f Player Kills\n%0.f Player Deaths\n%s Damage Dealt\n%s DPS\n%0.f RPS\n%s Damage Healed", StartMoney+additionalstartmoney,CurrencyOwned[client],Kills[client],Deaths[client],GetAlphabetForm(DamageDealt[client]),GetAlphabetForm(dps[client]),RPS[client],GetAlphabetForm(Healed[client])); 
-					SendItemInfo(client, Startcash);
-				}
-				SetEntProp(client, Prop_Send, "m_nCurrency", 0);
-				char ArmorLeft[64]
-				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEdict(CWeapon))
-				{
-					Format(ArmorLeft, sizeof(ArmorLeft), "Armor | %i / %i", RoundToCeil(fl_CurrentArmor[client] + fl_AdditionalArmor[client]), RoundToNearest(fl_MaxArmor[client])); 
-					if(CheckForAttunement(client))
-					{
-						Format(ArmorLeft, sizeof(ArmorLeft), "%s\nFocus  | %.0f / %.0f", ArmorLeft, fl_CurrentFocus[client],fl_MaxFocus[client]); 
-						char spellHUD[1024]
-						Format(spellHUD, sizeof(spellHUD), "Current Spells Active | \n");
-						int activeSpells = 0;
-						int attunement = 1;
-						Address attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
-						if(attuneActive != Address_Null)
-						{
-							attunement += RoundToNearest(TF2Attrib_GetValue(attuneActive));
-						}
-						for(int i = 0;i<Max_Attunement_Slots && attunement > activeSpells;i++)
-						{
-							if(AttunedSpells[client][i] != 0.0)
-							{
-								activeSpells++;
-								int spellID = RoundToNearest(AttunedSpells[client][i]-1.0)
-								char spellnum[64]
-								Format(spellnum, sizeof(spellnum),"%i - %s | Cooldown %.1f\n", i+1, SpellList[spellID], SpellCooldowns[client][i]);
-								StrCat(spellHUD,sizeof(spellHUD),spellnum);
-							}
-						}
-						SetHudTextParams(0.02, 0.02, 0.21, 69, 245, 66, 255, 0, 0.0, 0.0, 0.0);
-						ShowSyncHudText(client, hudSpells, spellHUD);
-					}
-
-					if (AreClientCookiesCached(client))
-					{
-						if(StringToFloat(ArmorXPos[client]) != 0.0 && StringToFloat(ArmorYPos[client]))
-						{
-							if(fl_AdditionalArmor[client] <= 0.0)
-							{
-								SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudSync, ArmorLeft);
-							}
-							else
-							{
-								SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudSync, ArmorLeft);
-							}
-						}
-						else
-						{
-							if(fl_AdditionalArmor[client] <= 0.0)
-							{
-								SetHudTextParams(-0.75, -0.2, 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudSync, ArmorLeft);
-							}
-							else
-							{
-								SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudSync, ArmorLeft);
-							}
-						}
-					}
-					else
-					{
-						if(fl_AdditionalArmor[client] <= 0.0)
-						{
-							SetHudTextParams(-0.75, -0.2, 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudSync, ArmorLeft);
-						}
-						else
-						{
-							SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudSync, ArmorLeft);
-						}
-					}
+					RegenPerTick += TF2_GetMaxHealth(client) / 66.7;//+15% maxHPR/s
 				}
 			}
-
-			oldPlayerButtons[client] = globalButtons[client];
-		}
-		if(IsValidClient3(client))
-		{
-			Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
-			if(RegenActive != Address_Null)
+			
+			int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
+			int clientMaxHealth = TF2_GetMaxHealth(client);
+			if(clientHealth < clientMaxHealth)
 			{
-				float RegenPerSecond = TF2Attrib_GetValue(RegenActive);
-				float RegenPerTick = RegenPerSecond/10;
-				Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
-				if(HealingReductionActive != Address_Null)
+				if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
 				{
-					RegenPerTick *= TF2Attrib_GetValue(HealingReductionActive);
+					RegenPerTick *= 2.0;
 				}
-				
-				Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
-				if(regenerationPowerup != Address_Null)
+				if(TF2_IsPlayerInCondition(client, TFCond_Plague))
 				{
-					float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
-					if(regenerationPowerupValue > 0.0)
-					{
-						RegenPerTick += TF2_GetMaxHealth(client) / 66.7;//+15% maxHPR/s
-					}
+					RegenPerTick *= 0.0;
 				}
-				
-				int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
-				int clientMaxHealth = TF2_GetMaxHealth(client);
-				if(clientHealth < clientMaxHealth)
+				if(float(clientHealth) + RegenPerTick < clientMaxHealth)
 				{
-					if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
-					{
-						RegenPerTick *= 2.0;
-					}
-					if(TF2_IsPlayerInCondition(client, TFCond_Plague))
-					{
-						RegenPerTick *= 0.0;
-					}
-					if(float(clientHealth) + RegenPerTick < clientMaxHealth)
-					{
-						SetEntProp(client, Prop_Data, "m_iHealth", clientHealth+RoundToNearest(RegenPerTick));
-					}
-					else
-					{
-						SetEntProp(client, Prop_Data, "m_iHealth", clientMaxHealth);
-					}
+					SetEntProp(client, Prop_Data, "m_iHealth", clientHealth+RoundToNearest(RegenPerTick));
+				}
+				else
+				{
+					SetEntProp(client, Prop_Data, "m_iHealth", clientMaxHealth);
 				}
 			}
-			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
 				Address PrecisionActive = TF2Attrib_GetByName(CWeapon, "medic regen bonus");
@@ -329,6 +219,114 @@ public Action:Timer_FixedVariables(Handle timer)
 				}
 			}
 		}
+		
+		if(IsFakeClient(client))
+			continue;
+
+		if(CurrencyOwned[client] >= 300000000000.0)
+			CurrencyOwned[client] = 300000000000.0;
+		
+		if(CurrencyOwned[client] < 0.0)
+			CurrencyOwned[client] = 0.0;
+		
+		if(inScore[client] == false)
+		{
+			int delta = (globalButtons[client] ^ oldPlayerButtons[client]) & globalButtons[client];
+			int inverseDelta = (oldPlayerButtons[client] ^ globalButtons[client]) & oldPlayerButtons[client];
+			if(delta & IN_DUCK || delta & IN_JUMP || delta & IN_RELOAD || inverseDelta & IN_DUCK
+			|| inverseDelta & IN_JUMP || inverseDelta & IN_RELOAD)
+			{//Update menu based on operators
+				if(IsValidHandle(view_as<Menu>(playerUpgradeMenus[client])))
+				{
+					char fstr2[100];
+					getUpgradeMenuTitle(client, current_w_list_id[client], current_w_c_list_id[client], current_slot_used[client], fstr2);
+					Menu_UpgradeChoice(client, current_w_sc_list_id[client], current_w_c_list_id[client], fstr2, RoundToFloor(playerUpgradeMenuPage[client]/7.0)*7);
+				}
+			}
+
+			if(disableIFMiniHud[client] <= currentGameTime)
+			{
+				char Startcash[128]
+				Format(Startcash, sizeof(Startcash), "%.0f Startmoney\n$%.0f\n%0.f Player Kills\n%0.f Player Deaths\n%s Damage Dealt\n%s DPS\n%0.f RPS\n%s Damage Healed", StartMoney+additionalstartmoney,CurrencyOwned[client],Kills[client],Deaths[client],GetAlphabetForm(DamageDealt[client]),GetAlphabetForm(dps[client]),RPS[client],GetAlphabetForm(Healed[client])); 
+				SendItemInfo(client, Startcash);
+			}
+			SetEntProp(client, Prop_Send, "m_nCurrency", 0);
+			char ArmorLeft[64]
+			if(IsValidEdict(CWeapon))
+			{
+				Format(ArmorLeft, sizeof(ArmorLeft), "Armor | %i / %i", RoundToCeil(fl_CurrentArmor[client] + fl_AdditionalArmor[client]), RoundToNearest(fl_MaxArmor[client])); 
+				if(CheckForAttunement(client))
+				{
+					Format(ArmorLeft, sizeof(ArmorLeft), "%s\nFocus  | %.0f / %.0f", ArmorLeft, fl_CurrentFocus[client],fl_MaxFocus[client]); 
+					char spellHUD[1024]
+					Format(spellHUD, sizeof(spellHUD), "Current Spells Active | \n");
+					int activeSpells = 0;
+					int attunement = 1;
+					Address attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
+					if(attuneActive != Address_Null)
+					{
+						attunement += RoundToNearest(TF2Attrib_GetValue(attuneActive));
+					}
+					for(int i = 0;i<Max_Attunement_Slots && attunement > activeSpells;i++)
+					{
+						if(AttunedSpells[client][i] != 0.0)
+						{
+							activeSpells++;
+							int spellID = RoundToNearest(AttunedSpells[client][i]-1.0)
+							char spellnum[64]
+							Format(spellnum, sizeof(spellnum),"%i - %s | Cooldown %.1f\n", i+1, SpellList[spellID], SpellCooldowns[client][i]);
+							StrCat(spellHUD,sizeof(spellHUD),spellnum);
+						}
+					}
+					SetHudTextParams(0.02, 0.02, 0.21, 69, 245, 66, 255, 0, 0.0, 0.0, 0.0);
+					ShowSyncHudText(client, hudSpells, spellHUD);
+				}
+
+				if (AreClientCookiesCached(client))
+				{
+					if(StringToFloat(ArmorXPos[client]) != 0.0 && StringToFloat(ArmorYPos[client]))
+					{
+						if(fl_AdditionalArmor[client] <= 0.0)
+						{
+							SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudSync, ArmorLeft);
+						}
+						else
+						{
+							SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudSync, ArmorLeft);
+						}
+					}
+					else
+					{
+						if(fl_AdditionalArmor[client] <= 0.0)
+						{
+							SetHudTextParams(-0.75, -0.2, 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudSync, ArmorLeft);
+						}
+						else
+						{
+							SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudSync, ArmorLeft);
+						}
+					}
+				}
+				else
+				{
+					if(fl_AdditionalArmor[client] <= 0.0)
+					{
+						SetHudTextParams(-0.75, -0.2, 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+						ShowSyncHudText(client, hudSync, ArmorLeft);
+					}
+					else
+					{
+						SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+						ShowSyncHudText(client, hudSync, ArmorLeft);
+					}
+				}
+			}
+		}
+		oldPlayerButtons[client] = globalButtons[client];
 	}
 }
 public Action:Timer_Every100MS(Handle timer)
@@ -520,13 +518,13 @@ public Action:Timer_Every100MS(Handle timer)
 					{
 						case 752:
 						{
-							miniCritStatusAttacker[client] = 0.3
+							miniCritStatusAttacker[client] = currentGameTime+0.3
 							TF2_AddCondition(client, TFCond_RuneHaste, 0.3);
 							TF2_RemoveCondition(client, TFCond_FocusBuff);
 						}
 						case 594:
 						{
-							miniCritStatusAttacker[client] = 0.3
+							miniCritStatusAttacker[client] = currentGameTime+0.3
 							TF2_AddCondition(client, TFCond_RuneAgility, 0.3);
 							TF2_RemoveCondition(client, TFCond_CritMmmph);
 						}
@@ -562,8 +560,8 @@ public Action:Timer_Every100MS(Handle timer)
 									if(GetVectorDistance(ClientPos,VictimPos) <= range)
 									{
 										TF2_AddCondition(i, TFCond_DisguiseRemoved, 0.3)//Buff Banner | 1.8x dmg
-										if(miniCritStatusAttacker[i] < 0.3)
-											miniCritStatusAttacker[i] = 0.3
+										if(miniCritStatusAttacker[i] < currentGameTime+0.3)
+											miniCritStatusAttacker[i] = currentGameTime+0.3
 									}
 								}
 							}
@@ -842,7 +840,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory.
 						{
 							BleedBuildup[client] = 0.0;
 							RadiationBuildup[client] = 0.0;
-							miniCritStatusAttacker[client] = 10.0
+							miniCritStatusAttacker[client] = currentGameTime+10.0
 							TF2_AddCondition(client, TFCond_DodgeChance, 2.5);
 							TF2_AddCondition(client, TFCond_AfterburnImmune, 2.5);
 							TF2_AddCondition(client, TFCond_UberchargedHidden, 0.01);
@@ -1441,7 +1439,7 @@ public Action:GiveMaxAmmo(Handle timer, any:userid)
 }
 public Action:eurekaAttempt(client, const char[] command, argc) 
 {
-	if(IsValidClient3(client) && eurekaActive[client] == false && weaponArtCooldown[client] <= 0.0)
+	if(IsValidClient3(client) && eurekaActive[client] == false && weaponArtCooldown[client] <= currentGameTime)
 	{
 		eurekaActive[client] = true;
 		float tauntDelay = 2.3;
@@ -1672,7 +1670,7 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 		TE_SendToAll();
 		
 		shouldAttack[client] = true;
-		SetEntPropFloat(weapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime());
+		SetEntPropFloat(weapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
 		RequestFrame(disableWeapon,client);
 	}
 	CloseHandle(data);
@@ -1697,7 +1695,7 @@ public Action:AttackTwice(Handle timer, any:data)
 	{
 		timesLeft--;
 		shouldAttack[client] = true;
-		SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", GetGameTime());
+		SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
 		
 		if(timesLeft > 0)
 		{

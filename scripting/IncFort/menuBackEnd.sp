@@ -7,8 +7,6 @@ public MenuHandler_AccessDenied(Handle menu, MenuAction:action, client, param2)
     if (action == MenuAction_End)
         CloseHandle(menu);
 }
-
-//Memory Leak here?
 public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 {
 	if(action == MenuAction_DisplayItem)
@@ -23,33 +21,34 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int subcat_id = current_w_sc_list_id[client]
 		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
 		playerUpgradeMenuPage[client] = param2;
-		if(upgrades_display_style[upgrade_choice] != 0)
+		if(upgrades[upgrade_choice].display_style == 0)
+			return param2;
+		
+		switch(upgrades[upgrade_choice].display_style)
 		{
-			switch(upgrades_display_style[upgrade_choice])
-			{
-				case 1:
-				{		
-					if(upgrades_efficiency_list[client][slot][upgrade_choice])
-						Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
-				}
-				case 6:
-				{
-					if(upgrades_efficiency_list[client][slot][upgrade_choice])
-						Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
-				}
-				case 2:
-				{
-					if(upgrades_efficiency_list[client][slot][upgrade_choice])
-						Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
-				}
-				case 3:
-				{
-					if(upgrades_efficiency_list[client][slot][upgrade_choice])
-						Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
-				}
+			case 1:
+			{		
+				if(upgrades_efficiency_list[client][slot][upgrade_choice])
+					Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
 			}
-			return RedrawMenuItem(desc_str);
+			case 6:
+			{
+				if(upgrades_efficiency_list[client][slot][upgrade_choice])
+					Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+			}
+			case 2:
+			{
+				if(upgrades_efficiency_list[client][slot][upgrade_choice])
+					Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+			}
+			case 3:
+			{
+				if(upgrades_efficiency_list[client][slot][upgrade_choice])
+					Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+			}
 		}
+		return RedrawMenuItem(desc_str);
+		
 	}
 	else if (action == MenuAction_Select)
 	{
@@ -62,7 +61,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
 		int rate = getUpgradeRate(client);
 
-		if(canBypassRestriction[client] == false && upgrades_requirement[upgrade_choice] > (StartMoney + additionalstartmoney))
+		if(canBypassRestriction[client] == false && upgrades[upgrade_choice].requirement > (StartMoney + additionalstartmoney))
 		{
 			char fstr2[100]
 			char fstr[40]
@@ -101,12 +100,12 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 					PrintToChat(client,"You can use the QBUY system by using /qbuy.\nOr you can CROUCH for 10x purchasing and RELOAD for 100x purchasing.");
 					PrintToChat(client,"Downgrading is possible by using JUMP key while upgrading.");
 				}
-				if(upgrades_description[upgrade_choice][0])
+				if(upgrades[upgrade_choice].description[0])
 				{
-					disableIFMiniHud[client] = 8.0;
+					disableIFMiniHud[client] = currentGameTime+8.0;
 					char upgradeDescription[512]
 					Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
-					upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
+					upgrades[upgrade_choice].name,upgrades[upgrade_choice].description);
 					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
 					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "pct");
 					SendItemInfo(client, upgradeDescription);
@@ -121,42 +120,42 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 				currentupgrades_number[client][slot]++
 				upgrades_ref_to_idx[client][slot][upgrade_choice] = inum;
 				currentupgrades_idx[client][slot][inum] = upgrade_choice 
-				currentupgrades_val[client][slot][inum] = upgrades_i_val[upgrade_choice];
+				currentupgrades_val[client][slot][inum] = upgrades[upgrade_choice].i_val;
 			}
 			int idx_currentupgrades_val
 			if(currentupgrades_i[client][slot][inum] != 0.0){
-				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - currentupgrades_i[client][slot][inum])/ upgrades_ratio[upgrade_choice])
+				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - currentupgrades_i[client][slot][inum])/ upgrades[upgrade_choice].ratio)
 			}
 			else{
-				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - upgrades_i_val[upgrade_choice])/ upgrades_ratio[upgrade_choice])
+				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - upgrades[upgrade_choice].i_val)/ upgrades[upgrade_choice].ratio)
 			}
 			float upgrades_val = currentupgrades_val[client][slot][inum];
-			float up_cost = float(upgrades_costs[upgrade_choice]);
+			float up_cost = float(upgrades[upgrade_choice].cost);
 			if (slot == 1)
 				up_cost *= SecondaryCostReduction;
 			
-			if (inum != 20000 && upgrades_ratio[upgrade_choice])
+			if (inum != 20000 && upgrades[upgrade_choice].ratio)
 			{
 				float t_up_cost = 0.0;
 				int times = 0;
 				bool notEnough = false;
 				for (int idx = 0; idx < rate; idx++)
 				{
-					float nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice])
-					if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] > 0.0 && 
-					(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 < upgrades_m_val[upgrade_choice]))
+					float nextcost = t_up_cost + up_cost + up_cost * (idx_currentupgrades_val * upgrades[upgrade_choice].cost_inc_ratio)
+					if(nextcost < CurrencyOwned[client] && upgrades[upgrade_choice].ratio > 0.0 && 
+					(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 < upgrades[upgrade_choice].m_val))
 					{
-						t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[upgrade_choice]))
+						t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades[upgrade_choice].cost_inc_ratio))
 						idx_currentupgrades_val++		
-						upgrades_val += upgrades_ratio[upgrade_choice]
+						upgrades_val += upgrades[upgrade_choice].ratio
 						times++;
 					}
-					else if(nextcost < CurrencyOwned[client] && upgrades_ratio[upgrade_choice] < 0.0 && 
-					(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 > upgrades_m_val[upgrade_choice]))
+					else if(nextcost < CurrencyOwned[client] && upgrades[upgrade_choice].ratio < 0.0 && 
+					(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 > upgrades[upgrade_choice].m_val))
 					{
-						t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice]))
+						t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades[upgrade_choice].cost_inc_ratio))
 						idx_currentupgrades_val++		
-						upgrades_val += upgrades_ratio[upgrade_choice]
+						upgrades_val += upgrades[upgrade_choice].ratio
 						times++;
 					}
 					else if(nextcost > CurrencyOwned[client])
@@ -170,18 +169,18 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 				}
 				if(times > 0)
 				{
-					if(canBypassRestriction[client] == false && upgrades_restriction_category[upgrade_choice] != 0)
+					if(canBypassRestriction[client] == false && upgrades[upgrade_choice].restriction_category != 0)
 					{
 						for(int i = 1;i<5;i++)
 						{
-							if(currentupgrades_restriction[client][slot][i] == upgrades_restriction_category[upgrade_choice])
+							if(currentupgrades_restriction[client][slot][i] == upgrades[upgrade_choice].restriction_category)
 							{
 								PrintToChat(client, "You already have something that fits this restriction category.");
 								EmitSoundToClient(client, SOUND_FAIL);
 								break;
 							}
 						}
-						currentupgrades_restriction[client][slot][upgrades_restriction_category[upgrade_choice]] = upgrades_restriction_category[upgrade_choice];
+						currentupgrades_restriction[client][slot][upgrades[upgrade_choice].restriction_category] = upgrades[upgrade_choice].restriction_category;
 					}
 					if(notEnough == true)
 					{
@@ -190,8 +189,8 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 					if (t_up_cost < 0.0)
 					{
 						t_up_cost *= -1;
-						if (t_up_cost < upgrades_costs[upgrade_choice])
-							t_up_cost = float(upgrades_costs[upgrade_choice]);
+						if (t_up_cost < upgrades[upgrade_choice].cost)
+							t_up_cost = float(upgrades[upgrade_choice].cost);
 					}
 					CurrencyOwned[client] -= t_up_cost;
 					currentupgrades_val[client][slot][inum] = upgrades_val
@@ -201,14 +200,14 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 
 					client_spent_money[client][slot] += t_up_cost
 					GiveNewUpgradedWeapon_(client, slot)
-					PrintToChat(client, "You bought %t %i times.",upgradesNames[upgrade_choice],times);
+					PrintToChat(client, "You bought %t %i times.",upgrades[upgrade_choice].name,times);
 
-					if(upgrades_description[upgrade_choice][0])
+					if(upgrades[upgrade_choice].description[0])
 					{
-						disableIFMiniHud[client] = 8.0;
+						disableIFMiniHud[client] = currentGameTime+8.0;
 						char upgradeDescription[512]
 						Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
-						upgradesNames[upgrade_choice],upgrades_description[upgrade_choice]);
+						upgrades[upgrade_choice].name,upgrades[upgrade_choice].description);
 						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
 						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "pct");
 						SendItemInfo(client, upgradeDescription);
@@ -225,51 +224,51 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 				currentupgrades_number[client][slot]++
 				upgrades_ref_to_idx[client][slot][upgrade_choice] = inum;
 				currentupgrades_idx[client][slot][inum] = upgrade_choice 
-				currentupgrades_val[client][slot][inum] = upgrades_i_val[upgrade_choice];
+				currentupgrades_val[client][slot][inum] = upgrades[upgrade_choice].i_val;
 			}
 			int idx_currentupgrades_val
 			if(currentupgrades_i[client][slot][inum] != 0.0){
-				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - currentupgrades_i[client][slot][inum])/ upgrades_ratio[upgrade_choice])
+				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - currentupgrades_i[client][slot][inum])/ upgrades[upgrade_choice].ratio)
 			}
 			else{
-				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - upgrades_i_val[upgrade_choice])/ upgrades_ratio[upgrade_choice])
+				idx_currentupgrades_val = RoundFloat((currentupgrades_val[client][slot][inum] - upgrades[upgrade_choice].i_val)/ upgrades[upgrade_choice].ratio)
 			}
 			if(idx_currentupgrades_val > 0)
 			{
 				float upgrades_val = currentupgrades_val[client][slot][inum];
-				float up_cost = float(upgrades_costs[upgrade_choice]);
+				float up_cost = float(upgrades[upgrade_choice].cost);
 				if (slot == 1)
 					up_cost *= SecondaryCostReduction;
 			
-				if (inum != 20000 && upgrades_ratio[upgrade_choice])
+				if (inum != 20000 && upgrades[upgrade_choice].ratio)
 				{
 					float t_up_cost = 0.0;
 					int times = 0;
-					if(upgrades_val == upgrades_m_val[upgrade_choice])
+					if(upgrades_val == upgrades[upgrade_choice].m_val)
 					{
 						idx_currentupgrades_val--
-						float temp = currentupgrades_i[client][slot][inum] != 0.0 ? currentupgrades_i[client][slot][inum] : upgrades_i_val[upgrade_choice];
-						t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[upgrade_choice]));
-						upgrades_val = temp+(idx_currentupgrades_val * upgrades_ratio[upgrade_choice]);
+						float temp = currentupgrades_i[client][slot][inum] != 0.0 ? currentupgrades_i[client][slot][inum] : upgrades[upgrade_choice].i_val;
+						t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades[upgrade_choice].cost_inc_ratio));
+						upgrades_val = temp+(idx_currentupgrades_val * upgrades[upgrade_choice].ratio);
 						times++;
 					}
 					for (;times < yeah;)
 					{
-						if(idx_currentupgrades_val > 0 && upgrades_ratio[upgrade_choice] > 0.0 && 
-						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 <= upgrades_m_val[upgrade_choice]
+						if(idx_currentupgrades_val > 0 && upgrades[upgrade_choice].ratio > 0.0 && 
+						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 <= upgrades[upgrade_choice].m_val
 						&& client_spent_money[client][slot] + t_up_cost > client_tweak_highest_requirement[client][slot] - 1.0)))
 						{
 							idx_currentupgrades_val--
-							t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades_costs_inc_ratio[upgrade_choice]))		
-							upgrades_val -= upgrades_ratio[upgrade_choice]
+							t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades[upgrade_choice].cost_inc_ratio))		
+							upgrades_val -= upgrades[upgrade_choice].ratio
 						}
-						else if(idx_currentupgrades_val > 0 && upgrades_ratio[upgrade_choice] < 0.0 && 
-						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 >= upgrades_m_val[upgrade_choice]
+						else if(idx_currentupgrades_val > 0 && upgrades[upgrade_choice].ratio < 0.0 && 
+						(canBypassRestriction[client] == true || (RoundFloat(upgrades_val*100.0)/100.0 >= upgrades[upgrade_choice].m_val
 						&& client_spent_money[client][slot] + t_up_cost > client_tweak_highest_requirement[client][slot] - 1.0)))
 						{
 							idx_currentupgrades_val--
-							t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades_costs_inc_ratio[upgrade_choice]))	
-							upgrades_val -= upgrades_ratio[upgrade_choice]
+							t_up_cost -= up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades[upgrade_choice].cost_inc_ratio))	
+							upgrades_val -= upgrades[upgrade_choice].ratio
 						}
 						else{
 							break;
@@ -284,7 +283,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 							check_apply_maxvalue(client, slot, inum, upgrade_choice)
 						client_spent_money[client][slot] += t_up_cost
 						GiveNewUpgradedWeapon_(client, slot)
-						PrintToChat(client, "You downgraded %t %i times.",upgradesNames[upgrade_choice],times);
+						PrintToChat(client, "You downgraded %t %i times.",upgrades[upgrade_choice].name,times);
 					}
 					if(idx_currentupgrades_val == 0)
 						remove_attribute(client,inum);
@@ -654,10 +653,10 @@ public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client
 				int u = currentupgrades_idx[client][s][param2]
 				if (u != 20000)
 				{
-					if(upgrades_costs[u] < -0.1)
+					if(upgrades[u].cost < -0.1)
 					{
-						int nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][param2]) / upgrades_ratio[u])
-						float up_cost = float(upgrades_costs[u] * nb_time_upgraded);
+						int nb_time_upgraded = RoundToNearest((upgrades[u].i_val - currentupgrades_val[client][s][param2]) / upgrades[u].ratio)
+						float up_cost = float(upgrades[u].cost * nb_time_upgraded);
 						if(up_cost > 200.0)
 						{
 							if (CurrencyOwned[client] >= up_cost)
@@ -673,19 +672,19 @@ public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client
 							}
 						}
 					}
-					if (upgrades_costs[u] > 1.0)
+					if (upgrades[u].cost > 1.0)
 					{
 						int nb_time_upgraded;
 						if(currentupgrades_i[client][s][param2] != 0.0)
 						{
-							nb_time_upgraded = RoundToNearest((currentupgrades_i[client][s][param2] - currentupgrades_val[client][s][param2]) / upgrades_ratio[u])
+							nb_time_upgraded = RoundToNearest((currentupgrades_i[client][s][param2] - currentupgrades_val[client][s][param2]) / upgrades[u].ratio)
 						}
 						else
 						{
-							nb_time_upgraded = RoundToNearest((upgrades_i_val[u] - currentupgrades_val[client][s][param2]) / upgrades_ratio[u])
+							nb_time_upgraded = RoundToNearest((upgrades[u].i_val - currentupgrades_val[client][s][param2]) / upgrades[u].ratio)
 						}
 						nb_time_upgraded *= -1
-						float up_cost = ((upgrades_costs[u]+((upgrades_costs_inc_ratio[u]*upgrades_costs[u])*(nb_time_upgraded-1))/2)*nb_time_upgraded)
+						float up_cost = ((upgrades[u].cost+((upgrades[u].cost_inc_ratio*upgrades[u].cost)*(nb_time_upgraded-1))/2)*nb_time_upgraded)
 						if(s == 1)
 							up_cost *= SecondaryCostReduction;
 							
@@ -728,9 +727,9 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 		int w_id = current_w_list_id[client]
 		int cat_id = current_w_c_list_id[client]
 		int spTweak = given_upgrd_list[w_id][cat_id][0][param2]
-		for (int i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
+		for (int i = 0; i < tweaks[spTweak].nb_att; i++)
 		{
-			int upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
+			int upgrade_choice = tweaks[spTweak].att_idx[i]
 			int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
 
 			if(canBypassRestriction[client])
@@ -738,7 +737,7 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 
 			if (inum != 20000)
 			{
-				if (currentupgrades_val[client][slot][inum] == upgrades_m_val[upgrade_choice])
+				if (currentupgrades_val[client][slot][inum] == upgrades[upgrade_choice].m_val)
 				{
 					PrintToChat(client, "You already have reached the maximum upgrade for this tweak.");
 					EmitSoundToClient(client, SOUND_FAIL);
@@ -748,7 +747,7 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 			}
 			else
 			{
-				if (currentupgrades_number[client][slot] + upgrades_tweaks_nb_att[spTweak] >= MAX_ATTRIBUTES_ITEM)
+				if (currentupgrades_number[client][slot] + tweaks[spTweak].nb_att >= MAX_ATTRIBUTES_ITEM)
 				{
 					PrintToChat(client, "You have not enough upgrade category slots for this tweak.");
 					EmitSoundToClient(client, SOUND_FAIL);
@@ -756,14 +755,14 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 					break;
 				}
 			}
-			if(upgrades_tweaks_requirement[spTweak] > client_spent_money[client][slot])
+			if(tweaks[spTweak].requirement > client_spent_money[client][slot])
 			{
 				PrintToChat(client, "You must spend more on the slot to use this tweak.");
 				EmitSoundToClient(client, SOUND_FAIL);
 				got_req = 0
 				break;
 			}
-			if(upgrades_tweaks_cost[spTweak] > CurrencyOwned[client])
+			if(tweaks[spTweak].cost > CurrencyOwned[client])
 			{
 				PrintToChat(client, "You don't have enough money for this tweak.");
 				EmitSoundToClient(client, SOUND_FAIL);
@@ -773,9 +772,9 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 		}
 		if (got_req)
 		{
-			if(upgrades_tweaks_requirement[spTweak] > 1.0 && client_tweak_highest_requirement[client][slot] < upgrades_tweaks_requirement[spTweak])
+			if(tweaks[spTweak].requirement > 1.0 && client_tweak_highest_requirement[client][slot] < tweaks[spTweak].requirement)
 			{
-				client_tweak_highest_requirement[client][slot] = upgrades_tweaks_requirement[spTweak];
+				client_tweak_highest_requirement[client][slot] = tweaks[spTweak].requirement;
 			}
 			char clname[255]
 			GetClientName(client, clname, sizeof(clname))
@@ -784,17 +783,17 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 				if (IsValidClient(i) && !client_no_d_team_upgrade[i])
 				{
 					PrintToChat(i,"%s : [%s tweak] - %s!", 
-					clname, upgrades_tweaks[spTweak], current_slot_name[slot]);
+					clname, tweaks[spTweak].tweaks, current_slot_name[slot]);
 				}
 			}
-			for (int i = 0; i < upgrades_tweaks_nb_att[spTweak]; i++)
+			for (int i = 0; i < tweaks[spTweak].nb_att; i++)
 			{
-				int upgrade_choice = upgrades_tweaks_att_idx[spTweak][i]
-				UpgradeItem(client, upgrade_choice, upgrades_ref_to_idx[client][slot][upgrade_choice], upgrades_tweaks_att_ratio[spTweak][i], slot)
+				int upgrade_choice = tweaks[spTweak].att_idx[i]
+				UpgradeItem(client, upgrade_choice, upgrades_ref_to_idx[client][slot][upgrade_choice], tweaks[spTweak].att_ratio[i], slot)
 			}
 			GiveNewUpgradedWeapon_(client, slot)
-			CurrencyOwned[client] -= upgrades_tweaks_cost[spTweak];
-			client_spent_money[client][slot] += upgrades_tweaks_cost[spTweak];
+			CurrencyOwned[client] -= tweaks[spTweak].cost;
+			client_spent_money[client][slot] += tweaks[spTweak].cost;
 		}
 		char buf[128]
 		Format(buf, sizeof(buf), "%T", current_slot_name[slot], client);
@@ -965,9 +964,9 @@ public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select && IsValidClient(client) && IsPlayerAlive(client))
 	{
-		if(param2 >= 0 && MenuTimer[client] <= 0.0)
+		if(param2 >= 0 && MenuTimer[client] < currentGameTime)
 		{
-			MenuTimer[client] = 1.0
+			MenuTimer[client] = 1.0+currentGameTime
 			switch(param2)
 			{
 				case 0:

@@ -281,9 +281,9 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 				if(StrEqual(weaponClassName,"tf_weapon_jar_milk",false))
 				{
-					if(MadmilkDuration[victim] < 6.0)
+					if(MadmilkDuration[victim] < currentGameTime+6.0)
 					{
-						MadmilkDuration[victim] = 6.0;
+						MadmilkDuration[victim] = currentGameTime+6.0;
 						MadmilkInflictor[victim] = attacker;
 					}
 				}
@@ -292,9 +292,9 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(MadMilkOnhit != Address_Null)
 			{
 				float value = TF2Attrib_GetValue(MadMilkOnhit);
-				if(MadmilkDuration[victim] < value)
+				if(MadmilkDuration[victim] < currentGameTime+value)
 				{
-					MadmilkDuration[victim] = value
+					MadmilkDuration[victim] = currentGameTime+value
 					MadmilkInflictor[victim] = attacker;
 				}
 			}
@@ -431,11 +431,11 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(RageActive[attacker] == true && TF2Attrib_GetValue(revengePowerupAttacker) > 0.0)
 			{
 				damage *= 1.5;
-				if(powerupParticle[attacker] <= 0.0)
+				if(powerupParticle[attacker] <= currentGameTime)
 				{
 					CreateParticle(victim, "critgun_weaponmodel_red", true, "", 1.0,_,_,1);
 					TE_SendToAll();
-					powerupParticle[attacker] = 0.2;
+					powerupParticle[attacker] = currentGameTime+0.2;
 				}
 			}
 		}
@@ -619,7 +619,7 @@ public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 		critType = CritType_None;
 		return Plugin_Changed;
 	}else if(IsValidClient3(victim) && miniCritStatus[victim] == false && IsValidClient3(attacker) && 
-	(critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > 0.0 || miniCritStatusVictim[victim] > 0.0))
+	(critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > currentGameTime || miniCritStatusVictim[victim] > currentGameTime))
 	{
 		if(debugMode)
 			PrintToChat(attacker, "minicrit override 1");
@@ -657,7 +657,7 @@ int damagecustom, CritType &critType)
 		return Plugin_Changed;
 	}
 	else if(IsValidClient3(victim) && lastDamageTaken[victim] != 0.0 && miniCritStatus[victim] == false && IsValidClient3(attacker) 
-	&& (critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > 0.0 || miniCritStatusVictim[victim] > 0.0))
+	&& (critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > currentGameTime || miniCritStatusVictim[victim] > currentGameTime))
 	{
 		if(debugMode)
 			PrintToChat(attacker, "minicrit override failsafe");
@@ -1205,9 +1205,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				float victimPosition[3];
 				GetEntPropVector(victim, Prop_Data, "m_vecAbsOrigin", victimPosition); 
 				
-				EntityExplosion(attacker, damage, 300.0,victimPosition,_,weaponArtParticle[attacker] <= 0.0 ? true : false, victim,_,_,weapon, 0.5, 70);
+				EntityExplosion(attacker, damage, 300.0,victimPosition,_,weaponArtParticle[attacker] <= currentGameTime ? true : false, victim,_,_,weapon, 0.5, 70);
 				//PARTICLES
-				if(weaponArtParticle[attacker] <= 0.0)
+				if(weaponArtParticle[attacker] <= currentGameTime)
 				{
 					int iParti = CreateEntityByName("info_particle_system");
 					int iPart2 = CreateEntityByName("info_particle_system");
@@ -1239,7 +1239,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						CreateDataTimer(0.2, Timer_KillParticle, pack2);
 						WritePackCell(pack2, EntRefToEntIndex(iPart2));
 					}
-					weaponArtParticle[attacker] = 1.0;
+					weaponArtParticle[attacker] = currentGameTime+1.0;
 				}
 			}
 		}

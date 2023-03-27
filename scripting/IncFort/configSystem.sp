@@ -70,7 +70,7 @@ BrowseWeaponsCatKV(Handle kv)
 
 BrowseAttributesKV(Handle kv)
 {
-	char Buf[512];
+	char Buf[256];
 	do
 	{
 		if (KvGotoFirstSubKey(kv, false))
@@ -87,7 +87,7 @@ BrowseAttributesKV(Handle kv)
 				if (!strcmp(Buf,"ref"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					strcopy(upgradesNames[_u_id], 64, Buf);
+					strcopy(upgrades[_u_id].name, 64, Buf);
 					SetTrieValue(_upg_names, Buf, _u_id, true);
 				}
 				else if (!strcmp(Buf,"name"))
@@ -97,10 +97,9 @@ BrowseAttributesKV(Handle kv)
 					{
 						for (int i_ = 1; i_ < MAX_ATTRIBUTES; i_++)
 						{
-							if (!strcmp(upgradesWorkNames[i_], Buf))
+							if (!strcmp(upgrades[i_].attr_name, Buf))
 							{
-								upgrades_to_a_id[_u_id] = i_
-							
+								upgrades[_u_id].to_a_id = i_
 								break;
 							}
 						}
@@ -109,60 +108,60 @@ BrowseAttributesKV(Handle kv)
 				else if (!strcmp(Buf,"cost"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades_costs[_u_id] = StringToInt(Buf)
+					upgrades[_u_id].cost = StringToInt(Buf)
 				}
 				else if (!strcmp(Buf,"increase_ratio"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades_costs_inc_ratio[_u_id] = StringToFloat(Buf)
+					upgrades[_u_id].cost_inc_ratio = StringToFloat(Buf)
 				}
 				else if (!strcmp(Buf,"value"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades_ratio[_u_id] = StringToFloat(Buf)
+					upgrades[_u_id].ratio = StringToFloat(Buf)
 				}
 				else if (!strcmp(Buf,"init"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades_i_val[_u_id] = StringToFloat(Buf)
+					upgrades[_u_id].i_val = StringToFloat(Buf)
 				}
 				else if(!strcmp(Buf,"restriction_category"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades_restriction_category[_u_id] = StringToInt(Buf)
+					upgrades[_u_id].restriction_category = StringToInt(Buf)
 				}
 				else if(!strcmp(Buf,"display_style"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades_display_style[_u_id] = StringToInt(Buf)
+					upgrades[_u_id].display_style = StringToInt(Buf)
 				}
 				else if(!strcmp(Buf,"description"))
 				{
-					KvGetString(kv, "", Buf, 512);
-					upgrades_description[_u_id] = Buf;
+					KvGetString(kv, "", Buf, 256);
+					upgrades[_u_id].description = Buf;
 				}
 				else if(!strcmp(Buf,"requirement"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades_requirement[_u_id] = StringToFloat(Buf);
+					upgrades[_u_id].requirement = StringToFloat(Buf);
 				}
 				else if(!strcmp(Buf, "staged_max"))
 				{
-					KvGetString(kv, "", Buf, 512);
+					KvGetString(kv, "", Buf, 256);
 					char parts[MAX_STAGES][256];
 					int it = ExplodeString(Buf, ",", parts, MAX_STAGES, 256);
 
 					for(int i = 1;i<it;i++)
 					{
 						//PrintToServer("Stage %i | Set to %.2f max.", i, StringToFloat(parts[i])) //it works :D
-						upgrades_staged_max[_u_id][i] = StringToFloat(parts[i-1]);
+						upgrades[_u_id].staged_max[i] = StringToFloat(parts[i-1]);
 					}
 				}
 				else if (!strcmp(Buf,"max"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades_m_val[_u_id] = StringToFloat(Buf)
-					upgrades_staged_max[_u_id][0] = upgrades_m_val[_u_id]
+					upgrades[_u_id].m_val = StringToFloat(Buf)
+					upgrades[_u_id].staged_max[0] = upgrades[_u_id].m_val;
 					_u_id++//Finish the attribute here.
 				}
 			}
@@ -263,7 +262,7 @@ BrowseAttListKV(Handle kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_at
 }
 BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 {
-	char Buf[128];
+	char Buf[32];
 	int attr_ref
 	do
 	{
@@ -272,10 +271,10 @@ BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 			KvGetSectionName(kv, Buf, sizeof(Buf));
 			u_id++
 			SetTrieValue(_spetweaks_names, Buf, u_id)
-			upgrades_tweaks[u_id] = Buf
-			upgrades_tweaks_nb_att[u_id] = 0
-			upgrades_tweaks_requirement[u_id] = 0.0;
-			upgrades_tweaks_cost[u_id] = 0.0;
+			tweaks[u_id].tweaks = Buf
+			tweaks[u_id].nb_att = 0
+			tweaks[u_id].requirement = 0.0;
+			tweaks[u_id].cost = 0.0;
 			att_id = 0
 		}
 		if (level == 3)
@@ -283,26 +282,25 @@ BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 			KvGetSectionName(kv, Buf, sizeof(Buf));
 			if(!strcmp("requirement", Buf))
 			{
-				KvGetString(kv, "", Buf, 64);
-				upgrades_tweaks_requirement[u_id] = StringToFloat(Buf)
+				KvGetString(kv, "", Buf, 32);
+				tweaks[u_id].requirement = StringToFloat(Buf)
 			}
 			else if(!strcmp("cost", Buf))
 			{
-				KvGetString(kv, "", Buf, 64);
-				upgrades_tweaks_cost[u_id] = StringToFloat(Buf)
+				KvGetString(kv, "", Buf, 32);
+				tweaks[u_id].cost = StringToFloat(Buf)
 			}
 			else
 			{
 				if (!GetTrieValue(_upg_names, Buf, attr_ref))
-				{
 					PrintToServer("[spetw_lists] Malformated if_specialtweaks | if_attribute.txt file?: %s was not found", Buf)
-				}
 				
-				upgrades_tweaks_att_idx[u_id][att_id] = attr_ref
-				KvGetString(kv, "", Buf, 64);
-				upgrades_tweaks_att_ratio[u_id][att_id] = StringToFloat(Buf)
 				
-				upgrades_tweaks_nb_att[u_id]++
+				tweaks[u_id].att_idx[att_id] = attr_ref;
+				KvGetString(kv, "", Buf, 32);
+				tweaks[u_id].att_ratio[att_id] = StringToFloat(Buf)
+				
+				tweaks[u_id].nb_att++
 				att_id++
 			}
 		}

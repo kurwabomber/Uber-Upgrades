@@ -741,7 +741,7 @@ public void CheckMines(ref)
 	CreateTimer(0.1,Timer_GrenadeMines,  EntIndexToEntRef(entity), TIMER_REPEAT);
 	CreateTimer(20.0,SelfDestruct,  EntIndexToEntRef(entity));
 	SetEntProp(entity, Prop_Data, "m_nNextThinkTick", -1);
-	lastMinesTime[client] = GetGameTime();
+	lastMinesTime[client] = currentGameTime;
 }
 public Action:Timer_GrenadeMines(Handle timer, any:ref) 
 { 
@@ -761,7 +761,7 @@ public Action:Timer_GrenadeMines(Handle timer, any:ref)
 
 	float distance = GetEntPropFloat(entity, Prop_Send, "m_DmgRadius")
 	float damage = GetEntPropFloat(entity, Prop_Send, "m_flDamage")
-	float timeMod = 1.0+((GetGameTime()-lastMinesTime[client])*damageRate[spellLevel]);
+	float timeMod = 1.0+((currentGameTime-lastMinesTime[client])*damageRate[spellLevel]);
 	float grenadevec[3], targetvec[3];
 
 	if(timeMod > maxDamageBonus[spellLevel]){timeMod=maxDamageBonus[spellLevel];}
