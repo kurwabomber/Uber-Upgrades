@@ -176,6 +176,13 @@
 					}
 				}
 			}
+			"CTFWeaponBase::GetDamageType()"
+			{
+				"signature"		"CTFWeaponBase::GetDamageType()"
+				"callconv"		"thiscall"
+				"return"		"int"
+				"this"			"entity"
+			}
 		}
 		"Signatures"
 		{
@@ -287,6 +294,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN11CTFBat_Wood15LaunchBallThinkEv"
+			}
+			"CTFWeaponBase::GetDamageType()"
+			{
+				"library"	"server"
+				"linux"		"@_ZNK13CTFWeaponBase13GetDamageTypeEv"
 			}
 		}
 	}

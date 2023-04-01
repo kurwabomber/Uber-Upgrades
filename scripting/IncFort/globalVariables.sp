@@ -56,7 +56,20 @@ enum struct Tweak{
     int att_idx[NB_SLOTS_UED + 1];
     char tweaks[64] //change name later
 }
+//96 different damagetypes should be enough?
+enum struct extendedDamageTypes{
+    int first;
+    int second;
+    int third;
 
+    void clear(){
+        this.first = 0;
+        this.second = 0;
+        this.third = 0;
+    }
+}
+//oh boy
+extendedDamageTypes currentDamageType[MAXENTITIES];
 Upgrade upgrades[MAX_ATTRIBUTES];
 Tweak tweaks[MAX_TWEAKS]
 

@@ -19,6 +19,146 @@ public GetUpgrade_CatList(char[] WCName)
 	}
 	return w_id
 }
+stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = 0.65,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = 100, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0)
+{
+	if(entity == -1 || !IsValidEdict(entity))
+		entity = owner;
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
+	{
+		if(ShouldNotHit[entity][entity])
+			continue;
+
+		if(IsValidForDamage(i) && IsOnDifferentTeams(owner,i) && i != entity)
+		{
+			float targetvec[3];
+			float distance;
+			GetEntPropVector(i, Prop_Data, "m_vecOrigin", targetvec);
+			distance = GetVectorDistance(pos, targetvec, false)
+			if(distance <= radius)
+			{
+				if(IsPointVisible(pos,targetvec))
+				{
+					if(falloff != 0.0)
+					{
+						float ratio = (1.0-(distance/radius)*falloff);
+						if(ratio < 0.5)
+							ratio = 0.5;
+						if(ratio >= 0.95)
+							ratio = 1.0;
+						damage *= ratio
+					}
+					
+					currentDamageType[owner].first = damagetype | firstBits;
+					currentDamageType[owner].second = secondBits;
+					currentDamageType[owner].third = thirdBits;
+
+					if(IsValidEdict(weapon) && IsValidClient3(i))
+					{
+						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
+						if(ignition)
+							TF2_IgnitePlayer(i, owner, 7.0);
+					}
+					else
+					{
+						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,-1,NULL_VECTOR,NULL_VECTOR, false);
+					}
+				}
+			}
+		}
+	}
+	if(visual)
+	{
+		/*int particle = CreateEntityByName( "info_particle_system" );
+		if ( IsValidEdict( particle ) )
+		{
+			TeleportEntity( particle, pos, NULL_VECTOR, NULL_VECTOR );
+			DispatchKeyValue( particle, "effect_name", "ExplosionCore_MidAir" );
+			DispatchSpawn( particle );
+			ActivateEntity( particle );
+			AcceptEntityInput( particle, "start" );
+			SetVariantString( "OnUser1 !self:Kill::8:-1" );
+			AcceptEntityInput( particle, "AddOutput" );
+			AcceptEntityInput( particle, "FireUser1" );
+			CreateTimer(0.01, SelfDestruct, EntIndexToEntRef(particle));
+		}*/
+		CreateParticle(-1, "ExplosionCore_MidAir", false, "", 0.1, pos);
+	}
+	int random = GetRandomInt(1,3)
+	switch(soundType)
+	{
+		case 1:
+		{
+			if(random == 1){
+				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
+			}else if(random == 2){
+				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
+			}else if(random == 3){
+				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
+			}
+		}
+		case 2:
+		{
+			EmitSoundToAll(DetonatorExplosionSound, entity, -1, soundPriority-20, 0, soundLevel-0.15);
+		}
+		case 3:
+		{
+			EmitSoundToAll(OrnamentExplosionSound, entity, -1, soundPriority, 0, soundLevel);
+		}
+		default:
+		{
+			if(random == 1){
+				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
+			}else if(random == 2){
+				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
+			}else if(random == 3){
+				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
+			}
+		}
+	}
+}
+stock char[] getDamageCategory(extendedDamageTypes damagetype)
+{
+	//int damagebits2;
+	char damageCategory[64];
+	if(damagetype.second & DMG_PIERCING)
+	{
+		damageCategory = "piercing"
+	}
+	else if(damagetype.first & DMG_BULLET || damagetype.first & DMG_SLASH || 
+	damagetype.first & DMG_VEHICLE || damagetype.first & DMG_FALL || damagetype.first & DMG_CLUB || 
+	damagetype.first & DMG_BUCKSHOT)
+	{
+		damageCategory = "direct"
+	}
+	else if(damagetype.first & DMG_BLAST || damagetype.first & DMG_BLAST_SURFACE)
+	{
+		damageCategory = "blast"
+	}
+	else if(damagetype.first & DMG_BURN || damagetype.first & DMG_SLOWBURN || damagetype.first & DMG_IGNITE)
+	{
+		damageCategory = "fire"
+	}
+	else if(damagetype.first & DMG_SHOCK || damagetype.first & DMG_ENERGYBEAM)
+	{
+		damageCategory = "electric"
+	}
+	else if(damagetype.second & DMG_ARCANE)
+	{
+		damageCategory = "arcane"
+	}
+	else
+	{
+		damageCategory = "generic"
+	}
+	return damageCategory;
+}
 CheckForAttunement(client)
 {
 	bool flag = false;
@@ -1320,7 +1460,7 @@ refreshUpgrades(client, slot)
 				}
 				if(damageModifier != 1.0)
 				{
-					TF2Attrib_SetByName(slotItem,"throwable healing", damageModifier);
+					TF2Attrib_SetByName(slotItem,"damage mult 15", damageModifier);
 					//PrintToChat(client,"int mult = %.2f",damageModifier);
 				}
 			}

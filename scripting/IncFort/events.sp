@@ -1238,6 +1238,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
 {
 	int flags = GetEntityFlags(client)
+	
 	if(!IsPlayerAlive(client) || !IsValidClient3(client) || IsClientObserver(client))
 		return Plugin_Continue;
 	

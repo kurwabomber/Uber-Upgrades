@@ -16,8 +16,12 @@ Yeah.
 #define OrnamentExplosionSound "weapons/ball_buster_break_01.wav"
 #define MAXENTITIES 2049
 #define PI 3.142
-#define DMG_PIERCING DMG_CRUSH | DMG_BLAST_SURFACE | DMG_AIRBOAT | DMG_DROWNRECOVER
 
+//Second
+#define DMG_PIERCING 1 << 1
+#define DMG_ARCANE 1 << 2
+#define DMG_MINICRIT 1 << 3
+#define DMG_ACTUALCRIT 1 << 4
 
 bool DOTStacked[MAXENTITIES][MAXENTITIES];
 bool ShouldNotHome[MAXENTITIES][MAXPLAYERS+1];
@@ -77,40 +81,6 @@ stock bool IsOnDifferentTeams(entity1,entity2)
 	}
 	
     return false; 
-}
-stock char[] getDamageCategory(int damagetype)
-{
-	//int damagebits2;
-	char damageCategory[64];
-	if(damagetype & DMG_PIERCING == DMG_PIERCING)
-	{
-		damageCategory = "piercing"
-	}
-	else if(damagetype & DMG_BULLET || damagetype & DMG_SLASH || damagetype & DMG_VEHICLE || damagetype & DMG_FALL || damagetype & DMG_CLUB || damagetype & DMG_BUCKSHOT)
-	{
-		damageCategory = "direct"
-	}
-	else if(damagetype & DMG_BLAST || damagetype & DMG_BLAST_SURFACE)
-	{
-		damageCategory = "blast"
-	}
-	else if(damagetype & DMG_BURN || damagetype & DMG_SLOWBURN || damagetype & DMG_IGNITE)
-	{
-		damageCategory = "fire"
-	}
-	else if(damagetype & DMG_SHOCK || damagetype & DMG_ENERGYBEAM)
-	{
-		damageCategory = "electric"
-	}
-	else if(damagetype & 1073741824)
-	{
-		damageCategory = "arcane"
-	}
-	else
-	{
-		damageCategory = "generic"
-	}
-	return damageCategory;
 }
 stock float GetAttribute(int entity, const char[] attrName, float value = 1.0)
 {
@@ -313,106 +283,6 @@ stock refreshAllWeapons(client)
 		if(IsValidEdict(weapon))
 		{
 			TF2Attrib_ClearCache(weapon);
-		}
-	}
-}
-stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = 0.65,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = 100, bool ignition = false)
-{
-	if(entity == -1 || !IsValidEdict(entity))
-		entity = owner;
-	int i = -1;
-	while ((i = FindEntityByClassname(i, "*")) != -1)
-	{
-		if(ShouldNotHit[entity][entity])
-			continue;
-
-		if(IsValidForDamage(i) && IsOnDifferentTeams(owner,i) && i != entity)
-		{
-			float targetvec[3];
-			float distance;
-			GetEntPropVector(i, Prop_Data, "m_vecOrigin", targetvec);
-			distance = GetVectorDistance(pos, targetvec, false)
-			if(distance <= radius)
-			{
-				if(IsPointVisible(pos,targetvec))
-				{
-					if(falloff != 0.0)
-					{
-						float ratio = (1.0-(distance/radius)*falloff);
-						if(ratio < 0.5)
-							ratio = 0.5;
-						if(ratio >= 0.95)
-							ratio = 1.0;
-						damage *= ratio
-					}
-					
-					if(IsValidEdict(weapon) && IsValidClient3(i))
-					{
-						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
-						if(ignition)
-							TF2_IgnitePlayer(i, owner, 7.0);
-					}
-					else
-					{
-						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,-1,NULL_VECTOR,NULL_VECTOR, false);
-					}
-				}
-			}
-		}
-	}
-	if(visual)
-	{
-		/*int particle = CreateEntityByName( "info_particle_system" );
-		if ( IsValidEdict( particle ) )
-		{
-			TeleportEntity( particle, pos, NULL_VECTOR, NULL_VECTOR );
-			DispatchKeyValue( particle, "effect_name", "ExplosionCore_MidAir" );
-			DispatchSpawn( particle );
-			ActivateEntity( particle );
-			AcceptEntityInput( particle, "start" );
-			SetVariantString( "OnUser1 !self:Kill::8:-1" );
-			AcceptEntityInput( particle, "AddOutput" );
-			AcceptEntityInput( particle, "FireUser1" );
-			CreateTimer(0.01, SelfDestruct, EntIndexToEntRef(particle));
-		}*/
-		CreateParticle(-1, "ExplosionCore_MidAir", false, "", 0.1, pos);
-	}
-	int random = GetRandomInt(1,3)
-	switch(soundType)
-	{
-		case 1:
-		{
-			if(random == 1){
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
-			}else if(random == 2){
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
-			}else if(random == 3){
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
-			}
-		}
-		case 2:
-		{
-			EmitSoundToAll(DetonatorExplosionSound, entity, -1, soundPriority-20, 0, soundLevel-0.15);
-		}
-		case 3:
-		{
-			EmitSoundToAll(OrnamentExplosionSound, entity, -1, soundPriority, 0, soundLevel);
-		}
-		default:
-		{
-			if(random == 1){
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
-			}else if(random == 2){
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
-			}else if(random == 3){
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
-			}
 		}
 	}
 }
@@ -1553,99 +1423,54 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 				TF2Econ_GetItemClassName(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"), Classname, sizeof(Classname));
 				if(StrEqual(Classname,"tf_weapon_scattergun",false) || StrEqual(Classname,"tf_weapon_soda_popper",false) || StrEqual(Classname,"tf_weapon_pep_brawler_blaster",false) || StrEqual(Classname,"tf_weapon_shotgun",false) || 
 				StrEqual(Classname,"tf_weapon_shotgun_primary",false) || StrEqual(Classname,"tf_weapon_sentry_revenge",false) || StrEqual(Classname,"tf_weapon_shotgun_building_rescue",false))
-				{
 					aps = 1.6;
-				}
 				else if(StrEqual(Classname,"tf_weapon_handgun_scout_primary",false))
-				{
 					aps = 2.857;
-				}
 				else if(StrEqual(Classname,"tf_weapon_pistol",false) || StrEqual(Classname,"tf_weapon_handgun_scout_secondary",false))
-				{
 					aps = 6.67;
-				}
 				else if(StrEqual(Classname,"tf_weapon_cleaver",false))
-				{
 					aps = 1.25;
-				}
 				else if(StrEqual(Classname,"tf_weapon_rocketlauncher",false) || StrEqual(Classname,"tf_weapon_rocketlauncher_directhit",false) || StrEqual(Classname,"tf_weapon_particle_cannon",false) || StrEqual(Classname,"tf_weapon_rocketlauncher_airstrike",false))
-				{
 					aps = 1.25;
-				}
 				else if(StrEqual(Classname,"tf_weapon_raygun",false) || StrEqual(Classname,"tf_weapon_drg_pomson",false))
-				{
 					aps = 1.25;
-				}
 				else if(StrEqual(Classname,"tf_weapon_shovel",false) || StrEqual(Classname,"saxxy",false) || StrEqual(Classname,"tf_weapon_fireaxe",false) || StrEqual(Classname,"tf_weapon_slap",false) || StrEqual(Classname,"tf_weapon_sword",false) ||
 				StrEqual(Classname,"tf_weapon_bottle",false) || StrEqual(Classname,"tf_weapon_stickbomb",false) || StrEqual(Classname,"tf_weapon_katana",false) || StrEqual(Classname,"tf_weapon_fists",false) || StrEqual(Classname,"tf_weapon_wrench",false) ||
 				StrEqual(Classname,"tf_weapon_robot_arm",false) || StrEqual(Classname,"tf_weapon_bonesaw",false) || StrEqual(Classname,"tf_weapon_club",false) || StrEqual(Classname,"tf_weapon_breakable_sign",false))
-				{
 					aps = 1.25;
-				}
 				else if(StrEqual(Classname,"tf_weapon_bat",false) || StrEqual(Classname,"tf_weapon_bat_wood",false) || StrEqual(Classname,"tf_weapon_bat_fish",false) || StrEqual(Classname,"tf_weapon_bat_giftwrap",false))
-				{
 					aps = 2.0;
-				}
 				else if(StrEqual(Classname,"tf_weapon_flamethrower",false))
-				{
 					aps = 25.0;
-				}
 				else if(StrEqual(Classname,"tf_weapon_rocketlauncher_fireball",false))
-				{
 					aps = 1.25;
-				}
 				else if(StrEqual(Classname,"tf_weapon_jar_gas",false) || StrEqual(Classname,"tf_weapon_jar",false) || StrEqual(Classname,"tf_weapon_jar_milk",false))
-				{
 					aps = 1.25;
-				}
 				else if(StrEqual(Classname,"tf_weapon_flaregun",false) || StrEqual(Classname,"tf_weapon_flaregun_revenge",false))
-				{
 					aps = 0.5;
-				}
 				else if(StrEqual(Classname,"tf_weapon_grenadelauncher",false) || StrEqual(Classname,"tf_weapon_cannon",false))
-				{
 					aps = 1.67;
-				}
 				else if(StrEqual(Classname,"tf_weapon_pipebomblauncher",false))
-				{
 					aps = 1.67;
-				}
 				else if(StrEqual(Classname,"tf_weapon_minigun",false))
-				{
 					aps = 10.0;
-				}
 				else if(StrEqual(Classname,"tf_weapon_syringegun_medic",false) || StrEqual(Classname,"tf_weapon_syringegun",false))
-				{
 					aps = 10.0;
-				}
 				else if(StrEqual(Classname,"tf_weapon_compound_bow",false))
-				{
 					aps = 1.25;
-				}
 				else if(StrEqual(Classname,"tf_weapon_crossbow",false))
-				{
 					aps = 4.35;
-				}
 				else if(StrEqual(Classname,"tf_weapon_sniperrifle",false) || StrEqual(Classname,"tf_weapon_sniperrifle_decap",false) || StrEqual(Classname,"tf_weapon_sniperrifle_classic",false))
-				{
 					aps = 0.67;
-				}
 				else if(StrEqual(Classname,"tf_weapon_smg",false) || StrEqual(Classname,"tf_weapon_charged_smg",false))
-				{
 					aps = 10.0;
-				}
 				else if(StrEqual(Classname,"tf_weapon_revolver",false))
-				{
 					aps = 2.0;
-				}
 				else if(StrEqual(Classname,"tf_weapon_mechanical_arm",false))
-				{
 					aps = 6.7;
-				}
 				else
-				{
 					aps = 1.0;
-				}
+				
 				Address apsMult1 = TF2Attrib_GetByName(weapon, "fire rate bonus HIDDEN");
 				Address apsMult2 = TF2Attrib_GetByName(weapon, "fire rate penalty HIDDEN");
 				Address apsMult3 = TF2Attrib_GetByName(weapon, "fire rate bonus");
@@ -1664,42 +1489,42 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 						Address apsMult14 = TF2Attrib_GetByName(weapon, "Reload time decreased");
 						Address apsMult15 = TF2Attrib_GetByName(weapon, "reload time increased hidden");
 						
-						if(apsMult12 != Address_Null) {
-						aps /= TF2Attrib_GetValue(apsMult12) / efficiency;
-						}
-						if(apsMult13 != Address_Null) {
-						aps /= TF2Attrib_GetValue(apsMult13) / efficiency;
-						}
-						if(apsMult14 != Address_Null) {
-						aps /= TF2Attrib_GetValue(apsMult14) / efficiency;
-						}
-						if(apsMult15 != Address_Null) {
-						aps /= TF2Attrib_GetValue(apsMult15) / efficiency;
-						}
+						if(apsMult12 != Address_Null) 
+							aps /= TF2Attrib_GetValue(apsMult12) / efficiency;
+						
+						if(apsMult13 != Address_Null) 
+							aps /= TF2Attrib_GetValue(apsMult13) / efficiency;
+						
+						if(apsMult14 != Address_Null) 
+							aps /= TF2Attrib_GetValue(apsMult14) / efficiency;
+						
+						if(apsMult15 != Address_Null) 
+							aps /= TF2Attrib_GetValue(apsMult15) / efficiency;
+
 					}
 				}
 				//Normal Firerate Attributes
-				if(apsMult1 != Address_Null) {
-				aps /= TF2Attrib_GetValue(apsMult1) / efficiency;
-				}
-				if(apsMult2 != Address_Null) {
-				aps /= TF2Attrib_GetValue(apsMult2) / efficiency;
-				}
-				if(apsMult3 != Address_Null) {
-				aps /= TF2Attrib_GetValue(apsMult3) / efficiency;
-				}
-				if(apsMult4 != Address_Null) {
-				aps /= TF2Attrib_GetValue(apsMult4) / efficiency;
-				}
-				if(apsMult5 != Address_Null) {
-				aps /= TF2Attrib_GetValue(apsMult5) / efficiency;
-				}
-				if(apsMult6 != Address_Null) {
-				aps /= TF2Attrib_GetValue(apsMult6) / efficiency;
-				}
-				if(apsMod != Address_Null) {
-				aps *= 33.0;
-				}
+				if(apsMult1 != Address_Null)
+					aps /= TF2Attrib_GetValue(apsMult1) / efficiency;
+				
+				if(apsMult2 != Address_Null)
+					aps /= TF2Attrib_GetValue(apsMult2) / efficiency;
+				
+				if(apsMult3 != Address_Null)
+					aps /= TF2Attrib_GetValue(apsMult3) / efficiency;
+				
+				if(apsMult4 != Address_Null)
+					aps /= TF2Attrib_GetValue(apsMult4) / efficiency;
+				
+				if(apsMult5 != Address_Null)
+					aps /= TF2Attrib_GetValue(apsMult5) / efficiency;
+				
+				if(apsMult6 != Address_Null) 
+					aps /= TF2Attrib_GetValue(apsMult6) / efficiency;
+				
+				if(apsMod != Address_Null) 
+					aps *= 33.0;
+				
 				//if(apsMult7 != Address_Null) {
 				//aps *= TF2Attrib_GetValue(apsMult7) * efficiency;
 				//}
@@ -1709,31 +1534,28 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 				Address BodyapsMult8 = TF2Attrib_GetByName(client, "fire rate bonus");
 				Address BodyapsMult9 = TF2Attrib_GetByName(client, "fire rate penalty");
 
-				if(BodyapsMult6 != Address_Null) {
-				aps /= TF2Attrib_GetValue(BodyapsMult6) / efficiency
-				}
-				if(BodyapsMult7 != Address_Null) {
-				aps /= TF2Attrib_GetValue(BodyapsMult7) / efficiency
-				}
-				if(BodyapsMult8 != Address_Null) {
-				aps /= TF2Attrib_GetValue(BodyapsMult8) / efficiency
-				}
-				if(BodyapsMult9 != Address_Null) {
-				aps /= TF2Attrib_GetValue(BodyapsMult9) / efficiency
-				}
+				if(BodyapsMult6 != Address_Null) 
+					aps /= TF2Attrib_GetValue(BodyapsMult6) / efficiency
+				
+				if(BodyapsMult7 != Address_Null) 
+					aps /= TF2Attrib_GetValue(BodyapsMult7) / efficiency
+				
+				if(BodyapsMult8 != Address_Null) 
+					aps /= TF2Attrib_GetValue(BodyapsMult8) / efficiency
+				
+				if(BodyapsMult9 != Address_Null) 
+					aps /= TF2Attrib_GetValue(BodyapsMult9) / efficiency
+				
 				if(TF2_IsPlayerInCondition(client, TFCond_RuneHaste))
-				{
 					aps *= 2.0 * efficiency;
-				}
+				
 				if(TF2_IsPlayerInCondition(client, TFCond_HalloweenSpeedBoost))
-				{
 					aps *= 1.5 * efficiency;
-				}
+				
 				Address apsAdd = TF2Attrib_GetByName(weapon, "auto fires full clip all at once");
 				if(apsAdd != Address_Null)
-				{
 					aps = 22.0
-				}
+				
 				
 				return aps;
 			}

@@ -3377,6 +3377,16 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "6014"
+    {
+        "name"  "damage mult 15"
+        "attribute_class"	"dmg_outgoing_mult"
+        "description_string"	"(+-)%p% damage dealt"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
     "6020"
     {
         "name"  "damage taken mult 1"

@@ -1,5 +1,22 @@
+public MRESReturn OnDamageTypeCalc(int weapon, Handle hReturn) {
+	if(!IsValidWeapon(weapon))
+		return MRES_Ignored;
+
+	int damagetype = DHookGetReturn(hReturn);
+	int client = getOwner(weapon);
+	if(!IsValidClient3(client))
+		return MRES_Ignored;
+
+	currentDamageType[client].first = damagetype;
+
+	return MRES_Ignored;
+}
+
 public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom)
 {
+	if(currentDamageType[attacker].first == 0)
+		currentDamageType[attacker].first = damagetype;
+
 	if(IsValidClient3(victim))
 	{
 		lastKBSource[victim] = attacker;
@@ -42,7 +59,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
 				}
-				if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
+				if(currentDamageType[attacker].second & DMG_ARCANE)
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
 				if(LightningEnchantmentDuration[attacker] > 0.0 && !(damagetype & DMG_VEHICLE))
 				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
@@ -65,7 +82,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		if(damagetype & DMG_PIERCING != DMG_PIERCING)
+		if(!(currentDamageType[attacker].second & DMG_PIERCING))
 			damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
 		Address bossType = TF2Attrib_GetByName(victim, "damage force increase text");
 		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
@@ -142,7 +159,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 	}
-	if(damagetype & DMG_PIERCING != DMG_PIERCING && IsValidClient(victim))
+
+	if(!(currentDamageType[attacker].second & DMG_PIERCING) && IsValidClient(victim))
 	{
 		float pctArmor = (fl_AdditionalArmor[victim] + fl_CurrentArmor[victim])/fl_MaxArmor[victim];
 		if(pctArmor < 0.01)
@@ -195,74 +213,9 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 	if(IsValidClient3(attacker) && IsValidClient3(victim) && IsValidWeapon(weapon))
 	{
 		char damageCategory[64];
-		damageCategory = getDamageCategory(damagetype);
+		damageCategory = getDamageCategory(currentDamageType[attacker]);
 
-		if(StrEqual(damageCategory, "direct"))
-		{
-			Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "direct damage taken reduced");
-			if(dmgTakenMultAddr != Address_Null)
-				damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
-
-			Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "physical damage affinity");
-			if(dmgMasteryAddr != Address_Null){
-				damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-
-				if(IsValidEdict(inflictor) && !IsValidClient3(inflictor))
-					{damagetype |= DMG_CLUB;damagetype |= DMG_BULLET;}
-
-				if(damagetype & DMG_CLUB)
-				{
-					//Melee reduces on average 5% of their armor per second.
-					float multiHitActive = GetAttribute(weapon, "taunt move acceleration time",0.0);
-					fl_CurrentArmor[victim] -= fl_CurrentArmor[victim]*0.05/(weaponFireRate[weapon]*(multiHitActive+1));
-				}
-				if(damagetype & DMG_BULLET)
-				{
-					//Deal 3 piercing damage.
-					SDKHooks_TakeDamage(victim, attacker, attacker, 3.0, DMG_PIERCING, weapon);
-				}
-			}
-		}
-		if(StrEqual(damageCategory, "fire"))
-		{
-			Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "fire damage affinity");
-			if(dmgMasteryAddr != Address_Null){
-				damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-				damage *= 1.0+(TF2Util_GetPlayerBurnDuration(victim)*0.05);
-			}
-		}
-		if(StrEqual(damageCategory, "blast"))
-		{
-			Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "explosive damage affinity");
-			if(dmgMasteryAddr != Address_Null){
-				damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-			}
-		}
-		if(StrEqual(damageCategory, "electric"))
-		{
-			Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "electric damage affinity");
-			if(dmgMasteryAddr != Address_Null){
-				damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-			}
-		}
-		if(damagetype & DMG_CRIT)
-		{
-			Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "crit damage affinity");
-			if(dmgMasteryAddr != Address_Null){
-				damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-			}
-		}
-		if(StrEqual(damageCategory, "arcane"))
-		{
-			Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "arcane damage taken reduced");
-			if(dmgTakenMultAddr != Address_Null)
-				damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
-
-			Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "arcane damage affinity");
-			if(dmgMasteryAddr != Address_Null){
-				damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-			}
-		}
+		applyDamageAffinities(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom, damageCategory);
 
 		char weaponClassName[128]; 
 		GetEntityClassname(weapon, weaponClassName, sizeof(weaponClassName));
@@ -617,6 +570,7 @@ public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 		damagetype &= ~DMG_CRIT;
 		damage *= 2.25;
 		critType = CritType_None;
+		currentDamageType[attacker].second |= DMG_ACTUALCRIT;
 		return Plugin_Changed;
 	}else if(IsValidClient3(victim) && miniCritStatus[victim] == false && IsValidClient3(attacker) && 
 	(critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > currentGameTime || miniCritStatusVictim[victim] > currentGameTime))
@@ -628,7 +582,8 @@ public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 		critType = CritType_None;
 		if(damagetype & DMG_CRIT)
 			damagetype &= ~DMG_CRIT;
-		
+
+		currentDamageType[attacker].second |= DMG_MINICRIT;
 		return Plugin_Changed;
 	}
 	lastDamageTaken[victim] = damage;
@@ -702,6 +657,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 {
 	if(IsValidEdict(victim) && IsValidClient3(attacker))
 	{
+		currentDamageType[attacker].first = damagetype;
 		if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
 			damage = genericSentryDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		
@@ -724,27 +680,19 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 					damage += DarkmoonBlade[attacker];
 				}
 			}
-			//PrintToServer("%i damagebit", damagetype);
-			if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
-			{
+			if(currentDamageType[attacker].second & DMG_ARCANE)
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
-				Address lameMult = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
-				if(lameMult != Address_Null)//lame. AP applies twice.
-				{
-					damage /= TF2Attrib_GetValue(lameMult);
-				}
-			}
 			Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
 			if(arcaneWeaponScaling != Address_Null)
-			{
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
-			}
+			
 			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
 			if(i <= 6)
 			{
 				if(i == 0) i = 1;
 				damage *= i*weaponFireRate[weapon]/TICKRATE;
 			}
+			applyDamageAffinities(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom, getDamageCategory(currentDamageType[attacker]));
 		}
 	}
 	if(damage < 0.0)
@@ -770,6 +718,7 @@ public Action:OnTakeDamagePre_Sapper(victim, &attacker, &inflictor, float &damag
 	{
 		return Plugin_Continue;
 	}
+	currentDamageType[attacker].first = damagetype;
 	damage = 50.0;
 	int melee = (GetWeapon(attacker,2));
 	Address firerate = TF2Attrib_GetByName(melee, "fire rate bonus HIDDEN");
@@ -790,6 +739,7 @@ public Action:OnTakeDamagePre_Sapper(victim, &attacker, &inflictor, float &damag
 public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom) 
 {
 	int owner = GetEntPropEnt(victim, Prop_Send, "m_hBuilder");
+	currentDamageType[attacker].first = damagetype;
 	char SapperObject[128];
 	GetEdictClassname(attacker, SapperObject, sizeof(SapperObject));
 	if (StrEqual(SapperObject, "obj_attachment_sapper"))
@@ -844,20 +794,12 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 				}
 			}
 			//PrintToServer("%i damagebit", damagetype);
-			if(damagetype & DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX)//Transient Moonlight
-			{
+			if(currentDamageType[attacker].second & DMG_ARCANE)
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
-				Address lameMult = TF2Attrib_GetByName(weapon, "dmg penalty vs players");
-				if(lameMult != Address_Null)//lame. AP applies twice.
-				{
-					damage /= TF2Attrib_GetValue(lameMult);
-				}
-			}
 			Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
 			if(arcaneWeaponScaling != Address_Null)
-			{
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
-			}
+			
 			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
 			if(i <= 6)
 			{
@@ -907,6 +849,8 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 				fl_CurrentArmor[owner] = 0.0
 		}
 		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", owner);
+
+		applyDamageAffinities(owner, attacker, inflictor, damage, weapon, damagetype, damagecustom, getDamageCategory(currentDamageType[attacker]));
 	}
 	return Plugin_Changed;
 }
@@ -1019,7 +963,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					SetEntPropFloat(attacker, Prop_Send, "m_flRageMeter", GetEntPropFloat(attacker, Prop_Send, "m_flRageMeter") + rageOnHit)
 			}
 			int hitgroup = GetEntProp(victim, Prop_Data, "m_LastHitGroup");
-			if(StrEqual(getDamageCategory(damagetype),"direct",false) && hitgroup == 1)
+			if(StrEqual(getDamageCategory(currentDamageType[attacker]),"direct",false) && hitgroup == 1)
 			{
 				float HeadshotsActive = GetAttribute(weapon, "charge time decreased",0.0);
 				if(HeadshotsActive != 0.0)
@@ -1234,7 +1178,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		float supernovaPowerup = GetAttribute(attacker, "supernova powerup",0.0);
 		if(supernovaPowerup != 0.0)
 		{
-			if(StrEqual(getDamageCategory(damagetype),"blast",false))
+			if(StrEqual(getDamageCategory(currentDamageType[attacker]),"blast",false))
 			{
 				damage *= 1.8;
 			}
@@ -1669,4 +1613,79 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 		}
 	}
 	return damage;
+}
+public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage, &weapon, &damagetype, &damagecustom, char[] damageCategory)
+{
+	/*extendedDamageTypes bits;
+	bits = currentDamageType[attacker];
+	*///Lets use this later...
+
+	currentDamageType[attacker].clear();
+
+	if(StrEqual(damageCategory, "direct"))
+	{
+		Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "direct damage taken reduced");
+		if(dmgTakenMultAddr != Address_Null)
+			damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
+
+		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "physical damage affinity");
+		if(dmgMasteryAddr != Address_Null){
+			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+
+			if(IsValidEdict(inflictor) && !IsValidClient3(inflictor) && !HasEntProp(inflictor, Prop_Send, "m_iItemDefinitionIndex"))
+				{damagetype |= DMG_CLUB;damagetype |= DMG_BULLET;}
+
+			if(damagetype & DMG_CLUB)
+			{
+				//Melee reduces on average 5% of their armor per second.
+				float multiHitActive = GetAttribute(weapon, "taunt move acceleration time",0.0);
+				fl_CurrentArmor[victim] -= fl_CurrentArmor[victim]*0.05/(weaponFireRate[weapon]*(multiHitActive+1));
+			}
+			if(damagetype & DMG_BULLET || damagetype & DMG_BUCKSHOT)
+			{
+				//Deal 3 piercing damage.
+				currentDamageType[attacker].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(victim, attacker, attacker, 3.0, DMG_GENERIC, weapon);
+			}
+		}
+	}
+	if(StrEqual(damageCategory, "fire"))
+	{
+		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "fire damage affinity");
+		if(dmgMasteryAddr != Address_Null){
+			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+			damage *= 1.0+(TF2Util_GetPlayerBurnDuration(victim)*0.05);
+		}
+	}
+	if(StrEqual(damageCategory, "blast"))
+	{
+		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "explosive damage affinity");
+		if(dmgMasteryAddr != Address_Null)
+			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+		
+	}
+	if(StrEqual(damageCategory, "electric"))
+	{
+		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "electric damage affinity");
+		if(dmgMasteryAddr != Address_Null)
+			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+		
+	}
+	if(damagetype & DMG_CRIT)
+	{
+		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "crit damage affinity");
+		if(dmgMasteryAddr != Address_Null)
+			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+		
+	}
+	if(StrEqual(damageCategory, "arcane"))
+	{
+		Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "arcane damage taken reduced");
+		if(dmgTakenMultAddr != Address_Null)
+			damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
+
+		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "arcane damage affinity");
+		if(dmgMasteryAddr != Address_Null)
+			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+	}
 }

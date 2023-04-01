@@ -380,6 +380,13 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | g_DHookChargeMove fucked up.");
 	DHookEnableDetour(g_DHookChargeMove, false, OnShieldChargeMove);
 
+	//Damagetypes lul
+	Handle g_DHookDamagetypes = DHookCreateFromConf(hConf, "CTFWeaponBase::GetDamageType()");
+	
+	if(g_DHookDamagetypes == INVALID_HANDLE)
+		PrintToServer("CustomAttrs | g_DHookDamagetypes fucked up.");
+	DHookEnableDetour(g_DHookDamagetypes, true, OnDamageTypeCalc);
+
 	//Weapon Fired
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	

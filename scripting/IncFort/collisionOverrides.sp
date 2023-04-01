@@ -471,10 +471,10 @@ public Action:OnCollisionMoonveil(entity, client)
 					float mult = 1.0
 					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
 					if(multiHitActive != Address_Null)
-					{
 						mult *= TF2Attrib_GetValue(multiHitActive) + 1.0;
-					}
-					SDKHooks_TakeDamage(client,owner,owner,mult*35.0,DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX,CWeapon, NULL_VECTOR, NULL_VECTOR);
+					
+					currentDamageType[owner].second |= DMG_ARCANE;
+					SDKHooks_TakeDamage(client,owner,owner,mult*35.0,DMG_GENERIC,CWeapon, NULL_VECTOR, NULL_VECTOR);
 				}
 				RemoveEntity(entity);
 			}
