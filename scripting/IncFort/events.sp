@@ -2386,10 +2386,23 @@ public MRESReturn OnScattergunReload(int weapon)
 
 	int finalAmmo = currentAmmo-(maxClip-currentClip);
 	if(finalAmmo < 0){maxClip-=IntAbs(finalAmmo);finalAmmo = 0;}
-	SetAmmo_Weapon(weapon, finalAmmo)
-	SetEntProp( weapon, Prop_Send, "m_iClip1", maxClip ); 
 
-	return MRES_Supercede;
+	DataPack pack = new DataPack();
+	pack.WriteCell(weapon);
+	pack.WriteCell(finalAmmo);
+
+	RequestFrame(giveAmmoBack, pack);
+	return MRES_Ignored;
+}
+public void giveAmmoBack(DataPack pack){
+	pack.Reset();
+
+	int weapon = pack.ReadCell();
+	int finalAmmo = pack.ReadCell();
+
+	SetAmmo_Weapon(weapon, finalAmmo)
+
+	delete pack;	
 }
 public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 {

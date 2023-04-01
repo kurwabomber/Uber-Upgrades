@@ -613,7 +613,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 648:
 		{
-			ChangeString = "The Wrap Assassin | Ball base damage increased to 40. Shoots out grenades at a 15 degree variance with 300HU blast radius. Bounces at 4000HU/s speed.";
+			ChangeString = "The Wrap Assassin | Ball base damage increased to 40. Fires balls on primary fire.";
 		}
 		case 349:
 		{
@@ -663,7 +663,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1101:
 		{
-			ChangeString = "The B.A.S.E Jumper | Increased gravity & Heavily increased mobility when deployed.";
+			ChangeString = "The B.A.S.E Jumper | Increased gravity & heavily increased mobility when deployed.";
 		}
 		//Soldier Melee
 		case 416:
