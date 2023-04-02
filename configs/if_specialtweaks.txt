@@ -50,30 +50,49 @@
 		}
 		"Lightning Banner"
 		{
-			"cost"							"10000.0"
+			"cost"							"10k"
 			"Banner Summons Lightning"		"1"
 		}
 		"Lacerating Rounds"
 		{
-			"requirement"							"250000.0"
+			"requirement"							"250k"
 			"fire rate penalty(unremoveable)"		"3.0"
 			"bleeding duration"						"5"
 			"Bleed Per Hit"							"2"
 		}
 		"Blade Stream"
 		{
-			"requirement"					"150000"
-			"cost"							"15000"
+			"requirement"					"150k"
+			"cost"							"15k"
+			"restriction"					"1"
 			"fire rate bonus HIDDEN"		"5.0"
 			"Crit Damage Bonus"				"4.0"
 			"Crit on Kill Duration"			"4.0"
 		}
 		"Fan of Knives"
 		{
-			"requirement"					"200000"
+			"requirement"					"200k"
+			"restriction"					"1"
 			"Fan of Knives"					"1"
 			"slow enemy on hit major"		"0.8"
 			"Crit on Kill Duration"			"6.0"
+		}
+		"Multishot Flares"
+		{
+			"requirement"					"0.5m"
+			"restriction"					"1"
+			"mult projectile count"			"15"
+			"projectile spread angle penalty"		"2"
+			"fire rate penalty(unremoveable)"		"150.0"
+			"Crit Damage Bonus"				"20.0"
+		}
+		"Homing Flares"
+		{
+			"requirement"					"0.5m"
+			"restriction"					"1"
+			"Homing Projectiles"			"200.0"
+			"Crit Damage Bonus"				"3.0"
+			"Ability : Homing Flares"		"1"
 		}
 	}
 }

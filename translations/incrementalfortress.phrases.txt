@@ -1,5 +1,17 @@
 "Phrases"
 {
+	"mult projectile count"
+	{
+		"en"		"Projectiles Per Shot Increased"
+	}
+	"Multishot Flares"
+	{
+		"en"		"Multishot Flares"
+	}
+	"Homing Flares"
+	{
+		"en"		"Homing Flares"
+	}
 	"Infernal Powerup"
 	{
 		"en"		"Infernal Powerup"

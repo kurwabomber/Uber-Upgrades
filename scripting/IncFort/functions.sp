@@ -19,6 +19,18 @@ public GetUpgrade_CatList(char[] WCName)
 	}
 	return w_id
 }
+public float ParseShorthand(char[] input, int size){
+	int thousands = ReplaceString(input, size, "k", "", false);
+	int millions = ReplaceString(input, size, "m", "", false);
+
+	float num = StringToFloat(input);
+	if(thousands)
+		num*=1000.0;
+	if(millions)
+		num*=1000000.0;
+
+	return num;
+}
 stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = 0.65,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = 100, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0)
 {
 	if(entity == -1 || !IsValidEdict(entity))

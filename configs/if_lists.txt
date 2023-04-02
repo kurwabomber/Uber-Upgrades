@@ -1201,7 +1201,7 @@
 	}
 	"pyroflareg"// flare gun
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(H)"
@@ -1220,6 +1220,11 @@
 			"Attr0"		"faster reload rate"
 			"Attr1"		"fire rate bonus(multshit)"
 			"Attr2"		"Projectile speed increased"
+		}
+		"Special Tweaks"
+		{
+			"Sp1"		"Multishot Flares"
+			"Sp2"		"Homing Flares"
 		}
 	}
 	"pyroflaregd"//Detonator

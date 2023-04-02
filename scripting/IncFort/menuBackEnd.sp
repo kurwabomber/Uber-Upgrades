@@ -727,13 +727,37 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 		int w_id = current_w_list_id[client]
 		int cat_id = current_w_c_list_id[client]
 		int spTweak = given_upgrd_list[w_id][cat_id][0][param2]
-		for (int i = 0; i < tweaks[spTweak].nb_att; i++)
+
+		for(int k = 0;k < 5;k++){
+			if(currentupgrades_restriction[client][slot][k] == tweaks[spTweak].restriction){
+				PrintToChat(client, "You already have a restricted upgrade for this tweak.");
+				EmitSoundToClient(client, SOUND_FAIL);
+				got_req = 0;
+				break;
+			}
+		}
+
+		if(tweaks[spTweak].requirement > client_spent_money[client][slot])
+		{
+			PrintToChat(client, "You must spend more on the slot to use this tweak.");
+			EmitSoundToClient(client, SOUND_FAIL);
+			got_req = 0;
+		}
+		if(tweaks[spTweak].cost > CurrencyOwned[client])
+		{
+			PrintToChat(client, "You don't have enough money for this tweak.");
+			EmitSoundToClient(client, SOUND_FAIL);
+			got_req = 0;
+		}
+
+		for (int i = 0; i < tweaks[spTweak].nb_att && got_req == 1; i++)
 		{
 			int upgrade_choice = tweaks[spTweak].att_idx[i]
 			int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
 
 			if(canBypassRestriction[client])
 				break;
+
 
 			if (inum != 20000)
 			{
@@ -755,26 +779,16 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 					break;
 				}
 			}
-			if(tweaks[spTweak].requirement > client_spent_money[client][slot])
-			{
-				PrintToChat(client, "You must spend more on the slot to use this tweak.");
-				EmitSoundToClient(client, SOUND_FAIL);
-				got_req = 0
-				break;
-			}
-			if(tweaks[spTweak].cost > CurrencyOwned[client])
-			{
-				PrintToChat(client, "You don't have enough money for this tweak.");
-				EmitSoundToClient(client, SOUND_FAIL);
-				got_req = 0
-				break;
-			}
 		}
 		if (got_req)
 		{
 			if(tweaks[spTweak].requirement > 1.0 && client_tweak_highest_requirement[client][slot] < tweaks[spTweak].requirement)
 			{
 				client_tweak_highest_requirement[client][slot] = tweaks[spTweak].requirement;
+			}
+			if(tweaks[spTweak].restriction != 0)
+			{
+				currentupgrades_restriction[client][slot][tweaks[spTweak].restriction] = tweaks[spTweak].restriction;
 			}
 			char clname[255]
 			GetClientName(client, clname, sizeof(clname))

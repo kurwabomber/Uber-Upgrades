@@ -4274,7 +4274,7 @@
 			"value"		"0.1"
 			"init"		"0.0"
 			"description"	"Increases lifesteal from damage.\n0.1x of the damage then multiplied\nby this attribute, then\ngiven as health.\n0.2x is converted into armor.\nLifesteal on bots is 0.3x effective."
-			"max"		"3.0"
+			"max"		"4.0"
 		}
 		"1521"
 		{
@@ -5199,15 +5199,6 @@
 			"init"		"1"
 			"max"		"100"
 		}
-		"1583"
-		{
-			"name"		"mod medic killed marked for death"
-			"ref"		"Crit Damage Bonus"
-			"cost"		"0"
-			"value"		"0.1"
-			"init"		"1"
-			"max"		"100"
-		}
 		"1584"
 		{
 			"name"		"critboost on kill"
@@ -5473,6 +5464,15 @@
 			"init"		"0"
 			"description"		"Prestiges your weapon loadout\nwhich drastically improves stats and specifies abilities."
 			"max"		"1"
+		}
+		"1608"
+		{
+			"name"		"mult projectile count"
+			"ref"		"mult projectile count"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"100"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"

@@ -108,7 +108,7 @@ BrowseAttributesKV(Handle kv)
 				else if (!strcmp(Buf,"cost"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades[_u_id].cost = StringToInt(Buf)
+					upgrades[_u_id].cost = RoundToCeil(ParseShorthand(Buf,64));
 				}
 				else if (!strcmp(Buf,"increase_ratio"))
 				{
@@ -143,7 +143,7 @@ BrowseAttributesKV(Handle kv)
 				else if(!strcmp(Buf,"requirement"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades[_u_id].requirement = StringToFloat(Buf);
+					upgrades[_u_id].requirement = ParseShorthand(Buf, 64);
 				}
 				else if(!strcmp(Buf, "staged_max"))
 				{
@@ -283,12 +283,17 @@ BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 			if(!strcmp("requirement", Buf))
 			{
 				KvGetString(kv, "", Buf, 32);
-				tweaks[u_id].requirement = StringToFloat(Buf)
+				tweaks[u_id].requirement = ParseShorthand(Buf,32)
 			}
 			else if(!strcmp("cost", Buf))
 			{
 				KvGetString(kv, "", Buf, 32);
-				tweaks[u_id].cost = StringToFloat(Buf)
+				tweaks[u_id].cost = ParseShorthand(Buf,32)
+			}
+			else if(!strcmp("restriction", Buf))
+			{
+				KvGetString(kv, "", Buf, 32);
+				tweaks[u_id].restriction = StringToInt(Buf);
 			}
 			else
 			{

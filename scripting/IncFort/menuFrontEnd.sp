@@ -496,7 +496,16 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 		slot = current_slot_used[client]
 		for (i = 0; i < given_upgrd_classnames_tweak_nb[w_id]; i++)
 		{
+			bool restricted = false;
 			tmp_spe_up_idx = given_upgrd_list[w_id][cat_choice][0][i]
+
+			for(int k = 0;k < 5;k++){
+				if(currentupgrades_restriction[client][slot][k] == tweaks[tmp_spe_up_idx].restriction){
+					restricted = true;
+					break;
+				}
+			}
+
 			Format(buft, sizeof(buft), "%T",  tweaks[tmp_spe_up_idx].tweaks, client);
 			if(tweaks[tmp_spe_up_idx].cost > 0.0)
 			{
@@ -546,7 +555,7 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 						plus_sign, tmp_ratio, tmp_val)
 				}
 			}
-			AddMenuItem(menu, "upgrade", desc_str);
+			AddMenuItem(menu, "upgrade", desc_str, restricted ? ITEMDRAW_DISABLED : ITEMDRAW_DEFAULT);
 		}
 	}
 	else{

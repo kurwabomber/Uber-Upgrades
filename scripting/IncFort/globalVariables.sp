@@ -52,6 +52,7 @@ enum struct Tweak{
     float cost;
     float requirement;
     float att_ratio[NB_SLOTS_UED + 1];
+    int restriction;
     int nb_att;
     int att_idx[NB_SLOTS_UED + 1];
     char tweaks[64] //change name later
