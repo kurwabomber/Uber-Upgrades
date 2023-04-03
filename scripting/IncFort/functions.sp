@@ -1898,6 +1898,25 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 		refreshUpgrades(client,4);
 	}
 }
+ApplyFullHoming(int entity){
+	entity = EntRefToEntIndex(entity);
+	if(!IsValidEdict(entity))
+		return;
+
+	int owner = getOwner(entity);
+	if(!IsValidClient3(owner))
+		return;
+
+	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+	if(!IsValidWeapon(CWeapon))
+		return;
+
+	Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
+	if(homingActive == Address_Null)
+		return;
+
+	isProjectileHoming[entity] = true;
+}
 ApplyHomingCharacteristics(DataPack pack)//int,float,int,int
 {
 	pack.Reset();
@@ -2460,95 +2479,96 @@ public void SetZeroGravity(ref)
 }
 public void OnHomingThink(entity) 
 { 
-	if(IsValidEdict(entity))
+	if(!IsValidEdict(entity))
+		return;
+
+	int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+	if(!IsValidClient3(owner))
+		return;
+
+	int Target = GetClosestTarget(entity, owner); 
+	if(!IsValidClient3(Target))
+		return;
+
+	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+	if(!IsValidWeapon(CWeapon))
+		return;
+
+	float TargetPos[3];
+	GetClientAbsOrigin(Target, TargetPos);
+	TargetPos[2]+=40.0;
+	float flRocketPos[3];
+	GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
+	float distance = GetVectorDistance( flRocketPos, TargetPos ); 
+	
+	if( distance <= projectileHomingDegree[entity] && currentGameTime - entitySpawnTime[entity] < 3.0 )
 	{
-		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
-		if(IsValidClient3(owner))
+		float ProjVector[3],BaseSpeed,NewSpeed,ProjAngle[3],AimVector[3],InitialSpeed[3]; 
+		
+		GetEntPropVector( entity, Prop_Send, "m_vInitialVelocity", InitialSpeed ); 
+		if ( GetVectorLength( InitialSpeed ) < 10.0 ) GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", InitialSpeed ); 
+		BaseSpeed = GetVectorLength( InitialSpeed ) * 0.3; 
+		
+		GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", flRocketPos ); 
+		GetClientAbsOrigin( Target, TargetPos ); 
+		TargetPos[2] += 20.0;
+		MakeVectorFromPoints( flRocketPos, TargetPos, AimVector ); 
+		
+		if(distance <= projectileHomingDegree[entity]*2.0 + 20.0)
 		{
-			int Target = GetClosestTarget(entity, owner); 
-			if(IsValidClient3(Target))
-			{
-				if(owner != Target)
-				{
-					float TargetPos[3];
-					GetClientAbsOrigin(Target, TargetPos);
-					TargetPos[2]+=40.0;
-					float flRocketPos[3];
-					GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
-					float distance = GetVectorDistance( flRocketPos, TargetPos ); 
-					
-					if( distance <= projectileHomingDegree[entity] && currentGameTime - entitySpawnTime[entity] < 3.0 )
-					{
-						float ProjVector[3],BaseSpeed,NewSpeed,ProjAngle[3],AimVector[3],InitialSpeed[3]; 
-						
-						GetEntPropVector( entity, Prop_Send, "m_vInitialVelocity", InitialSpeed ); 
-						if ( GetVectorLength( InitialSpeed ) < 10.0 ) GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", InitialSpeed ); 
-						BaseSpeed = GetVectorLength( InitialSpeed ) * 0.3; 
-						
-						GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", flRocketPos ); 
-						GetClientAbsOrigin( Target, TargetPos ); 
-						TargetPos[2] += 20.0;
-						MakeVectorFromPoints( flRocketPos, TargetPos, AimVector ); 
-						
-						if(distance <= projectileHomingDegree[entity]*2.0 + 20.0)
-						{
-							SubtractVectors( TargetPos, flRocketPos, ProjVector ); //100% HOME
-						}
-						else
-						{
-							GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", ProjVector ); //50% HOME
-						}
-						AddVectors( ProjVector, AimVector, ProjVector ); 
-						NormalizeVector( ProjVector, ProjVector );
-						
-						GetEntPropVector( entity, Prop_Data, "m_angRotation", ProjAngle ); 
-						GetVectorAngles( ProjVector, ProjAngle ); 
-						
-						NewSpeed = ( BaseSpeed * 2.0 ) + 1.0 * BaseSpeed * 1.02; 
-						ScaleVector( ProjVector, NewSpeed ); 
-						
-						TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
-					}
-				}
-			}
+			SubtractVectors( TargetPos, flRocketPos, ProjVector ); //100% HOME
 		}
+		else
+		{
+			GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", ProjVector ); //50% HOME
+		}
+		AddVectors( ProjVector, AimVector, ProjVector ); 
+		NormalizeVector( ProjVector, ProjVector );
+		
+		GetEntPropVector( entity, Prop_Data, "m_angRotation", ProjAngle ); 
+		GetVectorAngles( ProjVector, ProjAngle ); 
+		
+		NewSpeed = ( BaseSpeed * 2.0 ) + 1.0 * BaseSpeed * 1.02; 
+		ScaleVector( ProjVector, NewSpeed ); 
+		
+		TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
 	}
 }
 public OnThinkPost(entity) 
 { 
-	if(IsValidEdict(entity))
+	if(!IsValidEdict(entity))
+		return;
+
+	int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+	if(!IsValidClient3(owner))
+		return;
+
+	int Target = GetClosestTarget(entity, owner); 
+	if(!IsValidClient3(Target))
+		return;
+
+	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+	if(!IsValidWeapon(CWeapon))
+		return;
+
+	Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
+	if(homingActive == Address_Null)
+		return;
+
+	float maxDistance = TF2Attrib_GetValue(homingActive)
+	if(owner != Target)
 	{
-		int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
-		if(IsValidClient3(owner))
+		float flTargetPos[3];
+		GetClientAbsOrigin(Target, flTargetPos);
+		flTargetPos[2]+=40.0;
+		float flRocketPos[3];
+		GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
+		float distance = GetVectorDistance( flRocketPos, flTargetPos ); 
+		
+		if( distance <= maxDistance )
 		{
-			int Target = GetClosestTarget(entity, owner); 
-			if(IsValidClient3(Target))
-			{
-				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEdict(CWeapon))
-				{
-					Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
-					if(homingActive != Address_Null)
-					{
-						float maxDistance = TF2Attrib_GetValue(homingActive)
-						if(owner != Target)
-						{
-							float flTargetPos[3];
-							GetClientAbsOrigin(Target, flTargetPos);
-							flTargetPos[2]+=40.0;
-							float flRocketPos[3];
-							GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
-							float distance = GetVectorDistance( flRocketPos, flTargetPos ); 
-							
-							if( distance <= maxDistance )
-							{
-								float flVelocityChange[3];
-								TeleportEntity(entity, flTargetPos, NULL_VECTOR, flVelocityChange);
-							}
-						}
-					}
-				}
-			}
+			float flVelocityChange[3];
+			TeleportEntity(entity, flTargetPos, NULL_VECTOR, flVelocityChange);
 		}
 	}
 }

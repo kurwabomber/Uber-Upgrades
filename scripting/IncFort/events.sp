@@ -833,6 +833,7 @@ public OnEntityCreated(entity, const char[] classname)
 			SDKHook(entity, SDKHook_StartTouch, OnStartTouch);
 			RequestFrame(projGravity, reference);
 			RequestFrame(PrecisionHoming, reference);
+			RequestFrame(ApplyFullHoming, reference);
 		}
 		if(StrEqual(classname, "tf_projectile_rocket") || StrEqual(classname, "tf_projectile_flare") || StrEqual(classname, "tf_projectile_sentryrocket"))
 		{

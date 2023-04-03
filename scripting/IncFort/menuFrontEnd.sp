@@ -201,11 +201,11 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			Format(buf, sizeof(buf), "%T", upgrades[tmp_up_idx].name, client)
 			if (FloatAbs(tmp_ratio) < 0.99)
 			{
-				if(val == upgrades[tmp_up_idx].m_val)
+				if(RoundFloat(val*100) == RoundFloat(upgrades[tmp_up_idx].m_val * 100))
 				{
 					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%i%%\t(%i%%) MAXED",
 						t_up_cost, buf,
-						plus_sign, RoundFloat(tmp_ratio * 100 * times), (RoundFloat(tmp_val * 100)))
+						plus_sign, RoundFloat(tmp_ratio * 100 * times), RoundFloat(tmp_val * 100))
 					itemDisabled = true;
 					attributeDisabled[tmp_up_idx] = true;
 				}
@@ -246,7 +246,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			}
 			else
 			{
-				if(val == upgrades[tmp_up_idx].m_val)
+				if(RoundFloat(val*100) == RoundFloat(upgrades[tmp_up_idx].m_val * 100))
 				{
 					Format(desc_str, sizeof(desc_str), "$%.0f - %s\n\t\t\t%s%3.1f\t(%.1f) MAXED",
 						t_up_cost, buf,
@@ -500,6 +500,9 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 			tmp_spe_up_idx = given_upgrd_list[w_id][cat_choice][0][i]
 
 			for(int k = 0;k < 5;k++){
+				if(currentupgrades_restriction[client][slot][k] == 0)
+					continue;
+
 				if(currentupgrades_restriction[client][slot][k] == tweaks[tmp_spe_up_idx].restriction){
 					restricted = true;
 					break;

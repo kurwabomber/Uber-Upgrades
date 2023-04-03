@@ -729,6 +729,9 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 		int spTweak = given_upgrd_list[w_id][cat_id][0][param2]
 
 		for(int k = 0;k < 5;k++){
+			if(currentupgrades_restriction[client][slot][k] == 0)
+				continue;
+
 			if(currentupgrades_restriction[client][slot][k] == tweaks[spTweak].restriction){
 				PrintToChat(client, "You already have a restricted upgrade for this tweak.");
 				EmitSoundToClient(client, SOUND_FAIL);
