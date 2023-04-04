@@ -157,6 +157,16 @@ public Action:Timer_FixedVariables(Handle timer)
 
 		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 
+		Address relentlessPowerup = TF2Attrib_GetByName(client, "relentless powerup");
+		if(relentlessPowerup != Address_Null){
+			if(TF2Attrib_GetValue(relentlessPowerup) > 0.0)
+				TF2Attrib_SetByName(client, "fire rate bonus HIDDEN", 1.0/(1.0 + (relentlessTicks[client] > 667 ? 667 : relentlessTicks[client])/(TICKRATE*10.0)) );
+			else{
+				TF2Attrib_RemoveByName(client, "fire rate bonus HIDDEN");
+				TF2Attrib_RemoveByName(client, "relentless powerup")
+			}
+		}
+
 		Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
 		if(RegenActive != Address_Null)
 		{

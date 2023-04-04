@@ -143,6 +143,7 @@ int plagueAttacker[MAXPLAYERS+1];
 int g_nBounces[MAXENTITIES];
 int lastKBSource[MAXPLAYERS+1];
 int knockbackFlags[MAXPLAYERS+1];
+int relentlessTicks[MAXPLAYERS+1];
 
 //Floats
 float currentGameTime
@@ -216,6 +217,7 @@ float miniCritStatusVictim[MAXPLAYERS+1];
 float miniCritStatusAttacker[MAXPLAYERS+1];
 float corrosiveDOT[MAXPLAYERS+1][MAXPLAYERS+1][2]
 float entitySpawnPositions[MAXENTITIES][3];
+float baseDamage[MAXPLAYERS+1];
 
 //String
 char given_upgrd_classnames[LISTS][LISTS_CATEGORIES][128]
@@ -252,6 +254,7 @@ bool critStatus[MAXPLAYERS+1];
 bool miniCritStatus[MAXPLAYERS+1];
 bool RageActive[MAXPLAYERS+1];
 bool canBypassRestriction[MAXPLAYERS+1];
+bool isTagged[MAXPLAYERS+1][MAXPLAYERS+1];
 
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS + 1]

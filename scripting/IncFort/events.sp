@@ -5,6 +5,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 	
 	float damage = GetEventFloat(event, "damageamount");	
 	lastDamageTaken[client] = 0.0;
+
 	if(critStatus[client])
 	{
 		SetEventBool(event, "crit", true);
@@ -15,6 +16,12 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		SetEventBool(event, "minicrit", true);
 		miniCritStatus[client] = false;
 	}
+
+	if(damage == 0.0)
+		return;
+	
+	isTagged[attacker][client] = true;
+
 	if(attacker != client && IsValidClient(attacker)){
 		DamageDealt[attacker] += damage;
 		dps[attacker] += damage;
@@ -56,8 +63,12 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		if(TF2_IsPlayerInCondition(attacker, TFCond_CritCanteen))
 			armorLoss *= 1.4;
 	}
+
 	if(IsValidClient3(client))
 	{
+		if(GetAttribute(client, "martyr powerup", 0.0))
+			armorLoss *= 0.0;
+
 		Address revengePowerup = TF2Attrib_GetByName(client, "revenge powerup");
 		if(revengePowerup != Address_Null)
 		{
@@ -306,10 +317,20 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						return MRES_Supercede;
 					}
 				}
-				TF2Attrib_SetByName(client, "health from healers reduced", 0.5);
+				if(!TF2_IsPlayerInCondition(client, cond)){
+					if(GetAttribute(client, "inverter powerup", 0.0))
+						TF2Attrib_SetByName(client, "health from healers reduced", 2.0);
+					else
+						TF2Attrib_SetByName(client, "health from healers reduced", 0.5*GetAttribute(client,"health from healers reduced", 1.0));
+				}
 			}
 			case TFCond_Slowed:
 			{
+				if(GetAttribute(client, "inverter powerup", 0.0)){
+					TF2_AddCondition(client, TFCond_HalloweenSpeedBoost, 3.0);
+					return MRES_Supercede;
+				}
+
 				Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
 				if(slowResistance != Address_Null)
 				{
@@ -410,16 +431,29 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			}
 			case TFCond_Jarated:
 			{
+				if(GetAttribute(client, "inverter powerup", 0.0)){
+					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
+					return MRES_Supercede;
+				}
 				miniCritStatusVictim[client] = currentGameTime+duration;
+				
 				return MRES_Supercede;
 			}
 			case TFCond_MarkedForDeath:
 			{
+				if(GetAttribute(client, "inverter powerup", 0.0)){
+					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
+					return MRES_Supercede;
+				}
 				miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_MarkedForDeathSilent:
 			{
+				if(GetAttribute(client, "inverter powerup", 0.0)){
+					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
+					return MRES_Supercede;
+				}
 				miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
@@ -1153,6 +1187,8 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 
 	if(!IsValidClient3(client))
 		return;
+
+	isTagged[attack][client] = false;
 		
 	fanOfKnivesCount[client] = 0;
 	RageBuildup[client] = 0.0;
@@ -1302,6 +1338,12 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			shouldAttack[client] = false;
 			buttons |= IN_ATTACK;
 		}
+
+		if(buttons & IN_ATTACK)
+			relentlessTicks[client]++;
+		if(buttons & IN_RELOAD)
+			relentlessTicks[client] = 0;
+
 		if(buttons & IN_SCORE)
 		{
 			inScore[client] = true;
@@ -3076,9 +3118,14 @@ public OnClientDisconnect(client)
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
-	for(int i = 0; i < Max_Attunement_Slots; i++)
+
+	int i;
+	for(i = 0; i < Max_Attunement_Slots; i++)
 	{
 		AttunedSpells[client][i] = 0.0;
+	}
+	for(i = 1;i<MaxClients;i++){
+		isTagged[i][client] = false;
 	}
 	if(IsClientInGame(client))
 	{

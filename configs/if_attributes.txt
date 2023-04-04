@@ -5749,7 +5749,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"+35% spread on fire, +70% fire damage.\n-35% afterburn tick time and all attacks can ignite."
+			"description"	"Fire damage spreads 100 piercing DPS, +70% fire damage.\n-35% afterburn tick time and all attacks can ignite."
 			"max"		"1.00"
 		}
 		"2100.13"
@@ -5771,7 +5771,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"-90% healing from all sources but your armor never goes down.\nSacrifice 15% max health + damage taken to\nabsorb fatal teammate damage and give uber for 2s."
+			"description"	"-80% healing from all sources but your armor never goes down.\nSacrifice 15% max health + damage taken to\nabsorb fatal teammate damage and give uber for 2s."
 			"max"		"1.00"
 		}
 		"2100.14"
@@ -5793,7 +5793,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"+20% Attackspeed per second you hold fire.\nCapped at +200% and is removed on reload.\nMelee weapons instead gain +1 additional attacks."
+			"description"	"+20% Attackspeed per second you hold fire.\nCapped at +200% and is removed on reload.\nMelee weapons gain +1 additional attacks VS non-living targets."
 			"max"		"1.00"
 		}
 	}

@@ -135,10 +135,16 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 		}
 	}
 }
-stock char[] getDamageCategory(extendedDamageTypes damagetype)
+stock char[] getDamageCategory(extendedDamageTypes damagetype, int attacker = -1)
 {
 	//int damagebits2;
 	char damageCategory[64];
+
+	if(IsValidClient3(attacker)){
+		if(GetAttribute(attacker, "thunderstorm powerup", 0.0))
+			damageCategory = "electric";
+	}
+
 	if(damagetype.second & DMG_PIERCING)
 	{
 		damageCategory = "piercing"
@@ -1371,8 +1377,7 @@ refreshUpgrades(client, slot)
 			Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
 			if(agilityPowerup != Address_Null)
 			{
-				float agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
-				if(agilityPowerupValue > 0.0)
+				if(TF2Attrib_GetValue(agilityPowerup) > 0.0)
 				{
 					TF2Attrib_SetByName(client,"major move speed bonus", 1.4);
 					TF2Attrib_SetByName(client,"major increased jump height", 1.3);
@@ -1388,6 +1393,22 @@ refreshUpgrades(client, slot)
 					TF2Attrib_RemoveByName(client,"SET BONUS: chance of hunger decrease");
 					TF2Attrib_RemoveByName(client,"has pipboy build interface");
 				}
+			}
+
+			Address infernalPowerup = TF2Attrib_GetByName(client, "infernal powerup");
+			if(infernalPowerup != Address_Null)
+			{
+				if(TF2Attrib_GetValue(infernalPowerup) > 0.0)
+					TF2Attrib_SetByName(client,"mult afterburn delay", 0.65);
+				else
+					TF2Attrib_RemoveByName(client,"mult afterburn delay");
+			}
+			Address martyrPowerup = TF2Attrib_GetByName(client, "martyr powerup");
+			if(martyrPowerup != Address_Null){
+				if(TF2Attrib_GetValue(martyrPowerup) > 0.0)
+					TF2Attrib_SetByName(client, "health from healers reduced", 0.2);
+				else
+					TF2Attrib_SetByName(client, "health from healers reduced", TF2_IsPlayerInCondition(client, TFCond_Bleeding) ? 0.5 : 1.0);
 			}
 
 		}

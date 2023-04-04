@@ -58,6 +58,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
+					if(GetAttribute(victim, "inverter powerup", 0.0)){
+						AddPlayerHealth(victim, RoundToFloor(damage/GetResistance(victim, true)), 2.0, true, 0);
+						damage *= 0.0;
+					}
 				}
 				if(currentDamageType[attacker].second & DMG_ARCANE)
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
@@ -213,7 +217,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 	if(IsValidClient3(attacker) && IsValidClient3(victim) && IsValidWeapon(weapon))
 	{
 		char damageCategory[64];
-		damageCategory = getDamageCategory(currentDamageType[attacker]);
+		damageCategory = getDamageCategory(currentDamageType[attacker], attacker);
 
 		applyDamageAffinities(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom, damageCategory);
 
@@ -234,7 +238,11 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 				if(StrEqual(weaponClassName,"tf_weapon_jar_milk",false))
 				{
-					if(MadmilkDuration[victim] < currentGameTime+6.0)
+					if(GetAttribute(victim, "inverter powerup", 0.0)){
+						MadmilkDuration[attacker] = currentGameTime+6.0;
+						MadmilkInflictor[attacker] = victim;
+					}
+					else if(MadmilkDuration[victim] < currentGameTime+6.0)
 					{
 						MadmilkDuration[victim] = currentGameTime+6.0;
 						MadmilkInflictor[victim] = attacker;
@@ -245,7 +253,12 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(MadMilkOnhit != Address_Null)
 			{
 				float value = TF2Attrib_GetValue(MadMilkOnhit);
-				if(MadmilkDuration[victim] < currentGameTime+value)
+
+				if(GetAttribute(victim, "inverter powerup", 0.0)){
+					MadmilkDuration[attacker] = currentGameTime+value;
+					MadmilkInflictor[attacker] = victim;
+				}
+				else if(MadmilkDuration[victim] < currentGameTime+value)
 				{
 					MadmilkDuration[victim] = currentGameTime+value
 					MadmilkInflictor[victim] = attacker;
@@ -282,90 +295,48 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		Address resistancePowerup = TF2Attrib_GetByName(victim, "resistance powerup");
-		if(resistancePowerup != Address_Null)
+		if(GetAttribute(victim, "resistance powerup", 0.0))
 		{
-			float resistancePowerupValue = TF2Attrib_GetValue(resistancePowerup);
-			if(resistancePowerupValue > 0.0)
-			{
-				if(critStatus[victim] == true){
-					critStatus[victim] = false;
-					damage /= 2.25;
-				}else if(miniCritStatus[victim] == true){
-					miniCritStatus[victim] = false;
-					damage /= 1.4;
-				}
-				
-				damage /= 2.0;
+			if(critStatus[victim] == true){
+				critStatus[victim] = false;
+				damage /= 2.25;
+			}else if(miniCritStatus[victim] == true){
+				miniCritStatus[victim] = false;
+				damage /= 1.4;
 			}
-		}
-		Address vampirePowerup = TF2Attrib_GetByName(victim, "vampire powerup");//Vampire Powerup
-		if(vampirePowerup != Address_Null)
-		{
-			float vampirePowerupValue = TF2Attrib_GetValue(vampirePowerup);
-			if(vampirePowerupValue > 0.0)
-			{
-				damage *= 0.75;
-			}
-		}
-		Address revengePowerup = TF2Attrib_GetByName(victim, "revenge powerup");//Vampire Powerup
-		if(revengePowerup != Address_Null)
-		{
-			float revengePowerupValue = TF2Attrib_GetValue(revengePowerup);
-			if(revengePowerupValue > 0.0)
-			{
-				damage *= 0.8;
-			}
-		}
-		Address regenerationPowerup = TF2Attrib_GetByName(victim, "regeneration powerup");//Regeneration powerup
-		if(regenerationPowerup != Address_Null)
-		{
-			float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
-			if(regenerationPowerupValue > 0.0)
-			{
-				damage *= 0.75;
-			}
+			damage /= 2.0;
 		}
 
-		Address knockoutPowerupVictim = TF2Attrib_GetByName(victim, "knockout powerup");
-		if(knockoutPowerupVictim != Address_Null)
-		{
-			float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerupVictim);
-			if(knockoutPowerupValue > 0.0){
-				damage *= 0.8;
-			}
-		}
-		
-		Address kingPowerup = TF2Attrib_GetByName(victim, "king powerup");
-		if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
-		{
+		if(GetAttribute(victim, "revenge powerup", 0.0))
 			damage *= 0.8;
-		}
+
+		if(GetAttribute(victim, "knockout powerup", 0.0))
+			damage *= 0.8;
+
+		if(GetAttribute(victim, "king powerup", 0.0))
+			damage *= 0.8;
+		
+		if(GetAttribute(victim, "supernova powerup", 0.0))
+			damage *= 0.8;
+
+		if(GetAttribute(victim, "inverter powerup", 0.0))
+			damage *= 0.8;
+
+		if(GetAttribute(victim, "regeneration powerup", 0.0))
+			damage *= 0.75;
+
+		if(GetAttribute(victim, "vampire powerup", 0.0))
+			damage *= 0.75;
+
+		if(GetAttribute(victim, "plague powerup", 0.0))
+			damage *= 0.7;
 		
 		if(TF2_IsPlayerInCondition(attacker, TFCond_Plague))
 		{
 			int plagueInflictor = GetClientOfUserId(plagueAttacker[attacker]);
 			if(IsValidClient3(plagueInflictor))
-			{
-				Address plaguePowerup = TF2Attrib_GetByName(plagueInflictor, "plague powerup");
-				if(plaguePowerup != Address_Null)
-				{
-					float plaguePowerupValue = TF2Attrib_GetValue(plaguePowerup);
-					if(plaguePowerupValue > 0.0)
-						damage /= 2.0;
-				}
-			}
-		}
-		Address plaguePowerup = TF2Attrib_GetByName(victim, "plague powerup");
-		if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
-		{
-			damage *= 0.7;
-		}
-		
-		Address supernovaPowerupVictim = TF2Attrib_GetByName(victim, "supernova powerup");
-		if(supernovaPowerupVictim != Address_Null && TF2Attrib_GetValue(supernovaPowerupVictim) > 0.0)
-		{
-			damage *= 0.8;
+				if(GetAttribute(plagueInflictor, "plague powerup", 0.0))
+					damage /= 2.0;
 		}
 		
 		Address strengthPowerup = TF2Attrib_GetByName(attacker, "strength powerup");
@@ -378,73 +349,27 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 		
-		Address revengePowerupAttacker = TF2Attrib_GetByName(attacker, "revenge powerup");
-		if(revengePowerupAttacker != Address_Null)
+		if(RageActive[attacker] == true && GetAttribute(attacker, "revenge powerup"))
 		{
-			if(RageActive[attacker] == true && TF2Attrib_GetValue(revengePowerupAttacker) > 0.0)
+			damage *= 1.5;
+			if(powerupParticle[attacker] <= currentGameTime)
 			{
-				damage *= 1.5;
-				if(powerupParticle[attacker] <= currentGameTime)
-				{
-					CreateParticle(victim, "critgun_weaponmodel_red", true, "", 1.0,_,_,1);
-					TE_SendToAll();
-					powerupParticle[attacker] = currentGameTime+0.2;
-				}
+				CreateParticle(victim, "critgun_weaponmodel_red", true, "", 1.0,_,_,1);
+				TE_SendToAll();
+				powerupParticle[attacker] = currentGameTime+0.2;
 			}
 		}
 		
-		Address precisionPowerup = TF2Attrib_GetByName(attacker, "precision powerup");
-		if(precisionPowerup != Address_Null)
-		{
-			float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
-			if(precisionPowerupValue > 0.0){
-				damage *= 1.35;
-			}
-		}
+		if(GetAttribute(attacker, "precision powerup", 0.0))
+			damage *= 1.35;
+
+		if(!IsFakeClient(attacker) && TF2_IsPlayerInCondition(attacker, TFCond_KingAura))
+			damage *= 1.2;
 		
-		int clientTeam = GetClientTeam(attacker);
-		float clientPos[3];
-		GetEntPropVector(attacker, Prop_Data, "m_vecOrigin", clientPos);
-		float highestKingDMG = 1.0;
-		for(int i = 1;i<MaxClients;i++)
-		{
-			if(IsValidClient3(i) && IsPlayerAlive(i))
-			{
-				int iTeam = GetClientTeam(i);
-				if(clientTeam == iTeam)
-				{
-					float VictimPos[3];
-					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-					VictimPos[2] += 30.0;
-					float Distance = GetVectorDistance(clientPos,VictimPos);
-					if(Distance <= 600.0)
-					{
-						Address kingPowerupAttacker = TF2Attrib_GetByName(i, "king powerup");
-						if(kingPowerupAttacker != Address_Null && TF2Attrib_GetValue(kingPowerupAttacker) > 0.0)
-						{
-							highestKingDMG = 1.2;
-							break;
-						}
-					}
-				}
-			}
-		}
-		if(highestKingDMG > 1.0)
-		{
-			damage *= highestKingDMG;
-		}
-		
-		Address knockoutPowerup = TF2Attrib_GetByName(attacker, "knockout powerup");
-		if(knockoutPowerup != Address_Null)
-		{
-			float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
-			if(knockoutPowerupValue > 0.0){
-				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-				{
-					damage *= 1.75
-				}
-			}
-		}
+		if(GetAttribute(attacker, "knockout powerup", 0.0))
+			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				damage *= 1.75
+
 		Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
 		if(bleedBuild != Address_Null)
 		{
@@ -469,19 +394,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		{
 			RadiationBuildup[victim] += TF2Attrib_GetValue(radiationBuild);
 			checkRadiation(victim,attacker);
-		}
-		Address Skill = TF2Attrib_GetByName(weapon, "apply look velocity on damage");
-		if(Skill != Address_Null)
-		{
-			switch(TF2Attrib_GetValue(Skill))
-			{
-				case 13.0: //Bloodlust
-				{
-					float offset[3]
-					offset[2] += 40.0;
-					CreateParticle(victim, "env_sawblood", true, "", 2.0, offset);
-				}
-			}
 		}
 		if(StunShotStun[attacker])
 		{
@@ -553,6 +465,16 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 						SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
 						damage *= (1-redirect);
 					}
+					if(damage > GetClientHealth(victim) && GetAttribute(i, "martyr powerup", 0.0)){
+						SDKHooks_TakeDamage(i, attacker, attacker, damage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
+
+						currentDamageType[attacker].second |= DMG_PIERCING;
+						SDKHooks_TakeDamage(i, attacker, attacker, GetClientHealth(i) * 0.15, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
+						damage *= 0.0;
+
+						TF2_AddCondition(victim, TFCond_UberchargedCanteen, 2.0, i);
+						TF2_AddCondition(i, TFCond_UberchargedCanteen, 0.5, i);
+					}
 				}
 			}
 		}
@@ -563,7 +485,9 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 }
 public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3],int damagecustom, CritType &critType)
 {
-	attacker = EntRefToEntIndex(attacker);
+	if(!IsValidClient3(attacker))
+		attacker = EntRefToEntIndex(attacker);
+
 	if(critType == CritType_Crit)
 	{
 		critStatus[victim] = true
@@ -630,6 +554,9 @@ int damagecustom, CritType &critType)
 }
 public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom)
 {
+	if(0 < attacker < MaxClients)
+		baseDamage[attacker] = damage;
+
 	if(damagetype & DMG_CRIT)
 	{
 		critStatus[victim] = true
@@ -692,7 +619,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 				if(i == 0) i = 1;
 				damage *= i*weaponFireRate[weapon]/TICKRATE;
 			}
-			applyDamageAffinities(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom, getDamageCategory(currentDamageType[attacker]));
+			applyDamageAffinities(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom, getDamageCategory(currentDamageType[attacker], attacker));
 		}
 	}
 	if(damage < 0.0)
@@ -850,7 +777,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		}
 		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", owner);
 
-		applyDamageAffinities(owner, attacker, inflictor, damage, weapon, damagetype, damagecustom, getDamageCategory(currentDamageType[attacker]));
+		applyDamageAffinities(owner, attacker, inflictor, damage, weapon, damagetype, damagecustom, getDamageCategory(currentDamageType[attacker], attacker));
 	}
 	return Plugin_Changed;
 }
@@ -1066,7 +993,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			burndmgMult *= GetAttribute(weapon, "shot penetrate all players");
 			burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
 
-			if(GetClientTeam(attacker) != GetClientTeam(victim) && GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) &&
+
+			if(GetClientTeam(attacker) != GetClientTeam(victim) && (GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) || GetAttribute(attacker, "infernal powerup", 0.0)) &&
 			TF2_GetDPSModifiers(attacker, weapon)*burndmgMult >= fl_HighestFireDamage[victim] && 
 			!(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE) && !(damagetype & DMG_ENERGYBEAM)) // int afterburn system.
 			{
@@ -1178,7 +1106,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		float supernovaPowerup = GetAttribute(attacker, "supernova powerup",0.0);
 		if(supernovaPowerup != 0.0)
 		{
-			if(StrEqual(getDamageCategory(currentDamageType[attacker]),"blast",false))
+			if(StrEqual(getDamageCategory(currentDamageType[attacker], attacker),"blast",false))
 			{
 				damage *= 1.8;
 			}
@@ -1620,6 +1548,9 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 	bits = currentDamageType[attacker];
 	*///Lets use this later...
 
+	if(!IsValidWeapon(weapon))
+		return;
+
 	currentDamageType[attacker].clear();
 
 	if(StrEqual(damageCategory, "direct"))
@@ -1656,6 +1587,26 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
 			damage *= 1.0+(TF2Util_GetPlayerBurnDuration(victim)*0.05);
 		}
+		Address infernalPowerup = TF2Attrib_GetByName(attacker, "infernal powerup");
+		if(infernalPowerup != Address_Null){
+			damage *= 1.7;
+
+			int team = GetClientTeam(attacker);
+			float piercingDamage = 100.0/weaponFireRate[weapon];
+			for(int i = 1;i<MaxClients;i++){
+				if(!IsValidClient3(i))
+					continue;
+				if(!IsPlayerAlive(i))
+					continue;
+				if(GetClientTeam(i) == team)
+					continue;
+				if(GetPlayerDistance(victim,i) > 500)
+					continue;
+				
+				currentDamageType[attacker].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(victim, attacker, attacker, piercingDamage, DMG_GENERIC, weapon);
+			}
+		}
 	}
 	if(StrEqual(damageCategory, "blast"))
 	{
@@ -1669,7 +1620,30 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "electric damage affinity");
 		if(dmgMasteryAddr != Address_Null)
 			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-		
+
+		if(GetAttribute(attacker, "thunderstorm powerup", 0.0)){
+			float buff = 1.0;
+			for(int i = 1;i<MaxClients;i++){
+				if(isTagged[attacker][i])
+					buff += 0.08;
+			}
+			damage *= buff;
+		}
+
+		int team = GetClientTeam(attacker);
+		float arcDamage = baseDamage[attacker] * TF2_GetDamageModifiers(attacker, weapon, true) * 0.5;
+		for(int i = 1;i<MaxClients;i++){
+			if(!IsValidClient3(i))
+				continue;
+			if(!IsPlayerAlive(i))
+				continue;
+			if(GetClientTeam(i) == team)
+				continue;
+			if(!isTagged[attacker][i])
+				continue;
+
+			SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK, weapon);
+		}
 	}
 	if(damagetype & DMG_CRIT)
 	{
