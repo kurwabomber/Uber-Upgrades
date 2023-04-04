@@ -5793,7 +5793,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"+20% Attackspeed per second you hold fire.\nCapped at +200% and is removed on reload.\nMelee weapons gain +1 additional attacks VS non-living targets."
+			"description"	"+20% Attackspeed per second you hold fire.\nCapped at +200% and is removed when not firing (including reload)."
 			"max"		"1.00"
 		}
 	}

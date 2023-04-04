@@ -3192,6 +3192,15 @@
         "hidden"	"0"
         "effect_type"	"positive"
     }
+    "4704"
+    {
+        "name"	"additive damage bonus"
+        "attribute_class"	"additive_damage"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
     //Masteries
     "5000"
     {
@@ -3446,11 +3455,51 @@
     }
     "6023"
     {
+        "name"  "damage taken mult 4"
+        "attribute_class"	"dmg_incoming_mult"
+        "description_string"	"(+-)%p% damage taken"
+        "description_format"	"value_is_percentage"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6024"
+    {
         "name"  "Converts Firerate to Damage"
         "attribute_class"   "convert_firerate_to_damage"
         "description_string"	"Converts fire rate to damage bonus"
         "description_format"	"value_is_additive"
         "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6025"
+    {
+        "name"  "movespeed player buff"
+        "attribute_class"	"mult_player_movespeed"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6026"
+    {
+        "name"  "firerate player buff"
+        "attribute_class"	"mult_postfiredelay"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6027"
+    {
+        "name"  "recharge rate player buff"
+        "attribute_class"	"mult_item_meter_charge_rate"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }

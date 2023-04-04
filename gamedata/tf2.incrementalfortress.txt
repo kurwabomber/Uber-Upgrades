@@ -183,6 +183,13 @@
 				"return"		"int"
 				"this"			"entity"
 			}
+			"CTFWeaponBase::FinishReload()"
+			{
+				"signature"		"CTFWeaponBase::FinishReload()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"entity"
+			}
 		}
 		"Signatures"
 		{
@@ -299,6 +306,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZNK13CTFWeaponBase13GetDamageTypeEv"
+			}
+			"CTFWeaponBase::FinishReload()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN13CTFWeaponBase6ReloadEv"
 			}
 		}
 	}

@@ -288,6 +288,13 @@ public void OnPluginStart()
 	if(g_DHookScattergunReload == INVALID_HANDLE)
 		PrintToServer("CustomAttrs | Scattergun Clip Replacement function error");
 	DHookEnableDetour(g_DHookScattergunReload, false, OnScattergunReload);
+	
+	//Post finish reload
+	Handle g_DHookFinishReload = DHookCreateFromConf(hConf, "CTFWeaponBase::FinishReload()");
+	
+	if(g_DHookFinishReload == INVALID_HANDLE)
+		PrintToServer("CustomAttrs | g_DHookFinishReload function error");
+	DHookEnableDetour(g_DHookFinishReload, true, OnFinishReload);
 
 	//Knockback Changes
 	Handle g_DHookKnockbackReplacement = DHookCreateFromConf(hConf, "CTFPlayer::ApplyAbsVelocityImpulse()");

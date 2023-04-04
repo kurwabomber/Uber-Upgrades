@@ -157,15 +157,7 @@ public Action:Timer_FixedVariables(Handle timer)
 
 		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 
-		Address relentlessPowerup = TF2Attrib_GetByName(client, "relentless powerup");
-		if(relentlessPowerup != Address_Null){
-			if(TF2Attrib_GetValue(relentlessPowerup) > 0.0)
-				TF2Attrib_SetByName(client, "fire rate bonus HIDDEN", 1.0/(1.0 + (relentlessTicks[client] > 667 ? 667 : relentlessTicks[client])/(TICKRATE*10.0)) );
-			else{
-				TF2Attrib_RemoveByName(client, "fire rate bonus HIDDEN");
-				TF2Attrib_RemoveByName(client, "relentless powerup")
-			}
-		}
+		ManagePlayerBuffs(client);
 
 		Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
 		if(RegenActive != Address_Null)
@@ -244,12 +236,6 @@ public Action:Timer_FixedVariables(Handle timer)
 				}
 			}
 
-			if(disableIFMiniHud[client] <= currentGameTime)
-			{
-				char Startcash[128]
-				Format(Startcash, sizeof(Startcash), "%.0f Startmoney\n$%.0f\n%0.f Player Kills\n%0.f Player Deaths\n%s Damage Dealt\n%s DPS\n%0.f RPS\n%s Damage Healed", StartMoney+additionalstartmoney,CurrencyOwned[client],Kills[client],Deaths[client],GetAlphabetForm(DamageDealt[client]),GetAlphabetForm(dps[client]),RPS[client],GetAlphabetForm(Healed[client])); 
-				SendItemInfo(client, Startcash);
-			}
 			SetEntProp(client, Prop_Send, "m_nCurrency", 0);
 			char ArmorLeft[64]
 			if(IsValidEdict(CWeapon))

@@ -569,9 +569,10 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 	if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
 		damage = genericSentryDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 	
-	if(IsValidClient3(victim) && IsValidClient3(attacker))
+	if(IsValidClient3(victim) && IsValidClient3(attacker)){
+		damage += GetAttribute(attacker, "additive damage bonus", 0.0);
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
-	
+	}
 	lastDamageTaken[victim] = damage;
 	if(damage < 0.0)
 	{

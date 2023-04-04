@@ -49,8 +49,14 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 						if(ConcussionBuildup[client] >= 100.0)
 						{
 							ConcussionBuildup[client] = 0.0;
+
+							if(GetAttribute(client, "inverter powerup", 0.0)){
+								TF2_AddCondition(client, TFCond_MegaHeal, 10.0);
+								TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, 10.0);
+							}else{
 							miniCritStatusVictim[client] = currentGameTime+10.0;
 							TF2_StunPlayer(client, 1.0, 1.0, TF_STUNFLAGS_NORMALBONK, attacker);
+							}
 						}
 					}
 				}
@@ -330,12 +336,14 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					TF2_AddCondition(client, TFCond_HalloweenSpeedBoost, 3.0);
 					return MRES_Supercede;
 				}
-
-				Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
-				if(slowResistance != Address_Null)
+				else
 				{
-					DHookSetParam(hParams, 2, duration * TF2Attrib_GetValue(slowResistance));
-					return MRES_Override;
+					Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
+					if(slowResistance != Address_Null)
+					{
+						DHookSetParam(hParams, 2, duration * TF2Attrib_GetValue(slowResistance));
+						return MRES_Override;
+					}
 				}
 			}
 			case TFCond_Bonked:
@@ -388,9 +396,13 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						Address MiniCritActive = TF2Attrib_GetByName(CWeapon, "duel loser account id");
 						if(MiniCritActive != Address_Null)
 						{
-							miniCritStatusVictim[client] = currentGameTime+16.0;
+							if(GetAttribute(client, "inverter powerup", 0.0)){
+								TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, 16.0);
+							}else{
+								miniCritStatusVictim[client] = currentGameTime+16.0;
+								TF2_AddCondition(client, TFCond_RestrictToMelee, 16.0);
+							}
 							miniCritStatusAttacker[client] = currentGameTime+16.0;
-							TF2_AddCondition(client, TFCond_RestrictToMelee, 16.0);
 							TF2_AddCondition(client, TFCond_SpeedBuffAlly, 16.0);
 							int melee = GetWeapon(client, 2)
 							if(IsValidEdict(melee) && HasEntProp(melee, Prop_Send, "m_iItemDefinitionIndex"))
@@ -431,30 +443,26 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			}
 			case TFCond_Jarated:
 			{
-				if(GetAttribute(client, "inverter powerup", 0.0)){
+				if(GetAttribute(client, "inverter powerup", 0.0))
 					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
-					return MRES_Supercede;
-				}
-				miniCritStatusVictim[client] = currentGameTime+duration;
-				
+				else
+					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_MarkedForDeath:
 			{
-				if(GetAttribute(client, "inverter powerup", 0.0)){
+				if(GetAttribute(client, "inverter powerup", 0.0))
 					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
-					return MRES_Supercede;
-				}
-				miniCritStatusVictim[client] = currentGameTime+duration;
+				else
+					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_MarkedForDeathSilent:
 			{
-				if(GetAttribute(client, "inverter powerup", 0.0)){
+				if(GetAttribute(client, "inverter powerup", 0.0))
 					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
-					return MRES_Supercede;
-				}
-				miniCritStatusVictim[client] = currentGameTime+duration;
+				else
+					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_MiniCritOnKill:
@@ -465,6 +473,10 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			case TFCond_CritCola:
 			{
 				miniCritStatusAttacker[client] = currentGameTime+duration;
+				if(GetAttribute(client, "inverter powerup", 0.0))
+					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
+				else
+					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_NoHealingDamageBuff:
@@ -1341,7 +1353,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 
 		if(buttons & IN_ATTACK)
 			relentlessTicks[client]++;
-		if(buttons & IN_RELOAD)
+		else
 			relentlessTicks[client] = 0;
 
 		if(buttons & IN_SCORE)
@@ -2406,6 +2418,18 @@ public OnGameFrame()
 			}
 		}
 	}
+}
+public MRESReturn OnFinishReload(int weapon)
+{
+	if(!IsValidWeapon(weapon))
+		return MRES_Ignored;
+
+	int client = getOwner(weapon);
+	if(!IsValidClient3(client))
+		return MRES_Ignored;
+
+	relentlessTicks[client] = 0;
+	return MRES_Ignored;
 }
 public MRESReturn OnScattergunReload(int weapon)
 {

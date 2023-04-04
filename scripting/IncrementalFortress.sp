@@ -31,8 +31,10 @@
 #define NB_WEAPONS 20
 #define Max_Attunement_Slots 10
 #define MAX_STAGES 5
+
 #define TICKINTERVAL 0.01499
 #define TICKRATE 66.67
+#define MAXBUFFS 12
 
 #define MAXMONEY 50000000.0
 #define STAGEONE 1000000.0
