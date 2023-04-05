@@ -114,7 +114,11 @@ enum struct Buff{
 	}
 }
 enum {
-	Buff_Empty=0
+	Buff_Empty=0,
+	Buff_Minicrits=1,
+	Buff_MarkedForDeath=2,
+	Buff_DefenseBoost=3,
+	Buff_KingAura=4,
 };
 
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];

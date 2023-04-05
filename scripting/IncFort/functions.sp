@@ -3,7 +3,7 @@ public void insertBuff(int client, Buff newBuff){
 	int replacementID = getNextBuff(client);
 
 	for(int i = 0;i < MAXBUFFS;i++){
-		if(playerBuffs[client][i].id == newBuff.id && playerBuffs[client][i].priority == newBuff.priority)
+		if(playerBuffs[client][i].id == newBuff.id && playerBuffs[client][i].priority <= newBuff.priority)
 			{replacementID = i;break;}
 	}
 	buffChange[client] = true;
@@ -23,6 +23,17 @@ public int getNextBuff(int client){
 			return i;
 	}
 	return 0;
+}
+public void clearAllBuffs(int client){
+	for(int i = 0; i < MAXBUFFS; i++){
+		playerBuffs[client][i].clear();
+	}
+}
+public void giveDefenseBuff(int client, float duration){
+	Buff defenseBuff;
+	defenseBuff.init("Defense Bonus", "", Buff_DefenseBoost, 1, client, duration);
+	defenseBuff.multiplicativeDamageTaken = -0.35;
+	insertBuff(client, defenseBuff);
 }
 public void ManagePlayerBuffs(int i){
 	float additiveDamageRawBuff;
@@ -83,10 +94,14 @@ public void ManagePlayerBuffs(int i){
 			Format(details, sizeof(details), "%s\n%s", details, "Relentless Powerup");
 			additiveAttackSpeedMultBuff += (relentlessTicks[i] > 667 ? 667 : relentlessTicks[i])/(TICKRATE*5.0);
 		}
-		else{
-			TF2Attrib_RemoveByName(i, "relentless powerup")
-		}
+		else
+			TF2Attrib_RemoveByName(i, "relentless powerup");
 	}
+
+	if(miniCritStatusVictim[i]-currentGameTime > 0.0)
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
+	if(miniCritStatusAttacker[i]-currentGameTime > 0.0)
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Minicrits", miniCritStatusAttacker[i]-currentGameTime);
 
 	if(buffChange[i])
 	{

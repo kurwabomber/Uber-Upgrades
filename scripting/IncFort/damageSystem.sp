@@ -362,9 +362,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		
 		if(GetAttribute(attacker, "precision powerup", 0.0))
 			damage *= 1.35;
-
-		if(!IsFakeClient(attacker) && TF2_IsPlayerInCondition(attacker, TFCond_KingAura))
-			damage *= 1.2;
 		
 		if(GetAttribute(attacker, "knockout powerup", 0.0))
 			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)

@@ -332,25 +332,12 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			}
 			case TFCond_Slowed:
 			{
-				if(GetAttribute(client, "inverter powerup", 0.0)){
-					TF2_AddCondition(client, TFCond_HalloweenSpeedBoost, 3.0);
-					return MRES_Supercede;
-				}
-				else
+				Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
+				if(slowResistance != Address_Null)
 				{
-					Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
-					if(slowResistance != Address_Null)
-					{
-						DHookSetParam(hParams, 2, duration * TF2Attrib_GetValue(slowResistance));
-						return MRES_Override;
-					}
+					DHookSetParam(hParams, 2, duration * TF2Attrib_GetValue(slowResistance));
+					return MRES_Override;
 				}
-			}
-			case TFCond_Bonked:
-			{
-				TF2_AddCondition(client, TFCond_SpeedBuffAlly, 8.0);
-				TF2_AddCondition(client, TFCond_HalloweenQuickHeal, 8.0);
-				return MRES_Supercede;
 			}
 			case TFCond_Taunting:
 			{
@@ -397,7 +384,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						if(MiniCritActive != Address_Null)
 						{
 							if(GetAttribute(client, "inverter powerup", 0.0)){
-								TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, 16.0);
+								giveDefenseBuff(client, duration);
 							}else{
 								miniCritStatusVictim[client] = currentGameTime+16.0;
 								TF2_AddCondition(client, TFCond_RestrictToMelee, 16.0);
@@ -444,7 +431,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			case TFCond_Jarated:
 			{
 				if(GetAttribute(client, "inverter powerup", 0.0))
-					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
+					giveDefenseBuff(client, duration);
 				else
 					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
@@ -452,7 +439,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			case TFCond_MarkedForDeath:
 			{
 				if(GetAttribute(client, "inverter powerup", 0.0))
-					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
+					giveDefenseBuff(client, duration);
 				else
 					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
@@ -460,7 +447,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			case TFCond_MarkedForDeathSilent:
 			{
 				if(GetAttribute(client, "inverter powerup", 0.0))
-					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
+					giveDefenseBuff(client, duration);
 				else
 					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
@@ -474,7 +461,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			{
 				miniCritStatusAttacker[client] = currentGameTime+duration;
 				if(GetAttribute(client, "inverter powerup", 0.0))
-					TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, duration);
+					giveDefenseBuff(client, duration);
 				else
 					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
@@ -757,12 +744,23 @@ public Event_BuffDeployed( Handle event, const char[] name, bool:broadcast )
 
 	return;
 }
-public void TF2_OnConditionAdded(client, TFCond:cond)
+public void TF2_OnConditionAdded(client, TFCond cond)
 {
 	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.01);
 	if(cond == TFCond_Charging)
 	{
 		TF2_Override_ChargeSpeed(client);
+	}
+	if(cond == TFCond_Slowed){
+		if(GetAttribute(client, "inverter powerup", 0.0)){
+			TF2_AddCondition(client, TFCond_HalloweenSpeedBoost, 3.0);
+			TF2_RemoveCondition(client, cond);
+		}
+	}
+	if(cond == TFCond_Bonked){
+		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 8.0);
+		TF2_AddCondition(client, TFCond_HalloweenQuickHeal, 8.0);
+		TF2_RemoveCondition(client, cond);
 	}
 }
 public void TF2_OnConditionRemoved(client, TFCond:cond)
@@ -1206,6 +1204,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 	RageBuildup[client] = 0.0;
 
 	CancelClientMenu(client);
+	clearAllBuffs(client);
 	if(IsValidEdict(autoSentryID[client]) && autoSentryID[client] > 32)
 	{
 		RemoveEntity(autoSentryID[client]);
@@ -1580,6 +1579,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						int clientTeam = GetClientTeam(client);
 						float clientPos[3];
 						GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
+						Buff kingBuff;
+						kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
+						kingBuff.multiplicativeAttackSpeedMult = 0.33;
+						kingBuff.additiveDamageMult = 0.2;
 						for(int i = 1;i<MaxClients;i++)
 						{
 							if(IsValidClient3(i) && IsPlayerAlive(i))
@@ -1594,14 +1597,11 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 									if(Distance <= 600.0)
 									{
 										if(iTeam == 2)
-										{
 											CreateParticle(i, "powerup_king_red", true, "", 2.0);
-										}
 										else
-										{
 											CreateParticle(i, "powerup_king_blue", true, "", 2.0);
-										}
-										TF2_AddCondition(i, TFCond_KingAura, 3.0)
+										
+										insertBuff(i, kingBuff);
 									}
 								}
 							}
@@ -3142,6 +3142,7 @@ public OnClientDisconnect(client)
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
+	clearAllBuffs(client);
 
 	int i;
 	for(i = 0; i < Max_Attunement_Slots; i++)
