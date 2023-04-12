@@ -697,29 +697,28 @@ public Action:OnTouchExplodeJar(entity, other)
 						}
 						else
 						{
-							if(isPlayer && i != owner)
+							if(!isPlayer)
+								continue;
+								
+							Address jarAfterburnImmunity = TF2Attrib_GetByName(CWeapon, "overheal decay disabled");
+							if(jarAfterburnImmunity != Address_Null)
+								TF2_AddCondition(i,TFCond_AfterburnImmune,TF2Attrib_GetValue(jarAfterburnImmunity));
+
+							if(GetAttribute(CWeapon, "no crit vs nonburning", 0.0) > 0.0)
 							{
-								Address jarAfterburnImmunity = TF2Attrib_GetByName(CWeapon, "overheal decay disabled");
-								if(jarAfterburnImmunity != Address_Null)
-								{
-									TF2_AddCondition(i,TFCond_AfterburnImmune,TF2Attrib_GetValue(jarAfterburnImmunity));
-								}
-								Address jarKingBuff = TF2Attrib_GetByName(CWeapon, "no crit vs nonburning");
-								if(jarKingBuff != Address_Null)
-								{
-									TF2_AddCondition(i,TFCond_KingAura,TF2Attrib_GetValue(jarKingBuff));
-								}
-								Address jarPreventDeath = TF2Attrib_GetByName(CWeapon, "fists have radial buff");
-								if(jarPreventDeath != Address_Null)
-								{
-									TF2_AddCondition(i,TFCond_PreventDeath,TF2Attrib_GetValue(jarPreventDeath));
-								}
-								Address jarDefensiveBuff = TF2Attrib_GetByName(CWeapon, "set cloak is feign death");
-								if(jarDefensiveBuff != Address_Null)
-								{
-									TF2_AddCondition(i,TFCond_DefenseBuffNoCritBlock,TF2Attrib_GetValue(jarDefensiveBuff));
-								}
+								Buff hasteBuff;
+								hasteBuff.init("Minor Haste", "", Buff_Haste, 1, owner, GetAttribute(CWeapon, "no crit vs nonburning", 0.0));
+								hasteBuff.additiveAttackSpeedMult = 0.5;
+								insertBuff(i, hasteBuff);
 							}
+							Address jarPreventDeath = TF2Attrib_GetByName(CWeapon, "fists have radial buff");
+							if(jarPreventDeath != Address_Null)
+								TF2_AddCondition(i,TFCond_PreventDeath,TF2Attrib_GetValue(jarPreventDeath));
+
+							Address jarDefensiveBuff = TF2Attrib_GetByName(CWeapon, "set cloak is feign death");
+							if(jarDefensiveBuff != Address_Null)
+								giveDefenseBuff(i,TF2Attrib_GetValue(jarDefensiveBuff));
+							
 							TF2_RemoveCondition(i, TFCond_OnFire);
 						}
 					}

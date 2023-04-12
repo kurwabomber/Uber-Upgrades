@@ -86,6 +86,7 @@ enum struct Buff{
 	float additiveMoveSpeedMult;
 	float additiveDamageTaken;
 	float multiplicativeDamageTaken;
+	float additiveArmorRecharge;
 
 	void clear(){
 		this.name = "";
@@ -102,6 +103,7 @@ enum struct Buff{
 		this.additiveMoveSpeedMult = 0.0;
 		this.additiveDamageTaken = 0.0;
 		this.multiplicativeDamageTaken = 0.0;
+		this.additiveArmorRecharge = 0.0;
 	}
 	void init(const char sName[32], const char sDescription[64], int iID, int iPriority, int iInflictor, float fDuration)
 	{
@@ -119,6 +121,9 @@ enum {
 	Buff_MarkedForDeath=2,
 	Buff_DefenseBoost=3,
 	Buff_KingAura=4,
+	Buff_LunchboxArmor=5,
+	Buff_Haste=6,
+	Buff_Speed=7,
 };
 
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
@@ -247,8 +252,6 @@ float DarkmoonBladeDuration[MAXPLAYERS + 1];
 float RPS[MAXPLAYERS+1];
 float lastMinesTime[MAXPLAYERS+1];
 float weaponTrailTimer[MAXPLAYERS+1];
-float fl_ArmorRegenBonusDuration[MAXPLAYERS+1]
-float fl_ArmorRegenBonus[MAXPLAYERS+1]
 float upgrades_weapon_cost[NB_WEAPONS];
 float upgrades_weapon_att_amt[NB_WEAPONS][NB_SLOTS_UED + 1];
 float weaponFireRate[MAXENTITIES+1];

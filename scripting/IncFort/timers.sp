@@ -30,63 +30,6 @@ public Action:Timer_Second(Handle timer)
 			
 			GetClientCookie(client, hArmorXPos, ArmorXPos[client], sizeof(ArmorXPos));
 			GetClientCookie(client, hArmorYPos, ArmorYPos[client], sizeof(ArmorYPos));
-			
-			Address armorRecharge = TF2Attrib_GetByName(client, "tmp dmgbuff on hit");
-			float ArmorRechargeMult = 1.0;
-			fl_ArmorRegenConstant[client] = 0.0;
-			if(IsNearSpencer(client) == true)
-			{
-				ArmorRechargeMult += 1.0;
-				fl_ArmorRegenConstant[client] += 0.05;
-			}
-			Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
-			int healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
-			if(healers > 0)
-			{
-				for (int i = 1; i < MaxClients; i++)
-				{
-					if (IsValidClient(i))
-					{
-						int healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
-						if(IsValidEdict(healerweapon))
-						{
-							if(HasEntProp(healerweapon, Prop_Send, "m_hHealingTarget") && GetEntPropEnt(healerweapon, Prop_Send, "m_hHealingTarget") == client)
-							{
-								if(IsValidEdict(healerweapon))
-								{
-									Address overhealBonus = TF2Attrib_GetByName(healerweapon, "overheal bonus");
-									if(overhealBonus != Address_Null)
-									{
-										ArmorRechargeMult *= TF2Attrib_GetValue(overhealBonus);
-									}
-									Address constantArmorRegen = TF2Attrib_GetByName(healerweapon, "SRifle Charge rate increased");
-									if(constantArmorRegen != Address_Null)
-									{
-										fl_ArmorRegenConstant[client] += (fl_ArmorRegen[client]*TF2Attrib_GetValue(constantArmorRegen));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
-				ArmorRechargeMult += 1.0;
-
-			if(armorRecharge != Address_Null)
-				ArmorRechargeMult += TF2Attrib_GetValue(armorRecharge)-1.0;
-			
-			if(fl_ArmorRegenBonusDuration[client] > currentGameTime)
-				ArmorRechargeMult += fl_ArmorRegenBonus[client]-1.0;
-			
-			if(GetAttribute(client, "regeneration powerup", 0.0) > 0.0)
-				ArmorRechargeMult *= 2.0;
-
-			if(HealingReductionActive != Address_Null)
-				ArmorRechargeMult *= TF2Attrib_GetValue(HealingReductionActive);
-		
-			fl_ArmorRegen[client] = (fl_MaxArmor[client]*0.0002);
-			fl_ArmorRegen[client] += (fl_MaxArmor[client]*0.0002*ArmorRechargeMult);
 
 			//Arcane
 			float arcanePower = 1.0;
@@ -1124,6 +1067,24 @@ public Action:BuildingRegeneration(Handle timer, any:entity)
 			}
 		}
 	}
+}
+public Action Timer_UberCheck(Handle timer, int medigun){
+	int medigunID = EntRefToEntIndex(medigun);
+	if(!IsValidWeapon(medigunID) || !GetEntProp(medigunID, Prop_Send, "m_bChargeRelease"))
+		return Plugin_Stop;
+
+	if(GetEntProp(medigunID, Prop_Send, "m_bHolstered"))
+		return Plugin_Continue;
+
+	int medic = getOwner(medigunID);
+	if(!IsValidClient3(medic) || !IsPlayerAlive(medic) || TF2_GetPlayerClass(medic) != TFClass_Medic)
+		return Plugin_Stop;
+
+	
+	int target = GetEntPropEnt(medigunID, Prop_Send, "m_hHealingTarget");	
+	ApplyUberBuffs(medic, target, medigunID);
+
+	return Plugin_Continue;
 }
 public Action:refreshallweapons(Handle timer, int client) 
 {

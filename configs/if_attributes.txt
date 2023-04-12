@@ -5474,6 +5474,15 @@
 			"init"		"0"
 			"max"		"100"
 		}
+		"1609"
+		{
+			"name"		"additional ubers bit"
+			"ref"		"Additional Uber Effects"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"100000000"
+		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{

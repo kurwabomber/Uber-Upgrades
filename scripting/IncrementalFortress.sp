@@ -15,6 +15,7 @@
 #include <stocksoup/memory>
 #include <vphysics>
 #include <tf2utils>
+#include <profiler>
 
 #pragma tabsize 0
 

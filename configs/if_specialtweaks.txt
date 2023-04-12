@@ -25,9 +25,11 @@
 		}
 		"Stat Boost Ubercharge"
 		{
-			"overheal penalty"		"5"
+			"restriction"					"1"
+			"requirement"					"50k"
+
 			"ubercharge rate penalty"		"3.3334"
-			"medigun charge is boost"		"1.0"
+			"Additional Uber Effects"		"8.0"
 		}
 		"Rocket Launcher(Shortstop)"
 		{
@@ -40,8 +42,16 @@
 		}
 		"High-Velocity Bullets"
 		{
+			"requirement"					"50k"
+			"restriction"					"1"
 			"override projectile type (B)"	"1"
-			"Overall Damage Penalty" "2"
+		}
+		"Needlestorm"
+		{
+			"requirement"					"50k"
+			"restriction"					"1"
+			"Homing Projectiles"			"200"
+			"Bleed Per Hit"					"2"
 		}
 		"Guardian"
 		{

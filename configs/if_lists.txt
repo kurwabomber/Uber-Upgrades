@@ -1091,6 +1091,7 @@
 		"Special Tweaks"
 		{
 			"Sp1"		"High-Velocity Bullets"
+			"Sp2"		"Needlestorm"
 		}
 	}
 	"medweap_c"

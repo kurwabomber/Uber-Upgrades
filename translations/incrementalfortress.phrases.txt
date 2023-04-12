@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"Needlestorm"
+	{
+		"en"		"Needlestorm"
+	}
+	"Additional Uber Effects"
+	{
+		"en"		"Additional Uber Effects"
+	}
 	"mult projectile count"
 	{
 		"en"		"Projectiles Per Shot Increased"

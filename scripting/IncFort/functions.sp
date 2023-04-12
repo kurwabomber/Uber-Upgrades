@@ -44,6 +44,7 @@ public void ManagePlayerBuffs(int i){
 	float additiveMoveSpeedMultBuff = 1.0;
 	float additiveDamageTakenBuff = 1.0;
 	float multiplicativeDamageTakenBuff = 1.0;
+	float additiveArmorRechargeBuff = 1.0;
 
 	char details[255] = "Statuses Active:"
 
@@ -80,6 +81,7 @@ public void ManagePlayerBuffs(int i){
 		additiveMoveSpeedMultBuff += playerBuffs[i][buff].additiveMoveSpeedMult;
 		additiveDamageTakenBuff += playerBuffs[i][buff].additiveDamageTaken;
 		multiplicativeDamageTakenBuff *= 1.0+playerBuffs[i][buff].multiplicativeDamageTaken;
+		additiveArmorRechargeBuff += playerBuffs[i][buff].additiveArmorRecharge;
 
 		if(playerBuffs[i][buff].description[0] != '\0')
 			Format(details, sizeof(details), "%s\n%s: - %.1fs\n  %s", details, playerBuffs[i][buff].name, playerBuffs[i][buff].duration - currentGameTime, playerBuffs[i][buff].description);
@@ -98,10 +100,51 @@ public void ManagePlayerBuffs(int i){
 			TF2Attrib_RemoveByName(i, "relentless powerup");
 	}
 
+	float ArmorRechargeMult = 1.0;
+	fl_ArmorRegenConstant[i] = 0.0;
+	Address armorRecharge = TF2Attrib_GetByName(i, "tmp dmgbuff on hit");
+
+	if(TF2_IsPlayerInCondition(i, TFCond_MegaHeal))
+		additiveArmorRechargeBuff += 0.67;
+
+	if(armorRecharge != Address_Null)
+		additiveArmorRechargeBuff += TF2Attrib_GetValue(armorRecharge);
+	
+	if(GetAttribute(i, "regeneration powerup", 0.0) > 0.0)
+		ArmorRechargeMult *= 2.0;
+
+	Address HealingReductionActive = TF2Attrib_GetByName(i, "health from healers reduced");
+	if(HealingReductionActive != Address_Null)
+		ArmorRechargeMult *= TF2Attrib_GetValue(HealingReductionActive);
+
+	for (int h = 1; h < MaxClients; h++)
+	{
+		if (!IsValidClient3(h))
+			continue;
+
+		int healerweapon = GetEntPropEnt(h, Prop_Send, "m_hActiveWeapon");
+		if(!IsValidEdict(healerweapon))
+			continue;
+
+		if(HasEntProp(healerweapon, Prop_Send, "m_hHealingTarget") 
+		&& GetEntPropEnt(healerweapon, Prop_Send, "m_hHealingTarget") == i)
+		{
+			Address overhealBonus = TF2Attrib_GetByName(healerweapon, "overheal bonus");
+			if(overhealBonus != Address_Null)
+				additiveArmorRechargeBuff += (TF2Attrib_GetValue(overhealBonus)-1.0);
+
+			Address constantArmorRegen = TF2Attrib_GetByName(healerweapon, "SRifle Charge rate increased");
+			if(constantArmorRegen != Address_Null)
+				fl_ArmorRegenConstant[i] = (fl_MaxArmor[i]*TF2Attrib_GetValue(constantArmorRegen)*TICKINTERVAL);
+		}
+	}
+
 	if(miniCritStatusVictim[i]-currentGameTime > 0.0)
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
 	if(miniCritStatusAttacker[i]-currentGameTime > 0.0)
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Minicrits", miniCritStatusAttacker[i]-currentGameTime);
+	if(TF2_IsPlayerInCondition(i, TFCond_AfterburnImmune))
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Afterburn Immunity", TF2Util_GetPlayerConditionDuration(i, TFCond_AfterburnImmune));
 
 	if(buffChange[i])
 	{
@@ -114,6 +157,8 @@ public void ManagePlayerBuffs(int i){
 		TF2Attrib_SetByName(i, "damage taken mult 4", additiveDamageTakenBuff*multiplicativeDamageTakenBuff);
 		buffChange[i] = false;
 	}
+
+	fl_ArmorRegen[i] = (fl_MaxArmor[i]*0.0002) + (fl_MaxArmor[i]*0.0002*ArmorRechargeMult*additiveArmorRechargeBuff);
 
 	if(IsFakeClient(i) || disableIFMiniHud[i] > currentGameTime)
 		return;
@@ -135,7 +180,63 @@ public void ManagePlayerBuffs(int i){
 	else if (additiveDamageTakenBuff*multiplicativeDamageTakenBuff < 1.0)
 		Format(details, sizeof(details), "%s\n-%ipct Damage Taken", details, RoundToNearest( (1.0-(additiveDamageTakenBuff*multiplicativeDamageTakenBuff)) *100.0) );
 
+	if(additiveArmorRechargeBuff != 1.0)
+		Format(details, sizeof(details), "%s\n+%ipct Armor Recharge Rate", details, RoundToNearest((additiveArmorRechargeBuff-1.0)*100.0) );
+
 	SendItemInfo(i, details);
+}
+public ApplyUberBuffs(int medic, int target, int medigun){
+	/*
+		Debug: Works perfectly!
+		PrintToServer("Medic = %i | Target = %i | Medigun = %i", medic, target, medigun);
+	*/
+
+	bool applyToTarget = IsValidClient3(target) && IsPlayerAlive(target);
+	int uberBits = TF2Attrib_HookValueInt(0, "additional_ubers", medigun);
+
+	if(uberBits & UBER_INVULN){
+		TF2_AddCondition(medic, TFCond_UberchargedCanteen, 0.2, medic);
+		if(applyToTarget)
+			TF2_AddCondition(target, TFCond_UberchargedCanteen, 0.2, medic);
+	}
+	if(uberBits & UBER_CRIT){
+		TF2_AddCondition(medic, TFCond_CritCanteen, 0.2, medic);
+		if(applyToTarget)
+			TF2_AddCondition(target, TFCond_CritCanteen, 0.2, medic);
+	}
+	if(uberBits & UBER_MEGAHEAL){
+		TF2_AddCondition(medic, TFCond_MegaHeal, 0.2, medic);
+		if(applyToTarget)
+			TF2_AddCondition(target, TFCond_MegaHeal, 0.2, medic);
+	}
+	if(uberBits & UBER_HASTE){
+		Buff hasteBuff;
+		hasteBuff.init("Minor Haste", "", Buff_Haste, 1, medic, 0.2);
+		hasteBuff.additiveAttackSpeedMult = 0.5;
+		insertBuff(medic, hasteBuff);
+
+		if(applyToTarget)
+			insertBuff(target, hasteBuff);
+	}
+	if(uberBits & UBER_DEFENSE){
+		Buff defenseBuff;
+		defenseBuff.init("Major Defense Bonus", "", Buff_DefenseBoost, 2, medic, 0.2);
+		defenseBuff.multiplicativeDamageTaken = -0.5;
+		insertBuff(medic, defenseBuff);
+
+		if(applyToTarget)
+			insertBuff(target, defenseBuff);
+	}
+	if(uberBits & UBER_SPEED){
+		Buff speedBuff;
+		speedBuff.init("Major Speed Bonus", "", Buff_Speed, 2, medic, 0.2);
+		speedBuff.additiveMoveSpeedMult = 0.4;
+		speedBuff.additiveArmorRecharge = 1.0;
+		insertBuff(medic, speedBuff);
+
+		if(applyToTarget)
+			insertBuff(target, speedBuff);
+	}
 }
 public GetUpgrade_CatList(char[] WCName)
 {

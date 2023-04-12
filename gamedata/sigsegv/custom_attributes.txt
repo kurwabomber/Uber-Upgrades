@@ -3453,7 +3453,7 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
-    "6023"
+    "6024"
     {
         "name"  "damage taken mult 4"
         "attribute_class"	"dmg_incoming_mult"
@@ -3463,7 +3463,7 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
-    "6024"
+    "6023"
     {
         "name"  "Converts Firerate to Damage"
         "attribute_class"   "convert_firerate_to_damage"
@@ -3502,5 +3502,25 @@
         "hidden"	"1"
         "effect_type"	"positive"
         "stored_as_integer"	"0"
+    }
+    "6028"
+    {
+        "name"  "armor recharge rate buff"
+        "attribute_class"	"armor_recharge_rate_mult"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6029"
+    {
+        "name" "additional ubers bit"
+        "attribute_class"	"additional_ubers"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"1"
+        "effect_type"	"positive"
+        "stored_as_integer"	"1"
     }
 }

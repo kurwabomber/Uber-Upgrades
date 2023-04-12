@@ -197,6 +197,20 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		}
 	}
 }
+public Event_UberDeployed(Event event, const char[] name, bool dontBroadcast){
+	int medic = GetClientOfUserId(GetEventInt(event, "userid"));
+	if(!IsValidClient3(medic) || !IsPlayerAlive(medic) || TF2_GetPlayerClass(medic) != TFClass_Medic)
+		return;
+	
+	int medigun = GetWeapon(medic, 1);
+	if(!IsValidWeapon(medigun))
+		return;
+	
+	int target = GetEntPropEnt(medigun, Prop_Send, "m_hHealingTarget");
+	ApplyUberBuffs(medic, target, medigun);
+
+	CreateTimer(0.1, Timer_UberCheck, EntIndexToEntRef(medigun), TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+}
 public MRESReturn OnModifyRagePre(Address pPlayerShared, Handle hParams) {
 	int client = GetEntityFromAddress((DereferencePointer(pPlayerShared + g_offset_CTFPlayerShared_pOuter)));
 	if(TF2_GetPlayerClass(client) == TFClass_Soldier)
@@ -366,12 +380,10 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						}
 						if(ArmorRegen != Address_Null)
 						{
-							fl_ArmorRegenBonus[client] = TF2Attrib_GetValue(ArmorRegen)
-							fl_ArmorRegenBonusDuration[client] = currentGameTime+4.0
-						}
-						else
-						{
-							fl_ArmorRegenBonus[client] = 1.0
+							Buff lunchboxBonus;
+							lunchboxBonus.init("Lunchbox Armor Recharge", "", Buff_LunchboxArmor, 1, client, 8.0);
+							lunchboxBonus.additiveArmorRecharge = TF2Attrib_GetValue(ArmorRegen);
+							insertBuff(client, lunchboxBonus);
 						}
 						if(ShieldingActive != Address_Null)
 						{
@@ -464,11 +476,6 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					giveDefenseBuff(client, duration);
 				else
 					miniCritStatusVictim[client] = currentGameTime+duration;
-				return MRES_Supercede;
-			}
-			case TFCond_NoHealingDamageBuff:
-			{
-				miniCritStatusAttacker[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_Sapped:
@@ -695,6 +702,7 @@ public MRESReturn OnFireRateCall(int entity, Handle hReturn, Handle hParams)  {
 				}
 			}
 		}
+
 		weaponFireRate[entity] = 1.0/rate;
 	}
 	return MRES_Ignored;
@@ -862,12 +870,7 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(PrecisionHoming, reference);
 			CreateTimer(4.0, SelfDestruct, reference);
 			CreateTimer(0.1, ArrowThink, reference, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-			DataPack pack = CreateDataPack();
-			pack.WriteCell(reference);
-			pack.WriteFloat(0.1);
-			pack.WriteCell(1);
-			pack.WriteCell(1);
-			RequestFrame(ApplyHomingCharacteristics, pack);
+			RequestFrame(ApplyFullHoming, reference);
 		}
 		if(StrEqual(classname, "tf_projectile_syringe") || StrEqual(classname, "tf_projectile_rocket")
 		|| StrEqual(classname, "tf_projectile_flare")|| StrEqual(classname, "tf_projectile_pipe")
@@ -886,12 +889,6 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(instantProjectile, reference);
 			RequestFrame(monoculusBonus, reference);
 			RequestFrame(PrecisionHoming, reference);
-			DataPack pack = CreateDataPack();
-			pack.WriteCell(reference);
-			pack.WriteFloat(0.1);
-			pack.WriteCell(1);
-			pack.WriteCell(0);
-			RequestFrame(ApplyHomingCharacteristics, pack);
 		}
 		if(StrEqual(classname, "tf_projectile_stun_ball") || StrEqual(classname, "tf_projectile_ball_ornament") || StrEqual(classname, "tf_projectile_cleaver"))
 		{
@@ -904,7 +901,7 @@ public OnEntityCreated(entity, const char[] classname)
 			DataPack pack = CreateDataPack();
 			pack.WriteCell(reference);
 			pack.WriteFloat(0.1);
-			pack.WriteCell(1);
+			pack.WriteCell(0);
 			pack.WriteCell(0);
 			RequestFrame(ApplyHomingCharacteristics, pack);
 		}

@@ -23,6 +23,14 @@ Yeah.
 #define DMG_MINICRIT 1 << 3
 #define DMG_ACTUALCRIT 1 << 4
 
+//Uber Stuff
+#define UBER_INVULN 1 << 0
+#define UBER_CRIT 1 << 1
+#define UBER_MEGAHEAL 1 << 2
+#define UBER_HASTE 1 << 3
+#define UBER_DEFENSE 1 << 4
+#define UBER_SPEED 1 << 5
+
 bool DOTStacked[MAXENTITIES][MAXENTITIES];
 bool ShouldNotHome[MAXENTITIES][MAXPLAYERS+1];
 bool ShouldNotHit[MAXENTITIES][MAXENTITIES];
@@ -911,7 +919,7 @@ stock int GetWeapon(int client, int slot)
 stock int GetHealingTarget(const int client)
 {
     int medigun = GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary);
-    if (!IsValidEdict(medigun) || !IsValidEdict(medigun))
+    if (!IsValidEdict(medigun))
         return -1;
 
     char s[32]; GetEdictClassname(medigun, s, sizeof(s));
@@ -977,6 +985,61 @@ bool IsAbleToSee(entity, client, bool forWeapon = true)
     
     return false;
 }
+stock void insertionSort(any[] arr, int arrSize){
+	int i, key, j;
+    for (i = 1; i < arrSize; i++)
+    {
+        key = arr[i];
+        j = i - 1;
+
+        while (j >= 0 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+stock void swap(any[] arr , int pos1, int pos2){
+	int temp;
+	temp = arr[pos1];
+	arr[pos1] = arr[pos2];
+	arr[pos2] = temp;
+}
+
+stock int partition(any[] arr, int low, int high, int pivot){
+	int i = low;
+	int j = low;
+	while( i <= high){
+		if(arr[i] > pivot){
+			i++;
+		}
+		else{
+			swap(arr,i,j);
+			i++;
+			j++;
+		}
+	}
+	return j-1;
+}
+
+stock void quickSort(any[] arr, int low, int high){
+	if(low < high){
+		int pivot = arr[high];
+		int pos = partition(arr, low, high, pivot);
+		quickSort(arr, low, pos-1);
+		quickSort(arr, pos+1, high);
+	}
+}
+
+stock sortArray(any[] arr, int arrSize){
+	if(arrSize > 32){
+		quickSort(arr, 0, arrSize);
+	}else{
+		insertionSort(arr, arrSize);
+	}
+}
+
 stock bool IsInFieldOfView(client, const float start[3], const float angles[3], float fov = 90.0)
 {
     float normal[3], plane[3];

@@ -129,6 +129,7 @@ public UberShopinitMenusHandlers()
 	RegConsoleCmd("sm_showhelp", ShowHelp, "Displays all if help.")
 	
 	HookEvent("player_hurt", Event_Playerhurt, EventHookMode_Pre)
+	HookEvent("player_chargedeployed", Event_UberDeployed);
 	HookEvent("post_inventory_application", Event_PlayerreSpawn)
 	HookEvent("player_death", Event_PlayerDeath)
 	HookEvent("player_changeclass", Event_PlayerChangeClass)

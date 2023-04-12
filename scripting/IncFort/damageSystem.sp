@@ -471,6 +471,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 						TF2_AddCondition(victim, TFCond_UberchargedCanteen, 2.0, i);
 						TF2_AddCondition(i, TFCond_UberchargedCanteen, 0.5, i);
+						break;
 					}
 				}
 			}
