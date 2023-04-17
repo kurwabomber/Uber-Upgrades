@@ -971,7 +971,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			}
 		}
 		damage *= medicDMGBonus;
-		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", attacker);
+		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", weapon);
 		float SniperChargingFactorActive = GetAttribute(weapon, "no charge impact range");
 		if(SniperChargingFactorActive != 1.0)
 		{
@@ -1543,9 +1543,9 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 }
 public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage, &weapon, &damagetype, &damagecustom, char[] damageCategory)
 {
-	/*extendedDamageTypes bits;
+	//Now's the time!
+	extendedDamageTypes bits;
 	bits = currentDamageType[attacker];
-	*///Lets use this later...
 
 	if(!IsValidWeapon(weapon))
 		return;
@@ -1644,12 +1644,19 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK, weapon);
 		}
 	}
-	if(damagetype & DMG_CRIT)
+	if(bits.second & DMG_ACTUALCRIT
+	||	bits.second & DMG_MINICRIT)
 	{
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "crit damage affinity");
 		if(dmgMasteryAddr != Address_Null)
-			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-		
+			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr) + (bits.second & DMG_ACTUALCRIT ? 0.2 : 0.0) );
+
+		if(bits.second & DMG_ACTUALCRIT)
+		{
+			Buff critAffinityDebuff;
+			critAffinityDebuff.init("Shattered Armor", "-25% Armor", Buff_ShatteredArmor, 1, attacker, 8.0);
+			insertBuff(victim, critAffinityDebuff);
+		}
 	}
 	if(StrEqual(damageCategory, "arcane"))
 	{

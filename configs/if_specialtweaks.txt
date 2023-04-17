@@ -89,7 +89,7 @@
 		}
 		"Multishot Flares"
 		{
-			"requirement"					"0.5m"
+			"gamestage"						"1"
 			"restriction"					"1"
 			"mult projectile count"			"15"
 			"projectile spread angle penalty"		"2"
@@ -98,7 +98,7 @@
 		}
 		"Homing Flares"
 		{
-			"requirement"					"0.5m"
+			"gamestage"						"1"
 			"restriction"					"1"
 			"Homing Projectiles"			"200.0"
 			"Crit Damage Bonus"				"3.0"

@@ -373,9 +373,9 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						if(ArmorGain != Address_Null)
 						{
 							fl_CurrentArmor[client] += TF2Attrib_GetValue(ArmorGain)
-							if(fl_CurrentArmor[client] > fl_MaxArmor[client])
+							if(fl_CurrentArmor[client] > fl_CalculatedMaxArmor[client])
 							{
-								fl_CurrentArmor[client] = fl_MaxArmor[client]
+								fl_CurrentArmor[client] = fl_CalculatedMaxArmor[client]
 							}
 						}
 						if(ArmorRegen != Address_Null)
@@ -2364,7 +2364,7 @@ public OnGameFrame()
 					}
 				}
 			}
-			if(fl_CurrentArmor[client] < fl_MaxArmor[client])
+			if(fl_CurrentArmor[client] < fl_CalculatedMaxArmor[client])
 			{
 				if(!TF2_IsPlayerInCondition(client,TFCond_NoTaunting_DEPRECATED))
 				{
@@ -2386,9 +2386,9 @@ public OnGameFrame()
 			{
 				fl_CurrentFocus[client] = fl_MaxFocus[client];
 			}
-			if(fl_CurrentArmor[client] > fl_MaxArmor[client])
+			if(fl_CurrentArmor[client] > fl_CalculatedMaxArmor[client])
 			{
-				fl_CurrentArmor[client] = fl_MaxArmor[client];
+				fl_CurrentArmor[client] = fl_CalculatedMaxArmor[client];
 			}
 			
 			if(fl_CurrentArmor[client] < 0.0)
@@ -2770,19 +2770,9 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 									SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
 									SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
 									SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
-									if(StrEqual(projName, "tf_projectile_arrow", false))
-									{
-										SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchWarriorArrow);
-										
-										if(iTeam == 2)
-										{
-											CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_red.vmt", "255 255 255");
-										}
-										else
-										{
-											CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_blu.vmt", "255 255 255");
-										}
-									}
+									SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchWarriorArrow);
+										CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0",
+										iTeam == 2 ? "materials/effects/arrowtrail_red.vmt":"materials/effects/arrowtrail_blu.vmt", "255 255 255");
 								}
 							}
 						}
@@ -2792,65 +2782,40 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 						if(meleeLimiter[client] >= 2)
 						{
 							meleeLimiter[client] = 0;
-							char projName[32] = "tf_projectile_arrow";
-							int iEntity = CreateEntityByName(projName);
+							int iEntity = CreateEntityByName("tf_projectile_cleaver");
 							if (IsValidEdict(iEntity)) 
 							{
 								int iTeam = GetClientTeam(client);
-								float fwd[3]
-								SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-
-								//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
-								//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
-					
-								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
 								GetClientEyePosition(client, fOrigin);
 								GetClientEyeAngles(client, fAngles);
+								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-								GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-								ScaleVector(fwd, 30.0);
-								AddVectors(fOrigin, fwd, fOrigin);
-								float velocity = 4000.0;
-								Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-								Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
-								if(projspeed != Address_Null){
-									velocity *= TF2Attrib_GetValue(projspeed)
-								}
-								if(projspeed1 != Address_Null){
-									velocity *= TF2Attrib_GetValue(projspeed1)
-								}
-								float vecAngImpulse[3];
-								GetCleaverAngularImpulse(vecAngImpulse);
-								fVelocity[0] = vBuffer[0]*velocity;
-								fVelocity[1] = vBuffer[1]*velocity;
-								fVelocity[2] = vBuffer[2]*velocity;
-								
-								TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-								DispatchSpawn(iEntity);
-								//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
-								SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-								if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
-								{
-									SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-								}
+								fAngles[2] = 90.0;
+								fVelocity[0] = vBuffer[0]*3000.0;
+								fVelocity[1] = vBuffer[1]*3000.0;
+								fVelocity[2] = vBuffer[2]*3000.0;
+
+								ScaleVector(vBuffer, 75.0);
+								AddVectors(fOrigin, vBuffer, fOrigin);
+
+								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
 								SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+								SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+								SetEntProp(iEntity, Prop_Send, "m_bCritical", 1);
+
+								TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
+								DispatchSpawn(iEntity);
+								Phys_EnableGravity(iEntity, false);
+								Phys_EnableDrag(iEntity, false);
+								//Set Thrower is used in init.
+								float impulse[3];
+								GetCleaverAngularImpulse(impulse);
 								isProjectileBoomerang[iEntity] = true;
-								SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
-								SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
-								SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
-								SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.4);
-								ResizeHitbox(iEntity, 2.0)
-								SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchBoomerang);
 								
-								if(iTeam == 2)
-								{
-									CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_red.vmt", "255 255 255");
-								}
-								else
-								{
-									CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_blu.vmt", "255 255 255");
-								}
+								SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, impulse, client, 50, 146.0);
+
+								SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchBoomerang);
+
 								SetEntityModel(iEntity, "models/weapons/c_models/c_croc_knife/c_croc_knife.mdl");
 							}
 						}

@@ -295,6 +295,11 @@ BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 				KvGetString(kv, "", Buf, 32);
 				tweaks[u_id].restriction = StringToInt(Buf);
 			}
+			else if(!strcmp("gamestage", Buf))
+			{
+				KvGetString(kv, "", Buf, 32);
+				tweaks[u_id].gamestage_requirement = StringToInt(Buf);
+			}
 			else
 			{
 				if (!GetTrieValue(_upg_names, Buf, attr_ref))

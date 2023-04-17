@@ -518,6 +518,15 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 			{
 				Format(buft, sizeof(buft), "%s\nRequirement: $%.0f spent",  buft, tweaks[tmp_spe_up_idx].requirement)
 			}
+			if(tweaks[tmp_spe_up_idx].gamestage_requirement > gameStage)
+			{
+				Format(buft, sizeof(buft), "%s\nStage: %i",  buft, tweaks[tmp_spe_up_idx].gamestage_requirement)
+				restricted = true;
+			}
+			
+			if(canBypassRestriction[client])
+				restricted = false;
+
 			desc_str = buft;
 			for (j = 0; j < tweaks[tmp_spe_up_idx].nb_att; j++)
 			{

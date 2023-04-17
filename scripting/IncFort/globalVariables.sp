@@ -53,6 +53,7 @@ enum struct Tweak{
     float requirement;
     float att_ratio[NB_SLOTS_UED + 1];
     int restriction;
+	int gamestage_requirement;
     int nb_att;
     int att_idx[NB_SLOTS_UED + 1];
     char tweaks[64] //change name later
@@ -124,6 +125,7 @@ enum {
 	Buff_LunchboxArmor=5,
 	Buff_Haste=6,
 	Buff_Speed=7,
+	Buff_ShatteredArmor=8,
 };
 
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
@@ -230,6 +232,7 @@ float blankArray2[MAXPLAYERS + 1][16][MAX_ATTRIBUTES_ITEM]
 float MenuTimer[MAXPLAYERS +1];
 float ImpulseTimer[MAXPLAYERS +1];
 float fl_MaxArmor[MAXPLAYERS+1];
+float fl_CalculatedMaxArmor[MAXPLAYERS+1];
 float fl_CurrentArmor[MAXPLAYERS+1];
 float fl_AdditionalArmor[MAXPLAYERS+1];
 float fl_ArmorCap[MAXPLAYERS+1];

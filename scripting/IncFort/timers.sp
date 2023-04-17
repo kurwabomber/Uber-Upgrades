@@ -16,6 +16,10 @@ public Action:Timer_Second(Handle timer)
 			{
 				fl_MaxArmor[client] = 300.0;
 			}
+			fl_CalculatedMaxArmor[client] = fl_MaxArmor[client];
+			if(hasBuffIndex(client, Buff_ShatteredArmor))
+				fl_CalculatedMaxArmor[client] *= 0.75;
+
 			Address resActive = TF2Attrib_GetByName(client, "energy weapon no drain")
 			if(resActive != Address_Null)
 			{

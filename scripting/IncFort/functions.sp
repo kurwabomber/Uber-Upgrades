@@ -135,7 +135,7 @@ public void ManagePlayerBuffs(int i){
 
 			Address constantArmorRegen = TF2Attrib_GetByName(healerweapon, "SRifle Charge rate increased");
 			if(constantArmorRegen != Address_Null)
-				fl_ArmorRegenConstant[i] = (fl_MaxArmor[i]*TF2Attrib_GetValue(constantArmorRegen)*TICKINTERVAL);
+				fl_ArmorRegenConstant[i] = (fl_CalculatedMaxArmor[i]*TF2Attrib_GetValue(constantArmorRegen)*TICKINTERVAL);
 		}
 	}
 
@@ -158,7 +158,7 @@ public void ManagePlayerBuffs(int i){
 		buffChange[i] = false;
 	}
 
-	fl_ArmorRegen[i] = (fl_MaxArmor[i]*0.0002) + (fl_MaxArmor[i]*0.0002*ArmorRechargeMult*additiveArmorRechargeBuff);
+	fl_ArmorRegen[i] = (fl_CalculatedMaxArmor[i]*0.0002) + (fl_CalculatedMaxArmor[i]*0.0002*ArmorRechargeMult*additiveArmorRechargeBuff);
 
 	if(IsFakeClient(i) || disableIFMiniHud[i] > currentGameTime)
 		return;
@@ -2361,19 +2361,24 @@ AirblastPatch(client)
 }
 public BoomerangThink(entity) 
 { 
-	if(IsValidEdict(entity) && currentGameTime - entitySpawnTime[entity] > 0.3 && currentGameTime - entitySpawnTime[entity] < 0.92)
+	if(IsValidEdict(entity) && currentGameTime - entitySpawnTime[entity] > 0.4)
 	{
-		float ProjAngle[3],ProjVelocity[3],vBuffer[3],speed;
-		GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
-		ProjAngle[1] += 5.5;
-		ProjAngle[0] = 0.0;
+		float ProjAngle[3],ProjVelocity[3],vBuffer[3],impulse[3],speed;
 		GetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", ProjVelocity);
 		speed = GetVectorLength(ProjVelocity)
+		GetVectorAngles(ProjVelocity, ProjAngle);
+		ProjAngle[0] -= 180.0;
 		GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR)
 		ProjVelocity[0] = vBuffer[0] * speed;
 		ProjVelocity[1] = vBuffer[1] * speed;
 		ProjVelocity[2] = vBuffer[2] * speed;
-		TeleportEntity(entity, NULL_VECTOR, ProjAngle, ProjVelocity);
+
+		GetCleaverAngularImpulse(impulse);
+		Phys_SetVelocity(entity, ProjVelocity, impulse, true);
+
+		SetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", ProjVelocity);
+
+		isProjectileBoomerang[entity] = false;
 	}
 }
 checkRadiation(victim,attacker)
@@ -3415,7 +3420,28 @@ stock SentryMultishot(entity)
 		}
 	}
 }
+stock delayedResetVelocity(entity, float vel[3]){
+	DataPack pack = new DataPack();
+	pack.WriteCell(entity);
+	pack.WriteFloat(vel[0]);
+	pack.WriteFloat(vel[1]);
+	pack.WriteFloat(vel[2]);
+	RequestFrame(resetVelocity, pack);
+}
+stock resetVelocity(DataPack pack){
+	pack.Reset();
+	int entity = EntRefToEntIndex(pack.ReadCell());
+	float vel[3];
+	vel[0] = pack.ReadFloat();
+	vel[1] = pack.ReadFloat();
+	vel[2] = pack.ReadFloat();
 
+	float impulse[3];
+	GetCleaverAngularImpulse(impulse);
+	Phys_SetVelocity(entity, vel, impulse, true);
+
+	delete pack;
+}
 stock fixPiercingVelocity(entity)
 {
 	entity = EntRefToEntIndex(entity)

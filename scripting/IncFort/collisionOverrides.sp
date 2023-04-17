@@ -90,7 +90,7 @@ public Action:OnSunlightSpearCollision(entity, client)
 			TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
 		}
 	}
-	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
+	SDKUnhook(entity, SDKHook_Touch, OnSunlightSpearCollision);
 	return Plugin_Stop;
 }
 public Action:BlackskyEyeCollision(entity, client)
@@ -273,22 +273,21 @@ public Action:ExplosiveArrowCollision(entity, client)
 }
 public Action:projectileCollision(entity, client)
 {
-	if(!IsValidEdict(entity)) return Plugin_Stop;
-	char strName[64];
-	GetEntityClassname(client, strName, 64)
-	char entName[64]
-	GetEntityClassname(entity, entName, 64);
+	if(!entity) return Plugin_Stop;
+
+	char strName[32];
+	GetEntityClassname(client, strName, 32)
+	char entName[32]
+	GetEntityClassname(entity, entName, 32);
+
 	if(StrEqual(strName,entName,false))
-	{	
-		if(StrEqual(strName,entName,false))
-		{
-			float origin[3];
-			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
-			origin[0] += GetRandomFloat(-4.0,4.0)
-			origin[1] += GetRandomFloat(-4.0,4.0)
-			TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
-			RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
-		}
+	{
+		float origin[3];
+		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
+		origin[0] += GetRandomFloat(-4.0,4.0)
+		origin[1] += GetRandomFloat(-4.0,4.0)
+		TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
+		RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
 	}
 	if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
 	{
@@ -303,38 +302,35 @@ public Action:projectileCollision(entity, client)
 }
 public Action:OnStartTouchWarriorArrow(entity, other)
 {
+	if(!other)
+		return Plugin_Stop;
+
+	if(!IsValidForDamage(other))
+		return Plugin_Stop;
+
 	SDKHook(entity, SDKHook_Touch, OnCollisionWarriorArrow);
 	return Plugin_Handled;
 }
 public Action:OnCollisionWarriorArrow(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
-	if(IsValidForDamage(client))
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	if(IsOnDifferentTeams(owner,client))
 	{
-		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
+		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+		if(IsValidEdict(CWeapon))
 		{
-			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
-			if(IsOnDifferentTeams(owner,client))
+			float damageDealt = 30.0;
+			Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
+			if(multiHitActive != Address_Null)
 			{
-				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEdict(CWeapon))
-				{
-					float damageDealt = 30.0;
-					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
-					if(multiHitActive != Address_Null)
-					{
-						damageDealt *= TF2Attrib_GetValue(multiHitActive) + 1.0;
-					}
-					SDKHooks_TakeDamage(client, owner, owner, damageDealt*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
-				}
-				RemoveEntity(entity);
+				damageDealt *= TF2Attrib_GetValue(multiHitActive) + 1.0;
 			}
+			SDKHooks_TakeDamage(client, owner, owner, damageDealt*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
 		}
+		RemoveEntity(entity);
 	}
-	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
+
+	SDKUnhook(entity, SDKHook_Touch, OnCollisionWarriorArrow);
 	return Plugin_Stop;
 }
 public Action:OnCollisionBossArrow(entity, client)
@@ -484,7 +480,7 @@ public Action:OnCollisionMoonveil(entity, client)
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", pos);
 	EmitSoundToAll("weapons/cow_mangler_explosion_normal_01.wav", entity,_,100,_,0.85);
 	CreateParticle(-1, "drg_cow_explosioncore_charged_blue", false, "", 0.1, pos);
-	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
+	SDKUnhook(entity, SDKHook_Touch, OnCollisionMoonveil);
 	return Plugin_Continue;
 }
 public Action:OnStartTouchBoomerang(entity, other)
@@ -494,45 +490,37 @@ public Action:OnStartTouchBoomerang(entity, other)
 }
 public Action:OnCollisionBoomerang(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
-		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
+		int owner = GetEntPropEnt(entity, Prop_Data, "m_hThrower");
+		if(owner == client)
+			{RemoveEntity(entity);return Plugin_Handled;}
+
+		if(IsValidClient3(owner) && IsOnDifferentTeams(owner,client))
 		{
-			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
-			if(IsValidClient3(owner) && IsOnDifferentTeams(owner,client))
+			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+			if(IsValidEdict(CWeapon))
 			{
-				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEdict(CWeapon))
-				{
-					float damageDealt = 120.0 * TF2_GetDamageModifiers(owner, CWeapon);
-					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
-					if(multiHitActive != Address_Null)
-					{
-						damageDealt *= TF2Attrib_GetValue(multiHitActive) + 1.0;
-					}
-					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_CLUB, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
-				}
+				float damageDealt = 120.0 * TF2_GetDamageModifiers(owner, CWeapon);
+				currentDamageType[owner].second |= DMG_ACTUALCRIT;
+				SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_SLASH | DMG_CRIT, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
 			}
-			float origin[3];
-			float ProjAngle[3];
-			float vBuffer[3];
-			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
-			GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
-			GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
-			ScaleVector(vBuffer, 20.0);
-			origin[0] += vBuffer[0]
-			origin[1] += vBuffer[1]
-			TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
-			if(IsValidClient3(client))
-				ShouldNotHome[entity][client] = true;
 		}
+		float origin[3],ProjAngle[3], vBuffer[3], ProjVelocity[3];
+		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
+		GetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", ProjVelocity);
+		GetVectorAngles(ProjVelocity, ProjAngle);
+		GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
+		ScaleVector(vBuffer, 120.0);
+		AddVectors(origin, vBuffer, origin);
+		TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
+		if(IsValidClient3(client))
+			ShouldNotHome[entity][client] = true;
+
+		delayedResetVelocity(entity, ProjVelocity);
 	}
-	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
-	if(client == 0)
+	SDKUnhook(entity, SDKHook_Touch, OnCollisionBoomerang);
+	if(!client)
 		RemoveEntity(entity);
 	return Plugin_Stop;
 }
@@ -543,11 +531,15 @@ public Action:OnStartTouchPiercingRocket(entity, other)
 }
 public Action:OnCollisionPiercingRocket(entity, client)
 {
+	SDKUnhook(entity, SDKHook_Touch, OnCollisionPiercingRocket);
+	if(!client)
+		return Plugin_Continue;
+
 	Action action = Plugin_Continue;
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
+	char strName[32];
+	GetEntityClassname(client, strName, 32)
+	char strName1[32];
+	GetEntityClassname(entity, strName1, 32)
 	
 	if(!StrEqual(strName, strName1) && IsValidForDamage(client))
 	{
@@ -613,8 +605,7 @@ public Action:OnCollisionPiercingRocket(entity, client)
 		RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
 		action = Plugin_Stop;
 	}
-	if(client == 0)
-		action = Plugin_Continue;
+
 	return action;
 }
 public Action:OnStartTouchJars(entity, other)

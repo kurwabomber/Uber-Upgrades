@@ -728,31 +728,38 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 		int cat_id = current_w_c_list_id[client]
 		int spTweak = given_upgrd_list[w_id][cat_id][0][param2]
 
-		for(int k = 0;k < 5;k++){
-			if(currentupgrades_restriction[client][slot][k] == 0)
-				continue;
+		if(!canBypassRestriction[client]){
+			for(int k = 0;k < 5;k++){
+				if(currentupgrades_restriction[client][slot][k] == 0)
+					continue;
 
-			if(currentupgrades_restriction[client][slot][k] == tweaks[spTweak].restriction){
-				PrintToChat(client, "You already have a restricted upgrade for this tweak.");
+				if(currentupgrades_restriction[client][slot][k] == tweaks[spTweak].restriction){
+					PrintToChat(client, "You already have a restricted upgrade for this tweak.");
+					EmitSoundToClient(client, SOUND_FAIL);
+					got_req = 0;
+					break;
+				}
+			}
+
+			if(tweaks[spTweak].requirement > client_spent_money[client][slot])
+			{
+				PrintToChat(client, "You must spend more on the slot to use this tweak.");
 				EmitSoundToClient(client, SOUND_FAIL);
 				got_req = 0;
-				break;
+			}
+			if(tweaks[spTweak].gamestage_requirement > gameStage)
+			{
+				PrintToChat(client, "You must reach the required game stage.");
+				EmitSoundToClient(client, SOUND_FAIL);
+				got_req = 0;
+			}
+			if(tweaks[spTweak].cost > CurrencyOwned[client])
+			{
+				PrintToChat(client, "You don't have enough money for this tweak.");
+				EmitSoundToClient(client, SOUND_FAIL);
+				got_req = 0;
 			}
 		}
-
-		if(tweaks[spTweak].requirement > client_spent_money[client][slot])
-		{
-			PrintToChat(client, "You must spend more on the slot to use this tweak.");
-			EmitSoundToClient(client, SOUND_FAIL);
-			got_req = 0;
-		}
-		if(tweaks[spTweak].cost > CurrencyOwned[client])
-		{
-			PrintToChat(client, "You don't have enough money for this tweak.");
-			EmitSoundToClient(client, SOUND_FAIL);
-			got_req = 0;
-		}
-
 		for (int i = 0; i < tweaks[spTweak].nb_att && got_req == 1; i++)
 		{
 			int upgrade_choice = tweaks[spTweak].att_idx[i]
@@ -760,7 +767,6 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 
 			if(canBypassRestriction[client])
 				break;
-
 
 			if (inum != 20000)
 			{
@@ -809,8 +815,9 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 				UpgradeItem(client, upgrade_choice, upgrades_ref_to_idx[client][slot][upgrade_choice], tweaks[spTweak].att_ratio[i], slot)
 			}
 			GiveNewUpgradedWeapon_(client, slot)
-			CurrencyOwned[client] -= tweaks[spTweak].cost;
 			client_spent_money[client][slot] += tweaks[spTweak].cost;
+			if(!canBypassRestriction[client])
+				CurrencyOwned[client] -= tweaks[spTweak].cost;
 		}
 		char buf[128]
 		Format(buf, sizeof(buf), "%T", current_slot_name[slot], client);
