@@ -1420,19 +1420,42 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			{
 				if(!(buttons & IN_ATTACK) && globalButtons[client] & IN_ATTACK && fanOfKnivesCount[client] > 1)
 				{
-					float fOrigin[3], fAngles[3];
+					float fOrigin[3], fAngles[3], vBuffer[3], fVelocity[3], vImpulse[3];
+
+					GetCleaverAngularImpulse(vImpulse);
 					GetClientEyePosition(client, fOrigin);
 
 					GetClientEyeAngles(client, fAngles);
-					fAngles[1] -= 15.0;
+
+					int iTeam = GetClientTeam(client);
+
+					fAngles[1] -= 15.0 + 15.0/fanOfKnivesCount[client];
+					fAngles[0] -= 2.0;
 					for(int i = 0; i < fanOfKnivesCount[client]; i++)
 					{
 						fAngles[1] += 30.0/fanOfKnivesCount[client]
-						TeleportEntity(client, NULL_VECTOR, fAngles, NULL_VECTOR);
-						SDKCall(g_SDKCallJar, CWeapon);
+						int iEntity = CreateEntityByName("tf_projectile_cleaver");
+						if (!IsValidEdict(iEntity))
+							continue;
+
+						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+
+						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+
+						fVelocity[0] = vBuffer[0]*4000.0;
+						fVelocity[1] = vBuffer[1]*4000.0;
+						fVelocity[2] = vBuffer[2]*4000.0;
+
+						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+						SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+
+						TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
+						DispatchSpawn(iEntity);
+						Phys_EnableDrag(iEntity, false);
+						SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vImpulse, client, 50, 146.0);
 					}
-					fAngles[1] -= 15.0;
-					TeleportEntity(client, NULL_VECTOR, fAngles, NULL_VECTOR);
+
 					fanOfKnivesCount[client] = 0;
 				}
 				if(buttons & IN_DUCK && buttons & IN_ATTACK3)
