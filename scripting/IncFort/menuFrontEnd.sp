@@ -18,19 +18,16 @@ public Action:Menu_BuyUpgrade(client, args)
 		else
 			AddMenuItem(menuBuy, "upgrade_melee", "Upgrade Melee Slot / Buildings");
 
-		AddMenuItem(menuBuy, "upgrade_dispcurrups", "Upgrade Manager");
-		AddMenuItem(menuBuy, "upgrade_stats", "View Stats");
-		AddMenuItem(menuBuy, "use_arcane", "Use Arcane Spells");
-
 		if (currentitem_level[client][3] != 242)
-		{
 			AddMenuItem(menuBuy, "upgrade_buyoneweap", "Buy a Custom Weapon");
-		}
 		else
-		{
 			AddMenuItem(menuBuy, "upgrade_upgradeoneweap", "Upgrade Bought Weapon");
-		}
+
+		AddMenuItem(menuBuy, "upgrade_dispcurrups", "Upgrade Manager");
+		AddMenuItem(menuBuy, "use_arcane", "Use Arcane Spells");
 		
+		AddMenuItem(menuBuy, "upgrade_stats", "View Stats");
+
 		AddMenuItem(menuBuy, "preferences", "Change Preferences/Settings");
 		
 		AddMenuItem(menuBuy, "wiki", "Display In-Game Wiki");

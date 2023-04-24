@@ -508,18 +508,6 @@ public MenuHandler_BuyUpgrade(Handle menu, MenuAction:action, client, param2)
 				Menu_ChooseCategory(client, fstr2)
 			}
 			case 4:
-			{//Upgrade Manager
-				Menu_TweakUpgrades(client);
-			}
-			case 5:
-			{//Show stats
-				Menu_ShowStats(client);
-			}
-			case 6:
-			{//Use arcane
-				Menu_ShowArcane(client);
-			}
-			case 7:
 			{//Upgrade / buy int weapon.
 				if(currentitem_level[client][3] != 242)
 				{
@@ -535,6 +523,18 @@ public MenuHandler_BuyUpgrade(Handle menu, MenuAction:action, client, param2)
 																	  ,fstr)
 					Menu_ChooseCategory(client, fstr2)
 				}
+			}
+			case 5:
+			{//Upgrade Manager
+				Menu_TweakUpgrades(client);
+			}
+			case 6:
+			{//Use arcane
+				Menu_ShowArcane(client);
+			}
+			case 7:
+			{//Show stats
+				Menu_ShowStats(client);
 			}
 			case 8:
 			{//Change preferences menu
