@@ -2298,30 +2298,21 @@ public OnGameFrame()
 					if(flag)
 					{
 						float SecondaryROF = 1.0;
+
 						Address Firerate1 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
 						Address Firerate2 = TF2Attrib_GetByName(CWeapon, "fire rate bonus HIDDEN");
 						Address Firerate3 = TF2Attrib_GetByName(CWeapon, "fire rate penalty HIDDEN");
 						Address Firerate4 = TF2Attrib_GetByName(CWeapon, "fire rate bonus");
+
 						if(Firerate1 != Address_Null)
-						{
-							float Firerate1Amount = TF2Attrib_GetValue(Firerate1);
-							SecondaryROF =  SecondaryROF/Firerate1Amount;
-						}
+							SecondaryROF =  SecondaryROF/TF2Attrib_GetValue(Firerate1);
 						if(Firerate2 != Address_Null)
-						{
-							float Firerate2Amount = TF2Attrib_GetValue(Firerate2);
-							SecondaryROF =  SecondaryROF/Firerate2Amount;
-						}
+							SecondaryROF =  SecondaryROF/TF2Attrib_GetValue(Firerate2);
 						if(Firerate3 != Address_Null)
-						{
-							float Firerate3Amount = TF2Attrib_GetValue(Firerate3);
-							SecondaryROF =  SecondaryROF/Firerate3Amount;
-						}
+							SecondaryROF =  SecondaryROF/TF2Attrib_GetValue(Firerate3);
 						if(Firerate4 != Address_Null)
-						{
-							float Firerate4Amount = TF2Attrib_GetValue(Firerate4);
-							SecondaryROF =  SecondaryROF/Firerate4Amount;
-						}
+							SecondaryROF =  SecondaryROF/TF2Attrib_GetValue(Firerate4);
+						
 						if(SecondaryROF < 1.0)
 							SecondaryROF = 1.0;
 
@@ -2337,32 +2328,29 @@ public OnGameFrame()
 						}
 						//Remove fire rate bonuses for reload rate on no clip size weapons.
 						Address ModClip = TF2Attrib_GetByName(CWeapon, "mod max primary clip override");
-						if(ModClip != Address_Null)
+						if(ModClip != Address_Null && TF2Attrib_GetValue(ModClip) == -1.0)
 						{
-							if(TF2Attrib_GetValue(ModClip) == -1.0)
+							float PrimaryROF = 1.0;
+							Address ReloadRate = TF2Attrib_GetByName(CWeapon, "faster reload rate");
+							Address ReloadRate1 = TF2Attrib_GetByName(CWeapon, "reload time increased hidden");
+							Address ReloadRate2 = TF2Attrib_GetByName(CWeapon, "Reload time increased");
+							if(ReloadRate != Address_Null)
 							{
-								float PrimaryROF = 1.0;
-								Address ReloadRate = TF2Attrib_GetByName(CWeapon, "faster reload rate");
-								Address ReloadRate1 = TF2Attrib_GetByName(CWeapon, "reload time increased hidden");
-								Address ReloadRate2 = TF2Attrib_GetByName(CWeapon, "Reload time increased");
-								if(ReloadRate != Address_Null)
-								{
-									PrimaryROF *= TF2Attrib_GetValue(ReloadRate);
-								}
-								if(ReloadRate1 != Address_Null)
-								{
-									PrimaryROF *= TF2Attrib_GetValue(ReloadRate1);
-								}
-								if(ReloadRate2 != Address_Null)
-								{
-									PrimaryROF *= TF2Attrib_GetValue(ReloadRate2);
-								}
-								float m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
-								float Time = (m_flNextPrimaryAttack - currentGameTime) - ((PrimaryROF - 1.0) / (1/GetTickInterval()));
-								float FinalROF = Time+currentGameTime;
-								SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", FinalROF);
-								//PrintToChat(client, "%.1f NextPrimaryAttack", FinalROF);
+								PrimaryROF *= TF2Attrib_GetValue(ReloadRate);
 							}
+							if(ReloadRate1 != Address_Null)
+							{
+								PrimaryROF *= TF2Attrib_GetValue(ReloadRate1);
+							}
+							if(ReloadRate2 != Address_Null)
+							{
+								PrimaryROF *= TF2Attrib_GetValue(ReloadRate2);
+							}
+							float m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
+							float Time = (m_flNextPrimaryAttack - currentGameTime) - ((PrimaryROF - 1.0) / (1/GetTickInterval()));
+							float FinalROF = Time+currentGameTime;
+							SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", FinalROF);
+							//PrintToChat(client, "%.1f NextPrimaryAttack", FinalROF);
 						}
 					}
 				}
@@ -2410,43 +2398,32 @@ public OnGameFrame()
 			}
 			
 			if(fl_CurrentFocus[client] + fl_RegenFocus[client] < fl_MaxFocus[client])
-			{
 				fl_CurrentFocus[client] += fl_RegenFocus[client];
-			}
 			else if(fl_CurrentFocus[client] < fl_MaxFocus[client])
-			{
 				fl_CurrentFocus[client] = fl_MaxFocus[client];
-			}
 			
 			if(fl_CurrentFocus[client] > fl_MaxFocus[client])
-			{
 				fl_CurrentFocus[client] = fl_MaxFocus[client];
-			}
+
 			if(fl_CurrentArmor[client] > fl_CalculatedMaxArmor[client])
-			{
 				fl_CurrentArmor[client] = fl_CalculatedMaxArmor[client];
-			}
 			
 			if(fl_CurrentArmor[client] < 0.0)
-			{
 				fl_CurrentArmor[client] = 0.0;
-			}
 			if(fl_CurrentFocus[client] < 0.0)
-			{
 				fl_CurrentFocus[client] = 0.0;
-			}
+
 			if(CheckForAttunement(client))
 			{
 				for(i = 0; i < Max_Attunement_Slots;i++)
 				{
+					if(SpellCooldowns[client][i] == 0.0)
+						continue;
+
 					if(SpellCooldowns[client][i] > 0.0)
-					{
 						SpellCooldowns[client][i] -= TICKINTERVAL;
-					}
-					if(SpellCooldowns[client][i] < 0.0)
-					{
+					else
 						SpellCooldowns[client][i] = 0.0;
-					}
 				}
 			}
 		}

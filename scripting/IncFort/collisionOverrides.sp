@@ -34,8 +34,9 @@ public Action:OnStartTouchStomp(client, other)
 
 public Action:AddArrowCollisionFunction(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
+	char strName[32];
+	GetEntityClassname(client, strName, 32)
+
 	if(IsValidClient3(client) || !StrContains(strName,"tank_boss",false))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -63,8 +64,8 @@ public Action:OnStartTouchSunlightSpear(entity, other)
 }
 public Action:OnSunlightSpearCollision(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
+	char strName[32];
+	GetEntityClassname(client, strName, 32)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -335,10 +336,10 @@ public Action:OnCollisionWarriorArrow(entity, client)
 }
 public Action:OnCollisionBossArrow(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
+	char strName[32];
+	GetEntityClassname(client, strName, 32)
+	char strName1[32];
+	GetEntityClassname(entity, strName1, 32)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -365,10 +366,10 @@ public Action:OnCollisionBossArrow(entity, client)
 }
 public Action:OnCollisionArrow(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
+	char strName[32];
+	GetEntityClassname(client, strName, 32)
+	char strName1[32];
+	GetEntityClassname(entity, strName1, 32)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -397,10 +398,6 @@ public Action:OnCollisionArrow(entity, client)
 }
 public Action:OnCollisionPhotoViscerator(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -450,10 +447,6 @@ public Action:OnStartTouchMoonveil(entity, other)
 }
 public Action:OnCollisionMoonveil(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
 	if(IsValidForDamage(client))
 	{
 		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
@@ -621,14 +614,6 @@ public Action:OnTouchExplodeJar(entity, other)
 	int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity"); 
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
-
-	char strName[128];
-	GetEntityClassname(other, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
-
-	if(StrEqual(strName, strName1))
-		return Plugin_Continue;
 	
 	int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
 	if(IsValidWeapon(CWeapon))
@@ -760,32 +745,13 @@ public Action:OnTouchExplodeJar(entity, other)
 			}
 		}
 	}
-	switch(mode)
-	{
-		case 0:
-		{
-			CreateParticle(-1, "peejar_impact", false, "", 1.0, clientvec);
-		}
-		case 1:
-		{
-			CreateParticle(-1, "peejar_impact_milk", false, "", 1.0, clientvec);
-		}
-		case 2:
-		{
-			CreateParticle(-1, "pumpkin_explode", false, "", 1.0, clientvec);
-		}
-		case 3:
-		{
-			CreateParticle(-1, "breadjar_impact", false, "", 1.0, clientvec);
-		}
-		case 4:
-		{
-			CreateParticle(-1, "gas_can_impact_blue", false, "", 1.0, clientvec);
-		}
-		case 5:
-		{
-			CreateParticle(-1, "gas_can_impact_red", false, "", 1.0, clientvec);
-		}
+	switch(mode){
+		case 0:{CreateParticle(-1, "peejar_impact", false, "", 1.0, clientvec);}
+		case 1:{CreateParticle(-1, "peejar_impact_milk", false, "", 1.0, clientvec);}
+		case 2:{CreateParticle(-1, "pumpkin_explode", false, "", 1.0, clientvec);}
+		case 3:{CreateParticle(-1, "breadjar_impact", false, "", 1.0, clientvec);}
+		case 4:{CreateParticle(-1, "gas_can_impact_blue", false, "", 1.0, clientvec);}
+		case 5:{CreateParticle(-1, "gas_can_impact_red", false, "", 1.0, clientvec);}
 	}
 	EmitSoundToAll(SOUND_JAR_EXPLOSION, entity, -1, 80, 0, 0.8);
 	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
@@ -795,10 +761,6 @@ public Action:OnTouchExplodeJar(entity, other)
 }
 public Action:OnCollisionJarateFrag(entity, client)
 {
-	char strName[128];
-	GetEntityClassname(client, strName, 128)
-	char strName1[128];
-	GetEntityClassname(entity, strName1, 128)
 	int CWeapon = EntRefToEntIndex(jarateWeapon[entity])
 	if(IsValidEdict(CWeapon))
 	{
