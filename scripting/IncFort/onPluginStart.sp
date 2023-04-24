@@ -295,7 +295,7 @@ public void OnPluginStart()
 	
 	if(g_DHookFinishReload == INVALID_HANDLE)
 		PrintToServer("CustomAttrs | g_DHookFinishReload function error");
-	DHookEnableDetour(g_DHookFinishReload, true, OnFinishReload);
+	DHookEnableDetour(g_DHookFinishReload, false, OnFinishReload);
 
 	//Knockback Changes
 	Handle g_DHookKnockbackReplacement = DHookCreateFromConf(hConf, "CTFPlayer::ApplyAbsVelocityImpulse()");
@@ -318,7 +318,7 @@ public void OnPluginStart()
 	if(g_DHookPlayerLocomotionJump == INVALID_HANDLE)
 		PrintToServer("CustomAttrs | bot locomotion jump function error");
 	DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);
-
+	
 	//fire rate?
 	Handle g_DHookFireRateCall = DHookCreateFromConf(hConf, "CTFWeaponBase::ApplyFireDelay(float)");
 	

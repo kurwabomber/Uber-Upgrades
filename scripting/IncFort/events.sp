@@ -1280,6 +1280,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 }
 
 //Called on player CMD (~almost every tick, but varies based on response rate)
+
 public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
 {
 	int flags = GetEntityFlags(client)
@@ -1379,12 +1380,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		}
 		if(IsValidEdict(CWeapon))
 		{
-			char strName[32];
-			GetEntityClassname(CWeapon, strName, 32)
-			if(StrContains(strName, "tf_weapon_minigun", false) == 0)
-			{
-				if(buttons & IN_ATTACK)
-				{
+			if(buttons & IN_ATTACK){
+				char strName[32];
+				GetEntityClassname(CWeapon, strName, 32)
+				if(StrEqual(strName, "tf_weapon_minigun", false)){
 					SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack"));
 				}
 			}
@@ -2218,6 +2217,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 	return Plugin_Continue;
 }
 //Called on server thinking, 66.6/s
+
 public OnGameFrame()
 {
 	currentGameTime = GetGameTime();
@@ -2316,14 +2316,19 @@ public OnGameFrame()
 							float Firerate4Amount = TF2Attrib_GetValue(Firerate4);
 							SecondaryROF =  SecondaryROF/Firerate4Amount;
 						}
-						SecondaryROF = Pow(SecondaryROF, 0.4);
-						float m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
-						float SeTime = (m_flNextSecondaryAttack - currentGameTime) - ((SecondaryROF - 1.0) * currentGameTime);
-						float FinalS = SeTime+currentGameTime;
+						if(SecondaryROF < 1.0)
+							SecondaryROF = 1.0;
 
-						if(FinalS < currentGameTime)
-							FinalS = currentGameTime;
-						SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", FinalS);
+						if(SecondaryROF != 1.0){
+							SecondaryROF = Pow(SecondaryROF, 0.4);
+							float m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
+							float SeTime = (m_flNextSecondaryAttack - currentGameTime) - ((SecondaryROF - 1.0) * currentGameTime);
+							float FinalS = SeTime+currentGameTime;
+
+							if(FinalS < currentGameTime)
+								FinalS = currentGameTime;
+							SetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack", FinalS);
+						}
 						//Remove fire rate bonuses for reload rate on no clip size weapons.
 						Address ModClip = TF2Attrib_GetByName(CWeapon, "mod max primary clip override");
 						if(ModClip != Address_Null)
