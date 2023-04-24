@@ -5,10 +5,19 @@ public Action:Menu_BuyUpgrade(client, args)
 	{
 		menuBuy = CreateMenu(MenuHandler_BuyUpgrade);
 		SetMenuTitle(menuBuy, "Incremental Fortress - /buy or +SHOWSCORES");
-		AddMenuItem(menuBuy, "upgrade_player", "Upgrade Body");
+		if(current_class[client] != TFClass_Engineer)
+			AddMenuItem(menuBuy, "upgrade_player", "Upgrade Body");
+		else
+			AddMenuItem(menuBuy, "upgrade_player", "Upgrade Body / Building");
+
 		AddMenuItem(menuBuy, "upgrade_primary", "Upgrade Primary Slot");
 		AddMenuItem(menuBuy, "upgrade_secondary", "Upgrade Secondary Slot");
-		AddMenuItem(menuBuy, "upgrade_melee", "Upgrade Melee Slot");
+
+		if(current_class[client] != TFClass_Engineer)
+			AddMenuItem(menuBuy, "upgrade_melee", "Upgrade Melee Slot");
+		else
+			AddMenuItem(menuBuy, "upgrade_melee", "Upgrade Melee Slot / Buildings");
+
 		AddMenuItem(menuBuy, "upgrade_dispcurrups", "Upgrade Manager");
 		AddMenuItem(menuBuy, "upgrade_stats", "View Stats");
 		AddMenuItem(menuBuy, "use_arcane", "Use Arcane Spells");
