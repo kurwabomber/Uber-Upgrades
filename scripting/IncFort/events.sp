@@ -1370,7 +1370,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		{
 			if(currentitem_level[client][3] == 242 && IsValidEdict(client_new_weapon_ent_id[client]))
 			{
-				SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",client_new_weapon_ent_id[client]);
+				SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",-1);
 				EquipPlayerWeapon(client, client_new_weapon_ent_id[client]);
 			}
 			ImpulseTimer[client] = currentGameTime+0.3;
