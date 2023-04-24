@@ -2285,9 +2285,15 @@ public OnGameFrame()
 				if(IsValidEdict(CWeapon))
 				{
 					bool flag = true;
-					if(IsValidEdict(melee) && CWeapon == melee && TF2_GetPlayerClass(client) == TFClass_Heavy ){flag=false;}
-					if(IsValidEdict(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Sniper){flag=false;}
-					if((IsValidEdict(primary) && CWeapon == primary && TF2_GetPlayerClass(client) == TFClass_Heavy)){flag=false;}
+					if(IsValidEntity(melee) && CWeapon == melee)
+						if(TF2_GetPlayerClass(client) == TFClass_Heavy)
+							flag = false;
+
+					if(IsValidEdict(primary) && CWeapon == primary )
+						if(TF2_GetPlayerClass(client) == TFClass_Heavy || TF2_GetPlayerClass(client) == TFClass_Sniper)
+							flag=false;
+
+					if(GetEntProp(CWeapon, Prop_Data, "m_iClip1") == 0) flag=false;
 
 					if(flag)
 					{
