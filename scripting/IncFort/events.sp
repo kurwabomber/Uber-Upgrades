@@ -1372,6 +1372,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			{
 				SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",-1);
 				EquipPlayerWeapon(client, client_new_weapon_ent_id[client]);
+
+				SetEntPropFloat(client_new_weapon_ent_id[client], Prop_Send, "m_flNextPrimaryAttack", 0.3+currentGameTime+(1/weaponFireRate[client_new_weapon_ent_id[client]]));
 			}
 			ImpulseTimer[client] = currentGameTime+0.3;
 		}
