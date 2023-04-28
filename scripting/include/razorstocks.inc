@@ -17,6 +17,9 @@ Yeah.
 #define MAXENTITIES 2049
 #define PI 3.142
 
+//First
+#define DMG_ACTUALIGNITE 1 << 30
+
 //Second
 #define DMG_PIERCING 1 << 1
 #define DMG_ARCANE 1 << 2
@@ -34,6 +37,7 @@ Yeah.
 bool DOTStacked[MAXENTITIES][MAXENTITIES];
 bool ShouldNotHome[MAXENTITIES][MAXPLAYERS+1];
 bool ShouldNotHit[MAXENTITIES][MAXENTITIES];
+
 stock bool IsValidClient(client)
 {
     if ( client <= 0 || client > MaxClients ) return false; 
@@ -2521,8 +2525,7 @@ stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] s
 			ActivateEntity(iParticle);
 			AcceptEntityInput(iParticle, "Start");
 			
-			if(IsValidEdict(iParticle) && time > 0.0)
-			{
+			if(time > 0.0){
 				Handle pack;
 				CreateDataTimer(time, Timer_KillParticle, pack);
 				WritePackCell(pack, EntIndexToEntRef(iParticle));
@@ -2541,9 +2544,11 @@ stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] s
 		TE_WriteNum("m_iParticleSystemIndex", FindStringIndex(table, strParticle));
 		TE_WriteNum("m_iAttachType", 1); // Create at absorigin, and update to follow the entity
 		
-		Handle pack;
-		CreateDataTimer(time, Timer_KillTEParticle, pack);
-		WritePackCell(pack, EntIndexToEntRef(iEntity));
+		if(time > 0.0){
+			Handle pack;
+			CreateDataTimer(time, Timer_KillTEParticle, pack);
+			WritePackCell(pack, EntIndexToEntRef(iEntity));
+		}
 	}
 	return true
 }

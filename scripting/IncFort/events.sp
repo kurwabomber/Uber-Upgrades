@@ -957,6 +957,7 @@ public OnEntityDestroyed(entity)
 	homingTicks[entity] = 0;
 	homingDelay[entity] = 0.0;
 	homingAimStyle[entity] = -1;
+	
 	//isProjectileSlash[entity][0] = 0.0;
 	//isProjectileSlash[entity][1] = 0.0;
 	jarateWeapon[entity] = -1;
@@ -1122,11 +1123,6 @@ public Event_mvm_wave_failed(Handle event, const char[] name, bool:dontBroadcast
 		isFailHooked = false;
 	}
 	CreateTimer(0.75, THEREWILLBEBLOOD);
-}
-public Event_RoundStart(Handle event, const char[] name, bool:dontBroadcast)
-{
-	MoneyForTeamRatio[RED] = 1.0
-	MoneyForTeamRatio[BLUE] = 1.0
 }
 public Event_mvm_wave_complete(Handle event, const char[] name, bool:dontBroadcast)
 {
@@ -2609,19 +2605,11 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 									SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
 									SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
 									SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
-									if(StrEqual(projName, "tf_projectile_arrow", false))
-									{
-										SDKHook(iEntity, SDKHook_Touch, OnCollisionBossArrow);
-										
-										if(iTeam == 2)
-										{
-											CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_red.vmt", "255 255 255");
-										}
-										else
-										{
-											CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_blu.vmt", "255 255 255");
-										}
-									}
+									SDKHook(iEntity, SDKHook_Touch, OnCollisionBossArrow);
+									if(iTeam == 2)
+										CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_red.vmt", "255 255 255");
+									else
+										CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_blu.vmt", "255 255 255");
 								}
 							}
 						}

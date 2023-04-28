@@ -74,6 +74,7 @@ public UberShopinitMenusHandlers()
 	LoadTranslations("incrementalfortress.phrases.txt");
 	LoadTranslations("common.phrases.txt");
 	
+	cvar_debug = CreateConVar("sm_debugmode", "0", "toggles chat spam");
 	cvar_MoneyBonusKill = CreateConVar("sm_if_moneybonuskill", "600", "Sets the money bonus a client gets for killing");
 	cvar_StartMoney = CreateConVar("sm_if_startmoney", "60000", "Sets the starting money");
 	cvar_ServerMoneyMult = CreateConVar("sm_if_moneymult", "1.0", "Sets the Cash Multiplier");
@@ -81,14 +82,13 @@ public UberShopinitMenusHandlers()
 	cvar_DisableBotUpgrade = CreateConVar("sm_if_disablebotupgrades","0","Disables bot upgrades if set to 1");
 	cvar_DisableCooldowns = CreateConVar("sm_if_disablecooldowns","0","Disables arcane cooldowns if set to 1");
 	
+	HookConVarChange(cvar_debug, OnCvarChanged);
 	HookConVarChange(cvar_MoneyBonusKill, OnCvarChanged);
 	HookConVarChange(cvar_StartMoney, OnCvarChanged);
 	HookConVarChange(cvar_ServerMoneyMult, OnCvarChanged);
 	HookConVarChange(cvar_BotMultiplier, OnCvarChanged);
 	HookConVarChange(cvar_DisableBotUpgrade, OnCvarChanged);
 	HookConVarChange(cvar_DisableCooldowns, OnCvarChanged);
-	MoneyForTeamRatio[RED]  = 1.0
-	MoneyForTeamRatio[BLUE]  = 1.0
 	
 	MoneyBonusKill = GetConVarFloat(cvar_MoneyBonusKill)
 	StartMoney = GetConVarFloat(cvar_StartMoney)
@@ -96,6 +96,9 @@ public UberShopinitMenusHandlers()
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	DisableBotUpgrades = GetConVarInt(cvar_DisableBotUpgrade);
 	DisableCooldowns = GetConVarInt(cvar_DisableCooldowns);
+	debugMode = view_as<bool>(GetConVarInt(cvar_debug));
+	StartMoney = GetConVarFloat(cvar_StartMoney);
+	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	
 	RegAdminCmd("reload_cfg", ReloadCfgFiles, ADMFLAG_ROOT, "Reloads All CFG files for Uberupgrades");
 	RegAdminCmd("sm_ifspentmoney", ShowSpentMoney, ADMFLAG_GENERIC, "Shows everyones upgrades");
@@ -231,8 +234,6 @@ public void OnPluginStart()
 	hudAbility = CreateHudSynchronizer();
 	
 	CreateTimer(0.1, Timer_FixedVariables, _, TIMER_REPEAT);
-	StartMoney = GetConVarFloat(cvar_StartMoney);
-	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	
 	CreateTimer(1.0, Timer_Second, _, TIMER_REPEAT);
 	CreateTimer(10.0, Timer_EveryTenSeconds, _, TIMER_REPEAT);
@@ -241,8 +242,6 @@ public void OnPluginStart()
 	OnPluginStart_RegisterWeaponData();
 	
 	logic = FindEntityByClassname(-1, "tf_objective_resource");
-	cvar_debug = CreateConVar("sm_debugmode", "0", "toggles chat spam");
-	debugMode = view_as<bool>(GetConVarInt(cvar_debug));
 
 	//Offsets
 	Handle hConf = LoadGameConfigFile("tf2.incrementalfortress");
@@ -440,28 +439,28 @@ public void OnPluginStart()
 		PrintToServer("IF : Was unable to create a table. | SQLERROR : %s.", Error);
 	}
 	//Refresh
-	for (int client = 1; client < MaxClients; client++)
+	for (int client = 1; client < MaxClients; ++client)
 	{
-		if(IsValidClient(client))
+		if(!IsValidClient(client))
+			continue;
+
+		fl_MaxArmor[client] = 300.0;
+		fl_CurrentArmor[client] = 300.0;
+		fl_MaxFocus[client] = 100.0;
+		fl_CurrentFocus[client] = 100.0;
+		client_no_d_team_upgrade[client] = 1
+		current_class[client] = TF2_GetPlayerClass(client)
+		if (!client_respawn_handled[client])
 		{
-			fl_MaxArmor[client] = 300.0;
-			fl_CurrentArmor[client] = 300.0;
-			fl_MaxFocus[client] = 100.0;
-			fl_CurrentFocus[client] = 100.0;
-			client_no_d_team_upgrade[client] = 1
-			current_class[client] = TF2_GetPlayerClass(client)
-			if (!client_respawn_handled[client])
-			{
-				CreateTimer(0.2, ClChangeClassTimer, GetClientUserId(client));
-			}
-			CurrencyOwned[client] = (StartMoney + additionalstartmoney);
+			CreateTimer(0.2, ClChangeClassTimer, GetClientUserId(client));
 		}
-		for(int i = 0; i < Max_Attunement_Slots; i++)
-		{
+		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
+		
+		for(int i = 0; i < Max_Attunement_Slots; ++i){
 			AttunedSpells[client][i] = 0.0;
 		}
 	}
-	for (int i = 1 ; i <= MaxClients ; i++)
+	for (int i = 1; i <= MaxClients; ++i)
 		if(IsValidClient3(i))
 			OnClientPutInServer(i);
 }

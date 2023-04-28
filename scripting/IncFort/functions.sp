@@ -3476,4 +3476,4 @@ public Menu_BuyNewWeapon(client)
 }
 stock bool TraceEntityFilterPlayers(int entity, int contentsMask) {
     return entity > MaxClients;
-} 
+}

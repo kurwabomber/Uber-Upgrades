@@ -84,7 +84,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 		slot = current_slot_used[client]
 		int attributeDisabled[MAX_ATTRIBUTES]
 		//PrintToServer("%i | %i", cat_choice, subcat_choice)
-		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); i++)
+		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); ++i)
 		{
 			//PrintToServer("%i", tmp_up_idx);
 			up_cost = upgrades[tmp_up_idx].cost;
@@ -126,14 +126,14 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 						(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 < upgrades[tmp_up_idx].m_val))
 						{
 							t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val* upgrades[tmp_up_idx].cost_inc_ratio))
-							idx_currentupgrades_val++		
+							++idx_currentupgrades_val		
 							upgrades_val += upgrades[tmp_up_idx].ratio
 						}
 						else if(nextcost < CurrencyOwned[client] && upgrades[tmp_up_idx].ratio < 0.0 && 
 						(canBypassRestriction[client] == true || RoundFloat(upgrades_val*100.0)/100.0 > upgrades[tmp_up_idx].m_val))
 						{
 							t_up_cost += up_cost + RoundFloat(up_cost * (idx_currentupgrades_val * upgrades[tmp_up_idx].cost_inc_ratio))
-							idx_currentupgrades_val++		
+							++idx_currentupgrades_val	
 							upgrades_val += upgrades[tmp_up_idx].ratio
 						}
 						else{
@@ -225,7 +225,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 				}
 				else if(upgrades[tmp_up_idx].restriction_category != 0 && (val == 0.0 || val - upgrades[tmp_up_idx].i_val == 0.0))
 				{
-					for(int it = 0;it<5;it++)
+					for(int it = 0;it<5;++it)
 					{
 						if(currentupgrades_restriction[client][slot][it] == upgrades[tmp_up_idx].restriction_category)
 						{
@@ -270,7 +270,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 				}
 				else if(upgrades[tmp_up_idx].restriction_category != 0 && (val == 0.0 || val - upgrades[tmp_up_idx].i_val == 0.0))
 				{
-					for(int it = 0;it<5;it++)
+					for(int it = 0;it<5;++it)
 					{
 						if(currentupgrades_restriction[client][slot][it] == upgrades[tmp_up_idx].restriction_category)
 						{
@@ -375,19 +375,17 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 		if(efficiencyCalculationTimer[client] < currentGameTime)
 		{
 			int numEff = 0;
-			for(int e=0;e<MAX_ATTRIBUTES;e++)
+			for(int e=0;e<MAX_ATTRIBUTES;++e)
 			{
 				if(upgrades_efficiency[client][slot][e])
-				{
-					numEff++;
-				}
+					++numEff;
 			}
 			float max = 0.0;
 			int highestIndex = 0;
 			bool toBlock[MAX_ATTRIBUTES];
-			for(int k=0;k<numEff;k++) 
+			for(int k=0;k<numEff;++k) 
 			{
-				for(int t=0;t<MAX_ATTRIBUTES;t++)
+				for(int t=0;t<MAX_ATTRIBUTES;++t)
 				{
 					if(!toBlock[t] && upgrades_efficiency[client][slot][t])
 					{
@@ -438,7 +436,7 @@ public Action:Menu_ChooseCategory(client, char[] TitleStr)
 	{
 		current_w_list_id[client] = w_id
 		char buf[128]
-		for (int i = 0; i < given_upgrd_list_nb[w_id] <= 10 ; i++)
+		for (int i = 0; i < given_upgrd_list_nb[w_id] <= 10 ; ++i)
 		{
 			Format(buf, sizeof(buf), "%T", given_upgrd_classnames[w_id][i], client)
 			AddMenuItem(menu, "upgrade", buf);
@@ -463,7 +461,7 @@ public Action:Menu_ChooseSubcat(client, subcat_choice, const char[] TitleStr)
 		current_w_sc_list_id[client] = subcat_choice;
 		char buf[128]
 
-		for(int j = 0; j < given_upgrd_subcat_nb[w_id][subcat_choice];j++)
+		for(int j = 0; j < given_upgrd_subcat_nb[w_id][subcat_choice];++j)
 		{
 			//PrintToServer("%s", given_upgrd_subclassnames[w_id][j])
 			Format(buf, sizeof(buf), "%T", given_upgrd_subclassnames[cat_id][subcat_choice][j], client);
@@ -500,12 +498,12 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 	
 		current_w_c_list_id[client] = cat_choice
 		slot = current_slot_used[client]
-		for (i = 0; i < given_upgrd_classnames_tweak_nb[w_id]; i++)
+		for (i = 0; i < given_upgrd_classnames_tweak_nb[w_id]; ++i)
 		{
 			bool restricted = false;
 			tmp_spe_up_idx = given_upgrd_list[w_id][cat_choice][0][i]
 
-			for(int k = 0;k < 5;k++){
+			for(int k = 0;k < 5;++k){
 				if(currentupgrades_restriction[client][slot][k] == 0)
 					continue;
 
@@ -534,7 +532,7 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 				restricted = false;
 
 			desc_str = buft;
-			for (j = 0; j < tweaks[tmp_spe_up_idx].nb_att; j++)
+			for (j = 0; j < tweaks[tmp_spe_up_idx].nb_att; ++j)
 			{
 				tmp_up_idx = tweaks[tmp_spe_up_idx].att_idx[j]
 				tmp_ref_idx = upgrades_ref_to_idx[client][slot][tmp_up_idx]
@@ -601,7 +599,7 @@ public	Menu_TweakUpgrades_slot(client, arg, page)
 		char fstr[512]
 		if(currentupgrades_number[client][s] != 0)
 		{
-			for (i = 0; i < currentupgrades_number[client][s]; i++)
+			for (i = 0; i < currentupgrades_number[client][s]; ++i)
 			{
 				int u = currentupgrades_idx[client][s][i]
 				Format(buf, sizeof(buf), "%T", upgrades[u].name, client)
@@ -667,10 +665,9 @@ public Menu_TweakUpgrades(client)
 	SetMenuExitBackButton(menu, true);
 	
 	SetMenuTitle(menu, "Display Upgrades Or Remove downgrades");
-	for (s = 0; s < 5; s++)
+	for (s = 0; s < 5; ++s)
 	{
 		char fstr[100]
-		
 		Format(fstr, sizeof(fstr), "$%.0f of upgrades | Refund & Remove my %s attributes", client_spent_money[client][s], current_slot_name[s])
 		AddMenuItem(menu, "tweak", fstr);
 	}
@@ -1194,22 +1191,19 @@ public CreateBuyNewWeaponMenu(client)
 			playerClass = "spy"
 		}
 	}
-	for (i = 0; i < upgrades_weapon_nb; i++)
+	for (i = 0; i < upgrades_weapon_nb; ++i)
 	{
 		if(StrContains(upgrades_weapon_class_restrictions[i],playerClass) != -1 || StrEqual(upgrades_weapon_class_restrictions[i],"none",false))
 		{
 			Format(strTotal, sizeof(strTotal), "%s | $%.0f",upgrades_weapon[i],upgrades_weapon_cost[i]); 
 			AddMenuItem(BuyNWmenu, "tweak", strTotal);
 			buyableIndexOffParam[client][it] = i
-			it++
+			++it
 		}
 	}
 	if(it == 0)
-	{
 		PrintToChat(client,"There aren't any custom weapons for this class yet.")
-	}
-	if (IsValidClient(client) && IsPlayerAlive(client))
-	{
+	else if (IsValidClient(client) && IsPlayerAlive(client))
 		DisplayMenu(BuyNWmenu, client, 20);
-	}
+	
 }

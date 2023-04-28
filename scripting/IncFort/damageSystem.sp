@@ -993,9 +993,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
 
 
-			if(GetClientTeam(attacker) != GetClientTeam(victim) && (GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) || GetAttribute(attacker, "infernal powerup", 0.0)) &&
+			if(damagetype & DMG_ACTUALIGNITE || (GetClientTeam(attacker) != GetClientTeam(victim) && (GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) || GetAttribute(attacker, "infernal powerup", 0.0)) &&
 			TF2_GetDPSModifiers(attacker, weapon)*burndmgMult >= fl_HighestFireDamage[victim] && 
-			!(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE) && !(damagetype & DMG_ENERGYBEAM)) // int afterburn system.
+			!(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE) && !(damagetype & DMG_ENERGYBEAM))) // int afterburn system.
 			{
 				float afterburnDuration = 2.0 * GetAttribute(weapon, "weapon burn time increased");
 				TF2Util_IgnitePlayer(victim, attacker, afterburnDuration, weapon);

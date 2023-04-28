@@ -612,61 +612,47 @@ public Action:TestCommand(client, args)
 	return Plugin_Handled;
 }
 
-public OnCvarChanged(Handle:cvar, const char[] oldVal, const char[] newVal)
+public OnCvarChanged(Handle cvar, const char[] oldVal, const char[] newVal)
 {
 	if(cvar == cvar_MoneyBonusKill)
-	{
 		MoneyBonusKill = GetConVarFloat(cvar_MoneyBonusKill);
-	}
 	else if(cvar == cvar_ServerMoneyMult)
-	{
 		ServerMoneyMult = GetConVarFloat(cvar_ServerMoneyMult);
-	}
-	else if(cvar == cvar_BotMultiplier)
-	{
+	else if(cvar == cvar_BotMultiplier){
 		OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
-		for(int i=1;i<MaxClients;i++)
-		{
-			if(IsValidClient3(i) && IsFakeClient(i))
-			{
+		for(int i=1;i<MaxClients;i++){
+			if(IsValidClient3(i) && IsFakeClient(i)){
+				ForcePlayerSuicide(i);
+			}
+		}
+	}
+	else if(cvar == cvar_DisableBotUpgrade){
+		DisableBotUpgrades = GetConVarInt(cvar_DisableBotUpgrade);
+		for(int i=1;i<MaxClients;i++){
+			if(IsValidClient3(i) && IsFakeClient(i)){
 				ForcePlayerSuicide(i);
 			}
 		}
 	}
 	else if(cvar == cvar_StartMoney)
-	{
 		StartMoney = GetConVarFloat(cvar_StartMoney);
-	}
-	else if(cvar == cvar_DisableBotUpgrade)
-	{
-		DisableBotUpgrades = GetConVarInt(cvar_DisableBotUpgrade);
-		for(int i=1;i<MaxClients;i++)
-		{
-			if(IsValidClient3(i) && IsFakeClient(i))
-			{
-				ForcePlayerSuicide(i);
-			}
-		}
-	}
-	else if(cvar == cvar_DisableCooldowns)
-	{
+	else if(cvar == cvar_DisableCooldowns){
 		DisableCooldowns = GetConVarInt(cvar_DisableCooldowns);
-		for(int client=1;client<MaxClients;client++)
-		{
-			if(IsValidClient(client))
-			{
-				if(CheckForAttunement(client))
-				{
-					for(int i = 0; i < Max_Attunement_Slots;i++)
-					{
+		for(int client=1;client<MaxClients;client++){
+			if(IsValidClient(client)){
+				if(CheckForAttunement(client)){
+					for(int i = 0; i < Max_Attunement_Slots;i++){
 						SpellCooldowns[client][i] = 0.0;
 					}
 				}
 			}
 		}
 	}
+	else if(cvar == cvar_debug){
+		debugMode = view_as<bool>(GetConVarInt(cvar_debug));
+	}
 }
-public Action:Command_DealDamage(client, args)
+public Action Command_DealDamage(client, args)
 {
 	if(args != 2)
 	{

@@ -210,7 +210,6 @@ int relentlessTicks[MAXPLAYERS+1];
 float currentGameTime
 float MoneyBonusKill
 float StartMoney
-float MoneyForTeamRatio[2]
 float efficiencyCalculationTimer[MAXPLAYERS + 1]
 float currentupgrades_i[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]
 float currentupgrades_val[MAXPLAYERS + 1][NB_SLOTS_UED + 1][MAX_ATTRIBUTES_ITEM]
