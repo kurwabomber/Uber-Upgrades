@@ -996,7 +996,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 424:
 		{
-			ChangeString = "Tomislav | Shoots instant travel rockets. +50% blast radius, +300% self push force, -100% rocket jump self damage, -35% damage.";
+			ChangeString = "Tomislav | 3x damage and fire rate delay. Blocks medigun healing while in use but gives full mobility while spun up.";
 		}
 		//Heavy Secondaries
 		case 311:

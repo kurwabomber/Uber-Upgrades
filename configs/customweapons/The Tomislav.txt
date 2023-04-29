@@ -18,45 +18,25 @@
 			"plugin"	"tf2attributes"
 			"value"		"1"
 		}
-		"override projectile type"
+		"mod weapon blocks healing"
 		{
-			"plugin"	"tf2attributes"
-			"value"		"2"
+            "plugin"    "tf2attributes"
+            "value"     "1"
+		}
+		"fire rate penalty HIDDEN"
+		{
+		    "plugin"    "tf2attributes"
+		    "value"     "3"
 		}
 		"damage bonus HIDDEN"
 		{
 			"plugin"	"tf2attributes"
 			"value"		"3"
 		}
-		"Projectile speed increased"
+		"minigun full movement"
 		{
 			"plugin"	"tf2attributes"
-			"value"		"1000"
-		}
-		"Blast radius increased"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"1.5"
-		}
-		"self dmg push force increased"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"4.0"
-		}
-		"blast dmg to self increased"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"0.0"
-		}
-		"dmg falloff increased"
-		{
-			"plugin"	"tf2attributes"
-			"value"		"1.0"
-		}
-		"dmg falloff decreased"
-		{
-			"plugin"	"tf2attributes"
-			"value"		".5"
+			"value"		"1"
 		}
 	}
 }
