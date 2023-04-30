@@ -38,5 +38,10 @@
 			"plugin"	"tf2attributes"
 			"value"		"1"
 		}
+		"mult duck speed"
+		{
+			"plugin"	"tf2attributes"
+			"value"		"3"
+		}
 	}
 }

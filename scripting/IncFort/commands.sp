@@ -514,9 +514,11 @@ public Action:ReloadCfgFiles(client, args)
 	}
 	return Plugin_Handled;
 }
-public Action:jointeam_callback(client, const char[] command, argc) 
+public Action jointeam_callback(client, const char[] command, argc) 
 {
 	CancelClientMenu(client);
+
+	return Plugin_Continue;
 }
 public Action:ResetPlayers(client, args)
 {

@@ -1538,17 +1538,11 @@ refreshUpgrades(client, slot)
 			Address healthActive = TF2Attrib_GetByName(client, "health from packs decreased");		
 			if(healthActive != Address_Null)
 			{
-				float healthMultiplier = TF2Attrib_GetValue(healthActive);
-				float MaxHealth = GetClientBaseHP(client)*healthMultiplier;
-				TF2Attrib_SetByName(client,"max health additive bonus", MaxHealth);
+				TF2Attrib_SetByName(client,"mult max health", TF2Attrib_GetValue(healthActive));
 				if(TF2Spawn_IsClientInSpawn(client))
-				{
 					CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
-				}
 				if(current_class[client] == TFClass_Engineer)
-				{
-					TF2Attrib_SetByName(client,"engy building health bonus", 1.0+healthMultiplier);
-				}
+					TF2Attrib_SetByName(client,"engy building health bonus", 1.0+TF2Attrib_GetValue(healthActive));
 			}
 			if(fl_AdditionalArmor[client] > 0.0)
 			{

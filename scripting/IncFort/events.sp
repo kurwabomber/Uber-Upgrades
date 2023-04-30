@@ -1278,11 +1278,12 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 //Called on player CMD (~almost every tick, but varies based on response rate)
 
 public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
-{
-	int flags = GetEntityFlags(client)
-	
+{	
 	if(!IsPlayerAlive(client) || !IsValidClient3(client) || IsClientObserver(client))
 		return Plugin_Continue;
+
+	int flags = GetEntityFlags(client)
+	Action return_value = Plugin_Continue;
 	
 	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	if(IsValidEdict(CWeapon))
@@ -1415,6 +1416,11 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			}
 			if(IsPlayerAlive(client))
 			{
+				if(HasEntProp(CWeapon, Prop_Send, "m_iWeaponState")){
+					if(GetAttribute(CWeapon, "minigun full movement", 0.0))
+						if(buttons & IN_ATTACK3)
+							{buttons |= IN_JUMP;return_value=Plugin_Changed;}
+				}
 				if(!(buttons & IN_ATTACK) && globalButtons[client] & IN_ATTACK && fanOfKnivesCount[client] > 1)
 				{
 					float fOrigin[3], fAngles[3], vBuffer[3], fVelocity[3], vImpulse[3];
@@ -2210,7 +2216,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		lastFlag[client] = flags;
 		globalButtons[client] = buttons;
 	}
-	return Plugin_Continue;
+	return return_value;
 }
 //Called on server thinking, 66.6/s
 
