@@ -262,7 +262,7 @@ BrowseAttListKV(Handle kv, &w_id = -1, &w_sub_id = -1, &w_subcat_id = 0,w_sub_at
 }
 BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 {
-	char Buf[32];
+	char Buf[64];
 	int attr_ref
 	do
 	{
@@ -282,22 +282,22 @@ BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 			KvGetSectionName(kv, Buf, sizeof(Buf));
 			if(!strcmp("requirement", Buf))
 			{
-				KvGetString(kv, "", Buf, 32);
-				tweaks[u_id].requirement = ParseShorthand(Buf,32)
+				KvGetString(kv, "", Buf, 64);
+				tweaks[u_id].requirement = ParseShorthand(Buf,64)
 			}
 			else if(!strcmp("cost", Buf))
 			{
-				KvGetString(kv, "", Buf, 32);
-				tweaks[u_id].cost = ParseShorthand(Buf,32)
+				KvGetString(kv, "", Buf, 64);
+				tweaks[u_id].cost = ParseShorthand(Buf,64)
 			}
 			else if(!strcmp("restriction", Buf))
 			{
-				KvGetString(kv, "", Buf, 32);
+				KvGetString(kv, "", Buf, 64);
 				tweaks[u_id].restriction = StringToInt(Buf);
 			}
 			else if(!strcmp("gamestage", Buf))
 			{
-				KvGetString(kv, "", Buf, 32);
+				KvGetString(kv, "", Buf, 64);
 				tweaks[u_id].gamestage_requirement = StringToInt(Buf);
 			}
 			else
@@ -307,7 +307,7 @@ BrowseSpeTweaksKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 				
 				
 				tweaks[u_id].att_idx[att_id] = attr_ref;
-				KvGetString(kv, "", Buf, 32);
+				KvGetString(kv, "", Buf, 64);
 				tweaks[u_id].att_ratio[att_id] = StringToFloat(Buf)
 				
 				tweaks[u_id].nb_att++

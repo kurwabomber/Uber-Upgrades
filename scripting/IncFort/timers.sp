@@ -1663,6 +1663,10 @@ public Action:AttackTwice(Handle timer, any:data)
 	}
 	CloseHandle(data);
 }
+public Action deletePack(Handle timer, DataPack data){
+	delete data;
+	return Plugin_Stop;
+}
 public Action:orbitalStrike(Handle timer,any:data)
 {
 	ResetPack(data);
@@ -1709,7 +1713,6 @@ public Action:orbitalStrike(Handle timer,any:data)
 		TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 		DispatchSpawn(iEntity);
 	}
-	CloseHandle(data);
 }
 public Action:SetTankTeleporter(Handle timer, int entity) 
 {  

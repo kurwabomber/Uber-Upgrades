@@ -999,7 +999,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			{
 				float afterburnDuration = 2.0 * GetAttribute(weapon, "weapon burn time increased");
 				TF2Util_IgnitePlayer(victim, attacker, afterburnDuration, weapon);
-				damagetype |= DMG_PLASMA;
 				fl_HighestFireDamage[victim] = TF2_GetDPSModifiers(attacker, weapon)*burndmgMult;
 			}
 		}

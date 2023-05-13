@@ -2910,6 +2910,59 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							CreateTimer(10.0,SelfDestruct,EntIndexToEntRef(iEntity));
 						}
 					}
+					case 44.0:
+					{
+						float rocketDamage = 20.0;
+						int melee = GetWeapon(client, 2);
+						Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
+						if(SentryDmgActive != Address_Null)
+							rocketDamage *= TF2Attrib_GetValue(SentryDmgActive);
+
+						if(IsValidWeapon(melee)){
+							Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
+							if(SentryDmgActive1 != Address_Null)
+								rocketDamage *= TF2Attrib_GetValue(SentryDmgActive1);
+
+							Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
+							if(SentryDmgActive2 != Address_Null)
+								rocketDamage *= TF2Attrib_GetValue(SentryDmgActive2);
+
+							Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
+							if(damageActive != Address_Null)
+								rocketDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
+
+							Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
+							if(damageActive2 != Address_Null)
+								rocketDamage *= TF2Attrib_GetValue(damageActive2);
+
+							Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
+							if(fireRateActive != Address_Null)
+								rocketDamage /= TF2Attrib_GetValue(fireRateActive);
+						}
+
+						DataPack pack = new DataPack();
+						pack.Reset();
+						pack.WriteCell(client);
+						pack.WriteCell(GetClientTeam(client));
+						pack.WriteFloat(rocketDamage);
+						float ClientPos[3];
+						TracePlayerAim(client, ClientPos);
+						pack.WriteFloat(ClientPos[0]);
+						pack.WriteFloat(ClientPos[1]);
+						pack.WriteFloat(ClientPos[2]);
+						float ClientOrigin[3];
+						GetClientEyePosition(client, ClientOrigin);
+						pack.WriteFloat(ClientOrigin[0]);
+						pack.WriteFloat(ClientOrigin[1]);
+						pack.WriteFloat(ClientOrigin[2]);
+
+						int times = 100;
+
+						for(int i=0;i<times;i++){
+							CreateTimer(0.5+(i*0.02), orbitalStrike, pack);
+						}
+						CreateTimer(0.6+(times*0.02), deletePack, pack);
+					}
 					case 45.0:
 					{
 						char projName[32] = "tf_projectile_pipe";

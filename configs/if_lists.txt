@@ -1167,7 +1167,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Higher Pressure"
+			"Sp1"		"Hot Pursuit"
+			"Sp2"		"Temperature rise"
 		}
 	}
 	"pyroweapp"//phlog
@@ -1197,7 +1198,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Higher Pressure"
+			"Sp1"		"Hot Pursuit"
+			"Sp2"		"Temperature rise"
 		}
 	}
 	"pyroflareg"// flare gun

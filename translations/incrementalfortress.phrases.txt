@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"Afterburn Tick Rate"
+	{
+		"en"		"Afterburn Tick Rate"
+	}
+	"flame ammopersec increased (tweak)"
+	{
+		"en"		"Flamethrower Ammo Consumption Increased"
+	}
 	"Needlestorm"
 	{
 		"en"		"Needlestorm"
@@ -3696,9 +3704,9 @@
 	{
 		"en"		"Concentrated Fire"
 	}
-	"Higher Pressure"
+	"Hot Pursuit"
 	{
-		"en"		"Higher Pressure"
+		"en"		"Hot Pursuit"
 	}
 	"Temperature rise"
 	{

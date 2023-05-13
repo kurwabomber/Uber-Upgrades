@@ -33,7 +33,7 @@
 #define Max_Attunement_Slots 10
 #define MAX_STAGES 5
 
-#define TICKINTERVAL 0.01499
+#define TICKINTERVAL 0.015
 #define TICKRATE 66.67
 #define MAXBUFFS 12
 
