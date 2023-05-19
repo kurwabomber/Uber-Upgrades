@@ -795,7 +795,7 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp5"		"Rocket Launcher"
+			"Sp5"		"Explosive Bullets(P)"
 			"Sp6"		"Lacerating Rounds"
 		}
 		"Special Abilities"
@@ -856,7 +856,7 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp5"		"Rocket Launcher"
+			"Sp5"		"Explosive Bullets(P)"
 			"Sp6"		"Lacerating Rounds"
 		}
 		"Rocket Upgrades"
@@ -899,7 +899,7 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Rocket Launcher(S)"
+			"Sp1"		"Explosive Bullets(S)"
 		}
 		"Rocket Upgrades"
 		{
@@ -1304,7 +1304,7 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp5"		"Rocket Launcher"
+			"Sp5"		"Explosive Bullets(P)"
 			"Sp6"		"Lacerating Rounds"
 		}
 		"Rocket Upgrades"
@@ -1341,7 +1341,7 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp5"		"Rocket Launcher(Shortstop)"
+			"Sp5"		"Explosive Bullets(Shortstop)"
 			"Sp6"		"Lacerating Rounds"
 		}
 		"Rocket Upgrades"
@@ -1484,7 +1484,7 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp3"		"Rocket Launcher(S)"
+			"Sp3"		"Explosive Bullets(S)"
 		}
 		"Rocket Upgrades"
 		{
@@ -2086,7 +2086,7 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp4"		"Rocket Launcher"
+			"Sp4"		"Explosive Bullets(P)"
 			"Sp5"		"Lacerating Rounds"
 		}
 		"Rocket Upgrades"

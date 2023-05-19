@@ -26,11 +26,6 @@
 			"Honorbound"					"1.0"
 			"percent of hp healed on kill"	"7.5"
 		}
-		"Rocket Launcher"
-		{
-			"override projectile type (R)"	"1"
-			"Increased Overall Damage(T)"	"70"
-		}
 		"Stat Boost Ubercharge"
 		{
 			"restriction"					"1"
@@ -38,15 +33,6 @@
 
 			"ubercharge rate penalty"		"3.3334"
 			"Additional Uber Effects"		"8.0"
-		}
-		"Rocket Launcher(Shortstop)"
-		{
-			"override projectile type (R)"	"1"
-			"Increased Overall Damage(T)"	"30"
-		}
-		"Rocket Launcher(S)"
-		{
-			"override projectile type (R)"	"1"
 		}
 		"High-Velocity Bullets"
 		{
@@ -70,13 +56,6 @@
 		{
 			"cost"							"10k"
 			"Banner Summons Lightning"		"1"
-		}
-		"Lacerating Rounds"
-		{
-			"requirement"							"250k"
-			"fire rate penalty(unremoveable)"		"3.0"
-			"bleeding duration"						"5"
-			"Bleed Per Hit"							"2"
 		}
 		"Blade Stream"
 		{
@@ -111,6 +90,41 @@
 			"Homing Projectiles"			"200.0"
 			"Crit Damage Bonus"				"3.0"
 			"Ability : Homing Flares"		"1"
+		}
+		"Explosive Bullets(P)"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"bullets per shot mult"			"7.5"
+			"Overall Damage"				"96"
+			"Explosive Bullets Radius (tweak)"	"350.0"
+			"fire rate penalty(unremoveable)"	"50"
+		}
+		"Explosive Bullets(Shortstop)"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"bullets per shot mult"			"7.5"
+			"Overall Damage"				"96"
+			"Explosive Bullets Radius (tweak)"	"350.0"
+			"fire rate penalty(unremoveable)"	"50"
+		}
+		"Explosive Bullets(S)"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"bullets per shot mult"			"5.0"
+			"Overall Damage"				"70"
+			"Explosive Bullets Radius (tweak)"	"150.0"
+			"fire rate penalty(unremoveable)"	"50"
+		}
+		"Lacerating Rounds"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"fire rate penalty(unremoveable)"		"3.0"
+			"bleeding duration"						"5"
+			"Bleed Per Hit"							"2"
 		}
 	}
 }

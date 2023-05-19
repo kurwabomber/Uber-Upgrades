@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"Explosive Bullets Radius (tweak)"
+	{
+		"en"		"Explosive Bullets Radius"
+	}
+	"bullets per shot mult"
+	{
+		"en"		"Bullets per Shot Multiplier"
+	}
 	"Afterburn Tick Rate"
 	{
 		"en"		"Afterburn Tick Rate"
@@ -120,7 +128,7 @@
 	{
 		"en"		"Increased Projectile Count"
 	}
-	"Explosive Bullets"
+	"Explosive Bullets(P)"
 	{
 		"en"		"Explosive Bullets"
 	}
@@ -1076,9 +1084,9 @@
 	{
 		"en"		"Switch Speed Increased"
 	}
-	"Rocket Launcher(S)"
+	"Explosive Bullets(S)"
 	{
-		"en"		"Rocket Launcher"
+		"en"		"Explosive Bullets"
 	}
 	"pct rage from being hit"
 	{
@@ -1407,10 +1415,6 @@
 	"Rocket Damage"
 	{
 		"en"		"Rocket Damage"
-	}
-	"Rocket Launcher"
-	{
-		"en"		"Rocket Launcher"
 	}
 	"damage bonus HIDDEN"
 	{
@@ -2132,13 +2136,9 @@
 	{
 		"en"		"Ball Upgrades"
 	}
-	"Rocket Launcher"
+	"Explosive Bullets(Shortstop)"
 	{
-		"en"		"Rocket Launcher"
-	}
-	"Rocket Launcher(Shortstop)"
-	{
-		"en"		"Rocket Launcher"
+		"en"		"Explosive Bullets"
 	}
 	"Jumper"
 	{

@@ -3408,6 +3408,16 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "4727"
+	{
+        "name"	"bullets per shot mult"
+        "attribute_class"	"mult_bullets_per_shot"
+        "description_string"	"(+-)%p% Max health"
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
     //Masteries
     "5000"
     {

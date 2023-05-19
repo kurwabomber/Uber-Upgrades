@@ -166,7 +166,7 @@
 			"cost"		"0"
 			"value"		"0.1"
 			"init"		"1.00"
-			"max"		"3"
+			"max"		"100"
 		}
 		"11.4"
 		{
@@ -5265,6 +5265,16 @@
 			"init"		"0"
 			"max"		"150"
 		}
+		"1589.5"
+		{
+			"name"		"explosive bullets"
+			"ref"		"Explosive Bullets Radius (tweak)"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1.0"
+			"init"		"0"
+			"max"		"1000"
+		}
 		"1590"
 		{
 			"name"		"mult firerocket rate"
@@ -5305,16 +5315,6 @@
 			"init"		"0.0"
 			"description"	"+10% healing to buildings per purchase."
 			"max"		"5"
-		}
-		"1594"
-		{
-			"name"		"explosive bullets"
-			"ref"		"Explosive Bullets"
-			"cost"		"0"
-			"increase_ratio"	"0.0"
-			"value"		"1"
-			"init"		"0.0"
-			"max"		"500"
 		}
 		"1595"
 		{
@@ -5500,6 +5500,15 @@
 			"value"		"1.0"
 			"init"		"1"
 			"max"		"5.0"
+		}
+		"1611"
+		{
+			"name"		"bullets per shot mult"
+			"ref"		"bullets per shot mult"
+			"cost"		"0"
+			"value"		"-0.1"
+			"init"		"1"
+			"max"		"10.0"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"

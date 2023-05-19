@@ -420,7 +420,6 @@ public _load_cfg_files()
 	kv = CreateKeyValues("attribs");
 	FileToKeyValues(kv, "addons/sourcemod/configs/if_attributes.txt");
 	_u_id = 1
-	PrintToServer("browsin if attribs (kvh:%d)", kv)
 	BrowseAttributesKV(kv)
 	PrintToServer("[UberUpgrades] %d attributes loaded", _u_id)
 	CloseHandle(kv);
