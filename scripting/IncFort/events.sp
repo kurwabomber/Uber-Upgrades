@@ -3145,8 +3145,8 @@ public OnClientDisconnect(client)
 		}
 	}
 	DamageDealt[client] = 0.0;
-	Kills[client] = 0.0;
-	Deaths[client] = 0.0;
+	Kills[client] = 0;
+	Deaths[client] = 0;
 	dps[client] = 0.0;
 	Healed[client] = 0.0;
 	current_class[client] = TFClass_Unknown;

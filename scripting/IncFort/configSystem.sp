@@ -118,7 +118,10 @@ BrowseAttributesKV(Handle kv)
 				else if (!strcmp(Buf,"value"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					upgrades[_u_id].ratio = StringToFloat(Buf)
+					if(IsCharNumeric(Buf[0]))
+						upgrades[_u_id].ratio = StringToFloat(Buf)
+					else
+						strcopy(upgrades[_u_id].string_value, 64, Buf);
 				}
 				else if (!strcmp(Buf,"init"))
 				{
@@ -147,9 +150,9 @@ BrowseAttributesKV(Handle kv)
 				}
 				else if(!strcmp(Buf, "staged_max"))
 				{
-					KvGetString(kv, "", Buf, 256);
+					KvGetString(kv, "", Buf, 64);
 					char parts[MAX_STAGES][256];
-					int it = ExplodeString(Buf, ",", parts, MAX_STAGES, 256);
+					int it = ExplodeString(Buf, ",", parts, MAX_STAGES, 64);
 
 					for(int i = 1;i<it;i++)
 					{

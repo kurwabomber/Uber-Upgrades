@@ -572,7 +572,7 @@ public Action:ShowStats(client, args)
 		{
 			char cstr[255]
 			GetClientName(i, cstr, 255)
-			PrintToConsole(client, "\n%s:\n--------------\nHealed: %.0f\nDamage: %.0f\nKills: %.0f\nDeaths: %.0f\n", cstr, Healed[i], DamageDealt[i], Kills[i], Deaths[i])
+			PrintToConsole(client, "\n%s:\n--------------\nHealed: %.0f\nDamage: %.0f\nKills: %d\nDeaths: %d\n", cstr, Healed[i], DamageDealt[i], Kills[i], Deaths[i])
 		}
 	}
 	PrintToChat(client, "Output is in console.");

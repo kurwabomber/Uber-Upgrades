@@ -44,8 +44,9 @@ enum struct Upgrade{
     int cost;
     int restriction_category;
     int display_style;
-    char name[64]
-    char attr_name[64]
+    char name[64];
+    char attr_name[64];
+	char string_value[64];
     char description[256];
 }
 enum struct Tweak{
@@ -205,6 +206,8 @@ int g_nBounces[MAXENTITIES];
 int lastKBSource[MAXPLAYERS+1];
 int knockbackFlags[MAXPLAYERS+1];
 int relentlessTicks[MAXPLAYERS+1];
+int Kills[MAXPLAYERS + 1]
+int Deaths[MAXPLAYERS + 1]
 
 //Floats
 float currentGameTime
@@ -221,8 +224,6 @@ float CurrencyOwned[MAXPLAYERS + 1]
 float ServerMoneyMult = 1.0
 float OverAllMultiplier
 float DamageDealt[MAXPLAYERS + 1]
-float Kills[MAXPLAYERS + 1]
-float Deaths[MAXPLAYERS + 1]
 float dps[MAXPLAYERS + 1]
 float Healed[MAXPLAYERS + 1]
 float CurrencySaved[MAXPLAYERS + 1];
