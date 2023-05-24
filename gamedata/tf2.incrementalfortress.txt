@@ -310,7 +310,7 @@
 			"CTFWeaponBase::FinishReload()"
 			{
 				"library"	"server"
-				"linux"		"@_ZN13CTFWeaponBase12FinishReloadEv"
+				"linux"		"@_ZN13CTFWeaponBase6ReloadEv"
 			}
 		}
 	}

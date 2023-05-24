@@ -1633,7 +1633,7 @@ refreshUpgrades(client, slot)
 			if(infernalPowerup != Address_Null)
 			{
 				if(TF2Attrib_GetValue(infernalPowerup) > 0.0)
-					TF2Attrib_SetByName(client,"mult afterburn delay", 0.65);
+					TF2Attrib_SetByName(client,"mult afterburn delay", 1.55);
 				else
 					TF2Attrib_RemoveByName(client,"mult afterburn delay");
 			}

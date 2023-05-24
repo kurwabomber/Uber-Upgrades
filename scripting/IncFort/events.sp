@@ -1554,8 +1554,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					Address vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
 					if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
 					{
-						CreateParticle(client, "spell_batball_red", true, "", 2.0);
-						powerupParticle[client] = currentGameTime+8.0;
+						CreateParticle(client, "utaunt_hellpit_parent", true, "", 5.0);
+						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
 					if(regenerationPowerup != Address_Null && TF2Attrib_GetValue(regenerationPowerup) > 0.0)
@@ -1641,6 +1641,36 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					if(supernovaPowerup != Address_Null && TF2Attrib_GetValue(supernovaPowerup) > 0.0)
 					{
 						CreateParticle(client, "powerup_supernova_ready", true, "", 5.0);
+						powerupParticle[client] = currentGameTime+5.0;
+					}
+					Address infernalPowerup = TF2Attrib_GetByName(client, "infernal powerup");
+					if(infernalPowerup != Address_Null && TF2Attrib_GetValue(infernalPowerup) > 0.0)
+					{
+						CreateParticle(client, "heavy_ring_of_fire_fp", true, "", 2.0);
+						powerupParticle[client] = currentGameTime+2.0;
+					}
+					Address thunderstormPowerup = TF2Attrib_GetByName(client, "thunderstorm powerup");
+					if(thunderstormPowerup != Address_Null && TF2Attrib_GetValue(thunderstormPowerup) > 0.0)
+					{
+						CreateParticle(client, "utaunt_electric_mist" , true, "", 5.0);
+						powerupParticle[client] = currentGameTime+5.0;
+					}
+					Address martyrPowerup = TF2Attrib_GetByName(client, "martyr powerup");
+					if(martyrPowerup != Address_Null && TF2Attrib_GetValue(martyrPowerup) > 0.0)
+					{
+						CreateParticle(client, "utaunt_hearts_beams" , true, "", 5.0);
+						powerupParticle[client] = currentGameTime+5.0;
+					}
+					Address inverterPowerup = TF2Attrib_GetByName(client, "inverter powerup");
+					if(inverterPowerup != Address_Null && TF2Attrib_GetValue(inverterPowerup) > 0.0)
+					{
+						CreateParticle(client, "utaunt_portalswirl_purple_parent" , true, "", 5.0);
+						powerupParticle[client] = currentGameTime+5.0;
+					}
+					Address relentlessPowerup = TF2Attrib_GetByName(client, "relentless powerup");
+					if(relentlessPowerup != Address_Null && TF2Attrib_GetValue(relentlessPowerup) > 0.0)
+					{
+						CreateParticle(client, "utaunt_runeprison_yellow_parent" , true, "", 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 				}
@@ -2846,7 +2876,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 							GetClientEyeAngles(client, fAngles);
 							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 							GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-							ScaleVector(fwd, 50.0);
+							ScaleVector(fwd, 75.0);
 							AddVectors(fOrigin, fwd, fOrigin);
 							float velocity = 3000.0;
 							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
@@ -2872,7 +2902,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
 							}
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-							SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.7);
+							SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.3);
 							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchPiercingRocket);
 							SDKUnhook(iEntity, SDKHook_Touch, projectileCollision);
 							SetEntityModel(iEntity, "models/weapons/w_models/w_rocket_airstrike/w_rocket_airstrike.mdl");
