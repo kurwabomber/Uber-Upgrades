@@ -330,6 +330,7 @@ BrowseWeaponsListKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 {
 	char Buf[128];
 	int attr_ref
+	upgrades_weapon_nb = 0;
 	do
 	{
 		if (level == 1)

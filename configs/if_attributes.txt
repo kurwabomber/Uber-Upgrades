@@ -5508,7 +5508,7 @@
 			"cost"		"0"
 			"value"		"-0.1"
 			"init"		"1"
-			"max"		"10.0"
+			"max"		"0.0"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
