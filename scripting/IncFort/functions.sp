@@ -2600,7 +2600,7 @@ ChangeProjModel(entity)
 						jarateType[entity] = 1;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
 						SetEntityGravity(entity, 1.0);
-						IncreaseProjectileAngle(client, entity);
+						IncreaseProjectileAngle(entity);
 					}
 					case 1121:
 					{
@@ -2610,7 +2610,7 @@ ChangeProjModel(entity)
 						jarateType[entity] = 1;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
 						SetEntityGravity(entity, 1.0);
-						IncreaseProjectileAngle(client, entity);
+						IncreaseProjectileAngle(entity);
 					}
 					case 58,1149:
 					{
@@ -2620,7 +2620,7 @@ ChangeProjModel(entity)
 						jarateType[entity] = 0;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
 						SetEntityGravity(entity, 1.0);
-						IncreaseProjectileAngle(client, entity);
+						IncreaseProjectileAngle(entity);
 					}
 					case 1105:
 					{
@@ -2630,7 +2630,7 @@ ChangeProjModel(entity)
 						jarateType[entity] = 0;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
 						SetEntityGravity(entity, 1.0);
-						IncreaseProjectileAngle(client, entity);
+						IncreaseProjectileAngle(entity);
 					}
 					case 812,833:
 					{
