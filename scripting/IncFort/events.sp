@@ -2486,7 +2486,7 @@ public MRESReturn OnScattergunReload(int weapon)
 		return MRES_Ignored;
 
 	int currentClip = GetEntProp( weapon, Prop_Data, "m_iClip1" );
-	int maxClip = GetMaxClip(weapon);
+	int maxClip = TF2Util_GetWeaponMaxClip(weapon);
 	int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
 	int currentAmmo = GetEntProp( client, Prop_Send, "m_iAmmo", _, type ); 
 

@@ -239,8 +239,6 @@ public void OnPluginStart()
 	CreateTimer(10.0, Timer_EveryTenSeconds, _, TIMER_REPEAT);
 	CreateTimer(0.07, Timer_Every100MS, _, TIMER_REPEAT);
 	
-	OnPluginStart_RegisterWeaponData();
-	
 	logic = FindEntityByClassname(-1, "tf_objective_resource");
 
 	//Offsets

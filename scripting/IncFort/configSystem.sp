@@ -118,10 +118,7 @@ BrowseAttributesKV(Handle kv)
 				else if (!strcmp(Buf,"value"))
 				{
 					KvGetString(kv, "", Buf, 64);
-					if(IsCharNumeric(Buf[0]))
-						upgrades[_u_id].ratio = StringToFloat(Buf)
-					else
-						strcopy(upgrades[_u_id].string_value, 64, Buf);
+					upgrades[_u_id].ratio = StringToFloat(Buf)
 				}
 				else if (!strcmp(Buf,"init"))
 				{
@@ -330,7 +327,6 @@ BrowseWeaponsListKV(Handle kv, &u_id = -1, att_id = -1, level = 0)
 {
 	char Buf[128];
 	int attr_ref
-	upgrades_weapon_nb = 0;
 	do
 	{
 		if (level == 1)
@@ -445,6 +441,7 @@ public _load_cfg_files()
 	CloseHandle(kv);
 	
 	static_uid = -1
+	upgrades_weapon_nb = 0;
 	kv = CreateKeyValues("buyableWeapons");
 	FileToKeyValues(kv, "addons/sourcemod/configs/if_buyableweapons.txt");
 	BrowseWeaponsListKV(kv, static_uid)

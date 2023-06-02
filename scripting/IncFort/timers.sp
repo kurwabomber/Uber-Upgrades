@@ -1347,7 +1347,7 @@ public Action:GiveMaxAmmo(Handle timer, any:userid)
 			if(autoFires != 0.0)
 				return;
 
-			int primaryAmmo = GetMaxClip(primary);
+			int primaryAmmo = TF2Util_GetWeaponMaxClip(primary);
 			if(primaryAmmo > 1)
 				SetClipAmmo(client, 0, primaryAmmo);
 			
@@ -1360,7 +1360,7 @@ public Action:GiveMaxAmmo(Handle timer, any:userid)
 			if(autoFires != 0.0)
 				return;
 
-			int secondaryAmmo = GetMaxClip(secondary);
+			int secondaryAmmo = TF2Util_GetWeaponMaxClip(secondary);
 			if(secondaryAmmo > 1)
 				SetClipAmmo(client, 1, secondaryAmmo);
 

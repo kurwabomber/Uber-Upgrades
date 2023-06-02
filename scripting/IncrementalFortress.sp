@@ -8,7 +8,6 @@
 #include <keyvalues>
 #include <sdktools>
 #include <dhooks>
-#include <weapondata>
 #include <clientprefs>
 #include <morecolors>
 #include <razorstocks>

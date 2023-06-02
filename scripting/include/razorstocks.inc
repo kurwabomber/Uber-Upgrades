@@ -1,10 +1,10 @@
 /*
 Yeah.
  */
-#include <tf2wearables>
 #include <sdkhooks>
 #include <tf2attributes>
 #include <tf_econ_data>
+#include <tf2utils>
 #pragma tabsize 0
 #define ExplosionSound1 "weapons/explode1.wav"
 #define ExplosionSound2 "weapons/explode2.wav"
@@ -33,6 +33,8 @@ Yeah.
 #define UBER_HASTE 1 << 3
 #define UBER_DEFENSE 1 << 4
 #define UBER_SPEED 1 << 5
+
+#define GetWeapon TF2Util_GetPlayerLoadoutEntity
 
 bool DOTStacked[MAXENTITIES][MAXENTITIES];
 bool ShouldNotHome[MAXENTITIES][MAXPLAYERS+1];
@@ -825,101 +827,7 @@ public bool TEF_ExcludeEntity(entity, contentsMask, any:data)
 {
 	return (entity != data);
 }
-stock int GetWeapon(int client, int slot)
-{
-	int itemID;
-	if(IsValidClient3(client))
-	{
-		switch(slot)
-		{
-			case 0:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Primary);
-			}
-			case 1:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Secondary);
-			}
-			case 2:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Melee);
-			}
-			case 3:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Utility);
-			}
-			case 4:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Unknown1);
-			}
-			case 5:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Building);
-			}
-			case 6:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Unknown2);
-			}
-			case 7:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_PDA2);
-			}
-			case 8:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Misc1);
-			}
-			case 9:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Misc2);
-			}
-			case 10:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Action);
-			}
-			case 11:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Misc3);
-			}
-			case 12:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Taunt1);
-			}
-			case 13:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Taunt2);
-			}
-			case 14:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Taunt3);
-			}
-			case 15:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Taunt4);
-			}
-			case 16:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Taunt5);
-			}
-			case 17:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Taunt6);
-			}
-			case 18:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Taunt7);
-			}
-			case 19:
-			{
-				itemID = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Taunt8);
-			}
-			default:
-			{
-				return -1;
-			}
-		}
-	}
-	return itemID;
-}
+
 stock int GetHealingTarget(const int client)
 {
     int medigun = GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary);
@@ -2046,16 +1954,7 @@ stock CreateSprite(iClient, char[] sprite, float offset)
 	}
 	return ent;
 }
-//Math
-stock float FloatMod(float num, float denom)
-{
-    return num - denom * RoundToFloor(num / denom);
-}
 
-stock float operator%(float oper1, float oper2)
-{
-    return FloatMod(oper1, oper2);
-}
 stock char[] GetAlphabetForm(float number)
 {
 	char output[64];
@@ -2333,45 +2232,20 @@ stock GetClientBaseHP(client){
 			HP += 100;
 		}
 	}
-	
-	int weap = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Primary)
-	if(IsValidEdict(weap))
-	{
-		Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
-		Address HPActive2 = TF2Attrib_GetByName(weap, "max health additive penalty");
-		
-		if(HPActive1 != Address_Null){
-			HP += RoundToCeil(TF2Attrib_GetValue(HPActive1));
+	for(int i = 0; i<2; i++){
+		int weap = TF2Util_GetPlayerLoadoutEntity(client, i);
+		if(IsValidEdict(weap))
+		{
+			Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
+			Address HPActive2 = TF2Attrib_GetByName(weap, "max health additive penalty");
+			
+			if(HPActive1 != Address_Null){
+				HP += RoundToCeil(TF2Attrib_GetValue(HPActive1));
+			}
+			if(HPActive2 != Address_Null){
+				HP += RoundToCeil(TF2Attrib_GetValue(HPActive2));
+			}		
 		}
-		if(HPActive2 != Address_Null){
-			HP += RoundToCeil(TF2Attrib_GetValue(HPActive2));
-		}		
-	}
-	weap = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Secondary)
-	if(IsValidEdict(weap))
-	{
-		Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
-		Address HPActive2 = TF2Attrib_GetByName(weap, "max health additive penalty");
-		
-		if(HPActive1 != Address_Null){
-			HP += RoundToCeil(TF2Attrib_GetValue(HPActive1));
-		}
-		if(HPActive2 != Address_Null){
-			HP += RoundToCeil(TF2Attrib_GetValue(HPActive2));
-		}		
-	}
-	weap = TF2_GetPlayerLoadoutSlot(client, TF2LoadoutSlot_Melee)
-	if(IsValidEdict(weap))
-	{
-		Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
-		Address HPActive2 = TF2Attrib_GetByName(weap, "max health additive penalty");
-		
-		if(HPActive1 != Address_Null){
-			HP += RoundToCeil(TF2Attrib_GetValue(HPActive1));
-		}
-		if(HPActive2 != Address_Null){
-			HP += RoundToCeil(TF2Attrib_GetValue(HPActive2));
-		}		
 	}
 	return HP;
 }

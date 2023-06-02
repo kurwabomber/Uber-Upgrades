@@ -46,7 +46,6 @@ enum struct Upgrade{
     int display_style;
     char name[64];
     char attr_name[64];
-	char string_value[64];
     char description[256];
 }
 enum struct Tweak{

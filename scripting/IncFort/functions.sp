@@ -1678,6 +1678,11 @@ refreshUpgrades(client, slot)
 			{
 				SetEntProp(slotItem, Prop_Data, "m_bReloadsSingly", 0);
 			}
+			Address explosiveBullets = TF2Attrib_GetByName(slotItem, "explosive bullets");
+			if(explosiveBullets!=Address_Null)
+			{
+				TF2Attrib_SetFromStringValue(slotItem, "explosion particle", "ExplosionCore_sapperdestroyed");
+			}
 			Address firerateActive = TF2Attrib_GetByName(slotItem, "disguise speed penalty");
 			Address heavyweaponActive = TF2Attrib_GetByName(slotItem, "Converts Firerate to Damage");//Implement "Heavy" Weapons
 			if(heavyweaponActive != Address_Null && TF2Attrib_GetValue(heavyweaponActive) != 0.0)

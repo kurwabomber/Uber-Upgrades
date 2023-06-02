@@ -2,19 +2,10 @@
 {
 	"*"//Which steam id this applies to? * = All players
 	{
-		"460"//item ID (Enforcer)
-		{	
-			//attr#			attrID ; float value
-			"1"				"336 ; 1"
-		}
 		"526,30665"//The Machina
 		{
 			"1"				"305 ; 0"
-		}
-		"1098"//The Classic
-		{
-			"1"				"647 ; 0"
-			"2"				"2030 ; 1"
+			"2"				"161 ; 3.0"
 		}
 		"441"//The Cow Mangler
 		{
@@ -39,63 +30,25 @@
 			"2"				"377 ; 0"
 			"3"				"376 ; 1"
 		}
-		"140"//The Wrangler
+		"140,30668"//The Wrangler
 		{
 			"preserve_attributes"	"1"
 			
 			"1"				"488 ; 1"
 			"2"				"343 ; 0.80"
 		}
-		"30668"//The Gigar Counter
-		{
-			"preserve_attributes"	"1"
-			
-			"1"				"488 ; 1"
-			"2"				"343 ; 0.80"
-		}
-		"812"//The Flying Guillotine
+		"812,833"//The Flying Guillotine
 		{
 			"preserve_attributes"	"1"
 		
 			"1"				"437 ; 65536"
 		}
-		"833"//The Flying Guillotine (Genuine)
-		{
-			"preserve_attributes"	"1"
-		
-			"1"				"437 ; 65536"
-		}
-		"831"//The Red Tape Recorder (Genuine)
+		"810,831"//The Red Tape Recorder
 		{
 			"1"				"425 ; 2.0"
 			"2"				"840 ; 0.1"
 		}
-		"810"//The Red Tape Recorder
-		{
-			"1"				"425 ; 2.0"
-			"2"				"840 ; 0.1"
-		}
-		"735"//The Sapper
-		{
-			"preserve_attributes"	"1"
-			"1"				"840 ; 0.1"
-		}
-		"736"//The Sapper (Unique)
-		{
-			"preserve_attributes"	"1"
-			"1"				"840 ; 0.1"
-		}
-		"933"//The Sapper (Ap-Sap)
-		{
-			"preserve_attributes"	"1"
-			"1"				"840 ; 0.1"
-		}
-		"1080"//The Sapper (Festive)
-		{
-			"preserve_attributes"	"1"
-			"1"				"840 ; 0.1"
-		}
-		"1102"//The Sapper (Snack Attack)
+		"735,736,933,1080,1102"//The Sapper
 		{
 			"preserve_attributes"	"1"
 			"1"				"840 ; 0.1"
@@ -112,7 +65,7 @@
 			"preserve_attributes"	"1"
 		
 			"1"				"26 ; 35"
-			"2"				"2714632 ; 750.0"
+			"2"				"4632 ; 750.0"
 		}
 		"406"//Splendid Screen
 		{
@@ -184,15 +137,10 @@
 			"1"				"144 ; 0.0"
 			"2"				"184 ; 1"
 		}
-		"159"//Dalakohs Bar
+		"159,433"//Dalakohs Bar
 		{
 			"preserve_attributes"	"1"
 			"1"				"282 ; 15.0"
-		}
-		"433"//Fishcake
-		{
-			"preserve_attributes"	"1"
-			"1"				"282 ; 200.0"
 		}
 		"449"//Winger
 		{
@@ -222,6 +170,8 @@
 		"355"// Fan O'War
 		{
 			"1"				"2000 ; 4.0"
+			"2"				"372 ; 1.75"
+			"3"				"6012 ; 0.6"
 		}
 		"525"//Diamondback
 		{
@@ -237,11 +187,17 @@
 		{
 			"preserve_attributes"	"1"
 			"1"				"6023 ; 1.0"
+			"2"				"619 ; 1.0"
 		}
 		"1092"//Fortified Compound
 		{
 			"preserve_attributes"	"1"
 			"1"				"6023 ; 1.0"
+			"2"				"2 ; 7.0"
+			"3"				"6012 ; 3.0"
+			"4"				"105 ; 1.5"
+			"5"				"5 ; 4.0"
+			"6"				"183 ; 0.01"
 		}
 		"595"//The Manmelter
 		{
@@ -249,25 +205,28 @@
 			"1"				"6023 ; 1.0"
 			"2"				"726 ; 12.0"
 		}
-		"588"//Pomson 6000
+		"588,442"//Pomson 6000
 		{
 			"preserve_attributes"	"1"
 			"1"				"6023 ; 1.0"
+			"2"				"283 ; 1.0"
+			"3"				"362 ; 350.0"
+			"4"				"6012 ; 0.1"
 		}
 		"1150"//Quickiebomb
 		{
 			"preserve_attributes"	"1"
 			"1"				"6023 ; 1.0"
-		}
-		"442"//Righteous Bison
-		{
-			"preserve_attributes"	"1"
-			"1"				"6023 ; 1.0"
+			"2"				"216 ; 12.0"
+			"3"				"6012 ; 0.75"
+			"4"				"89 ; -6.0"
 		}
 		"348"//Sharpened Volcano Fragment
 		{
 			"preserve_attributes"	"1"
 			"1"				"6023 ; 1.0"
+			"2"				"389 ; 15.0"
+			"3"				"6012 ; 0.5"
 		}
 		"44"//Sandman
 		{
@@ -280,6 +239,248 @@
 			"preserve_attributes"	"1"
 			"1"				"346 ; 10.0"
 			"2"				"27 ; 1"
+		}
+		"1104" //Air Strike
+		{
+			"preserve_attributes"	"1"
+			"1"				"100 ; 0.9"
+			"2"				"1 ; 0.85"
+			"3"				"135 ; 0.6"
+			"4"				"621 ; 0.7"
+			"5"				"644 ; 15"
+		}
+		"61,1006" //Ambassador
+		{
+			"preserve_attributes"	"1"
+			"1"				"117 ; 1.15"
+			"2"				"774 ; 1.0"
+		}
+		"1103" //Backscatter
+		{
+			"preserve_attributes"	"1"
+			"1"				"58 ; 3.0"
+		}
+		"461" //Big Earner
+		{
+			"preserve_attributes"	"1"
+			"1"				"107 ; 1.15"
+		}
+		"228,1085" //Black Box
+		{
+			"preserve_attributes"	"1"
+			"1"				"57 ; -4.0"
+			"2"				"128 ; 1.0"
+		}
+		"36" //Blutsauger
+		{
+			"preserve_attributes"	"1"
+			"1"				"545 ; 1.0"
+		}
+		"312" //Brass Beast
+		{
+			"preserve_attributes"	"1"
+			"1"				"412 ; 0.8"
+			"2"				"280 ; 42.0"
+			"3"				"348 ; 3.0"
+			"4"				"642 ; 1.0"
+		}
+		"232" //Bushwacka
+		{
+			"preserve_attributes"	"1"
+			"1"				"280 ; 41.0"
+			"2"				"348 ; 4.0"
+		}
+		"1098" //The Classic
+		{
+			"preserve_attributes"	"1"
+			"1"				"305 ; 0"
+			"2"				"647 ; 0"
+			"3"				"247 ; 1.6"
+		}
+		"305,1079" //Crusader's Crossbow
+		{
+			"preserve_attributes"	"1"
+			"1"				"475 ; 1.1"
+		}
+		"215" //Degreaser
+		{
+			"preserve_attributes"	"1"
+			"1"				"6012 ; 0.8"
+			"2"				"255 ; 1.4"
+			"3"				"264 ; 1.25"
+		}
+		"460" //Enforcer
+		{
+			"preserve_attributes"	"1"
+			"1"				"298 ; 2.0"
+			"2"				"348 ; 0.5"
+			"3"				"241 ; 7.0"
+		}
+		"45,1078" //Force a Nature
+		{
+			"preserve_attributes"	"1"
+			"1"				"348 ; 0.5"
+			"2"				"6012 ; 0.8"
+			"3"				"6 ; 1.0"
+		}
+		"1180" //Gas Passer
+		{
+			"preserve_attributes"	"1"
+			"1"				"801 ; 30.0"
+			"2"				"394 ; 0.3"
+		}
+		"752" //Hitman's Heatmaker
+		{
+			"preserve_attributes"	"1"
+			"1"				"244 ; 1.0"
+			"2"				"319 ; 0.35"
+			"3"				"305 ; 0.0"
+			"4"				"280 ; 2.0"
+			"5"				"103 ; 1000.0"
+		}
+		"1181" //Hot hand
+		{
+			"preserve_attributes"	"1"
+			"classname"		"tf_weapon_fireaxe"
+		}
+		"56,1005" //Huntsman
+		{
+			"preserve_attributes"	"1"
+			"classname"		"tf_weapon_grenadelauncher"
+			"1"				"280 ; 8.0"
+			"2"				"2 ; 1.2"
+			"3"				"424 ; 0.5"
+			"4"				"103 ; 2.5"
+			"5"				"182 ; 1.0"
+		}
+		"811" //Huo-long Heater
+		{
+			"preserve_attributes"	"1"
+			"1"				"280 ; 6.0"
+			"2"				"103 ; 3.0"
+			"3"				"726 ; 0.01"
+			"4"				"99 ; 1.65"
+			"5"				"411 ; 2.0"
+			"6"				"216 ; 6.0"
+		}
+		"1151" //Iron Bomber
+		{
+			"preserve_attributes"	"1"
+			"1"				"200 ; -1.0"
+		}
+		"329" //Jag
+		{
+			"preserve_attributes"	"1"
+			"1"				"348 ; 0.85"
+			"2"				"6012 ; 0.8"
+		}
+		"43" //KGB
+		{	
+			"preserve_attributes"	"1"
+			"1"				"613 ; 2.0"
+			"2"				"31 ; 0.0"
+		}
+		"414" //Liberty Launcher
+		{	
+			"preserve_attributes"	"1"
+			"classname"		"tf_weapon_grenadelauncher"
+			"1"				"2 ; 0.5"
+			"2"				"441 ; 1.0"
+			"3"				"280 ; 2.0"
+			"4"				"411 ; 2.0"
+			"5"				"241 ; 0.4"
+			"6"				"5 ; 6.0"
+		}
+		"308" //Loch-n-Load
+		{
+			"preserve_attributes"	"1"
+			"1"				"2 ; 1.2"
+			"2"				"726 ; 4.0"
+		}
+		"996" //Loose Cannon
+		{
+			"preserve_attributes"	"1"
+			"1"				"2 ; 0.5"
+			"2"				"441 ; 1.0"
+			"3"				"280 ; 17.0"
+			"4"				"411 ; 2.0"
+			"5"				"241 ; 0.4"
+			"6"				"5 ; 6.0"
+		}
+		"416" //Market Gardener
+		{
+			"preserve_attributes"	"1"
+			"1"				"869 ; 1.0"
+			"2"				"117 ; 1.0"
+			"3"				"128 ; 1.0"
+		}
+		"36" //Overdose
+		{
+			"preserve_attributes"	"1"
+			"1"				"372 ; 6.0"
+		}
+		"130" //Scottish Resistance
+		{
+			"preserve_attributes"	"1"
+			"1"				"89 ; 60.0"
+		}
+		"528" //Short Circuit
+		{
+			"preserve_attributes"	"1"
+			"1"				"4388 ; 140.0"
+			"2"				"842 ; 1.0"
+			"3"				"5 ; 2.0"
+		}
+		"220" //Shortstop
+		{
+			"preserve_attributes"	"1"
+			"1"				"412 ; 1.15"
+			"2"				"107 ; 1.15"
+		}
+		"448" //Soda Popper
+		{
+			"preserve_attributes"	"1"
+			"1"				"809 ; 1.0"
+			"2"				"851 ; 1.8"
+			"3"				"54 ; 0.8"
+			"4"				"855 ; 25"
+		}
+		"349" //Sun on a Stick
+		{
+			"1"				"389 ; 15.0"
+			"2"				"6012 ; 0.5"
+			"3"				"842 ; 1.0"
+		}
+		"230" //Sydney Sleeper
+		{
+			"1"				"2000 ; 2.0"
+			"2"				"42 ; 1.0"
+		}
+		"17,204" //Syringe Gun 
+		{
+			"preserve_attributes"	"1"
+			"1"				"372 ; 4.0"
+		}
+		"424" //Tomislav
+		{
+			"preserve_attributes"	"1"
+			"1"				"236 ; 1.0"
+			"2"				"348 ; 3.0"
+			"3"				"6012 ; 3.0"
+			"4"				"4725 ; 1.0"
+			"5"				"4551 ; 3.0"
+		}
+		"37,1003" //Ubersaw
+		{
+			"preserve_attributes"	"1"
+			"1"				"17 ; 0.03"
+		}
+		"310" //Warrior's Spirit
+		{
+			"preserve_attributes"	"1"
+			"1"				"6012 ; 0.45"
+			"2"				"280 ; 40.0"
+			"3"				"362 ; 150.0"
 		}
 	}
 }
