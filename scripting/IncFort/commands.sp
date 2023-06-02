@@ -653,6 +653,9 @@ public OnCvarChanged(Handle cvar, const char[] oldVal, const char[] newVal)
 	else if(cvar == cvar_debug){
 		debugMode = view_as<bool>(GetConVarInt(cvar_debug));
 	}
+	else if(cvar == cvar_InfiniteMoney){
+		infiniteMoney = view_as<bool>(GetConVarInt(cvar_InfiniteMoney));
+	}
 }
 public Action Command_DealDamage(client, args)
 {

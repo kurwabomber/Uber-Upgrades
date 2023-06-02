@@ -796,26 +796,6 @@
 	{
 		"en"		"Ammo & Cloak Upgrades"
 	}
-	"unusual id"
-	{
-		"en"		"Unusual ID"
-	}
-	"KS idle effect"
-	{
-		"en"		"KS Idle Effect"
-	}
-	"killstreak effect"
-	{
-		"en"		"Killstreak Effect"
-	}
-	"Projectile Hitbox Bonus"
-	{
-		"en"		"Projectile Hitbox Bonus"
-	}
-	"weapon spread bonus(H)"
-	{
-		"en"		"Weapon Spread Bonus"
-	}
 	"damage bonus (clea)"
 	{
 		"en"		"Damage+++"
@@ -1524,10 +1504,6 @@
 	{
 		"en"		"Vaccinator Upgrades"
 	}
-	"fire retardant"
-	{
-		"en"		"Afterburn Immunity"
-	}
 	"stickybomb charge rate"
 	{
 		"en"		"Launcher Charge Rate"
@@ -1960,10 +1936,6 @@
 	{
 		"en"		"powerup duration"
 	}
-	"KS idle effect"
-	{
-		"en"		"KS idle effect"
-	}
 	"pro KS"
 	{
 		"en"		"Professional Killstreak"
@@ -1971,10 +1943,6 @@
 	"crit_dmg_falloff"
 	{
 		"en"		"Crtical Damage Has Fall-off"
-	}
-	"Special Effects"
-	{
-		"en"		"Special Effects"
 	}
 	"unusual effect"
 	{
@@ -2132,21 +2100,9 @@
 	{
 		"en"		"Afterburn Damage Multiplier"
 	}
-	"Ball Upgrades"
-	{
-		"en"		"Ball Upgrades"
-	}
 	"Explosive Bullets(Shortstop)"
 	{
 		"en"		"Explosive Bullets"
-	}
-	"Jumper"
-	{
-		"en"		"Jumper"
-	}
-	"mod bat launches ornaments"
-	{
-		"en"		"Bat Launches Ornaments"
 	}
 	"mod bat launches balls"
 	{
@@ -2192,10 +2148,6 @@
 	{
 		"en"		"Heal Rate Bonus"
 	}
-	"Special Effects"
-	{
-		"en"		"Special Effects"
-	}
 	"Bigger Flames (not hitbox)"
 	{
 		"en"		"Bigger Flames"
@@ -2204,17 +2156,9 @@
 	{
 		"en"		"Headshots"
 	}
-	"Special Effects"
-	{
-		"en"		"Special effects"
-	}
 	"mod rage damage boost(L)"
 	{
 		"en"		"Rage Meter Damage Boost"
-	}
-	"generate rage on damage"
-	{
-		"en"		"Gain Rage On Hit"
 	}
 	"Projectile Upgrades"
 	{
@@ -2223,18 +2167,6 @@
 	"Projectile Specific Upgrades"
 	{
 		"en"		"Projectile Specific Upgrades"
-	}
-	"a manns mint"
-	{
-		"en"		"Paint : Mint"
-	}
-	"a distinctive lack of hue"
-	{
-		"en"		"Paint : White"
-	}
-	"a deep commitment to purp"
-	{
-		"en"		"Paint : Purple"
 	}
 	"auto fires full clip all at once"
 	{
@@ -2259,10 +2191,6 @@
 	"cannot disguise"
 	{
 		"en"		"Disguise Disabled"
-	}
-	"healing mastery"
-	{
-		"en"		"Healing Mastery"
 	}
 	"switch buff banner"
 	{
@@ -2344,21 +2272,9 @@
 	{
 		"en"		"Gun Shoots Tracers"
 	}
-	"mod bat launches ornaments"
-	{
-		"en"		"Bat Launches Ornaments"
-	}
-	"Ball Upgrades"
-	{
-		"en"		"Ball Upgrades"
-	}
 	"medigun boost"
 	{
 		"en"		"Medigun Boost Uber"
-	}
-	"medigun outline uber"
-	{
-		"en"		"Medigun Outline Uber"
 	}
 	"Army of not Many(en)"
 	{
@@ -2379,10 +2295,6 @@
 	"killstreak idleeffect"
 	{
 		"en"		"Killstreak Idle Effect"
-	}
-	"killstreak effect"
-	{
-		"en"		"Killstreak Effect"
 	}
 	"is_festive"
 	{
@@ -2476,10 +2388,6 @@
 	{
 		"en"		"Bullet Damage Taken Reduced"
 	}
-	"dmg from melee reduced(S)"
-	{
-		"en"		"Melee Damage Taken Reduced"
-	}
 	"dmg from sentry reduced(S)"
 	{
 		"en"		"Sentry Damage Taken Reduced"
@@ -2551,10 +2459,6 @@
 	"weapon burn time reduced"
 	{
 		"en"		"Afterburn Duration Increased"
-	}
-	"ubercharge rate penalty"
-	{
-		"en"		"Ubercharge Rate Penalty"
 	}
 	"Damage bonus vs player x"
 	{
@@ -2715,10 +2619,6 @@
 	"backstab shield"
 	{
 		"en"		"Backstab Shield"
-	}
-	"fire retardant"
-	{
-		"en"		"Afterburn Immunity"
 	}
 	"move speed"
 	{
@@ -3240,10 +3140,6 @@
 	{
 		"en"		"Building Health Bonus"
 	}
-	"ubercharge rate penalty"
-	{
-		"en"		"Ubercharge Rate Penalty"
-	}
 	"overheal fill rate bonus"
 	{
 		"en"		"Heal Rate Bonus When Overhealing"
@@ -3251,10 +3147,6 @@
 	"heal rate bonus(A)"
 	{
 		"en"		"Heal Rate Multiplier"
-	}
-	"healing mastery"
-	{
-		"en"		"Healing Mastery"
 	}
 	"20% fire immunity"
 	{
@@ -3371,10 +3263,6 @@
 	"burn damage earns rage"
 	{
 		"en"		"Phlogistinator Rage Meter"
-	}
-	"generate rage on damage"
-	{
-		"en"		"Generate Rage On Damage"
 	}
 	"rage on kill"
 	{

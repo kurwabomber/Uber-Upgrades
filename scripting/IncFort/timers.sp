@@ -102,6 +102,10 @@ public Action:Timer_FixedVariables(Handle timer)
 		if (!IsValidClient3(client) || !IsPlayerAlive(client))
 			continue;
 
+		if(infiniteMoney){
+			CurrencyOwned[client] = 9999999999999999.0;
+		}
+
 		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 
 		ManagePlayerBuffs(client);

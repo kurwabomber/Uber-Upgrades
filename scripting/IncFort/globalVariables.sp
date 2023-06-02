@@ -7,6 +7,7 @@ Handle cvar_StartMoney
 Handle cvar_DisableBotUpgrade
 Handle cvar_DisableCooldowns
 Handle cvar_debug;
+Handle cvar_InfiniteMoney;
 Handle _upg_names;
 Handle _weaponlist_names
 Handle _spetweaks_names
@@ -305,6 +306,7 @@ bool canShootAgain[MAXPLAYERS+1] = {true};
 bool isBuffActive[MAXPLAYERS+1];
 bool gravChanges[MAXENTITIES];
 bool debugMode = false;
+bool infiniteMoney = false;
 bool eurekaActive[MAXPLAYERS+1];
 bool StunShotBPS[MAXPLAYERS+1];
 bool StunShotStun[MAXPLAYERS+1];

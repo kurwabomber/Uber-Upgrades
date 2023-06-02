@@ -74,7 +74,8 @@ public UberShopinitMenusHandlers()
 	LoadTranslations("incrementalfortress.phrases.txt");
 	LoadTranslations("common.phrases.txt");
 	
-	cvar_debug = CreateConVar("sm_debugmode", "0", "toggles chat spam");
+	cvar_debug = CreateConVar("sm_if_debugmode", "0", "toggles chat spam");
+	cvar_InfiniteMoney = CreateConVar("sm_if_infinitemoney", "0", "If set to 1, everyone gains infinite money.")
 	cvar_MoneyBonusKill = CreateConVar("sm_if_moneybonuskill", "600", "Sets the money bonus a client gets for killing");
 	cvar_StartMoney = CreateConVar("sm_if_startmoney", "60000", "Sets the starting money");
 	cvar_ServerMoneyMult = CreateConVar("sm_if_moneymult", "1.0", "Sets the Cash Multiplier");
@@ -83,6 +84,7 @@ public UberShopinitMenusHandlers()
 	cvar_DisableCooldowns = CreateConVar("sm_if_disablecooldowns","0","Disables arcane cooldowns if set to 1");
 	
 	HookConVarChange(cvar_debug, OnCvarChanged);
+	HookConVarChange(cvar_InfiniteMoney, OnCvarChanged);
 	HookConVarChange(cvar_MoneyBonusKill, OnCvarChanged);
 	HookConVarChange(cvar_StartMoney, OnCvarChanged);
 	HookConVarChange(cvar_ServerMoneyMult, OnCvarChanged);
@@ -97,6 +99,7 @@ public UberShopinitMenusHandlers()
 	DisableBotUpgrades = GetConVarInt(cvar_DisableBotUpgrade);
 	DisableCooldowns = GetConVarInt(cvar_DisableCooldowns);
 	debugMode = view_as<bool>(GetConVarInt(cvar_debug));
+	infiniteMoney = view_as<bool>(GetConVarInt(cvar_InfiniteMoney));
 	StartMoney = GetConVarFloat(cvar_StartMoney);
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	
