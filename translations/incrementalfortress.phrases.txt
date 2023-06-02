@@ -796,6 +796,14 @@
 	{
 		"en"		"Ammo & Cloak Upgrades"
 	}
+	"Projectile Hitbox Bonus"
+	{
+		"en"		"Projectile Hitbox Bonus"
+	}
+	"weapon spread bonus(H)"
+	{
+		"en"		"Weapon Spread Bonus"
+	}
 	"damage bonus (clea)"
 	{
 		"en"		"Damage+++"
@@ -1596,6 +1604,10 @@
 	{
 		"en"		"Move Speed Increased"
 	}
+	"move speed bonus"
+	{
+		"en"		"Move Speed Increased"
+	}
 	"increased air control(S)"
 	{
 		"en"		"Air Control Increased"
@@ -1936,6 +1948,10 @@
 	{
 		"en"		"powerup duration"
 	}
+	"KS idle effect"
+	{
+		"en"		"KS idle effect"
+	}
 	"pro KS"
 	{
 		"en"		"Professional Killstreak"
@@ -2104,6 +2120,10 @@
 	{
 		"en"		"Explosive Bullets"
 	}
+	"Jumper"
+	{
+		"en"		"Jumper"
+	}
 	"mod bat launches balls"
 	{
 		"en"		"Bat Launches Balls"
@@ -2148,6 +2168,10 @@
 	{
 		"en"		"Heal Rate Bonus"
 	}
+	"Special Effects"
+	{
+		"en"		"Special Effects"
+	}
 	"Bigger Flames (not hitbox)"
 	{
 		"en"		"Bigger Flames"
@@ -2160,6 +2184,10 @@
 	{
 		"en"		"Rage Meter Damage Boost"
 	}
+	"generate rage on damage"
+	{
+		"en"		"Gain Rage On Hit"
+	}
 	"Projectile Upgrades"
 	{
 		"en"		"Projectile Upgrades"
@@ -2167,6 +2195,18 @@
 	"Projectile Specific Upgrades"
 	{
 		"en"		"Projectile Specific Upgrades"
+	}
+	"a manns mint"
+	{
+		"en"		"Paint : Mint"
+	}
+	"a distinctive lack of hue"
+	{
+		"en"		"Paint : White"
+	}
+	"a deep commitment to purp"
+	{
+		"en"		"Paint : Purple"
 	}
 	"auto fires full clip all at once"
 	{
@@ -2272,9 +2312,21 @@
 	{
 		"en"		"Gun Shoots Tracers"
 	}
+	"mod bat launches ornaments"
+	{
+		"en"		"Bat Launches Ornaments"
+	}
+	"Ball Upgrades"
+	{
+		"en"		"Ball Upgrades"
+	}
 	"medigun boost"
 	{
 		"en"		"Medigun Boost Uber"
+	}
+	"medigun outline uber"
+	{
+		"en"		"Medigun Outline Uber"
 	}
 	"Army of not Many(en)"
 	{
@@ -2295,6 +2347,10 @@
 	"killstreak idleeffect"
 	{
 		"en"		"Killstreak Idle Effect"
+	}
+	"killstreak effect"
+	{
+		"en"		"Killstreak Effect"
 	}
 	"is_festive"
 	{
@@ -2364,10 +2420,6 @@
 	{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"dmg from melee reduced(S)"
-	{
-		"en"		"Melee Damage Taken Reduced"
-	}
 	"dmg from melee reduced(E)"
 	{
 		"en"		"Melee Damage Taken Reduced"
@@ -2387,6 +2439,10 @@
 	"dmg taken from bullets reduced(S)"
 	{
 		"en"		"Bullet Damage Taken Reduced"
+	}
+	"dmg from melee reduced(S)"
+	{
+		"en"		"Melee Damage Taken Reduced"
 	}
 	"dmg from sentry reduced(S)"
 	{
@@ -2459,6 +2515,10 @@
 	"weapon burn time reduced"
 	{
 		"en"		"Afterburn Duration Increased"
+	}
+	"ubercharge rate penalty"
+	{
+		"en"		"Ubercharge Rate Penalty"
 	}
 	"Damage bonus vs player x"
 	{
@@ -2619,6 +2679,10 @@
 	"backstab shield"
 	{
 		"en"		"Backstab Shield"
+	}
+	"fire retardant"
+	{
+		"en"		"Afterburn Immunity"
 	}
 	"move speed"
 	{
@@ -3148,6 +3212,10 @@
 	{
 		"en"		"Heal Rate Multiplier"
 	}
+	"healing mastery"
+	{
+		"en"		"Healing Mastery"
+	}
 	"20% fire immunity"
 	{
 		"en"		"20pct Chance To Remove Fire"
@@ -3264,6 +3332,7 @@
 	{
 		"en"		"Phlogistinator Rage Meter"
 	}
+
 	"rage on kill"
 	{
 		"en"		"Add Rage On Kill"

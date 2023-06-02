@@ -1695,6 +1695,7 @@
 		"Cleaver specific upgrades"
 		{
 			"Attr1"		"fire rate bonus(multshit)"
+			"Attr5"		"effect bar recharge rate increased"
 			"Attr2"		"Homing Projectiles (cleaver)"
 			"Attr4"		"No gravity projectile"
 		}
@@ -1757,6 +1758,7 @@
 		"Jarate specific upgrades"
 		{
 			"Attr1"		"fire rate bonus(old)"
+			"Attr5"		"effect bar recharge rate increased"
 			"Attr2"		"Blast radius increased (Throwable)"
 			"Attr3"		"Projectile speed increased"
 			"Attr4"		"dmg from all reduced(wearable)"
@@ -1795,6 +1797,7 @@
 		"Jarate specific upgrades"
 		{
 			"Attr1"		"fire rate bonus(old)"
+			"Attr5"		"effect bar recharge rate increased"
 			"Attr3"		"Blast radius increased (Throwable)"
 			"Attr4"		"Projectile speed increased"
 			"Attr5"		"dmg from all reduced(wearable)"

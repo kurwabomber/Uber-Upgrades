@@ -2599,7 +2599,8 @@ ChangeProjModel(entity)
 						gravChanges[entity] = true;
 						jarateType[entity] = 1;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
-						SetEntityGravity(entity, 1.75);
+						SetEntityGravity(entity, 1.0);
+						IncreaseProjectileAngle(client, entity);
 					}
 					case 1121:
 					{
@@ -2608,7 +2609,8 @@ ChangeProjModel(entity)
 						gravChanges[entity] = true;
 						jarateType[entity] = 1;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
-						SetEntityGravity(entity, 1.75);
+						SetEntityGravity(entity, 1.0);
+						IncreaseProjectileAngle(client, entity);
 					}
 					case 58,1149:
 					{
@@ -2617,7 +2619,8 @@ ChangeProjModel(entity)
 						gravChanges[entity] = true;
 						jarateType[entity] = 0;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
-						SetEntityGravity(entity, 1.75);
+						SetEntityGravity(entity, 1.0);
+						IncreaseProjectileAngle(client, entity);
 					}
 					case 1105:
 					{
@@ -2626,7 +2629,8 @@ ChangeProjModel(entity)
 						gravChanges[entity] = true;
 						jarateType[entity] = 0;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
-						SetEntityGravity(entity, 1.75);
+						SetEntityGravity(entity, 1.0);
+						IncreaseProjectileAngle(client, entity);
 					}
 					case 812,833:
 					{
@@ -2636,6 +2640,12 @@ ChangeProjModel(entity)
 			}
 		}
 	}
+}
+IncreaseProjectileAngle(int entity, float increment = 200.0){
+	float fVelocity[3];
+	GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", fVelocity);
+	fVelocity[2] += increment;
+	TeleportEntity(entity, NULL_VECTOR, NULL_VECTOR, fVelocity);
 }
 SentryDelay(entity) 
 {
