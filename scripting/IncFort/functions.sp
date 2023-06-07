@@ -1583,6 +1583,7 @@ refreshUpgrades(client, slot)
 					TF2Attrib_SetByName(client,"weapon spread bonus", 0.05);
 					TF2Attrib_SetByName(client,"Projectile speed increased", 2.0);
 					TF2Attrib_SetByName(client,"Projectile range increased", 1.35);
+					TF2Attrib_SetByName(client,"sniper charge per sec", 1.75);
 					TF2Attrib_SetByName(client,"blast dmg to self increased", 0.001);
 					if(current_class[client] == TFClass_DemoMan)
 					{
@@ -1596,6 +1597,7 @@ refreshUpgrades(client, slot)
 					TF2Attrib_RemoveByName(client,"weapon spread bonus");
 					TF2Attrib_RemoveByName(client,"Projectile speed increased");
 					TF2Attrib_RemoveByName(client,"Projectile range increased");
+					TF2Attrib_RemoveByName(client,"sniper charge per sec");
 					TF2Attrib_RemoveByName(client,"blast dmg to self increased");
 					if(current_class[client] == TFClass_DemoMan)
 					{
@@ -2470,6 +2472,33 @@ checkEnabledSentry(entity)
 		}
 	}
 }
+jagBonus(entity)
+{
+	entity = EntRefToEntIndex(entity);
+	if(IsValidEdict(entity))
+	{
+		if(HasEntProp(entity,Prop_Send,"m_hBuilder"))
+		{
+			int owner = GetEntPropEnt(entity,Prop_Send,"m_hBuilder" );
+			if(IsValidClient3(owner))
+			{
+				int melee = (GetPlayerWeaponSlot(owner,2));
+				if(IsValidEdict(melee))
+				{
+					int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
+					if(weaponIndex == 329)
+					{
+						SDKCall(g_SDKFastBuild, entity, true);
+						RequestFrame(setNoMetal, owner);
+					}
+				}
+			}
+		}
+	}
+}
+setNoMetal(int client){
+	SetEntProp(client, Prop_Data, "m_iAmmo", 0, 4, 3);
+}
 public bool applyArcaneRestrictions(int client, int attuneSlot, float focusCost, float cooldown)
 {
 	focusCost /= ArcanePower[client];
@@ -2635,6 +2664,10 @@ ChangeProjModel(entity)
 					case 812,833:
 					{
 						SetEntityModel(entity, "models/weapons/c_models/c_sd_cleaver/c_sd_cleaver.mdl");
+					}
+					case 307:
+					{
+						SetEntityModel(entity, "models/weapons/c_models/c_caber/c_caber.mdl");
 					}
 				}
 			}
@@ -2961,7 +2994,6 @@ TF2_Override_ChargeSpeed(client)
 		velocity *= GetAttribute(client, "agility powerup") != 0.0 ? 1.8 : 1.0;
 		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.01);
 		SetEntPropFloat(client, Prop_Data, "m_flMaxspeed", velocity);
-		
 	}
 }
 CheckGrenadeMines(ref)

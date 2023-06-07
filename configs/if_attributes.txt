@@ -3737,7 +3737,7 @@
 		}
 		"450"
 		{
-			"name"		"blast dmg to self increased"
+			"name"		"dmg taken from self reduced"
 			"ref"		"blast dmg to self decreased"
 			"cost"		"375"
 			"value"		"-0.33"
@@ -4034,13 +4034,13 @@
 		}
 		"1342"
 		{
-			"name"		"Repair rate increased"
-			"ref"		"Initial Charge percent"
+			"name"		"sniper charge per sec"
+			"ref"		"Increased Charge percent"
 			"cost"		"350"
 			"increase_ratio"	"0.2"
-			"value"		"5"
-			"init"		"0"
-			"max"		"150"
+			"value"		"0.2"
+			"init"		"1"
+			"max"		"3.0"
 		}
 		"1344"
 		{

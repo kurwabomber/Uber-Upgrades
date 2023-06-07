@@ -22,6 +22,8 @@ Handle g_SDKCallLaunchBall;
 Handle g_SDKCallInitGrenade;
 Handle g_SDKCallJar;
 Handle g_SDKCallSentryThink;
+Handle g_SDKFastBuild;
+
 Handle Hook_OnMyWeaponFired;
 Handle hudSync;
 Handle hudSpells;
@@ -190,7 +192,6 @@ int globalButtons[MAXPLAYERS+1];
 int singularBuysPerMinute[MAXPLAYERS+1];
 int bossPhase[MAXPLAYERS+1];
 int fanOfKnivesCount[MAXPLAYERS+1];
-int CaberUses[MAXPLAYERS+1];
 int StrangeFarming[MAXPLAYERS+1][MAXPLAYERS+1];
 int firestormCounter[MAXPLAYERS+1];
 int lastFlag[MAXPLAYERS+1];

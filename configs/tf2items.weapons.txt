@@ -482,10 +482,16 @@
 			"2"				"280 ; 40.0"
 			"3"				"362 ; 150.0"
 		}
-		"222,1121,58,1083,1105"
+		"222,1121,58,1083,1105" //Jars
 		{
 			"preserve_attributes"	"1"
 			"1"				"280 ; 8.0"
+		}
+		"307" //Caber
+		{
+			"preserve_attributes"	"1"
+			"classname"		"tf_weapon_bat_wood"
+			"1"				"38 ; 11"
 		}
 	}
 }

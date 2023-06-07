@@ -3423,7 +3423,7 @@
     {
         "name"  "physical damage affinity"
         "attribute_class"   "physical_damage_affinity"
-        "description_string"    "(+-)%p% damage mastery"
+        "description_string"    "(+-)%p% Physical damage mastery"
         "description_format"    "value_is_additive"
         "hidden"    "0"
         "effect_type"   "positive"
@@ -3433,7 +3433,7 @@
     {
         "name"  "fire damage affinity"
         "attribute_class"   "fire_damage_affinity"
-        "description_string"    "(+-)%p% damage mastery"
+        "description_string"    "(+-)%p% Fire damage mastery"
         "description_format"    "value_is_additive"
         "hidden"    "0"
         "effect_type"   "positive"
@@ -3443,7 +3443,7 @@
     {
         "name"  "explosive damage affinity"
         "attribute_class"   "explosive_damage_affinity"
-        "description_string"    "(+-)%p% damage mastery"
+        "description_string"    "(+-)%p% Explosive damage mastery"
         "description_format"    "value_is_additive"
         "hidden"    "0"
         "effect_type"   "positive"
@@ -3453,7 +3453,7 @@
     {
         "name"  "electric damage affinity"
         "attribute_class"   "electric_damage_affinity"
-        "description_string"    "(+-)%p% damage mastery"
+        "description_string"    "(+-)%p% Electric damage mastery"
         "description_format"    "value_is_additive"
         "hidden"    "0"
         "effect_type"   "positive"
@@ -3463,7 +3463,7 @@
     {
         "name"  "crit damage affinity"
         "attribute_class"   "crit_damage_affinity"
-        "description_string"    "(+-)%p% damage mastery"
+        "description_string"    "(+-)%p% Critical damage mastery"
         "description_format"    "value_is_additive"
         "hidden"    "0"
         "effect_type"   "positive"
@@ -3473,7 +3473,7 @@
     {
         "name"  "weapon advancement"
         "attribute_class"   "weapon_advancement"
-        "description_string"    "(+-)%p weapon mastery"
+        "description_string"    "(+-)%p Weapon mastery"
         "description_format"    "value_is_additive"
         "hidden"    "0"
         "effect_type"   "positive"
@@ -3483,7 +3483,7 @@
     {
         "name"  "arcane damage affinity"
         "attribute_class"   "arcane_damage_affinity"
-        "description_string"    "(+-)%p% damage mastery"
+        "description_string"    "(+-)%p% Arcane damage mastery"
         "description_format"    "value_is_additive"
         "hidden"    "0"
         "effect_type"   "positive"

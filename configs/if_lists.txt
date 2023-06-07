@@ -1373,7 +1373,7 @@
 			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"faster reload rate"
 			"Attr2"		"bullets per shot bonus (single)"
-			"Attr8"		"Initial Charge percent"
+			"Attr8"		"Increased Charge percent"
 			"Attr5"		"aiming movespeed increased"
 		}
 	}
@@ -1400,7 +1400,7 @@
 		{
 			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"faster reload rate"
-			"Attr7"		"Initial Charge percent"
+			"Attr7"		"Increased Charge percent"
 			"Attr5"		"aiming movespeed increased"
 		}
 	}
@@ -1426,7 +1426,7 @@
 			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"faster reload rate"
 			"Attr2"		"bullets per shot bonus (single)"
-			"Attr7"		"Initial Charge percent"
+			"Attr7"		"Increased Charge percent"
 			"Attr5"		"aiming movespeed increased"
 		}
 	}

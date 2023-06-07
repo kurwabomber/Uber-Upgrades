@@ -127,6 +127,8 @@ public UberShopinitMenusHandlers()
 	RegConsoleCmd("sm_buy", Menu_BuyUpgrade, "Buy Menu");
 	RegConsoleCmd("shop", Menu_BuyUpgrade, "Buy Menu");
 	RegConsoleCmd("sm_shop", Menu_BuyUpgrade, "Buy Menu");
+	RegConsoleCmd("upgrade", Menu_BuyUpgrade, "Buy Menu");
+	RegConsoleCmd("sm_upgrade", Menu_BuyUpgrade, "Buy Menu");
 	RegConsoleCmd("byu", Menu_BuyUpgrade, "Buy Menu");
 	RegConsoleCmd("BUY", Menu_BuyUpgrade, "Buy Menu");
 	
@@ -149,6 +151,7 @@ public UberShopinitMenusHandlers()
 	HookEvent("mvm_reset_stats", Event_ResetStats);
 	HookEvent("mvm_begin_wave",Event_mvm_wave_begin)
 	HookEvent("mvm_wave_complete",Event_mvm_wave_complete);
+	HookEvent("player_builtobject", Event_ObjectBuilt);
 	
 	AddCommandListener(jointeam_callback, "jointeam");
 	AddCommandListener(eurekaAttempt, "eureka_teleport");
@@ -201,6 +204,7 @@ public OnMapStart()
 	PrecacheModel("materials/effects/arrowtrail_blu.vmt");
 	PrecacheModel("models/weapons/c_models/c_croc_knife/c_croc_knife.mdl");
 	PrecacheModel("models/weapons/w_models/w_rocket_airstrike/w_rocket_airstrike.mdl");
+	PrecacheModel("models/weapons/c_models/c_caber/c_caber.mdl");
 	g_SmokeSprite = PrecacheModel("sprites/steam1.vmt");
 	g_LightningSprite = PrecacheModel("sprites/lgtning.vmt");
 	spriteIndex = PrecacheModel("materials/sprites/halo01.vmt");
@@ -281,6 +285,12 @@ public void OnPluginStart()
 	g_SDKCallLaunchBall = EndPrepSDKCall();
 	if(!g_SDKCallLaunchBall)
 		PrintToServer("CustomAttrs | ball launch signature not found.");
+
+	//Fast Build Call
+	StartPrepSDKCall(SDKCall_Entity);
+	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CBaseObject::DoQuickBuild()");
+	PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
+	g_SDKFastBuild = EndPrepSDKCall();
 
 	//Scattergun Proper Clip Replacement
 	Handle g_DHookScattergunReload = DHookCreateFromConf(hConf, "CTFScatterGun::FinishReload()");

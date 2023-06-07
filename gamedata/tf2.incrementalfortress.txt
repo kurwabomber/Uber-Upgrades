@@ -312,6 +312,11 @@
 				"library"	"server"
 				"linux"		"@_ZN13CTFWeaponBase6ReloadEv"
 			}
+			"CBaseObject::DoQuickBuild()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN11CBaseObject12DoQuickBuildEb"
+			}
 		}
 	}
 }

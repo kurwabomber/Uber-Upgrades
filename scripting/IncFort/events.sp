@@ -618,6 +618,7 @@ public MRESReturn OnFireballRangeThink(int entity)  {
 }
 public MRESReturn OnShieldChargeMove(Address address, Handle hReturn){
 	DHookSetReturn(hReturn, false);
+
 	return MRES_Supercede;
 }
 public MRESReturn IsInWorldCheck(int entity, Handle hReturn, Handle hParams)  {
@@ -897,6 +898,7 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(ResizeProjectile, reference);
 			RequestFrame(PrecisionHoming, reference);
 			RequestFrame(SetWeaponOwner, reference);
+			RequestFrame(ChangeProjModel, reference);
 			CreateTimer(1.5, SelfDestruct, reference);
 			DataPack pack = CreateDataPack();
 			pack.WriteCell(reference);
@@ -974,6 +976,15 @@ public OnEntityDestroyed(entity)
 
 	if(debugMode)
 		PrintToServer("debugLog | %s was deleted.", classname)
+}
+public Action Event_ObjectBuilt(Event event, const char[] name, bool dontBroadcast){
+	//int obj = event.GetInt("object");
+	int entity = event.GetInt("index");
+	int entRef = EntIndexToEntRef(entity);
+
+	RequestFrame(jagBonus, entRef);
+
+	return Plugin_Continue;
 }
 public Event_PlayerChangeTeam(Handle event, const char[] name, bool:dontBroadcast)
 {
@@ -1284,7 +1295,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 
 	int flags = GetEntityFlags(client)
 	Action return_value = Plugin_Continue;
-	
+
 	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	if(IsValidEdict(CWeapon))
 	{
@@ -1389,25 +1400,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				float charging = GetEntPropFloat(CWeapon, Prop_Send, "m_flChargedDamage");
 				if(charging > 0.0)
 				{
-					Address charge = TF2Attrib_GetByName(CWeapon, "Repair rate increased");
-					if(charge != Address_Null)
-					{
-						charging += TF2Attrib_GetValue(charge)*TICKINTERVAL;
-					}
-					Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
-					if(precisionPowerup != Address_Null)
-					{
-						float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
-						if(precisionPowerupValue > 0.0){
-							charging += 90.0*TICKINTERVAL;
-						}
-					}
-					
-					SetEntPropFloat(CWeapon, Prop_Send, "m_flChargedDamage", charging);
-					
 					Address tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
 					LastCharge[client] = charging;
-					//PrintToChat(client,"a %.2f",LastCharge[client]);
 					if(LastCharge[client] >= 150.0 && tracer != Address_Null && TF2Attrib_GetValue(tracer) == 0.0)
 					{
 						TF2Attrib_SetByName(CWeapon, "sniper fires tracer", 1.0);
@@ -2536,11 +2530,43 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 						if(ballCheck == 0.0)
 							ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
 
-						if(GetCarriedAmmo(client, 2) > 0)
+						int a = GetCarriedAmmo(client, 2)
+						if(a > 0)
 						{
 							if(ballCheck == 10.0)
 							{
 								SDKCall(g_SDKCallLaunchBall, CWeapon);
+							}
+							else if(ballCheck == 11.0)
+							{
+								int ent = CreateEntityByName("prop_physics_override");
+								SetEntityModel(ent, "models/weapons/c_models/c_caber/c_caber.mdl");
+								
+								SetEntPropEnt(ent, Prop_Data, "m_hOwnerEntity", client);
+
+								float fOrigin[3],fAngles[3],fVelocity[3],vBuffer[3],fwd[3];
+								GetClientEyePosition(client, fOrigin);
+								GetClientEyeAngles(client, fAngles);
+								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+								GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+								ScaleVector(fwd, 50.0);
+								AddVectors(fOrigin, fwd, fOrigin);
+
+								float velocity = 4000.0;
+								fVelocity[0] = vBuffer[0]*velocity;
+								fVelocity[1] = vBuffer[1]*velocity;
+								fVelocity[2] = vBuffer[2]*velocity;
+								
+								TeleportEntity(ent, fOrigin, fAngles, fVelocity);
+
+								DispatchSpawn(ent);
+
+								float vecAngImpulse[3];
+								GetCleaverAngularImpulse(vecAngImpulse);
+
+								Phys_SetVelocity(ent, fVelocity, vecAngImpulse, true);
+
+								SetCarriedAmmo(client, 2, a-1);
 							}
 							//Calc crit is called within ball creation
 							meleeLimiter[client]--;

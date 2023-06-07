@@ -276,7 +276,6 @@ public Action:Timer_Every100MS(Handle timer)
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			int primary = GetWeapon(client, 0);
 			int secondary = GetWeapon(client, 1);
-			int melee = GetWeapon(client, 2);
 			if(bleedResistance != Address_Null)
 			{
 				BleedMaximum[client] = 100.0 + TF2Attrib_GetValue(bleedResistance);
@@ -425,15 +424,6 @@ public Action:Timer_Every100MS(Handle timer)
 				if(infAmmo != Address_Null)
 				{
 					SetAmmo_Weapon(CWeapon,RoundToNearest(TF2Attrib_GetValue(infAmmo)))
-				}
-			}
-			if(IsValidEdict(melee) && GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex") == 307)
-			{
-				if(CaberUses[client] > 0 && GetEntProp(melee, Prop_Send, "m_iDetonated") == 1)
-				{
-					SetEntProp(melee, Prop_Send, "m_bBroken", 0);
-					SetEntProp(melee, Prop_Send, "m_iDetonated", 0);
-					CaberUses[client]--;
 				}
 			}
 			if(IsValidEdict(primary))
@@ -620,23 +610,12 @@ public Action:Timer_Every100MS(Handle timer)
 		}
 	}
 }
-public Action:Timer_EveryTenSeconds(Handle timer)// Self Explanitory. 
+public Action:Timer_EveryTenSeconds(Handle timer)
 {
 	for(int client = 1; client < MaxClients; client++)
 	{
 		if (IsValidClient3(client) && IsPlayerAlive(client))
 		{
-			int melee = GetWeapon(client, 2);
-			if(IsValidEdict(melee) && GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex") == 307)
-			{
-				Address MaxChargesActive = TF2Attrib_GetByName(melee, "zombiezombiezombiezombie");
-				int MaxCharges = 1;
-				if(MaxChargesActive != Address_Null)
-				{
-					MaxCharges += RoundToNearest(TF2Attrib_GetValue(MaxChargesActive));
-				}
-				CaberUses[client] = MaxCharges;
-			}
 			Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
 			if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 			{

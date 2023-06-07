@@ -105,7 +105,7 @@ GivePlayerData(client)
 
 	float CurrencyFormulated = (StartMoney + additionalstartmoney);
 	DataPack pack = view_as<DataPack>(SQL_FetchInt(queryH, 1));
-	if(pack)
+	if(IsValidHandle(pack))
 	{
 		pack.Reset();
 		PrintToServer("IF : Successfully gave player upgrades to %N.", client);

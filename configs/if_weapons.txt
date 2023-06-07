@@ -56,6 +56,7 @@
 		"tf_weapon_rocketlauncher_airstrike"	"airstrike"		//Airstrike
 		"tf_weapon_particle_cannon"				"cow_m"			//Cow Mangler
 		"tf_weapon_shotgun_soldier"				"sprweap2"	//Shotgun (soldier)
+		"tf_weapon_shotgun_hwg"					"sprweap2"	//Shotgun (Heavy)
 		"tf_weapon_raygun"						"rayweap"		//Rightous Bison
 		"tf_wear_alishoes"						"ali_shoes"		//Demoman booties
 		"tf_weapon_revolver"					"spyweap"		//revolver

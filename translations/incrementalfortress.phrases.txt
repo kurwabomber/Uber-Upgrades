@@ -1044,7 +1044,7 @@
 	{
 		"en"		"sentry Rocket Damage"
 	}
-	"Initial Charge percent"
+	"Increased Charge percent"
 	{
 		"en"		"Increased Charge percent"
 	}
