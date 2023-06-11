@@ -109,6 +109,7 @@
 		}
 		"1151"//The Iron Bomber
 		{
+			"preserve_attributes"	"1"
 			"1"				"476 ; 1.15"
 		}
 		"426"//Eviction Notice

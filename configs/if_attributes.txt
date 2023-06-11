@@ -2899,10 +2899,10 @@
 		{
 			"name"		"disguise on backstab"
 			"ref"		"health regen"
-			"cost"		"400"
+			"cost"		"1000"
 			"increase_ratio" 	"0.02"
-			"value"		"4.00"
-			"init"		"4.00"
+			"value"		"10.00"
+			"init"		"0.00"
 			"max"		"60000.00"
 		}
 		"297"
@@ -4086,9 +4086,9 @@
 		{
 			"name"		"health from packs decreased"
 			"ref"		"Health Bonus"
-			"cost"		"200"
-			"increase_ratio"	"0.045"
-			"value"		"0.25"
+			"cost"		"600"
+			"increase_ratio"	"0.04"
+			"value"		"0.75"
 			"init"		"1"
 			"max"		"10000"
 		}
@@ -4096,9 +4096,9 @@
 		{
 			"name"		"health from packs decreased"
 			"ref"		"Health Bonus (Heavy)"
-			"cost"		"195"
-			"increase_ratio"	"0.03"
-			"value"		"0.3"
+			"cost"		"500"
+			"increase_ratio"	"0.04"
+			"value"		"1.0"
 			"init"		"1"
 			"max"		"10000"
 		}
@@ -4106,9 +4106,9 @@
 		{
 			"name"		"obsolete ammo penalty"
 			"ref"		"Max Armor Capacity"
-			"cost"		"225"
-			"increase_ratio"	"0.015"
-			"value"		"50"
+			"cost"		"750"
+			"increase_ratio"	"0.03"
+			"value"		"150"
 			"init"		"0"
 			"max"		"100000000"
 		}

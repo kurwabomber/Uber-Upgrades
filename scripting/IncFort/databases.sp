@@ -159,7 +159,7 @@ GivePlayerData(client)
 	}
 	else
 	{
-		PrintToServer("IF : Was unable to save due to invalid pack handle.");
+		PrintToServer("IF : Was unable to load previous state for %N due to invalid pack handle.", client);
 		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 	}
 	

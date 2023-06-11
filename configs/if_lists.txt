@@ -859,12 +859,6 @@
 			"Sp5"		"Explosive Bullets(P)"
 			"Sp6"		"Lacerating Rounds"
 		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
-		}
 		"Special Abilities"
 		{
 			"Attr0"		"Ability : Stun Shot"
@@ -900,12 +894,6 @@
 		"Special Tweaks"
 		{
 			"Sp1"		"Explosive Bullets(S)"
-		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
 		}
 	}
 	"rayweap"
@@ -1307,12 +1295,6 @@
 			"Sp5"		"Explosive Bullets(P)"
 			"Sp6"		"Lacerating Rounds"
 		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
-		}
 	}
 	"scoweap2"
 	{
@@ -1343,12 +1325,6 @@
 		{
 			"Sp5"		"Explosive Bullets(Shortstop)"
 			"Sp6"		"Lacerating Rounds"
-		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
 		}
 	}
 	"classic"
@@ -1485,12 +1461,6 @@
 		"Special Tweaks"
 		{
 			"Sp3"		"Explosive Bullets(S)"
-		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
 		}
 	}
 	"spysap"
@@ -2059,6 +2029,7 @@
 		{
 			"Attr0"		"Thermal Thruster recharge"
 			"Attr3"		"thermal_thruster_air_launch"
+			"Attr6"		"self dmg push force increased"
 			"Attr5"		"increased air control(S)"
 			"Attr7"		"dmg from all reduced(wearable)"
 			"Attr8"		"Switch Speed Increased"
@@ -2091,12 +2062,6 @@
 		{
 			"Sp4"		"Explosive Bullets(P)"
 			"Sp5"		"Lacerating Rounds"
-		}
-		"Rocket Upgrades"
-		{
-			"Attr0"		"Projectile speed increased"
-			"Attr1"		"blast radius increased (F)"
-			"Attr2"		"dmg falloff decreased"	
 		}
 		"Special Abilities"
 		{

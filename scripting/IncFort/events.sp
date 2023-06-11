@@ -69,6 +69,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		if(TF2_IsPlayerInCondition(attacker, TFCond_CritCanteen))
 			armorLoss *= 1.4;
 	}
+	armorWeaknessRatio[client] += armorLoss/fl_MaxArmor[client];
 
 	if(IsValidClient3(client))
 	{
@@ -978,11 +979,13 @@ public OnEntityDestroyed(entity)
 		PrintToServer("debugLog | %s was deleted.", classname)
 }
 public Action Event_ObjectBuilt(Event event, const char[] name, bool dontBroadcast){
-	//int obj = event.GetInt("object");
+	int obj = event.GetInt("object");
 	int entity = event.GetInt("index");
 	int entRef = EntIndexToEntRef(entity);
-
-	RequestFrame(jagBonus, entRef);
+	DataPack pack = new DataPack();
+	pack.WriteCell(entRef);
+	pack.WriteCell(obj);
+	RequestFrame(wrenchBonus, pack);
 
 	return Plugin_Continue;
 }
@@ -2287,6 +2290,44 @@ public OnGameFrame()
 				if(ConcussionBuildup[client] > 0.0){
 				ConcussionBuildup[client] -= 100.0 * 0.03 * TICKINTERVAL; }//Fully remove concussion within 30 seconds.
 
+				int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
+				int clientMaxHealth = TF2_GetMaxHealth(client);
+				
+				if(clientHealth < clientMaxHealth){
+					float RegenPerTick = 0.0;
+
+					Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
+					if(RegenActive != Address_Null)
+						RegenPerTick += TF2Attrib_GetValue(RegenActive)*TICKINTERVAL;
+
+					Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
+					if(HealingReductionActive != Address_Null)
+						RegenPerTick *= TF2Attrib_GetValue(HealingReductionActive);
+					
+					Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
+					if(regenerationPowerup != Address_Null)
+						if(TF2Attrib_GetValue(regenerationPowerup) > 0.0)
+							RegenPerTick += TF2_GetMaxHealth(client)*TICKINTERVAL*0.15;//+15% maxHPR/s
+
+					if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
+						RegenPerTick *= 2.0;
+					
+					if(TF2_IsPlayerInCondition(client, TFCond_Plague))
+						RegenPerTick *= 0.0;
+		
+					remainderHealthRegeneration[client] += RegenPerTick;
+
+					if(remainderHealthRegeneration[client] > 1.0){
+						int heal = RoundToFloor(remainderHealthRegeneration[client]);
+						if(float(clientHealth) + heal < clientMaxHealth)
+							SetEntProp(client, Prop_Data, "m_iHealth", clientHealth+heal);
+						else
+							SetEntProp(client, Prop_Data, "m_iHealth", clientMaxHealth);
+						
+						remainderHealthRegeneration[client] -= heal;
+					}
+				}
+
 				if(RageActive[client])
 				{
 					if(RageBuildup[client] > 0.0)
@@ -2416,11 +2457,38 @@ public OnGameFrame()
 			}
 			if(fl_CurrentArmor[client] < fl_CalculatedMaxArmor[client])
 			{
-				if(!TF2_IsPlayerInCondition(client,TFCond_NoTaunting_DEPRECATED))
-				{
+				/* Essentially the greater amount of armor percentage you lose, the more ticks it requires to increment armor by armor regen. */
+				if(armorWeaknessRatio[client] > 0.75){
+					if(armorTicks[client] % 5 == 0)
+						fl_CurrentArmor[client] += fl_ArmorRegen[client];
+				}
+				else if(armorWeaknessRatio[client] > 0.5){
+					if(armorTicks[client] % 4 == 0)
+						fl_CurrentArmor[client] += fl_ArmorRegen[client];
+				}
+				else if(armorWeaknessRatio[client] > 0.35){
+					if(armorTicks[client] % 3 == 0)
+						fl_CurrentArmor[client] += fl_ArmorRegen[client];
+				}
+				else if(armorWeaknessRatio[client] > 0.2){
+					if(armorTicks[client] % 2 == 0)
+						fl_CurrentArmor[client] += fl_ArmorRegen[client];
+				}
+				else if(armorWeaknessRatio[client] > 0.1){
+					fl_CurrentArmor[client] += fl_ArmorRegen[client]*0.75;
+				}
+				else{
 					fl_CurrentArmor[client] += fl_ArmorRegen[client];
 				}
+
 				fl_CurrentArmor[client] += fl_ArmorRegenConstant[client];
+				armorTicks[client]++;
+			}
+			if(armorWeaknessRatio[client] > 0.0){
+				//About -7% every second
+				armorWeaknessRatio[client] *= 0.999;
+				//-2% every second.
+				armorWeaknessRatio[client] -= 0.02*TICKINTERVAL;
 			}
 			
 			if(fl_CurrentFocus[client] + fl_RegenFocus[client] < fl_MaxFocus[client])
@@ -2970,32 +3038,10 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 					{
 						float rocketDamage = 20.0;
 						int melee = GetWeapon(client, 2);
-						Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
-						if(SentryDmgActive != Address_Null)
-							rocketDamage *= TF2Attrib_GetValue(SentryDmgActive);
 
-						if(IsValidWeapon(melee)){
-							Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
-							if(SentryDmgActive1 != Address_Null)
-								rocketDamage *= TF2Attrib_GetValue(SentryDmgActive1);
-
-							Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
-							if(SentryDmgActive2 != Address_Null)
-								rocketDamage *= TF2Attrib_GetValue(SentryDmgActive2);
-
-							Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
-							if(damageActive != Address_Null)
-								rocketDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
-
-							Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
-							if(damageActive2 != Address_Null)
-								rocketDamage *= TF2Attrib_GetValue(damageActive2);
-
-							Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
-							if(fireRateActive != Address_Null)
-								rocketDamage /= TF2Attrib_GetValue(fireRateActive);
-						}
-
+						if(IsValidWeapon(melee))
+							rocketDamage *= TF2_GetSentryDPSModifiers(client, melee);
+						
 						DataPack pack = new DataPack();
 						pack.Reset();
 						pack.WriteCell(client);
@@ -3458,42 +3504,7 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 				
 				EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 				
-				float LightningDamage = 325.0;
-				
-				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEdict(CWeapon))
-				{
-					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
-					if(SentryDmgActive != Address_Null)
-					{
-						LightningDamage *= TF2Attrib_GetValue(SentryDmgActive);
-					}
-				}
-				Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
-				if(SentryDmgActive1 != Address_Null)
-				{
-					LightningDamage *= TF2Attrib_GetValue(SentryDmgActive1);
-				}
-				Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
-				if(SentryDmgActive2 != Address_Null)
-				{
-					LightningDamage *= TF2Attrib_GetValue(SentryDmgActive2);
-				}
-				Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
-				if(damageActive != Address_Null)
-				{
-					LightningDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
-				}
-				Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
-				if(damageActive2 != Address_Null)
-				{
-					LightningDamage *= TF2Attrib_GetValue(damageActive2);
-				}
-				Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
-				if(fireRateActive != Address_Null)
-				{
-					LightningDamage /= TF2Attrib_GetValue(fireRateActive);
-				}
+				float LightningDamage = 325.0 * TF2_GetSentryDPSModifiers(client, melee);
 				
 				int i = -1;
 				while ((i = FindEntityByClassname(i, "*")) != -1)

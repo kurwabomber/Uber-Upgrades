@@ -1041,12 +1041,12 @@ DisplayItemChange(client,itemidx)
 		}
 		case 589:
 		{
-			ChangeString = "The Eureka Effect | Teleporting will deal 500 base DPS based on sentry upgrades, stun targets, and launch them into the air. At the peak of the launch, will increase radiation. Cannot build a sentry.";
+			ChangeString = "The Eureka Effect | Teleporting will deal 500 base DPS based on sentry upgrades, stun targets, and launch them into the air. Cannot build a sentry, but teleporters are instant-built.";
 		}
 		//Medic Secondaries
 		case 411:
 		{
-			ChangeString = "The Quick-Fix | Healing target constantly gives a 3% armor regeneration. (Based on their own armor regeneration.) Uber gives an additional 2x health regeneration and armor regeneration.";
+			ChangeString = "The Quick-Fix | Healing target constantly gives a 3% armor regeneration. Uber gives an additional 2x health regeneration and armor regeneration.";
 		}
 		//Medic Melee
 		case 37:
@@ -2472,29 +2472,48 @@ checkEnabledSentry(entity)
 		}
 	}
 }
-jagBonus(entity)
+wrenchBonus(DataPack pack)
 {
-	entity = EntRefToEntIndex(entity);
-	if(IsValidEdict(entity))
+	pack.Reset();
+	int entity = EntRefToEntIndex(pack.ReadCell());
+	int obj = pack.ReadCell();
+
+	if(!IsValidEdict(entity))
+		{delete pack;return;}
+	
+	if(!HasEntProp(entity,Prop_Send,"m_hBuilder"))
+		{delete pack; return;}
+
+	int owner = GetEntPropEnt(entity,Prop_Send,"m_hBuilder" );
+	if(!IsValidClient3(owner))
+		{delete pack; return;}
+
+	int melee = GetWeapon(owner,2);
+	if(IsValidEdict(melee))
 	{
-		if(HasEntProp(entity,Prop_Send,"m_hBuilder"))
+		int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
+		switch(weaponIndex)
 		{
-			int owner = GetEntPropEnt(entity,Prop_Send,"m_hBuilder" );
-			if(IsValidClient3(owner))
-			{
-				int melee = (GetPlayerWeaponSlot(owner,2));
-				if(IsValidEdict(melee))
-				{
-					int weaponIndex = GetEntProp(melee, Prop_Send, "m_iItemDefinitionIndex");
-					if(weaponIndex == 329)
-					{
-						SDKCall(g_SDKFastBuild, entity, true);
-						RequestFrame(setNoMetal, owner);
-					}
+			case 329:{
+				SDKCall(g_SDKFastBuild, entity, true);
+				RequestFrame(setNoMetal, owner);
+			}
+			case 142:{
+				if(obj == 2){//Sentry
+					SDKCall(g_SDKFastBuild, entity, true);
+					SetEntProp(entity, Prop_Send, "m_iHighestUpgradeLevel", 3);
+					SetEntProp(entity, Prop_Send, "m_iUpgradeLevel", 3);
+					SetEntProp(entity, Prop_Send, "m_nSkin", GetClientTeam(owner)-2);
+				}
+			}
+			case 589:{
+				if(obj == 1){//Teleporter
+					SDKCall(g_SDKFastBuild, entity, true);
 				}
 			}
 		}
 	}
+	delete pack;
 }
 setNoMetal(int client){
 	SetEntProp(client, Prop_Data, "m_iAmmo", 0, 4, 3);
@@ -2946,7 +2965,7 @@ public OnEntityHomingThink(entity)
 	if( distance > homingRadius[entity] )
 		return;
 
-	if(homingTickRate[entity] == 0 || homingTicks[entity] & homingTickRate[entity] == 1)
+	if(homingTicks[entity] % homingTickRate[entity] == 0)
 	{
 		float ProjLocation[3], ProjVector[3], BaseSpeed, NewSpeed, ProjAngle[3], AimVector[3], InitialSpeed[3]; 
 		

@@ -1476,7 +1476,6 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 		{
 			if(!strcmp("tf_projectile_spellfireball", classname))
 			{
-				int primary = GetPlayerWeaponSlot(attacker,0)
 				int melee = GetPlayerWeaponSlot(attacker,2)
 				if(IsValidEdict(melee))
 				{
@@ -1495,45 +1494,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 							damagetype |= DMG_PREVENT_PHYSICS_FORCE;
 						}
 					}
-					
-					
-					Address SentryDmgActive = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
-					Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
-					Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
-					if(SentryDmgActive != Address_Null)
-					{
-						damage *= TF2Attrib_GetValue(SentryDmgActive);
-					}
-					if(SentryDmgActive1 != Address_Null)
-					{
-						damage *= TF2Attrib_GetValue(SentryDmgActive1);
-					}
-					if(SentryDmgActive2 != Address_Null)
-					{
-						damage *= TF2Attrib_GetValue(SentryDmgActive2);
-					}
-					Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
-					if(damageActive != Address_Null)
-					{
-						damage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
-					}
-				}
-				if(IsValidEdict(primary))
-				{
-					Address SentryDmgActive2 = TF2Attrib_GetByName(primary, "engy sentry damage bonus");
-					if(SentryDmgActive2 != Address_Null)
-					{
-						damage *= TF2Attrib_GetValue(SentryDmgActive2);
-					}
-				}
-				int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
-				if(IsValidEdict(CWeapon))
-				{
-					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
-					if(SentryDmgActive != Address_Null)
-					{
-						damage *= TF2Attrib_GetValue(SentryDmgActive);
-					}
+					damage *= TF2_GetSentryDPSModifiers(attacker, melee);
 				}
 			}
 		}

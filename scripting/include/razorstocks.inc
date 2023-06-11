@@ -1538,6 +1538,39 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 	}
 	return 1.0;
 }
+stock float TF2_GetSentryDPSModifiers(client, melee){
+	float dmgBonus = 1.0;
+	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	if(IsValidWeapon(CWeapon))
+	{
+		Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
+		if(SentryDmgActive != Address_Null)
+		{
+			dmgBonus *= TF2Attrib_GetValue(SentryDmgActive);
+		}
+	}
+	Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
+	if(SentryDmgActive1 != Address_Null)
+		dmgBonus *= TF2Attrib_GetValue(SentryDmgActive1);
+	
+	Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
+	if(SentryDmgActive2 != Address_Null)
+		dmgBonus *= TF2Attrib_GetValue(SentryDmgActive2);
+	
+	Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
+	if(damageActive != Address_Null)
+		dmgBonus *= Pow(1.05,TF2Attrib_GetValue(damageActive));
+	
+	Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
+	if(damageActive2 != Address_Null)
+		dmgBonus *= TF2Attrib_GetValue(damageActive2);
+	
+	Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
+	if(fireRateActive != Address_Null)
+		dmgBonus /= TF2Attrib_GetValue(fireRateActive);
+	
+	return dmgBonus;
+}
 stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true, bool critMod = true, bool onlyModifiers = false)
 {
 	if(IsValidClient3(client))

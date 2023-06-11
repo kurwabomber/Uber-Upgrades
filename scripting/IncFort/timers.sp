@@ -110,50 +110,6 @@ public Action:Timer_FixedVariables(Handle timer)
 
 		ManagePlayerBuffs(client);
 
-		Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
-		if(RegenActive != Address_Null)
-		{
-			float RegenPerSecond = TF2Attrib_GetValue(RegenActive);
-			float RegenPerTick = RegenPerSecond/10;
-			Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
-			if(HealingReductionActive != Address_Null)
-			{
-				RegenPerTick *= TF2Attrib_GetValue(HealingReductionActive);
-			}
-			
-			Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
-			if(regenerationPowerup != Address_Null)
-			{
-				float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
-				if(regenerationPowerupValue > 0.0)
-				{
-					RegenPerTick += TF2_GetMaxHealth(client) / 66.7;//+15% maxHPR/s
-				}
-			}
-			
-			int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
-			int clientMaxHealth = TF2_GetMaxHealth(client);
-			if(clientHealth < clientMaxHealth)
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
-				{
-					RegenPerTick *= 2.0;
-				}
-				if(TF2_IsPlayerInCondition(client, TFCond_Plague))
-				{
-					RegenPerTick *= 0.0;
-				}
-				if(float(clientHealth) + RegenPerTick < clientMaxHealth)
-				{
-					SetEntProp(client, Prop_Data, "m_iHealth", clientHealth+RoundToNearest(RegenPerTick));
-				}
-				else
-				{
-					SetEntProp(client, Prop_Data, "m_iHealth", clientMaxHealth);
-				}
-			}
-		}
-
 		Address conditionToggle = TF2Attrib_GetByName(client, "has pipboy build interface");
 		if(conditionToggle != Address_Null)
 		{
@@ -1460,42 +1416,7 @@ public Action:eurekaDelayed(Handle timer, int client)
 				
 				EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 				
-				float LightningDamage = 500.0;
-				
-				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-				if(IsValidWeapon(CWeapon))
-				{
-					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
-					if(SentryDmgActive != Address_Null)
-					{
-						LightningDamage *= TF2Attrib_GetValue(SentryDmgActive);
-					}
-				}
-				Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
-				if(SentryDmgActive1 != Address_Null)
-				{
-					LightningDamage *= TF2Attrib_GetValue(SentryDmgActive1);
-				}
-				Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
-				if(SentryDmgActive2 != Address_Null)
-				{
-					LightningDamage *= TF2Attrib_GetValue(SentryDmgActive2);
-				}
-				Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
-				if(damageActive != Address_Null)
-				{
-					LightningDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
-				}
-				Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
-				if(damageActive2 != Address_Null)
-				{
-					LightningDamage *= TF2Attrib_GetValue(damageActive2);
-				}
-				Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
-				if(fireRateActive != Address_Null)
-				{
-					LightningDamage /= TF2Attrib_GetValue(fireRateActive);
-				}
+				float LightningDamage = 500.0 * TF2_GetSentryDPSModifiers(client, melee);
 				
 				int i = -1;
 				while ((i = FindEntityByClassname(i, "*")) != -1)
