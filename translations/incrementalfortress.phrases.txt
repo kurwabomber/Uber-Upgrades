@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"weapon self dmg push force increased"
+	{
+		"en"		"Self Push Force Increased"
+	}
 	"Explosive Bullets Radius (tweak)"
 	{
 		"en"		"Explosive Bullets Radius"
@@ -1299,6 +1303,10 @@
 	"crits_become_minicrits"
 	{
 		"en"		"Crits Become Minicrits"
+	}
+	"energy weapon no hurt building"
+	{
+		"en"		"Major Damage Penalty VS Buildings"
 	}
 	"override projectile type (S)"
 	{

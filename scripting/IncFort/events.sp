@@ -563,38 +563,49 @@ public MRESReturn OnKnockbackApply(int client, Handle hParams) {
 	{
 		float initKB[3];
 		DHookGetParamVector(hParams,1,initKB);
-		float KBMult = GetAttributeAccumulateMultiplicative(client, "knockback resistance", 1.0);
-		if(KBMult == 1.0)
-			return MRES_Ignored;
 
-		if(knockbackFlags[client] & 1<<0 && client == lastKBSource[client]){
-			if(knockbackFlags[client] & 1<<3){
-				initKB[0] *= KBMult;
-				initKB[1] *= KBMult;
-			}if(knockbackFlags[client] & 1<<4){
-				initKB[2] *= KBMult;
-			}
+		if(IsValidWeapon(lastKBSource[client])){
+			ScaleVector(initKB,GetAttribute(lastKBSource[client], "weapon self dmg push force increased", 1.0));
 		}
-		else if(knockbackFlags[client] & 1<<1 && client != lastKBSource[client]){
-			if(knockbackFlags[client] & 1<<3){
-				initKB[0] *= KBMult;
-				initKB[1] *= KBMult;
-			}if(knockbackFlags[client] & 1<<4){
-				initKB[2] *= KBMult;
+
+		float KBMult = GetAttributeAccumulateMultiplicative(client, "knockback resistance", 1.0);
+		if(KBMult == 1.0){
+			if(knockbackFlags[client] & 1<<0 && client == lastKBSource[client]){
+				if(knockbackFlags[client] & 1<<3){
+					initKB[0] *= KBMult;
+					initKB[1] *= KBMult;
+				}if(knockbackFlags[client] & 1<<4){
+					initKB[2] *= KBMult;
+				}
 			}
-		}
-		else if(knockbackFlags[client] & 1<<2 && lastKBSource[client] == 0){
-			if(knockbackFlags[client] & 1<<3){
-				initKB[0] *= KBMult;
-				initKB[1] *= KBMult;
-			}if(knockbackFlags[client] & 1<<4){
-				initKB[2] *= KBMult;
+			else if(knockbackFlags[client] & 1<<1 && client != lastKBSource[client]){
+				if(knockbackFlags[client] & 1<<3){
+					initKB[0] *= KBMult;
+					initKB[1] *= KBMult;
+				}if(knockbackFlags[client] & 1<<4){
+					initKB[2] *= KBMult;
+				}
+			}
+			else if(knockbackFlags[client] & 1<<2 && lastKBSource[client] == 0){
+				if(knockbackFlags[client] & 1<<3){
+					initKB[0] *= KBMult;
+					initKB[1] *= KBMult;
+				}if(knockbackFlags[client] & 1<<4){
+					initKB[2] *= KBMult;
+				}
 			}
 		}
 		DHookSetParamVector(hParams, 1,initKB);
 		lastKBSource[client] = 0;
 	}
 	return MRES_Override;
+}
+public MRESReturn OnThermalThrusterLaunch(int weapon){
+	if(IsValidWeapon(weapon)){
+		int owner = getOwner(weapon);
+		lastKBSource[owner] = weapon;
+	}
+	return MRES_Ignored;
 }
 public MRESReturn OnCalculateBotSpeedPost(int client, Handle hReturn) {
 	DHookSetReturn(hReturn, 3000.0);

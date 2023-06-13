@@ -3740,4 +3740,13 @@
         "effect_type"	"positive"
         "stored_as_integer"	"1"
     }
+    "6030"
+    {
+        "name"  "weapon self dmg push force increased"
+        "attribute_class"   "new_self_push_force"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
 }

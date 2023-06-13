@@ -1150,7 +1150,7 @@
 		}
 		"Flamethrower specific upgrades"
 		{
-			"Attr17"	"flame speed bonus"
+			"Attr17"	"flame_speed"
 			"Attr14"	"Flame Size"
 		}
 		"Special Tweaks"
@@ -1181,7 +1181,7 @@
 		{
 			"Attr3"		"increase buff duration"
 			"Attr2"		"flame life bonus"
-			"Attr17"	"flame speed bonus"
+			"Attr17"	"flame_speed"
 			"Attr14"	"Flame Size"
 		}
 		"Special Tweaks"
@@ -2029,7 +2029,7 @@
 		{
 			"Attr0"		"Thermal Thruster recharge"
 			"Attr3"		"thermal_thruster_air_launch"
-			"Attr6"		"self dmg push force increased"
+			"Attr6"		"weapon self dmg push force increased"
 			"Attr5"		"increased air control(S)"
 			"Attr7"		"dmg from all reduced(wearable)"
 			"Attr8"		"Switch Speed Increased"
@@ -2165,18 +2165,21 @@
 	"gas"
 	{
 		"special_tweaks_listid"		"-1"
-		"Weapon Specific upgrades"
+		"Damage upgrades"
 		{
-			"Attr0"		"explode_on_ignite"
-			"Attr1"		"gas passer recharge"
 			"Attr14"	"Gas Passer Explosion Damage"
 			"Attr2"		"damage bonus done against players"
 			"Attr6"		"Overall Damage"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
-			"Attr7"		"blast radius increased(G)"
 			"Attr5"		"afterburn time increased"
+		}
+		"Weapon Specific upgrades"
+		{
+			"Attr0"		"explode_on_ignite"
+			"Attr1"		"gas passer recharge"
+			"Attr7"		"blast radius increased(G)"
 		}
 	}//direct hit
 	"directhit"

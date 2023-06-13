@@ -404,6 +404,13 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | g_DHookDamagetypes fucked up.");
 	DHookEnableDetour(g_DHookDamagetypes, true, OnDamageTypeCalc);
 
+	//Thermal Thruster Velocity Boost
+	Handle g_DHookThrusterLaunch = DHookCreateFromConf(hConf, "CTFRocketPack::Launch()");
+	
+	if(!g_DHookThrusterLaunch)
+		PrintToServer("CustomAttrs | g_DHookFireballRange fucked up.");
+	DHookEnableDetour(g_DHookThrusterLaunch, false, OnThermalThrusterLaunch);
+
 	//Weapon Fired
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	

@@ -732,6 +732,11 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 				if(i == 0) i = 1;
 				damage *= i*weaponFireRate[weapon]/TICKRATE;
 			}
+			if(damagecustom == TF_CUSTOM_PLASMA_CHARGED || damagecustom == TF_CUSTOM_PLASMA){
+				if(!GetAttribute(weapon, "energy weapon no hurt building", 1.0)){
+					damage /= 0.2;
+				}
+			}
 		}
 		if(TF2_IsPlayerMinicritBuffed(attacker))
 		{

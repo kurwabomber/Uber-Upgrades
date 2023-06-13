@@ -190,6 +190,13 @@
 				"return"		"void"
 				"this"			"entity"
 			}
+			"CTFRocketPack::Launch()"
+			{
+				"signature"		"CTFRocketPack::Launch()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"entity"
+			}
 		}
 		"Signatures"
 		{
@@ -316,6 +323,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN11CBaseObject12DoQuickBuildEb"
+			}
+			"CTFRocketPack::Launch()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN13CTFRocketPack6LaunchEv"
 			}
 		}
 	}

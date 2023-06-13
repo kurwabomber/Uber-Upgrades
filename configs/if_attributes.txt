@@ -611,6 +611,16 @@
 			"value"		"0.1"
 			"init"		"1.00"
 			"max"		"2.0"
+		}
+		"45.5"
+		{
+			"name"		"weapon self dmg push force increased"
+			"ref"		"weapon self dmg push force increased"
+			"cost"		"300"
+			"increase_ratio"	"0.4"
+			"value"		"0.1"
+			"init"		"1.00"
+			"max"		"3.0"
 		}//Primary Defense
 		"46"
 		{
@@ -995,7 +1005,7 @@
 			"increase_ratio" "0.3"
 			"value"		"0.2"
 			"init"		"1.00"
-			"max"		"4.0"
+			"max"		"2.0"
 		}
 		"74"
 		{
@@ -1005,7 +1015,7 @@
 			"increase_ratio" "0.45"
 			"value"		"0.10"
 			"init"		"1.00"
-			"max"		"5.00"
+			"max"		"2.00"
 		}
 		"75"
 		{
@@ -1294,16 +1304,6 @@
 			"value"		"1.00"
 			"init"		"1.00"
 			"max"		"4.50"
-		}
-		"103"
-		{
-			"name"		"flame_speed"
-			"ref"		"flame speed bonus"
-			"cost"		"75"
-			"increase_ratio"	"0.15"
-			"value"		"150"
-			"init"		"2300"
-			"max"		"14000"
 		}
 		"400"
 		{
@@ -2748,16 +2748,6 @@
 			"init"		"1.00"
 			"max"		"6.00"
 		}
-		"132"
-		{
-			"name"		"Blast radius increased"
-			"ref"		"blast radius increased (C)"
-			"cost"		"0.5"
-			"increase_ratio" "0"
-			"value"		"1.00"
-			"init"		"1.00"
-			"max"		"5.00"
-		}
 		"133"
 		{
 			"name"		"mod soldier buff type"
@@ -2874,7 +2864,7 @@
 			"increase_ratio"	"1.2"
 			"value"		"0.20"
 			"init"		"1.00"
-			"max"		"2.5"
+			"max"		"2.0"
 		}
 		"286"
 		{
@@ -3195,10 +3185,11 @@
 		{
 			"name"		"flame_speed"
 			"ref"		"flame_speed"
-			"cost"		"0"
-			"value"		"0"
-			"init"		"1"
-			"max"		"90000"
+			"cost"		"500"
+			"increase_ratio"	"0.3"
+			"value"		"350"
+			"init"		"0"
+			"max"		"14000"
 		}
 		"331"
 		{
@@ -3265,7 +3256,7 @@
 			"increase_ratio" "0.5"
 			"value"		"0.1"
 			"init"		"1.00"
-			"max"		"3.0"
+			"max"		"2.0"
 		}
 		"151"
 		{
@@ -3546,7 +3537,7 @@
 			"value"		"-0.1"
 			"increase_ratio" 	"1.5"
 			"init"		"1.00"
-			"max"		"0.025"
+			"max"		"0.03"
 		}
 		"383"
 		{
@@ -3580,7 +3571,7 @@
 			"increase_ratio" "0.35"
 			"value"		"0.10"
 			"init"		"1.00"
-			"max"		"3.00"
+			"max"		"2.00"
 		}
 		"385.5"
 		{
@@ -3590,7 +3581,7 @@
 			"increase_ratio" "0.35"
 			"value"		"0.10"
 			"init"		"1.00"
-			"max"		"2.7"
+			"max"		"2.0"
 		}
 		"385.75"
 		{
@@ -5509,6 +5500,24 @@
 			"value"		"-0.1"
 			"init"		"1"
 			"max"		"0.0"
+		}
+		"1612"
+		{
+			"name"		"crits_become_minicrits"
+			"ref"		"crits_become_minicrits"
+			"cost"		"-5000"
+			"value"		"1"
+			"init"		"0"
+			"max"		"1"
+		}
+		"1613"
+		{
+			"name"		"energy weapon no hurt building"
+			"ref"		"energy weapon no hurt building"
+			"cost"		"-2000"
+			"value"		"1"
+			"init"		"0"
+			"max"		"1"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"

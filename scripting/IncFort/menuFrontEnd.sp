@@ -1,5 +1,5 @@
 //IF Front Menu
-public Action:Menu_BuyUpgrade(client, args)
+public Action Menu_BuyUpgrade(client, args)
 {
 	if (IsValidClient(client) && IsPlayerAlive(client) && !client_respawn_checkpoint[client] )
 	{
@@ -34,8 +34,9 @@ public Action:Menu_BuyUpgrade(client, args)
 		
 		DisplayMenuAtItem(menuBuy, client, args, MENU_TIME_FOREVER)
 	}
+	return Plugin_Handled;
 }
-public Action:Menu_ConfirmWeapon(client, param2)
+public Action Menu_ConfirmWeapon(client, param2)
 {
 	Handle menu = CreateMenu(MenuHandler_BuyNewWeapon);
 
@@ -52,6 +53,7 @@ public Action:Menu_ConfirmWeapon(client, param2)
 	{
 		DisplayMenu(menu, client, MENU_TIME_FOREVER);
 	}
+	return Plugin_Handled;
 }
 public Action:Timer_giveactionslot(Handle timer, int client)
 {
