@@ -393,24 +393,6 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 								fl_AdditionalArmor[client] = TF2Attrib_GetValue(ShieldingActive)
 							}
 						}
-						Address MiniCritActive = TF2Attrib_GetByName(CWeapon, "duel loser account id");
-						if(MiniCritActive != Address_Null)
-						{
-							if(GetAttribute(client, "inverter powerup", 0.0)){
-								giveDefenseBuff(client, duration);
-							}else{
-								miniCritStatusVictim[client] = currentGameTime+16.0;
-								TF2_AddCondition(client, TFCond_RestrictToMelee, 16.0);
-							}
-							miniCritStatusAttacker[client] = currentGameTime+16.0;
-							TF2_AddCondition(client, TFCond_SpeedBuffAlly, 16.0);
-							int melee = GetWeapon(client, 2)
-							if(IsValidEdict(melee) && HasEntProp(melee, Prop_Send, "m_iItemDefinitionIndex"))
-							{
-								SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",melee);
-								EquipPlayerWeapon(client, melee);
-							}
-						}
 					}
 					float damageReduction = GetAttribute(CWeapon, "energy buff dmg taken multiplier", 1.0);
 					if(damageReduction != 1.0)
@@ -478,6 +460,11 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 				else
 					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
+			}
+			case TFCond_RestrictToMelee:
+			{
+				if(GetAttribute(client, "inverter powerup", 0.0))
+					return MRES_Supercede;
 			}
 			case TFCond_Sapped:
 			{
@@ -2613,40 +2600,8 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 						if(a > 0)
 						{
 							if(ballCheck == 10.0)
-							{
 								SDKCall(g_SDKCallLaunchBall, CWeapon);
-							}
-							else if(ballCheck == 11.0)
-							{
-								int ent = CreateEntityByName("prop_physics_override");
-								SetEntityModel(ent, "models/weapons/c_models/c_caber/c_caber.mdl");
-								
-								SetEntPropEnt(ent, Prop_Data, "m_hOwnerEntity", client);
 
-								float fOrigin[3],fAngles[3],fVelocity[3],vBuffer[3],fwd[3];
-								GetClientEyePosition(client, fOrigin);
-								GetClientEyeAngles(client, fAngles);
-								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-								GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-								ScaleVector(fwd, 50.0);
-								AddVectors(fOrigin, fwd, fOrigin);
-
-								float velocity = 4000.0;
-								fVelocity[0] = vBuffer[0]*velocity;
-								fVelocity[1] = vBuffer[1]*velocity;
-								fVelocity[2] = vBuffer[2]*velocity;
-								
-								TeleportEntity(ent, fOrigin, fAngles, fVelocity);
-
-								DispatchSpawn(ent);
-
-								float vecAngImpulse[3];
-								GetCleaverAngularImpulse(vecAngImpulse);
-
-								Phys_SetVelocity(ent, fVelocity, vecAngImpulse, true);
-
-								SetCarriedAmmo(client, 2, a-1);
-							}
 							//Calc crit is called within ball creation
 							meleeLimiter[client]--;
 							flag = false;

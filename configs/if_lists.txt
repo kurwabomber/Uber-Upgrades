@@ -150,36 +150,76 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Arcane Hunter"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Tiered Upgrades"
+		{
+			"Attr1"			"weapon advancement"
+			"Attr0"			"Rooted damage taken"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_soldier"
@@ -221,36 +261,76 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Aerial Strike"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Tiered Upgrades"
+		{
+			"Attr1"			"weapon advancement"
+			"Attr0"			"Rooted damage taken"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_pyro"
@@ -291,41 +371,81 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Inferno"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Tiered Upgrades"
+		{
+			"Attr1"			"weapon advancement"
+			"Attr0"			"Rooted damage taken"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_heavy"
 	{
-		"special_tweaks_listid"		"6"
+		"special_tweaks_listid"		"7"
 		"Protection upgrades"
 		{
 			"Attr0"		"Health Bonus (Heavy)"
@@ -362,36 +482,76 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Shockwave"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Tiered Upgrades"
+		{
+			"Attr1"			"weapon advancement"
+			"Attr0"			"Rooted damage taken"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 		"Special Tweaks"
 		{
@@ -437,36 +597,76 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Mine Field"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Tiered Upgrades"
+		{
+			"Attr1"			"weapon advancement"
+			"Attr0"			"Rooted damage taken"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_medic"
@@ -507,36 +707,76 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Soothing Sunlight"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Tiered Upgrades"
+		{
+			"Attr1"			"weapon advancement"
+			"Attr0"			"Rooted damage taken"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_spy"
@@ -580,36 +820,76 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Mark-For-Death"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Tiered Upgrades"
+		{
+			"Attr1"			"weapon advancement"
+			"Attr0"			"Rooted damage taken"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_engie"
@@ -654,36 +934,76 @@
 		}
 		"Arcane Upgrades"
 		{
-			"Attr0"		"Max Focus"
-			"Attr1"		"Focus Regeneration"
-			"Attr2"		"Arcane Power"
-			"Attr7"		"Arcane Damage"
-			"Attr3"		"Attunement Slots"
-			"Attr4"		"Arcane - Zap"
-			"Attr5"		"Arcane - Lightning Strike"
-			"Attr6"		"Arcane - Healing Aura"
-			"Attr7"		"Arcane - A Call Beyond"
-			"Attr8"		"Arcane - Blacksky Eye"
-			"Attr9"		"Arcane - Sunlight Spear"
-			"Attr10"	"Arcane - Lightning Enchantment"
-			"Attr13"	"Arcane - Darkmoon Blade"
-			"Attr11"	"Arcane - Snap Freeze"
-			"Attr14"	"Arcane - Arcane Prison"
-			"Attr15"	"Arcane - Auto-Sentry"
+			"!Arcane Stats"
+			{
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
+			}
+			"!Tier 1 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Speed Aura"
+			}
+			"!Tier 2 Arcane Spells"
+			{
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
+			}
+			"!Tier 3 Arcane Spells"
+			{
+				"Attr7"		"Arcane - A Call Beyond"
+			}
 		}
 		"Powerup Upgrades"
 		{
-			"Attr0"		"Strength Powerup"
-			"Attr1"		"Resistance Powerup"
-			"Attr2"		"Vampire Powerup"
-			"Attr4"		"Revenge Powerup"
-			"Attr5"		"Regeneration Powerup"
-			"Attr6"		"Precision Powerup"
-			"Attr7"		"Agility Powerup"
-			"Attr8"		"Knockout Powerup"
-			"Attr9"		"King Powerup"
-			"Attr10"	"Plague Powerup"
-			"Attr11"	"Supernova Powerup"
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr6"		"Infernal Powerup"
+				"Attr7"		"Thunderstorm Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
+				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Tiered Upgrades"
+		{
+			"Attr1"			"weapon advancement"
+			"Attr0"			"Rooted damage taken"
+			"Attr2"			"physical damage affinity"
+			"Attr3"			"explosive damage affinity"
+			"Attr4"			"fire damage affinity"
+			"Attr5"			"electric damage affinity"
+			"Attr6"			"crit damage affinity"
 		}
 	}
 	"cow_m"
@@ -1705,8 +2025,8 @@
 		"special_tweaks_listid"		"-1"
 		"Lunchbox specific upgrades"
 		{
-			"Attr1"		"dmg from all reduced(wearable)"
 			"Attr0"		"mult_item_meter_charge_rate"
+			"Attr1"		"Resistance when eaten"
 			"Attr4"		"lunchbox healing decreased"
 			"Attr5"		"Armor Recharge Rate When Eaten"
 			"Attr6"		"Armor Refilled When Eaten"

@@ -131,7 +131,6 @@
 		"311"//Buffalo Steak Sandvich
 		{
 			"preserve_attributes"	"1"
-			"1"				"144 ; 0.0"
 			"2"				"184 ; 1"
 		}
 		"159,433"//Dalakohs Bar
@@ -489,11 +488,11 @@
 			"preserve_attributes"	"1"
 			"1"				"280 ; 8.0"
 		}
-		"307" //Caber
+		"730"//Beggar's Bazooka
 		{
 			"preserve_attributes"	"1"
-			"classname"		"tf_weapon_bat_wood"
-			"1"				"38 ; 11"
+			"1"				"394 ; 0.9"
+			"2"				"488 ; 1"
 		}
 	}
 }

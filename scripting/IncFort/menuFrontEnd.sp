@@ -104,7 +104,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			else
 			{
 				tmp_val = 0.0
-				val = 0.0
+				val = upgrades[tmp_up_idx].i_val;
 			}
 			tmp_ratio = upgrades[tmp_up_idx].ratio
 			float t_up_cost = 0.0;

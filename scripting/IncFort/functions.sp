@@ -898,6 +898,10 @@ DisplayItemChange(client,itemidx)
 		{
 			ChangeString = "The Air Strike | Rocket jumping gives 30% faster fire rate.";
 		}
+		case 730:
+		{
+			ChangeString = "The Beggar's Bazooka | 10% faster fire rate with rocket specialist.";
+		}
 		//Soldier Secondary
 		case 129,1001:
 		{
@@ -1082,10 +1086,6 @@ DisplayItemChange(client,itemidx)
 		case 751:
 		{
 			ChangeString = "The Cleaner's Carbine | No longer has crikey. Close ranged backattacks do minicrits. Converts fire rate to damage.";
-		}
-		case 58,1083,1105:
-		{
-			ChangeString = "The Jarate | Infinite ammo.";
 		}
 		//Sniper Melees
 		case 232:
@@ -2648,7 +2648,6 @@ ChangeProjModel(entity)
 						jarateType[entity] = 1;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
 						SetEntityGravity(entity, 1.0);
-						IncreaseProjectileAngle(entity);
 					}
 					case 1121:
 					{
@@ -2658,7 +2657,6 @@ ChangeProjModel(entity)
 						jarateType[entity] = 1;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
 						SetEntityGravity(entity, 1.0);
-						IncreaseProjectileAngle(entity);
 					}
 					case 58,1149:
 					{
@@ -2668,7 +2666,6 @@ ChangeProjModel(entity)
 						jarateType[entity] = 0;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
 						SetEntityGravity(entity, 1.0);
-						IncreaseProjectileAngle(entity);
 					}
 					case 1105:
 					{
@@ -2678,7 +2675,6 @@ ChangeProjModel(entity)
 						jarateType[entity] = 0;
 						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
 						SetEntityGravity(entity, 1.0);
-						IncreaseProjectileAngle(entity);
 					}
 					case 812,833:
 					{
@@ -2692,12 +2688,6 @@ ChangeProjModel(entity)
 			}
 		}
 	}
-}
-IncreaseProjectileAngle(int entity, float increment = 200.0){
-	float fVelocity[3];
-	GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", fVelocity);
-	fVelocity[2] += increment;
-	TeleportEntity(entity, NULL_VECTOR, NULL_VECTOR, fVelocity);
 }
 SentryDelay(entity) 
 {
