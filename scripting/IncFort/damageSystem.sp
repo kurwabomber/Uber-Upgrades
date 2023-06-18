@@ -1106,10 +1106,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				}
 			}
 		}
-		float supernovaPowerup = GetAttribute(attacker, "supernova powerup",0.0);
-		if(supernovaPowerup != 0.0)
+		if(GetAttribute(attacker, "supernova powerup",0.0) != 0.0)
 		{
-			if(StrEqual(getDamageCategory(currentDamageType[attacker], attacker),"blast",false))
+			if(StrContains(getDamageCategory(currentDamageType[attacker], attacker),"blast",false) != -1)
 			{
 				damage *= 1.8;
 			}
@@ -1517,7 +1516,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 
 	currentDamageType[attacker].clear();
 
-	if(StrEqual(damageCategory, "direct"))
+	if(StrContains(damageCategory, "direct") != -1)
 	{
 		Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "direct damage taken reduced");
 		if(dmgTakenMultAddr != Address_Null)
@@ -1544,7 +1543,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			}
 		}
 	}
-	if(StrEqual(damageCategory, "fire"))
+	else if(StrContains(damageCategory, "fire") != -1)
 	{
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "fire damage affinity");
 		if(dmgMasteryAddr != Address_Null){
@@ -1572,14 +1571,14 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			}
 		}
 	}
-	if(StrEqual(damageCategory, "blast"))
+	else if(StrContains(damageCategory, "blast") != -1)
 	{
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "explosive damage affinity");
 		if(dmgMasteryAddr != Address_Null)
 			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
 		
 	}
-	if(StrEqual(damageCategory, "electric"))
+	else if(StrContains(damageCategory, "electric") != -1)
 	{
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "electric damage affinity");
 		if(dmgMasteryAddr != Address_Null)
@@ -1609,8 +1608,18 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK, weapon);
 		}
 	}
-	if(bits.second & DMG_ACTUALCRIT
-	||	bits.second & DMG_MINICRIT)
+	else if(StrContains(damageCategory, "arcane") != -1)
+	{
+		Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "arcane damage taken reduced");
+		if(dmgTakenMultAddr != Address_Null)
+			damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
+
+		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "arcane damage affinity");
+		if(dmgMasteryAddr != Address_Null)
+			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+	}
+
+	if(StrContains(damageCategory, "crit") != -1)
 	{
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "crit damage affinity");
 		if(dmgMasteryAddr != Address_Null)
@@ -1622,15 +1631,5 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			critAffinityDebuff.init("Shattered Armor", "-25% Armor", Buff_ShatteredArmor, 1, attacker, 8.0);
 			insertBuff(victim, critAffinityDebuff);
 		}
-	}
-	if(StrEqual(damageCategory, "arcane"))
-	{
-		Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "arcane damage taken reduced");
-		if(dmgTakenMultAddr != Address_Null)
-			damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
-
-		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "arcane damage affinity");
-		if(dmgMasteryAddr != Address_Null)
-			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
 	}
 }

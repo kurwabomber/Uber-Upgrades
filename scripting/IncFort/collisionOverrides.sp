@@ -74,7 +74,7 @@ public Action:OnSunlightSpearCollision(entity, client)
 			if(IsOnDifferentTeams(owner,client))
 			{
 				float ProjectileDamage = (140.0 + (Pow(ArcaneDamage[owner] * Pow(ArcanePower[owner], 4.0), 2.45) * 35.0));
-				SDKHooks_TakeDamage(client, owner, owner, ProjectileDamage, DMG_SHOCK, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
+				SDKHooks_TakeDamage(client, owner, owner, ProjectileDamage, DMG_SHOCK, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 				RemoveEntity(entity);
 				CreateParticle(client, "dragons_fury_effect_parent", true, "", 2.0);
 			}
@@ -326,7 +326,7 @@ public Action:OnCollisionWarriorArrow(entity, client)
 			{
 				damageDealt *= TF2Attrib_GetValue(multiHitActive) + 1.0;
 			}
-			SDKHooks_TakeDamage(client, owner, owner, damageDealt*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
+			SDKHooks_TakeDamage(client, owner, owner, damageDealt*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 		}
 		RemoveEntity(entity);
 	}
@@ -351,7 +351,7 @@ public Action:OnCollisionBossArrow(entity, client)
 				if(IsValidEdict(CWeapon))
 				{
 					float damageDealt = 240.0*TF2_GetDamageModifiers(owner, CWeapon, false);
-					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
+					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 					if(IsValidClient3(client))
 					{
 						RadiationBuildup[client] += 100.0;
@@ -378,7 +378,7 @@ public Action:OnCollisionArrow(entity, client)
 			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
-				SDKHooks_TakeDamage(client, owner, owner, 50.0*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
+				SDKHooks_TakeDamage(client, owner, owner, 50.0*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 			}
 			RemoveEntity(entity);
 		}
@@ -496,7 +496,7 @@ public Action:OnCollisionBoomerang(entity, client)
 			{
 				float damageDealt = 120.0 * TF2_GetDamageModifiers(owner, CWeapon);
 				currentDamageType[owner].second |= DMG_ACTUALCRIT;
-				SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_SLASH | DMG_CRIT, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
+				SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_SLASH | DMG_CRIT, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 			}
 		}
 		float origin[3],ProjAngle[3], vBuffer[3], ProjVelocity[3];
@@ -626,7 +626,7 @@ public Action:OnTouchExplodeJar(entity, other)
 		if(blastRadius2 != Address_Null){
 			Radius *= TF2Attrib_GetValue(blastRadius2)
 		}
-		
+		float damageBoost = TF2_GetDamageModifiers(owner, CWeapon);
 		int i = -1;
 		while ((i = FindEntityByClassname(i, "*")) != -1)
 		{
@@ -650,14 +650,14 @@ public Action:OnTouchExplodeJar(entity, other)
 									if(isPlayer)
 										miniCritStatusVictim[i] = currentGameTime+8.0;
 
-									SDKHooks_TakeDamage(i,owner,owner,30.0,DMG_BULLET,CWeapon,NULL_VECTOR,NULL_VECTOR, !isPlayer);
+									SDKHooks_TakeDamage(i,owner,owner,30.0*damageBoost,DMG_BULLET,CWeapon,NULL_VECTOR,NULL_VECTOR, isPlayer);
 								}
 								case 1:
 								{
 									if(isPlayer)
 										TF2_AddCondition(i,TFCond_Milked,0.01);
 
-									SDKHooks_TakeDamage(i,owner,owner,30.0,DMG_BULLET,CWeapon,NULL_VECTOR,NULL_VECTOR, !isPlayer);
+									SDKHooks_TakeDamage(i,owner,owner,30.0*damageBoost,DMG_BULLET,CWeapon,NULL_VECTOR,NULL_VECTOR, isPlayer);
 								}
 							}//corrosiveDOT
 							if(isPlayer)
@@ -772,7 +772,7 @@ public Action:OnCollisionJarateFrag(entity, client)
 				if(IsOnDifferentTeams(owner,client))
 				{
 					float damageDealt = 15.0*TF2_GetDamageModifiers(owner, CWeapon, false);
-					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(client));
+					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 				}
 			}
 			Address fragmentExplosion = TF2Attrib_GetByName(CWeapon, "overheal decay bonus");

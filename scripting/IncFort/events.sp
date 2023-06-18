@@ -3485,7 +3485,7 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
 							{
-								SDKHooks_TakeDamage(i, client, client, LightningDamage, DMG_GENERIC, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(i));
+								SDKHooks_TakeDamage(i, client, client, LightningDamage, DMG_GENERIC, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
 								if(IsValidClient3(i))
 								{
 									float velocity[3];

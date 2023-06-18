@@ -409,7 +409,7 @@ CastSnapFreeze(client, attuneSlot)
 		if(!IsPointVisible(clientpos,VictimPos))
 			continue;
 
-		SDKHooks_TakeDamage(i,client,client,damage,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
+		SDKHooks_TakeDamage(i,client,client,damage,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 		if(IsValidClient3(i))
 		{
 			TF2_AddCondition(i, TFCond_FreezeInput, 0.4);
@@ -828,7 +828,7 @@ CastShockwave(client, attuneSlot)
 		if(GetVectorDistance(ClientPos,VictimPos) > 500.0)
 			continue;
 
-		SDKHooks_TakeDamage(i,client,client,damageDealt,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
+		SDKHooks_TakeDamage(i,client,client,damageDealt,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 		if(IsValidClient3(i))
 		{
 			TF2_AddCondition(i, TFCond_FreezeInput, 0.4);
@@ -1096,7 +1096,7 @@ public Action:ArcaneHunter(Handle timer, client)
 		if(!IsPointVisible(clientpos,VictimPos))
 			continue;
 
-		SDKHooks_TakeDamage(i,client,client,LightningDamage,1073741824,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
+		SDKHooks_TakeDamage(i,client,client,LightningDamage,1073741824,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 	}
 }
 CastBlackskyEye(client, attuneSlot)
@@ -1357,7 +1357,7 @@ DoZap(client,victim,spellLevel)
 	float LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 3.0));
 	float radiationAmount[] = {0.0,6.0,10.0,25.0};
 	SDKHooks_TakeDamage(victim,client,client, radiationAmount[spellLevel], (DMG_RADIATION+DMG_DISSOLVE), -1, NULL_VECTOR, NULL_VECTOR);
-	SDKHooks_TakeDamage(victim,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, !IsValidClient3(victim));
+	SDKHooks_TakeDamage(victim,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(victim));
 	float chance[] = {0.0,0.3,0.6,0.9};
 		
 	if(chance[spellLevel] >= GetRandomFloat(0.0, 1.0))
@@ -1453,7 +1453,7 @@ CastLightning(client, attuneSlot)
 				continue;
 
 			float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
-			SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, !IsValidClient3(i));
+			SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 
 			CreateParticle(i, "utaunt_auroraglow_orange_parent", true, "", 3.25);
 			

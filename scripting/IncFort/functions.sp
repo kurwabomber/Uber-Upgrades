@@ -99,6 +99,14 @@ public void ManagePlayerBuffs(int i){
 		else
 			TF2Attrib_RemoveByName(i, "relentless powerup");
 	}
+	if(GetAttribute(i, "thunderstorm powerup", 0.0)){
+		float buff = 1.0;
+		for(int victims = 1;victims<MaxClients;victims++){
+			if(isTagged[i][victims])
+				buff += 0.08;
+		}
+		Format(details, sizeof(details), "%s\n%s %.2fx", details, "Thunderstorm Powerup",buff);
+	}
 
 	float ArmorRechargeMult = 1.0;
 	fl_ArmorRegenConstant[i] = 0.0;
@@ -382,38 +390,38 @@ stock char[] getDamageCategory(extendedDamageTypes damagetype, int attacker = -1
 
 	if(IsValidClient3(attacker)){
 		if(GetAttribute(attacker, "thunderstorm powerup", 0.0))
-			damageCategory = "electric";
+			StrCat(damageCategory, sizeof(damageCategory), "electric");
 	}
 
 	if(damagetype.second & DMG_PIERCING)
 	{
-		damageCategory = "piercing"
+		StrCat(damageCategory, sizeof(damageCategory), "piercing");
 	}
 	else if(damagetype.first & DMG_BULLET || damagetype.first & DMG_SLASH || 
 	damagetype.first & DMG_VEHICLE || damagetype.first & DMG_FALL || damagetype.first & DMG_CLUB || 
 	damagetype.first & DMG_BUCKSHOT)
 	{
-		damageCategory = "direct"
+		StrCat(damageCategory, sizeof(damageCategory), "direct");
 	}
 	else if(damagetype.first & DMG_BLAST || damagetype.first & DMG_BLAST_SURFACE)
 	{
-		damageCategory = "blast"
+		StrCat(damageCategory, sizeof(damageCategory), "blast");
 	}
 	else if(damagetype.first & DMG_BURN || damagetype.first & DMG_SLOWBURN || damagetype.first & DMG_IGNITE)
 	{
-		damageCategory = "fire"
+		StrCat(damageCategory, sizeof(damageCategory), "fire");
 	}
 	else if(damagetype.first & DMG_SHOCK || damagetype.first & DMG_ENERGYBEAM)
 	{
-		damageCategory = "electric"
+		StrCat(damageCategory, sizeof(damageCategory), "electric");
 	}
 	else if(damagetype.second & DMG_ARCANE)
 	{
-		damageCategory = "arcane"
+		StrCat(damageCategory, sizeof(damageCategory), "arcane");
 	}
 	else
 	{
-		damageCategory = "generic"
+		StrCat(damageCategory, sizeof(damageCategory), "generic");
 	}
 	return damageCategory;
 }
