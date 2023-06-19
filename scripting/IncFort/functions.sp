@@ -1699,6 +1699,7 @@ refreshUpgrades(client, slot)
 			{
 				Address firerateActive2 = TF2Attrib_GetByName(slotItem, "fire rate bonus HIDDEN");
 				Address firerateActive3 = TF2Attrib_GetByName(slotItem, "fire rate penalty HIDDEN");
+				Address firerateActive4 = TF2Attrib_GetByName(slotItem, "mult_item_meter_charge_rate");
 				float damageModifier = 1.0;
 				if(firerateActive != Address_Null)
 				{
@@ -1714,6 +1715,11 @@ refreshUpgrades(client, slot)
 				{
 					damageModifier /= TF2Attrib_GetValue(firerateActive3);
 					TF2Attrib_RemoveByName(slotItem, "fire rate penalty HIDDEN");
+				}
+				if(firerateActive4 != Address_Null)
+				{
+					damageModifier /= TF2Attrib_GetValue(firerateActive4);
+					TF2Attrib_RemoveByName(slotItem, "mult_item_meter_charge_rate");
 				}
 				//If their weapon doesn't have a clip, reload rate also affects fire rate.
 				if((HasEntProp(slotItem, Prop_Data, "m_iClip1") && GetEntProp(slotItem,Prop_Data,"m_iClip1")  == -1) || TF2Attrib_GetValue(heavyweaponActive) > 1.0)
@@ -1753,7 +1759,6 @@ refreshUpgrades(client, slot)
 					TF2Attrib_SetByName(slotItem,"mult smack time", 1.0/TF2Attrib_GetValue(firerateActive));
 				
 			}
-			TF2Attrib_ClearCache(slotItem);
 		}
 	}
 }
