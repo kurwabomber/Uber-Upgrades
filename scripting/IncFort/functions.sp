@@ -2266,6 +2266,30 @@ StunShotFunc(client)
 	SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime + 0.6);
 	CreateTimer(0.5, removeBulletsPerShot, client);
 }
+meteorCollisionCheck(int entity){
+	entity = EntRefToEntIndex(entity);
+
+	if(!IsValidEdict(entity))
+		return;
+
+	if(!HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
+		return;
+	
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	if(!IsValidClient(owner))
+		return;
+
+	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+	if(!IsValidWeapon(CWeapon))
+		return;
+
+	int iItemDefinitionIndex = GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex");
+	if(iItemDefinitionIndex == 595){
+		SDKHook(entity, SDKHook_StartTouchPost, meteorCollision);
+		jarateWeapon[entity] = CWeapon;
+	}
+	
+}
 AirblastPatch(client)
 {
 	if( !IsPlayerAlive(client) )

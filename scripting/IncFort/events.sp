@@ -885,10 +885,10 @@ public OnEntityCreated(entity, const char[] classname)
 		if(StrEqual(classname, "tf_projectile_rocket") || StrEqual(classname, "tf_projectile_flare") || StrEqual(classname, "tf_projectile_sentryrocket"))
 		{
 			SDKHook(entity, SDKHook_Touch, projectileCollision);
-			SDKHook(entity, SDKHook_StartTouchPost, meteorCollision);
 			RequestFrame(instantProjectile, reference);
 			RequestFrame(monoculusBonus, reference);
 			RequestFrame(PrecisionHoming, reference);
+			RequestFrame(meteorCollisionCheck, reference);
 		}
 		if(StrEqual(classname, "tf_projectile_stun_ball") || StrEqual(classname, "tf_projectile_ball_ornament") || StrEqual(classname, "tf_projectile_cleaver"))
 		{

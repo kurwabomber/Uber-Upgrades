@@ -806,21 +806,14 @@ public Action:meteorCollision(entity, client)
 	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
-	
-	if(HasEntProp(entity, Prop_Data, "m_vecOrigin"))
+
+	int CWeapon = jarateWeapon[entity];
+	if(IsValidEdict(CWeapon))
 	{
-		int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
-		if(IsValidEdict(CWeapon))
-		{
-			int iItemDefinitionIndex = GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex");
-			if(iItemDefinitionIndex == 595)
-			{
-				float position[3];
-				GetEntPropVector(entity, Prop_Send, "m_vecOrigin", position);
-				EntityExplosion(owner, TF2_GetDamageModifiers(owner,CWeapon) * 45.0, 250.0, position, 0, _, entity);
-				return Plugin_Continue;
-			}
-		}
+		float position[3];
+		GetEntPropVector(entity, Prop_Send, "m_vecOrigin", position);
+		EntityExplosion(owner, TF2_GetDamageModifiers(owner,CWeapon) * 45.0, 250.0, position, 0, _, entity);
+		return Plugin_Continue;
 	}
 		
 	return Plugin_Continue;

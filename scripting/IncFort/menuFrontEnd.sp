@@ -611,11 +611,11 @@ public	Menu_TweakUpgrades_slot(client, arg, page)
 					float up_cost = float(upgrades[u].cost*nb_time_upgraded);
 					if(up_cost > 200.0)
 					{
-						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.2f\n%.0f", buf, RoundFloat(currentupgrades_val[client][s][i]*100.0)/100.0,up_cost)
+						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.3f\n%.0f", buf, currentupgrades_val[client][s][i],up_cost)
 					}
 					else
 					{
-						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.2f", buf, RoundFloat(currentupgrades_val[client][s][i]*100.0)/100.0)
+						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.3f", buf, currentupgrades_val[client][s][i])
 					}
 				}
 				else if (upgrades[u].cost > 1.0)
@@ -636,16 +636,16 @@ public	Menu_TweakUpgrades_slot(client, arg, page)
 						
 					if(up_cost > 200.0)
 					{
-						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.2f\n+%.0f", buf, RoundFloat(currentupgrades_val[client][s][i]*100.0)/100.0,up_cost)
+						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.3f\n+%.0f", buf, currentupgrades_val[client][s][i],up_cost)
 					}
 					else
 					{
-						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.2f", buf, RoundFloat(currentupgrades_val[client][s][i]*100.0)/100.0)
+						Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.3f", buf, currentupgrades_val[client][s][i])
 					}
 				}
 				else
 				{
-					Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.2f", buf, RoundFloat(currentupgrades_val[client][s][i]*100.0)/100.0)
+					Format(fstr, sizeof(fstr), "[%s] :\n\t\t%10.3f", buf, currentupgrades_val[client][s][i])
 				}
 				AddMenuItem(menu, "yep", fstr);
 			}
