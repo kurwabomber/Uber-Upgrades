@@ -37,18 +37,22 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				return Plugin_Changed;
 			}
 		}
-		if(IsValidClient3(attacker) && victim != attacker && IsValidEdict(inflictor))
+		if(IsValidClient3(attacker) && victim != attacker)
 		{
-			char classname[128]; 
-			GetEdictClassname(inflictor, classname, sizeof(classname));
-			if(!strcmp("tf_projectile_lightningorb", classname))
-			{
-				damage += (30.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * 5.0));
-				damagetype |= DMG_PREVENT_PHYSICS_FORCE;
+			if(IsValidEdict(inflictor)){
+				char classname[32]; 
+				GetEdictClassname(inflictor, classname, sizeof(classname));
+				if(!strcmp("tf_projectile_lightningorb", classname))
+				{
+					damage += (30.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * 5.0));
+					damagetype |= DMG_PREVENT_PHYSICS_FORCE;
+				}
 			}
+
 			if(IsValidWeapon(weapon))
 			{
-				if(damagetype == (DMG_BURN | DMG_PREVENT_PHYSICS_FORCE))
+				PrintToServer("%i damageType", damagetype);
+				if(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE)
 				{
 					damage = 0.0;
 					float burndmgMult = 1.0;
@@ -58,6 +62,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
+					PrintToServer("%i weapon | %.2f damage | %N attacker", weapon, damage, attacker);
 					if(GetAttribute(victim, "inverter powerup", 0.0)){
 						AddPlayerHealth(victim, RoundToFloor(damage/GetResistance(victim, true)), 2.0, true, 0);
 						damage *= 0.0;

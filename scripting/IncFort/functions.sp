@@ -317,7 +317,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 					{
 						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
 						if(ignition)
-							TF2_IgnitePlayer(i, owner, 7.0);
+							TF2Util_IgnitePlayer(i, owner, 7.0, weapon);
 					}
 					else
 					{
@@ -948,6 +948,10 @@ DisplayItemChange(client,itemidx)
 		case 594:
 		{
 			ChangeString = "The Phlogistinator | Rage gain is now based on hits dealt rather than damage dealt. Rage gives minicrits and agility rune instead of crits.";
+		}
+		case 1178:
+		{
+			ChangeString = "Dragon's Fury | No longer has recharge penalty on airblast. Fire rate bonus is converted into damage.";
 		}
 		//Pyro Secondary
 		case 595:
@@ -1746,11 +1750,7 @@ refreshUpgrades(client, slot)
 					TF2Attrib_RemoveByName(slotItem, "reload time increased hidden");
 					}
 				}
-				if(damageModifier != 1.0)
-				{
-					TF2Attrib_SetByName(slotItem,"damage mult 15", damageModifier);
-					//PrintToChat(client,"int mult = %.2f",damageModifier);
-				}
+				TF2Attrib_SetByName(slotItem,"damage mult 15", damageModifier);
 			}
 			else if(firerateActive != Address_Null)
 			{
@@ -1759,6 +1759,7 @@ refreshUpgrades(client, slot)
 					TF2Attrib_SetByName(slotItem,"mult smack time", 1.0/TF2Attrib_GetValue(firerateActive));
 				
 			}
+			TF2Attrib_ClearCache(slotItem);
 		}
 	}
 }

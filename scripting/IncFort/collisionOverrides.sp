@@ -868,11 +868,6 @@ public Action:OnStartTouchDragonsBreath(entity, other)
 	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(!IsValidClient(owner))
 		return Plugin_Continue;
-	
-	int maxBounces = 6;
-	
-	if (g_nBounces[entity] >= maxBounces)
-		return Plugin_Continue;
 
 	SDKHook(entity, SDKHook_Touch, OnTouchDrag);
 	return Plugin_Handled;
@@ -909,52 +904,7 @@ public Action:OnTouchDrag(entity, other)
 {
 	float vOrigin[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vOrigin);
-	
-	float vAngles[3];
-	GetEntPropVector(entity, Prop_Data, "m_angRotation", vAngles);
-	
-	float vVelocity[3];
-	GetEntPropVector(entity, Prop_Data, "m_vecAbsVelocity", vVelocity);
-	
-	Handle trace = TR_TraceRayFilterEx(vOrigin, vAngles, MASK_SHOT, RayType_Infinite, TEF_ExcludeEntity, entity);
-	
-	if(!TR_DidHit(trace))
-	{
-		CloseHandle(trace);
-		return Plugin_Continue;
-	}
-	
-	float vNormal[3];
-	TR_GetPlaneNormal(trace, vNormal);
-	
-	//PrintToServer("Surface Normal: [%.2f, %.2f, %.2f]", vNormal[0], vNormal[1], vNormal[2]);
-	
-	CloseHandle(trace);
-	
-	float dotProduct = GetVectorDotProduct(vNormal, vVelocity);
-	
-	ScaleVector(vNormal, dotProduct);
-	ScaleVector(vNormal, 2.0);
-	
-	float vBounceVec[3];
-	SubtractVectors(vVelocity, vNormal, vBounceVec);
-	
-	float vNewAngles[3];
-	GetVectorAngles(vBounceVec, vNewAngles);
-	
-	//PrintToServer("Angles: [%.2f, %.2f, %.2f] -> [%.2f, %.2f, %.2f]", vAngles[0], vAngles[1], vAngles[2], vNewAngles[0], vNewAngles[1], vNewAngles[2]);
-	//PrintToServer("Velocity: [%.2f, %.2f, %.2f] |%.2f| -> [%.2f, %.2f, %.2f] |%.2f|", vVelocity[0], vVelocity[1], vVelocity[2], GetVectorLength(vVelocity), vBounceVec[0], vBounceVec[1], vBounceVec[2], GetVectorLength(vBounceVec));
-	
-	Handle datapack = CreateDataPack();
-	WritePackCell(datapack,EntIndexToEntRef(entity));
-	for(int i=0;i<3;i++)
-	{
-		WritePackFloat(datapack,0.0);
-		WritePackFloat(datapack,vNewAngles[i]);
-		WritePackFloat(datapack,vBounceVec[i]);
-	}
-	
-	RequestFrame(DelayedTeleportEntity,datapack);
+
 	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 	if(IsValidClient(owner))
 	{
@@ -962,10 +912,11 @@ public Action:OnTouchDrag(entity, other)
 		if(IsValidEdict(CWeapon))
 		{
 			vOrigin[2]+= 30.0;
-			EntityExplosion(owner, TF2_GetDPSModifiers(owner, CWeapon, false)*35.0, 500.0, vOrigin, 0,_,entity);
+			EntityExplosion(owner, TF2_GetDPSModifiers(owner, CWeapon, false)*45.0, 500.0, vOrigin, 0,_,entity, _, _, _, _, _, true);
 		}
 	}
-	g_nBounces[entity]++;
+
+	RemoveEntity(entity);
 	SDKUnhook(entity, SDKHook_Touch, OnTouchDrag);
 	return Plugin_Handled;
 }

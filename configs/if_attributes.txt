@@ -4359,7 +4359,7 @@
 		"1529.3"
 		{
 			"name"		"apply look velocity on damage"
-			"ref"		"Ability : Dragon's Breath"
+			"ref"		"Ability : Fireball Volley"
 			"cost"		"15000"
 			"increase_ratio"	"0"
 			"value"		"5"

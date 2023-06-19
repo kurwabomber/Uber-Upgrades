@@ -1807,19 +1807,19 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								}
 							}
 						}
-						case 5.0: //Dragon's Breath
+						case 5.0: //Fireball Volley
 						{
 							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Dragon's Breath: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+								Format(CooldownTime, sizeof(CooldownTime), "Fireball Volley: %.1fs", weaponArtCooldown[client]-currentGameTime); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Dragon's Breath: READY (MOUSE3)"); 
+								Format(CooldownTime, sizeof(CooldownTime), "Fireball Volley: READY (MOUSE3)"); 
 								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
@@ -1845,8 +1845,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 												GetClientEyeAngles(client, fAngles);
 												GetClientEyePosition(client, fOrigin);
 												
-												fAngles[1] -= 20.0*(5/2);
-												fAngles[1] += i*20.0;
+												fAngles[1] -= 10.0*(5/2);
+												fAngles[1] += i*10.0;
 
 												GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
 												ScaleVector(fwd, 30.0);
@@ -1854,18 +1854,17 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 												AddVectors(fOrigin, fwd, fOrigin);
 												GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 												
-												float velocity = 300.0;
-												float vecAngImpulse[3];
-												GetCleaverAngularImpulse(vecAngImpulse);
+												float velocity = 1300.0;
 												fVelocity[0] = vBuffer[0]*velocity;
 												fVelocity[1] = vBuffer[1]*velocity;
 												fVelocity[2] = vBuffer[2]*velocity;
 												
 												TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 												DispatchSpawn(iEntity);
-												setProjGravity(iEntity, 9.0);
 												SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchDragonsBreath);
 												CreateTimer(10.0,SelfDestruct,EntIndexToEntRef(iEntity));
+												homingRadius[iEntity] = 400.0;
+												homingTickRate[iEntity] = 3;
 											}
 										}
 									}

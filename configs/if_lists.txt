@@ -2339,7 +2339,7 @@
 		}
 		"Special Abilities"
 		{
-			"Attr0"		"Ability : Dragon's Breath"
+			"Attr0"		"Ability : Fireball Volley"
 		}
 	}
 	"rocketpack"
