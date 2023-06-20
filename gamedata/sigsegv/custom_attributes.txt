@@ -3749,4 +3749,13 @@
         "hidden"	"1"
         "effect_type"	"positive"
     }
+    "6031"
+    {
+        "name"  "conference call damage"
+        "attribute_class"   "conference_call_damage"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
 }

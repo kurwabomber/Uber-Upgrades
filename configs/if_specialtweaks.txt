@@ -52,11 +52,6 @@
 			"Teammate Damage Redirection"	"6.5"
 			"Damage Reduced"				"5.0"
 		}
-		"Lightning Banner"
-		{
-			"cost"							"10k"
-			"Banner Summons Lightning"		"1"
-		}
 		"Blade Stream"
 		{
 			"requirement"					"150k"

@@ -320,6 +320,7 @@ bool miniCritStatus[MAXPLAYERS+1];
 bool RageActive[MAXPLAYERS+1];
 bool canBypassRestriction[MAXPLAYERS+1];
 bool isTagged[MAXPLAYERS+1][MAXPLAYERS+1];
+bool isConferenced[MAXENTITIES+1];
 
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]

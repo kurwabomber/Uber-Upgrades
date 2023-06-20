@@ -1110,6 +1110,77 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					i++
 				}
 			}
+			float conferenceBonus = GetAttribute(weapon, "conference call damage", 0.0);
+			if(conferenceBonus && baseDamage[attacker] > 0)
+			{
+				float victimPos[3];
+				GetClientEyePosition(victim, victimPos);
+
+				for(int i = 0; i < 3; i++){
+					float pos1[3],pos2[3];
+
+					float vecangles[3];
+					if(i == 0){
+						vecangles = {90.0,0.0,0.0};
+					}else if(i == 1){
+						vecangles = {0.0,0.0,0.0};
+					}else{
+						vecangles = {0.0,90.0,0.0};
+					}
+
+					Handle traceray = TR_TraceRayFilterEx(victimPos, vecangles, MASK_SHOT_HULL, RayType_Infinite, ConferenceCallTrace, attacker);
+					if (TR_DidHit(traceray)) {
+						TR_GetEndPosition(pos1, traceray);
+						delete traceray;
+					}
+					if(i != 1)
+						ScaleVector(vecangles, -1.0);
+					else
+						vecangles[1] = 179.99;
+
+					Handle traceray2 = TR_TraceRayFilterEx(victimPos, vecangles, MASK_SHOT_HULL, RayType_Infinite, ConferenceCallTrace, attacker);
+					if (TR_DidHit(traceray2)) {
+						TR_GetEndPosition(pos2, traceray2);
+						delete traceray2;
+					}
+					delete traceray2;
+
+
+					int iPart1 = CreateEntityByName("info_particle_system");
+					int iPart2 = CreateEntityByName("info_particle_system");
+
+					if (IsValidEdict(iPart1) && IsValidEdict(iPart2))
+					{
+						char szCtrlParti[32];
+						char particleName[32];
+						particleName = GetClientTeam(attacker) == 2 ? "dxhr_sniper_rail_red" : "dxhr_sniper_rail_blue";
+						Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
+						PrintToServer("%s", szCtrlParti);
+						DispatchKeyValue(iPart2, "targetname", szCtrlParti);
+
+						DispatchKeyValue(iPart1, "effect_name", particleName);
+						DispatchKeyValue(iPart1, "cpoint1", szCtrlParti);
+						DispatchSpawn(iPart1);
+						TeleportEntity(iPart1, pos1, NULL_VECTOR, NULL_VECTOR);
+						TeleportEntity(iPart2, pos2, NULL_VECTOR, NULL_VECTOR);
+						ActivateEntity(iPart1);
+						AcceptEntityInput(iPart1, "Start");
+						
+						Handle pack;
+						CreateDataTimer(1.0, Timer_KillParticle, pack);
+						WritePackCell(pack, iPart1);
+						Handle pack2;
+						CreateDataTimer(1.0, Timer_KillParticle, pack2);
+						WritePackCell(pack2, iPart2);
+					}
+				}
+				for(int i = 1; i< MAXENTITIES; i++){
+					if(isConferenced[i]){
+						SDKHooks_TakeDamage(i,attacker,attacker,baseDamage[attacker]*TF2_GetDamageModifiers(attacker, weapon)*conferenceBonus,damagetype,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
+						isConferenced[i] = false;
+					}
+				}
+			}
 		}
 		if(GetAttribute(attacker, "supernova powerup",0.0) != 0.0)
 		{

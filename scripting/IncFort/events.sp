@@ -2839,7 +2839,7 @@ public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
 									ScaleVector(fwd, 50.0);
 									AddVectors(fOrigin, fwd, fOrigin);
 									AddVectors(fOrigin, right, fOrigin);
-									float velocity = 5000.0;
+									float velocity = 3000.0;
 									Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
 									Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
 									if(projspeed != Address_Null){

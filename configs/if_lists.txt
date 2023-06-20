@@ -1142,10 +1142,8 @@
 		"Laser weapon specific upgrades"
 		{
 			"Attr0"		"fire rate bonus(multshit)"
-			"Attr1"		"faster reload rate (U)"
+			"Attr1"		"faster reload rate"
 			"Attr2"		"clip size bonus (E)"
-			"Attr3"		"bullets per shot bonus"
-			"Attr3"		"Projectile speed increased"
 		}
 	}
 	"sprweap2"
@@ -1226,7 +1224,6 @@
 			"Attr1"		"Accuracy Scales DMG Replacement"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1236,10 +1233,8 @@
 		"Laser specific upgrades"
 		{
 			"Attr0"		"fire rate bonus(multshit)"
-			"Attr1"		"faster reload rate (U)"
+			"Attr1"		"faster reload rate"
 			"Attr2"		"clip size bonus (E)"
-			"Attr3"		"Projectile speed increased"
-			"Attr4"		"bullets per shot bonus"
 		}
 	}
 	
@@ -2014,10 +2009,7 @@
 			"Attr0"		"increase buff duration"
 			"Attr1"		"increase buff radius"
 			"Attr2"		"blast dmg to self decreased"
-		}
-		"Special Tweaks"
-		{
-			"Sp1"		"Lightning Banner"
+			"Attr3"		"Banner Summons Lightning"
 		}
 	}
 	"lunchbox"

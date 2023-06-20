@@ -4954,7 +4954,7 @@
 		{
 			"name"		"has pipboy build interface"
 			"ref"		"Banner Summons Lightning"
-			"cost"		"0"
+			"cost"		"10000"
 			"increase_ratio"	"0"
 			"value"		"0.15"
 			"init"		"1"
