@@ -2045,11 +2045,6 @@
 			"Attr3"		"Projectile speed increased"
 			"Attr4"		"dmg from all reduced(wearable)"
 		}
-		"Fragmentation Upgrades"
-		{
-			"Attr1"		"Jar Fragment Count"
-			"Attr2"		"Fragment Explosion Base Damage"
-		}
 		"Debuff Upgrades"
 		{
 			"Attr1"		"Bleed Per Hit(E)"

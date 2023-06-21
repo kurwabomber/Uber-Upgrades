@@ -5166,8 +5166,8 @@
 			"name"		"building cost reduction"
 			"ref"		"Corrosive Damage Over Time"
 			"cost"		"2000"
-			"increase_ratio"	"0.55"
-			"value"		"0.75"
+			"increase_ratio"	"0.4"
+			"value"		"0.25"
 			"init"		"0.0"
 			"max"		"15.0"
 		}

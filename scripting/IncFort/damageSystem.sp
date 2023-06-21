@@ -1145,7 +1145,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					}
 					delete traceray2;
 
-
 					int iPart1 = CreateEntityByName("info_particle_system");
 					int iPart2 = CreateEntityByName("info_particle_system");
 

@@ -24,7 +24,6 @@ Handle g_SDKCallJar;
 Handle g_SDKCallSentryThink;
 Handle g_SDKFastBuild;
 
-Handle Hook_OnMyWeaponFired;
 Handle hudSync;
 Handle hudSpells;
 Handle hudAbility;
@@ -306,7 +305,7 @@ bool isFailHooked = false;
 bool isEntitySentry[MAXENTITIES+1];
 bool sentryThought[MAXENTITIES+1];
 bool b_Hooked[MAXPLAYERS+1];
-bool canShootAgain[MAXPLAYERS+1] = {true};
+bool canShootAgain[MAXPLAYERS+1] = {true,...};
 bool isBuffActive[MAXPLAYERS+1];
 bool gravChanges[MAXENTITIES];
 bool debugMode = false;
@@ -321,6 +320,7 @@ bool RageActive[MAXPLAYERS+1];
 bool canBypassRestriction[MAXPLAYERS+1];
 bool isTagged[MAXPLAYERS+1][MAXPLAYERS+1];
 bool isConferenced[MAXENTITIES+1];
+bool canOverride[MAXPLAYERS+1];
 
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]

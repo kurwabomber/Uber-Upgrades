@@ -217,6 +217,7 @@ public OnMapStart()
 	{
 		RemoveEntity(entity);
 	}
+	ResetVariables();
 }
 
 public void OnPluginStart()
@@ -411,15 +412,13 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | g_DHookFireballRange fucked up.");
 	DHookEnableDetour(g_DHookThrusterLaunch, false, OnThermalThrusterLaunch);
 
-	//Weapon Fired
-	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
+
+	//New On Weapon Fired
+	Handle g_DHookOnWeaponFired = DHookCreateFromConf(hConf, "CTFGameStats::Event_PlayerFiredWeapon()");
 	
-	int offset = GameConfGetOffset(hConf, "CBasePlayer::OnMyWeaponFired");
-	if (offset == -1)
-		SetFailState("Missing offset for CBasePlayer::OnMyWeaponFired");
-	
-	Hook_OnMyWeaponFired = DHookCreate(offset, HookType_Entity, ReturnType_Void, ThisPointer_CBaseEntity, OnMyWeaponFired);
-	DHookAddParam(Hook_OnMyWeaponFired, HookParamType_Int);
+	if(!g_DHookOnWeaponFired)
+		PrintToServer("CustomAttrs | Weapon Fire Hook Failed");
+	DHookEnableDetour(g_DHookOnWeaponFired, false, OnWeaponFired);
 	
 	delete hConf;
 			

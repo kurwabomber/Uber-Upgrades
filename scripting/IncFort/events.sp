@@ -962,6 +962,7 @@ public OnEntityDestroyed(entity)
 	//isProjectileSlash[entity][0] = 0.0;
 	//isProjectileSlash[entity][1] = 0.0;
 	jarateWeapon[entity] = -1;
+	jarateType[entity] = -1;
 	if(StrEqual(classname, "tank_boss"))
 	{
 		int iLink = GetEntPropEnt(entity, Prop_Send, "m_hEffectEntity");
@@ -2572,12 +2573,16 @@ public void giveAmmoBack(DataPack pack){
 
 	delete pack;	
 }
-public MRESReturn OnMyWeaponFired(int client, Handle hReturn, Handle hParams)
+public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 {
+	int client = DHookGetParam(hParams, 1);
+	//bool isCrit = DHookGetParam(hParams, 2);
+
 	if(!IsValidClient3(client) || !IsValidEdict(client))
 		return MRES_Ignored;
 	if(IsValidClient3(client))//Players
 	{
+		canOverride[client] = true;
 		canShootAgain[client] = true;
 		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 		if(IsValidWeapon(CWeapon))
@@ -3266,7 +3271,6 @@ public OnClientPutInServer(client)
 	{
 		AttunedSpells[client][i] = 0.0;
 	}
-	DHookEntity(Hook_OnMyWeaponFired, true, client);
 	
 	if(b_Hooked[client] == false)
 	{

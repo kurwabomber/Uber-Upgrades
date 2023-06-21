@@ -20,11 +20,6 @@
 				"windows"	"32"
 				"linux"		"28"
 			}
-			"CBasePlayer::OnMyWeaponFired"
-			{
-				"windows"	"357"
-				"linux"		"358"
-			}
 		}
 		"Functions"
 		{
@@ -197,6 +192,24 @@
 				"return"		"void"
 				"this"			"entity"
 			}
+			"CTFGameStats::Event_PlayerFiredWeapon()"
+			{
+				"signature"		"CTFGameStats::Event_PlayerFiredWeapon()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"address"
+				"arguments"
+				{
+					"client"
+					{
+						"type"	"cbaseentity"
+					}
+					"critbool"
+					{
+						"type"	"bool"
+					}
+				}
+			}
 		}
 		"Signatures"
 		{
@@ -328,6 +341,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN13CTFRocketPack6LaunchEv"
+			}
+			"CTFGameStats::Event_PlayerFiredWeapon()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN12CTFGameStats23Event_PlayerFiredWeaponEP9CTFPlayerb"
 			}
 		}
 	}

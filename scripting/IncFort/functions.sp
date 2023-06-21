@@ -929,7 +929,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 442:
 		{
-			ChangeString = "The Righteous Bison | Shoots homing lasers which continously deal damage. Converts fire rate to damage.";
+			ChangeString = "The Righteous Bison | Shoots tracer rounds that also deals damage to enemies in a cross pattern. Converts fire rate to damage.";
 		}
 		case 1101:
 		{
@@ -1008,7 +1008,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 811,832:
 		{
-			ChangeString = "The Huo-Long Heater | Shoots flares. Deals 66% less damage. +200% projectile speed. Press mouse3 (middle click) to detonate the flares. Massively increased blast radius.";
+			ChangeString = "The Huo-Long Heater | Shoots flares. Converts fire rate into damage. Press mouse3 (middle click) to detonate the flares. Massively increased blast radius.";
 		}
 		case 424:
 		{
@@ -1039,7 +1039,7 @@ DisplayItemChange(client,itemidx)
 		//Engineer Primary
 		case 588:
 		{
-			ChangeString = "The Pomson 6000 | Shoots homing lasers which continously deal damage. Converts fire rate to damage.";
+			ChangeString = "The Pomson 6000 | Shoots tracer rounds that also deals damage to enemies in a cross pattern. Converts fire rate to damage.";
 		}
 		case 141,1004:
 		{
@@ -1099,10 +1099,14 @@ DisplayItemChange(client,itemidx)
 		{
 			ChangeString = "The Cleaner's Carbine | No longer has crikey. Close ranged backattacks do minicrits. Converts fire rate to damage.";
 		}
+		case 58	:
+		{
+			ChangeString = "Jarate | Jarate effect now applies +10 damage (based on your scaling) to every hit taken.";
+		}
 		//Sniper Melees
 		case 232:
 		{
-			ChangeString = "The Bushwacka | Shoots an arrow that deals 120 base damage and has a boomerang styled trajectory. Projectile pierces all targets forever and can hit multiple times. Fires 4x slower.";
+			ChangeString = "The Bushwacka | Launches projectile dealing 120 base damage and returns after 0.7s. Projectile pierces all targets forever and can hit multiple times. Fires 4x slower.";
 		}
 		//Spy Primaries
 		case 61,1006:
@@ -2670,8 +2674,9 @@ ChangeProjModel(entity)
 		{
 			client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		}
-		if(IsValidClient(client))
+		if(IsValidClient(client) && canOverride[client])
 		{
+			canOverride[client] = false;
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
@@ -3555,6 +3560,66 @@ stock fixPiercingVelocity(entity)
 		fVelocity[1] = vBuffer[1]*speed;
 		fVelocity[2] = vBuffer[2]*speed;
 		TeleportEntity(entity, origin,NULL_VECTOR,fVelocity);
+	}
+}
+ResetVariables(){
+	for(int client = 1;client<MaxClients;client++){
+		buffChange[client] = false;
+		playerUpgradeMenus[client] = 0;
+		playerUpgradeMenuPage[client] = 0;
+		oldPlayerButtons[client] = 0;
+		MadmilkInflictor[client] = 0;
+		autoSentryID[client] = 0;
+		globalButtons[client] = 0;
+		singularBuysPerMinute[client] = 0;
+		bossPhase[client] = 0;
+		fanOfKnivesCount[client] = 0;
+		firestormCounter[client] = 0;
+		lastFlag[client] = 0;
+		ShotsLeft[client] = 0;
+		meleeLimiter[client] = 0;
+		lightningCounter[client] = 0;
+		plagueAttacker[client] = 0;
+		lastKBSource[client] = 0;
+		knockbackFlags[client] = 0;
+		relentlessTicks[client] = 0;
+		Kills[client] = 0;
+		Deaths[client] = 0;
+		armorTicks[client] = 0;
+		currentGameTime = 0.0;
+		efficiencyCalculationTimer[client] = 0.0;
+		DamageDealt[client] = 0.0;
+		dps[client] = 0.0;
+		Healed[client] = 0.0;
+		MenuTimer[client] = 0.0;
+		ImpulseTimer[client] = 0.0;
+		g_flLastAttackTime[client] = 0.0;
+		RPS[client] = 0.0;
+		lastMinesTime[client] = 0.0;
+		weaponTrailTimer[client] = 0.0;
+		disableIFMiniHud[client] = 0.0;
+		fl_GlobalCoolDown[client] = 0.0;
+		weaponArtCooldown[client] = 0.0;
+		weaponArtParticle[client] = 0.0;
+		powerupParticle[client] = 0.0;
+		fl_ArrowStormDuration[client] = 0.0;
+		BotTimer[client] = 0.0;
+		LastCharge[client] = 0.0;
+		lastDamageTaken[client] = 0.0;
+		flNextSecondaryAttack[client] = 0.0;
+		CurrentSlowTimer[client] = 0.0;
+		fl_HighestFireDamage[client] = 0.0;
+		miniCritStatusVictim[client] = 0.0;
+		miniCritStatusAttacker[client] = 0.0;
+		baseDamage[client] = 0.0;
+		remainderHealthRegeneration[client] = 0.0;
+		armorWeaknessRatio[client] = 0.0;
+		for(int buffID = 0; buffID<MAXBUFFS; buffID++){
+			playerBuffs[client][buffID].clear();
+		}
+	}
+	for(int entity = 0; entity<MAXENTITIES; entity++){
+		currentDamageType[entity].clear();
 	}
 }
 stock void ZeroVector(float vec[3])
