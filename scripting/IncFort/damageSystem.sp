@@ -1237,7 +1237,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				}
 			}
 		}
-		PrintToServer("%s",getDamageCategory(currentDamageType[attacker], attacker));
 		if(isVictimPlayer && StrContains(getDamageCategory(currentDamageType[attacker], attacker),"electric",false) != -1){
 			PrintToServer("yeah");
 			int team = GetClientTeam(attacker);
