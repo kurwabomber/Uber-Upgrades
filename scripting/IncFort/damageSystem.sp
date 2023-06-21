@@ -569,6 +569,9 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 	if(damagetype & DMG_USEDISTANCEMOD)
 		damagetype ^= DMG_USEDISTANCEMOD;
 
+	if(currentDamageType[attacker].first == 0)
+		currentDamageType[attacker].first = damagetype;
+
 	if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
 		damage = genericSentryDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 	
@@ -1158,7 +1161,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						char particleName[32];
 						particleName = GetClientTeam(attacker) == 2 ? "dxhr_sniper_rail_red" : "dxhr_sniper_rail_blue";
 						Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
-						PrintToServer("%s", szCtrlParti);
 						DispatchKeyValue(iPart2, "targetname", szCtrlParti);
 
 						DispatchKeyValue(iPart1, "effect_name", particleName);
@@ -1233,6 +1235,24 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					}
 					weaponArtParticle[attacker] = currentGameTime+1.0;
 				}
+			}
+		}
+		PrintToServer("%s",getDamageCategory(currentDamageType[attacker], attacker));
+		if(isVictimPlayer && StrContains(getDamageCategory(currentDamageType[attacker], attacker),"electric",false) != -1){
+			PrintToServer("yeah");
+			int team = GetClientTeam(attacker);
+			float arcDamage = baseDamage[attacker] * TF2_GetDamageModifiers(attacker, weapon, true) * 0.5;
+			for(int i = 1;i<MaxClients;i++){
+				if(!IsValidClient3(i))
+					continue;
+				if(!IsPlayerAlive(i))
+					continue;
+				if(GetClientTeam(i) == team)
+					continue;
+				if(!isTagged[attacker][i])
+					continue;
+
+				SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK, weapon);
 			}
 		}
 	}
@@ -1670,21 +1690,6 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 					buff += 0.08;
 			}
 			damage *= buff;
-		}
-
-		int team = GetClientTeam(attacker);
-		float arcDamage = baseDamage[attacker] * TF2_GetDamageModifiers(attacker, weapon, true) * 0.5;
-		for(int i = 1;i<MaxClients;i++){
-			if(!IsValidClient3(i))
-				continue;
-			if(!IsPlayerAlive(i))
-				continue;
-			if(GetClientTeam(i) == team)
-				continue;
-			if(!isTagged[attacker][i])
-				continue;
-
-			SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK, weapon);
 		}
 	}
 	else if(StrContains(damageCategory, "arcane") != -1)

@@ -412,7 +412,6 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | g_DHookFireballRange fucked up.");
 	DHookEnableDetour(g_DHookThrusterLaunch, false, OnThermalThrusterLaunch);
 
-
 	//New On Weapon Fired
 	Handle g_DHookOnWeaponFired = DHookCreateFromConf(hConf, "CTFGameStats::Event_PlayerFiredWeapon()");
 	
@@ -420,6 +419,7 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | Weapon Fire Hook Failed");
 	DHookEnableDetour(g_DHookOnWeaponFired, false, OnWeaponFired);
 	
+	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	delete hConf;
 			
 	//Cookies
