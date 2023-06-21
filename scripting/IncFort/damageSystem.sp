@@ -51,7 +51,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 			if(IsValidWeapon(weapon))
 			{
-				PrintToServer("%i damageType", damagetype);
 				if(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE)
 				{
 					damage = 0.0;
@@ -539,7 +538,8 @@ int damagecustom, CritType &critType)
 		return Plugin_Changed;
 	}
 	else if(IsValidClient3(victim) && lastDamageTaken[victim] != 0.0 && miniCritStatus[victim] == false && IsValidClient3(attacker) 
-	&& (critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > currentGameTime || miniCritStatusVictim[victim] > currentGameTime))
+	&& (critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > currentGameTime || miniCritStatusVictim[victim] > currentGameTime)
+	&& !(currentDamageType[attacker].second & DMG_ACTUALCRIT) )
 	{
 		if(debugMode)
 			PrintToChat(attacker, "minicrit override failsafe");
