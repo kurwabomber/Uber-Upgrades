@@ -427,8 +427,9 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			{
 				if(GetAttribute(client, "inverter powerup", 0.0))
 					giveDefenseBuff(client, duration);
-				else
+				else{
 					miniCritStatusVictim[client] = currentGameTime+duration;
+				}
 				return MRES_Supercede;
 			}
 			case TFCond_MarkedForDeath:

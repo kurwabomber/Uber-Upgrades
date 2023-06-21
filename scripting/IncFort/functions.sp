@@ -17,6 +17,13 @@ public bool hasBuffIndex(int client, int index){
 	}
 	return false;
 }
+public int getBuffInArray(int client, int index){
+	for(int i = 0; i < MAXBUFFS; i++){
+		if(playerBuffs[client][i].id == index)
+			return i;
+	}
+	return -1;
+}
 public int getNextBuff(int client){
 	for(int i = 0; i < MAXBUFFS; i++){
 		if(playerBuffs[client][i].id == 0)

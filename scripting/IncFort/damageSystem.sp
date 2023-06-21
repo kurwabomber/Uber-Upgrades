@@ -575,6 +575,10 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 	if(IsValidClient3(victim) && IsValidClient3(attacker)){
 		damage += GetAttribute(attacker, "additive damage bonus", 0.0);
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
+		int jaratedIndex = getBuffInArray(victim, Buff_Jarated);
+		if(jaratedIndex != -1){
+			SDKHooks_TakeDamage(victim,playerBuffs[victim][jaratedIndex].inflictor,playerBuffs[victim][jaratedIndex].inflictor,10.0*playerBuffs[victim][jaratedIndex].priority,DMG_DISSOLVE,-1,NULL_VECTOR,NULL_VECTOR);
+		}
 	}
 	lastDamageTaken[victim] = damage;
 	if(damage < 0.0)
