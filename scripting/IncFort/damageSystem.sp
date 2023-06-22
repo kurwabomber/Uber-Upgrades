@@ -1238,7 +1238,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			}
 		}
 		if(isVictimPlayer && StrContains(getDamageCategory(currentDamageType[attacker], attacker),"electric",false) != -1){
-			PrintToServer("yeah");
 			int team = GetClientTeam(attacker);
 			float arcDamage = baseDamage[attacker] * TF2_GetDamageModifiers(attacker, weapon, true) * 0.5;
 			for(int i = 1;i<MaxClients;i++){
@@ -1249,6 +1248,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				if(GetClientTeam(i) == team)
 					continue;
 				if(!isTagged[attacker][i])
+					continue;
+				if(TF2Spawn_IsClientInSpawn(i))
 					continue;
 
 				SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK, weapon);
