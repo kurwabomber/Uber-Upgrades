@@ -1135,7 +1135,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						vecangles = {0.0,90.0,0.0};
 					}
 
-					Handle traceray = TR_TraceRayFilterEx(victimPos, vecangles, MASK_SHOT_HULL, RayType_Infinite, ConferenceCallTrace, attacker);
+					Handle traceray = TR_TraceRayFilterEx(victimPos, vecangles, MASK_SHOT_HULL, RayType_Infinite, PenetrationCallTrace, attacker);
 					if (TR_DidHit(traceray)) {
 						TR_GetEndPosition(pos1, traceray);
 						delete traceray;
@@ -1145,7 +1145,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					else
 						vecangles[1] = 179.99;
 
-					Handle traceray2 = TR_TraceRayFilterEx(victimPos, vecangles, MASK_SHOT_HULL, RayType_Infinite, ConferenceCallTrace, attacker);
+					Handle traceray2 = TR_TraceRayFilterEx(victimPos, vecangles, MASK_SHOT_HULL, RayType_Infinite, PenetrationCallTrace, attacker);
 					if (TR_DidHit(traceray2)) {
 						TR_GetEndPosition(pos2, traceray2);
 						delete traceray2;
@@ -1180,9 +1180,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					}
 				}
 				for(int i = 1; i< MAXENTITIES; i++){
-					if(isConferenced[i]){
+					if(isPenetrated[i]){
 						SDKHooks_TakeDamage(i,attacker,attacker,baseDamage[attacker]*TF2_GetDamageModifiers(attacker, weapon)*conferenceBonus,damagetype,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
-						isConferenced[i] = false;
+						isPenetrated[i] = false;
 					}
 				}
 			}

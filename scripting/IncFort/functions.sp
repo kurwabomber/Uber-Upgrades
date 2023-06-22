@@ -3520,9 +3520,9 @@ stock SentryMultishot(entity)
 		}
 	}
 }
-stock bool ConferenceCallTrace(int entity, int contentsMask, any data) {
+stock bool PenetrationCallTrace(int entity, int contentsMask, any data) {
 	if(entity != 0 && IsValidEntity(entity) && IsValidForDamage(entity) && IsOnDifferentTeams(entity,data)){
-		isConferenced[entity] = true;
+		isPenetrated[entity] = true;
 		return false;
 	}
     return true;
