@@ -2433,9 +2433,7 @@ stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] s
 			AcceptEntityInput(iParticle, "Start");
 			
 			if(time > 0.0){
-				Handle pack;
-				CreateDataTimer(time, Timer_KillParticle, pack);
-				WritePackCell(pack, EntIndexToEntRef(iParticle));
+				CreateTimer(time, Timer_KillParticle, EntIndexToEntRef(iParticle));
 			}
 		}
 		return iParticle
@@ -2472,18 +2470,15 @@ public Action:Timer_MoveParticle(Handle timer, Handle pack)
 	
 	return Plugin_Stop;
 }
-public Action:Timer_KillParticle(Handle timer, Handle pack)
-{
-	ResetPack(pack);	
-	int entity = EntRefToEntIndex(ReadPackCell(pack));
-	
+public Action Timer_KillParticle(Handle timer, any data)
+{	
+	int entity = EntRefToEntIndex(data);
 	if (IsValidEdict(entity))
 	{
 		SetVariantString("ParticleEffectStop");
 		AcceptEntityInput(entity, "DispatchEffect");
 		RemoveEdict(entity);
 	}
-	
 	return Plugin_Stop;
 }
 public Action:Timer_KillTEParticle(Handle timer, Handle pack)

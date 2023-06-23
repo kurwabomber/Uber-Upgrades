@@ -1060,10 +1060,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(isVictimPlayer)
 		{
-			float bouncingBullets = GetAttribute(weapon, "flame size penalty", 0.0);
+			float bouncingBullets = GetAttribute(weapon, "sniper fully charged bounce count", 0.0);
 			if(bouncingBullets != 0.0 && LastCharge[attacker] >= 150.0)
 			{
-				//PrintToChat(attacker, "%s dmg", GetAlphabetForm(DOTDmg));
 				bool isBounced[MAXPLAYERS+1];
 				isBounced[victim] = true
 				int lastBouncedTarget = victim;
@@ -1087,10 +1086,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					isBounced[client] = true;
 					GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
 					lastBouncedTarget = client
-					int iParti = CreateEntityByName("info_particle_system");
+					int iPart1 = CreateEntityByName("info_particle_system");
 					int iPart2 = CreateEntityByName("info_particle_system");
 
-					if (IsValidEdict(iParti) && IsValidEdict(iPart2))
+					if (IsValidEdict(iPart1) && IsValidEdict(iPart2))
 					{
 						char szCtrlParti[32];
 						char particleName[32];
@@ -1098,20 +1097,16 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
 						DispatchKeyValue(iPart2, "targetname", szCtrlParti);
 
-						DispatchKeyValue(iParti, "effect_name", particleName);
-						DispatchKeyValue(iParti, "cpoint1", szCtrlParti);
-						DispatchSpawn(iParti);
-						TeleportEntity(iParti, lastBouncedPosition, NULL_VECTOR, NULL_VECTOR);
+						DispatchKeyValue(iPart1, "effect_name", particleName);
+						DispatchKeyValue(iPart1, "cpoint1", szCtrlParti);
+						DispatchSpawn(iPart1);
+						TeleportEntity(iPart1, lastBouncedPosition, NULL_VECTOR, NULL_VECTOR);
 						TeleportEntity(iPart2, VictimPos, NULL_VECTOR, NULL_VECTOR);
-						ActivateEntity(iParti);
-						AcceptEntityInput(iParti, "Start");
+						ActivateEntity(iPart1);
+						AcceptEntityInput(iPart1, "Start");
 						
-						Handle pack;
-						CreateDataTimer(1.0, Timer_KillParticle, pack);
-						WritePackCell(pack, iParti);
-						Handle pack2;
-						CreateDataTimer(1.0, Timer_KillParticle, pack2);
-						WritePackCell(pack2, iPart2);
+						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
+						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 					}
 					SDKHooks_TakeDamage(client,attacker,attacker,damage,damagetype,-1,NULL_VECTOR,NULL_VECTOR)
 					i++
@@ -1171,12 +1166,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						ActivateEntity(iPart1);
 						AcceptEntityInput(iPart1, "Start");
 						
-						Handle pack;
-						CreateDataTimer(1.0, Timer_KillParticle, pack);
-						WritePackCell(pack, iPart1);
-						Handle pack2;
-						CreateDataTimer(1.0, Timer_KillParticle, pack2);
-						WritePackCell(pack2, iPart2);
+						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
+						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 					}
 				}
 				for(int i = 1; i< MAXENTITIES; i++){
@@ -1203,10 +1194,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				//PARTICLES
 				if(weaponArtParticle[attacker] <= currentGameTime)
 				{
-					int iParti = CreateEntityByName("info_particle_system");
+					int iPart1 = CreateEntityByName("info_particle_system");
 					int iPart2 = CreateEntityByName("info_particle_system");
 
-					if (IsValidEdict(iParti) && IsValidEdict(iPart2))
+					if (IsValidEdict(iPart1) && IsValidEdict(iPart2))
 					{
 						char particleName[32];
 						particleName = GetClientTeam(attacker) == 2 ? "powerup_supernova_strike_red" : "powerup_supernova_strike_blue";
@@ -1218,20 +1209,16 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						char szCtrlParti[32];
 						Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
 						DispatchKeyValue(iPart2, "targetname", szCtrlParti);
-						DispatchKeyValue(iParti, "effect_name", particleName);
-						DispatchKeyValue(iParti, "cpoint1", szCtrlParti);
-						DispatchSpawn(iParti);
-						TeleportEntity(iParti, clientPos, clientAng, NULL_VECTOR);
+						DispatchKeyValue(iPart1, "effect_name", particleName);
+						DispatchKeyValue(iPart1, "cpoint1", szCtrlParti);
+						DispatchSpawn(iPart1);
+						TeleportEntity(iPart1, clientPos, clientAng, NULL_VECTOR);
 						TeleportEntity(iPart2, victimPosition, NULL_VECTOR, NULL_VECTOR);
-						ActivateEntity(iParti);
-						AcceptEntityInput(iParti, "Start");
+						ActivateEntity(iPart1);
+						AcceptEntityInput(iPart1, "Start");
 						
-						Handle pack;
-						CreateDataTimer(0.2, Timer_KillParticle, pack);
-						WritePackCell(pack, EntIndexToEntRef(iParti));
-						Handle pack2;
-						CreateDataTimer(0.2, Timer_KillParticle, pack2);
-						WritePackCell(pack2, EntRefToEntIndex(iPart2));
+						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
+						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 					}
 					weaponArtParticle[attacker] = currentGameTime+1.0;
 				}
