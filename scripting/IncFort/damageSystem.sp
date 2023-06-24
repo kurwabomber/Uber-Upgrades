@@ -1060,7 +1060,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(isVictimPlayer)
 		{
-			float bouncingBullets = GetAttribute(weapon, "sniper fully charged bounce count", 0.0);
+			float bouncingBullets = GetAttribute(weapon, "flame size penalty", 0.0);
 			if(bouncingBullets != 0.0 && LastCharge[attacker] >= 150.0)
 			{
 				bool isBounced[MAXPLAYERS+1];
