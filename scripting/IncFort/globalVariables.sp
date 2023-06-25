@@ -139,6 +139,7 @@ Upgrade upgrades[MAX_ATTRIBUTES];
 Tweak tweaks[MAX_TWEAKS]
 
 //Integers
+int OwnerOffset;
 int playerUpgradeMenus[MAXPLAYERS+1];
 int playerUpgradeMenuPage[MAXPLAYERS+1];
 int oldPlayerButtons[MAXPLAYERS+1];
@@ -322,7 +323,7 @@ bool canBypassRestriction[MAXPLAYERS+1];
 bool isTagged[MAXPLAYERS+1][MAXPLAYERS+1];
 bool isPenetrated[MAXENTITIES+1];
 bool canOverride[MAXPLAYERS+1];
-
+bool isPrimed[MAXENTITIES+1];
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]

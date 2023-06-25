@@ -1313,7 +1313,176 @@ ChangeClassEffect(client)
 		ForcePlayerSuicide(client);
 	}
 }
+public void ThrowBuilding(any buildref) {
+	int building = EntRefToEntIndex(buildref);
+	if (building == INVALID_ENT_REFERENCE) return;
+	int owner = GetEntPropEnt(building, Prop_Send, "m_hBuilder");
+	if (owner < 1 || owner > MaxClients || !IsClientInGame(owner)) return;
+	
+	float eyes[3];
+	float origin[3];
+	float angles[3];
+	float fwd[3];
+	float velocity[3];
+	GetClientEyePosition(owner, origin);
+	eyes = origin;
+	//set origin in front of player
+	GetClientEyeAngles(owner, angles);
+	angles[0]=angles[2]=0.0;
+	GetAngleVectors(angles, fwd, NULL_VECTOR, NULL_VECTOR);
+	ScaleVector(fwd, 64.0);
+	AddVectors(origin, fwd, origin);
+	//get angles/velocity
+	GetClientEyeAngles(owner, angles);
+	GetAngleVectors(angles, fwd, NULL_VECTOR, NULL_VECTOR);
+	ScaleVector(fwd, 1200.0);
+	fwd[2] += (1200.0/3.25);//bit more archy
+	GetEntPropVector(owner, Prop_Data, "m_vecAbsVelocity", velocity);
+	AddVectors(velocity, fwd, velocity);
+	angles[0] = angles[2] = 0.0; //upright angle = 0.0 yaw 0.0
+	
+	//double up the CheckThrowPos trace, since we're a tick later
+	TR_TraceRayFilter(eyes, origin, MASK_PLAYERSOLID, RayType_EndPoint, TEF_HitSelfFilterPassClients, owner);
+	if (TR_DidHit()) {
+		// the building is already going up, we need to either handle the refund or break the building
+		SetVariantInt(RoundToCeil(TF2Util_GetEntityMaxHealth(building)*1.5));
+		AcceptEntityInput(building, "RemoveHealth");
+		return;
+	}
+	
+	int phys = CreateEntityByName("prop_physics_multiplayer");
+	if (phys == INVALID_ENT_REFERENCE) return;
+	
+	char targetName[24];
+	Format(targetName, sizeof(targetName), "physbuilding_%08X", EntIndexToEntRef(phys));
+	char buffer[64] = "models/weapons/w_models/w_toolbox.mdl";
+	DispatchKeyValue(phys, "targetname", targetName);
+	DispatchKeyValue(phys, "model", buffer);
+	DispatchKeyValue(phys, "physicsmode", "2"); //don't push (hard collide) with player (1), but get pushed (soft collide)
+	DispatchKeyValueVector(phys, "origin", origin);
+	DispatchKeyValueVector(phys, "angles", angles);
+	Format(buffer, sizeof(buffer), "%i", GetEntProp(building, Prop_Send, "m_nSkin"));
+	DispatchKeyValue(phys, "skin", buffer);
+	if (GetEntProp(building, Prop_Send, "m_bDisposableBuilding")) buffer = "0.66";
+	else if (GetEntProp(building, Prop_Send, "m_bMiniBuilding")) buffer = "0.75";
+	else buffer = "1.0";
+	DispatchKeyValue(phys, "modelscale", buffer);//mini sentries are .75
+	if (!DispatchSpawn(phys)) {
+		PrintToChat(owner, "Failed to spawn physics prop");
+		return;
+	}
+	ActivateEntity(phys);
+	SetEntityRenderMode(phys, RENDER_NORMAL); //why is it sometimes not rendered?
+	
+	bool newlyBuilt = GetEntProp(building, Prop_Send, "m_bCarryDeploy")==0;
+	SetEntProp(building, Prop_Send, "m_bCarried", 1);
+	SetEntProp(building, Prop_Send, "m_bBuilding", 0);
+	if (newlyBuilt) { //set health above 66% to suppress the client side alert
+		int maxhp = TF2Util_GetEntityMaxHealth(building);
+		SetEntityHealth(building, maxhp);
+	}
+	SetEntProp(building, Prop_Send, "m_usSolidFlags", 0x0004); //FSOLID_NOT_SOLID
+	SetEntityRenderMode(building, RENDER_NONE);
+	TeleportEntity(building, origin, NULL_VECTOR, NULL_VECTOR);
 
+	SetVariantString("!activator");
+	AcceptEntityInput(building, "SetParent", phys);
+	Phys_ApplyForceCenter(phys, velocity);// works best
+	CreateTimer(0.1,Timer_ThrownSentryDeploy,  buildref, TIMER_REPEAT);
+}
+public void function_AllowBuilding(int client){
+	int wrench = GetWeapon(client,2);
+	if(!IsValidWeapon(wrench)) return;
+
+	int DispenserLimit = RoundToNearest(GetAttribute(wrench, "dispenser amount"));
+	int SentryLimit = RoundToNearest(GetAttribute(wrench, "sentry amount"));
+
+	int DispenserCount = 0;
+	int SentryCount = 0;
+
+	for(int i=0;i<2048;i++){
+
+		if(!IsValidEntity(i)){
+			continue;
+		}
+
+		decl String:netclass[32];
+		GetEntityNetClass(i, netclass, sizeof(netclass));
+		if ( !(strcmp(netclass, "CObjectSentrygun") == 0 || strcmp(netclass, "CObjectDispenser") == 0) ){
+			continue;
+		}
+
+		if(GetEntDataEnt2(i, OwnerOffset)!=client){
+			continue;
+		}
+
+
+		int type=view_as<int>(function_GetBuildingType(i));
+
+		//Switching the dispenser to a sapper type
+		if(type==view_as<int>(TFObject_Dispenser)){
+			DispenserCount=DispenserCount+1;
+			SetEntProp(i, Prop_Send, "m_iObjectType", TFObject_Sapper);
+			if(DispenserCount>=DispenserLimit){
+				//if the limit is reached, disallow building
+				SetEntProp(i, Prop_Send, "m_iObjectType", type);
+
+			}
+
+		//not a dispenser,
+		}else if(type==view_as<int>(TFObject_Sentry)){
+			SentryCount++;
+			SetEntProp(i, Prop_Send, "m_iObjectType", TFObject_Sapper);
+			if(SentryCount>=SentryLimit){
+				//if the limit is reached, disallow building
+				SetEntProp(i, Prop_Send, "m_iObjectType", type);
+			}
+		}
+	//every building is in the desired state
+
+
+	}
+}
+public void function_AllowDestroying(int client){
+	for(int i=1;i<2048;i++){
+
+		if(!IsValidEntity(i)){
+			continue;
+		}
+
+		decl String:netclass[32];
+		GetEntityNetClass(i, netclass, sizeof(netclass));
+
+		if ( !(strcmp(netclass, "CObjectSentrygun") == 0 || strcmp(netclass, "CObjectDispenser") == 0) ){
+			continue;
+		}
+
+		if(GetEntDataEnt2(i, OwnerOffset)!=client){
+			continue;
+		}
+
+		SetEntProp(i, Prop_Send, "m_iObjectType", function_GetBuildingType(i));
+	}
+
+}
+
+public TFObjectType function_GetBuildingType(int entIndex){
+	//This function relies on Netclass rather than building type since building type
+	//gets changed
+	decl String:netclass[32];
+	GetEntityNetClass(entIndex, netclass, sizeof(netclass));
+
+	if(strcmp(netclass, "CObjectSentrygun") == 0){
+		return TFObject_Sentry;
+	}
+	if(strcmp(netclass, "CObjectDispenser") == 0){
+		return TFObject_Dispenser;
+	}
+
+	return TFObject_Sapper;
+
+
+}
 //PostUpgrade
 refreshUpgrades(client, slot)
 {
@@ -2549,10 +2718,7 @@ wrenchBonus(DataPack pack)
 			}
 			case 142:{
 				if(obj == 2){//Sentry
-					SDKCall(g_SDKFastBuild, entity, true);
-					SetEntProp(entity, Prop_Send, "m_iHighestUpgradeLevel", 3);
-					SetEntProp(entity, Prop_Send, "m_iUpgradeLevel", 3);
-					SetEntProp(entity, Prop_Send, "m_nSkin", GetClientTeam(owner)-2);
+					ThrowBuilding(EntIndexToEntRef(entity));
 				}
 			}
 			case 589:{
@@ -3643,4 +3809,7 @@ public Menu_BuyNewWeapon(client)
 }
 stock bool TraceEntityFilterPlayers(int entity, int contentsMask) {
     return entity > MaxClients;
+}
+public bool TEF_HitSelfFilterPassClients(int entity, int contentsMask, any data) {
+	return entity > MaxClients && entity != data;
 }

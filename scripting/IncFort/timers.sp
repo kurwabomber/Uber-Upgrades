@@ -1355,6 +1355,7 @@ public Action:eurekaAttempt(client, const char[] command, argc)
 		CreateTimer(tauntDelay,eurekaDelayed,EntIndexToEntRef(client));
 	}
 }
+
 public Action:thunderClapPart2(Handle timer, any:data) 
 {  
 	ResetPack(data);
@@ -1631,6 +1632,28 @@ public Action:orbitalStrike(Handle timer,any:data)
 		TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 		DispatchSpawn(iEntity);
 	}
+}
+public Action Timer_ThrownSentryDeploy(Handle timer, any data){
+	int entity = EntRefToEntIndex(data);
+	if(!IsValidEntity(entity)) return Plugin_Stop;
+	int parent = GetEntPropEnt(entity, Prop_Send, "moveparent");
+	if(!IsValidEntity(parent)) return Plugin_Stop;
+	float position[3];
+	GetEntPropVector(parent, Prop_Data, "m_vecOrigin", position);
+	
+	float low = getLowestPosition(position, entity);
+
+	if(FloatAbs(position[2]-low) > 10.0) return Plugin_Continue;
+
+	AcceptEntityInput(entity, "ClearParent");
+	//restore other props: get it out of peudo carry state 
+	SetEntProp(entity, Prop_Send, "m_bBuilding", 1);
+	SetEntProp(entity, Prop_Send, "m_bCarried", 0);
+	SDKCall(g_SDKFastBuild, entity, true);
+	SetEntityRenderMode(entity, RENDER_NORMAL);
+	RemoveEntity(parent);
+	isPrimed[entity] = true;
+	return Plugin_Stop;
 }
 public Action:SetTankTeleporter(Handle timer, int entity) 
 {  

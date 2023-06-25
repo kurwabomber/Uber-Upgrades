@@ -155,6 +155,7 @@ public UberShopinitMenusHandlers()
 	
 	AddCommandListener(jointeam_callback, "jointeam");
 	AddCommandListener(eurekaAttempt, "eureka_teleport");
+	AddCommandListener(removeAllBuildings, "destroy");
 }
 public OnMapStart()
 {
@@ -247,6 +248,8 @@ public void OnPluginStart()
 	CreateTimer(0.07, Timer_Every100MS, _, TIMER_REPEAT);
 	
 	logic = FindEntityByClassname(-1, "tf_objective_resource");
+
+	OwnerOffset = FindSendPropInfo("CBaseObject", "m_hBuilder");
 
 	//Offsets
 	Handle hConf = LoadGameConfigFile("tf2.incrementalfortress");

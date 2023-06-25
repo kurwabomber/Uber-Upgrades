@@ -3758,4 +3758,22 @@
         "hidden"	"1"
         "effect_type"	"positive"
     }
+    "6032"
+    {
+        "name"  "dispenser amount"
+        "attribute_class"   "dispenser_amount"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
+    "6033"
+    {
+        "name"  "sentry amount"
+        "attribute_class"   "sentry_amount"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
 }

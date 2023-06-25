@@ -301,7 +301,10 @@ stock refreshAllWeapons(client)
 	}
 }
 public bool TraceEntityFilterPlayer(entity, contentsMask){
-     return entity > MaxClients || !entity;
+    return entity > MaxClients || !entity;
+}
+public bool TraceEntityFilterOnlyWorld(entity, contentsMask){
+    return entity == 0;
 }
 stock float GetResistance(int client, bool includeReduction = false, float increaseBase = 0.0, float increaseMult = 0.0)
 {
@@ -789,13 +792,13 @@ stock bool TracePlayerAimRanged(int client, float dist, float vec[3]) {
     delete traceray;
     return false;
 }
-stock float getLowestPosition(float vec[3]) {
+stock float getLowestPosition(float vec[3], int entity = -1) {
 	float vecangles[3];
 	float zAxis;
 	vecangles[0] = 89.0;
 	vecangles[1] = 0.0;
 	vecangles[2] = 0.0;
-    Handle traceray = TR_TraceRayFilterEx(vec, vecangles, MASK_SHOT_HULL, RayType_Infinite, TraceEntityFilterPlayer);
+    Handle traceray = TR_TraceRayFilterEx(vec, vecangles, MASK_SHOT_HULL, RayType_Infinite, TraceEntityFilterOnlyWorld, entity);
     if (TR_DidHit(traceray)) {
 		float lastVec[3];
         TR_GetEndPosition(lastVec, traceray);
@@ -812,7 +815,7 @@ stock float getHighestPosition(float vec[3]) {
 	vecangles[0] = -89.0;
 	vecangles[1] = 0.0;
 	vecangles[2] = 0.0;
-    Handle traceray = TR_TraceRayFilterEx(vec, vecangles, MASK_SHOT_HULL, RayType_Infinite, TraceEntityFilterPlayer);
+    Handle traceray = TR_TraceRayFilterEx(vec, vecangles, MASK_SHOT_HULL, RayType_Infinite, TraceEntityFilterOnlyWorld);
     if (TR_DidHit(traceray)) {
 		float lastVec[3];
         TR_GetEndPosition(lastVec, traceray);

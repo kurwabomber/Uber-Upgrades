@@ -973,9 +973,109 @@ public OnEntityDestroyed(entity)
 		}
 		SDKUnhook(entity, SDKHook_OnTakeDamage, OnTakeDamagePre_Tank);
 	}
-
+	if(StrEqual(classname, "obj_sentrygun"))
+	{
+		int parent = GetEntPropEnt(entity, Prop_Send, "moveparent");
+		if(IsValidEntity(parent)){
+			char targetname[32];
+			GetEntPropString(parent, Prop_Data, "m_iName", targetname, sizeof(targetname));
+			if(StrContains(targetname, "physbuilding_"))
+				RemoveEntity(parent);
+		}
+		if(isPrimed[entity]){
+			isPrimed[entity] = false;
+			float vec[3];
+			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vec);
+			int owner = GetEntPropEnt(entity, Prop_Send, "m_hBuilder");
+			if(IsValidClient3(owner)){
+				int wrench = GetWeapon(owner,2);
+				if(IsValidWeapon(wrench)){
+					EntityExplosion(owner, TF2_GetSentryDPSModifiers(owner,wrench)*70.0, 350.0, vec, _, _, entity, 0.9 ,DMG_SHOCK, wrench);
+				}
+			}
+		}
+	}
 	if(debugMode)
 		PrintToServer("debugLog | %s was deleted.", classname)
+}
+public Action removeAllBuildings(client, const char[] command, argc) 
+{
+	if(GetCmdArgInt(1) == 2){
+		for(int i=1;i<2048;i++){
+
+			if(!IsValidEntity(i)){
+				continue;
+			}
+
+			decl String:netclass[32];
+			GetEntityNetClass(i, netclass, sizeof(netclass));
+
+			if ( !(strcmp(netclass, "CObjectSentrygun") == 0) ){
+				continue;
+			}
+
+			if(GetEntDataEnt2(i, OwnerOffset)!=client){
+				continue;
+			}
+			SetVariantInt(9999999);
+			AcceptEntityInput(i,"RemoveHealth");
+		}
+	}else if(GetCmdArgInt(1) == 0){
+		for(int i=1;i<2048;i++){
+
+			if(!IsValidEntity(i)){
+				continue;
+			}
+
+			decl String:netclass[32];
+			GetEntityNetClass(i, netclass, sizeof(netclass));
+
+			if ( !(strcmp(netclass, "CObjectDispenser") == 0)){
+				continue;
+			}
+
+			if(GetEntDataEnt2(i, OwnerOffset)!=client){
+				continue;
+			}
+			SetVariantInt(9999999);
+			AcceptEntityInput(i,"RemoveHealth");
+		}
+	}
+	return Plugin_Continue;
+}
+public Action WeaponSwitch(client, weapon){
+	//Safety Checks
+	if(!IsClientInGame(client)){
+		return Plugin_Continue;
+	}
+	if(TF2_GetPlayerClass(client)!=TFClass_Engineer){
+		return Plugin_Continue;
+	}
+	if(!IsValidEntity(GetPlayerWeaponSlot(client,1))){
+		return Plugin_Continue;
+	}
+	if(!IsValidEntity(GetPlayerWeaponSlot(client,3))){
+		return Plugin_Continue;
+	}
+	if(!IsValidEntity(GetPlayerWeaponSlot(client,4))){
+		return Plugin_Continue;
+	}
+	if(!IsValidEntity(weapon)){
+		return Plugin_Continue;
+	}
+
+	//if the building pda is opened
+	//Switches some buildings to sappers so the game doesn't count them as engie buildings
+	if(GetPlayerWeaponSlot(client,3)==weapon){
+		function_AllowBuilding(client);
+		return Plugin_Continue;
+	}//else if the client is not holding the building tool
+	else if(GetEntProp(weapon,Prop_Send,"m_iItemDefinitionIndex")!=28){
+		function_AllowDestroying(client);
+		return Plugin_Continue;
+	}
+	return Plugin_Continue;
+
 }
 public Action Event_ObjectBuilt(Event event, const char[] name, bool dontBroadcast){
 	int obj = event.GetInt("object");
@@ -2183,11 +2283,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 						case 12.0: //Strong Dash
 						{
-							if(weaponArtParticle[client] <= currentGameTime)
-							{
-								weaponArtParticle[client] = currentGameTime+7.0;
-								SetEntityRenderColor(CWeapon, 0, 0, 0,130);
-							}
 							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]
@@ -2230,6 +2325,33 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								weaponArtParticle[client] = currentGameTime+3.0;
 								CreateParticle(CWeapon, "critgun_weaponmodel_red", true, "", 6.0,_,_,1);
 								TE_SendToAll();
+							}
+						}
+						case 14.0://Throw Sentry
+						{
+							if(weaponArtCooldown[client] > currentGameTime)
+							{
+								char CooldownTime[32]
+								Format(CooldownTime, sizeof(CooldownTime), "Throw Sentry: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								ShowSyncHudText(client, hudAbility, CooldownTime);
+							}
+							else
+							{
+								char CooldownTime[32]
+								Format(CooldownTime, sizeof(CooldownTime), "Throw Sentry: READY (MOUSE3)"); 
+								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								ShowSyncHudText(client, hudAbility, CooldownTime);
+								if(buttons & IN_ATTACK3)
+								{
+									if(fl_GlobalCoolDown[client] <= currentGameTime)
+									{
+										weaponArtCooldown[client] = currentGameTime+5.0;
+										fl_GlobalCoolDown[client] = currentGameTime+0.2;
+										
+										
+									}
+								}
 							}
 						}
 					}
@@ -3252,6 +3374,7 @@ public OnClientDisconnect(client)
 		SDKUnhook(client, SDKHook_OnTakeDamage, OnTakeDamage);
 		SDKUnhook(client, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
 		SDKUnhook(client, SDKHook_StartTouch, OnStartTouchStomp);
+		SDKUnhook(client, SDKHook_WeaponSwitch, WeaponSwitch);
 	}
 }
 public OnClientPutInServer(client)
@@ -3278,6 +3401,7 @@ public OnClientPutInServer(client)
 		SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage);
 		SDKHook(client, SDKHook_OnTakeDamageAlive, OnTakeDamageAlive);
 		SDKHook(client, SDKHook_StartTouch, OnStartTouchStomp);
+		SDKHook(client, SDKHook_WeaponSwitch, WeaponSwitch);
 	}
 	ClientCommand(client, "sm_showhelp");
 }

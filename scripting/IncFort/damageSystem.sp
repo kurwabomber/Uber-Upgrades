@@ -39,6 +39,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		}
 		if(IsValidClient3(attacker) && victim != attacker)
 		{
+			bool isSentry = false;
 			if(IsValidEdict(inflictor)){
 				char classname[32]; 
 				GetEdictClassname(inflictor, classname, sizeof(classname));
@@ -47,9 +48,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					damage += (30.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * 5.0));
 					damagetype |= DMG_PREVENT_PHYSICS_FORCE;
 				}
+				isSentry = !strcmp("obj_sentrygun", classname) || !strcmp("tf_projectile_sentryrocket", classname);
 			}
 
-			if(IsValidWeapon(weapon))
+			if(IsValidWeapon(weapon) && !isSentry)
 			{
 				if(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE)
 				{
@@ -61,7 +63,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
-					PrintToServer("%i weapon | %.2f damage | %N attacker", weapon, damage, attacker);
 					if(GetAttribute(victim, "inverter powerup", 0.0)){
 						AddPlayerHealth(victim, RoundToFloor(damage/GetResistance(victim, true)), 2.0, true, 0);
 						damage *= 0.0;
@@ -82,11 +83,13 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				if(arcaneWeaponScaling != 0.0)
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * arcaneWeaponScaling));
 				
-				int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
-				if(i <= 6)
-				{
-					if(i == 0) i = 1;
-					damage *= i*weaponFireRate[weapon]/TICKRATE;
+				if(weaponFireRate[weapon] != 0.0){
+					int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
+					if(i <= 6)
+					{
+						if(i == 0) i = 1;
+						damage *= i*weaponFireRate[weapon]/TICKRATE;
+					}
 				}
 			}
 		}
