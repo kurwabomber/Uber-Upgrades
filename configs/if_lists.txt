@@ -2399,7 +2399,7 @@
 		}
 		"Ball Upgrades"
 		{
-			"Attr5"			"effect bar recharge rate increased"
+			"Attr5"			"effect bar recharge rate increased(L)"
 			"Attr6"			"max ammo"
 			"Attr7"			"Ball Additive Damage Bonus"
 		}

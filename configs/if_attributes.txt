@@ -1777,6 +1777,16 @@
 			"init"		"1.00"
 			"max"		"0.0"
 		}
+		"156.5"
+		{
+			"name"		"effect bar recharge rate increased"
+			"ref"		"effect bar recharge rate increased(L)"
+			"cost"		"125"
+			"value"		"-0.10"
+			"increase_ratio" 	"0.35"
+			"init"		"1.00"
+			"max"		"0.01"
+		}
 		"157"
 		{
 			"name"		"override projectile type"
@@ -5717,7 +5727,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"Disables armor recharge delay.\nAll damage taken is multiplied by 0.75x.\n+15% max health regeneration per second and 2x armor regeneration."
+			"description"	"Removes armor weakness ratio.\nAll damage taken is multiplied by 0.75x.\n+15% max health regeneration per second and 2x armor regeneration.\n100% ammo regeneration."
 			"max"		"1.00"
 		}
 		"2100.6"

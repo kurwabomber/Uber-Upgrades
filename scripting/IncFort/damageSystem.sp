@@ -276,29 +276,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			RadiationBuildup[victim] += damage;
 			checkRadiation(victim,attacker);
 		}
-		if(damagetype != (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM))
-		{
-			bool delayBool = true;
-			Address regenerationPowerup = TF2Attrib_GetByName(victim, "regeneration powerup");
-			if(regenerationPowerup != Address_Null)
-			{
-				float regenerationPowerupValue = TF2Attrib_GetValue(regenerationPowerup);
-				if(regenerationPowerupValue > 0.0){delayBool = false;}
-			}
-			if(delayBool)
-			{
-				Address armorDelay = TF2Attrib_GetByName(victim, "tmp dmgbuff on hit");
-				if(armorDelay != Address_Null)
-				{
-					float DelayAmount = TF2Attrib_GetValue(armorDelay) + 1.0;
-					TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 1.5/DelayAmount);
-				}
-				else
-				{
-					TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 1.5);
-				}
-			}
-		}
 		if(GetAttribute(victim, "resistance powerup", 0.0))
 		{
 			if(critStatus[victim] == true){

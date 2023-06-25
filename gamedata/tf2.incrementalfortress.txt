@@ -320,7 +320,7 @@
 			"CTFBat_Wood::LaunchBallThink()"
 			{
 				"library"	"server"
-				"linux"		"@_ZN11CTFBat_Wood15LaunchBallThinkEv"
+				"linux"		"@_ZN11CTFBat_Wood10LaunchBallEv"
 			}
 			"CTFWeaponBase::GetDamageType()"
 			{

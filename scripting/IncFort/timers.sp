@@ -6,6 +6,20 @@ public Action:Timer_Second(Handle timer)
 			singularBuysPerMinute[client]--;
 		if (IsValidClient3(client) && !IsFakeClient(client))
 		{
+			if(GetAttribute(client, "regeneration powerup", 0.0)){
+				for(int i=0;i<3;i++){
+					int weapon = GetWeapon(client, i);
+					if(!IsValidWeapon(weapon))
+						continue;
+					if(!HasEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType"))
+						continue;
+					
+					int type = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType"); 
+					SetAmmo_Weapon(weapon, TF2Util_GetPlayerMaxAmmo(client, type, current_class[client]));
+				}
+			}
+
+			
 			Address armorActive = TF2Attrib_GetByName(client, "obsolete ammo penalty")
 			if(armorActive != Address_Null)
 			{

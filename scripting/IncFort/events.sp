@@ -69,7 +69,8 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		if(TF2_IsPlayerInCondition(attacker, TFCond_CritCanteen))
 			armorLoss *= 1.4;
 	}
-	armorWeaknessRatio[client] += armorLoss/fl_MaxArmor[client];
+	if(!GetAttribute(client, "regeneration powerup", 0.0))
+		armorWeaknessRatio[client] += armorLoss/fl_MaxArmor[client];
 
 	if(IsValidClient3(client))
 	{

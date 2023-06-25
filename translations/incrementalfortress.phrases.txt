@@ -3204,6 +3204,10 @@
 	{
 		"en"		"Recharge Rate Increased"
 	}
+	"effect bar recharge rate increased(L)"
+	{
+		"en"		"Recharge Rate Increased"
+	}
 	"override projectile type"
 	{
 		"en"		"Weapon Shoots Different Projectile"
