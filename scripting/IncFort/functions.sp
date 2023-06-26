@@ -1066,6 +1066,10 @@ DisplayItemChange(client,itemidx)
 		{
 			ChangeString = "The Eureka Effect | Teleporting will deal 500 base DPS based on sentry upgrades, stun targets, and launch them into the air. Cannot build a sentry, but teleporters are instant-built.";
 		}
+		case 142:
+		{
+			ChangeString = "The Gunslinger | Throw out instant-built minisentries. Up to 5 sentries placed in total, and upon destroying, deal 70 base DPS.";
+		}
 		//Medic Secondaries
 		case 411:
 		{
