@@ -1638,14 +1638,32 @@ public Action Timer_ThrownSentryDeploy(Handle timer, any data){
 	if(!IsValidEntity(entity)) return Plugin_Stop;
 	int parent = GetEntPropEnt(entity, Prop_Send, "moveparent");
 	if(!IsValidEntity(parent)) return Plugin_Stop;
-	float position[3];
-	GetEntPropVector(parent, Prop_Data, "m_vecOrigin", position);
-	
-	float low = getLowestPosition(position, entity);
+	float pos[3];
+	GetEntPropVector(parent, Prop_Data, "m_vecOrigin", pos);
+	float mins[3],maxs[3],vec[3],angles[3];
 
-	if(FloatAbs(position[2]-low) > 10.0) return Plugin_Continue;
+	GetEntPropVector(entity, Prop_Send, "m_vecMins", mins);
+	GetEntPropVector(entity, Prop_Send, "m_vecMaxs", maxs);
+	vec[0] = pos[0];
+	vec[1] = pos[1];
+	vec[2] = pos[2] - 5.0;
+	pos[2] += 5.0;
+
+	Handle tr = TR_TraceHullFilterEx(pos,vec, mins,maxs, MASK_PLAYERSOLID_BRUSHONLY, TraceWorldOnly);
+	if (!TR_DidHit(tr)) {
+		delete tr
+		return Plugin_Continue;
+	}
+
+	delete tr
 
 	AcceptEntityInput(entity, "ClearParent");
+	float zeros[3];
+
+	GetEntPropVector(parent, Prop_Data, "m_angRotation", angles);
+	angles[0] = 0.0;
+
+	TeleportEntity(entity, pos, angles, zeros); //use 0-velocity to calm down bouncyness
 	//restore other props: get it out of peudo carry state 
 	SetEntProp(entity, Prop_Send, "m_bBuilding", 1);
 	SetEntProp(entity, Prop_Send, "m_bCarried", 0);

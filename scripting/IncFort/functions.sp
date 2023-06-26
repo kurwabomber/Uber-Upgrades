@@ -1337,7 +1337,6 @@ public void ThrowBuilding(any buildref) {
 	GetAngleVectors(angles, fwd, NULL_VECTOR, NULL_VECTOR);
 	ScaleVector(fwd, 1200.0);
 	fwd[2] += (1200.0/3.25);//bit more archy
-	GetEntPropVector(owner, Prop_Data, "m_vecAbsVelocity", velocity);
 	AddVectors(velocity, fwd, velocity);
 	angles[0] = angles[2] = 0.0; //upright angle = 0.0 yaw 0.0
 	
@@ -1350,15 +1349,13 @@ public void ThrowBuilding(any buildref) {
 		return;
 	}
 	
-	int phys = CreateEntityByName("prop_physics_multiplayer");
+	int phys = CreateEntityByName("tf_projectile_rocket");
 	if (phys == INVALID_ENT_REFERENCE) return;
 	
 	char targetName[24];
 	Format(targetName, sizeof(targetName), "physbuilding_%08X", EntIndexToEntRef(phys));
 	char buffer[64] = "models/weapons/w_models/w_toolbox.mdl";
 	DispatchKeyValue(phys, "targetname", targetName);
-	DispatchKeyValue(phys, "model", buffer);
-	DispatchKeyValue(phys, "physicsmode", "2"); //don't push (hard collide) with player (1), but get pushed (soft collide)
 	DispatchKeyValueVector(phys, "origin", origin);
 	DispatchKeyValueVector(phys, "angles", angles);
 	Format(buffer, sizeof(buffer), "%i", GetEntProp(building, Prop_Send, "m_nSkin"));
@@ -1366,29 +1363,37 @@ public void ThrowBuilding(any buildref) {
 	if (GetEntProp(building, Prop_Send, "m_bDisposableBuilding")) buffer = "0.66";
 	else if (GetEntProp(building, Prop_Send, "m_bMiniBuilding")) buffer = "0.75";
 	else buffer = "1.0";
-	DispatchKeyValue(phys, "modelscale", buffer);//mini sentries are .75
+	DispatchKeyValue(phys, "modelscale", buffer);
 	if (!DispatchSpawn(phys)) {
 		PrintToChat(owner, "Failed to spawn physics prop");
 		return;
 	}
 	ActivateEntity(phys);
-	SetEntityRenderMode(phys, RENDER_NORMAL); //why is it sometimes not rendered?
-	
-	bool newlyBuilt = GetEntProp(building, Prop_Send, "m_bCarryDeploy")==0;
+	SetEntityRenderMode(phys, RENDER_NORMAL);
+
 	SetEntProp(building, Prop_Send, "m_bCarried", 1);
 	SetEntProp(building, Prop_Send, "m_bBuilding", 0);
-	if (newlyBuilt) { //set health above 66% to suppress the client side alert
-		int maxhp = TF2Util_GetEntityMaxHealth(building);
-		SetEntityHealth(building, maxhp);
-	}
-	SetEntProp(building, Prop_Send, "m_usSolidFlags", 0x0004); //FSOLID_NOT_SOLID
+	SetEntityHealth(building, TF2Util_GetEntityMaxHealth(building));
+	
+	SetEntProp(phys, Prop_Send, "m_usSolidFlags", 0x0008 | 0x0080); 
+	SetEntProp(phys, Prop_Send, "m_CollisionGroup", 1);
+	TeleportEntity(phys, NULL_VECTOR, NULL_VECTOR, velocity);
+	SetEntityGravity(phys, 1.5);
+	SetEntityMoveType(phys, MOVETYPE_FLYGRAVITY);
+	CreateParticle(phys, "drg_cowmangler_trail_charged", true, "", 2.0);
+	CreateParticle(phys, "rockettrail_airstrike_line", true, "", 2.0);
+	CreateParticle(phys, "rockettrail_fire_airstrike", true, "", 2.0);
+	SetEntityModel(phys, "models/weapons/w_models/w_toolbox.mdl");
+	SetEntProp(building, Prop_Send, "m_usSolidFlags", 0x0004);
 	SetEntityRenderMode(building, RENDER_NONE);
 	TeleportEntity(building, origin, NULL_VECTOR, NULL_VECTOR);
 
 	SetVariantString("!activator");
 	AcceptEntityInput(building, "SetParent", phys);
-	Phys_ApplyForceCenter(phys, velocity);// works best
+
 	CreateTimer(0.1,Timer_ThrownSentryDeploy,  buildref, TIMER_REPEAT);
+	SDKHook(phys, SDKHook_StartTouch, StartTouchThrownSentryDeploy);
+	jarateWeapon[phys] = EntIndexToEntRef(building);
 }
 public void function_AllowBuilding(int client){
 	int wrench = GetWeapon(client,2);
@@ -3812,4 +3817,7 @@ stock bool TraceEntityFilterPlayers(int entity, int contentsMask) {
 }
 public bool TEF_HitSelfFilterPassClients(int entity, int contentsMask, any data) {
 	return entity > MaxClients && entity != data;
+}
+public bool TraceWorldOnly(int entity, int contentsMask) {
+	return entity == 0;
 }

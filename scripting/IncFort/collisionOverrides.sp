@@ -601,6 +601,55 @@ public Action:OnCollisionPiercingRocket(entity, client)
 
 	return action;
 }
+public Action StartTouchThrownSentryDeploy(entity, other){
+	SDKHook(entity, SDKHook_Touch, TouchThrownSentryDeploy);
+	return Plugin_Continue;
+}
+public Action TouchThrownSentryDeploy(entity, other){
+	if(!IsValidEntity(entity)) return Plugin_Continue;
+	int building = EntRefToEntIndex(jarateWeapon[entity]);
+	if(!IsValidEntity(building)) return Plugin_Continue;
+	float pos[3];
+	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", pos);
+	float mins[3],maxs[3],vec[3],angles[3],fwd[3];
+
+	GetEntPropVector(building, Prop_Send, "m_vecMins", mins);
+	GetEntPropVector(building, Prop_Send, "m_vecMaxs", maxs);
+	vec[0] = pos[0];
+	vec[1] = pos[1];
+	vec[2] = pos[2] - 5.0;
+	pos[2] += 5.0;
+
+	TR_TraceHullFilter(pos,vec, mins,maxs, MASK_PLAYERSOLID_BRUSHONLY, TraceWorldOnly);
+	if (!TR_DidHit()) 
+		return Plugin_Continue;
+
+	AcceptEntityInput(building, "ClearParent");
+	float zeros[3];
+
+	GetEntPropVector(entity, Prop_Data, "m_angRotation", angles);
+	angles[0] = 0.0;
+	GetAngleVectors(angles,fwd, NULL_VECTOR, NULL_VECTOR);
+	ScaleVector(fwd, 45.0);
+	AddVectors(pos,fwd,fwd);
+	TR_TraceRayFilter(pos, fwd, MASK_SHOT_HULL, RayType_EndPoint, TraceWorldOnly);
+	if(TR_DidHit()){
+		float normal[3];
+		TR_GetPlaneNormal(INVALID_HANDLE, normal);
+		GetVectorAngles(normal, angles)
+	}
+
+
+	TeleportEntity(building, pos, angles, zeros); //use 0-velocity to calm down bouncyness
+	//restore other props: get it out of peudo carry state 
+	SetEntProp(building, Prop_Send, "m_bBuilding", 1);
+	SetEntProp(building, Prop_Send, "m_bCarried", 0);
+	SDKCall(g_SDKFastBuild, building, true);
+	SetEntityRenderMode(building, RENDER_NORMAL);
+	RemoveEntity(entity);
+	isPrimed[entity] = true;
+	return Plugin_Stop;
+}
 public Action:OnStartTouchJars(entity, other)
 {
 	SDKHook(entity, SDKHook_Touch, OnTouchExplodeJar);
