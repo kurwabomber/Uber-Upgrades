@@ -2689,7 +2689,7 @@ public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 				{
 					bool flag = true;
 
-					if(meleeLimiter[client] & 1 == 1)
+					if(meleeLimiter[client] % 2 == 0)
 					{
 						float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
 						if(ballCheck == 0.0)
@@ -2702,7 +2702,7 @@ public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 								SDKCall(g_SDKCallLaunchBall, CWeapon);
 
 							//Calc crit is called within ball creation
-							meleeLimiter[client]--;
+							meleeLimiter[client] = 0;
 							flag = false;
 						}
 					}

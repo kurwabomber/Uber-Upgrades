@@ -1140,6 +1140,8 @@ CastBlackskyEye(client, attuneSlot)
 					
 		GetClientEyePosition(client, fOrigin);
 		GetClientEyeAngles(client,fAngles);
+
+		SetEntityRenderMode(iEntity, RENDER_NONE);
 		
 		GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 		GetAngleVectors(fAngles,fwd, right, NULL_VECTOR);
@@ -1249,11 +1251,16 @@ public Action:ACallBeyond(Handle timer, client)
 		SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
 		TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 		DispatchSpawn(iEntity);
+		SetEntityRenderMode(iEntity, RENDER_NONE);
+		
 		TE_SetupKillPlayerAttachments(iEntity);
 		TE_SendToAll();
 		int color[4]={255, 255, 255,225};
 		TE_SetupBeamFollow(iEntity,Laser,0,2.5,4.0,8.0,3,color);
 		TE_SendToAll();
+
+		CreateParticle(iEntity, "drg_cow_rockettrail_charged_blue", true, "", 4.5);
+		
 		SDKHook(iEntity, SDKHook_StartTouchPost, CallBeyondCollision);
 		SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
 		

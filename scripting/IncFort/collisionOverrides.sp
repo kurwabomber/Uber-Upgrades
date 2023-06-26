@@ -696,14 +696,13 @@ public Action:OnTouchExplodeJar(entity, other)
 							{
 								case 0:
 								{
-									if(isPlayer)
-										miniCritStatusVictim[i] = currentGameTime+8.0;
-
 									SDKHooks_TakeDamage(i,owner,owner,30.0*damageBoost,DMG_BULLET,CWeapon,NULL_VECTOR,NULL_VECTOR, isPlayer);
-									Buff jarateDebuff;
-									jarateDebuff.init("Jarated", "", Buff_Jarated, RoundToNearest(damageBoost), owner, 8.0);
-									jarateDebuff.multiplicativeDamageTaken = -0.35;
-									insertBuff(i, jarateDebuff);
+									if(isPlayer){
+										miniCritStatusVictim[i] = currentGameTime+8.0;
+										Buff jarateDebuff;
+										jarateDebuff.init("Jarated", "", Buff_Jarated, RoundToNearest(damageBoost), owner, 8.0);
+										insertBuff(i, jarateDebuff);
+									}
 								}
 								case 1:
 								{
