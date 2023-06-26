@@ -1284,14 +1284,10 @@ RespawnEffect(client)
 		fl_CurrentArmor[client] = fl_MaxArmor[client];
 		fl_AdditionalArmor[client] = 0.0;
 		LightningEnchantmentDuration[client] = 0.0;
-		CreateTimer(0.4,GiveMaxAmmo,GetClientUserId(client));
+		CreateTimer(0.2,GiveMaxAmmo,GetClientUserId(client));
 	}
 	TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
-	TF2Attrib_SetByName(client,"crit_dmg_falloff", 1.0);
 	TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
-	TF2Attrib_SetByName(client,"airblast_pushback_disabled", 1.0);
-	TF2Attrib_SetByName(client,"airblast_deflect_projectiles_disabled", 1.0);
-	TF2Attrib_SetByName(client,"no damage view flinch", 1.0);
 	CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
 }
 UpdateMaxValuesStage(int stage)
@@ -2484,108 +2480,6 @@ meteorCollisionCheck(int entity){
 		jarateWeapon[entity] = CWeapon;
 	}
 	
-}
-AirblastPatch(client)
-{
-	if( !IsPlayerAlive(client) )
-		return;
-	
-	if( TF2_GetPlayerClass(client) != TFClass_Pyro )
-		return;
-
-	int iNextTickTime = RoundToNearest(currentGameTime/GetTickInterval())+ 5;
-	SetEntProp( client, Prop_Data, "m_nNextThinkTick", iNextTickTime );
-	
-	if( GetEntProp( client, Prop_Data, "m_nWaterLevel" ) > 1 )
-		return;
-	
-	if( (GetClientButtons(client) & IN_ATTACK2) != IN_ATTACK2 )
-		return;
-
-	int iWeapon = GetEntPropEnt( client, Prop_Send, "m_hActiveWeapon" );
-	if( !IsValidEdict(iWeapon) )
-		return;
-	
-	char strClassname[64];
-	GetEntityClassname( iWeapon, strClassname, sizeof(strClassname) );
-	if( !StrEqual( strClassname, "tf_weapon_flamethrower", false ) &&  !StrEqual( strClassname, "tf_weapon_rocketlauncher_fireball", false ) )
-		return;
-
-	if( ( GetEntPropFloat( iWeapon, Prop_Send, "m_flNextSecondaryAttack" ) - flNextSecondaryAttack[client] ) <= 0.0 )
-		return;
-		
-	flNextSecondaryAttack[client] = GetEntPropFloat( iWeapon, Prop_Send, "m_flNextSecondaryAttack" );
-	
-	float SlowForce = 2.0,AirblastDamage = 80.0,TotalRange = 600.0,Duration = 1.25,ConeRadius = 40.0;
-	Address SlowActive = TF2Attrib_GetByName(iWeapon, "airblast vertical pushback scale");
-	Address DamageActive = TF2Attrib_GetByName(iWeapon, "airblast pushback scale");
-	Address RangeActive = TF2Attrib_GetByName(iWeapon, "deflection size multiplier");
-	Address DurationActive = TF2Attrib_GetByName(iWeapon, "melee range multiplier");
-	Address RadiusActive = TF2Attrib_GetByName(iWeapon, "melee bounds multiplier");
-
-	if(SlowActive != Address_Null){
-		SlowForce *= TF2Attrib_GetValue(SlowActive)
-	}
-	if(DamageActive != Address_Null){
-		AirblastDamage *= TF2Attrib_GetValue(DamageActive)
-	}
-	if(RangeActive != Address_Null){
-		TotalRange *= TF2Attrib_GetValue(RangeActive)
-	}
-	if(DurationActive != Address_Null){
-		Duration *= TF2Attrib_GetValue(DurationActive)
-	}
-	if(RadiusActive != Address_Null){
-		ConeRadius *= TF2Attrib_GetValue(RadiusActive)
-	}	
-	AirblastDamage *= TF2_GetDamageModifiers(client, iWeapon);
-	
-	Address lameMult = TF2Attrib_GetByName(iWeapon, "dmg penalty vs players");
-	if(lameMult != Address_Null)//lame. AP applies twice.
-	{
-		AirblastDamage /= TF2Attrib_GetValue(lameMult);
-	}
-	for(int i=1; i<=MaxClients; i++)
-	{
-		if(IsValidClient3(i) && IsClientInGame(i) && IsPlayerAlive(i))
-		{
-			if(IsTargetInSightRange(client, i, ConeRadius, TotalRange, true, false))
-			{
-				if(IsAbleToSee(client,i, false) == true)
-				{
-					if(GetClientTeam(i) != GetClientTeam(client))//Enemies debuffed
-					{
-						CurrentSlowTimer[i] = currentGameTime+Duration;
-						SDKHooks_TakeDamage(i,client,client,AirblastDamage,DMG_BLAST,iWeapon, NULL_VECTOR, NULL_VECTOR);
-						
-						bool immune = false;
-						
-						Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
-						if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
-						{
-							immune = true;
-						}
-						if(TF2_IsPlayerInCondition(i,TFCond_MegaHeal))
-						{
-							immune = true;
-						}
-						if(!immune)
-						{
-							TF2Attrib_SetByName(i,"move speed penalty", 1/SlowForce);
-							TF2Attrib_SetByName(i,"major increased jump height", Pow(1.2/SlowForce,0.3));
-						}
-						//PrintToChat(client, "%N was airblasted. Took %.2f base damage and was slowed for %.2f seconds.", i, AirblastDamage, Duration);
-					}
-					else//Teammates buffed.
-					{
-						TF2_AddCondition(i, TFCond_AfterburnImmune, 6.0);
-						TF2_AddCondition(i, TFCond_SpeedBuffAlly, 6.0);
-						TF2_AddCondition(i, TFCond_DodgeChance, 0.2);
-					}
-				}
-			}
-		}
-	}
 }
 public BoomerangThink(entity) 
 { 

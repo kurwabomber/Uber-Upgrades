@@ -159,7 +159,7 @@ public UberShopinitMenusHandlers()
 }
 public OnMapStart()
 {
-	if(IsMvM())
+	if(IsMvM(true))
 	{
 		char mapName[64]
 		GetCurrentMap(mapName, sizeof(mapName))
@@ -421,6 +421,13 @@ public void OnPluginStart()
 	if(!g_DHookOnWeaponFired)
 		PrintToServer("CustomAttrs | Weapon Fire Hook Failed");
 	DHookEnableDetour(g_DHookOnWeaponFired, false, OnWeaponFired);
+
+	//Thermal Thruster Velocity Boost
+	Handle g_DHookOnAirblast = DHookCreateFromConf(hConf, "CTFFlameThrower::FireAirblast()");
+	
+	if(!g_DHookOnAirblast)
+		PrintToServer("CustomAttrs | g_DHookOnAirblast fucked up.");
+	DHookEnableDetour(g_DHookOnAirblast, true, OnAirblast);
 	
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	delete hConf;

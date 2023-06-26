@@ -210,6 +210,20 @@
 					}
 				}
 			}
+			"CTFFlameThrower::FireAirblast()"
+			{
+				"signature"		"CTFFlameThrower::FireAirblast()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"entity"
+				"arguments"
+				{
+					"ammo"
+					{
+						"type"	"int"
+					}
+				}
+			}
 		}
 		"Signatures"
 		{
@@ -346,6 +360,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN12CTFGameStats23Event_PlayerFiredWeaponEP9CTFPlayerb"
+			}
+			"CTFFlameThrower::FireAirblast()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN15CTFFlameThrower12FireAirBlastEi"
 			}
 		}
 	}

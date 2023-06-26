@@ -587,6 +587,61 @@ public MRESReturn OnKnockbackApply(int client, Handle hParams) {
 	}
 	return MRES_Override;
 }
+public MRESReturn OnAirblast(int weapon, Handle hParams){
+	if(IsValidWeapon(weapon)){
+		int owner = getOwner(weapon);
+
+		float SlowForce = 2.0 * GetAttribute(weapon, "airblast vertical pushback scale")
+		float AirblastDamage = 80.0 * GetAttribute(weapon, "airblast pushback scale")
+		float TotalRange = 600.0 * GetAttribute(weapon, "deflection size multiplier")
+		float Duration = 1.25 * GetAttribute(weapon, "melee range multiplier")
+		float ConeRadius = 40.0 * GetAttribute(weapon, "melee bounds multiplier");
+
+		AirblastDamage *= TF2_GetDamageModifiers(owner, weapon);
+
+		for(int i=1; i<=MaxClients; i++)
+		{
+			if(IsValidClient3(i) && IsClientInGame(i) && IsPlayerAlive(i))
+			{
+				if(IsTargetInSightRange(owner, i, ConeRadius, TotalRange, true, false))
+				{
+					if(IsAbleToSee(owner,i, false) == true)
+					{
+						if(GetClientTeam(i) != GetClientTeam(owner))//Enemies debuffed
+						{
+							CurrentSlowTimer[i] = currentGameTime+Duration;
+							SDKHooks_TakeDamage(i,owner,owner,AirblastDamage,DMG_BLAST,weapon, NULL_VECTOR, NULL_VECTOR);
+							
+							bool immune = false;
+							
+							Address agilityPowerup = TF2Attrib_GetByName(i, "agility powerup");		
+							if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
+								immune = true;
+							
+							if(TF2_IsPlayerInCondition(i,TFCond_MegaHeal))
+								immune = true;
+							
+							if(!immune)
+							{
+								TF2Attrib_SetByName(i,"move speed penalty", 1/SlowForce);
+								TF2Attrib_SetByName(i,"major increased jump height", Pow(1.2/SlowForce,0.3));
+							}
+							//PrintToChat(client, "%N was airblasted. Took %.2f base damage and was slowed for %.2f seconds.", i, AirblastDamage, Duration);
+						}
+						else//Teammates buffed.
+						{
+							TF2_AddCondition(i, TFCond_AfterburnImmune, 6.0);
+							TF2_AddCondition(i, TFCond_SpeedBuffAlly, 6.0);
+							TF2_AddCondition(i, TFCond_DodgeChance, 0.2);
+						}
+					}
+				}
+			}
+		}
+		SetEntPropFloat(weapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
+	}
+	return MRES_Ignored;
+}
 public MRESReturn OnThermalThrusterLaunch(int weapon){
 	if(IsValidWeapon(weapon)){
 		int owner = getOwner(weapon);
@@ -2332,7 +2387,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			}
 		}
 		fEyeAngles[client] = angles;
-		AirblastPatch(client);
 		lastFlag[client] = flags;
 		globalButtons[client] = buttons;
 	}
