@@ -8,7 +8,7 @@ public MRESReturn OnDamageTypeCalc(int weapon, Handle hReturn) {
 		return MRES_Ignored;
 
 	currentDamageType[client].first = damagetype;
-
+	
 	return MRES_Ignored;
 }
 
@@ -1538,8 +1538,8 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 				}
 			}
 			if((!strcmp("obj_sentrygun", classname) && GetEntProp(inflictor, Prop_Send, "m_bMiniBuilding") == 1))
-			{
-				damage *= 1.5
+			{//Minisentries deal 4 damage base.
+				damage *= 0.5
 			}
 		}
 		if(IsValidClient3(attacker) && TF2_GetPlayerClass(attacker) == TFClass_Engineer)

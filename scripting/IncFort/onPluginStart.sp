@@ -296,6 +296,7 @@ public void OnPluginStart()
 	PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
 	g_SDKFastBuild = EndPrepSDKCall();
 
+
 	//Scattergun Proper Clip Replacement
 	Handle g_DHookScattergunReload = DHookCreateFromConf(hConf, "CTFScatterGun::FinishReload()");
 	

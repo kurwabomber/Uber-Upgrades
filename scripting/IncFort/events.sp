@@ -19,10 +19,9 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 
 	if(damage == 0.0)
 		return;
-	
-	isTagged[attacker][client] = true;
 
 	if(attacker != client && IsValidClient(attacker)){
+		isTagged[attacker][client] = true;
 		DamageDealt[attacker] += damage;
 		dps[attacker] += damage;
 		if(damage > 32767)
@@ -626,7 +625,7 @@ public MRESReturn OnAirblast(int weapon, Handle hParams){
 								TF2Attrib_SetByName(i,"move speed penalty", 1/SlowForce);
 								TF2Attrib_SetByName(i,"major increased jump height", Pow(1.2/SlowForce,0.3));
 							}
-							//PrintToChat(client, "%N was airblasted. Took %.2f base damage and was slowed for %.2f seconds.", i, AirblastDamage, Duration);
+
 						}
 						else//Teammates buffed.
 						{

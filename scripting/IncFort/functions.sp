@@ -120,7 +120,7 @@ public void ManagePlayerBuffs(int i){
 	Address armorRecharge = TF2Attrib_GetByName(i, "tmp dmgbuff on hit");
 
 	if(TF2_IsPlayerInCondition(i, TFCond_MegaHeal))
-		additiveArmorRechargeBuff += 0.67;
+		additiveArmorRechargeBuff += 1.0;
 
 	if(armorRecharge != Address_Null)
 		additiveArmorRechargeBuff += TF2Attrib_GetValue(armorRecharge);
@@ -866,18 +866,6 @@ DisplayItemChange(client,itemidx)
 		case 449:
 		{
 			ChangeString = "The Winger | Right click is a dash ability based on your maximum speed. 3x slower reload speed.";
-		}
-		case 222:
-		{
-			ChangeString = "The Mad Milk | Shoots a grenade which applies a 15% lifesteal effect on the enemy. Scales with duration left.";
-		}
-		case 1121:
-		{
-			ChangeString = "Mutated Milk | Shoots a grenade which applies a 15% lifesteal effect on the enemy. Scales with duration left.";
-		}
-		case 812,833:
-		{
-			ChangeString = "The Flying Guillotine | Has infinite ammo.";
 		}
 		//Scout Melee
 		case 44:
