@@ -2372,15 +2372,12 @@ ApplyHomingCharacteristics(DataPack pack)//int,float,int,int
 	int entity = EntRefToEntIndex(pack.ReadCell());
 	if(!IsValidEdict(entity))
 		return;
-
 	int owner = getOwner(entity);
 	if(!IsValidClient3(owner))
 		return;
-
 	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 	if(!IsValidWeapon(CWeapon))
 		return;
-
 	Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
 	if(homingActive == Address_Null)
 		return;
@@ -2389,7 +2386,6 @@ ApplyHomingCharacteristics(DataPack pack)//int,float,int,int
 	homingDelay[entity] = pack.ReadFloat();
 	homingTickRate[entity] = pack.ReadCell();
 	homingAimStyle[entity] = pack.ReadCell();
-
 	delete pack;
 }
 ExplosiveArrow(entity)
@@ -3040,11 +3036,9 @@ public OnEntityHomingThink(entity)
 	if(!HasEntProp(entity,Prop_Send,"m_vInitialVelocity"))
 		return;
 
-	int owner = GetEntPropEnt( entity, Prop_Data, "m_hOwnerEntity" ); 
+	int owner = getOwner(entity);
 	if(!IsValidClient3(owner) && IsValidEdict(owner) && HasEntProp(owner,Prop_Send,"m_hBuilder"))
-	{
 		owner = GetEntPropEnt(owner,Prop_Send,"m_hBuilder" );
-	}
 
 	if (!IsValidClient3(owner))
 		return;
@@ -3052,7 +3046,6 @@ public OnEntityHomingThink(entity)
 	int Target = GetClosestTarget(entity, owner); 
 	if(!IsValidClient3(Target) || owner == Target)
 		return;
-
 
 	float EntityPos[3], TargetPos[3]; 
 	GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", EntityPos ); 
@@ -3062,7 +3055,7 @@ public OnEntityHomingThink(entity)
 	if( distance > homingRadius[entity] )
 		return;
 
-	if(homingTicks[entity] % homingTickRate[entity] == 0)
+	if(homingTickRate[entity] == 0 || homingTicks[entity] % homingTickRate[entity] == 0)
 	{
 		float ProjLocation[3], ProjVector[3], BaseSpeed, NewSpeed, ProjAngle[3], AimVector[3], InitialSpeed[3]; 
 		

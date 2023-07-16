@@ -1012,6 +1012,7 @@ public OnEntityDestroyed(entity)
 	homingTicks[entity] = 0;
 	homingDelay[entity] = 0.0;
 	homingAimStyle[entity] = -1;
+	projectileDamage[entity] = 0.0;
 	
 	//isProjectileSlash[entity][0] = 0.0;
 	//isProjectileSlash[entity][1] = 0.0;

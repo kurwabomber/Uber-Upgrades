@@ -358,6 +358,7 @@ bool isProjectileHoming[MAXENTITIES];
 bool isProjectileBoomerang[MAXENTITIES];
 bool isProjectileFireball[MAXENTITIES];
 float projectileHomingDegree[MAXENTITIES];
+float projectileDamage[MAXENTITIES];
 float entitySpawnTime[MAXENTITIES];
 /*-- homing shit --*/
 float homingRadius[MAXENTITIES];

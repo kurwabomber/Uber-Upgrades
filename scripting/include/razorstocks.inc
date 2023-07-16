@@ -179,7 +179,11 @@ stock bool IsValidWeapon(int entity)
 }
 stock int getOwner(int entity)
 {
-	return HasEntProp(entity, Prop_Data, "m_hOwnerEntity") ? GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity") : -1;
+	if(HasEntProp(entity, Prop_Data, "m_hThrower"))
+		return GetEntPropEnt(entity, Prop_Data, "m_hThrower");
+	else if(HasEntProp(entity, Prop_Data, "m_hOwnerEntity"))
+	 	return GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+	return -1;
 }
 stock int getWeaponSlot(int client, int entity)
 {

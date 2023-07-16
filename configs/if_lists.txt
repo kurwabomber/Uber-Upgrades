@@ -102,7 +102,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
@@ -213,7 +212,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
@@ -324,7 +322,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
@@ -434,7 +431,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
@@ -545,7 +541,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
@@ -660,7 +655,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
@@ -770,7 +764,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
@@ -883,7 +876,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
@@ -997,7 +989,6 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr1"			"weapon advancement"
 			"Attr0"			"Rooted damage taken"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"

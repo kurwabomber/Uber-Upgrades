@@ -73,7 +73,12 @@ public Action:OnSunlightSpearCollision(entity, client)
 			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsOnDifferentTeams(owner,client))
 			{
-				float ProjectileDamage = (140.0 + (Pow(ArcaneDamage[owner] * Pow(ArcanePower[owner], 4.0), 2.45) * 35.0));
+				int spellLevel = RoundToNearest(GetAttribute(client, "arcane sunlight spear", 0.0));
+				if(spellLevel < 1)
+					return Plugin_Continue;
+
+				float scaling[] = {0.0, 35.0, 70.0, 140.0};
+				float ProjectileDamage = 140.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
 				SDKHooks_TakeDamage(client, owner, owner, ProjectileDamage, DMG_SHOCK, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 				RemoveEntity(entity);
 				CreateParticle(client, "dragons_fury_effect_parent", true, "", 2.0);

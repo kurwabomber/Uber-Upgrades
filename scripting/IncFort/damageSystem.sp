@@ -43,10 +43,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(IsValidEdict(inflictor)){
 				char classname[32]; 
 				GetEdictClassname(inflictor, classname, sizeof(classname));
-				if(!strcmp("tf_projectile_lightningorb", classname))
-				{
-					damage += (30.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * 5.0));
-					damagetype |= DMG_PREVENT_PHYSICS_FORCE;
+				if(projectileDamage[inflictor] > 0.0){
+					damage = projectileDamage[inflictor];
 				}
 				isSentry = !strcmp("obj_sentrygun", classname) || !strcmp("tf_projectile_sentryrocket", classname);
 			}
@@ -1001,16 +999,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		float overrideproj = GetAttribute(weapon, "override projectile type");
 		float energyWeapActive = GetAttribute(weapon, "energy weapon penetration", 0.0);
-		if(overrideproj != 1.0)
-		{
-			if((overrideproj > 1.0 && overrideproj <= 2.0) || (overrideproj > 5.0 && overrideproj <= 6.0))
-			{
-				damage *= GetAttribute(weapon, "bullets per shot bonus");
-				damage *= GetAttribute(attacker, "bullets per shot bonus");
-				damage *= GetAttribute(weapon, "accuracy scales damage");
-			}
-		}
-		if(energyWeapActive != 0.0)
+		if(overrideproj != 1.0 || energyWeapActive != 0.0)
 		{
 			damage *= GetAttribute(weapon, "bullets per shot bonus");
 			damage *= GetAttribute(weapon, "accuracy scales damage");
