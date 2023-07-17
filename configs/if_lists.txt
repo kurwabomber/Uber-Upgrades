@@ -7,7 +7,6 @@
 		{
 			"Attr0"		"Health Bonus"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"
@@ -117,7 +116,6 @@
 		{
 			"Attr0"		"Health Bonus"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"
@@ -227,7 +225,6 @@
 		{
 			"Attr0"		"Health Bonus"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"
@@ -337,7 +334,6 @@
 		{
 			"Attr0"		"Health Bonus"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"
@@ -446,7 +442,6 @@
 		{
 			"Attr0"		"Health Bonus (Heavy)"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"
@@ -560,7 +555,6 @@
 		{
 			"Attr0"		"Health Bonus"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"
@@ -670,7 +664,6 @@
 		{
 			"Attr0"		"Health Bonus"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"
@@ -779,7 +772,6 @@
 		{
 			"Attr0"		"Health Bonus"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"
@@ -891,7 +883,6 @@
 		{
 			"Attr0"		"Health Bonus"
 			"Attr1"		"health regen"
-			"Attr16"	"Max Armor Capacity"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
 			"Attr19"	"Armor Recharge Rate Multiplier"

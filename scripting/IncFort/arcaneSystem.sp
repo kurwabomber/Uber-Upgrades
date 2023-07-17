@@ -359,7 +359,7 @@ CastSunlightSpear(client, attuneSlot)
 		TE_SetupKillPlayerAttachments(iEntity);
 		TE_SendToAll();
 		int color[4]={255, 200, 0,225};
-		TE_SetupBeamFollow(iEntity,Laser,0,0.5,3.0,3.0,1,color);
+		TE_SetupBeamFollow(iEntity,Laser,0,0.2,3.0,3.0,1,color);
 		TE_SendToAll();
 	}
 }
@@ -371,8 +371,9 @@ CastLightningEnchantment(client, attuneSlot)
 	if(applyArcaneRestrictions(client, attuneSlot, 150.0 + (40.0 * ArcaneDamage[client]), 30.0))
 		return;
 		
-	LightningEnchantment[client] = (10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.0));
-	LightningEnchantmentDuration[client] = 20.0 * ArcanePower[client];	
+	LightningEnchantment[client] = (10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 4.0));
+	LightningEnchantmentLevel[client] = spellLevel;
+	LightningEnchantmentDuration[client] = currentGameTime + 20.0*ArcanePower[client];	
 }
 CastDarkmoonBlade(client, attuneSlot)
 {
@@ -382,8 +383,9 @@ CastDarkmoonBlade(client, attuneSlot)
 	if(applyArcaneRestrictions(client, attuneSlot, 100.0 + (20.0 * ArcaneDamage[client]), 25.0))
 		return; 
 	
-	DarkmoonBlade[client] = (10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 4.5));
-	DarkmoonBladeDuration[client] = 20.0 * ArcanePower[client];
+	DarkmoonBlade[client] = (10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 4.5));
+	DarkmoonBladeLevel[client] = spellLevel;
+	DarkmoonBladeDuration[client] = currentGameTime + 20.0*ArcanePower[client];
 }
 CastSnapFreeze(client, attuneSlot)
 {
@@ -397,7 +399,7 @@ CastSnapFreeze(client, attuneSlot)
 	float clientpos[3];
 	GetClientEyePosition(client, clientpos);
 	EmitSoundToAll(SOUND_FREEZE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
-	float damage = 100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0);
+	float damage = 100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 60.0);
 	int i = -1;
 	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
@@ -420,10 +422,10 @@ CastSnapFreeze(client, attuneSlot)
 		if(IsValidClient3(i))
 		{
 			TF2_AddCondition(i, TFCond_FreezeInput, 0.4);
-			TF2_StunPlayer(i, 0.4,1.0,TF_STUNFLAGS_NORMALBONK,client);
+			TF2_StunPlayer(i, 0.4*spellLevel,1.0,TF_STUNFLAGS_NORMALBONK,client);
 		}
 	}
-	TF2_AddCondition(client, TFCond_ObscuredSmoke, 0.4);
+	TF2_AddCondition(client, TFCond_ObscuredSmoke, 0.4*spellLevel);
 	GetClientAbsOrigin(client, clientpos);
 	CreateSmoke(clientpos,0.3,255,255,255,"200","20");
 	CreateParticle(client, "utaunt_snowring_icy_parent", true);
@@ -449,7 +451,7 @@ CastArcanePrison(client, attuneSlot)
 	float fOrigin[3]
 	float vBuffer[3]
 
-	int magnitude[] = {0,1,2,3};
+	int magnitude[] = {0,1,2,2};
 	float damage = 20.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 7.5);
 	if(spellLevel < 3){
 		if(LookPoint(client,fOrigin))
@@ -853,7 +855,7 @@ CastShockwave(client, attuneSlot)
 	GetClientEyePosition(client,ClientPos);
 	ClientPos[2] -= 20.0;
 		
-	float damageDealt = (100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), 2.45) * 60.0));
+	float damageDealt = (100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 60.0));
 	int i = -1;
 	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
@@ -876,7 +878,7 @@ CastShockwave(client, attuneSlot)
 		if(IsValidClient3(i))
 		{
 			TF2_AddCondition(i, TFCond_FreezeInput, 0.4);
-			TF2_StunPlayer(i, 2.25,1.0,TF_STUNFLAGS_NORMALBONK,client);
+			TF2_StunPlayer(i, 2.25 + 0.4*spellLevel,1.0,TF_STUNFLAGS_NORMALBONK,client);
 			PushEntity(i,client,900.0,200.0);
 		}
 	}
@@ -1529,51 +1531,55 @@ CastHealing(client, attuneSlot)//Projected Healing
 	GetClientEyePosition(client,clientpos);
 	int iTeam = GetClientTeam(client);
 	EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
-	int iEntity = CreateEntityByName("tf_projectile_flare");
-	if (!IsValidEdict(iEntity)) 
-		return;
 
 	float fAngles[3]
 	float fOrigin[3]
 	float vBuffer[3]
 	float fVelocity[3]
 	float fwd[3]
-	SetEntityRenderColor(iEntity, 255, 255, 255, 0);
-	SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+	
+	int projCount[] = {0,1,3,5};
+	for(int i = 0;i<projCount[spellLevel];++i){
+		int iEntity = CreateEntityByName("tf_projectile_flare");
+		if (!IsValidEdict(iEntity)) 
+			return;
 
-	SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
-	SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
-	SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
-	SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-	int g_offsCollisionGroup = FindSendPropInfo("CBaseEntity", "m_CollisionGroup");
-	SetEntData(iEntity, g_offsCollisionGroup, 5, 4, true);
-				
-	GetClientEyePosition(client, fOrigin);
-	GetClientEyeAngles(client,fAngles);
+		SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+		SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
+		SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
+		SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
 
-	GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-	GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-	ScaleVector(fwd, 60.0);
+		SetEntityRenderMode(iEntity, RENDER_NONE);
+		GetClientEyePosition(client, fOrigin);
+		GetClientEyeAngles(client,fAngles);
 
-	AddVectors(fOrigin, fwd, fOrigin);
+		if(projCount[spellLevel] > 1){
+			fAngles[1] -= (projCount[spellLevel]-1)*4.0;
+			fAngles[1] += i*8.0;
+		}
+		GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+		GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+		ScaleVector(fwd, 60.0);
 
-	float Speed = 1800.0;
-	fVelocity[0] = vBuffer[0]*Speed;
-	fVelocity[1] = vBuffer[1]*Speed;
-	fVelocity[2] = vBuffer[2]*Speed;
-	SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-	TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-	DispatchSpawn(iEntity);
+		AddVectors(fOrigin, fwd, fOrigin);
 
-	TE_SetupKillPlayerAttachments(iEntity);
-	TE_SendToAll();
+		float Speed = 1800.0;
+		fVelocity[0] = vBuffer[0]*Speed;
+		fVelocity[1] = vBuffer[1]*Speed;
+		fVelocity[2] = vBuffer[2]*Speed;
+		SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+		TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+		DispatchSpawn(iEntity);
 
-	int color[4];
-	color = iTeam == 2 ? {255, 0, 0, 255} : {0, 0, 255, 255};
+		TE_SetupKillPlayerAttachments(iEntity);
+		TE_SendToAll();
 
-	TE_SetupBeamFollow(iEntity,Laser,0,2.5,4.0,8.0,3,color);
-	TE_SendToAll();
-	SDKHook(iEntity, SDKHook_StartTouchPost, ProjectedHealingCollision);
-	SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
-	CreateTimer(0.03, HeavyFriendlyHoming, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		int color[4] = {255, 220, 0, 255};
+
+		TE_SetupBeamFollow(iEntity,Laser,0,0.5,4.0,8.0,3,color);
+		TE_SendToAll();
+
+		SDKHook(iEntity, SDKHook_StartTouchPost, ProjectedHealingCollision);
+		CreateTimer(0.03, HeavyFriendlyHoming, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	}
 }

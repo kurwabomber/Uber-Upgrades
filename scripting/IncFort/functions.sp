@@ -82,12 +82,12 @@ public void ManagePlayerBuffs(int i){
 
 		additiveDamageRawBuff += playerBuffs[i][buff].additiveDamageRaw;
 		additiveDamageMultBuff += playerBuffs[i][buff].additiveDamageMult;
-		multiplicativeDamageBuff *= 1.0+playerBuffs[i][buff].multiplicativeDamage;
+		multiplicativeDamageBuff *= playerBuffs[i][buff].multiplicativeDamage;
 		additiveAttackSpeedMultBuff += playerBuffs[i][buff].additiveAttackSpeedMult;
-		multiplicativeAttackSpeedMultBuff *= 1.0+playerBuffs[i][buff].multiplicativeAttackSpeedMult;
+		multiplicativeAttackSpeedMultBuff *= playerBuffs[i][buff].multiplicativeAttackSpeedMult;
 		additiveMoveSpeedMultBuff += playerBuffs[i][buff].additiveMoveSpeedMult;
 		additiveDamageTakenBuff += playerBuffs[i][buff].additiveDamageTaken;
-		multiplicativeDamageTakenBuff *= 1.0+playerBuffs[i][buff].multiplicativeDamageTaken;
+		multiplicativeDamageTakenBuff *= playerBuffs[i][buff].multiplicativeDamageTaken;
 		additiveArmorRechargeBuff += playerBuffs[i][buff].additiveArmorRecharge;
 
 		if(playerBuffs[i][buff].description[0] != '\0')
@@ -113,6 +113,13 @@ public void ManagePlayerBuffs(int i){
 				buff += 0.08;
 		}
 		Format(details, sizeof(details), "%s\n%s %.2fx", details, "Thunderstorm Powerup",buff);
+	}
+
+	if(LightningEnchantmentDuration[i] > currentGameTime){
+		Format(details, sizeof(details), "%s\nLightning Enchantment | %.2fs | +%s DPS", details, LightningEnchantmentDuration[i] - currentGameTime,  GetAlphabetForm(LightningEnchantment[i]*20.0));
+	}
+	if(DarkmoonBladeDuration[i] > currentGameTime){
+		Format(details, sizeof(details), "%s\nDarkmoon Blade | %.2fs | +%s Melee Damage", details, DarkmoonBladeDuration[i] - currentGameTime, GetAlphabetForm(DarkmoonBlade[i]));
 	}
 
 	float ArmorRechargeMult = 1.0;
@@ -151,6 +158,16 @@ public void ManagePlayerBuffs(int i){
 			Address constantArmorRegen = TF2Attrib_GetByName(healerweapon, "SRifle Charge rate increased");
 			if(constantArmorRegen != Address_Null)
 				fl_ArmorRegenConstant[i] = (fl_CalculatedMaxArmor[i]*TF2Attrib_GetValue(constantArmorRegen)*TICKINTERVAL);
+		}
+	}
+
+	if(TF2_IsPlayerInCondition(i, TFCond_Sapped))
+	{
+		int spy = TF2Util_GetPlayerConditionProvider(i, TFCond_Sapped);
+		if(IsValidClient3(spy)){
+			int sapper = GetWeapon(spy,6);
+			if(IsValidWeapon(sapper))
+				multiplicativeDamageTakenBuff *= GetAttribute(sapper, "scattergun knockback mult");
 		}
 	}
 
@@ -236,7 +253,7 @@ public ApplyUberBuffs(int medic, int target, int medigun){
 	if(uberBits & UBER_DEFENSE){
 		Buff defenseBuff;
 		defenseBuff.init("Major Defense Bonus", "", Buff_DefenseBoost, 2, medic, 0.2);
-		defenseBuff.multiplicativeDamageTaken = -0.5;
+		defenseBuff.multiplicativeDamageTaken = 0.5;
 		insertBuff(medic, defenseBuff);
 
 		if(applyToTarget)
@@ -1272,6 +1289,7 @@ RespawnEffect(client)
 		fl_CurrentArmor[client] = fl_MaxArmor[client];
 		fl_AdditionalArmor[client] = 0.0;
 		LightningEnchantmentDuration[client] = 0.0;
+		DarkmoonBladeDuration[client] = 0.0;
 		CreateTimer(0.2,GiveMaxAmmo,GetClientUserId(client));
 	}
 	TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
@@ -1724,23 +1742,19 @@ refreshUpgrades(client, slot)
 			if(healthActive != Address_Null)
 			{
 				TF2Attrib_SetByName(client,"mult max health", TF2Attrib_GetValue(healthActive));
-				if(TF2Spawn_IsClientInSpawn(client))
-					CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
 				if(current_class[client] == TFClass_Engineer)
 					TF2Attrib_SetByName(client,"engy building health bonus", 1.0+TF2Attrib_GetValue(healthActive));
 			}
 			if(fl_AdditionalArmor[client] > 0.0)
 			{
 				float postArmorAmount = 300.0
-				Address armorActive = TF2Attrib_GetByName(client, "obsolete ammo penalty")
+				Address armorActive = TF2Attrib_GetByName(client, "mult max health")
 				if(armorActive != Address_Null)
-				{
-					postArmorAmount = TF2Attrib_GetValue(armorActive)+300.0;
-				}
+					postArmorAmount = TF2Attrib_GetValue(armorActive)*300.0;
+				
 				if(postArmorAmount < fl_MaxArmor[client] && fl_AdditionalArmor[client] > postArmorAmount)
-				{
 					fl_AdditionalArmor[client] = postArmorAmount
-				}
+				
 			}
 			
 			//Powerups
@@ -2494,14 +2508,7 @@ checkRadiation(victim,attacker)
 		RadiationBuildup[victim] = 0.0;
 		if(!IsFakeClient(victim))
 		{
-			float victimMaxArmor = 300.0;
-			Address armorActive = TF2Attrib_GetByName(victim, "obsolete ammo penalty")
-			if(armorActive != Address_Null)
-			{
-				float armorAmount = TF2Attrib_GetValue(armorActive);
-				victimMaxArmor += armorAmount;
-			}
-			int armorLost = RoundToNearest(victimMaxArmor/2.0);
+			int armorLost = RoundToNearest(fl_CalculatedMaxArmor[victim]/2.0);
 			DealFakeDamage(victim,attacker,-1, armorLost);
 			TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 5.0);
 			

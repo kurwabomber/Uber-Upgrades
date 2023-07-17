@@ -211,6 +211,8 @@ int relentlessTicks[MAXPLAYERS+1];
 int Kills[MAXPLAYERS+1]
 int Deaths[MAXPLAYERS+1]
 int armorTicks[MAXPLAYERS+1];
+int LightningEnchantmentLevel[MAXPLAYERS+1];
+int DarkmoonBladeLevel[MAXPLAYERS+1];
 
 //Floats
 float currentGameTime
@@ -298,7 +300,7 @@ char upgrades_weapon_description[NB_WEAPONS][512]
 char upgrades_weapon[NB_WEAPONS][128];
 char ArmorXPos[MAXPLAYERS+1][64];
 char ArmorYPos[MAXPLAYERS+1][64];
-char SpellList[][] = {"Zap","Lightning Strike","Projected Healing","A Call Beyond","Blacksky Eye","Sunlight Spear","Lightning Enchantment","Snap Freeze","Arcane Prison","darkmoon blade from dark souls","Speed Aura","Aerial Strike","Inferno","Mine Field","Shockwave","Auto-Sentry","Soothing Sunlight","Arcane Hunter","Sabotage"}
+char SpellList[][] = {"Zap","Lightning Strike","Projected Healing","A Call Beyond","Blacksky Eye","Sunlight Spear","Lightning Enchantment","Snap Freeze","Arcane Prison","Darkmoon Blade","Speed Aura","Aerial Strike","Inferno","Mine Field","Shockwave","Auto-Sentry","Soothing Sunlight","Arcane Hunter","Sabotage"}
 
 //Bools
 bool inScore[MAXPLAYERS+1];

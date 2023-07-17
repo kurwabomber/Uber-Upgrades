@@ -20,16 +20,11 @@ public Action:Timer_Second(Handle timer)
 			}
 
 			
-			Address armorActive = TF2Attrib_GetByName(client, "obsolete ammo penalty")
+			fl_MaxArmor[client] = 300.0
+			Address armorActive = TF2Attrib_GetByName(client, "mult max health")
 			if(armorActive != Address_Null)
-			{
-				float armorAmount = TF2Attrib_GetValue(armorActive);
-				fl_MaxArmor[client] = armorAmount+300.0;
-			}
-			else
-			{
-				fl_MaxArmor[client] = 300.0;
-			}
+				fl_MaxArmor[client] *= TF2Attrib_GetValue(armorActive);
+				
 			fl_CalculatedMaxArmor[client] = fl_MaxArmor[client];
 			if(hasBuffIndex(client, Buff_ShatteredArmor))
 				fl_CalculatedMaxArmor[client] *= 0.75;
@@ -191,31 +186,15 @@ public Action:Timer_FixedVariables(Handle timer)
 
 				if (AreClientCookiesCached(client))
 				{
-					if(StringToFloat(ArmorXPos[client]) != 0.0 && StringToFloat(ArmorYPos[client]))
+					if(fl_AdditionalArmor[client] <= 0.0)
 					{
-						if(fl_AdditionalArmor[client] <= 0.0)
-						{
-							SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudSync, ArmorLeft);
-						}
-						else
-						{
-							SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudSync, ArmorLeft);
-						}
+						SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+						ShowSyncHudText(client, hudSync, ArmorLeft);
 					}
 					else
 					{
-						if(fl_AdditionalArmor[client] <= 0.0)
-						{
-							SetHudTextParams(-0.75, -0.2, 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudSync, ArmorLeft);
-						}
-						else
-						{
-							SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudSync, ArmorLeft);
-						}
+						SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+						ShowSyncHudText(client, hudSync, ArmorLeft);
 					}
 				}
 				else
@@ -1045,16 +1024,15 @@ public Action Timer_UberCheck(Handle timer, int medigun){
 }
 public Action:refreshallweapons(Handle timer, int client) 
 {
-	for(int i = 0;i < 6;i++)
-	{
+	for(int i = 0;i < 6;i++){
 		refreshUpgrades(client,i);
 	}
 }
 public Action:GiveMaxHealth(Handle timer, any:userid) 
 {
 	int client = GetClientOfUserId(userid);
-	if(IsValidClient3(client) && TF2_GetMaxHealth(client) >= GetClientHealth(client))
-		SetEntityHealth(client, TF2_GetMaxHealth(client))
+	if(IsValidClient3(client) && TF2Util_GetEntityMaxHealth(client) >= GetClientHealth(client))
+		SetEntityHealth(client, TF2Util_GetEntityMaxHealth(client))
 }
 public Action:SelfDestruct(Handle timer, any:ref) 
 { 

@@ -68,10 +68,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 				if(currentDamageType[attacker].second & DMG_ARCANE)
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
-				if(LightningEnchantmentDuration[attacker] > 0.0 && !(damagetype & DMG_VEHICLE))
+				if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
 				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
 					damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
-				else if(DarkmoonBladeDuration[attacker] > 0.0)
+				else if(DarkmoonBladeDuration[attacker] > currentGameTime)
 				{
 					int melee = GetWeapon(attacker,2);
 					if(melee == weapon)
@@ -580,15 +580,15 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		if(IsValidWeapon(weapon))
 		{
-			if(GetAttribute(attacker, "knockout powerup", 0.0) != 0.0)
+			if(GetAttribute(attacker, "knockout powerup", 0.0))
 				damage *= 1.35;
 			
-			if(LightningEnchantmentDuration[attacker] > 0.0 && !(damagetype & DMG_VEHICLE))
+			if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
 			{
 				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
 				damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
 			}
-			else if(DarkmoonBladeDuration[attacker] > 0.0)
+			else if(DarkmoonBladeDuration[attacker] > currentGameTime)
 			{
 				int melee = GetWeapon(attacker,2);
 				if(IsValidWeapon(melee) && melee == weapon)
@@ -618,7 +618,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 	if(IsValidEdict(logic))
 	{
 		int round = GetEntProp(logic, Prop_Send, "m_nMannVsMachineWaveCount");
-		damage *= (Pow(7500.0/waveToCurrency[round], DefenseMod + (DefenseIncreasePerWaveMod * round)) * 6.0)/OverallMod;
+		damage *= (Pow(7500.0/(StartMoney+additionalstartmoney), DefenseMod + (DefenseIncreasePerWaveMod * round)) * 6.0)/OverallMod;
 	}
 	return Plugin_Changed;
 }
@@ -696,12 +696,12 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 			if(GetAttribute(attacker, "knockout powerup", 0.0) != 0.0)
 				damage *= 1.35;
 			
-			if(LightningEnchantmentDuration[attacker] > 0.0 && !(damagetype & DMG_VEHICLE))
+			if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
 			{
 				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
 				damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
 			}
-			else if(DarkmoonBladeDuration[attacker] > 0.0)
+			else if(DarkmoonBladeDuration[attacker] > currentGameTime)
 			{
 				int melee = GetWeapon(attacker,2);
 				if(IsValidWeapon(melee) && melee == weapon)
@@ -913,27 +913,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			if(TF2_IsPlayerInCondition(victim,TFCond_TmpDamageBonus))
 			{
 				damage *= 1.3;
-			}
-			if(TF2_IsPlayerInCondition(victim, TFCond_Sapped))
-			{
-				for(int i = 1;i<MaxClients;i++)
-				{
-					if(!IsValidClient3(i) || GetClientTeam(i) != GetClientTeam(attacker))
-						continue;
-
-					if(TF2_GetPlayerClass(i) != TFClass_Spy)
-						continue;
-
-					int sapper = GetWeapon(i,6);
-					if(!IsValidWeapon(sapper))
-						continue;
-
-					float sapperBonus = GetAttribute(sapper, "scattergun knockback mult");
-					if(sapperBonus == 1.0)
-						continue;
-
-					damage *= GetAttribute(sapper, "scattergun knockback mult");
-				}
 			}
 		}
 		if(TF2_GetPlayerClass(attacker) == TFClass_Medic)

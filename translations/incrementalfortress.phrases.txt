@@ -694,7 +694,7 @@
 	}
 	"Arcane - Darkmoon Blade"
 	{
-		"en"		"Arcane - darkmoon blade from dark souls"
+		"en"		"Arcane - Darkmoon Blade"
 	}
 	"Arcane - Snap Freeze"
 	{
@@ -838,7 +838,7 @@
 	}
 	"Health Bonus (Heavy)"
 	{
-		"en"		"Health Bonus (Heavy)"
+		"en"		"Health/Armor Bonus"
 	}
 	"Remove bleed chance"
 	{
@@ -1022,7 +1022,7 @@
 	}
 	"Health Bonus"
 	{
-		"en"		"Health Bonus"
+		"en"		"Health/Armor Bonus"
 	}
 	"Weapons Deals No Knockback"
 	{

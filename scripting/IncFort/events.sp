@@ -1755,7 +1755,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
 						Buff kingBuff;
 						kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
-						kingBuff.multiplicativeAttackSpeedMult = 0.33;
+						kingBuff.multiplicativeAttackSpeedMult = 1.33;
 						kingBuff.additiveDamageMult = 0.2;
 						for(int i = 1;i<MaxClients;i++)
 						{
@@ -2570,7 +2570,7 @@ public OnGameFrame()
 				}
 			}
 
-			if(LightningEnchantmentDuration[client] > 0.0)
+			if(LightningEnchantmentDuration[client] > currentGameTime)
 			{
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEdict(CWeapon) && CWeapon != 0 && DarkmoonBladeDuration[client] <= 0.0)
@@ -2586,7 +2586,7 @@ public OnGameFrame()
 					}
 				}
 			}
-			if(DarkmoonBladeDuration[client] > 0.0)
+			if(DarkmoonBladeDuration[client] > currentGameTime)
 			{
 				int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 				int melee = GetWeapon(client,2);

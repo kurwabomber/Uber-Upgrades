@@ -4789,7 +4789,6 @@
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
-			"staged_max"		"1,2,3"
 			"description"	"Summons a sentry ontop of your head."
 			"max"		"1"
 		}
@@ -4825,7 +4824,6 @@
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
-			"staged_max"		"1,2,3"
 			"description"	"Applies the sapped effect to all enemies around crosshair.\n-50% speed and jump height, lasts 10 seconds."
 			"max"		"1"
 		}
