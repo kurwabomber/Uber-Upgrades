@@ -1737,6 +1737,36 @@ refreshUpgrades(client, slot)
 						}
 					}
 				}
+				if(GetAttribute(client, "arcane infernal enchantment", 0.0) > 0.0 && !isUsed[20])
+				{
+					AttunedSpells[client][i] = 20.0;
+					isUsed[20] = true
+					continue;
+				}
+				if(GetAttribute(client, "arcane splitting thunder", 0.0) > 0.0 && !isUsed[21])
+				{
+					AttunedSpells[client][i] = 21.0;
+					isUsed[21] = true
+					continue;
+				}
+				if(GetAttribute(client, "arcane antiseptic blast", 0.0) > 0.0 && !isUsed[22])
+				{
+					AttunedSpells[client][i] = 22.0;
+					isUsed[22] = true
+					continue;
+				}
+				if(GetAttribute(client, "arcane karmic justice", 0.0) > 0.0 && !isUsed[23])
+				{
+					AttunedSpells[client][i] = 23.0;
+					isUsed[23] = true
+					continue;
+				}
+				if(GetAttribute(client, "arcane snowstorm", 0.0) > 0.0 && !isUsed[24])
+				{
+					AttunedSpells[client][i] = 24.0;
+					isUsed[24] = true
+					continue;
+				}
 			}
 			Address healthActive = TF2Attrib_GetByName(client, "health from packs decreased");		
 			if(healthActive != Address_Null)

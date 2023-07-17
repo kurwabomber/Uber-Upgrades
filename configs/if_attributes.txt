@@ -4131,7 +4131,7 @@
 			"increase_ratio"	"0.5"
 			"value"		"1"
 			"init"		"1"
-			"description"	"Divides total damage taken.\nCheck stats page to see effectiveness."
+			"description"	"Divides total damage taken.\nFormula is damage/(DR*DRMult)^2.35.\nCheck stats page to see effectiveness."
 			"display_style"	"2"
 			"max"		"100000"
 		}
@@ -4494,7 +4494,7 @@
 			"increase_ratio"	"0.5"
 			"value"		"0.1"
 			"init"		"1"
-			"description"	"Divides total damage taken.\nCheck stats page to see effectiveness."
+			"description"	"Multiplies input Damage Reduction for formula.\nCheck stats page to see effectiveness."
 			"display_style"	"3"
 			"max"		"10000"
 		}
@@ -4825,6 +4825,66 @@
 			"value"		"1"
 			"init"		"0"
 			"description"	"Applies the sapped effect to all enemies around crosshair.\n-50% speed and jump height, lasts 10 seconds."
+			"max"		"1"
+		}
+		"1543.1"
+		{
+			"name"		"arcane infernal enchantment"
+			"ref"		"Arcane - Infernal Enchantment"
+			"cost"		"40000"
+			"increase_ratio"	"20"
+			"value"		"1"
+			"init"		"0"
+			"staged_max"		"1,2,3"
+			"description"	"Gives 20s of Infernal Enchantment, which:\nGives +5% damage per second the victim has been on fire.\nMakes all attacks apply DOT for 50 arcane base DPS."
+			"max"		"1"
+		}
+		"1543.2"
+		{
+			"name"		"arcane splitting thunder"
+			"ref"		"Arcane - Splitting Thunder"
+			"cost"		"40000"
+			"increase_ratio"	"20"
+			"value"		"1"
+			"init"		"0"
+			"staged_max"		"1,2,3"
+			"description"	"Casts for 5s and shoots 5 angularly separated sunlight spears.\nEach creating lines of lightning, dealing 200 scaling and applying +150 radiation."
+			"max"		"1"
+		}
+		"1543.3"
+		{
+			"name"		"arcane antiseptic blast"
+			"ref"		"Arcane - Antiseptic Blast"
+			"cost"		"40000"
+			"increase_ratio"	"20"
+			"value"		"1"
+			"init"		"0"
+			"staged_max"		"1,2,3"
+			"description"	"Casts for 3s and within a 800 HU cone, deal 400 scaling\nwith an additional +50% damage per debuff.\nClears debuffs post-damage."
+			"max"		"1"
+		}
+		"1543.4"
+		{
+			"name"		"arcane karmic justice"
+			"ref"		"Arcane - Karmic Justice"
+			"cost"		"15000"
+			"increase_ratio"	"20"
+			"value"		"1"
+			"init"		"0"
+			"staged_max"		"1,2,3"
+			"description"	"For every 1% armor damage received during a 8s period:\n+4 arcane scaling to damage dealt. Automatically procs upon\nhitting 280 arcane scaling."
+			"max"		"1"
+		}
+		"1543.5"
+		{
+			"name"		"arcane snowstorm"
+			"ref"		"Arcane - Snowstorm"
+			"cost"		"13000"
+			"increase_ratio"	"20"
+			"value"		"1"
+			"init"		"0"
+			"staged_max"		"1,2,3"
+			"description"	"Toggles a damaging AOE that slows enemies nearby.\nDeals 90 scaling per second and drains 5% focus/s."
 			"max"		"1"
 		}
 		//Class Tweaks

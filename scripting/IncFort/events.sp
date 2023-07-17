@@ -1170,7 +1170,7 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 	additionalstartmoney = 0.0;
 	StartMoneySaved = 0.0;
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
-	for (int client = 1; client < MaxClients; client++)
+	for (int client = 1; client <= MaxClients; client++)
 	{
 		if (IsValidClient(client) && !IsFakeClient(client))
 		{
@@ -1210,6 +1210,7 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 		}
 	}
 	additionalstartmoney = 0.0;
+	ResetVariables();
 	DeleteSavedPlayerData();
 
 	char responseBuffer[256];

@@ -3489,6 +3489,56 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "5900"
+    {
+        "name"  "arcane infernal enchantment"
+        "attribute_class"   "arcane_infernal_enchantment"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5901"
+    {
+        "name"  "arcane splitting thunder"
+        "attribute_class"   "arcane_splitting_thunder"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5902"
+    {
+        "name"  "arcane antiseptic blast"
+        "attribute_class"   "arcane_antiseptic_blast"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5903"
+    {
+        "name"  "arcane karmic justice"
+        "attribute_class"   "arcane_karmic_justice"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "5904"
+    {
+        "name"  "arcane snowstorm"
+        "attribute_class"   "arcane_snowstorm"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
    //filler
     "6000"
     {

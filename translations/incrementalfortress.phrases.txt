@@ -1,5 +1,25 @@
 "Phrases"
 {
+	"Arcane - Infernal Enchantment"
+	{
+		"en"		"Arcane - Infernal Enchantment"
+	}
+	"Arcane - Splitting Thunder"
+	{
+		"en"		"Arcane - Splitting Thunder"
+	}
+	"Arcane - Antiseptic Blast"
+	{
+		"en"		"Arcane - Antiseptic Blast"
+	}
+	"Arcane - Karmic Justice"
+	{
+		"en"		"Arcane - Karmic Justice"
+	}
+	"Arcane - Snowstorm"
+	{
+		"en"		"Arcane - Snowstorm"
+	}
 	"weapon self dmg push force increased"
 	{
 		"en"		"Self Push Force Increased"
