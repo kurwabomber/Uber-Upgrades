@@ -310,6 +310,58 @@ public bool TraceEntityFilterPlayer(entity, contentsMask){
 public bool TraceEntityFilterOnlyWorld(entity, contentsMask){
     return entity == 0;
 }
+
+stock void SetPawnTimer(Function func, float thinktime = 0.1, any[] variables, int size)
+{
+	DataPack thinkpack = new DataPack();
+	thinkpack.WriteFunction(func);
+	thinkpack.WriteCell(size);
+	for(int i = 0; i<size; ++i){
+		thinkpack.WriteCell(variables[i]);
+	}
+	CreateTimer(thinktime, DoThinkTimed, thinkpack, TIMER_DATA_HNDL_CLOSE);
+}
+public Action DoThinkTimed(Handle t, DataPack pack)
+{
+	pack.Reset();
+	Function fn = pack.ReadFunction();
+	Call_StartFunction(null, fn);
+
+	int size = pack.ReadCell();
+	for(int i = 0; i<size; ++i){
+		any param = pack.ReadCell();
+		Call_PushCell(param);
+	}
+
+	Call_Finish();
+	return Plugin_Continue;
+}
+
+stock void RequestFramePawn(Function func, any[] variables, int size)
+{
+	DataPack thinkpack = new DataPack();
+	thinkpack.WriteFunction(func);
+	thinkpack.WriteCell(size);
+	for(int i = 0; i<size; ++i){
+		thinkpack.WriteCell(variables[i]);
+	}
+	RequestFrame(DoThink, thinkpack);
+}
+void DoThink(DataPack pack)
+{
+	pack.Reset();
+	Function fn = pack.ReadFunction();
+	Call_StartFunction(null, fn);
+
+	int size = pack.ReadCell();
+	for(int i = 0; i<size; ++i){
+		any param = pack.ReadCell();
+		Call_PushCell(param);
+	}
+
+	Call_Finish();
+}
+
 stock float GetResistance(int client, bool includeReduction = false, float increaseBase = 0.0, float increaseMult = 0.0)
 {
 	if(IsValidClient3(client))

@@ -1533,6 +1533,54 @@ public Action:removeBulletsPerShot(Handle timer, int client)
 		StunShotBPS[client] = false;
     }
 }
+public Action Timer_SplittingThunderThink(Handle timer, int entityRef){
+	int entity = EntRefToEntIndex(entityRef);
+	if(!IsValidEntity(entity))
+		return Plugin_Stop;
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	if(!IsValidClient3(owner))
+		return Plugin_Continue;
+	
+	int spellLevel = RoundToNearest(GetAttribute(owner, "arcane splitting thunder", 0.0));
+	if(spellLevel < 1)
+		return Plugin_Continue;
+
+	float startpos[3], endpos[3];
+	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", endpos);
+
+	startpos[0] = endpos[0];
+	startpos[1] = endpos[1];
+	startpos[2] = endpos[2] + 1600;
+	
+	// define the color of the strike
+	int iTeam = GetClientTeam(owner);
+
+	int color[4];
+	color = iTeam == 2 ? {255, 0, 0, 255} : {0, 0, 255, 255};
+	
+	// define the direction of the sparks
+	float dir[3] = {0.0, 0.0, 0.0};
+	
+	TE_SetupBeamPoints(startpos, endpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
+	TE_SendToAll();
+	
+	TE_SetupSparks(endpos, dir, 5000, 1000);
+	TE_SendToAll();
+	
+	TE_SetupEnergySplash(endpos, dir, false);
+	TE_SendToAll();
+	
+	TE_SetupSmoke(endpos, g_SmokeSprite, 5.0, 10);
+	TE_SendToAll();
+	
+	float scaling[] = {0.0, 100.0, 200.0, 300.0};
+	float ProjectileDamage = 2000.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
+
+	EntityExplosion(owner, ProjectileDamage, 300.0, endpos, -1, false, entity, 0.8);
+	EmitSoundToAll(SOUND_THUNDER, entity, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,endpos);
+
+	return Plugin_Continue;
+}
 public Action:AttackTwice(Handle timer, any:data) 
 {  
 	ResetPack(data);

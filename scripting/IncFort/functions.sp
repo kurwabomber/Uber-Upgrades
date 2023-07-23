@@ -121,6 +121,9 @@ public void ManagePlayerBuffs(int i){
 	if(DarkmoonBladeDuration[i] > currentGameTime){
 		Format(details, sizeof(details), "%s\nDarkmoon Blade | %.2fs | +%s Melee Damage", details, DarkmoonBladeDuration[i] - currentGameTime, GetAlphabetForm(DarkmoonBlade[i]));
 	}
+	if(InfernalEnchantmentDuration[i] > currentGameTime){
+		Format(details, sizeof(details), "%s\nInfernal Enchantment | %.2fs | +%s Infernal DPS", details, DarkmoonBladeDuration[i] - currentGameTime, GetAlphabetForm(InfernalEnchantment[i]));
+	}
 
 	float ArmorRechargeMult = 1.0;
 	fl_ArmorRegenConstant[i] = 0.0;
@@ -374,35 +377,35 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 		case 1:
 		{
 			if(random == 1){
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel, _, _, pos);
 			}else if(random == 2){
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel, _, _, pos);
 			}else if(random == 3){
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel, _, _, pos);
 			}
 		}
 		case 2:
 		{
-			EmitSoundToAll(DetonatorExplosionSound, entity, -1, soundPriority-20, 0, soundLevel-0.15);
+			EmitSoundToAll(DetonatorExplosionSound, entity, -1, soundPriority-20, 0, soundLevel-0.15, _, _, pos);
 		}
 		case 3:
 		{
-			EmitSoundToAll(OrnamentExplosionSound, entity, -1, soundPriority, 0, soundLevel);
+			EmitSoundToAll(OrnamentExplosionSound, entity, -1, soundPriority, 0, soundLevel, _, _, pos);
 		}
-		default:
+		case 0:
 		{
 			if(random == 1){
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel, _, _, pos);
 			}else if(random == 2){
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel, _, _, pos);
 			}else if(random == 3){
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel);
+				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel, _, _, pos);
 			}
 		}
 	}

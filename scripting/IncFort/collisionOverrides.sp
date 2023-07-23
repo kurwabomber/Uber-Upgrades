@@ -57,6 +57,35 @@ public Action:AddArrowCollisionFunction(entity, client)
 	}
 	return Plugin_Stop;
 }
+public Action OnStartTouchSplittingThunder(entity, other){
+	SDKHook(entity, SDKHook_Touch, OnSplittingThunderCollision);
+
+	if(other == 0)
+		return Plugin_Continue;
+
+	return Plugin_Handled;
+}
+public Action:OnSplittingThunderCollision(entity, client)
+{
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	if(!IsValidClient3(owner))
+		return Plugin_Continue;
+	
+	int spellLevel = RoundToNearest(GetAttribute(owner, "arcane splitting thunder", 0.0));
+	if(spellLevel < 1)
+		return Plugin_Continue;
+	
+	float origin[3];
+	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
+
+	float scaling[] = {0.0, 200.0, 400.0, 800.0};
+	float ProjectileDamage = 5000.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
+	EntityExplosion(owner, ProjectileDamage, 300.0, origin, _, false, entity);
+	RemoveEntity(entity);
+
+	SDKUnhook(entity, SDKHook_Touch, OnSplittingThunderCollision);
+	return Plugin_Continue;
+}
 public Action:OnStartTouchSunlightSpear(entity, other)
 {
 	SDKHook(entity, SDKHook_Touch, OnSunlightSpearCollision);
@@ -73,7 +102,7 @@ public Action:OnSunlightSpearCollision(entity, client)
 			int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
 			if(IsOnDifferentTeams(owner,client))
 			{
-				int spellLevel = RoundToNearest(GetAttribute(client, "arcane sunlight spear", 0.0));
+				int spellLevel = RoundToNearest(GetAttribute(owner, "arcane sunlight spear", 0.0));
 				if(spellLevel < 1)
 					return Plugin_Continue;
 

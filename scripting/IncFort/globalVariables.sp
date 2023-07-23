@@ -213,6 +213,7 @@ int Deaths[MAXPLAYERS+1]
 int armorTicks[MAXPLAYERS+1];
 int LightningEnchantmentLevel[MAXPLAYERS+1];
 int DarkmoonBladeLevel[MAXPLAYERS+1];
+int InfernalEnchantmentLevel[MAXPLAYERS+1];
 
 //Floats
 float currentGameTime
@@ -257,6 +258,8 @@ float LightningEnchantment[MAXPLAYERS+1];
 float LightningEnchantmentDuration[MAXPLAYERS+1];
 float DarkmoonBlade[MAXPLAYERS+1];
 float DarkmoonBladeDuration[MAXPLAYERS+1];
+float InfernalEnchantment[MAXPLAYERS+1];
+float InfernalEnchantmentDuration[MAXPLAYERS+1];
 float RPS[MAXPLAYERS+1];
 float lastMinesTime[MAXPLAYERS+1];
 float weaponTrailTimer[MAXPLAYERS+1];
