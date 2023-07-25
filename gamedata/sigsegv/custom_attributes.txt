@@ -1970,15 +1970,6 @@
         "hidden"	"1"
         "effect_type"	"positive"
     }
-    "4512"
-    {
-        "name"	"add cond when active"
-        "attribute_class"	"add_cond_when_active"
-        "description_string"	""
-        "description_format"	"value_is_additive"
-        "hidden"	"1"
-        "effect_type"	"positive"
-    }
     "4513"
     {
         "name"	"mult step height"
@@ -3411,7 +3402,17 @@
     "4727"
 	{
         "name"	"bullets per shot mult"
-        "attribute_class"	"mult_bullets_per_shot"
+        "attribute_class"	"mult_bullets_per_shot_if"
+        "description_string"	"(+-)%p% Max health"
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "4728"
+	{
+        "name"	"bullets per shot mult 2"
+        "attribute_class"	"mult_bullets_per_shot_if"
         "description_string"	"(+-)%p% Max health"
         "description_format"	"value_is_percentage"
         "hidden"	"1"
@@ -3825,5 +3826,24 @@
         "description_format"	"value_is_additive"
         "hidden"	"1"
         "effect_type"	"positive"
+    }
+    "6034"
+    {
+        "name"  "weapon fire rate"
+        "attribute_class"   "mult_postfiredelay"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
+    "6035"
+    {
+        "name"	"explosive bullets radius"
+        "attribute_class"	"explosive_bullets_radius"
+        "description_string"	"Fires explosive bullets"
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
     }
 }

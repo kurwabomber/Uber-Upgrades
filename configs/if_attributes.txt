@@ -5316,7 +5316,7 @@
 		}
 		"1589"
 		{
-			"name"		"explosive bullets"
+			"name"		"explosive bullets radius"
 			"ref"		"Explosive Bullets Radius"
 			"cost"		"1000"
 			"increase_ratio"	"0.5"
@@ -5326,7 +5326,7 @@
 		}
 		"1589.5"
 		{
-			"name"		"explosive bullets"
+			"name"		"explosive bullets radius"
 			"ref"		"Explosive Bullets Radius (tweak)"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -5569,6 +5569,15 @@
 			"init"		"1"
 			"max"		"0.0"
 		}
+		"1611.5"
+		{
+			"name"		"bullets per shot mult 2"
+			"ref"		"bullets per shot mult 2"
+			"cost"		"0"
+			"value"		"0.0"
+			"init"		"1"
+			"max"		"0.0"
+		}
 		"1612"
 		{
 			"name"		"crits_become_minicrits"
@@ -5585,6 +5594,51 @@
 			"cost"		"-2000"
 			"value"		"1"
 			"init"		"0"
+			"max"		"1"
+		}
+		"1614"
+		{
+			"name"		"weapon fire rate"
+			"ref"		"weapon fire rate"
+			"cost"		"0"
+			"value"		"0"
+			"init"		"1"
+			"max"		"1"
+		}
+		"1615"
+		{
+			"name"		"damage mult 13"
+			"ref"		"weapon damage mult"
+			"cost"		"0"
+			"value"		"0"
+			"init"		"1"
+			"max"		"1"
+		}
+		"1616"
+		{
+			"name"		"set_item_texture_wear"
+			"ref"		"set_item_texture_wear"
+			"cost"		"0"
+			"value"		"0"
+			"init"		"1"
+			"max"		"1"
+		}
+		"1617"
+		{
+			"name"		"paintkit_proto_def_index"
+			"ref"		"paintkit_proto_def_index"
+			"cost"		"0"
+			"value"		"0"
+			"init"		"1"
+			"max"		"1"
+		}
+		"1618"
+		{
+			"name"		"set throwable type"
+			"ref"		"add cond when active"
+			"cost"		"0"
+			"value"		"0"
+			"init"		"1"
 			"max"		"1"
 		}
 		//2000 series are tweaks -> attributes.

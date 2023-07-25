@@ -2167,7 +2167,11 @@ stock bool TF2_AttribListAttributesBySlot(client, iSlot = -1)
         case -1: 
         { 
             iEntity = client;
-        } 
+        }
+		case 5:
+		{
+			iEntity = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+		}
         default: 
         { 
             iEntity = GetWeapon(client, iSlot); 
@@ -2198,6 +2202,9 @@ stock bool TF2_AttribListAttributesBySlot(client, iSlot = -1)
 	//int weapon = GetWeapon(client,iSlot);
 	//PrintToChatAll("%i weapon",weapon);
     return true; 
+}
+int EHandleToEntIndex(int ehandle) {
+	return EntRefToEntIndex(ehandle | (1 << 31));
 }
 //Ammo
 stock SetCarriedAmmo( client, slot, newAmmo )

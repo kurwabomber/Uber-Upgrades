@@ -443,7 +443,7 @@ FinishCastSplittingThunder(int client, int spellLevel)
 {
 	client = EntRefToEntIndex(client)
 	if(IsValidClient3(client) && IsPlayerAlive(client)){
-		int projCount[] = {0,5,10,15};
+		int projCount[] = {0,5,7,10};
 		for(int i = 0;i<projCount[spellLevel];++i)
 		{
 			int iEntity = CreateEntityByName("tf_projectile_arrow");
@@ -468,7 +468,7 @@ FinishCastSplittingThunder(int client, int spellLevel)
 			GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 			GetAngleVectors(fAngles,fwd, right, NULL_VECTOR);
 
-			ScaleVector(fwd, 30.0);
+			ScaleVector(fwd, 50.0);
 			AddVectors(fOrigin, fwd, fOrigin);			
 
 			fVelocity[0] = vBuffer[0]*500.0;
@@ -496,7 +496,7 @@ FinishCastSplittingThunder(int client, int spellLevel)
 			TE_SetupBeamFollow(iEntity,Laser,0,0.2,3.0,3.0,1,color);
 			TE_SendToAll();
 
-			CreateTimer(0.4, Timer_SplittingThunderThink, EntIndexToEntRef(iEntity), TIMER_REPEAT);
+			CreateTimer(GetRandomFloat(0.3,0.5), Timer_SplittingThunderThink, EntIndexToEntRef(iEntity), TIMER_REPEAT);
 		}
 
 		float clientpos[3];

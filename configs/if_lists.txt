@@ -1708,6 +1708,28 @@
 			"Attr5"		"aiming movespeed increased"
 		}
 	}
+	"chargelessRifle"
+	{
+		"special_tweaks_listid"		"-1"
+		"Damage upgrades"
+		{
+			"Attr1"		"damage bonus"
+			"Attr24"	"ap (biggercali)"
+			"Attr4"		"Increased Overall Damage"
+			"Attr0"		"Overall Damage Bonus"
+			"Attr8"		"Weapons Deals No Knockback"
+			"Attr13"	"Life Steal Ability"
+			"Attr5"		"projectile penetration heavy"
+			"Attr12"	"reveal cloaked victim on hit"
+			"Attr13"	"reveal disguised victim on hit"
+		}
+		"Sniper specific upgrades"
+		{
+			"Attr0"		"fire rate bonus(old)"
+			"Attr1"		"faster reload rate"
+			"Attr5"		"aiming movespeed increased"
+		}
+	}
 	"c_bow"
 	{
 		"special_tweaks_listid"		"-1"

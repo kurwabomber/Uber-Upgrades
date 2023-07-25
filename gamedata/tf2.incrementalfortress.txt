@@ -224,6 +224,32 @@
 					}
 				}
 			}
+			"CBaseEntity::DispatchTraceAttack()"
+			{
+				"signature"		"CBaseEntity::DispatchTraceAttack()"
+				"callconv"		"thiscall"
+				"return"		"void"
+				"this"			"entity"
+				"arguments"
+				{
+					"damage_info"
+					{
+						"type"	"int"
+					}
+					"direction"
+					{
+						"type"	"vectorptr"
+					}
+					"trace"
+					{
+						"type"	"objectptr"
+					}
+					"damage_accumulator"
+					{
+						"type"	"objectptr"
+					}
+				}
+			}
 		}
 		"Signatures"
 		{

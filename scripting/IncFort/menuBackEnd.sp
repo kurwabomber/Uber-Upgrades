@@ -627,6 +627,13 @@ public MenuHandler_BuyNewWeapon(Handle menu, MenuAction:action, client, param2)
 		CloseHandle(menu);
 	}
 }
+public Action:Timer_giveactionslot(Handle timer, int client)
+{
+	client = EntRefToEntIndex(client)
+	if(IsValidClient(client))
+		GiveNewWeapon(client, 3);
+}
+
 public MenuHandler_AttributesTweak(Handle menu, MenuAction:action, client, param2)
 {
 	if (IsValidClient(client) && IsPlayerAlive(client) && !client_respawn_checkpoint[client])

@@ -55,11 +55,6 @@ public Action Menu_ConfirmWeapon(client, param2)
 	}
 	return Plugin_Handled;
 }
-public Action:Timer_giveactionslot(Handle timer, int client)
-{
-	client = EntRefToEntIndex(client)
-	GiveNewWeapon(client, 3);
-}
 //When you purchase an upgrade
 Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, int page = 0)
 {

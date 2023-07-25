@@ -186,7 +186,7 @@ int upgrades_weapon_current[MAXPLAYERS+1];
 int upgrades_weapon_lookingat[MAXPLAYERS+1];
 int upgrades_weapon_nb_att[NB_WEAPONS];
 int upgrades_weapon_index[NB_WEAPONS];
-int upgrades_weapon_att_idx[NB_WEAPONS][NB_SLOTS_UED+1];
+int upgrades_weapon_att_idx[NB_WEAPONS][MAX_ATTRIBUTES_ITEM+1];
 int buyableIndexOffParam[MAXPLAYERS+1][NB_WEAPONS]
 int currentupgrades_restriction[MAXPLAYERS+1][NB_SLOTS_UED+1][5];//maximum of 5 restrictions
 int globalButtons[MAXPLAYERS+1];
@@ -264,7 +264,7 @@ float RPS[MAXPLAYERS+1];
 float lastMinesTime[MAXPLAYERS+1];
 float weaponTrailTimer[MAXPLAYERS+1];
 float upgrades_weapon_cost[NB_WEAPONS];
-float upgrades_weapon_att_amt[NB_WEAPONS][NB_SLOTS_UED+1];
+float upgrades_weapon_att_amt[NB_WEAPONS][MAX_ATTRIBUTES_ITEM+1];
 float weaponFireRate[MAXENTITIES+1];
 float disableIFMiniHud[MAXPLAYERS+1];
 float fl_GlobalCoolDown[MAXPLAYERS+1];

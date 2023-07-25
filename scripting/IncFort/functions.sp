@@ -122,7 +122,7 @@ public void ManagePlayerBuffs(int i){
 		Format(details, sizeof(details), "%s\nDarkmoon Blade | %.2fs | +%s Melee Damage", details, DarkmoonBladeDuration[i] - currentGameTime, GetAlphabetForm(DarkmoonBlade[i]));
 	}
 	if(InfernalEnchantmentDuration[i] > currentGameTime){
-		Format(details, sizeof(details), "%s\nInfernal Enchantment | %.2fs | +%s Infernal DPS", details, DarkmoonBladeDuration[i] - currentGameTime, GetAlphabetForm(InfernalEnchantment[i]));
+		Format(details, sizeof(details), "%s\nInfernal Enchantment | %.2fs | +%s Infernal DPS", details, InfernalEnchantmentDuration[i] - currentGameTime, GetAlphabetForm(InfernalEnchantment[i]));
 	}
 
 	float ArmorRechargeMult = 1.0;
@@ -306,7 +306,7 @@ public float ParseShorthand(char[] input, int size){
 
 	return num;
 }
-stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = 0.65,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = 100, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0)
+stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0)
 {
 	if(entity == -1 || !IsValidEdict(entity))
 		entity = owner;
@@ -377,35 +377,35 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 		case 1:
 		{
 			if(random == 1){
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel, _, _, pos);
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel, _, _, pos);
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound1, 0,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound1, 0,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound1, 0,_,soundPriority,_,soundLevel, _, _, pos);
 			}else if(random == 2){
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel, _, _, pos);
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel, _, _, pos);
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound2, 0,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound2, 0,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound2, 0,_,soundPriority,_,soundLevel, _, _, pos);
 			}else if(random == 3){
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel, _, _, pos);
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel, _, _, pos);
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound3, 0,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound3, 0,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound3, 0,_,soundPriority,_,soundLevel, _, _, pos);
 			}
 		}
 		case 2:
 		{
-			EmitSoundToAll(DetonatorExplosionSound, entity, -1, soundPriority-20, 0, soundLevel-0.15, _, _, pos);
+			EmitSoundToAll(DetonatorExplosionSound, 0, -1, soundPriority, 0, soundLevel, _, _, pos);
 		}
 		case 3:
 		{
-			EmitSoundToAll(OrnamentExplosionSound, entity, -1, soundPriority, 0, soundLevel, _, _, pos);
+			EmitSoundToAll(OrnamentExplosionSound, 0, -1, soundPriority, 0, soundLevel, _, _, pos);
 		}
 		case 0:
 		{
 			if(random == 1){
-				EmitSoundToAll(ExplosionSound1, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound1, 0,_,soundPriority,_,soundLevel, _, _, pos);
 			}else if(random == 2){
-				EmitSoundToAll(ExplosionSound2, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound2, 0,_,soundPriority,_,soundLevel, _, _, pos);
 			}else if(random == 3){
-				EmitSoundToAll(ExplosionSound3, entity,_,soundPriority,_,soundLevel, _, _, pos);
+				EmitSoundToAll(ExplosionSound3, 0,_,soundPriority,_,soundLevel, _, _, pos);
 			}
 		}
 	}
@@ -465,7 +465,7 @@ CheckForAttunement(client)
 	}
 	return flag;
 }
-public bool:GiveNewWeapon(client, slot)
+public bool GiveNewWeapon(client, slot)
 {
 	Handle newItem = TF2Items_CreateItem(PRESERVE_ATTRIBUTES+FORCE_GENERATION);
 	int Flags = 0;
@@ -491,10 +491,7 @@ public bool:GiveNewWeapon(client, slot)
 		EquipPlayerWeapon(client, entity);
 		return true;
 	}
-	else
-	{
-		return false
-	}
+	return false
 }
 public GiveNewUpgradedWeapon_(client, slot)
 {
@@ -519,6 +516,7 @@ public GiveNewUpgradedWeapon_(client, slot)
 	}
 	if (IsValidEdict(iEnt) && HasEntProp(iEnt, Prop_Send, "m_AttributeList"))
 	{
+		TF2Attrib_SetByName(iEnt, "bullets per shot bonus", 1.0);
 		if( iNumAttributes > 0 )
 		{
 			for(int a = 0; a < iNumAttributes ; a++ )
@@ -530,7 +528,13 @@ public GiveNewUpgradedWeapon_(client, slot)
 				TF2Attrib_SetByName(iEnt, upgrades[ifid].attr_name,currentupgrades_val[client][slot][a]);
 			}
 		}
-		refreshUpgrades(client, slot)
+		float bpsMult = GetAttribute(iEnt, "bullets per shot bonus", 1.0);
+		bpsMult *= GetAttribute(iEnt, "bullets per shot mult", 1.0);
+		bpsMult *= GetAttribute(iEnt, "bullets per shot mult 2", 1.0);
+		if(bpsMult != 1.0)
+			TF2Attrib_SetByName(iEnt, "bullets per shot bonus", bpsMult);
+
+		refreshUpgrades(client, slot);
 	}
 }
 stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
@@ -1297,6 +1301,8 @@ RespawnEffect(client)
 	}
 	TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
 	TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
+	TF2Attrib_SetByName(client,"ignores other projectiles", 1.0);
+	TF2Attrib_SetByName(client,"penetrate teammates", 1.0);
 	CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
 }
 UpdateMaxValuesStage(int stage)

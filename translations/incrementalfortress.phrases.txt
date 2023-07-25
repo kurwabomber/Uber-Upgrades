@@ -1,5 +1,29 @@
 "Phrases"
 {
+	"bullets per shot mult 2"
+	{
+		"en"		"Bullets Per Shot Multiplier"
+	}
+	"add cond when active"
+	{
+		"en"		"Add Condition When Active"
+	}
+	"set_item_texture_wear"
+	{
+		"en"		"Paint Wear Level"
+	}
+	"paintkit_proto_def_index"
+	{
+		"en"		"Paint Index"
+	}
+	"weapon damage mult"
+	{
+		"en"		"Weapon Damage Bonus"
+	}
+	"weapon fire rate"
+	{
+		"en"		"Weapon Fire Rate Bonus"
+	}
 	"Arcane - Infernal Enchantment"
 	{
 		"en"		"Arcane - Infernal Enchantment"

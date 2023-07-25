@@ -544,6 +544,29 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 	}
 	return MRES_Ignored;
 }
+public MRESReturn OnBulletTrace(int victim, Handle hParams){
+	float direction[3];
+	DHookGetParamVector(hParams, 2, direction);
+	CTakeDamageInfo info = CTakeDamageInfo.FromAddress(DHookGetParam(hParams, 1));
+	int attacker = EHandleToEntIndex(info.m_hAttacker);
+	int weapon = EHandleToEntIndex(info.m_hWeapon);
+
+	if(IsValidClient3(attacker) && IsValidWeapon(weapon)){
+		float pos[3];
+		GetClientEyePosition(attacker, pos);
+		GetVectorAngles(direction, direction);
+		TR_TraceRayFilter(pos, direction, MASK_SHOT, RayType_Infinite, Filter_WorldOnly);
+		if (TR_DidHit()) {
+			float endpos[3];
+			TR_GetEndPosition(endpos);
+
+			float explosiveBullet = GetAttribute(weapon, "explosive bullets radius", 0.0);
+			if(explosiveBullet)
+				EntityExplosion(attacker, info.m_flDamage, explosiveBullet, endpos, _, _, _, _, _, weapon, 0.3, _, true);
+		}
+	}
+	return MRES_Ignored;
+}
 public MRESReturn OnKnockbackApply(int client, Handle hParams) {
 	if(IsValidClient(client))
 	{
@@ -938,7 +961,6 @@ public OnEntityCreated(entity, const char[] classname)
 		}
 		if(StrEqual(classname, "tf_projectile_rocket") || StrEqual(classname, "tf_projectile_flare") || StrEqual(classname, "tf_projectile_sentryrocket"))
 		{
-			SDKHook(entity, SDKHook_Touch, projectileCollision);
 			RequestFrame(instantProjectile, reference);
 			RequestFrame(monoculusBonus, reference);
 			RequestFrame(PrecisionHoming, reference);
@@ -1045,7 +1067,7 @@ public OnEntityDestroyed(entity)
 			if(IsValidClient3(owner)){
 				int wrench = GetWeapon(owner,2);
 				if(IsValidWeapon(wrench)){
-					EntityExplosion(owner, TF2_GetSentryDPSModifiers(owner,wrench)*70.0, 350.0, vec, _, _, entity, 0.9 ,DMG_SHOCK, wrench);
+					EntityExplosion(owner, TF2_GetSentryDPSModifiers(owner,wrench)*70.0, 350.0, vec, _, _, entity, _ ,DMG_SHOCK, wrench);
 				}
 			}
 		}
@@ -3118,7 +3140,6 @@ public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
 							SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.3);
 							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchPiercingRocket);
-							SDKUnhook(iEntity, SDKHook_Touch, projectileCollision);
 							SetEntityModel(iEntity, "models/weapons/w_models/w_rocket_airstrike/w_rocket_airstrike.mdl");
 							CreateTimer(3.0, SelfDestruct, EntIndexToEntRef(iEntity));
 							SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, 70.0 * TF2_GetDamageModifiers(client,CWeapon), true);  
@@ -3590,18 +3611,8 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 				startpos[1] = clientpos[1];
 				startpos[2] = clientpos[2] + 1600;
 				
-				// define the color of the strike
-				int iTeam = GetClientTeam(client);
-				//PrintToChat(client, "%i", iTeam);
 				int color[4];
-				if(iTeam == 2)
-				{
-					color = {255, 0, 0, 255};
-				}
-				else if (iTeam == 3)
-				{
-					color = {0, 0, 255, 255};
-				}
+				color = {255,228,0,255};
 				
 				// define the direction of the sparks
 				float dir[3] = {0.0, 0.0, 0.0};

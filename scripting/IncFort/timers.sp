@@ -374,6 +374,9 @@ public Action:Timer_Every100MS(Handle timer)
 				{
 					SetAmmo_Weapon(CWeapon,RoundToNearest(TF2Attrib_GetValue(infAmmo)))
 				}
+				int conditionOnActive = RoundToNearest(GetAttribute(CWeapon, "set throwable type", 0.0));
+				if(conditionOnActive)
+					TF2_AddCondition(client, view_as<TFCond>(conditionOnActive), 0.15, client);
 			}
 			if(IsValidEdict(primary))
 			{
@@ -493,18 +496,8 @@ public Action:Timer_Every100MS(Handle timer)
 							startpos[1] = clientpos[1];
 							startpos[2] = clientpos[2] + 1600;
 							
-							// define the color of the strike
-							int iTeam = GetClientTeam(client);
-							//PrintToChat(client, "%i", iTeam);
 							int color[4];
-							if(iTeam == 2)
-							{
-								color = {255, 0, 0, 255};
-							}
-							else if (iTeam == 3)
-							{
-								color = {0, 0, 255, 255};
-							}
+							color = {255,228,0,255};
 							
 							// define the direction of the sparks
 							float dir[3] = {0.0, 0.0, 0.0};
@@ -808,18 +801,8 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 							startpos[1] = clientpos[1];
 							startpos[2] = clientpos[2] + 1600;
 							
-							// define the color of the strike
-							int iTeam = GetClientTeam(client);
-							//PrintToChat(client, "%i", iTeam);
 							int color[4];
-							if(iTeam == 2)
-							{
-								color = {255, 0, 0, 255};
-							}
-							else if (iTeam == 3)
-							{
-								color = {0, 0, 255, 255};
-							}
+							color = {255,228,0,255};
 							
 							// define the direction of the sparks
 							float dir[3] = {0.0, 0.0, 0.0};
@@ -1374,18 +1357,8 @@ public Action:eurekaDelayed(Handle timer, int client)
 				startpos[1] = clientpos[1];
 				startpos[2] = clientpos[2] + 1600;
 				
-				// define the color of the strike
-				int iTeam = GetClientTeam(client);
-				//PrintToChat(client, "%i", iTeam);
 				int color[4];
-				if(iTeam == 2)
-				{
-					color = {255, 0, 0, 255};
-				}
-				else if (iTeam == 3)
-				{
-					color = {0, 0, 255, 255};
-				}
+				color = {255,228,0,255};
 				
 				// define the direction of the sparks
 				float dir[3] = {0.0, 0.0, 0.0};
@@ -1552,11 +1525,8 @@ public Action Timer_SplittingThunderThink(Handle timer, int entityRef){
 	startpos[1] = endpos[1];
 	startpos[2] = endpos[2] + 1600;
 	
-	// define the color of the strike
-	int iTeam = GetClientTeam(owner);
-
 	int color[4];
-	color = iTeam == 2 ? {255, 0, 0, 255} : {0, 0, 255, 255};
+	color = {255,228,0,255};
 	
 	// define the direction of the sparks
 	float dir[3] = {0.0, 0.0, 0.0};
@@ -1564,7 +1534,7 @@ public Action Timer_SplittingThunderThink(Handle timer, int entityRef){
 	TE_SetupBeamPoints(startpos, endpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
 	TE_SendToAll();
 	
-	TE_SetupSparks(endpos, dir, 5000, 1000);
+	TE_SetupSparks(endpos, dir, 300, 1000);
 	TE_SendToAll();
 	
 	TE_SetupEnergySplash(endpos, dir, false);
@@ -1576,7 +1546,7 @@ public Action Timer_SplittingThunderThink(Handle timer, int entityRef){
 	float scaling[] = {0.0, 100.0, 200.0, 300.0};
 	float ProjectileDamage = 2000.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
 
-	EntityExplosion(owner, ProjectileDamage, 300.0, endpos, -1, false, entity, 0.8);
+	EntityExplosion(owner, ProjectileDamage, 300.0, endpos, -1, false, entity);
 	EmitSoundToAll(SOUND_THUNDER, entity, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,endpos);
 
 	return Plugin_Continue;

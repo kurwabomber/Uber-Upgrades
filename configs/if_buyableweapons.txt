@@ -38,6 +38,8 @@
 		"reload clip all at once"	"1"
 		"projectile spread angle penalty"	"1"
 		"override projectile type (AR)"	"8"
+		"paintkit_proto_def_index"	"234"
+		"set_item_texture_wear"		"0.0"
 	}
 	"Bloodlust"
 	{
@@ -67,6 +69,8 @@
 		"flame_drag"	"0.1"
 		"flame_lifetime"	"0.25"
 		"flame_spread_degree"	"0"
+		"paintkit_proto_def_index"	"255"
+		"set_item_texture_wear"		"0.0"
 	}
 	"Chaos Bed Vestige"
 	{
@@ -123,7 +127,7 @@
 		"Increased Overall Damage"	"1.65"
 		"Stealth On Backstab"	"3"
 	}
-	"nigga blaster 2.21"
+	"Blitzkrieg"
 	{
 		"index"			"15148"
 		"weapon_class"	"tf_weapon_pistol"
@@ -133,15 +137,61 @@
 		"cost"			"5000.0"
 		"Converts Firerate to Damage"	"1"
 	}
-	"revolving soule"
+	"Sniper's Revolver"
 	{
 		"index"			"15149"
 		"weapon_class"	"tf_weapon_revolver"
 		"weapon_menu"	"tf_weapon_revolver"
 		"class"			"sniper"
-		"description"	"Converts all fire rate into damage."
+		"description"	"Converts all fire rate into damage. Can headshot.\n2x damage with 2x slower fire rate."
 		"cost"			"5000.0"
 		"Converts Firerate to Damage"	"1"
 		"revolver use hit locations"	"1"
+		"weapon fire rate"				"2"
+		"weapon damage mult"			"2"
+	}
+	"Carpet Bomber"
+	{
+		"index"			"205"
+		"weapon_class"	"tf_weapon_rocketlauncher"
+		"weapon_menu"	"tf_weapon_rocketlauncher"
+		"class"			"soldier"
+		"description"	"+4 rockets per shot, converts fire rate into damage.\n2x slower fire rate with +3 projectile spread."
+		"cost"			"100000.0"
+		"Converts Firerate to Damage"	"1"
+		"Increased Projectile Count"	"5"
+		"weapon damage mult"			"2"
+		"projectile spread angle penalty" "3"
+		"paintkit_proto_def_index"	"413"
+		"set_item_texture_wear"		"0.0"
+	}
+	"True Backscatter"
+	{
+		"index"			"1103"
+		"weapon_class"	"tf_weapon_scattergun"
+		"weapon_menu"	"tf_weapon_scattergun"
+		"class"			"scout"
+		"description"	"Converts fire rate into damage.\n3x slower fire rate with 4x bullets per shot.\nFade into invisibility and crit from behind."
+		"cost"			"100000.0"
+		"Converts Firerate to Damage"	"1"
+		"Increased Projectile Count"	"4"
+		"weapon fire rate"				"3"
+		"add cond when active"			"66"
+		"crit from behind"				"1"
+		"bullets per shot mult 2"		"4.0"
+	}
+	"dragon_sniper_rifle"
+	{
+		"index"			"201"
+		"weapon_class"	"tf_weapon_sniperrifle"
+		"weapon_menu"	"tf_weapon_sniperrifle"
+		"class"			"sniper"
+		"description"	"placeholder name\nd"
+		"cost"			"100000.0"
+		"Converts Firerate to Damage"	"1"
+		"weapon fire rate"				"0.3"
+		"add cond when active"			"46"
+		"paintkit_proto_def_index"	"390"
+		"set_item_texture_wear"		"0.0"
 	}
 }

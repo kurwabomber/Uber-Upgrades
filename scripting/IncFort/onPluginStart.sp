@@ -418,17 +418,21 @@ public void OnPluginStart()
 
 	//New On Weapon Fired
 	Handle g_DHookOnWeaponFired = DHookCreateFromConf(hConf, "CTFGameStats::Event_PlayerFiredWeapon()");
-	
 	if(!g_DHookOnWeaponFired)
 		PrintToServer("CustomAttrs | Weapon Fire Hook Failed");
 	DHookEnableDetour(g_DHookOnWeaponFired, false, OnWeaponFired);
 
-	//Thermal Thruster Velocity Boost
+	//On Airblast Use
 	Handle g_DHookOnAirblast = DHookCreateFromConf(hConf, "CTFFlameThrower::FireAirblast()");
-	
 	if(!g_DHookOnAirblast)
 		PrintToServer("CustomAttrs | g_DHookOnAirblast fucked up.");
 	DHookEnableDetour(g_DHookOnAirblast, true, OnAirblast);
+
+	//On Bullet Trace
+	Handle g_DHookOnBulletTrace = DHookCreateFromConf(hConf, "CBaseEntity::DispatchTraceAttack()");
+	if(!g_DHookOnBulletTrace)
+		PrintToServer("CustomAttrs | g_DHookOnBulletTrace fucked up.");
+	DHookEnableDetour(g_DHookOnBulletTrace, true, OnBulletTrace);
 	
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	delete hConf;

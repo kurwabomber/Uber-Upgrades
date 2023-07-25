@@ -44,16 +44,13 @@ public Action:AddArrowCollisionFunction(entity, client)
 			RemoveEntity(entity);
 		}
 	}
-	if(StrContains(strName,"trigger_",false) || StrEqual(strName,"tf_projectile_arrow",false) || client == -1)
-	{	
-		if(StrEqual(strName,"tf_projectile_arrow",false))
-		{
-			float origin[3];
-			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
-			origin[0] += GetRandomFloat(-4.0,4.0)
-			origin[1] += GetRandomFloat(-4.0,4.0)
-			TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
-		}
+	if(StrEqual(strName,"tf_projectile_arrow"))
+	{
+		float origin[3];
+		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
+		origin[0] += GetRandomFloat(-4.0,4.0)
+		origin[1] += GetRandomFloat(-4.0,4.0)
+		TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
 	}
 	return Plugin_Stop;
 }
@@ -68,7 +65,7 @@ public Action OnStartTouchSplittingThunder(entity, other){
 public Action:OnSplittingThunderCollision(entity, client)
 {
 	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
-	if(!IsValidClient3(owner))
+	if(!IsValidClient3(owner) || client == owner)
 		return Plugin_Continue;
 	
 	int spellLevel = RoundToNearest(GetAttribute(owner, "arcane splitting thunder", 0.0));
@@ -80,7 +77,7 @@ public Action:OnSplittingThunderCollision(entity, client)
 
 	float scaling[] = {0.0, 200.0, 400.0, 800.0};
 	float ProjectileDamage = 5000.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
-	EntityExplosion(owner, ProjectileDamage, 300.0, origin, _, false, entity);
+	EntityExplosion(owner, ProjectileDamage, 300.0, origin, _, _, entity);
 	RemoveEntity(entity);
 
 	SDKUnhook(entity, SDKHook_Touch, OnSplittingThunderCollision);
@@ -305,35 +302,6 @@ public Action:ExplosiveArrowCollision(entity, client)
 		fl_ArrowStormDuration[owner]--;
 	}
 	return Plugin_Continue;
-}
-public Action:projectileCollision(entity, client)
-{
-	if(!entity) return Plugin_Stop;
-
-	char strName[32];
-	GetEntityClassname(client, strName, 32)
-	char entName[32]
-	GetEntityClassname(entity, entName, 32);
-
-	if(StrEqual(strName,entName,false))
-	{
-		float origin[3];
-		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
-		origin[0] += GetRandomFloat(-4.0,4.0)
-		origin[1] += GetRandomFloat(-4.0,4.0)
-		TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
-		RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
-	}
-	if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
-	{
-		int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
-		if(owner != client && (IsValidClient3(client) || client == 0 || StrEqual(strName,"func_door",false) || StrEqual(strName,"prop_dynamic",false)
-		|| StrEqual(strName,"prop_physics",false) || StrContains(strName,"tf",false)))
-		{
-			return Plugin_Continue;
-		}
-	}
-	return Plugin_Stop;
 }
 public Action:OnStartTouchWarriorArrow(entity, other)
 {

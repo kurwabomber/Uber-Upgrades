@@ -18,6 +18,8 @@
 !scripting/IncFort/*
 !scripting/include
 !scripting/include/razorstocks.inc
+!scripting/include/classdefs
+!scripting/include/classdefs/CTakeDamageInfo.sp
 !scripting/IncrementalFortress.sp
 !scripting/tf2items_manager.sp
 !scripting/UU_BotAi.sp
