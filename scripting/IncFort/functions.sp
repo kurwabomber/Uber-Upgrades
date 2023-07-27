@@ -39,7 +39,7 @@ public void clearAllBuffs(int client){
 public void giveDefenseBuff(int client, float duration){
 	Buff defenseBuff;
 	defenseBuff.init("Defense Bonus", "", Buff_DefenseBoost, 1, client, duration);
-	defenseBuff.multiplicativeDamageTaken = -0.35;
+	defenseBuff.multiplicativeDamageTaken = 0.65;
 	insertBuff(client, defenseBuff);
 }
 public void ManagePlayerBuffs(int i){
@@ -911,7 +911,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 228,1085:
 		{
-			ChangeString = "The Black Box | Applies afterburn to enemies. -4 HPR (this stalls out armor recharge).";
+			ChangeString = "The Black Box | Applies afterburn to enemies.";
 		}
 		case 414:
 		{
@@ -1289,7 +1289,7 @@ public Action:RemoveDamage(Handle timer, any:data)
 }
 RespawnEffect(client)
 {
-	if(IsValidClient(client) && IsClientObserver(client) == false)
+	if(IsValidClient3(client) && !IsClientObserver(client) && IsPlayerAlive(client))
 	{
 		current_class[client] = TF2_GetPlayerClass(client)
 		fl_CurrentFocus[client] = fl_MaxFocus[client];
@@ -1297,13 +1297,14 @@ RespawnEffect(client)
 		fl_AdditionalArmor[client] = 0.0;
 		LightningEnchantmentDuration[client] = 0.0;
 		DarkmoonBladeDuration[client] = 0.0;
+		TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
+		TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
+		TF2Attrib_SetByName(client,"ignores other projectiles", 1.0);
+		TF2Attrib_SetByName(client,"penetrate teammates", 1.0);
+		CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
 		CreateTimer(0.2,GiveMaxAmmo,GetClientUserId(client));
 	}
-	TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
-	TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
-	TF2Attrib_SetByName(client,"ignores other projectiles", 1.0);
-	TF2Attrib_SetByName(client,"penetrate teammates", 1.0);
-	CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
+
 }
 UpdateMaxValuesStage(int stage)
 {

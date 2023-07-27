@@ -555,14 +555,20 @@ public MRESReturn OnBulletTrace(int victim, Handle hParams){
 		float pos[3];
 		GetClientEyePosition(attacker, pos);
 		GetVectorAngles(direction, direction);
-		TR_TraceRayFilter(pos, direction, MASK_SHOT, RayType_Infinite, Filter_WorldOnly);
+		TR_TraceRayFilter(pos, direction, MASK_SOLID, RayType_Infinite, FilterPlayer, attacker);
 		if (TR_DidHit()) {
 			float endpos[3];
 			TR_GetEndPosition(endpos);
 
 			float explosiveBullet = GetAttribute(weapon, "explosive bullets radius", 0.0);
 			if(explosiveBullet)
-				EntityExplosion(attacker, info.m_flDamage, explosiveBullet, endpos, _, _, _, _, _, weapon, 0.3, _, true);
+				EntityExplosion(attacker, info.m_flDamage * TF2_GetDamageModifiers(attacker, weapon, _, false), explosiveBullet, endpos, _, _, _, _, _, weapon, 0.3, _, false);
+
+			float dragonBullet = GetAttribute(weapon, "dragon bullets radius", 0.0);
+			if(dragonBullet){
+				EntityExplosion(attacker, info.m_flDamage * TF2_GetDamageModifiers(attacker, weapon, _, false), dragonBullet, endpos, _, _, _, _, _, weapon, 0.3, _, true);
+				CreateParticle(-1, "heavy_ring_of_fire", false, "", 0.2, endpos);
+			}
 		}
 	}
 	return MRES_Ignored;
@@ -1820,7 +1826,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					Address infernalPowerup = TF2Attrib_GetByName(client, "infernal powerup");
 					if(infernalPowerup != Address_Null && TF2Attrib_GetValue(infernalPowerup) > 0.0)
 					{
-						CreateParticle(client, "heavy_ring_of_fire_fp", true, "", 2.0);
+						CreateParticle(client, "heavy_ring_of_fire", true, "", 2.0);
 						powerupParticle[client] = currentGameTime+2.0;
 					}
 					Address thunderstormPowerup = TF2Attrib_GetByName(client, "thunderstorm powerup");
@@ -1844,7 +1850,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					Address relentlessPowerup = TF2Attrib_GetByName(client, "relentless powerup");
 					if(relentlessPowerup != Address_Null && TF2Attrib_GetValue(relentlessPowerup) > 0.0)
 					{
-						CreateParticle(client, "utaunt_runeprison_yellow_parent" , true, "", 5.0);
+						if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
+						{
+							CreateParticle(client, "eye_powerup_red_lvl_4", true, "righteye", 5.0);
+						}
+						else
+						{
+							CreateParticle(client, "eye_powerup_red_lvl_4", true, "eyeglow_R", 5.0);
+						}
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 				}
@@ -3483,17 +3496,15 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 {
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	bossPhase[client] = 0;
+	RespawnEffect(client);
 	if(IsClientInGame(client) && IsValidClient(client))
 	{
 		CancelClientMenu(client);
-		TF2Attrib_ClearCache(client);
-		RespawnEffect(client);
 		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 		client_respawn_handled[client] = 1;
 		CreateTimer(0.4, WeaponReGiveUpgrades, GetClientUserId(client));
 		SetEntProp(client, Prop_Send, "m_nCurrency", 0);
 		CancelClientMenu(client);
-		SetClientViewEntity(client, client);
 		if(AreClientCookiesCached(client))
 		{
 			char menuEnabled[64];

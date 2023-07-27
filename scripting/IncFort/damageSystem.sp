@@ -1584,8 +1584,8 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
 			damage *= 1.0+(TF2Util_GetPlayerBurnDuration(victim)*0.05);
 		}
-		Address infernalPowerup = TF2Attrib_GetByName(attacker, "infernal powerup");
-		if(infernalPowerup != Address_Null){
+
+		if(GetAttribute(attacker, "infernal powerup") != Address_Null){
 			damage *= 1.7;
 
 			int team = GetClientTeam(attacker);

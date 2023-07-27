@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"Sniper Rifle Charge Rate Penalty"
+	{
+		"en"		"Sniper Rifle Charge Rate Penalty"
+	}
+	"Dragon Bullets Radius"
+	{
+		"en"		"Firestorm Bullets"
+	}
 	"bullets per shot mult 2"
 	{
 		"en"		"Bullets Per Shot Multiplier"

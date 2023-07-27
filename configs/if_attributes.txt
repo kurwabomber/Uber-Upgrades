@@ -5334,6 +5334,16 @@
 			"init"		"0"
 			"max"		"1000"
 		}
+		"1589.10"
+		{
+			"name"		"dragon bullets radius"
+			"ref"		"Dragon Bullets Radius"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1.0"
+			"init"		"0"
+			"max"		"1000"
+		}
 		"1590"
 		{
 			"name"		"mult firerocket rate"
@@ -5636,6 +5646,15 @@
 		{
 			"name"		"set throwable type"
 			"ref"		"add cond when active"
+			"cost"		"0"
+			"value"		"0"
+			"init"		"1"
+			"max"		"1"
+		}
+		"1619"
+		{
+			"name"		"SRifle Charge rate decreased"
+			"ref"		"Sniper Rifle Charge Rate Penalty"
 			"cost"		"0"
 			"value"		"0"
 			"init"		"1"

@@ -3846,4 +3846,14 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "6036"
+    {
+        "name"	"dragon bullets radius"
+        "attribute_class"	"dragon_bullets_radius"
+        "description_string"	"Fires dragon bullets"
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
 }

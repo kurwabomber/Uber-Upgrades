@@ -1637,12 +1637,13 @@ stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true,
 		if(IsValidEdict(weapon))
 		{
 			float dpsMult = onlyModifiers ? 1.0 : TF2_GetDamageModifiers(client,weapon);
-			Address DPSMult1 = TF2Attrib_GetByName(weapon, "fire rate bonus HIDDEN");
-			Address DPSMult2 = TF2Attrib_GetByName(weapon, "fire rate penalty HIDDEN");
-			Address DPSMult3 = TF2Attrib_GetByName(weapon, "fire rate bonus");
-			Address DPSMult4 = TF2Attrib_GetByName(weapon, "fire rate penalty");
-			Address DPSMult5 = TF2Attrib_GetByName(weapon, "halloween fire rate bonus");
-			Address DPSMult6 = TF2Attrib_GetByName(weapon, "mult_item_meter_charge_rate");
+			dpsMult /= GetAttribute(weapon, "fire rate bonus HIDDEN");
+			dpsMult /= GetAttribute(weapon, "fire rate penalty HIDDEN");
+			dpsMult /= GetAttribute(weapon, "fire rate bonus");
+			dpsMult /= GetAttribute(weapon, "fire rate penalty");
+			dpsMult /= GetAttribute(weapon, "halloween fire rate bonus");
+			dpsMult /= GetAttribute(weapon, "mult_item_meter_charge_rate");
+			dpsMult /= GetAttribute(weapon, "weapon fire rate");
 			//If their weapon doesn't have a clip, reload rate also affects fire rate.
 			if(CountReloadModifiers)
 			{
@@ -1651,67 +1652,20 @@ stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true,
 					Address ModClip = TF2Attrib_GetByName(weapon, "mod max primary clip override");
 					if(ModClip == Address_Null)
 					{
-						Address DPSMult12 = TF2Attrib_GetByName(weapon, "faster reload rate");
-						Address DPSMult13 = TF2Attrib_GetByName(weapon, "Reload time increased");
-						Address DPSMult14 = TF2Attrib_GetByName(weapon, "Reload time decreased");
-						Address DPSMult15 = TF2Attrib_GetByName(weapon, "reload time increased hidden");
-						
-						if(DPSMult12 != Address_Null) {
-						dpsMult /= TF2Attrib_GetValue(DPSMult12);
-						}
-						if(DPSMult13 != Address_Null) {
-						dpsMult /= TF2Attrib_GetValue(DPSMult13);
-						}
-						if(DPSMult14 != Address_Null) {
-						dpsMult /= TF2Attrib_GetValue(DPSMult14);
-						}
-						if(DPSMult15 != Address_Null) {
-						dpsMult /= TF2Attrib_GetValue(DPSMult15);
-						}
-						if(TF2_IsPlayerInCondition( client, TFCond_RuneHaste ))//Really valve?
-						{
-							dpsMult *= 2.0;
-						}
+						dpsMult /= GetAttribute(weapon, "faster reload rate");
+						dpsMult /= GetAttribute(weapon, "Reload time increased");
+						dpsMult /= GetAttribute(weapon, "Reload time decreased");
+						dpsMult /= GetAttribute(weapon, "reload time increased hidden");
 					}
 				}
 			}
-			//Normal Firerate Attributes
-			if(DPSMult1 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(DPSMult1);
-			}
-			if(DPSMult2 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(DPSMult2);
-			}
-			if(DPSMult3 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(DPSMult3);
-			}
-			if(DPSMult4 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(DPSMult4);
-			}
-			if(DPSMult5 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(DPSMult5);
-			}
-			if(DPSMult6 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(DPSMult6);
-			}
-			//Body Firerate Attributes
-			Address BodyDPSMult6 = TF2Attrib_GetByName(client, "fire rate bonus HIDDEN");
-			Address BodyDPSMult7 = TF2Attrib_GetByName(client, "fire rate penalty HIDDEN");
-			Address BodyDPSMult8 = TF2Attrib_GetByName(client, "fire rate bonus");
-			Address BodyDPSMult9 = TF2Attrib_GetByName(client, "fire rate penalty");
 
-			if(BodyDPSMult6 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(BodyDPSMult6)
-			}
-			if(BodyDPSMult7 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(BodyDPSMult7)
-			}
-			if(BodyDPSMult8 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(BodyDPSMult8)
-			}
-			if(BodyDPSMult9 != Address_Null) {
-			dpsMult /= TF2Attrib_GetValue(BodyDPSMult9)
-			}
+			//Body Firerate Attributes
+			dpsMult /= GetAttribute(client, "fire rate bonus HIDDEN");
+			dpsMult /= GetAttribute(client, "fire rate penalty HIDDEN");
+			dpsMult /= GetAttribute(client, "fire rate bonus");
+			dpsMult /= GetAttribute(client, "fire rate penalty");
+
 			if(critMod)
 			{
 				if(TF2_IsPlayerCritBuffed(client))
@@ -1736,7 +1690,7 @@ stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true,
     }
 	return 1.0;
 }
-stock float TF2_GetDamageModifiers(client,weapon,status=true)
+stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_per_shot = true)
 {
 	if(IsValidClient3(client))
     {
@@ -1784,7 +1738,7 @@ stock float TF2_GetDamageModifiers(client,weapon,status=true)
 			if(DPSMult7 != Address_Null) {
 			dpsMult *= TF2Attrib_GetValue(DPSMult7);
 			}
-			if(DPSMult8 != Address_Null){
+			if(bullets_per_shot && DPSMult8 != Address_Null){
 				dpsMult *= TF2Attrib_GetValue(DPSMult8);
 			}
 			if(DPSMult9 != Address_Null) {
@@ -1820,7 +1774,7 @@ stock float TF2_GetDamageModifiers(client,weapon,status=true)
 			if(BodyDPSMult5 != Address_Null) {
 			dpsMult *= TF2Attrib_GetValue(BodyDPSMult5);
 			}
-			if(BodyDPSMult6 != Address_Null){
+			if(bullets_per_shot && BodyDPSMult6 != Address_Null){
 				dpsMult *= TF2Attrib_GetValue(BodyDPSMult6);
 			}
 			//Custom Attributes

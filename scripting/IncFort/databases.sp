@@ -81,13 +81,11 @@ GivePlayerData(client)
 {
 	if(!IsValidClient(client))
 		return;
-
 	char steamid[64], queryDelete[256], queryString[2048];
 	GetClientAuthId(client, AuthId_SteamID64, steamid, sizeof(steamid))
 
 	Format(queryString, sizeof(queryString), "SELECT steamid, datapack FROM PlayerList WHERE steamid='%s'", steamid);
 	Format(queryDelete, sizeof(queryDelete), "DELETE FROM PlayerList WHERE steamid='%s'", steamid);
-	
 	Handle queryH = SQL_Query(DB, queryString);
 
 	if(!queryH){
@@ -96,13 +94,11 @@ GivePlayerData(client)
 		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 		return;
 	}
-
 	if(!SQL_FetchRow(queryH))
 	{
 		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 		return;
 	}
-
 	float CurrencyFormulated = (StartMoney + additionalstartmoney);
 	DataPack pack = view_as<DataPack>(SQL_FetchInt(queryH, 1));
 	if(IsValidHandle(pack))
