@@ -1,5 +1,17 @@
 "Phrases"
 {
+	"backstab tanks capability"
+	{
+		"en"		"Knife Can Backstab Tanks"
+	}
+	"sapper pulls enemies"
+	{
+		"en"		"Sapper Pulls Nearby Enemies"
+	}
+	"effect bar recharge rate increased(sapper)"
+	{
+		"en"		"Recharge Rate Increased"
+	}
 	"Sniper Rifle Charge Rate Penalty"
 	{
 		"en"		"Sniper Rifle Charge Rate Penalty"

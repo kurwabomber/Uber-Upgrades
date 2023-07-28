@@ -1186,13 +1186,7 @@ public Event_PlayerChangeTeam(Handle event, const char[] name, bool:dontBroadcas
 	}
 }
 public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
-{
-	if(isFailHooked == true)
-	{
-		UnhookEvent("mvm_wave_failed", Event_mvm_wave_failed)
-		isFailHooked = false;
-	}
-	
+{	
 	PrintToServer("MvM reset stats????");
 	CreateTimer(0.2, LockMission);
 	additionalstartmoney = 0.0;
@@ -1200,7 +1194,7 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	for (int client = 1; client <= MaxClients; client++)
 	{
-		if (IsValidClient(client) && !IsFakeClient(client))
+		if (IsValidClient(client))
 		{
 			int primary = (GetWeapon(client,0));
 			if(IsValidEdict(primary))
@@ -1243,72 +1237,74 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 
 	char responseBuffer[256];
 	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
-	GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
-	if(StrContains(responseBuffer, "IF", false) != -1)
-	{
-		if(StrContains(responseBuffer, "_Boss_Rush", false) != -1)
+	if(IsValidEntity(ObjectiveEntity)){
+		GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
+		if(StrContains(responseBuffer, "IF", false) != -1)
 		{
-			DefenseMod = 2.35;
-			DamageMod = 2.55;
-			DefenseIncreasePerWaveMod = 0.03;
-			OverallMod = 1.8;
-			PrintToServer("IF | Set Mission to Boss Rush");
-		}
-		else if(StrContains(responseBuffer, "_Defend", false) != -1)
-		{
-			DefenseMod = 2.55;
-			DamageMod = 2.55;
-			DefenseIncreasePerWaveMod = 0.03;
-			OverallMod = 1.8;
-			PrintToServer("IF | Set Mission to Defend");
-		}
-		else if(StrContains(responseBuffer, "_Extreme", false) != -1)
-		{
-			DefenseMod = 2.35;
-			DamageMod = 2.55;
-			DefenseIncreasePerWaveMod = 0.03;
-			OverallMod = 1.35;
-			PrintToServer("IF | Set Mission to Extreme");
-		}
-		else if(StrContains(responseBuffer, "_Hard", false) != -1)
-		{
-			DefenseMod = 2.35;
-			DamageMod = 2.55;
-			DefenseIncreasePerWaveMod = 0.03;
-			OverallMod = 1.1;
-			PrintToServer("IF | Set Mission to Hard");
-		}
-		else if(StrContains(responseBuffer, "_Intermediate", false) != -1)
-		{
-			DefenseMod = 2.0;
-			DamageMod = 2.3;
-			DefenseIncreasePerWaveMod = 0.015;
-			OverallMod = 1.5;
-			PrintToServer("IF | Set Mission to Intermediate");
-		}
-		else if(StrContains(responseBuffer, "_Rush", false) != -1)
-		{
-			DefenseMod = 2.35;
-			DamageMod = 2.55;
-			DefenseIncreasePerWaveMod = 0.03;
-			OverallMod = 1.1;
-			PrintToServer("IF | Set Mission to Rush");
-		}
-		else if(StrContains(responseBuffer, "_Survival", false) != -1)
-		{
-			DefenseMod = 2.35;
-			DamageMod = 2.55;
-			DefenseIncreasePerWaveMod = 0.03;
-			OverallMod = 1.5;
-			PrintToServer("IF | Set Mission to Survival");
-		}
-		else
-		{
-			DefenseMod = 1.75;
-			DamageMod = 2.1;
-			DefenseIncreasePerWaveMod = 0.0;
-			OverallMod = 1.0;
-			PrintToServer("IF | Set Mission to Default");
+			if(StrContains(responseBuffer, "_Boss_Rush", false) != -1)
+			{
+				DefenseMod = 2.35;
+				DamageMod = 2.55;
+				DefenseIncreasePerWaveMod = 0.03;
+				OverallMod = 1.8;
+				PrintToServer("IF | Set Mission to Boss Rush");
+			}
+			else if(StrContains(responseBuffer, "_Defend", false) != -1)
+			{
+				DefenseMod = 2.55;
+				DamageMod = 2.55;
+				DefenseIncreasePerWaveMod = 0.03;
+				OverallMod = 1.8;
+				PrintToServer("IF | Set Mission to Defend");
+			}
+			else if(StrContains(responseBuffer, "_Extreme", false) != -1)
+			{
+				DefenseMod = 2.35;
+				DamageMod = 2.55;
+				DefenseIncreasePerWaveMod = 0.03;
+				OverallMod = 1.35;
+				PrintToServer("IF | Set Mission to Extreme");
+			}
+			else if(StrContains(responseBuffer, "_Hard", false) != -1)
+			{
+				DefenseMod = 2.35;
+				DamageMod = 2.55;
+				DefenseIncreasePerWaveMod = 0.03;
+				OverallMod = 1.1;
+				PrintToServer("IF | Set Mission to Hard");
+			}
+			else if(StrContains(responseBuffer, "_Intermediate", false) != -1)
+			{
+				DefenseMod = 2.0;
+				DamageMod = 2.3;
+				DefenseIncreasePerWaveMod = 0.015;
+				OverallMod = 1.5;
+				PrintToServer("IF | Set Mission to Intermediate");
+			}
+			else if(StrContains(responseBuffer, "_Rush", false) != -1)
+			{
+				DefenseMod = 2.35;
+				DamageMod = 2.55;
+				DefenseIncreasePerWaveMod = 0.03;
+				OverallMod = 1.1;
+				PrintToServer("IF | Set Mission to Rush");
+			}
+			else if(StrContains(responseBuffer, "_Survival", false) != -1)
+			{
+				DefenseMod = 2.35;
+				DamageMod = 2.55;
+				DefenseIncreasePerWaveMod = 0.03;
+				OverallMod = 1.5;
+				PrintToServer("IF | Set Mission to Survival");
+			}
+			else
+			{
+				DefenseMod = 1.75;
+				DamageMod = 2.1;
+				DefenseIncreasePerWaveMod = 0.0;
+				OverallMod = 1.0;
+				PrintToServer("IF | Set Mission to Default");
+			}
 		}
 	}
 }
@@ -3548,7 +3544,7 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 	if(IsMvM() && IsFakeClient(client))
 	{
 		BotTimer[client] = 120.0;
-		if(IsValidForDamage(TankTeleporter))
+		if(IsValidForDamage(TankTeleporter) && !GetEntProp(TankTeleporter, Prop_Send, "m_bDisabled"))
 		{
 			char classname[128]; 
 			GetEdictClassname(TankTeleporter, classname, sizeof(classname)); 
@@ -3556,7 +3552,7 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 			{
 				float telePos[3];
 				GetEntPropVector(TankTeleporter,Prop_Send, "m_vecOrigin",telePos);
-				telePos[2]+= 250.0;
+				telePos[2]+= 220.0;
 				TeleportEntity(client, telePos, NULL_VECTOR, NULL_VECTOR);
 			}
 		}

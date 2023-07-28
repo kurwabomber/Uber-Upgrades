@@ -2088,15 +2088,15 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 			TF2Attrib_SetByName(client,"damage mult 2",1+((additionalstartmoney+StartMoney)/15000.0)*OverAllMultiplier);
 			TF2Attrib_SetByName(client,"damage mult 1",1+((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
 		}
-		for(i=0;i<3;i++)
+		for(i=0;i<2;i++)
 		{
 			int weap = GetWeapon(client,i);
-			if(i != 2)
+			if(!IsValidWeapon(weap))
+				continue;
+
+			if (current_class[client] != TFClass_Heavy && current_class[client] != TFClass_Pyro && current_class[client] != TFClass_Sniper )
 			{
-				if (current_class[client] != TFClass_Heavy && current_class[client] != TFClass_Pyro && current_class[client] != TFClass_Sniper )
-				{
-					TF2Attrib_SetByName(weap,"faster reload rate",(9000.0/(additionalstartmoney+StartMoney)));
-				}
+				TF2Attrib_SetByName(weap,"faster reload rate",(9000.0/(additionalstartmoney+StartMoney)));
 			}
 		}
 		
@@ -2133,6 +2133,8 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				for(i=0;i<3;i++)
 				{
 					int weap = GetWeapon(client,i);
+					if(!IsValidWeapon(weap))
+						continue;
 					if((additionalstartmoney+StartMoney) <= 400000/OverAllMultiplier)
 					{
 						TF2Attrib_SetByName(weap,"fire rate bonus",(20000.0/(additionalstartmoney+StartMoney))/OverAllMultiplier);
@@ -2160,6 +2162,9 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				for(i=0;i<3;i++)
 				{
 					int weap = GetWeapon(client,i);
+					if(!IsValidWeapon(weap))
+						continue;
+
 					if(i != 2)
 					{
 						if((additionalstartmoney+StartMoney) <= 750000 / OverAllMultiplier)
@@ -2211,6 +2216,8 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				for(i=0;i<3;i++)
 				{
 					int weap = GetWeapon(client,i);
+					if(!IsValidWeapon(weap))
+						continue;
 					if((additionalstartmoney+StartMoney) <= 1000000 / OverAllMultiplier)
 					{
 						TF2Attrib_SetByName(weap,"fire rate bonus",(25000.0/(additionalstartmoney+StartMoney)) / OverAllMultiplier);
@@ -2250,6 +2257,8 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				for(i=0;i<3;i++)
 				{
 					int weap = GetWeapon(client,i);
+					if(!IsValidWeapon(weap))
+						continue;
 					if(i != 2)
 					{
 						if((additionalstartmoney+StartMoney) <= 750000 / OverAllMultiplier)
@@ -2286,6 +2295,8 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				for(i=0;i<3;i++)
 				{
 					int weap = GetWeapon(client,i);
+					if(!IsValidWeapon(weap))
+						continue;
 					if((additionalstartmoney+StartMoney) > 90000)
 					{
 						if((additionalstartmoney+StartMoney) <= 1500000 / OverAllMultiplier)
@@ -2316,6 +2327,8 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				for(i=0;i<3;i++)
 				{
 					int weap = GetWeapon(client,i);
+					if(!IsValidWeapon(weap))
+						continue;
 					if((additionalstartmoney+StartMoney) <= 800000/OverAllMultiplier)
 					{
 						TF2Attrib_SetByName(weap,"fire rate bonus",(40000.0/(additionalstartmoney+StartMoney))/OverAllMultiplier);
@@ -2399,6 +2412,36 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 		refreshUpgrades(client,1);
 		refreshUpgrades(client,2);
 		refreshUpgrades(client,4);
+	}
+}
+void DoSapperEffects(int client){
+	float victimPos[3];
+	GetClientAbsOrigin(client, victimPos);
+
+	int inflictor = TF2Util_GetPlayerConditionProvider(client, TFCond_Sapped);
+	if(!IsValidClient(inflictor))
+		return;
+
+	int sapper = GetWeapon(inflictor,6);
+	if(!IsValidWeapon(sapper))
+		return;
+
+	float magnitude = GetAttribute(sapper, "sapper pulls enemies", 0.0);
+	if(magnitude){
+		for(int i = 1; i <= MaxClients; ++i){
+			if(!IsValidClient(i) || !IsPlayerAlive(i))
+				continue;
+
+			if(IsOnDifferentTeams(client,i))
+				continue;
+
+			float teammatePos[3];
+			GetClientAbsOrigin(i, teammatePos);
+			if(GetVectorDistance(teammatePos, victimPos) > magnitude*2.0)
+				continue;
+			
+			PushEntity(i, client, -1.0 * magnitude);
+		}
 	}
 }
 ApplyFullHoming(int entity){

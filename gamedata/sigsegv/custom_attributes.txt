@@ -3856,4 +3856,24 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "6037"
+    {
+        "name"	"sapper pulls enemies"
+        "attribute_class"	"sapper_pulls_enemies"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
+    "6038"
+    {
+        "name"	"backstab tanks capability"
+        "attribute_class"	"backstab_tanks_capability"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
 }

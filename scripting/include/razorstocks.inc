@@ -405,8 +405,8 @@ stock float GetPlayerDistance(client1,client2)
 {
 	static float vec1[3];
 	static float vec2[3];
-	GetClientAbsOrigin(client1,vec1);
-	GetClientAbsOrigin(client2,vec2);
+	GetEntPropVector(client1, Prop_Data, "m_vecAbsOrigin", vec1);
+	GetEntPropVector(client2, Prop_Data, "m_vecAbsOrigin", vec2);
 	return GetVectorDistance(vec1,vec2);
 }
 stock MoveForward(const float vPos[3], const float vAng[3], float vReturn[3], float fDistance)

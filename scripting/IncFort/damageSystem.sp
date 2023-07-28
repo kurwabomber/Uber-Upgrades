@@ -498,10 +498,13 @@ public Action:TF2_OnTakeDamageModifyRules(int victim, int &attacker, int &inflic
 int &damagetype, int &weapon, float damageForce[3], float damagePosition[3],
 int damagecustom, CritType &critType)
 {
+	if(!IsValidClient3(victim))
+		return Plugin_Continue;
+
 	attacker = EntRefToEntIndex(attacker);
 	if(critType == CritType_Crit)
 	{
-		critStatus[victim] = true
+		critStatus[victim] = true;
 		damagetype &= ~DMG_CRIT;
 		damage = lastDamageTaken[victim] * 1.25;
 		if(IsValidWeapon(weapon))
@@ -515,13 +518,13 @@ int damagecustom, CritType &critType)
 		lastDamageTaken[victim] = 0.0;
 		return Plugin_Changed;
 	}
-	else if(IsValidClient3(victim) && lastDamageTaken[victim] != 0.0 && miniCritStatus[victim] == false && IsValidClient3(attacker) 
+	else if(lastDamageTaken[victim] != 0.0 && miniCritStatus[victim] == false && IsValidClient3(attacker) 
 	&& (critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > currentGameTime || miniCritStatusVictim[victim] > currentGameTime)
 	&& !(currentDamageType[attacker].second & DMG_ACTUALCRIT) )
 	{
 		if(debugMode)
 			PrintToChat(attacker, "minicrit override failsafe");
-		miniCritStatus[victim] = true
+		miniCritStatus[victim] = true;
 		damage = lastDamageTaken[victim] * 1.4;
 		critType = CritType_None
 		if(damagetype & DMG_CRIT)
@@ -574,6 +577,41 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 	if(IsValidEdict(victim) && IsValidClient3(attacker))
 	{
 		currentDamageType[attacker].first = damagetype;
+		if(IsValidWeapon(weapon))
+		{
+			if(current_class[attacker] == TFClass_Spy && TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee){
+				float backstabCapability = GetAttribute(weapon, "backstab tanks capability", 0.0);
+				if(backstabCapability){
+					float tankRotation[3], attackerOrigin[3], attackerAngle[3], difference[3];
+					GetEntPropVector(victim, Prop_Data, "m_angRotation", tankRotation);
+					GetClientEyePosition(attacker, attackerOrigin);
+					GetClientEyeAngles(attacker, attackerAngle);
+					SubtractVectors(damagePosition, attackerOrigin, difference);
+
+					GetAngleVectors(tankRotation, tankRotation, NULL_VECTOR, NULL_VECTOR);
+					GetAngleVectors(attackerAngle, attackerAngle, NULL_VECTOR, NULL_VECTOR);
+
+					difference[2] = 0.0;
+					tankRotation[2] = 0.0;
+					attackerAngle[2] = 0.0;
+					
+					NormalizeVector(difference, difference);
+					NormalizeVector(attackerAngle, attackerAngle);
+					NormalizeVector(tankRotation, tankRotation);
+
+					float flPosVsTargetViewDot = GetVectorDotProduct( difference, tankRotation );
+					float flPosVsOwnerViewDot = GetVectorDotProduct( difference, attackerAngle );
+					float flViewAnglesDot = GetVectorDotProduct( tankRotation, attackerAngle );
+
+					if( flPosVsTargetViewDot > 0 && flPosVsOwnerViewDot > 0.5 && flViewAnglesDot > -0.3 ){
+						damage = backstabCapability;
+						damagetype |= DMG_CRIT;
+						currentDamageType[attacker].second |= DMG_ACTUALCRIT
+					}
+				}
+			}
+		}
+
 		if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
 			damage = genericSentryDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		
@@ -1549,12 +1587,15 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 		return;
 
 	currentDamageType[attacker].clear();
+	bool isVictimPlayer = IsValidClient3(victim);
 
 	if(StrContains(damageCategory, "direct") != -1)
 	{
-		Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "direct damage taken reduced");
-		if(dmgTakenMultAddr != Address_Null)
-			damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
+		if(isVictimPlayer){
+			Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "direct damage taken reduced");
+			if(dmgTakenMultAddr != Address_Null)
+				damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
+		}
 
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "physical damage affinity");
 		if(dmgMasteryAddr != Address_Null){
@@ -1563,7 +1604,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			if(IsValidEdict(inflictor) && !IsValidClient3(inflictor) && !HasEntProp(inflictor, Prop_Send, "m_iItemDefinitionIndex"))
 				{damagetype |= DMG_CLUB;damagetype |= DMG_BULLET;}
 
-			if(damagetype & DMG_CLUB)
+			if(damagetype & DMG_CLUB && isVictimPlayer)
 			{
 				//Melee reduces on average 5% of their armor per second.
 				float multiHitActive = GetAttribute(weapon, "taunt move acceleration time",0.0);
@@ -1582,7 +1623,8 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "fire damage affinity");
 		if(dmgMasteryAddr != Address_Null){
 			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
-			damage *= 1.0+(TF2Util_GetPlayerBurnDuration(victim)*0.05);
+			if(isVictimPlayer)
+				damage *= 1.0+(TF2Util_GetPlayerBurnDuration(victim)*0.05);
 		}
 
 		if(GetAttribute(attacker, "infernal powerup")){
@@ -1629,10 +1671,11 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 	}
 	else if(StrContains(damageCategory, "arcane") != -1)
 	{
-		Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "arcane damage taken reduced");
-		if(dmgTakenMultAddr != Address_Null)
-			damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
-
+		if(isVictimPlayer){
+			Address dmgTakenMultAddr = TF2Attrib_GetByName(victim, "arcane damage taken reduced");
+			if(dmgTakenMultAddr != Address_Null)
+				damage *= TF2Attrib_GetValue(dmgTakenMultAddr);
+		}
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "arcane damage affinity");
 		if(dmgMasteryAddr != Address_Null)
 			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
@@ -1644,7 +1687,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 		if(dmgMasteryAddr != Address_Null)
 			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr) + (bits.second & DMG_ACTUALCRIT ? 0.2 : 0.0) );
 
-		if(bits.second & DMG_ACTUALCRIT)
+		if(bits.second & DMG_ACTUALCRIT && isVictimPlayer)
 		{
 			Buff critAffinityDebuff;
 			critAffinityDebuff.init("Shattered Armor", "-25% Armor", Buff_ShatteredArmor, 1, attacker, 8.0);

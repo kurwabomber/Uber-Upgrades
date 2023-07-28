@@ -1000,12 +1000,12 @@
 		{
 			"Attr1"		"damage bonus(H)"
 			"Attr15"	"ap (armyofnotmany)"
-			"Attr2"		"blast radius increased"
+			"Attr1"		"blast radius increased"
+			"Attr9"		"dmg falloff decreased"
 			"Attr13"	"Extra Damage Bonus"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
-			"Attr3"		"dmg falloff decreased"
 			"Attr13"	"reveal cloaked victim on hit"
 			"Attr14"	"reveal disguised victim on hit"
 		}
@@ -1029,11 +1029,11 @@
 			"Attr1"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
 			"Attr1"			"blast radius increased"
+			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
 			"Attr0"			"Overall Damage Bonus"
 			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
-			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
 		}
@@ -1532,7 +1532,6 @@
 			"Attr8"		"Weapons Deals No Knockback"
 			
 			"Attr13"	"Life Steal Ability"
-			"Attr9"			"dmg falloff decreased"
 			"Attr14"	"afterburn time increased"
 			"Attr10"	"reveal cloaked victim on hit"
 			"Attr11"	"reveal disguised victim on hit"
@@ -1542,6 +1541,7 @@
 			"Attr0"		"faster reload rate"
 			"Attr1"		"fire rate bonus(multshit)"
 			"Attr2"		"blast radius increased"
+			"Attr3"		"dmg falloff decreased"
 		}
 	}
 	"pyroflareg2"//manmelter
@@ -1793,8 +1793,10 @@
 		"Sapper upgrades"
 		{
 			"Attr1"		"robo sapper"
-			"Attr4"		"Vulnerability When Sapped"
+			"Attr2"		"effect bar recharge rate increased(sapper)"
 			"Attr3"		"sapper damage leaches health"
+			"Attr4"		"Vulnerability When Sapped"
+			"Attr5"		"sapper pulls enemies"
 		}
 	}
 	"spymel"
@@ -1815,6 +1817,7 @@
 		{
 			"Attr0"		"melee attack rate bonus(spy)"
 			"Attr3"		"melee range multiplier"
+			"Attr4"		"backstab tanks capability"
 			"Attr12"	"increase player capture value"
 		}
 		"Special Tweaks"
@@ -2152,13 +2155,12 @@
 		{
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
+			"Attr1"			"blast radius increased"
+			"Attr9"			"dmg falloff decreased"
 			"Attr16"		"Extra Damage Bonus"
 			"Attr0"			"Overall Damage Bonus"
 			"Attr8"			"Weapons Deals No Knockback"
-			
 			"Attr13"		"Life Steal Ability"
-			"Attr1"			"blast radius increased"
-			"Attr9"			"dmg falloff decreased"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
 			"Attr13"		"reveal cloaked victim on hit"
@@ -2214,12 +2216,12 @@
 		{
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
+			"Attr1"			"blast radius increased"
+			"Attr9"			"dmg falloff decreased"
 			"Attr16"		"Extra Damage Bonus"
 			"Attr0"			"Overall Damage Bonus"
 			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
-			"Attr1"			"blast radius increased"
-			"Attr9"			"dmg falloff decreased"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
 			"Attr13"		"reveal cloaked victim on hit"
@@ -2505,11 +2507,11 @@
 		{
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
+			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
 			"Attr0"			"Overall Damage Bonus"
 			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
-			"Attr9"			"dmg falloff decreased"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
 			"Attr13"		"reveal cloaked victim on hit"
@@ -2535,12 +2537,11 @@
 			"Attr0"			"damage bonus(H)"
 			"Attr20"		"ap (armyofnotmany)"
 			"Attr1"			"blast radius increased"
+			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
 			"Attr0"			"Overall Damage Bonus"
 			"Attr8"			"Weapons Deals No Knockback"
-			
 			"Attr13"		"Life Steal Ability"
-			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
 		}
@@ -2564,12 +2565,11 @@
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
 			"Attr1"			"blast radius increased"
+			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
 			"Attr0"			"Overall Damage Bonus"
 			"Attr8"			"Weapons Deals No Knockback"
-			
 			"Attr13"		"Life Steal Ability"
-			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
 		}

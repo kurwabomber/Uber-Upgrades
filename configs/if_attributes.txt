@@ -1787,6 +1787,16 @@
 			"init"		"1.00"
 			"max"		"0.01"
 		}
+		"156.10"
+		{
+			"name"		"effect bar recharge rate increased"
+			"ref"		"effect bar recharge rate increased(sapper)"
+			"cost"		"800"
+			"value"		"-0.05"
+			"increase_ratio" 	"0.5"
+			"init"		"1.00"
+			"max"		"0.25"
+		}
 		"157"
 		{
 			"name"		"override projectile type"
@@ -5659,6 +5669,25 @@
 			"value"		"0"
 			"init"		"1"
 			"max"		"1"
+		}
+		"1620"
+		{
+			"name"		"sapper pulls enemies"
+			"ref"		"sapper pulls enemies"
+			"cost"		"10000"
+			"value"		"50"
+			"init"		"0"
+			"max"		"150"
+		}
+		"1621"
+		{
+			"name"		"backstab tanks capability"
+			"ref"		"backstab tanks capability"
+			"cost"		"20000"
+			"increase_ratio"	"0.5"
+			"value"		"100"
+			"init"		"40"
+			"max"		"340"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"

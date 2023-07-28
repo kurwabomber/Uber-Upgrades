@@ -465,7 +465,7 @@ public Action:OnCollisionMoonveil(entity, client)
 						mult *= TF2Attrib_GetValue(multiHitActive) + 1.0;
 					
 					currentDamageType[owner].second |= DMG_ARCANE;
-					SDKHooks_TakeDamage(client,owner,owner,mult*35.0,DMG_GENERIC,CWeapon, NULL_VECTOR, NULL_VECTOR);
+					SDKHooks_TakeDamage(client,owner,owner,mult*35.0,DMG_GENERIC,CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 				}
 				RemoveEntity(entity);
 			}

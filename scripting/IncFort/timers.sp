@@ -221,6 +221,7 @@ public Action:Timer_Every100MS(Handle timer)
 	{
 		if (IsValidClient3(client) && IsPlayerAlive(client))
 		{
+			DoSapperEffects(client);
 			Address bleedResistance = TF2Attrib_GetByName(client, "sapper damage penalty");
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			int primary = GetWeapon(client, 0);
@@ -365,7 +366,8 @@ public Action:Timer_Every100MS(Handle timer)
 			if(IsValidClient3(GetClientOfUserId(plagueAttacker[client])))
 			{
 				//Deal 3 piercing damage to plagued opponents.
-				SDKHooks_TakeDamage(client, GetClientOfUserId(plagueAttacker[client]), GetClientOfUserId(plagueAttacker[client]), 3.0, DMG_PIERCING);
+				currentDamageType[plagueAttacker[client]].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(client, GetClientOfUserId(plagueAttacker[client]), GetClientOfUserId(plagueAttacker[client]), 3.0);
 			}
 			if(IsValidEdict(CWeapon))
 			{
@@ -1112,21 +1114,24 @@ public Action:RemoveFire(Handle timer, any:data)
 }
 public Action:LockMission(Handle timer)
 {
-	char responseBuffer[4096];
+	char responseBuffer[2048];
 	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
-	GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
-	PrintToServer("%s mission",responseBuffer);
-	if(StrContains(responseBuffer, "if", false) != -1)
-	{
-		PrintToServer("Is on a IF mission.");
-		return;
+	if(IsValidEntity(ObjectiveEntity)){
+		GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
+		PrintToServer("%s mission",responseBuffer);
+		if(StrContains(responseBuffer, "if", false) != -1)
+		{
+			PrintToServer("Is on a IF mission.");
+			return Plugin_Stop;
+		}
+		char mapName[64];
+		GetCurrentMap(mapName, sizeof(mapName));
+		StrCat(mapName, sizeof(mapName),"_if_normal");
+		ServerCommand("tf_mvm_popfile %s", mapName);
+		PrintToServer("Mission was changed to something not Incremental Fortress!");
+		CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You must choose a mission that is made for Incremental Fortress.");
 	}
-	char mapName[64];
-	GetCurrentMap(mapName, sizeof(mapName));
-	StrCat(mapName, sizeof(mapName),"_if_normal");
-	ServerCommand("tf_mvm_popfile %s", mapName);
-	PrintToServer("Mission was changed to something not Incremental Fortress!");
-	CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You must choose a mission that is made for Incremental Fortress.");
+	return Plugin_Stop;
 }
 public Action:ResetMission(Handle timer)
 {

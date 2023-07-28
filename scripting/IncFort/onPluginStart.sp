@@ -152,6 +152,7 @@ public UberShopinitMenusHandlers()
 	HookEvent("mvm_begin_wave",Event_mvm_wave_begin)
 	HookEvent("mvm_wave_complete",Event_mvm_wave_complete);
 	HookEvent("player_builtobject", Event_ObjectBuilt);
+	HookEvent("mvm_mission_update",Event_ResetStats);
 	
 	AddCommandListener(jointeam_callback, "jointeam");
 	AddCommandListener(eurekaAttempt, "eureka_teleport");
@@ -163,7 +164,7 @@ public OnMapStart()
 	{
 		char mapName[64]
 		GetCurrentMap(mapName, sizeof(mapName))
-		StrCat(mapName, sizeof(mapName),"_IF");
+		StrCat(mapName, sizeof(mapName),"_if_normal");
 		ServerCommand("tf_mvm_popfile %s", mapName)
 	}
 	GameRules_SetProp("m_bPlayingMedieval", 0)
