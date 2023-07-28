@@ -1116,14 +1116,14 @@ public Action:LockMission(Handle timer)
 	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
 	GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
 	PrintToServer("%s mission",responseBuffer);
-	if(StrContains(responseBuffer, "IF", false) != -1)
+	if(StrContains(responseBuffer, "if", false) != -1)
 	{
 		PrintToServer("Is on a IF mission.");
 		return;
 	}
 	char mapName[64];
 	GetCurrentMap(mapName, sizeof(mapName));
-	StrCat(mapName, sizeof(mapName),"_IF");
+	StrCat(mapName, sizeof(mapName),"_if_normal");
 	ServerCommand("tf_mvm_popfile %s", mapName);
 	PrintToServer("Mission was changed to something not Incremental Fortress!");
 	CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You must choose a mission that is made for Incremental Fortress.");

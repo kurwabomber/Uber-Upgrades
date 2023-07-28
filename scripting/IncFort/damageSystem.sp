@@ -1585,7 +1585,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			damage *= 1.0+(TF2Util_GetPlayerBurnDuration(victim)*0.05);
 		}
 
-		if(GetAttribute(attacker, "infernal powerup") != Address_Null){
+		if(GetAttribute(attacker, "infernal powerup")){
 			damage *= 1.7;
 
 			int team = GetClientTeam(attacker);
