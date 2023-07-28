@@ -117,7 +117,7 @@
 	{
 		"index"			"225"
 		"weapon_class"	"tf_weapon_knife"
-		"weapon_menu"	"menuKatana"
+		"weapon_menu"	"tf_weapon_knife"
 		"class"			"spy"
 		"description"	"On a successful backstab - Gives stealthed condition for 3s.\nBackstabs increase victims radiation by 25.\n+25% movespeed, has the dash ability on the winger.\n+65% overall damage dealt."
 		"cost"			"40000.0"
