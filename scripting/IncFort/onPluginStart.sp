@@ -471,7 +471,7 @@ public void OnPluginStart()
 		PrintToServer("IF : Was unable to create a table. | SQLERROR : %s.", Error);
 	}
 	//Refresh
-	for (int client = 1; client < MaxClients; ++client)
+	for (int client = 1; client <= MaxClients; ++client)
 	{
 		if(!IsValidClient(client))
 			continue;
@@ -482,15 +482,12 @@ public void OnPluginStart()
 		fl_CurrentFocus[client] = 100.0;
 		client_no_d_team_upgrade[client] = 1
 		current_class[client] = TF2_GetPlayerClass(client)
-		if (!client_respawn_handled[client])
-		{
-			CreateTimer(0.2, ClChangeClassTimer, GetClientUserId(client));
-		}
 		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 		
 		for(int i = 0; i < Max_Attunement_Slots; ++i){
 			AttunedSpells[client][i] = 0.0;
 		}
+		CreateTimer(0.2, ClChangeClassTimer, GetClientUserId(client));
 	}
 	for (int i = 1; i <= MaxClients; ++i)
 		if(IsValidClient3(i))
@@ -510,7 +507,6 @@ public OnPluginEnd()
 		fl_CurrentArmor[i] = 300.0;
 		fl_MaxFocus[i] = 100.0;
 		fl_CurrentFocus[i] = 100.0;
-		//FakeClientCommand(i, "spectate");
 		TF2Attrib_ClearCache(i);
 		TF2Attrib_RemoveAll(i);
 	}

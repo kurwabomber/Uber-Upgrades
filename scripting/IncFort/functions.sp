@@ -2106,15 +2106,8 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 		TF2Attrib_SetByName(client,"increased air control", 3.0);
 		TF2Attrib_SetByName(melee,"melee range multiplier", 50.0);
 		TF2Attrib_SetByName(melee,"fire rate penalty HIDDEN", 0.75);
-		if((additionalstartmoney+StartMoney) <= 300000.0/OverAllMultiplier)
-		{
-			TF2Attrib_SetByName(client,"move speed bonus",1+(((additionalstartmoney+StartMoney)/300000.0)*OverAllMultiplier));
-		}
-		else
-		{
-			TF2Attrib_SetByName(client,"move speed bonus",(2.00));
-		}
-		
+		TF2Attrib_SetByName(client,"move speed bonus", 10.0);
+
 		switch(current_class[client])
 		{
 			case TFClass_Scout:
