@@ -516,7 +516,7 @@ public GiveNewUpgradedWeapon_(client, slot)
 	}
 	if (IsValidEdict(iEnt) && HasEntProp(iEnt, Prop_Send, "m_AttributeList"))
 	{
-		TF2Attrib_SetByName(iEnt, "bullets per shot bonus", 1.0);
+		TF2Attrib_RemoveByName(iEnt, "bullets per shot bonus");
 		if( iNumAttributes > 0 )
 		{
 			for(int a = 0; a < iNumAttributes ; a++ )

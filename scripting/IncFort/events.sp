@@ -1073,7 +1073,7 @@ public OnEntityDestroyed(entity)
 			if(IsValidClient3(owner)){
 				int wrench = GetWeapon(owner,2);
 				if(IsValidWeapon(wrench)){
-					EntityExplosion(owner, TF2_GetSentryDPSModifiers(owner,wrench)*70.0, 350.0, vec, _, _, entity, _ ,DMG_SHOCK, wrench);
+					EntityExplosion(owner, TF2_GetSentryDPSModifiers(owner,wrench)*70.0, 350.0, vec, _, _, owner, _ ,DMG_SHOCK, wrench);
 				}
 			}
 		}

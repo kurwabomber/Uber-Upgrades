@@ -80,6 +80,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 		current_w_c_list_id[client] = cat_choice;
 		slot = current_slot_used[client]
 		int attributeDisabled[MAX_ATTRIBUTES]
+		bool isBuildingPage = StrContains(TitleStr, "Building Upgrades", false) != -1;
 		//PrintToServer("%i | %i", cat_choice, subcat_choice)
 		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); ++i)
 		{
@@ -301,13 +302,14 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 					{
 						if(val == 0.0)
 							val = upgrades[tmp_up_idx].i_val;
-						upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(((val+upgrades[tmp_up_idx].ratio)/val)-1.0)/up_cost;
+	
+						upgrades_efficiency[client][isBuildingPage ? 5 : slot][tmp_up_idx] = 50000.0*(((val+upgrades[tmp_up_idx].ratio)/val)-1.0)/up_cost;
 					}
 					case 6:
 					{
 						if(val == 0.0)
 							val = upgrades[tmp_up_idx].i_val;
-						upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(0.05)/up_cost;
+						upgrades_efficiency[client][isBuildingPage ? 5 : slot][tmp_up_idx] = 50000.0*(0.05)/up_cost;
 					}
 					case 2:
 					{
@@ -374,7 +376,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			int numEff = 0;
 			for(int e=0;e<MAX_ATTRIBUTES;++e)
 			{
-				if(upgrades_efficiency[client][slot][e])
+				if(upgrades_efficiency[client][isBuildingPage ? 5 : slot][e])
 					++numEff;
 			}
 			float max = 0.0;
@@ -384,24 +386,24 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			{
 				for(int t=0;t<MAX_ATTRIBUTES;++t)
 				{
-					if(!toBlock[t] && upgrades_efficiency[client][slot][t])
+					if(!toBlock[t] && upgrades_efficiency[client][isBuildingPage ? 5 : slot][t])
 					{
-						if(upgrades_efficiency[client][slot][t] > max)
+						if(upgrades_efficiency[client][isBuildingPage ? 5 : slot][t] > max)
 						{
-							max = upgrades_efficiency[client][slot][t]
+							max = upgrades_efficiency[client][isBuildingPage ? 5 : slot][t]
 							highestIndex = t;
 						}
 					}
 					if(attributeDisabled[t])
 					{
-						upgrades_efficiency_list[client][slot][t] = 0;
-						upgrades_efficiency[client][slot][t] = 0.0;
+						upgrades_efficiency_list[client][isBuildingPage ? 5 : slot][t] = 0;
+						upgrades_efficiency[client][isBuildingPage ? 5 : slot][t] = 0.0;
 					}
 				}
 				max = 0.0;
 				toBlock[highestIndex] = true;
 				//PrintToServer("%i | %.2f | %s", k, upgrades_efficiency[client][slot][highestIndex], toBlock[highestIndex] ? "blocked" : "unblocked")
-				upgrades_efficiency_list[client][slot][highestIndex] = k+1;
+				upgrades_efficiency_list[client][isBuildingPage ? 5 : slot][highestIndex] = k+1;
 			}
 			efficiencyCalculationTimer[client] = currentGameTime+0.03;
 		}

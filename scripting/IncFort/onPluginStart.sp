@@ -433,7 +433,7 @@ public void OnPluginStart()
 	Handle g_DHookOnBulletTrace = DHookCreateFromConf(hConf, "CBaseEntity::DispatchTraceAttack()");
 	if(!g_DHookOnBulletTrace)
 		PrintToServer("CustomAttrs | g_DHookOnBulletTrace fucked up.");
-	DHookEnableDetour(g_DHookOnBulletTrace, true, OnBulletTrace);
+	DHookEnableDetour(g_DHookOnBulletTrace, false, OnBulletTrace);
 	
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	delete hConf;

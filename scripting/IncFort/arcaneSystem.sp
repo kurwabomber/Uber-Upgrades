@@ -323,7 +323,7 @@ CastSunlightSpear(client, attuneSlot)
 	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_NORMAL, _, 0.8, _,_,clientpos);
 	int projectileAmount[] = {0,1,2,5};
 	float projectileSpeed[] = {0.0,2500.0,4000.0,6000.0};
-	for(int i=0;projectileAmount[spellLevel] % 2 == 0 ? i<projectileAmount[spellLevel] : i<=projectileAmount[spellLevel];i++){
+	for(int i=0;i<projectileAmount[spellLevel];i++){
 		int iEntity = CreateEntityByName("tf_projectile_arrow");
 		if (!IsValidEdict(iEntity)) 
 			return;

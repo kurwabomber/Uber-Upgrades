@@ -13,7 +13,9 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 	{
 		char desc_str[128];
 		char info_str[16];
+		char title_str[64];
 		int style;
+		GetMenuTitle(menu, title_str, sizeof(title_str));
 		GetMenuItem(menu, param2, info_str, sizeof(info_str), style, desc_str, sizeof(desc_str));
 		int slot = current_slot_used[client]
 		int w_id = current_w_list_id[client]
@@ -23,18 +25,20 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		playerUpgradeMenuPage[client] = param2;
 		if(upgrades[upgrade_choice].display_style == 0)
 			return RedrawMenuItem(desc_str);
+
+		bool isBuildingPage = StrContains(title_str, "Building Upgrades", false) != -1;
 		
 		switch(upgrades[upgrade_choice].display_style)
 		{
 			case 1:
 			{		
-				if(upgrades_efficiency_list[client][slot][upgrade_choice])
-					Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+				if(upgrades_efficiency_list[client][isBuildingPage ? 5 : slot][upgrade_choice])
+					Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][isBuildingPage ? 5 : slot][upgrade_choice]);
 			}
 			case 6:
 			{
-				if(upgrades_efficiency_list[client][slot][upgrade_choice])
-					Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][slot][upgrade_choice]);
+				if(upgrades_efficiency_list[client][isBuildingPage ? 5 : slot][upgrade_choice])
+					Format(desc_str, sizeof(desc_str), "%s (#%i)", desc_str, upgrades_efficiency_list[client][isBuildingPage ? 5 : slot][upgrade_choice]);
 			}
 			case 2:
 			{
