@@ -1255,14 +1255,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 		{
 			owner = GetEntPropEnt(inflictor, Prop_Send, "m_hBuilder");
 		}
-		
-		if(!IsValidClient3(owner))
-		{
-			if(IsValidForDamage(GetEntProp(inflictor, Prop_Send, "m_hBuiltOnEntity")))
-			{
-				owner = GetEntProp(inflictor, Prop_Send, "m_hBuiltOnEntity");
-			}
-		}
+
 		if(IsValidForDamage(owner))
 		{
 			char Ownerclassname[128]; 
