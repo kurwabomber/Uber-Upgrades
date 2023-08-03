@@ -267,28 +267,28 @@ public void OnPluginStart()
 	PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
 	PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
 	g_SDKCallInitGrenade = EndPrepSDKCall();
-	if(!g_SDKCallInitGrenade)
+	if(!IsValidHandle(g_SDKCallInitGrenade))
 		PrintToServer("CustomAttrs | Grenade Creation offset not found.");
 
 	//Jar Call
 	StartPrepSDKCall(SDKCall_Entity);
 	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CTFJar::TossJarThink()");
 	g_SDKCallJar = EndPrepSDKCall();
-	if(!g_SDKCallJar)
+	if(!IsValidHandle(g_SDKCallJar))
 		PrintToServer("CustomAttrs | Jar Throw signature not found.");
 
 	//Sentry Think Call
 	StartPrepSDKCall(SDKCall_Entity);
 	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CObjectSentrygun::SentryThink()");
 	g_SDKCallSentryThink = EndPrepSDKCall();
-	if(!g_SDKCallSentryThink)
+	if(!IsValidHandle(g_SDKCallSentryThink))
 		PrintToServer("CustomAttrs | Sentry think signature not found.");
 
 	//Launch Ball
 	StartPrepSDKCall(SDKCall_Entity);
 	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CTFBat_Wood::LaunchBallThink()");
 	g_SDKCallLaunchBall = EndPrepSDKCall();
-	if(!g_SDKCallLaunchBall)
+	if(!IsValidHandle(g_SDKCallLaunchBall))
 		PrintToServer("CustomAttrs | ball launch signature not found.");
 
 	//Fast Build Call
@@ -296,144 +296,166 @@ public void OnPluginStart()
 	PrepSDKCall_SetFromConf(hConf, SDKConf_Signature, "CBaseObject::DoQuickBuild()");
 	PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
 	g_SDKFastBuild = EndPrepSDKCall();
-
+	if(!IsValidHandle(g_SDKFastBuild))
+		PrintToServer("CustomAttrs | Fastbuild signature not found.");
 
 	//Scattergun Proper Clip Replacement
 	Handle g_DHookScattergunReload = DHookCreateFromConf(hConf, "CTFScatterGun::FinishReload()");
 	
-	if(!g_DHookScattergunReload)
+	if(!IsValidHandle(g_DHookScattergunReload))
 		PrintToServer("CustomAttrs | Scattergun Clip Replacement function error");
-	DHookEnableDetour(g_DHookScattergunReload, false, OnScattergunReload);
+	else
+		DHookEnableDetour(g_DHookScattergunReload, false, OnScattergunReload);
 	
 	//Post finish reload
 	Handle g_DHookFinishReload = DHookCreateFromConf(hConf, "CTFWeaponBase::FinishReload()");
 	
-	if(!g_DHookFinishReload)
+	if(!IsValidHandle(g_DHookFinishReload))
 		PrintToServer("CustomAttrs | g_DHookFinishReload function error");
-	DHookEnableDetour(g_DHookFinishReload, false, OnFinishReload);
+	else
+		DHookEnableDetour(g_DHookFinishReload, false, OnFinishReload);
 
 	//Knockback Changes
 	Handle g_DHookKnockbackReplacement = DHookCreateFromConf(hConf, "CTFPlayer::ApplyAbsVelocityImpulse()");
 	
-	if(!g_DHookKnockbackReplacement)
+	if(!IsValidHandle(g_DHookKnockbackReplacement))
 		PrintToServer("CustomAttrs | Knockback Changes function error");
-	DHookEnableDetour(g_DHookKnockbackReplacement, false, OnKnockbackApply);
+	else
+		DHookEnableDetour(g_DHookKnockbackReplacement, false, OnKnockbackApply);
 
 	//Sentry Think Cap
 	Handle g_DHookSentryThink = DHookCreateFromConf(hConf, "CObjectSentrygun::SentryThink()");
 	
-	if(!g_DHookSentryThink)
+	if(!IsValidHandle(g_DHookSentryThink))
 		PrintToServer("CustomAttrs | Sentry think function error");
-	DHookEnableDetour(g_DHookSentryThink, false, OnSentryThink);
+	else
+		DHookEnableDetour(g_DHookSentryThink, false, OnSentryThink);
 
 
 	//disable bot jumping
 	Handle g_DHookPlayerLocomotionJump = DHookCreateFromConf(hConf, "PlayerLocomotion::Jump()");
 	
-	if(!g_DHookPlayerLocomotionJump)
+	if(!IsValidHandle(g_DHookPlayerLocomotionJump))
 		PrintToServer("CustomAttrs | bot locomotion jump function error");
-	DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);
+	else
+		DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);
 	
 	//fire rate?
 	Handle g_DHookFireRateCall = DHookCreateFromConf(hConf, "CTFWeaponBase::ApplyFireDelay(float)");
 	
-	if(!g_DHookFireRateCall)
+	if(!IsValidHandle(g_DHookFireRateCall))
 		PrintToServer("CustomAttrs | Fire rate error");
-	DHookEnableDetour(g_DHookFireRateCall, true, OnFireRateCall);
+	else
+		DHookEnableDetour(g_DHookFireRateCall, true, OnFireRateCall);
 
 	//Currency
 	Handle g_DHookAddCurrency = DHookCreateFromConf(hConf, "CCurrencyPack::SetAmount()");
 	
-	if(!g_DHookAddCurrency)
+	if(!IsValidHandle(g_DHookAddCurrency))
 		PrintToServer("CustomAttrs | Currency Hook error");
-	DHookEnableDetour(g_DHookAddCurrency, true, OnCurrencySpawn);
+	else
+		DHookEnableDetour(g_DHookAddCurrency, true, OnCurrencySpawn);
 
 	//Modify Rage
 	Handle g_DHookOnModifyRage = DHookCreateFromConf(hConf, "CTFPlayerShared::ModifyRage()");
 	
-	if(!g_DHookOnModifyRage)
+	if(!IsValidHandle(g_DHookOnModifyRage))
 		PrintToServer("CustomAttrs | Rage Modifier fucked up.");
-	DHookEnableDetour(g_DHookOnModifyRage, false, OnModifyRagePre);
+	else
+		DHookEnableDetour(g_DHookOnModifyRage, false, OnModifyRagePre);
 	//Bot speed
 	Handle g_DHookBotSpeed = DHookCreateFromConf(hConf, "CTFBotLocomotion::GetRunSpeed()");
 	
-	if(!g_DHookBotSpeed)
+	if(!IsValidHandle(g_DHookBotSpeed))
 		PrintToServer("CustomAttrs | Bot speed cap removal fucked up.");
-	DHookEnableDetour(g_DHookBotSpeed, true, OnCalculateBotSpeedPost);
+	else
+		DHookEnableDetour(g_DHookBotSpeed, true, OnCalculateBotSpeedPost);
 	
 	//On condition applied
 	Handle g_DHookCondApply = DHookCreateFromConf(hConf, "CTFPlayerShared::AddCond()");
 	
-	if(!g_DHookCondApply)
+	if(!IsValidHandle(g_DHookCondApply))
 		PrintToServer("CustomAttrs | Prehook for condition apply failed.");
-	DHookEnableDetour(g_DHookCondApply, false, OnCondApply);
+	else
+		DHookEnableDetour(g_DHookCondApply, false, OnCondApply);
 
 	//Is In world
 	Handle g_DHookInWorld = DHookCreateFromConf(hConf, "CBaseEntity::IsInWorld()");
 	
-	if(!g_DHookInWorld)
+	if(!IsValidHandle(g_DHookInWorld))
 		PrintToServer("CustomAttrs | Grenade patch fucked up.");
-	DHookEnableDetour(g_DHookInWorld, false, IsInWorldCheck);
+	else
+		DHookEnableDetour(g_DHookInWorld, false, IsInWorldCheck);
 
 	//vphysics
 	Handle g_DHookValidVelocity = DHookCreateFromConf(hConf, "CheckEntityVelocity");
 	
-	if(!g_DHookValidVelocity)
+	if(!IsValidHandle(g_DHookValidVelocity))
 		PrintToServer("CustomAttrs | Grenade patch part 2 fucked up.");
-	DHookEnableDetour(g_DHookValidVelocity, false, CheckEntityVelocity);
+	else
+		DHookEnableDetour(g_DHookValidVelocity, false, CheckEntityVelocity);
 
 	//Recoil changes
 	Handle g_DHookRecoil = DHookCreateFromConf(hConf, "CBasePlayer::SetPunchAngle()");
 	
-	if(!g_DHookRecoil)
+	if(!IsValidHandle(g_DHookRecoil))
 		PrintToServer("CustomAttrs | Recoil patch fucked up.");
-	DHookEnableDetour(g_DHookRecoil, false, OnRecoilApplied);
+	else
+		DHookEnableDetour(g_DHookRecoil, false, OnRecoilApplied);
 
 	//Dragon's Fury Range Upgrade
 	Handle g_DHookFireballRange = DHookCreateFromConf(hConf, "CTFProjectile_BallOfFire::DistanceLimitThink()");
 	
-	if(!g_DHookFireballRange)
+	if(!IsValidHandle(g_DHookFireballRange))
 		PrintToServer("CustomAttrs | g_DHookFireballRange fucked up.");
-	DHookEnableDetour(g_DHookFireballRange, false, OnFireballRangeThink);
+	else
+		DHookEnableDetour(g_DHookFireballRange, false, OnFireballRangeThink);
 
 	//Charge Speed Override
 	Handle g_DHookChargeMove = DHookCreateFromConf(hConf, "CTFGameMovement::ChargeMove()");
 	
-	if(!g_DHookChargeMove)
+	if(!IsValidHandle(g_DHookChargeMove))
 		PrintToServer("CustomAttrs | g_DHookChargeMove fucked up.");
-	DHookEnableDetour(g_DHookChargeMove, false, OnShieldChargeMove);
+	else
+		DHookEnableDetour(g_DHookChargeMove, false, OnShieldChargeMove);
 
 	//Damagetypes lul
-	Handle g_DHookDamagetypes = DHookCreateFromConf(hConf, "CTFWeaponBase::GetDamageType()");
+	/*Handle g_DHookDamagetypes = DHookCreateFromConf(hConf, "CTFWeaponBase::GetDamageType()");
 	
-	if(!g_DHookDamagetypes)
+	if(!IsValidHandle(g_DHookDamagetypes))
 		PrintToServer("CustomAttrs | g_DHookDamagetypes fucked up.");
-	DHookEnableDetour(g_DHookDamagetypes, true, OnDamageTypeCalc);
+	else
+		DHookEnableDetour(g_DHookDamagetypes, true, OnDamageTypeCalc);*/
 
 	//Thermal Thruster Velocity Boost
 	Handle g_DHookThrusterLaunch = DHookCreateFromConf(hConf, "CTFRocketPack::Launch()");
 	
-	if(!g_DHookThrusterLaunch)
+	if(!IsValidHandle(g_DHookThrusterLaunch))
 		PrintToServer("CustomAttrs | g_DHookFireballRange fucked up.");
-	DHookEnableDetour(g_DHookThrusterLaunch, false, OnThermalThrusterLaunch);
+	else
+		DHookEnableDetour(g_DHookThrusterLaunch, false, OnThermalThrusterLaunch);
 
 	//New On Weapon Fired
 	Handle g_DHookOnWeaponFired = DHookCreateFromConf(hConf, "CTFGameStats::Event_PlayerFiredWeapon()");
-	if(!g_DHookOnWeaponFired)
+	if(!IsValidHandle(g_DHookOnWeaponFired))
 		PrintToServer("CustomAttrs | Weapon Fire Hook Failed");
-	DHookEnableDetour(g_DHookOnWeaponFired, false, OnWeaponFired);
+	else
+		DHookEnableDetour(g_DHookOnWeaponFired, true, OnWeaponFired);
 
 	//On Airblast Use
 	Handle g_DHookOnAirblast = DHookCreateFromConf(hConf, "CTFFlameThrower::FireAirblast()");
-	if(!g_DHookOnAirblast)
+	if(!IsValidHandle(g_DHookOnAirblast))
 		PrintToServer("CustomAttrs | g_DHookOnAirblast fucked up.");
-	DHookEnableDetour(g_DHookOnAirblast, true, OnAirblast);
+	else
+		DHookEnableDetour(g_DHookOnAirblast, true, OnAirblast);
 
 	//On Bullet Trace
 	Handle g_DHookOnBulletTrace = DHookCreateFromConf(hConf, "CBaseEntity::DispatchTraceAttack()");
-	if(!g_DHookOnBulletTrace)
+	if(!IsValidHandle(g_DHookOnBulletTrace))
 		PrintToServer("CustomAttrs | g_DHookOnBulletTrace fucked up.");
-	DHookEnableDetour(g_DHookOnBulletTrace, false, OnBulletTrace);
+	else
+		DHookEnableDetour(g_DHookOnBulletTrace, false, OnBulletTrace);
+
 	
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	delete hConf;

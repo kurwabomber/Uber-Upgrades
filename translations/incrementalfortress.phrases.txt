@@ -1428,14 +1428,6 @@
 	{
 		"en"		"Applies Slowdown"
 	}
-	"paintkit_proto_def_index"
-	{
-		"en"		"Paint Index"
-	}
-	"set_item_texture_wear"
-	{
-		"en"		"Texture Quality"
-	}
 	"parachute is visible"
 	{
 		"en"		"Visible Parachute"

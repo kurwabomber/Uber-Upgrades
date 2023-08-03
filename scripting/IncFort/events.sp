@@ -2761,556 +2761,166 @@ public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 
 	if(!IsValidClient3(client) || !IsValidEdict(client))
 		return MRES_Ignored;
-	if(IsValidClient3(client))//Players
+
+	canOverride[client] = true;
+	canShootAgain[client] = true;
+	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	if(IsValidWeapon(CWeapon))
 	{
-		canOverride[client] = true;
-		canShootAgain[client] = true;
-		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-		if(IsValidWeapon(CWeapon))
+		meleeLimiter[client]++;
+		if(!IsFakeClient(client))
 		{
-			meleeLimiter[client]++;
-			if(!IsFakeClient(client))
+			if(getWeaponSlot(client,CWeapon) == 2)
 			{
-				if(getWeaponSlot(client,CWeapon) == 2)
+				bool flag = true;
+
+				if(meleeLimiter[client] % 2 == 0)
 				{
-					bool flag = true;
+					float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
+					if(ballCheck == 0.0)
+						ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
 
-					if(meleeLimiter[client] % 2 == 0)
+					int a = GetCarriedAmmo(client, 2)
+					if(a > 0)
 					{
-						float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
-						if(ballCheck == 0.0)
-							ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
+						if(ballCheck == 10.0)
+							SDKCall(g_SDKCallLaunchBall, CWeapon);
 
-						int a = GetCarriedAmmo(client, 2)
-						if(a > 0)
-						{
-							if(ballCheck == 10.0)
-								SDKCall(g_SDKCallLaunchBall, CWeapon);
-
-							//Calc crit is called within ball creation
-							meleeLimiter[client] = 0;
-							flag = false;
-						}
-					}
-					if(flag)
-					{
-						RPS[client] += 0.5;
-						Handle hPack = CreateDataPack();
-						WritePackCell(hPack, client);
-						WritePackFloat(hPack, 0.5);
-						CreateTimer(1.0, RemoveFire, hPack);
+						//Calc crit is called within ball creation
+						meleeLimiter[client] = 0;
+						flag = false;
 					}
 				}
-				else
+				if(flag)
 				{
-					RPS[client] += 1.0;
+					RPS[client] += 0.5;
 					Handle hPack = CreateDataPack();
 					WritePackCell(hPack, client);
-					WritePackFloat(hPack, 1.0);
+					WritePackFloat(hPack, 0.5);
 					CreateTimer(1.0, RemoveFire, hPack);
-					char classname[64]; 
-					GetEdictClassname(CWeapon, classname, sizeof(classname)); 
-
-					if(StrEqual(classname, "tf_weapon_cleaver"))
-					{
-						if(weaponFireRate[CWeapon] > 5.0)
-						{
-							Address override = TF2Attrib_GetByName(CWeapon, "override projectile type");
-							if(override == Address_Null)
-								SDKCall(g_SDKCallJar, CWeapon);
-						}
-					}
 				}
 			}
-			float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3];
-			Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
-			if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
+			else
 			{
-				float bossValue = TF2Attrib_GetValue(bossType);
-				switch(bossValue)
-				{
-					case 1.0:
-					{
-						if(meleeLimiter[client] > 20)
-						{
-							meleeLimiter[client] = 0;
-							for(int i=-3;i<=3;i+=1)
-							{
-								char projName[32] = "tf_projectile_arrow";
-								int iEntity = CreateEntityByName(projName);
-								if (IsValidEdict(iEntity)) 
-								{
-									int iTeam = GetClientTeam(client);
-									float fwd[3]
-									float right[3]
-									SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-
-									//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
-									//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
-						
-									SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-									SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-									GetClientEyePosition(client, fOrigin);
-									GetClientEyeAngles(client, fAngles);
-									GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-									GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-									GetAngleVectors(fAngles, NULL_VECTOR, right, NULL_VECTOR);
-									ScaleVector(right, 8.0 * i);
-									ScaleVector(fwd, 50.0);
-									AddVectors(fOrigin, fwd, fOrigin);
-									AddVectors(fOrigin, right, fOrigin);
-									float velocity = 5000.0;
-									Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-									Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
-									if(projspeed != Address_Null){
-										velocity *= TF2Attrib_GetValue(projspeed)
-									}
-									if(projspeed1 != Address_Null){
-										velocity *= TF2Attrib_GetValue(projspeed1)
-									}
-									float vecAngImpulse[3];
-									GetCleaverAngularImpulse(vecAngImpulse);
-									fVelocity[0] = vBuffer[0]*velocity;
-									fVelocity[1] = vBuffer[1]*velocity;
-									fVelocity[2] = vBuffer[2]*velocity;
-									
-									TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-									DispatchSpawn(iEntity);
-									//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
-									SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-									if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
-									{
-										SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-									}
-									SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-									SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
-									SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
-									SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
-									SDKHook(iEntity, SDKHook_Touch, OnCollisionBossArrow);
-									if(iTeam == 2)
-										CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_red.vmt", "255 255 255");
-									else
-										CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_blu.vmt", "255 255 255");
-								}
-							}
-						}
-					}
-				}
-			}
-
-			Address meleeAttacks = TF2Attrib_GetByName(CWeapon, "duck rating");
-			if(meleeAttacks != Address_Null && meleeLimiter[client] > RoundToNearest(TF2Attrib_GetValue(meleeAttacks) * 2.0))
-			{
+				RPS[client] += 1.0;
 				Handle hPack = CreateDataPack();
-				WritePackCell(hPack, EntIndexToEntRef(client));
-				WritePackCell(hPack, EntIndexToEntRef(CWeapon));
-				WritePackCell(hPack, RoundToNearest(TF2Attrib_GetValue(meleeAttacks)));
-				CreateTimer(0.1,AttackTwice,hPack);
-				meleeLimiter[client] = 0;
-			}
-			Address tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
-			if(LastCharge[client] >= 150.0 && tracer != Address_Null && TF2Attrib_GetValue(tracer) == 1.0)
-			{
-				TF2Attrib_SetByName(CWeapon, "sniper fires tracer", 0.0);
-			}
-			
-			Address projActive = TF2Attrib_GetByName(CWeapon, "sapper damage penalty hidden");
-			Address override = TF2Attrib_GetByName(CWeapon, "override projectile type");
-			if(override != Address_Null)
-			{
-				float projnum = TF2Attrib_GetValue(override);
-				switch(projnum)
+				WritePackCell(hPack, client);
+				WritePackFloat(hPack, 1.0);
+				CreateTimer(1.0, RemoveFire, hPack);
+				char classname[64]; 
+				GetEdictClassname(CWeapon, classname, sizeof(classname)); 
+
+				if(StrEqual(classname, "tf_weapon_cleaver"))
 				{
-					case 27.0:
+					if(weaponFireRate[CWeapon] > 5.0)
 					{
-						int iEntity = CreateEntityByName("tf_projectile_sentryrocket");
-						if (IsValidEdict(iEntity)) 
-						{
-							int iTeam = GetClientTeam(client);
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-
-							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
-							SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
-							
-							
-							SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
-							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-										
-							GetClientEyePosition(client, fOrigin);
-							fAngles = fEyeAngles[client];
-							
-							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-							float Speed = 2000.0;
-							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-							if(projspeed != Address_Null)
-							{
-								Speed *= TF2Attrib_GetValue(projspeed);
-							}
-							fVelocity[0] = vBuffer[0]*Speed;
-							fVelocity[1] = vBuffer[1]*Speed;
-							fVelocity[2] = vBuffer[2]*Speed;
-							
-							float ProjectileDamage = 90.0;
-							
-							Address DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "dmg penalty vs players");
-							Address DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
-							Address DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
-							Address DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
-							Address BulletsPerShot = TF2Attrib_GetByName(CWeapon, "bullets per shot bonus");
-							Address AccuracyScales = TF2Attrib_GetByName(CWeapon, "accuracy scales damage");
-							Address damageActive = TF2Attrib_GetByName(CWeapon, "ubercharge");
-							
-							if(damageActive != Address_Null)
-							{
-								ProjectileDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
-							}
-							if(DMGVSPlayer != Address_Null)
-							{
-								ProjectileDamage *= TF2Attrib_GetValue(DMGVSPlayer);
-							}
-							if(DamagePenalty != Address_Null)
-							{
-								ProjectileDamage *= TF2Attrib_GetValue(DamagePenalty);
-							}
-							if(DamageBonus != Address_Null)
-							{
-								ProjectileDamage *= TF2Attrib_GetValue(DamageBonus);
-							}
-							if(DamageBonusHidden != Address_Null)
-							{
-								ProjectileDamage *= TF2Attrib_GetValue(DamageBonusHidden);
-							}
-							if(BulletsPerShot != Address_Null)
-							{
-								ProjectileDamage *= TF2Attrib_GetValue(BulletsPerShot);
-							}
-							if(AccuracyScales != Address_Null)
-							{
-								ProjectileDamage *= TF2Attrib_GetValue(AccuracyScales);
-							}
-							
-							SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, ProjectileDamage, true);  
-							
-							TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-							DispatchSpawn(iEntity);
-						}
+						Address override = TF2Attrib_GetByName(CWeapon, "override projectile type");
+						if(override == Address_Null)
+							SDKCall(g_SDKCallJar, CWeapon);
 					}
-					case 40.0:
+				}
+			}
+		}
+		float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3];
+		Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
+		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
+		{
+			float bossValue = TF2Attrib_GetValue(bossType);
+			switch(bossValue)
+			{
+				case 1.0:
+				{
+					if(meleeLimiter[client] > 20)
 					{
-						if(meleeLimiter[client] >= 2)
+						meleeLimiter[client] = 0;
+						for(int i=-3;i<=3;i+=1)
 						{
-							meleeLimiter[client] = 0;
-							for(int i=-1;i<=1;i+=2)
-							{
-								char projName[32] = "tf_projectile_arrow";
-								int iEntity = CreateEntityByName(projName);
-								if (IsValidEdict(iEntity)) 
-								{
-									int iTeam = GetClientTeam(client);
-									float fwd[3]
-									float right[3]
-									SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-
-									//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
-									//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
-						
-									SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-									SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-									GetClientEyePosition(client, fOrigin);
-									GetClientEyeAngles(client, fAngles);
-									GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-									GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-									GetAngleVectors(fAngles, NULL_VECTOR, right, NULL_VECTOR);
-									ScaleVector(right, 8.0 * i);
-									ScaleVector(fwd, 50.0);
-									AddVectors(fOrigin, fwd, fOrigin);
-									AddVectors(fOrigin, right, fOrigin);
-									float velocity = 3000.0;
-									Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-									Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
-									if(projspeed != Address_Null){
-										velocity *= TF2Attrib_GetValue(projspeed)
-									}
-									if(projspeed1 != Address_Null){
-										velocity *= TF2Attrib_GetValue(projspeed1)
-									}
-									float vecAngImpulse[3];
-									GetCleaverAngularImpulse(vecAngImpulse);
-									fVelocity[0] = vBuffer[0]*velocity;
-									fVelocity[1] = vBuffer[1]*velocity;
-									fVelocity[2] = vBuffer[2]*velocity;
-									
-									TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-									DispatchSpawn(iEntity);
-									//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
-									SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-									if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
-									{
-										SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-									}
-									SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-									SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
-									SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
-									SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
-									SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchWarriorArrow);
-										CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0",
-										iTeam == 2 ? "materials/effects/arrowtrail_red.vmt":"materials/effects/arrowtrail_blu.vmt", "255 255 255");
-								}
-							}
-						}
-					}
-					case 41.0:
-					{
-						if(meleeLimiter[client] >= 2)
-						{
-							meleeLimiter[client] = 0;
-							int iEntity = CreateEntityByName("tf_projectile_cleaver");
-							if (IsValidEdict(iEntity)) 
-							{
-								int iTeam = GetClientTeam(client);
-								GetClientEyePosition(client, fOrigin);
-								GetClientEyeAngles(client, fAngles);
-								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-								fAngles[2] = 90.0;
-								fVelocity[0] = vBuffer[0]*3000.0;
-								fVelocity[1] = vBuffer[1]*3000.0;
-								fVelocity[2] = vBuffer[2]*3000.0;
-
-								ScaleVector(vBuffer, 75.0);
-								AddVectors(fOrigin, vBuffer, fOrigin);
-
-								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-								SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-								SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
-								SetEntProp(iEntity, Prop_Send, "m_bCritical", 1);
-
-								TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
-								DispatchSpawn(iEntity);
-								Phys_EnableGravity(iEntity, false);
-								Phys_EnableDrag(iEntity, false);
-								//Set Thrower is used in init.
-								float impulse[3];
-								GetCleaverAngularImpulse(impulse);
-								isProjectileBoomerang[iEntity] = true;
-								
-								SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, impulse, client, 50, 146.0);
-
-								SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchBoomerang);
-
-								SetEntityModel(iEntity, "models/weapons/c_models/c_croc_knife/c_croc_knife.mdl");
-							}
-						}
-					}
-					case 42.0:
-					{
-						char projName[32] = "tf_projectile_rocket";
-						int iEntity = CreateEntityByName(projName);
-						if (IsValidEdict(iEntity)) 
-						{
-							int iTeam = GetClientTeam(client);
-							float fwd[3]
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-
-							//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
-							//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
-				
-							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-							GetClientEyePosition(client, fOrigin);
-							GetClientEyeAngles(client, fAngles);
-							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-							GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-							ScaleVector(fwd, 75.0);
-							AddVectors(fOrigin, fwd, fOrigin);
-							float velocity = 3000.0;
-							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-							Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
-							if(projspeed != Address_Null){
-								velocity *= TF2Attrib_GetValue(projspeed)
-							}
-							if(projspeed1 != Address_Null){
-								velocity *= TF2Attrib_GetValue(projspeed1)
-							}
-							float vecAngImpulse[3];
-							GetCleaverAngularImpulse(vecAngImpulse);
-							fVelocity[0] = vBuffer[0]*velocity;
-							fVelocity[1] = vBuffer[1]*velocity;
-							fVelocity[2] = vBuffer[2]*velocity;
-							
-							TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-							DispatchSpawn(iEntity);
-							//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
-							SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-							if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
-							{
-								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-							}
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-							SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.3);
-							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchPiercingRocket);
-							SetEntityModel(iEntity, "models/weapons/w_models/w_rocket_airstrike/w_rocket_airstrike.mdl");
-							CreateTimer(3.0, SelfDestruct, EntIndexToEntRef(iEntity));
-							SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, 70.0 * TF2_GetDamageModifiers(client,CWeapon), true);  
-						}
-					}
-					case 43.0:
-					{
-						int iEntity = CreateEntityByName("tf_projectile_spellfireball");
-						if (IsValidEdict(iEntity)) 
-						{
-							int iTeam = GetClientTeam(client);
-							float fwd[3]
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-							GetClientEyeAngles(client, fAngles);
-							GetClientEyePosition(client, fOrigin);
-
-							GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-							ScaleVector(fwd, 30.0);
-							
-							AddVectors(fOrigin, fwd, fOrigin);
-							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-							
-							float velocity = 900.0;
-							fVelocity[0] = vBuffer[0]*velocity;
-							fVelocity[1] = vBuffer[1]*velocity;
-							fVelocity[2] = 150.0 + vBuffer[2]*velocity;
-							
-							TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-							DispatchSpawn(iEntity);
-							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchChaos);
-							setProjGravity(iEntity, 0.4);
-							CreateTimer(10.0,SelfDestruct,EntIndexToEntRef(iEntity));
-						}
-					}
-					case 44.0:
-					{
-						float rocketDamage = 20.0;
-						int melee = GetWeapon(client, 2);
-
-						if(IsValidWeapon(melee))
-							rocketDamage *= TF2_GetSentryDPSModifiers(client, melee);
-						
-						DataPack pack = new DataPack();
-						pack.Reset();
-						pack.WriteCell(client);
-						pack.WriteCell(GetClientTeam(client));
-						pack.WriteFloat(rocketDamage);
-						float ClientPos[3];
-						TracePlayerAim(client, ClientPos);
-						pack.WriteFloat(ClientPos[0]);
-						pack.WriteFloat(ClientPos[1]);
-						pack.WriteFloat(ClientPos[2]);
-						float ClientOrigin[3];
-						GetClientEyePosition(client, ClientOrigin);
-						pack.WriteFloat(ClientOrigin[0]);
-						pack.WriteFloat(ClientOrigin[1]);
-						pack.WriteFloat(ClientOrigin[2]);
-
-						int times = 100;
-
-						for(int i=0;i<times;i++){
-							CreateTimer(0.5+(i*0.02), orbitalStrike, pack);
-						}
-						CreateTimer(0.6+(times*0.02), deletePack, pack);
-					}
-					case 45.0:
-					{
-						char projName[32] = "tf_projectile_pipe";
-						int iEntity = CreateEntityByName(projName);
-						if (IsValidEdict(iEntity)) 
-						{
-							int iTeam = GetClientTeam(client);
-							float fwd[3]
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-
-							//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
-							//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
-				
-							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-							GetClientEyePosition(client, fOrigin);
-							GetClientEyeAngles(client, fAngles);
-							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-							GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-							ScaleVector(fwd, 30.0);
-							AddVectors(fOrigin, fwd, fOrigin);
-							float velocity = 20000.0;
-							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-							Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
-							if(projspeed != Address_Null){
-								velocity *= TF2Attrib_GetValue(projspeed)
-							}
-							if(projspeed1 != Address_Null){
-								velocity *= TF2Attrib_GetValue(projspeed1)
-							}
-							float vecAngImpulse[3];
-							GetCleaverAngularImpulse(vecAngImpulse);
-							fVelocity[0] = vBuffer[0]*velocity;
-							fVelocity[1] = vBuffer[1]*velocity;
-							fVelocity[2] = vBuffer[2]*velocity;
-						
-							DispatchSpawn(iEntity);
-							TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
-							SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
-							if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
-							{
-								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-							}
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-							SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
-							//PrintToServer("%.2f", TF2_GetWeaponFireRate(CWeapon));
-						}
-					}
-					case 46.0:
-					{
-						if(fanOfKnivesCount[client] < 100)
-							fanOfKnivesCount[client]++;
-						/*
-						float fwd[3]
-						GetClientEyePosition(client, fOrigin);
-						GetClientEyeAngles(client, fAngles);
-						float tempAngle[3] = fAngles;
-						float velocity = 6000.0;
-						float vecAngImpulse[3];
-						GetCleaverAngularImpulse(vecAngImpulse);
-						for(int i = 0; i < fanOfKnivesCount[client]; i++)
-						{
-							char projName[32] = "tf_projectile_cleaver";
+							char projName[32] = "tf_projectile_arrow";
 							int iEntity = CreateEntityByName(projName);
 							if (IsValidEdict(iEntity)) 
 							{
 								int iTeam = GetClientTeam(client);
+								float fwd[3]
+								float right[3]
 								SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+
+								//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
+								//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
+					
 								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-								tempAngle = fAngles[1] + GetRandomFloat(-35.0,35.0);
-								GetAngleVectors(tempAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
-								GetAngleVectors(tempAngle,fwd, NULL_VECTOR, NULL_VECTOR);
-								ScaleVector(fwd, 30.0);
+								GetClientEyePosition(client, fOrigin);
+								GetClientEyeAngles(client, fAngles);
+								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+								GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+								GetAngleVectors(fAngles, NULL_VECTOR, right, NULL_VECTOR);
+								ScaleVector(right, 8.0 * i);
+								ScaleVector(fwd, 50.0);
 								AddVectors(fOrigin, fwd, fOrigin);
+								AddVectors(fOrigin, right, fOrigin);
+								float velocity = 5000.0;
+								Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+								Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+								if(projspeed != Address_Null){
+									velocity *= TF2Attrib_GetValue(projspeed)
+								}
+								if(projspeed1 != Address_Null){
+									velocity *= TF2Attrib_GetValue(projspeed1)
+								}
+								float vecAngImpulse[3];
+								GetCleaverAngularImpulse(vecAngImpulse);
 								fVelocity[0] = vBuffer[0]*velocity;
 								fVelocity[1] = vBuffer[1]*velocity;
 								fVelocity[2] = vBuffer[2]*velocity;
-
-								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-								SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-								SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
-							
+								
+								TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 								DispatchSpawn(iEntity);
-								TeleportEntity(iEntity, fOrigin, tempAngle, NULL_VECTOR);
-								SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+								//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+								SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+								if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
+								{
+									SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+								}
+								SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+								SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
+								SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
+								SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
+								SDKHook(iEntity, SDKHook_Touch, OnCollisionBossArrow);
+								if(iTeam == 2)
+									CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_red.vmt", "255 255 255");
+								else
+									CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_blu.vmt", "255 255 255");
 							}
 						}
-						fanOfKnivesCount[client] = 0;
-						*/
 					}
 				}
 			}
-			if(projActive != Address_Null && TF2Attrib_GetValue(projActive) == 2.0)
+		}
+
+		Address meleeAttacks = TF2Attrib_GetByName(CWeapon, "duck rating");
+		if(meleeAttacks != Address_Null && meleeLimiter[client] > RoundToNearest(TF2Attrib_GetValue(meleeAttacks) * 2.0))
+		{
+			Handle hPack = CreateDataPack();
+			WritePackCell(hPack, EntIndexToEntRef(client));
+			WritePackCell(hPack, EntIndexToEntRef(CWeapon));
+			WritePackCell(hPack, RoundToNearest(TF2Attrib_GetValue(meleeAttacks)));
+			CreateTimer(0.1,AttackTwice,hPack);
+			meleeLimiter[client] = 0;
+		}
+		Address tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
+		if(LastCharge[client] >= 150.0 && tracer != Address_Null && TF2Attrib_GetValue(tracer) == 1.0)
+		{
+			TF2Attrib_SetByName(CWeapon, "sniper fires tracer", 0.0);
+		}
+		
+		Address projActive = TF2Attrib_GetByName(CWeapon, "sapper damage penalty hidden");
+		Address override = TF2Attrib_GetByName(CWeapon, "override projectile type");
+		if(override != Address_Null)
+		{
+			float projnum = TF2Attrib_GetValue(override);
+			switch(projnum)
 			{
-				if(ShotsLeft[client] < 1)
+				case 27.0:
 				{
 					int iEntity = CreateEntityByName("tf_projectile_sentryrocket");
 					if (IsValidEdict(iEntity)) 
@@ -3318,30 +2928,35 @@ public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 						int iTeam = GetClientTeam(client);
 						SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
-						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
 						SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
 						
 						
 						SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
-						DispatchSpawn(iEntity);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
 									
 						GetClientEyePosition(client, fOrigin);
 						fAngles = fEyeAngles[client];
 						
 						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 						float Speed = 2000.0;
+						Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+						if(projspeed != Address_Null)
+						{
+							Speed *= TF2Attrib_GetValue(projspeed);
+						}
 						fVelocity[0] = vBuffer[0]*Speed;
 						fVelocity[1] = vBuffer[1]*Speed;
 						fVelocity[2] = vBuffer[2]*Speed;
-						SetEntPropVector( iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-						float ProjectileDamage = 20.0;
 						
-						Address DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "taunt is highfive");
+						float ProjectileDamage = 90.0;
+						
+						Address DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "dmg penalty vs players");
 						Address DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
 						Address DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
 						Address DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
 						Address BulletsPerShot = TF2Attrib_GetByName(CWeapon, "bullets per shot bonus");
-						Address AccuracyScales = TF2Attrib_GetByName(CWeapon, "disguise damage reduction");
+						Address AccuracyScales = TF2Attrib_GetByName(CWeapon, "accuracy scales damage");
 						Address damageActive = TF2Attrib_GetByName(CWeapon, "ubercharge");
 						
 						if(damageActive != Address_Null)
@@ -3372,15 +2987,398 @@ public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 						{
 							ProjectileDamage *= TF2Attrib_GetValue(AccuracyScales);
 						}
+						
 						SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, ProjectileDamage, true);  
+						
 						TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+						DispatchSpawn(iEntity);
 					}
-					ShotsLeft[client] = 30;
 				}
-				else
+				case 40.0:
 				{
-					ShotsLeft[client]--;
+					if(meleeLimiter[client] >= 2)
+					{
+						meleeLimiter[client] = 0;
+						for(int i=-1;i<=1;i+=2)
+						{
+							char projName[32] = "tf_projectile_arrow";
+							int iEntity = CreateEntityByName(projName);
+							if (IsValidEdict(iEntity)) 
+							{
+								int iTeam = GetClientTeam(client);
+								float fwd[3]
+								float right[3]
+								SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+
+								//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
+								//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
+					
+								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+								GetClientEyePosition(client, fOrigin);
+								GetClientEyeAngles(client, fAngles);
+								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+								GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+								GetAngleVectors(fAngles, NULL_VECTOR, right, NULL_VECTOR);
+								ScaleVector(right, 8.0 * i);
+								ScaleVector(fwd, 50.0);
+								AddVectors(fOrigin, fwd, fOrigin);
+								AddVectors(fOrigin, right, fOrigin);
+								float velocity = 3000.0;
+								Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+								Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+								if(projspeed != Address_Null){
+									velocity *= TF2Attrib_GetValue(projspeed)
+								}
+								if(projspeed1 != Address_Null){
+									velocity *= TF2Attrib_GetValue(projspeed1)
+								}
+								float vecAngImpulse[3];
+								GetCleaverAngularImpulse(vecAngImpulse);
+								fVelocity[0] = vBuffer[0]*velocity;
+								fVelocity[1] = vBuffer[1]*velocity;
+								fVelocity[2] = vBuffer[2]*velocity;
+								
+								TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+								DispatchSpawn(iEntity);
+								//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+								SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+								if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
+								{
+									SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+								}
+								SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+								SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
+								SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
+								SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
+								SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchWarriorArrow);
+									CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0",
+									iTeam == 2 ? "materials/effects/arrowtrail_red.vmt":"materials/effects/arrowtrail_blu.vmt", "255 255 255");
+							}
+						}
+					}
 				}
+				case 41.0:
+				{
+					if(meleeLimiter[client] >= 2)
+					{
+						meleeLimiter[client] = 0;
+						int iEntity = CreateEntityByName("tf_projectile_cleaver");
+						if (IsValidEdict(iEntity)) 
+						{
+							int iTeam = GetClientTeam(client);
+							GetClientEyePosition(client, fOrigin);
+							GetClientEyeAngles(client, fAngles);
+							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+							fAngles[2] = 90.0;
+							fVelocity[0] = vBuffer[0]*3000.0;
+							fVelocity[1] = vBuffer[1]*3000.0;
+							fVelocity[2] = vBuffer[2]*3000.0;
+
+							ScaleVector(vBuffer, 75.0);
+							AddVectors(fOrigin, vBuffer, fOrigin);
+
+							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+							SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+							SetEntProp(iEntity, Prop_Send, "m_bCritical", 1);
+
+							TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
+							DispatchSpawn(iEntity);
+							Phys_EnableGravity(iEntity, false);
+							Phys_EnableDrag(iEntity, false);
+							//Set Thrower is used in init.
+							float impulse[3];
+							GetCleaverAngularImpulse(impulse);
+							isProjectileBoomerang[iEntity] = true;
+							
+							SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, impulse, client, 50, 146.0);
+
+							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchBoomerang);
+
+							SetEntityModel(iEntity, "models/weapons/c_models/c_croc_knife/c_croc_knife.mdl");
+						}
+					}
+				}
+				case 42.0:
+				{
+					char projName[32] = "tf_projectile_rocket";
+					int iEntity = CreateEntityByName(projName);
+					if (IsValidEdict(iEntity)) 
+					{
+						int iTeam = GetClientTeam(client);
+						float fwd[3]
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+
+						//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
+						//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
+			
+						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+						GetClientEyePosition(client, fOrigin);
+						GetClientEyeAngles(client, fAngles);
+						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+						GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+						ScaleVector(fwd, 75.0);
+						AddVectors(fOrigin, fwd, fOrigin);
+						float velocity = 3000.0;
+						Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+						Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+						if(projspeed != Address_Null){
+							velocity *= TF2Attrib_GetValue(projspeed)
+						}
+						if(projspeed1 != Address_Null){
+							velocity *= TF2Attrib_GetValue(projspeed1)
+						}
+						float vecAngImpulse[3];
+						GetCleaverAngularImpulse(vecAngImpulse);
+						fVelocity[0] = vBuffer[0]*velocity;
+						fVelocity[1] = vBuffer[1]*velocity;
+						fVelocity[2] = vBuffer[2]*velocity;
+						
+						TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+						DispatchSpawn(iEntity);
+						//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+						SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+						if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
+						{
+							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+						}
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+						SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.3);
+						SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchPiercingRocket);
+						SetEntityModel(iEntity, "models/weapons/w_models/w_rocket_airstrike/w_rocket_airstrike.mdl");
+						CreateTimer(3.0, SelfDestruct, EntIndexToEntRef(iEntity));
+						SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, 70.0 * TF2_GetDamageModifiers(client,CWeapon), true);  
+					}
+				}
+				case 43.0:
+				{
+					int iEntity = CreateEntityByName("tf_projectile_spellfireball");
+					if (IsValidEdict(iEntity)) 
+					{
+						int iTeam = GetClientTeam(client);
+						float fwd[3]
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+						GetClientEyeAngles(client, fAngles);
+						GetClientEyePosition(client, fOrigin);
+
+						GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+						ScaleVector(fwd, 30.0);
+						
+						AddVectors(fOrigin, fwd, fOrigin);
+						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+						
+						float velocity = 900.0;
+						fVelocity[0] = vBuffer[0]*velocity;
+						fVelocity[1] = vBuffer[1]*velocity;
+						fVelocity[2] = 150.0 + vBuffer[2]*velocity;
+						
+						TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+						DispatchSpawn(iEntity);
+						SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchChaos);
+						setProjGravity(iEntity, 0.4);
+						CreateTimer(10.0,SelfDestruct,EntIndexToEntRef(iEntity));
+					}
+				}
+				case 44.0:
+				{
+					float rocketDamage = 20.0;
+					int melee = GetWeapon(client, 2);
+
+					if(IsValidWeapon(melee))
+						rocketDamage *= TF2_GetSentryDPSModifiers(client, melee);
+					
+					DataPack pack = new DataPack();
+					pack.Reset();
+					pack.WriteCell(client);
+					pack.WriteCell(GetClientTeam(client));
+					pack.WriteFloat(rocketDamage);
+					float ClientPos[3];
+					TracePlayerAim(client, ClientPos);
+					pack.WriteFloat(ClientPos[0]);
+					pack.WriteFloat(ClientPos[1]);
+					pack.WriteFloat(ClientPos[2]);
+					float ClientOrigin[3];
+					GetClientEyePosition(client, ClientOrigin);
+					pack.WriteFloat(ClientOrigin[0]);
+					pack.WriteFloat(ClientOrigin[1]);
+					pack.WriteFloat(ClientOrigin[2]);
+
+					int times = 100;
+
+					for(int i=0;i<times;i++){
+						CreateTimer(0.5+(i*0.02), orbitalStrike, pack);
+					}
+					CreateTimer(0.6+(times*0.02), deletePack, pack);
+				}
+				case 45.0:
+				{
+					char projName[32] = "tf_projectile_pipe";
+					int iEntity = CreateEntityByName(projName);
+					if (IsValidEdict(iEntity)) 
+					{
+						int iTeam = GetClientTeam(client);
+						float fwd[3]
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+
+						//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
+						//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
+			
+						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+						GetClientEyePosition(client, fOrigin);
+						GetClientEyeAngles(client, fAngles);
+						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+						GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+						ScaleVector(fwd, 30.0);
+						AddVectors(fOrigin, fwd, fOrigin);
+						float velocity = 20000.0;
+						Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+						Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+						if(projspeed != Address_Null){
+							velocity *= TF2Attrib_GetValue(projspeed)
+						}
+						if(projspeed1 != Address_Null){
+							velocity *= TF2Attrib_GetValue(projspeed1)
+						}
+						float vecAngImpulse[3];
+						GetCleaverAngularImpulse(vecAngImpulse);
+						fVelocity[0] = vBuffer[0]*velocity;
+						fVelocity[1] = vBuffer[1]*velocity;
+						fVelocity[2] = vBuffer[2]*velocity;
+					
+						DispatchSpawn(iEntity);
+						TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
+						SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+						if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
+						{
+							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+						}
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+						SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+						//PrintToServer("%.2f", TF2_GetWeaponFireRate(CWeapon));
+					}
+				}
+				case 46.0:
+				{
+					if(fanOfKnivesCount[client] < 100)
+						fanOfKnivesCount[client]++;
+					/*
+					float fwd[3]
+					GetClientEyePosition(client, fOrigin);
+					GetClientEyeAngles(client, fAngles);
+					float tempAngle[3] = fAngles;
+					float velocity = 6000.0;
+					float vecAngImpulse[3];
+					GetCleaverAngularImpulse(vecAngImpulse);
+					for(int i = 0; i < fanOfKnivesCount[client]; i++)
+					{
+						char projName[32] = "tf_projectile_cleaver";
+						int iEntity = CreateEntityByName(projName);
+						if (IsValidEdict(iEntity)) 
+						{
+							int iTeam = GetClientTeam(client);
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+							tempAngle = fAngles[1] + GetRandomFloat(-35.0,35.0);
+							GetAngleVectors(tempAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
+							GetAngleVectors(tempAngle,fwd, NULL_VECTOR, NULL_VECTOR);
+							ScaleVector(fwd, 30.0);
+							AddVectors(fOrigin, fwd, fOrigin);
+							fVelocity[0] = vBuffer[0]*velocity;
+							fVelocity[1] = vBuffer[1]*velocity;
+							fVelocity[2] = vBuffer[2]*velocity;
+
+							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+							SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+						
+							DispatchSpawn(iEntity);
+							TeleportEntity(iEntity, fOrigin, tempAngle, NULL_VECTOR);
+							SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+						}
+					}
+					fanOfKnivesCount[client] = 0;
+					*/
+				}
+			}
+		}
+		if(projActive != Address_Null && TF2Attrib_GetValue(projActive) == 2.0)
+		{
+			if(ShotsLeft[client] < 1)
+			{
+				int iEntity = CreateEntityByName("tf_projectile_sentryrocket");
+				if (IsValidEdict(iEntity)) 
+				{
+					int iTeam = GetClientTeam(client);
+					SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+
+					SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+					SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
+					
+					
+					SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
+					DispatchSpawn(iEntity);
+								
+					GetClientEyePosition(client, fOrigin);
+					fAngles = fEyeAngles[client];
+					
+					GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+					float Speed = 2000.0;
+					fVelocity[0] = vBuffer[0]*Speed;
+					fVelocity[1] = vBuffer[1]*Speed;
+					fVelocity[2] = vBuffer[2]*Speed;
+					SetEntPropVector( iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+					float ProjectileDamage = 20.0;
+					
+					Address DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "taunt is highfive");
+					Address DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
+					Address DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
+					Address DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
+					Address BulletsPerShot = TF2Attrib_GetByName(CWeapon, "bullets per shot bonus");
+					Address AccuracyScales = TF2Attrib_GetByName(CWeapon, "disguise damage reduction");
+					Address damageActive = TF2Attrib_GetByName(CWeapon, "ubercharge");
+					
+					if(damageActive != Address_Null)
+					{
+						ProjectileDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
+					}
+					if(DMGVSPlayer != Address_Null)
+					{
+						ProjectileDamage *= TF2Attrib_GetValue(DMGVSPlayer);
+					}
+					if(DamagePenalty != Address_Null)
+					{
+						ProjectileDamage *= TF2Attrib_GetValue(DamagePenalty);
+					}
+					if(DamageBonus != Address_Null)
+					{
+						ProjectileDamage *= TF2Attrib_GetValue(DamageBonus);
+					}
+					if(DamageBonusHidden != Address_Null)
+					{
+						ProjectileDamage *= TF2Attrib_GetValue(DamageBonusHidden);
+					}
+					if(BulletsPerShot != Address_Null)
+					{
+						ProjectileDamage *= TF2Attrib_GetValue(BulletsPerShot);
+					}
+					if(AccuracyScales != Address_Null)
+					{
+						ProjectileDamage *= TF2Attrib_GetValue(AccuracyScales);
+					}
+					SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, ProjectileDamage, true);  
+					TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+				}
+				ShotsLeft[client] = 30;
+			}
+			else
+			{
+				ShotsLeft[client]--;
 			}
 		}
 	}
@@ -3426,7 +3424,7 @@ public OnClientDisconnect(client)
 	for(i = 1;i<MaxClients;i++){
 		isTagged[i][client] = false;
 	}
-	if(IsClientInGame(client))
+	if(b_Hooked[client])
 	{
 		b_Hooked[client] = false;
 		SDKUnhook(client, SDKHook_OnTakeDamage, OnTakeDamage);
@@ -3453,7 +3451,7 @@ public OnClientPutInServer(client)
 		AttunedSpells[client][i] = 0.0;
 	}
 	
-	if(b_Hooked[client] == false)
+	if(!b_Hooked[client])
 	{
 		b_Hooked[client] = true;
 		SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage);
