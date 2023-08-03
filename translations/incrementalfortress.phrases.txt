@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"melee cleave attack"
+	{
+		"en"		"Melee Hits All Enemies in Range"
+	}
+	"Scorchiest Shot"
+	{
+		"en"		"Scorchiest Shot"
+	}
 	"backstab tanks capability"
 	{
 		"en"		"Knife Can Backstab Tanks"

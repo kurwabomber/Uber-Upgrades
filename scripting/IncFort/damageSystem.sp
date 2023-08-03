@@ -525,7 +525,14 @@ int damagecustom, CritType &critType)
 		if(debugMode)
 			PrintToChat(attacker, "minicrit override failsafe");
 		miniCritStatus[victim] = true;
-		damage = lastDamageTaken[victim] * 1.4;
+		damage = lastDamageTaken[victim] * 0.35;
+		if(IsValidWeapon(weapon))
+		{
+			Address critDamageMult = TF2Attrib_GetByName(weapon, "mod medic killed marked for death");
+			if(critDamageMult != Address_Null)
+				damage *= TF2Attrib_GetValue(critDamageMult);
+		}
+		damage += lastDamageTaken[victim];
 		critType = CritType_None
 		if(damagetype & DMG_CRIT)
 			damagetype &= ~DMG_CRIT;

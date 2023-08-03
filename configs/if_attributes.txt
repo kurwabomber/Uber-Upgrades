@@ -5404,7 +5404,7 @@
 			"cost"		"0"
 			"increase_ratio"	"0.0"
 			"value"		"1"
-			"init"		"0.0"
+			"init"		"1.0"
 			"max"		"500"
 		}
 		"1596"
@@ -5690,6 +5690,16 @@
 			"value"		"100"
 			"init"		"40"
 			"max"		"340"
+		}
+		"1622"
+		{
+			"name"		"melee cleave attack"
+			"ref"		"melee cleave attack"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"1"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"

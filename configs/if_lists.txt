@@ -1498,7 +1498,7 @@
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(H)"
-			"Attr16"	"ap (concentrated)"
+			"Attr16"	"ap (temprise)"
 			"Attr13"	"Extra Damage Bonus"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
@@ -1510,7 +1510,6 @@
 		}
 		"Flaregun specific upgrades"
 		{
-			"Attr0"		"faster reload rate"
 			"Attr1"		"fire rate bonus(multshit)"
 			"Attr2"		"Projectile speed increased"
 		}
@@ -1522,11 +1521,11 @@
 	}
 	"pyroflaregd"//Detonator
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus"
-			"Attr16"	"ap (concentrated)"
+			"Attr0"		"damage bonus(H)"
+			"Attr16"	"ap (temprise)"
 			"Attr13"	"Extra Damage Bonus"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
@@ -1538,19 +1537,23 @@
 		}
 		"Flaregun specific upgrades"
 		{
-			"Attr0"		"faster reload rate"
 			"Attr1"		"fire rate bonus(multshit)"
 			"Attr2"		"blast radius increased"
 			"Attr3"		"dmg falloff decreased"
 		}
+		"Special Tweaks"
+		{
+			"Sp1"		"Multishot Flares"
+			"Sp2"		"Scorchiest Shot"
+		}
 	}
 	"pyroflareg2"//manmelter
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(H)"
-			"Attr15"	"ap (assault)"
+			"Attr15"	"ap (temprise)"
 			"Attr2"		"Extra Damage Bonus"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
@@ -1563,9 +1566,13 @@
 		"Flaregun specific upgrades"
 		{
 			"Attr1"		"fire rate bonus(multshit)"
-			"Attr4"		"extra fire rate HIDDEN"
 			"Attr2"		"Projectile speed increased(DH)"
 		}		
+		"Special Tweaks"
+		{
+			"Sp1"		"Multishot Flares"
+			"Sp2"		"Scorchiest Shot"
+		}
 	}
 	"scoweap"
 	{

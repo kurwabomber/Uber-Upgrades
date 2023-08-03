@@ -23,8 +23,11 @@
 		}
 		"Honor!"
 		{
+			"gamestage"						"1"
+			"restriction"					"1"
 			"Honorbound"					"1.0"
-			"percent of hp healed on kill"	"7.5"
+			"percent of hp healed on kill"	"15.0"
+			"melee cleave attack"			"1"
 		}
 		"Stat Boost Ubercharge"
 		{
@@ -73,9 +76,9 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"mult projectile count"			"15"
+			"mult projectile count"			"10"
 			"projectile spread angle penalty"		"2"
-			"fire rate penalty(unremoveable)"		"150.0"
+			"fire rate penalty(unremoveable)"		"60.0"
 			"Crit Damage Bonus"				"20.0"
 		}
 		"Homing Flares"
@@ -120,6 +123,14 @@
 			"fire rate penalty(unremoveable)"		"3.0"
 			"bleeding duration"						"5"
 			"Bleed Per Hit"							"2"
+		}
+		"Scorchiest Shot"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Afterburn Tick Rate"			"8.0"
+			"minicrits become crits"		"1.0"
+			"Crit Damage Bonus"				"3.0"
 		}
 	}
 }
