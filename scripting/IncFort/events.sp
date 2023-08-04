@@ -567,7 +567,7 @@ public MRESReturn OnBulletTrace(int victim, Handle hParams){
 			float dragonBullet = GetAttribute(weapon, "dragon bullets radius", 0.0);
 			if(dragonBullet){
 				EntityExplosion(attacker, info.m_flDamage * TF2_GetDamageModifiers(attacker, weapon, _, false), dragonBullet, endpos, _, _, _, _, _, weapon, 0.3, _, true);
-				CreateParticle(-1, "heavy_ring_of_fire", false, "", 0.2, endpos);
+				CreateParticleEx(-1, "heavy_ring_of_fire", _, _, endpos);
 			}
 		}
 	}
@@ -1522,7 +1522,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						TF2Attrib_SetByName(CWeapon, "Blast radius increased", 1.75)
 						SetEntityGravity(client, 0.2);
 						SetEntProp(CWeapon, Prop_Data, "m_bReloadsSingly", 0);
-						CreateParticle(client, "ExplosionCore_MidAir", false, "", 0.1);
+						CreateParticleEx(client, "ExplosionCore_MidAir");
 					}
 				}
 				//PrintToChatAll("air")
@@ -1660,13 +1660,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						
 						int iTeam = GetClientTeam(client);
 						if(iTeam == 2)
-						{
-							CreateParticle(client, "powerup_supernova_explode_red", false, "", 1.0);
-						}
+							CreateParticleEx(client, "powerup_supernova_explode_red");
 						else
-						{
-							CreateParticle(client, "powerup_supernova_explode_blue", false, "", 1.0);
-						}
+							CreateParticleEx(client, "powerup_supernova_explode_blue");
+						
 						float clientpos[3];
 						GetClientEyePosition(client,clientpos);
 						int i = -1;
@@ -1718,19 +1715,19 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					Address strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");
 					if(strengthPowerup != Address_Null && TF2Attrib_GetValue(strengthPowerup) > 0.0)
 					{
-						CreateParticle(client, "utaunt_tarotcard_orange_wind", true, "", 5.0);
+						CreateParticle(client, "utaunt_tarotcard_orange_wind", true, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
 					if(resistancePowerup != Address_Null && TF2Attrib_GetValue(resistancePowerup) > 0.0)
 					{
-						CreateParticle(client, "soldierbuff_red_spikes", true, "", 2.0);
+						CreateParticleEx(client, "soldierbuff_red_spikes", 1, _, _, 2.0);
 						powerupParticle[client] = currentGameTime+2.0;
 					}
 					Address vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
 					if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
 					{
-						CreateParticle(client, "utaunt_hellpit_parent", true, "", 5.0);
+						CreateParticleEx(client, "utaunt_hellpit_parent", 1, _, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
@@ -1738,38 +1735,32 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					{
 						int iTeam = GetClientTeam(client);
 						if(iTeam == 2)
-						{
-							CreateParticle(client, "medic_megaheal_red_shower", true, "", 5.0);
-						}
+							CreateParticle(client, "medic_megaheal_red_shower", true, _, 5.0);
 						else
-						{
-							CreateParticle(client, "medic_megaheal_blue_shower", true, "", 5.0);
-						}
+							CreateParticle(client, "medic_megaheal_blue_shower", true, _, 5.0);
+						
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 					if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
 					{
 						if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
-						{
 							CreateParticle(client, "eye_powerup_blue_lvl_4", true, "righteye", 5.0);
-						}
 						else
-						{
 							CreateParticle(client, "eye_powerup_blue_lvl_4", true, "eyeglow_R", 5.0);
-						}
+
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");
 					if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
 					{
-						CreateParticle(client, "medic_resist_bullet", true, "", 5.0);
+						CreateParticleEx(client, "medic_resist_bullet", 1, _, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address knockoutPowerup = TF2Attrib_GetByName(client, "knockout powerup");
 					if(knockoutPowerup != Address_Null && TF2Attrib_GetValue(knockoutPowerup) > 0.0)
 					{
-						CreateParticle(client, "medic_resist_blast", true, "", 5.0);
+						CreateParticleEx(client, "medic_resist_blast", 1, _, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
@@ -1796,9 +1787,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 									if(Distance <= 600.0)
 									{
 										if(iTeam == 2)
-											CreateParticle(i, "powerup_king_red", true, "", 2.0);
+											CreateParticleEx(i, "powerup_king_red", 1, _, _, 5.0);
 										else
-											CreateParticle(i, "powerup_king_blue", true, "", 2.0);
+											CreateParticleEx(i, "powerup_king_blue", 1, _, _, 5.0);
 										
 										insertBuff(i, kingBuff);
 									}
@@ -1810,50 +1801,46 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
 					if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 					{
-						CreateParticle(client, "powerup_plague_carrier", true, "", 5.0);
+						CreateParticle(client, "powerup_plague_carrier", true, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
 					if(supernovaPowerup != Address_Null && TF2Attrib_GetValue(supernovaPowerup) > 0.0)
 					{
-						CreateParticle(client, "powerup_supernova_ready", true, "", 5.0);
+						CreateParticleEx(client, "powerup_supernova_ready", 1, _, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address infernalPowerup = TF2Attrib_GetByName(client, "infernal powerup");
 					if(infernalPowerup != Address_Null && TF2Attrib_GetValue(infernalPowerup) > 0.0)
 					{
-						CreateParticle(client, "heavy_ring_of_fire", true, "", 2.0);
-						powerupParticle[client] = currentGameTime+2.0;
+						CreateParticleEx(client, "heavy_ring_of_fire");
+						powerupParticle[client] = currentGameTime+1.0;
 					}
 					Address thunderstormPowerup = TF2Attrib_GetByName(client, "thunderstorm powerup");
 					if(thunderstormPowerup != Address_Null && TF2Attrib_GetValue(thunderstormPowerup) > 0.0)
 					{
-						CreateParticle(client, "utaunt_electric_mist" , true, "", 5.0);
+						CreateParticleEx(client, "utaunt_electric_mist", 1, _, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address martyrPowerup = TF2Attrib_GetByName(client, "martyr powerup");
 					if(martyrPowerup != Address_Null && TF2Attrib_GetValue(martyrPowerup) > 0.0)
 					{
-						CreateParticle(client, "utaunt_hearts_beams" , true, "", 5.0);
+						CreateParticleEx(client, "utaunt_hearts_beams", 1, _, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address inverterPowerup = TF2Attrib_GetByName(client, "inverter powerup");
 					if(inverterPowerup != Address_Null && TF2Attrib_GetValue(inverterPowerup) > 0.0)
 					{
-						CreateParticle(client, "utaunt_portalswirl_purple_parent" , true, "", 5.0);
+						CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 5.0);
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 					Address relentlessPowerup = TF2Attrib_GetByName(client, "relentless powerup");
 					if(relentlessPowerup != Address_Null && TF2Attrib_GetValue(relentlessPowerup) > 0.0)
 					{
 						if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
-						{
 							CreateParticle(client, "eye_powerup_red_lvl_4", true, "righteye", 5.0);
-						}
 						else
-						{
 							CreateParticle(client, "eye_powerup_red_lvl_4", true, "eyeglow_R", 5.0);
-						}
 						powerupParticle[client] = currentGameTime+5.0;
 					}
 				}
@@ -1905,7 +1892,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										TF2_AddCondition(client, TFCond_AfterburnImmune, 2.5);
 										TF2_AddCondition(client, TFCond_UberchargedHidden, 0.01);
 										EmitSoundToAll(SOUND_ADRENALINE, client, -1, 150, 0, 1.0);
-										CreateParticle(client, "utaunt_tarotcard_red_wind", true, "", 5.0);
+										CreateParticleEx(client, "utaunt_tarotcard_red_wind", 1, _, _, 5.0);
 									}
 								}
 							}
@@ -2139,7 +2126,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, "", 5.0,_,_,1);
+								CreateParticleEx(CWeapon, "utaunt_auroraglow_purple_parent", 1, _, _, 5.0);
 								int clients[33], numClients = getClientParticleStatus(clients, client);
 								TE_Send(clients,numClients)
 							}
@@ -2226,11 +2213,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 											SetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecScaledBossMax);
 											
 											float particleOffset[3];
-											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, "", 5.0);
+											GetEntPropVector(iEntity,Prop_Send, "m_vecOrigin",particleOffset);
+
+											CreateParticleEx(iEntity, "utaunt_auroraglow_purple_parent", 1, _, particleOffset, 5.0);
 											particleOffset[2] -= 20.0;
-											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, "", 5.0, particleOffset);
+											CreateParticleEx(iEntity, "utaunt_auroraglow_purple_parent", 1, _, particleOffset);
 											particleOffset[2] += 40.0;
-											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, "", 5.0, particleOffset);
+											CreateParticleEx(iEntity, "utaunt_auroraglow_purple_parent", 1, _, particleOffset);
 										}
 									}
 								}
@@ -2241,8 +2230,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticle(CWeapon, "critgun_weaponmodel_red", true, "", 5.0,_,_,1);
-								TE_SendToAll();
+								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1);
 								SetEntityRenderColor(CWeapon, 255,0,0,200);
 							}
 							if(weaponArtCooldown[client] > currentGameTime)
@@ -2285,8 +2273,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticle(CWeapon, "critgun_weaponmodel_red", true, "", 5.0,_,_,1);
-								TE_SendToAll();
+								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1);
 								
 								SetEntityRenderColor(CWeapon, 255, 162, 0,200);
 								TF2Attrib_SetByName(CWeapon,"SPELL: Halloween green flames", 1.0);
@@ -2352,7 +2339,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 												
 												SDKHook(iEntity, SDKHook_Touch, OnCollisionPhotoViscerator);
 												CreateTimer(0.01, HomingFlareThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-												CreateParticle(iEntity, "utaunt_auroraglow_green_parent", true, "", 5.0);
+												CreateParticleEx(iEntity, "utaunt_auroraglow_green_parent", 1, _, _, 5.0);
 												CreateTimer(5.0, SelfDestruct, EntIndexToEntRef(iEntity));
 											}
 										}
@@ -2410,8 +2397,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticle(CWeapon, "critgun_weaponmodel_red", true, "", 6.0,_,_,1);
-								TE_SendToAll();
+								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 5.0);
 							}
 						}
 					}
@@ -3637,7 +3623,7 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 				TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 				TE_SendToAll();
 				
-				CreateParticle(-1, "utaunt_electricity_cloud_parent_WB", false, "", 5.0, startpos);
+				CreateParticleEx(client, "utaunt_electricity_cloud_parent_WB", _, _, startpos, 5.0);
 				
 				EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 				

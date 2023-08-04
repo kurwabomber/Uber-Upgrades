@@ -107,7 +107,7 @@ public Action:OnSunlightSpearCollision(entity, client)
 				float ProjectileDamage = 140.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
 				SDKHooks_TakeDamage(client, owner, owner, ProjectileDamage, DMG_SHOCK, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 				RemoveEntity(entity);
-				CreateParticle(client, "dragons_fury_effect_parent", true, "", 2.0);
+				CreateParticleEx(client, "dragons_fury_effect_parent", 1);
 			}
 		}
 	}
@@ -419,11 +419,11 @@ public Action:OnCollisionPhotoViscerator(entity, client)
 					DOTStock(client,owner,1.0,CWeapon,DMG_BURN + DMG_PREVENT_PHYSICS_FORCE,20,0.5,0.2,true);
 					SDKHooks_TakeDamage(client,owner,owner,damage,DMG_BURN,CWeapon, NULL_VECTOR, NULL_VECTOR);
 				}
-				RemoveEntity(entity);
 				float pos[3]
 				GetEntPropVector(entity, Prop_Data, "m_vecOrigin", pos);
 				EmitSoundToAll("weapons/cow_mangler_explosion_normal_01.wav", entity,_,100,_,0.85);
-				CreateParticle(-1, "drg_cow_explosioncore_charged_blue", false, "", 0.1, pos);
+				CreateParticleEx(entity, "drg_cow_explosioncore_charged_blue");
+				RemoveEntity(entity);
 			}
 		}
 	}
@@ -474,7 +474,7 @@ public Action:OnCollisionMoonveil(entity, client)
 	float pos[3]
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", pos);
 	EmitSoundToAll("weapons/cow_mangler_explosion_normal_01.wav", entity,_,100,_,0.85);
-	CreateParticle(-1, "drg_cow_explosioncore_charged_blue", false, "", 0.1, pos);
+	CreateParticleEx(entity, "drg_cow_explosioncore_charged_blue");
 	SDKUnhook(entity, SDKHook_Touch, OnCollisionMoonveil);
 	return Plugin_Continue;
 }
@@ -800,12 +800,12 @@ public Action:OnTouchExplodeJar(entity, other)
 		}
 	}
 	switch(mode){
-		case 0:{CreateParticle(-1, "peejar_impact", false, "", 1.0, clientvec);}
-		case 1:{CreateParticle(-1, "peejar_impact_milk", false, "", 1.0, clientvec);}
-		case 2:{CreateParticle(-1, "pumpkin_explode", false, "", 1.0, clientvec);}
-		case 3:{CreateParticle(-1, "breadjar_impact", false, "", 1.0, clientvec);}
-		case 4:{CreateParticle(-1, "gas_can_impact_blue", false, "", 1.0, clientvec);}
-		case 5:{CreateParticle(-1, "gas_can_impact_red", false, "", 1.0, clientvec);}
+		case 0:{CreateParticleEx(entity, "peejar_impact");}
+		case 1:{CreateParticleEx(entity, "peejar_impact_milk");}
+		case 2:{CreateParticleEx(entity, "pumpkin_explode");}
+		case 3:{CreateParticleEx(entity, "breadjar_impact");}
+		case 4:{CreateParticleEx(entity, "gas_can_impact_blue");}
+		case 5:{CreateParticleEx(entity, "gas_can_impact_red");}
 	}
 	EmitSoundToAll(SOUND_JAR_EXPLOSION, entity, -1, 80, 0, 0.8);
 	SDKUnhook(entity, SDKHook_Touch, OnTouchExplodeJar);
@@ -945,7 +945,7 @@ public Action:OnTouchChaos(entity, other)
 		{
 			float vOrigin[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vOrigin);
-			CreateParticle(-1, "heavy_ring_of_fire", false, "", 0.2, vOrigin);
+			CreateParticleEx(entity, "heavy_ring_of_fire", 0, 0, vOrigin);
 			vOrigin[2]+= 30.0;
 			EntityExplosion(owner, 80.0, 500.0, vOrigin, 0,_,entity,1.0,DMG_SONIC+DMG_PREVENT_PHYSICS_FORCE+DMG_RADIUS_MAX,CWeapon,0.75);
 			RemoveEntity(entity);

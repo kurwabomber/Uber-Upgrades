@@ -363,14 +363,8 @@ CastSunlightSpear(client, attuneSlot)
 		SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchSunlightSpear);
 		SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
 		
-		for(int it = 0;it < 3;it++)
-		{
-			int iParticle = CreateParticle(iEntity, "raygun_projectile_red_crit_trail", true, "", 4.0);
-			TeleportEntity(iParticle, NULL_VECTOR, fAngles, NULL_VECTOR);
-		}
-		
-		int iParticle2 = CreateParticle(iEntity, "raygun_projectile_red_trail", true, "", 4.0);
-		TeleportEntity(iParticle2, NULL_VECTOR, fAngles, NULL_VECTOR);
+		CreateParticleEx(iEntity, "raygun_projectile_red_crit", 1);
+		CreateParticleEx(iEntity, "raygun_projectile_red", 1);
 		
 		TE_SetupKillPlayerAttachments(iEntity);
 		TE_SendToAll();
@@ -481,14 +475,8 @@ FinishCastSplittingThunder(int client, int spellLevel)
 			SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchSplittingThunder);
 			SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
 			
-			for(int it = 0;it < 3;it++)
-			{
-				int iParticle = CreateParticle(iEntity, "raygun_projectile_red_crit_trail", true, "", 4.0);
-				TeleportEntity(iParticle, NULL_VECTOR, fAngles, NULL_VECTOR);
-			}
-			
-			int iParticle2 = CreateParticle(iEntity, "raygun_projectile_red_trail", true, "", 4.0);
-			TeleportEntity(iParticle2, NULL_VECTOR, fAngles, NULL_VECTOR);
+			CreateParticleEx(iEntity, "raygun_projectile_red_crit", 1);
+			CreateParticleEx(iEntity, "raygun_projectile_red", 1);
 			
 			TE_SetupKillPlayerAttachments(iEntity);
 			TE_SendToAll();
@@ -546,7 +534,7 @@ CastSnapFreeze(client, attuneSlot)
 	TF2_AddCondition(client, TFCond_ObscuredSmoke, 0.4*spellLevel);
 	GetClientAbsOrigin(client, clientpos);
 	CreateSmoke(clientpos,0.3,255,255,255,"200","20");
-	CreateParticle(client, "utaunt_snowring_icy_parent", true);
+	CreateParticleEx(client, "utaunt_snowring_icy_parent", 1, _, _, 3.5);
 
 }
 CastArcanePrison(client, attuneSlot)
@@ -780,32 +768,33 @@ CastInferno(client, attuneSlot)
 	float flamePos[3];
 	flamePos = ClientPos;
 	flamePos[2] += 400.0;
+
 	//ohhhhh myyyyy god!!!!!!
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos, 3.0);
 	//
 	flamePos[0] += 400.0;
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 	//
 	flamePos[1] += 400.0;
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 	//
 	flamePos[1] -= 800.0;
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 	//
 	flamePos[0] -= 400.0;
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 	//
 	flamePos[1] += 800.0;
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 	//
 	flamePos[0] -= 400.0;
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 	//
 	flamePos[1] -= 400.0;
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 	//
 	flamePos[1] -= 400.0;
-	CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 	
 	
 	float DMGDealt = 20.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),spellScaling[spellLevel]) * 12.5);
@@ -826,8 +815,8 @@ CastInferno(client, attuneSlot)
 		if(Distance > range[spellLevel])
 			continue;
 
-		CreateParticle(i, "dragons_fury_effect_parent", true, "", hitRate[spellLevel]*maxHits[spellLevel]);
-		CreateParticle(i, "utaunt_glowyplayer_orange_glow", true, "", hitRate[spellLevel]*maxHits[spellLevel],_,_,1);
+		CreateParticleEx(i, "dragons_fury_effect_parent", 1, _, _, hitRate[spellLevel]*maxHits[spellLevel]);
+		CreateParticleEx(i, "utaunt_glowyplayer_orange_glow", 1);
 		DOTStock(i,client,DMGDealt,-1,DMG_BURN,maxHits[spellLevel],1.0,hitRate[spellLevel],true);
 	}
 }
@@ -1002,7 +991,7 @@ CastShockwave(client, attuneSlot)
 	}
 	TF2_AddCondition(client, TFCond_ObscuredSmoke, 0.4);
 	EmitSoundToAll(SOUND_SHOCKWAVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
-	CreateParticle(client, "bombinomicon_burningdebris", true, "", 1.0);
+	CreateParticleEx(client, "bombinomicon_burningdebris");
 }
 CastAutoSentry(client, attuneSlot)
 {
@@ -1125,9 +1114,8 @@ public Action:SoothingSunlight(Handle timer, client)
 		if(fl_AdditionalArmor[i] < fl_MaxArmor[i] * ArcanePower[client] * additiveArmorBonus[spellLevel])
 			fl_AdditionalArmor[i] = fl_MaxArmor[i] * ArcanePower[client] * additiveArmorBonus[spellLevel];
 		TF2_AddCondition(i,TFCond_MegaHeal,incHealDuration[spellLevel]);
-	
-		float particleOffset[3] = {0.0,0.0,15.0};
-		CreateParticle(i, "utaunt_glitter_parent_gold", true, "", incHealDuration[spellLevel], particleOffset);
+
+		CreateParticleEx(i, "utaunt_glitter_parent_gold", 1);
 	}
 	EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 }
@@ -1145,15 +1133,6 @@ CastArcaneHunter(client, attuneSlot)
 	for(int i=0;i<30;i++)
 	{
 		EmitSoundToAll(SOUND_ARCANESHOOTREADY, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,CPOS);
-	}
-	
-	float particleOffset[3] = {0.0,0.0,90.0};
-	int iParticle = CreateParticle(client, "unusual_psychic_eye", true, "", 3.5, particleOffset);
-	if(!IsValidEdict(iParticle))
-	{
-		Handle pack;
-		CreateDataTimer(3.0, Timer_MoveParticle, pack);
-		WritePackCell(pack, EntIndexToEntRef(iParticle));
 	}
 	
 	int MaxUses[] = {0, 5,10,30}
@@ -1361,9 +1340,9 @@ CastACallBeyond(client, attuneSlot)
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
-	CreateParticle(client, "merasmus_tp_bits", true);
-	CreateParticle(client, "spellbook_major_burning", true);
-	CreateParticle(client, "unusual_meteor_cast_wheel_purple", true);
+	CreateParticleEx(client, "merasmus_tp_bits", 1, _, _, 2.0);
+	CreateParticleEx(client, "spellbook_major_burning", 1);
+	CreateParticleEx(client, "unusual_meteor_cast_wheel_purple", 1);
 }
 public Action:ACallBeyond(Handle timer, client) 
 {
@@ -1423,7 +1402,7 @@ public Action:ACallBeyond(Handle timer, client)
 		TE_SetupBeamFollow(iEntity,Laser,0,2.5,4.0,8.0,3,color);
 		TE_SendToAll();
 
-		CreateParticle(iEntity, "drg_cow_rockettrail_charged_blue", true, "", 4.5);
+		CreateParticleEx(iEntity, "drg_cow_rockettrail_charged_blue", 1);
 		
 		SDKHook(iEntity, SDKHook_StartTouchPost, CallBeyondCollision);
 		SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
@@ -1625,7 +1604,7 @@ CastLightning(client, attuneSlot)
 			float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
 			SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 
-			CreateParticle(i, "utaunt_auroraglow_orange_parent", true, "", 3.25);
+			CreateParticleEx(i, "utaunt_auroraglow_orange_parent", 1, _, _, 3.5);
 			
 			if(IsValidClient3(i))
 				TF2_IgnitePlayer(i, client, 3.0);

@@ -79,12 +79,14 @@
 			"preserve_attributes"	"1"
 			
 			"1"				"362 ; 35"
+			"2"				"20 ; 1"
 		}
 		"1081"//Festive Flare Gun
 		{
 			"preserve_attributes"	"1"
 			
 			"1"				"362 ; 35"
+			"2"				"20 ; 1"
 		}
 		"59"//The Dead Ringer
 		{

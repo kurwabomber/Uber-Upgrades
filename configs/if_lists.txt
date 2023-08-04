@@ -168,7 +168,6 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
-				"Attr6"		"Arcane - Speed Aura"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -180,6 +179,7 @@
 			"!Tier 3 Arcane Spells"
 			{
 				"Attr7"		"Arcane - A Call Beyond"
+				"Attr8"		"Arcane - Arcane Hunter"
 			}
 		}
 		"Powerup Upgrades"
@@ -277,7 +277,6 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
-				"Attr6"		"Arcane - Speed Aura"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -289,6 +288,7 @@
 			"!Tier 3 Arcane Spells"
 			{
 				"Attr7"		"Arcane - A Call Beyond"
+				"Attr8"		"Arcane - Aerial Strike"
 			}
 		}
 		"Powerup Upgrades"
@@ -385,7 +385,6 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
-				"Attr6"		"Arcane - Speed Aura"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -393,6 +392,7 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr5"		"Arcane - Inferno"
 			}
 			"!Tier 3 Arcane Spells"
 			{
@@ -494,7 +494,6 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
-				"Attr6"		"Arcane - Speed Aura"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -502,6 +501,7 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr5"		"Arcane - Shockwave"
 			}
 			"!Tier 3 Arcane Spells"
 			{
@@ -607,7 +607,6 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
-				"Attr6"		"Arcane - Speed Aura"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -615,6 +614,7 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr5"		"Arcane - Mine Field"
 			}
 			"!Tier 3 Arcane Spells"
 			{
@@ -715,7 +715,6 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
-				"Attr6"		"Arcane - Speed Aura"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -727,6 +726,7 @@
 			"!Tier 3 Arcane Spells"
 			{
 				"Attr7"		"Arcane - A Call Beyond"
+				"Attr8"		"Arcane - Soothing Sunlight"
 			}
 		}
 		"Powerup Upgrades"
@@ -826,7 +826,7 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
-				"Attr6"		"Arcane - Speed Aura"
+				"Attr6"		"Arcane - Mark-For-Death"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -938,7 +938,6 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
-				"Attr6"		"Arcane - Speed Aura"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -946,6 +945,7 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr5"		"Arcane - Auto-Sentry"
 			}
 			"!Tier 3 Arcane Spells"
 			{
@@ -1074,7 +1074,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Honor!"
+			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
 		}
 	}
 	"engweap"
@@ -1284,8 +1285,9 @@
 			"Attr11"	"bidirectional teleport"
 		}
 		"Special Tweaks"
-		{
-			"Sp1"		"Honor!"
+		{//Revamp later to some building bullshit or something idk
+			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
 		}
 		"Building Specializations"
 		{
@@ -1830,6 +1832,7 @@
 		"Special Tweaks"
 		{
 			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
 		}
 		"Spy upgrades"
 		{
@@ -1953,7 +1956,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Honor!"
+			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
 		}
 	}
 	"menuKatana"
@@ -2143,7 +2147,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Honor!"
+			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
 		}
 	}
 	"pointer"
@@ -2292,7 +2297,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Honor!"
+			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
 		}
 	}
 	"engweap_c"
@@ -2423,7 +2429,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Honor!"
+			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
 		}
 	}
 	"medi"

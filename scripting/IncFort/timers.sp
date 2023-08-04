@@ -259,7 +259,7 @@ public Action:Timer_Every100MS(Handle timer)
 					SetHudTextParams(0.43, 0.21, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 					ShowSyncHudText(client, hudStatus, StatusEffectText);
 				}
-				if(GetAttribute(client, "revenge powerup", 0.0) != 0.0 && RageBuildup[client] > 0.0)
+				if(GetAttribute(client, "revenge powerup", 0.0) && RageBuildup[client] > 0.0)
 				{
 					char StatusEffectText[256]
 					if(RageBuildup[client] < 1.0)
@@ -281,11 +281,11 @@ public Action:Timer_Every100MS(Handle timer)
 						TF2_AddCondition(client, TFCond_DefenseBuffMmmph, 1.0);
 						TF2_AddCondition(client, TFCond_PreventDeath, 1.0);
 						TF2_AddCondition(client, TFCond_KingAura, 1.0);
-						CreateParticle(client, "critgun_weaponmodel_red", true, "", 1.0,_,_,1);
+						CreateParticleEx(client, "critgun_weaponmodel_red", 1, _, _, 1.0);
 						TE_SendToAll();
 					}
 				}
-				if(SupernovaBuildup[client] > 0.0)
+				if(GetAttribute(client, "supernova powerup", 0.0) && SupernovaBuildup[client] > 0.0)
 				{
 					char StatusEffectText[256]
 					if(SupernovaBuildup[client] < 1.0)
@@ -519,7 +519,7 @@ public Action:Timer_Every100MS(Handle timer)
 							TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 							TE_SendToAll();
 							
-							CreateParticle(-1, "utaunt_electricity_cloud_parent_WB", false, "", 5.0, startpos);
+							CreateParticleEx(client, "utaunt_electricity_cloud_parent_WB", _, _, startpos, 5.0);
 							
 							EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 							
@@ -568,8 +568,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 				{
 					case 3.0:
 					{
-						CreateParticle(client, "critgun_weaponmodel_red", true, "", 10.0,_,_,1);
-						TE_SendToAll();
+						CreateParticleEx(client, "critgun_weaponmodel_red", 1, _, _, 10.0);
 						SetEntityRenderColor(client, 190,0,0,255);
 						int counter = 0;
 						bool clientList[MAXPLAYERS+1];
@@ -647,31 +646,31 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 								flamePos = ClientPos;
 								flamePos[2] += 400.0;
 								//ohhhhh myyyyy god!!!!!!
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos, 3.0);
 								//
 								flamePos[0] += 400.0;
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 								//
 								flamePos[1] += 400.0;
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 								//
 								flamePos[1] -= 800.0;
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 								//
 								flamePos[0] -= 400.0;
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 								//
 								flamePos[1] += 800.0;
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 								//
 								flamePos[0] -= 400.0;
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 								//
 								flamePos[1] -= 400.0;
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 								//
 								flamePos[1] -= 400.0;
-								CreateParticle(-1, "cinefx_goldrush_flames", false, "", 3.5,flamePos);
+								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
 								
 								
 								float DMGDealt = 3.0 * TF2_GetDPSModifiers(client,CWeapon);
@@ -687,8 +686,8 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 											float Distance = GetVectorDistance(ClientPos,VictimPos);
 											if(Distance <= 800.0)
 											{
-												CreateParticle(i, "dragons_fury_effect_parent", true, "", 2.0);
-												CreateParticle(i, "utaunt_glowyplayer_orange_glow", true, "", 2.0,_,_,1);
+												CreateParticleEx(i, "dragons_fury_effect_parent", 1, _, _, 2.0);
+												CreateParticleEx(i, "utaunt_glowyplayer_orange_glow", 1);
 												DOTStock(i,client,DMGDealt,-1,DMG_BURN,20,1.0,0.12,true);
 											}
 										}
@@ -705,7 +704,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 							TF2_AddCondition(client, TFCond_AfterburnImmune, 2.5);
 							TF2_AddCondition(client, TFCond_UberchargedHidden, 0.01);
 							EmitSoundToAll(SOUND_ADRENALINE, client, -1, 150, 0, 1.0);
-							CreateParticle(client, "utaunt_tarotcard_red_wind", true, "", 10.0);
+							CreateParticleEx(client, "utaunt_tarotcard_red_wind", 1, _, _, 10.0);
 						}
 						else if(spellCasted == 3 || spellCasted == 1)
 						{
@@ -753,7 +752,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 									
 									SDKHook(iEntity, SDKHook_Touch, OnCollisionPhotoViscerator);
 									CreateTimer(0.01, HomingFlareThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-									CreateParticle(iEntity, "utaunt_auroraglow_green_parent", true, "", 5.0);
+									CreateParticleEx(iEntity, "utaunt_auroraglow_green_parent", 1);
 									CreateTimer(5.0, SelfDestruct, EntIndexToEntRef(iEntity));
 								}
 							}
@@ -789,7 +788,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 						int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 						if(IsValidEdict(CWeapon))
 						{
-							CreateParticle(CWeapon, "utaunt_auroraglow_orange_parent", true, "", 10.0,_,_,1);
+							CreateParticleEx(CWeapon, "utaunt_auroraglow_orange_parent", 1, _, _, 10.0);
 							TE_SendToAll();
 								
 							float clientpos[3];
@@ -824,7 +823,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 							TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 							TE_SendToAll();
 							
-							CreateParticle(-1, "utaunt_electricity_cloud_parent_WB", false, "", 5.0, startpos);
+							CreateParticleEx(client, "utaunt_electricity_cloud_parent_WB", _, _, startpos, 5.0);
 							
 							EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 							
@@ -861,7 +860,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 								}
 							}
 						}
-						CreateParticle(client, "utaunt_arcane_yellow_parent", true, "", 10.0);
+						CreateParticleEx(client, "utaunt_arcane_yellow_parent", 1, _, _, 10.0);
 					}
 				}
 			}
@@ -1382,7 +1381,7 @@ public Action:eurekaDelayed(Handle timer, int client)
 				TE_SetupBeamRingPoint(clientpos, 20.0, 1000.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 				TE_SendToAll();
 				
-				CreateParticle(-1, "utaunt_electricity_cloud_parent_WB", false, "", 5.0, startpos);
+				CreateParticleEx(client, "utaunt_electricity_cloud_parent_WB", _, _, startpos, 5.0);
 				
 				EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 				
@@ -1474,7 +1473,7 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 				{
 					if(IsPointVisible(PlayerOrigin,VictimPos))
 					{
-						CreateParticle(i, "env_sawblood", true, "", 2.0);
+						CreateParticleEx(i, "env_sawblood");
 						SDKHooks_TakeDamage(i,client,client, mult, DMG_SLASH, weapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
 					}
 				}

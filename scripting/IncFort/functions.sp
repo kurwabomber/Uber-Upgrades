@@ -1,3 +1,100 @@
+stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] strAttachmentPoint="", float time = 2.0,float fOffset[3]={0.0, 0.0, 0.0}, bool parentAngle = false, attachType = 0)
+{
+	if(attachType == 0)
+	{
+		int iParticle = CreateEntityByName("info_particle_system");
+		if (IsValidEdict(iParticle))
+		{
+			float fPosition[3], fAngles[3];
+			
+			if(IsValidEdict(iEntity))
+			{
+				GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fPosition);
+			}
+			if(parentAngle == true)
+			{
+				GetEntPropVector(iEntity, Prop_Data, "m_angRotation", fAngles); 
+				TeleportEntity(iParticle, NULL_VECTOR, fAngles, NULL_VECTOR);
+			}
+			fPosition[0] += fOffset[0];
+			fPosition[1] += fOffset[1];
+			fPosition[2] += fOffset[2];
+			
+			TeleportEntity(iParticle, fPosition, NULL_VECTOR, NULL_VECTOR);
+			DispatchKeyValue(iParticle, "effect_name", strParticle);
+			
+			if (bAttach == true)
+			{
+				SetVariantString("!activator");
+				AcceptEntityInput(iParticle, "SetParent", iEntity, iParticle, 0);            
+				
+				if (StrEqual(strAttachmentPoint, "") == false)
+				{
+					SetVariantString(strAttachmentPoint);
+					AcceptEntityInput(iParticle, "SetParentAttachmentMaintainOffset", iEntity, iParticle, 0);                
+				}
+			}
+			// Spawn and start
+			DispatchSpawn(iParticle);
+			ActivateEntity(iParticle);
+			AcceptEntityInput(iParticle, "Start");
+			
+			if(time > 0.0){
+				CreateTimer(time, Timer_KillParticle, EntIndexToEntRef(iParticle));
+			}
+		}
+		return iParticle
+	}
+	else if (attachType == 1)
+	{
+		static int table = INVALID_STRING_TABLE;
+		if (table == INVALID_STRING_TABLE)
+			table = FindStringTable("ParticleEffectNames");
+			
+		TE_Start("TFParticleEffect");
+		TE_WriteNum("entindex", iEntity);
+		TE_WriteNum("m_iParticleSystemIndex", FindStringIndex(table, strParticle));
+		TE_WriteNum("m_iAttachType", 1); // Create at absorigin, and update to follow the entity
+		
+		if(time > 0.0){
+			Handle pack;
+			CreateDataTimer(time, Timer_KillTEParticle, pack);
+			WritePackCell(pack, EntIndexToEntRef(iEntity));
+		}
+	}
+	return true
+}
+void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachmentPointIndex = 0, float fOffset[3]=NULL_VECTOR, float time = 0.0)
+{
+	static int table = INVALID_STRING_TABLE;
+	if (table == INVALID_STRING_TABLE){
+		table = FindStringTable("ParticleEffectNames");
+		PrintToServer("Particle Table Found | index = %i", table);
+	}
+
+	TE_Start("TFParticleEffect");
+	TE_WriteNum("m_iParticleSystemIndex", FindStringIndex(table, strParticle));
+	TE_WriteNum("m_iAttachType", m_iAttachType);
+	TE_WriteNum("m_iAttachmentPointIndex", m_iAttachmentPointIndex);
+
+	if(IsValidEntity(iEntity)){
+		TE_WriteNum("entindex", iEntity);
+		if(time > 0.0){
+			Handle pack;
+			CreateDataTimer(time, Timer_KillTEParticle, pack);
+			WritePackCell(pack, EntIndexToEntRef(iEntity));
+		}
+		if(IsNullVector(fOffset)){
+			GetEntPropVector(iEntity, Prop_Data, "m_vecOrigin", fOffset);
+		}
+	}
+
+	TE_WriteFloat("m_vecOrigin[0]", fOffset[0]);
+	TE_WriteFloat("m_vecOrigin[1]", fOffset[1]);
+	TE_WriteFloat("m_vecOrigin[2]", fOffset[2]);
+	
+	TE_SendToAll();
+}
 //Replaces any old buff with same details, else inserts a new one.
 public void insertBuff(int client, Buff newBuff){
 	int replacementID = getNextBuff(client);
@@ -369,7 +466,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 			AcceptEntityInput( particle, "FireUser1" );
 			CreateTimer(0.01, SelfDestruct, EntIndexToEntRef(particle));
 		}*/
-		CreateParticle(-1, "ExplosionCore_MidAir", false, "", 0.1, pos);
+		CreateParticleEx(-1, "ExplosionCore_MidAir", 0, 0, pos);
 	}
 	int random = GetRandomInt(1,3)
 	switch(soundType)
@@ -1396,9 +1493,9 @@ public void ThrowBuilding(any buildref) {
 	TeleportEntity(phys, NULL_VECTOR, NULL_VECTOR, velocity);
 	SetEntityGravity(phys, 1.5);
 	SetEntityMoveType(phys, MOVETYPE_FLYGRAVITY);
-	CreateParticle(phys, "drg_cowmangler_trail_charged", true, "", 2.0);
-	CreateParticle(phys, "rockettrail_airstrike_line", true, "", 2.0);
-	CreateParticle(phys, "rockettrail_fire_airstrike", true, "", 2.0);
+	CreateParticleEx(phys, "drg_cowmangler_trail_charged", 1, 0, origin, 2.0);
+	CreateParticleEx(phys, "rockettrail_airstrike_line", 1, 0, origin);
+	CreateParticleEx(phys, "rockettrail_fire_airstrike", 1, 0, origin);
 	SetEntityModel(phys, "models/weapons/w_models/w_toolbox.mdl");
 	SetEntProp(building, Prop_Send, "m_usSolidFlags", 0x0004);
 	SetEntityRenderMode(building, RENDER_NONE);
@@ -2582,28 +2679,15 @@ checkRadiation(victim,attacker)
 	if(RadiationBuildup[victim] >= RadiationMaximum[victim])
 	{
 		RadiationBuildup[victim] = 0.0;
-		if(!IsFakeClient(victim))
-		{
-			int armorLost = RoundToNearest(fl_CalculatedMaxArmor[victim]/2.0);
-			DealFakeDamage(victim,attacker,-1, armorLost);
-			TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 5.0);
-			
-			float particleOffset[3] = {0.0,0.0,10.0};
-			CreateParticle(victim, "utaunt_electricity_cloud_electricity_WY", true, "", 5.0, particleOffset);
-			CreateParticle(victim, "utaunt_auroraglow_green_parent", true, "", 5.0);
-			CreateParticle(victim, "merasmus_blood", true, "", 2.0);
-		}
-		else
-		{
-			miniCritStatusVictim[victim] = currentGameTime+7.5;
-			TF2_AddCondition(victim, TFCond_Bleeding, 7.5);
-			TF2_AddCondition(victim, TFCond_AirCurrent, 7.5);
-			TF2_AddCondition(victim, TFCond_NoTaunting_DEPRECATED, 7.5);
-			float particleOffset[3] = {0.0,0.0,10.0};
-			CreateParticle(victim, "utaunt_electricity_cloud_electricity_WY", true, "", 7.5, particleOffset);
-			CreateParticle(victim, "utaunt_auroraglow_green_parent", true, "", 7.5);
-			CreateParticle(victim, "merasmus_blood", true, "", 7.5);
-		}
+
+		int armorLost = RoundToNearest(fl_CalculatedMaxArmor[victim]/2.0);
+		DealFakeDamage(victim,attacker,-1, armorLost);
+		armorWeaknessRatio[victim] += 0.5;
+		
+		float particleOffset[3] = {0.0,0.0,10.0};
+		CreateParticleEx(victim, "utaunt_electricity_cloud_electricity_WY", 1, 0, particleOffset, 5.0);
+		CreateParticleEx(victim, "utaunt_auroraglow_green_parent", 1, 0, particleOffset);
+		CreateParticleEx(victim, "merasmus_blood", 1, 0, particleOffset);
 	}
 }
 monoculusBonus(entity) 

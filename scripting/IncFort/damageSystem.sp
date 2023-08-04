@@ -336,8 +336,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			damage *= 1.5;
 			if(powerupParticle[attacker] <= currentGameTime)
 			{
-				CreateParticle(victim, "critgun_weaponmodel_red", true, "", 1.0,_,_,1);
-				TE_SendToAll();
+				CreateParticleEx(victim, "critgun_weaponmodel_red", 1, 0, damagePosition);
 				powerupParticle[attacker] = currentGameTime+0.2;
 			}
 		}
@@ -365,7 +364,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 				
 				SDKHooks_TakeDamage(victim, attacker, attacker, TF2_GetDamageModifiers(attacker, weapon)*100.0*bleedBonus,DMG_PREVENT_PHYSICS_FORCE, -1, NULL_VECTOR, NULL_VECTOR);
-				CreateParticle(victim, "env_sawblood", true, "", 2.0);
+				CreateParticleEx(victim, "env_sawblood", 1, 0, damagePosition);
 			}
 		}
 		Address radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");
@@ -1053,6 +1052,16 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(isVictimPlayer)
 		{
+			if(damagetype & DMG_CLUB){
+				float infernalExplosive = GetAttribute(weapon, "Dragon Bullets Radius", 0.0);
+				if(infernalExplosive){
+					float enemyPos[3];
+					GetClientEyePosition(victim, enemyPos);
+
+					EntityExplosion(attacker, damage, infernalExplosive, enemyPos, _, _, _, _, _, weapon, _, _, true);
+					CreateParticleEx(victim, "heavy_ring_of_fire");
+				}
+			}
 			float bouncingBullets = GetAttribute(weapon, "flame size penalty", 0.0);
 			if(bouncingBullets != 0.0 && LastCharge[attacker] >= 150.0)
 			{

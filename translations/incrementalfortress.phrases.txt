@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"Infernal Impulse"
+	{
+		"en"		"Infernal Impulse"
+	}
 	"melee cleave attack"
 	{
 		"en"		"Melee Hits All Enemies in Range"
@@ -51,6 +55,10 @@
 	"weapon fire rate"
 	{
 		"en"		"Weapon Fire Rate Bonus"
+	}
+	"weapon fire rate(tweak)"
+	{
+		"en"		"Weapon Fire Rate Penalty"
 	}
 	"Arcane - Infernal Enchantment"
 	{

@@ -176,6 +176,7 @@
 		"add cond when active"			"66"
 		"crit from behind"				"1"
 		"bullets per shot mult 2"		"4.0"
+		"minicrits become crits"		"1"
 	}
 	"Firestorm Sniper Rifle"
 	{
