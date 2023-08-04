@@ -646,31 +646,31 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 								flamePos = ClientPos;
 								flamePos[2] += 400.0;
 								//ohhhhh myyyyy god!!!!!!
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos, 3.0);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[0] += 400.0;
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] += 400.0;
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] -= 800.0;
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[0] -= 400.0;
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] += 800.0;
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[0] -= 400.0;
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] -= 400.0;
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] -= 400.0;
-								CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 								
 								
 								float DMGDealt = 3.0 * TF2_GetDPSModifiers(client,CWeapon);
@@ -752,7 +752,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 									
 									SDKHook(iEntity, SDKHook_Touch, OnCollisionPhotoViscerator);
 									CreateTimer(0.01, HomingFlareThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-									CreateParticleEx(iEntity, "utaunt_auroraglow_green_parent", 1);
+									CreateParticle(iEntity, "utaunt_auroraglow_green_parent", true, _, 5.0);
 									CreateTimer(5.0, SelfDestruct, EntIndexToEntRef(iEntity));
 								}
 							}

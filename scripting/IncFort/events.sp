@@ -2126,7 +2126,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticleEx(CWeapon, "utaunt_auroraglow_purple_parent", 1, _, _, 5.0);
+								CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, _, 3.0, _, _, 1);
 								int clients[33], numClients = getClientParticleStatus(clients, client);
 								TE_Send(clients,numClients)
 							}
@@ -2213,13 +2213,11 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 											SetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecScaledBossMax);
 											
 											float particleOffset[3];
-											GetEntPropVector(iEntity,Prop_Send, "m_vecOrigin",particleOffset);
-
-											CreateParticleEx(iEntity, "utaunt_auroraglow_purple_parent", 1, _, particleOffset, 5.0);
+											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
 											particleOffset[2] -= 20.0;
-											CreateParticleEx(iEntity, "utaunt_auroraglow_purple_parent", 1, _, particleOffset);
+											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
 											particleOffset[2] += 40.0;
-											CreateParticleEx(iEntity, "utaunt_auroraglow_purple_parent", 1, _, particleOffset);
+											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
 										}
 									}
 								}
@@ -2273,7 +2271,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1);
+								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 4.0);
 								
 								SetEntityRenderColor(CWeapon, 255, 162, 0,200);
 								TF2Attrib_SetByName(CWeapon,"SPELL: Halloween green flames", 1.0);
@@ -2339,7 +2337,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 												
 												SDKHook(iEntity, SDKHook_Touch, OnCollisionPhotoViscerator);
 												CreateTimer(0.01, HomingFlareThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-												CreateParticleEx(iEntity, "utaunt_auroraglow_green_parent", 1, _, _, 5.0);
+												CreateParticle(iEntity, "utaunt_auroraglow_green_parent", true, _, 5.0);
 												CreateTimer(5.0, SelfDestruct, EntIndexToEntRef(iEntity));
 											}
 										}
@@ -2397,7 +2395,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 5.0);
+								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 3.0);
 							}
 						}
 					}

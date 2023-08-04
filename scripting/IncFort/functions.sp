@@ -466,7 +466,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 			AcceptEntityInput( particle, "FireUser1" );
 			CreateTimer(0.01, SelfDestruct, EntIndexToEntRef(particle));
 		}*/
-		CreateParticleEx(-1, "ExplosionCore_MidAir", 0, 0, pos);
+		CreateParticleEx(-1, "ExplosionCore_MidAir", -1, -1, pos);
 	}
 	int random = GetRandomInt(1,3)
 	switch(soundType)

@@ -770,31 +770,31 @@ CastInferno(client, attuneSlot)
 	flamePos[2] += 400.0;
 
 	//ohhhhh myyyyy god!!!!!!
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos, 3.0);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[0] += 400.0;
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] += 400.0;
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] -= 800.0;
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[0] -= 400.0;
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] += 800.0;
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[0] -= 400.0;
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] -= 400.0;
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] -= 400.0;
-	CreateParticleEx(client, "cinefx_goldrush_flames", 1, 0, flamePos);
+	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
 	
 	
 	float DMGDealt = 20.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),spellScaling[spellLevel]) * 12.5);
@@ -1115,7 +1115,7 @@ public Action:SoothingSunlight(Handle timer, client)
 			fl_AdditionalArmor[i] = fl_MaxArmor[i] * ArcanePower[client] * additiveArmorBonus[spellLevel];
 		TF2_AddCondition(i,TFCond_MegaHeal,incHealDuration[spellLevel]);
 
-		CreateParticleEx(i, "utaunt_glitter_parent_gold", 1);
+		CreateParticleEx(i, "utaunt_glitter_parent_gold", 1, _, _, incHealDuration[spellLevel]);
 	}
 	EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 }
@@ -1342,7 +1342,7 @@ CastACallBeyond(client, attuneSlot)
 	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	CreateParticleEx(client, "merasmus_tp_bits", 1, _, _, 2.0);
 	CreateParticleEx(client, "spellbook_major_burning", 1);
-	CreateParticleEx(client, "unusual_meteor_cast_wheel_purple", 1);
+	CreateParticle(client, "unusual_meteor_cast_wheel_purple", true);
 }
 public Action:ACallBeyond(Handle timer, client) 
 {
