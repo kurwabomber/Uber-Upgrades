@@ -760,41 +760,39 @@ CastInferno(client, attuneSlot)
 
 	float ClientPos[3];
 	GetClientEyePosition(client,ClientPos);
-	ClientPos[2] -= 20.0;
 		
-	EmitSoundToAll(SOUND_INFERNO, _, client, SNDLEVEL_ROCKET, _, 1.0, _,_,ClientPos);
-	
+	EmitSoundToAll(SOUND_INFERNO, client, _, SNDLEVEL_ROCKET, _, 1.0, _,_,ClientPos);
 	//scripting god
 	float flamePos[3];
 	flamePos = ClientPos;
 	flamePos[2] += 400.0;
 
 	//ohhhhh myyyyy god!!!!!!
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[0] += 400.0;
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] += 400.0;
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] -= 800.0;
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[0] -= 400.0;
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] += 800.0;
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[0] -= 400.0;
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] -= 400.0;
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	//
 	flamePos[1] -= 400.0;
-	CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+	CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 	
 	
 	float DMGDealt = 20.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),spellScaling[spellLevel]) * 12.5);

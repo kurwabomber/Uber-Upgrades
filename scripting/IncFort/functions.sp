@@ -74,9 +74,10 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 
 	TE_Start("TFParticleEffect");
 	TE_WriteNum("m_iParticleSystemIndex", FindStringIndex(table, strParticle));
-	TE_WriteNum("m_iAttachType", m_iAttachType);
-	TE_WriteNum("m_iAttachmentPointIndex", m_iAttachmentPointIndex);
-
+	if(m_iAttachType != -1){
+		TE_WriteNum("m_iAttachType", m_iAttachType);
+		TE_WriteNum("m_iAttachmentPointIndex", m_iAttachmentPointIndex);
+	}
 	if(IsValidEntity(iEntity)){
 		TE_WriteNum("entindex", iEntity);
 		if(time > 0.0){

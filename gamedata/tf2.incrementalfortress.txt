@@ -192,24 +192,6 @@
 				"return"		"void"
 				"this"			"entity"
 			}
-			"CTFGameStats::Event_PlayerFiredWeapon()"
-			{
-				"signature"		"CTFGameStats::Event_PlayerFiredWeapon()"
-				"callconv"		"thiscall"
-				"return"		"void"
-				"this"			"address"
-				"arguments"
-				{
-					"client"
-					{
-						"type"	"cbaseentity"
-					}
-					"critbool"
-					{
-						"type"	"bool"
-					}
-				}
-			}
 			"CTFFlameThrower::FireAirblast()"
 			{
 				"signature"		"CTFFlameThrower::FireAirblast()"
@@ -352,11 +334,6 @@
 				"library"	"server"
 				"linux"		"@_ZN11CBaseEntity19DispatchTraceAttackERK15CTakeDamageInfoRK6VectorP10CGameTraceP15CDmgAccumulator"
 			}
-			"CTFBat_Wood::SendWeaponAnim()"
-			{
-				"library"	"server"
-				"linux"		"@_ZN11CTFBat_Wood19SecondaryAttackAnimEP9CTFPlayer"
-			}
 			"CTFBat_Wood::LaunchBallThink()"
 			{
 				"library"	"server"
@@ -381,11 +358,6 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN13CTFRocketPack6LaunchEv"
-			}
-			"CTFGameStats::Event_PlayerFiredWeapon()"
-			{
-				"library"	"server"
-				"linux"		"@_ZN12CTFGameStats23Event_PlayerFiredWeaponEP9CTFPlayerb"
 			}
 			"CTFFlameThrower::FireAirblast()"
 			{

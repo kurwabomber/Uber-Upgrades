@@ -1213,10 +1213,6 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 			}
 			TF2Attrib_RemoveAll(client);
 			current_class[client] = TF2_GetPlayerClass(client)
-			if (!client_respawn_handled[client])
-			{
-				CreateTimer(0.05, ClChangeClassTimer, GetClientUserId(client));
-			}
 			CancelClientMenu(client);
 			Menu_BuyUpgrade(client, 0);
 			ResetClientUpgrades(client)
@@ -2738,17 +2734,14 @@ public void giveAmmoBack(DataPack pack){
 
 	delete pack;	
 }
-public MRESReturn OnWeaponFired(Address addr, Handle hParams)
+public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname, bool& result)
 {
-	int client = DHookGetParam(hParams, 1);
-	//bool isCrit = DHookGetParam(hParams, 2);
-
 	if(!IsValidClient3(client) || !IsValidEdict(client))
-		return MRES_Ignored;
+		return Plugin_Continue;
 
 	canOverride[client] = true;
 	canShootAgain[client] = true;
-	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	int CWeapon = weapon;
 	if(IsValidWeapon(CWeapon))
 	{
 		meleeLimiter[client]++;
@@ -2980,65 +2973,61 @@ public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 				}
 				case 40.0:
 				{
-					if(meleeLimiter[client] >= 2)
+					for(int i=-1;i<=1;i+=2)
 					{
-						meleeLimiter[client] = 0;
-						for(int i=-1;i<=1;i+=2)
+						char projName[32] = "tf_projectile_arrow";
+						int iEntity = CreateEntityByName(projName);
+						if (IsValidEdict(iEntity)) 
 						{
-							char projName[32] = "tf_projectile_arrow";
-							int iEntity = CreateEntityByName(projName);
-							if (IsValidEdict(iEntity)) 
-							{
-								int iTeam = GetClientTeam(client);
-								float fwd[3]
-								float right[3]
-								SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+							int iTeam = GetClientTeam(client);
+							float fwd[3]
+							float right[3]
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
-								//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
-								//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
-					
-								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-								GetClientEyePosition(client, fOrigin);
-								GetClientEyeAngles(client, fAngles);
-								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-								GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-								GetAngleVectors(fAngles, NULL_VECTOR, right, NULL_VECTOR);
-								ScaleVector(right, 8.0 * i);
-								ScaleVector(fwd, 50.0);
-								AddVectors(fOrigin, fwd, fOrigin);
-								AddVectors(fOrigin, right, fOrigin);
-								float velocity = 3000.0;
-								Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
-								Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
-								if(projspeed != Address_Null){
-									velocity *= TF2Attrib_GetValue(projspeed)
-								}
-								if(projspeed1 != Address_Null){
-									velocity *= TF2Attrib_GetValue(projspeed1)
-								}
-								float vecAngImpulse[3];
-								GetCleaverAngularImpulse(vecAngImpulse);
-								fVelocity[0] = vBuffer[0]*velocity;
-								fVelocity[1] = vBuffer[1]*velocity;
-								fVelocity[2] = vBuffer[2]*velocity;
-								
-								TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-								DispatchSpawn(iEntity);
-								//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
-								SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-								if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
-								{
-									SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-								}
-								SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-								SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
-								SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
-								SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
-								SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchWarriorArrow);
-									CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0",
-									iTeam == 2 ? "materials/effects/arrowtrail_red.vmt":"materials/effects/arrowtrail_blu.vmt", "255 255 255");
+							//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
+							//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
+				
+							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+							GetClientEyePosition(client, fOrigin);
+							GetClientEyeAngles(client, fAngles);
+							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+							GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+							GetAngleVectors(fAngles, NULL_VECTOR, right, NULL_VECTOR);
+							ScaleVector(right, 8.0 * i);
+							ScaleVector(fwd, 50.0);
+							AddVectors(fOrigin, fwd, fOrigin);
+							AddVectors(fOrigin, right, fOrigin);
+							float velocity = 3000.0;
+							Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
+							Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
+							if(projspeed != Address_Null){
+								velocity *= TF2Attrib_GetValue(projspeed)
 							}
+							if(projspeed1 != Address_Null){
+								velocity *= TF2Attrib_GetValue(projspeed1)
+							}
+							float vecAngImpulse[3];
+							GetCleaverAngularImpulse(vecAngImpulse);
+							fVelocity[0] = vBuffer[0]*velocity;
+							fVelocity[1] = vBuffer[1]*velocity;
+							fVelocity[2] = vBuffer[2]*velocity;
+							
+							TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+							DispatchSpawn(iEntity);
+							//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+							SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+							if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
+							{
+								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+							}
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+							SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
+							SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
+							SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
+							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchWarriorArrow);
+								CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0",
+								iTeam == 2 ? "materials/effects/arrowtrail_red.vmt":"materials/effects/arrowtrail_blu.vmt", "255 255 255");
 						}
 					}
 				}
@@ -3366,7 +3355,7 @@ public MRESReturn OnWeaponFired(Address addr, Handle hParams)
 			}
 		}
 	}
-	return MRES_Ignored;
+	return Plugin_Continue;
 }
 public OnClientDisconnect(client)
 {

@@ -645,32 +645,33 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 								//scripting god
 								flamePos = ClientPos;
 								flamePos[2] += 400.0;
+
 								//ohhhhh myyyyy god!!!!!!
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[0] += 400.0;
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] += 400.0;
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] -= 800.0;
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[0] -= 400.0;
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] += 800.0;
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[0] -= 400.0;
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] -= 400.0;
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								//
 								flamePos[1] -= 400.0;
-								CreateParticle(client, "cinefx_goldrush_flames", _, _, _, flamePos);
+								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								
 								
 								float DMGDealt = 3.0 * TF2_GetDPSModifiers(client,CWeapon);

@@ -420,12 +420,12 @@ public void OnPluginStart()
 		DHookEnableDetour(g_DHookChargeMove, false, OnShieldChargeMove);
 
 	//Damagetypes lul
-	/*Handle g_DHookDamagetypes = DHookCreateFromConf(hConf, "CTFWeaponBase::GetDamageType()");
+	Handle g_DHookDamagetypes = DHookCreateFromConf(hConf, "CTFWeaponBase::GetDamageType()");
 	
 	if(!IsValidHandle(g_DHookDamagetypes))
 		PrintToServer("CustomAttrs | g_DHookDamagetypes fucked up.");
 	else
-		DHookEnableDetour(g_DHookDamagetypes, true, OnDamageTypeCalc);*/
+		DHookEnableDetour(g_DHookDamagetypes, true, OnDamageTypeCalc);
 
 	//Thermal Thruster Velocity Boost
 	Handle g_DHookThrusterLaunch = DHookCreateFromConf(hConf, "CTFRocketPack::Launch()");
@@ -434,13 +434,6 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | g_DHookFireballRange fucked up.");
 	else
 		DHookEnableDetour(g_DHookThrusterLaunch, false, OnThermalThrusterLaunch);
-
-	//New On Weapon Fired
-	Handle g_DHookOnWeaponFired = DHookCreateFromConf(hConf, "CTFGameStats::Event_PlayerFiredWeapon()");
-	if(!IsValidHandle(g_DHookOnWeaponFired))
-		PrintToServer("CustomAttrs | Weapon Fire Hook Failed");
-	else
-		DHookEnableDetour(g_DHookOnWeaponFired, true, OnWeaponFired);
 
 	//On Airblast Use
 	Handle g_DHookOnAirblast = DHookCreateFromConf(hConf, "CTFFlameThrower::FireAirblast()");
