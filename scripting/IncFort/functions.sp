@@ -94,7 +94,7 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 	TE_WriteFloat("m_vecOrigin[1]", fOffset[1]);
 	TE_WriteFloat("m_vecOrigin[2]", fOffset[2]);
 	
-	TE_SendToAll();
+	TE_SendToAllInRange(fOffset, RangeType_Visibility);
 }
 //Replaces any old buff with same details, else inserts a new one.
 public void insertBuff(int client, Buff newBuff){

@@ -150,13 +150,6 @@
 				"return"		"bool"
 				"this"			"address"
 			}
-			"CTFScatterGun::FinishReload()"
-			{
-				"signature"		"CTFScatterGun::FinishReload()"
-				"callconv"		"thiscall"
-				"return"		"void"
-				"this"			"entity"
-			}
 			"CTFPlayer::ApplyAbsVelocityImpulse()"
 			{
 				"signature"		"CTFPlayer::ApplyAbsVelocityImpulse()"
@@ -318,11 +311,6 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN15CTFGameMovement10ChargeMoveEv"
-			}
-			"CTFScatterGun::FinishReload()"
-			{
-				"library"	"server"
-				"linux"		"@_ZN13CTFScatterGun12FinishReloadEv"
 			}
 			"CTFPlayer::ApplyAbsVelocityImpulse()"
 			{

@@ -2694,46 +2694,6 @@ public MRESReturn OnFinishReload(int weapon)
 	relentlessTicks[client] = 0;
 	return MRES_Ignored;
 }
-public MRESReturn OnScattergunReload(int weapon)
-{
-	if(!IsValidWeapon(weapon))
-		return MRES_Ignored;
-
-	if(GetEntProp(weapon, Prop_Data, "m_bReloadsSingly") == 1)
-		return MRES_Ignored;
-
-	int client = getOwner(weapon);
-	if(!IsValidClient3(client))
-		return MRES_Ignored;
-
-	int currentClip = GetEntProp( weapon, Prop_Data, "m_iClip1" );
-	int maxClip = TF2Util_GetWeaponMaxClip(weapon);
-	int type = GetEntProp( weapon, Prop_Send, "m_iPrimaryAmmoType" ); 
-	int currentAmmo = GetEntProp( client, Prop_Send, "m_iAmmo", _, type ); 
-
-	if(currentAmmo == 0)
-		return MRES_Ignored;
-
-	int finalAmmo = currentAmmo-(maxClip-currentClip);
-	if(finalAmmo < 0){maxClip-=IntAbs(finalAmmo);finalAmmo = 0;}
-
-	DataPack pack = new DataPack();
-	pack.WriteCell(weapon);
-	pack.WriteCell(finalAmmo);
-
-	RequestFrame(giveAmmoBack, pack);
-	return MRES_Ignored;
-}
-public void giveAmmoBack(DataPack pack){
-	pack.Reset();
-
-	int weapon = pack.ReadCell();
-	int finalAmmo = pack.ReadCell();
-
-	SetAmmo_Weapon(weapon, finalAmmo)
-
-	delete pack;	
-}
 public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname, bool& result)
 {
 	if(!IsValidClient3(client) || !IsValidEdict(client))

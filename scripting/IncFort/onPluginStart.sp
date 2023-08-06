@@ -298,14 +298,6 @@ public void OnPluginStart()
 	g_SDKFastBuild = EndPrepSDKCall();
 	if(!IsValidHandle(g_SDKFastBuild))
 		PrintToServer("CustomAttrs | Fastbuild signature not found.");
-
-	//Scattergun Proper Clip Replacement
-	Handle g_DHookScattergunReload = DHookCreateFromConf(hConf, "CTFScatterGun::FinishReload()");
-	
-	if(!IsValidHandle(g_DHookScattergunReload))
-		PrintToServer("CustomAttrs | Scattergun Clip Replacement function error");
-	else
-		DHookEnableDetour(g_DHookScattergunReload, false, OnScattergunReload);
 	
 	//Post finish reload
 	Handle g_DHookFinishReload = DHookCreateFromConf(hConf, "CTFWeaponBase::FinishReload()");
@@ -448,7 +440,7 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | g_DHookOnBulletTrace fucked up.");
 	else
 		DHookEnableDetour(g_DHookOnBulletTrace, false, OnBulletTrace);
-
+	
 	
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	delete hConf;
