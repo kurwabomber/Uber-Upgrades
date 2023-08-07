@@ -582,17 +582,9 @@ public MenuHandler_ConfirmNewWeapon(Handle menu, MenuAction:action, client, para
 {
 	if (action == MenuAction_Select)
 	{
-		param2 = buyableIndexOffParam[client][param2]
-		if (CurrencyOwned[client] >= upgrades_weapon_cost[param2] && client_spent_money[client][3] == 0.0 && currentitem_level[client][3] != 242)
-		{
-			Menu_ConfirmWeapon(client,param2)
-			upgrades_weapon_lookingat[client] = param2
-		}
-		else
-		{
-			PrintToChat(client, "You don't have enough money or you already a weapon in slot 3.");
-			EmitSoundToClient(client, SOUND_FAIL);
-		}
+		param2 = buyableIndexOffParam[client][param2];
+		Menu_ConfirmWeapon(client,param2);
+		upgrades_weapon_lookingat[client] = param2;
 	}
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
 		Menu_BuyUpgrade(client, 7);
@@ -619,7 +611,7 @@ public MenuHandler_BuyNewWeapon(Handle menu, MenuAction:action, client, param2)
 		}
 		else
 		{
-			PrintToChat(client, "You don't have enough money or you already a weapon in slot 3.");
+			PrintToChat(client, "You don't have enough money to buy this custom weapon.");
 			EmitSoundToClient(client, SOUND_FAIL);
 		}
 	}
