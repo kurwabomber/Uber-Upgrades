@@ -127,6 +127,10 @@ public MenuHandler_ArcaneCast(Handle menu, MenuAction:action, client, param2)
 			{
 				CastSplittingThunder(client, param2);
 			}
+			case 22.0:
+			{
+				CastAntisepticBlast(client, param2);
+			}
 			default:
 			{
 				PrintHintText(client, "Sorry, we havent implemented this yet!");
@@ -255,6 +259,10 @@ public Action:Command_UseArcane(client, args)
 		case 21.0:
 		{
 			CastSplittingThunder(client, param2);
+		}
+		case 22.0:
+		{
+			CastAntisepticBlast(client, param2);
 		}
 		default:
 		{
@@ -396,6 +404,77 @@ CastDarkmoonBlade(client, attuneSlot)
 	DarkmoonBlade[client] = (10.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 4.5));
 	DarkmoonBladeLevel[client] = spellLevel;
 	DarkmoonBladeDuration[client] = currentGameTime + 20.0*ArcanePower[client];
+}
+CastAntisepticBlast(client, attuneSlot)
+{
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane antiseptic blast", 0.0));
+	if(spellLevel < 1)
+		return;
+
+	if(applyArcaneRestrictions(client, attuneSlot, 400.0 + (120.0 * ArcaneDamage[client]), 120.0))
+		return; 
+	
+	float clientpos[3], soundPos[3], clientAng[3];
+	TracePlayerAim(client, clientpos);
+	
+	float splashRadius[] = {0.0,200.0,350.0,500.0}
+	float aimAssist[] = {0.0,10.0,20.0,40.0}//In degrees
+
+	for(int i=1;i<MaxClients;i++)
+	{
+		if(!IsValidClient3(i))
+			continue;
+		
+		if(!IsOnDifferentTeams(client,i))
+			continue;
+		
+		if(!IsTargetInSightRange(client, i, aimAssist[spellLevel], 6000.0, true, false))
+			continue;
+
+		if(!IsAbleToSee(client,i, false))
+			continue;
+			
+		GetClientEyePosition(i,clientpos);
+		break;
+	}
+	
+	GetClientEyePosition(client, soundPos);
+	GetClientEyeAngles(client, clientAng);
+	EmitSoundToAll(SOUND_ARCANESHOOT, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
+	// define the direction of the sparks
+	float dir[3] = {0.0, 0.0, 0.0};
+	
+	TE_SetupEnergySplash(clientpos, dir, false);
+	TE_SendToAll();
+	
+	TE_SetupSparks(clientpos, dir, 5000, 1000);
+	TE_SendToAll();
+
+	CreateParticle(-1, "mvm_soldier_shockwave", _, _, 2.0, clientpos);
+
+	float LightningDamage = (15000.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 2000.0));
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "*")) != -1)
+	{
+		if(!IsValidForDamage(i))
+			continue;
+		if(!IsOnDifferentTeams(client,i))
+			continue;
+
+		float VictimPos[3];
+		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+		VictimPos[2] += 30.0;
+		float Distance = GetVectorDistance(clientpos,VictimPos);
+
+		if(Distance > splashRadius[spellLevel])
+			continue;
+
+		if(!IsPointVisible(clientpos,VictimPos))
+			continue;
+
+
+		SDKHooks_TakeDamage(i,client,client,LightningDamage * (1.0 + 0.5*GetAmountOfDebuffs(i)),1073741824,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
+	}
 }
 CastInfernalEnchantment(client, attuneSlot)
 {

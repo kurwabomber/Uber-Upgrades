@@ -140,6 +140,34 @@ public void giveDefenseBuff(int client, float duration){
 	defenseBuff.multiplicativeDamageTaken = 0.65;
 	insertBuff(client, defenseBuff);
 }
+public int GetAmountOfDebuffs(int i){
+	if(!IsValidClient3(i))
+		return 0;
+	
+	int amount = 0;
+	if(TF2_IsPlayerInCondition(i, TFCond_Slowed))
+		++amount;
+	if(TF2_IsPlayerInCondition(i, TFCond_Dazed))
+		++amount;
+	if(TF2_IsPlayerInCondition(i, TFCond_OnFire))
+		++amount;
+	if(miniCritStatusVictim[i]-currentGameTime > 0.0)
+		++amount;
+	if(TF2_IsPlayerInCondition(i, TFCond_Bleeding))
+		++amount;
+	if(MadmilkDuration[i] > currentGameTime)
+		++amount;
+	if(TF2_IsPlayerInCondition(i, TFCond_Sapped))
+		++amount;
+	if(TF2_IsPlayerInCondition(i, TFCond_FreezeInput))
+		++amount;
+	if(TF2_IsPlayerInCondition(i, TFCond_HealingDebuff))
+		++amount;
+	if(TF2_IsPlayerInCondition(i, TFCond_Gas))
+		++amount;
+		
+	return amount;
+}
 public void ManagePlayerBuffs(int i){
 	float additiveDamageRawBuff;
 	float additiveDamageMultBuff = 1.0;

@@ -323,7 +323,6 @@ public void OnPluginStart()
 	else
 		DHookEnableDetour(g_DHookSentryThink, false, OnSentryThink);
 
-
 	//disable bot jumping
 	Handle g_DHookPlayerLocomotionJump = DHookCreateFromConf(hConf, "PlayerLocomotion::Jump()");
 	
@@ -434,7 +433,7 @@ public void OnPluginStart()
 	else
 		DHookEnableDetour(g_DHookOnAirblast, true, OnAirblast);
 
-	//On Bullet Trace
+	//On Bullet Trace (THIS IS THE ONE THAT CRASHES ON UNLOAD)
 	Handle g_DHookOnBulletTrace = DHookCreateFromConf(hConf, "CBaseEntity::DispatchTraceAttack()");
 	if(!IsValidHandle(g_DHookOnBulletTrace))
 		PrintToServer("CustomAttrs | g_DHookOnBulletTrace fucked up.");

@@ -2710,23 +2710,19 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 			if(getWeaponSlot(client,CWeapon) == 2)
 			{
 				bool flag = true;
+				float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
+				if(ballCheck == 0.0)
+					ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
 
-				if(meleeLimiter[client] % 2 == 0)
+				int a = GetCarriedAmmo(client, 2)
+				if(a > 0)
 				{
-					float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
-					if(ballCheck == 0.0)
-						ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
+					if(ballCheck == 10.0)
+						SDKCall(g_SDKCallLaunchBall, CWeapon);
 
-					int a = GetCarriedAmmo(client, 2)
-					if(a > 0)
-					{
-						if(ballCheck == 10.0)
-							SDKCall(g_SDKCallLaunchBall, CWeapon);
-
-						//Calc crit is called within ball creation
-						meleeLimiter[client] = 0;
-						flag = false;
-					}
+					//Calc crit is called within ball creation
+					meleeLimiter[client] = 0;
+					flag = false;
 				}
 				if(flag)
 				{
