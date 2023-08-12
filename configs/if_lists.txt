@@ -70,7 +70,6 @@
 				"Attr0"		"Arcane - A Call Beyond"
 				"Attr1"		"Arcane - Infernal Enchantment"
 				"Attr2"		"Arcane - Splitting Thunder"
-				"Attr3"		"Arcane - Antiseptic Blast"
 			}
 		}
 		"Powerup Upgrades"

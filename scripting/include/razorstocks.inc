@@ -25,6 +25,7 @@ Yeah.
 #define DMG_ARCANE 1 << 2
 #define DMG_MINICRIT 1 << 3
 #define DMG_ACTUALCRIT 1 << 4
+#define DMG_FROST 1 << 5
 
 //Uber Stuff
 #define UBER_INVULN 1 << 0

@@ -131,6 +131,14 @@ public MenuHandler_ArcaneCast(Handle menu, MenuAction:action, client, param2)
 			{
 				CastAntisepticBlast(client, param2);
 			}
+			case 23.0:
+			{
+				CastKarmicJustice(client, param2);
+			}
+			case 24.0:
+			{
+				CastSnowstorm(client, param2);
+			}
 			default:
 			{
 				PrintHintText(client, "Sorry, we havent implemented this yet!");
@@ -263,6 +271,14 @@ public Action:Command_UseArcane(client, args)
 		case 22.0:
 		{
 			CastAntisepticBlast(client, param2);
+		}
+		case 23.0:
+		{
+			CastKarmicJustice(client, param2);
+		}
+		case 24.0:
+		{
+			CastSnowstorm(client, param2);
 		}
 		default:
 		{
@@ -452,7 +468,7 @@ CastAntisepticBlast(client, attuneSlot)
 
 	CreateParticle(-1, "mvm_soldier_shockwave", _, _, 2.0, clientpos);
 
-	float LightningDamage = (15000.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 2000.0));
+	float LightningDamage = (15000.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 400.0));
 	int i = -1;
 	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
@@ -472,9 +488,73 @@ CastAntisepticBlast(client, attuneSlot)
 		if(!IsPointVisible(clientpos,VictimPos))
 			continue;
 
-
 		SDKHooks_TakeDamage(i,client,client,LightningDamage * (1.0 + 0.5*GetAmountOfDebuffs(i)),1073741824,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 	}
+}
+CastSnowstorm(client, attuneSlot){
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane snowstorm", 0.0));
+	if(spellLevel < 1)
+		return;
+
+	if(applyArcaneRestrictions(client, attuneSlot, 5.0, 1.0))
+		return;
+
+	if(snowstormActive[client]){
+		int particleEffect = EntRefToEntIndex(snowstormParticle[client]);
+		if(IsValidEntity(particleEffect)){
+			SetVariantString("ParticleEffectStop");
+			AcceptEntityInput(particleEffect, "DispatchEffect");
+			RemoveEdict(particleEffect);
+		}
+		snowstormActive[client] = false;
+	}else{
+		snowstormParticle[client] = EntIndexToEntRef(CreateParticle(client, "utaunt_snowring_icy_parent", true, _, 0.0));
+		snowstormActive[client] = true;
+	}
+}
+CastKarmicJustice(client, attuneSlot){
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane karmic justice", 0.0));
+	if(spellLevel < 1)
+		return;
+
+	if(applyArcaneRestrictions(client, attuneSlot, 60.0 + (40.0 * ArcaneDamage[client]), 30.0))
+		return;
+
+	karmicJusticeScaling[client] = 4.0;
+	int args[1];args[0] = EntIndexToEntRef(client);
+	SetPawnTimer(FinishKarmicJustice, 8.0, args, 1);
+	CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 7.0);
+}
+FinishKarmicJustice(client){
+	client = EntRefToEntIndex(client)
+	if(IsValidClient3(client) && IsPlayerAlive(client) && karmicJusticeScaling[client] > 0.0){
+		KarmicJusticeExplosion(client);
+	}
+}
+KarmicJusticeExplosion(client){
+	int spellLevel = RoundToNearest(GetAttribute(client, "arcane karmic justice", 0.0));
+	if(spellLevel < 1)
+		return;
+
+	float damageDealt = (500.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * karmicJusticeScaling[client]));
+	float explosionRadius[] = {0.0, 500.0, 1000.0, 1250.0};
+	float pos[3];
+	GetEntPropVector(client, Prop_Data, "m_vecOrigin", pos);
+	EntityExplosion(client, damageDealt, explosionRadius[spellLevel], pos, 1, _, client);
+	CreateParticleEx(client, "drg_cow_explosioncore_charged_blue", -1, -1, pos);
+	CreateParticleEx(client, "rd_robot_explosion", -1, -1, pos);
+
+	for(int i = 1; i<=MaxClients; ++i){
+		if(!IsValidClient(i))
+			continue;
+
+		new flags = GetCommandFlags("shake");
+		SetCommandFlags("shake", flags & ~FCVAR_CHEAT);
+		FakeClientCommand(i, "shake");
+		SetCommandFlags("shake", flags);
+	}
+
+	karmicJusticeScaling[client] = 0.0;
 }
 CastInfernalEnchantment(client, attuneSlot)
 {
@@ -484,7 +564,6 @@ CastInfernalEnchantment(client, attuneSlot)
 
 	if(applyArcaneRestrictions(client, attuneSlot, 400.0 + (120.0 * ArcaneDamage[client]), 50.0))
 		return; 
-	
 	
 	int args[2];args[0] = EntIndexToEntRef(client);args[1] = spellLevel;
 	SetPawnTimer(FinishCastInfernalEnchantment, 2.0, args, 2);
@@ -511,11 +590,14 @@ CastSplittingThunder(client, attuneSlot)
 	
 	int args[2];args[0] = EntIndexToEntRef(client);args[1] = spellLevel;
 	SetPawnTimer(FinishCastSplittingThunder, 5.0, args, 2);
+	CreateParticleEx(client, "utaunt_electricity_discharge");
+	CreateParticleEx(client, "utaunt_electricity_purple_discharge");
 }
 FinishCastSplittingThunder(int client, int spellLevel)
 {
 	client = EntRefToEntIndex(client)
 	if(IsValidClient3(client) && IsPlayerAlive(client)){
+		CreateParticleEx(client, "utaunt_lightning_parent", _, _, _, 2.0);
 		int projCount[] = {0,5,7,10};
 		for(int i = 0;i<projCount[spellLevel];++i)
 		{

@@ -71,6 +71,9 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
 				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
 					damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
+				if(currentDamageType[attacker].second & DMG_FROST)
+					TF2_StunPlayer(victim, 2.0, 0.6, TF_STUNFLAG_SLOWDOWN | TF_STUNFLAG_NOSOUNDOREFFECT, attacker);
+				
 				else if(DarkmoonBladeDuration[attacker] > currentGameTime)
 				{
 					int melee = GetWeapon(attacker,2);

@@ -215,6 +215,7 @@ int armorTicks[MAXPLAYERS+1];
 int LightningEnchantmentLevel[MAXPLAYERS+1];
 int DarkmoonBladeLevel[MAXPLAYERS+1];
 int InfernalEnchantmentLevel[MAXPLAYERS+1];
+int snowstormParticle[MAXPLAYERS+1];
 
 //Floats
 float currentGameTime
@@ -289,6 +290,7 @@ float entitySpawnPositions[MAXENTITIES][3];
 float baseDamage[MAXPLAYERS+1];
 float remainderHealthRegeneration[MAXPLAYERS+1];
 float armorWeaknessRatio[MAXPLAYERS+1];
+float karmicJusticeScaling[MAXPLAYERS+1];
 
 //String
 char given_upgrd_classnames[LISTS][LISTS_CATEGORIES][128]
@@ -333,6 +335,7 @@ bool isTagged[MAXPLAYERS+1][MAXPLAYERS+1];
 bool isPenetrated[MAXENTITIES+1];
 bool canOverride[MAXPLAYERS+1];
 bool isPrimed[MAXENTITIES+1];
+bool snowstormActive[MAXPLAYERS+1];
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]

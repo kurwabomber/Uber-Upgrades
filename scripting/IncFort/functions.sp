@@ -252,6 +252,9 @@ public void ManagePlayerBuffs(int i){
 	if(InfernalEnchantmentDuration[i] > currentGameTime){
 		Format(details, sizeof(details), "%s\nInfernal Enchantment | %.2fs | +%s Infernal DPS", details, InfernalEnchantmentDuration[i] - currentGameTime, GetAlphabetForm(InfernalEnchantment[i]));
 	}
+	if(karmicJusticeScaling[i]){
+		Format(details, sizeof(details), "%s\nKarmic Justice | %.2f Scaling", details, karmicJusticeScaling[i]);
+	}
 
 	float ArmorRechargeMult = 1.0;
 	fl_ArmorRegenConstant[i] = 0.0;
@@ -1039,7 +1042,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 228,1085:
 		{
-			ChangeString = "The Black Box | Applies afterburn to enemies.";
+			ChangeString = "The Black Box | Applies afterburn to enemies. +1 rocket per shot but 2x slower fire rate.";
 		}
 		case 414:
 		{

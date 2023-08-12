@@ -128,6 +128,22 @@ public Action:Timer_FixedVariables(Handle timer)
 			}
 		}
 
+		if(snowstormActive[client]){
+			int spellLevel = RoundToNearest(GetAttribute(client, "arcane snowstorm", 0.0));
+			if(spellLevel >= 1){
+				float ratio = fl_CurrentFocus[client]/fl_MaxFocus[client];
+
+				if(ratio >= 0.005){
+					float damageDealt = (70.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 90.0)) * ArcanePower[client];
+					float explosionRadius[] = {0.0, 600.0, 900.0, 1500.0};
+					float pos[3];
+					GetEntPropVector(client, Prop_Data, "m_vecOrigin", pos);
+					EntityExplosion(client, damageDealt, explosionRadius[spellLevel], pos, -1, false, client, _, _, _, _, _, _, _, DMG_FROST);
+					fl_CurrentFocus[client] -= fl_MaxFocus[client]*0.005/ArcanePower[client];
+				}
+			}
+		}
+
 		if(IsFakeClient(client))
 			continue;
 
@@ -631,8 +647,6 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 									float rad=float(i*10)/360.0*(3.14159265*2);
 									tempdiameter=sphereRadius*Cosine(rad)*2;
 									float heightoffset=sphereRadius*Sine(rad);
-
-									//PrintToChatAll("degree %d rad %f sin %f cos %f radius %f offset %f",i*10,rad,Sine(rad),Cosine(rad),radius,heightoffset);
 
 									float origin[3];
 									origin[0]=ClientPos[0];

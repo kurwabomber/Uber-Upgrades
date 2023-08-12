@@ -63,6 +63,15 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		}
 	}
 	float armorLoss = damage/fl_ArmorRes[client];
+
+	if(karmicJusticeScaling[client]){
+		karmicJusticeScaling[client] += 400.0*armorLoss/fl_MaxArmor[client];
+		if(karmicJusticeScaling[client] >= 280.0){
+			karmicJusticeScaling[client] = 280.0;
+			KarmicJusticeExplosion(client);
+		}
+	}
+
 	if(IsValidClient3(attacker))
 	{
 		if(TF2_IsPlayerInCondition(attacker, TFCond_CritCanteen))
@@ -1387,6 +1396,19 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 
 	CancelClientMenu(client);
 	clearAllBuffs(client);
+
+	if(snowstormActive[client]){
+		int particleEffect = EntRefToEntIndex(snowstormParticle[client]);
+		if(IsValidEntity(particleEffect)){
+			SetVariantString("ParticleEffectStop");
+			AcceptEntityInput(particleEffect, "DispatchEffect");
+			RemoveEdict(particleEffect);
+		}
+		snowstormActive[client] = false;
+	}
+
+	karmicJusticeScaling[client] = 0.0;
+
 	if(IsValidEdict(autoSentryID[client]) && autoSentryID[client] > 32)
 	{
 		RemoveEntity(autoSentryID[client]);
@@ -3327,6 +3349,15 @@ public OnClientDisconnect(client)
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
 	clearAllBuffs(client);
+	if(snowstormActive[client]){
+		int particleEffect = EntRefToEntIndex(snowstormParticle[client]);
+		if(IsValidEntity(particleEffect)){
+			SetVariantString("ParticleEffectStop");
+			AcceptEntityInput(particleEffect, "DispatchEffect");
+			RemoveEdict(particleEffect);
+		}
+		snowstormActive[client] = false;
+	}
 
 	int i;
 	for(i = 0; i < Max_Attunement_Slots; i++)
@@ -3445,6 +3476,15 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 		{
 			corrosiveDOT[client][i][0] = 0.0;
 			corrosiveDOT[client][i][1] = 0.0;
+		}
+		if(snowstormActive[client]){
+			int particleEffect = EntRefToEntIndex(snowstormParticle[client]);
+			if(IsValidEntity(particleEffect)){
+				SetVariantString("ParticleEffectStop");
+				AcceptEntityInput(particleEffect, "DispatchEffect");
+				RemoveEdict(particleEffect);
+			}
+			snowstormActive[client] = false;
 		}
 	}
 	if(!IsMvM() && IsFakeClient(client))
