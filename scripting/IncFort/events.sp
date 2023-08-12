@@ -567,7 +567,7 @@ public MRESReturn OnBulletTrace(int victim, Handle hParams){
 			float dragonBullet = GetAttribute(weapon, "dragon bullets radius", 0.0);
 			if(dragonBullet){
 				EntityExplosion(attacker, info.m_flDamage * TF2_GetDamageModifiers(attacker, weapon, _, false), dragonBullet, endpos, _, _, _, _, _, weapon, 0.3, _, true);
-				CreateParticleEx(-1, "heavy_ring_of_fire", _, _, endpos);
+				CreateParticleEx(-1, "heavy_ring_of_fire", -1, -1, endpos);
 			}
 		}
 	}
@@ -2719,9 +2719,6 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 				{
 					if(ballCheck == 10.0)
 						SDKCall(g_SDKCallLaunchBall, CWeapon);
-
-					//Calc crit is called within ball creation
-					meleeLimiter[client] = 0;
 					flag = false;
 				}
 				if(flag)
@@ -2828,17 +2825,6 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 					}
 				}
 			}
-		}
-
-		Address meleeAttacks = TF2Attrib_GetByName(CWeapon, "duck rating");
-		if(meleeAttacks != Address_Null && meleeLimiter[client] > RoundToNearest(TF2Attrib_GetValue(meleeAttacks) * 2.0))
-		{
-			Handle hPack = CreateDataPack();
-			WritePackCell(hPack, EntIndexToEntRef(client));
-			WritePackCell(hPack, EntIndexToEntRef(CWeapon));
-			WritePackCell(hPack, RoundToNearest(TF2Attrib_GetValue(meleeAttacks)));
-			CreateTimer(0.1,AttackTwice,hPack);
-			meleeLimiter[client] = 0;
 		}
 		Address tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
 		if(LastCharge[client] >= 150.0 && tracer != Address_Null && TF2Attrib_GetValue(tracer) == 1.0)
@@ -2989,45 +2975,42 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 				}
 				case 41.0:
 				{
-					if(meleeLimiter[client] >= 2)
+					meleeLimiter[client] = 0;
+					int iEntity = CreateEntityByName("tf_projectile_cleaver");
+					if (IsValidEdict(iEntity)) 
 					{
-						meleeLimiter[client] = 0;
-						int iEntity = CreateEntityByName("tf_projectile_cleaver");
-						if (IsValidEdict(iEntity)) 
-						{
-							int iTeam = GetClientTeam(client);
-							GetClientEyePosition(client, fOrigin);
-							GetClientEyeAngles(client, fAngles);
-							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-							fAngles[2] = 90.0;
-							fVelocity[0] = vBuffer[0]*3000.0;
-							fVelocity[1] = vBuffer[1]*3000.0;
-							fVelocity[2] = vBuffer[2]*3000.0;
+						int iTeam = GetClientTeam(client);
+						GetClientEyePosition(client, fOrigin);
+						GetClientEyeAngles(client, fAngles);
+						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+						fAngles[2] = 90.0;
+						fVelocity[0] = vBuffer[0]*3000.0;
+						fVelocity[1] = vBuffer[1]*3000.0;
+						fVelocity[2] = vBuffer[2]*3000.0;
 
-							ScaleVector(vBuffer, 75.0);
-							AddVectors(fOrigin, vBuffer, fOrigin);
+						ScaleVector(vBuffer, 75.0);
+						AddVectors(fOrigin, vBuffer, fOrigin);
 
-							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-							SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
-							SetEntProp(iEntity, Prop_Send, "m_bCritical", 1);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+						SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+						SetEntProp(iEntity, Prop_Send, "m_bCritical", 1);
 
-							TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
-							DispatchSpawn(iEntity);
-							Phys_EnableGravity(iEntity, false);
-							Phys_EnableDrag(iEntity, false);
-							//Set Thrower is used in init.
-							float impulse[3];
-							GetCleaverAngularImpulse(impulse);
-							isProjectileBoomerang[iEntity] = true;
-							
-							SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, impulse, client, 50, 146.0);
+						TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
+						DispatchSpawn(iEntity);
+						Phys_EnableGravity(iEntity, false);
+						Phys_EnableDrag(iEntity, false);
+						//Set Thrower is used in init.
+						float impulse[3];
+						GetCleaverAngularImpulse(impulse);
+						isProjectileBoomerang[iEntity] = true;
+						
+						SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, impulse, client, 50, 146.0);
 
-							SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchBoomerang);
+						SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchBoomerang);
 
-							SetEntityModel(iEntity, "models/weapons/c_models/c_croc_knife/c_croc_knife.mdl");
-						}
+						SetEntityModel(iEntity, "models/weapons/c_models/c_croc_knife/c_croc_knife.mdl");
 					}
 				}
 				case 42.0:

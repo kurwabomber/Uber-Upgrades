@@ -433,7 +433,7 @@ public void OnPluginStart()
 	else
 		DHookEnableDetour(g_DHookOnAirblast, true, OnAirblast);
 
-	//On Bullet Trace (THIS IS THE ONE THAT CRASHES ON UNLOAD)
+	//On Bullet Trace (THIS HAS A CONFLICT WITH RAFMOD?)
 	Handle g_DHookOnBulletTrace = DHookCreateFromConf(hConf, "CBaseEntity::DispatchTraceAttack()");
 	if(!IsValidHandle(g_DHookOnBulletTrace))
 		PrintToServer("CustomAttrs | g_DHookOnBulletTrace fucked up.");

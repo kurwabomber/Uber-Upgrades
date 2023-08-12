@@ -77,8 +77,10 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 	if(m_iAttachType != -1){
 		TE_WriteNum("m_iAttachType", m_iAttachType);
 		TE_WriteNum("m_iAttachmentPointIndex", m_iAttachmentPointIndex);
+	}else{
+		TE_WriteNum("m_iAttachType", 2);
 	}
-	if(IsValidEntity(iEntity)){
+	if(iEntity != -1 && IsValidEntity(iEntity)){
 		TE_WriteNum("entindex", iEntity);
 		if(time > 0.0){
 			Handle pack;
