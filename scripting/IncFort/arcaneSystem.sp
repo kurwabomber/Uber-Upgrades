@@ -567,14 +567,16 @@ CastInfernalEnchantment(client, attuneSlot)
 	
 	int args[2];args[0] = EntIndexToEntRef(client);args[1] = spellLevel;
 	SetPawnTimer(FinishCastInfernalEnchantment, 2.0, args, 2);
+	CreateParticleEx(client, "spell_cast_wheel_red", _, _, _, 1.6);
 }
 FinishCastInfernalEnchantment(int client, int spellLevel)
 {
 	client = EntRefToEntIndex(client)
 	if(IsValidClient3(client) && IsPlayerAlive(client)){
-		InfernalEnchantment[client] = (10000.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 500.0));
+		InfernalEnchantment[client] = (10000.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 100.0));
 		InfernalEnchantmentLevel[client] = spellLevel;
 		InfernalEnchantmentDuration[client] = currentGameTime + 30.0*ArcanePower[client];
+		CreateParticleEx(client, "utaunt_auroraglow_orange_parent", _, _, _, 30.0*ArcanePower[client]);
 	}
 }
 
