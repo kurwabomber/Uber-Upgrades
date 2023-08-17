@@ -168,7 +168,6 @@ public Action:Timer_FixedVariables(Handle timer)
 				}
 			}
 
-			SetEntProp(client, Prop_Send, "m_nCurrency", 0);
 			char ArmorLeft[64]
 			if(IsValidEdict(CWeapon))
 			{
@@ -1055,8 +1054,94 @@ public Action:Timer_KillLaser(Handle timer, int entity)
 	TE_SendToAll();
 	return Plugin_Stop;
 }
+public Action Timer_DelayedRespawn(Handle timer, int client){
+	client = EntRefToEntIndex(client);
+	if(IsValidClient3(client))
+		TF2_RegeneratePlayer(client);
+
+	return Plugin_Stop;
+}
+public Action MissionLoaded(Handle timer){
+	for(int i = 1;i<=MaxClients;++i){
+		client_respawn_checkpoint[i] = false;
+		if(IsValidClient(i)){
+			StartMoney = float(GetEntProp(i, Prop_Send, "m_nCurrency"));
+			CurrencyOwned[i] = (StartMoney + additionalstartmoney);
+		}
+	}
+	PrintToServer("%.2f Startmoney", StartMoney);
+
+	if(StrContains(missionName, "IF", false) != -1)
+	{
+		if(StrContains(missionName, "_Boss_Rush", false) != -1)
+		{
+			DefenseMod = 2.35;
+			DamageMod = 2.55;
+			DefenseIncreasePerWaveMod = 0.03;
+			OverallMod = 1.8;
+			PrintToServer("IF | Set Mission to Boss Rush");
+		}
+		else if(StrContains(missionName, "_Defend", false) != -1)
+		{
+			DefenseMod = 2.55;
+			DamageMod = 2.55;
+			DefenseIncreasePerWaveMod = 0.03;
+			OverallMod = 1.8;
+			PrintToServer("IF | Set Mission to Defend");
+		}
+		else if(StrContains(missionName, "_Extreme", false) != -1)
+		{
+			DefenseMod = 2.35;
+			DamageMod = 2.55;
+			DefenseIncreasePerWaveMod = 0.03;
+			OverallMod = 1.35;
+			PrintToServer("IF | Set Mission to Extreme");
+		}
+		else if(StrContains(missionName, "_Hard", false) != -1)
+		{
+			DefenseMod = 2.35;
+			DamageMod = 2.55;
+			DefenseIncreasePerWaveMod = 0.03;
+			OverallMod = 1.1;
+			PrintToServer("IF | Set Mission to Hard");
+		}
+		else if(StrContains(missionName, "_Intermediate", false) != -1)
+		{
+			DefenseMod = 2.0;
+			DamageMod = 2.3;
+			DefenseIncreasePerWaveMod = 0.015;
+			OverallMod = 1.5;
+			PrintToServer("IF | Set Mission to Intermediate");
+		}
+		else if(StrContains(missionName, "_Rush", false) != -1)
+		{
+			DefenseMod = 2.35;
+			DamageMod = 2.55;
+			DefenseIncreasePerWaveMod = 0.03;
+			OverallMod = 1.1;
+			PrintToServer("IF | Set Mission to Rush");
+		}
+		else if(StrContains(missionName, "_Survival", false) != -1)
+		{
+			DefenseMod = 2.35;
+			DamageMod = 2.55;
+			DefenseIncreasePerWaveMod = 0.03;
+			OverallMod = 1.5;
+			PrintToServer("IF | Set Mission to Survival");
+		}
+		else
+		{
+			DefenseMod = 1.75;
+			DamageMod = 2.1;
+			DefenseIncreasePerWaveMod = 0.0;
+			OverallMod = 1.0;
+			PrintToServer("IF | Set Mission to Default");
+		}
+	}
+	return Plugin_Stop;
+}
 //On a wave fail:
-public Action:THEREWILLBEBLOOD(Handle timer)
+public Action WaveFailed(Handle timer)
 {
     int ent, round
 
@@ -1110,6 +1195,7 @@ public Action:THEREWILLBEBLOOD(Handle timer)
 			PrintToServer("%.0f Start Money.", StartMoney + additionalstartmoney);
 		}
 	}
+	return Plugin_Stop;
 }
 public Action:RemoveFire(Handle timer, any:data)
 {
@@ -1125,54 +1211,6 @@ public Action:RemoveFire(Handle timer, any:data)
 		RPS[client] = 0.0;
 	}
 	CloseHandle(data);
-}
-public Action:LockMission(Handle timer)
-{
-	char responseBuffer[2048];
-	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
-	if(IsValidEntity(ObjectiveEntity)){
-		GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
-		PrintToServer("%s mission",responseBuffer);
-		if(StrContains(responseBuffer, "if", false) != -1)
-		{
-			PrintToServer("Is on a IF mission.");
-			return Plugin_Stop;
-		}
-		char mapName[64];
-		GetCurrentMap(mapName, sizeof(mapName));
-		StrCat(mapName, sizeof(mapName),"_if_normal");
-		ServerCommand("tf_mvm_popfile %s", mapName);
-		PrintToServer("Mission was changed to something not Incremental Fortress!");
-		CPrintToChatAll("{valve}Incremental Fortress {white}| {red}WARNING {white}| You must choose a mission that is made for Incremental Fortress.");
-	}
-	return Plugin_Stop;
-}
-public Action:ResetMission(Handle timer)
-{
-	bool resetMission = true;
-	for(int i = 1;i<MaxClients;i++)
-	{
-		if(IsClientInGame(i))
-		{
-			resetMission = false;
-		}
-	}
-	if(resetMission)
-	{
-		char mapName[64]
-		GetCurrentMap(mapName, sizeof(mapName))
-		StrCat(mapName, sizeof(mapName),"_IF");
-		ServerCommand("tf_mvm_popfile %s", mapName)
-		PrintToServer("Everyone left! Time to restart everything.");
-		additionalstartmoney = 0.0
-		StartMoney = GetConVarFloat(cvar_StartMoney);
-		OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
-		for (int client = 0; client < MaxClients; client++)
-		{
-			CurrencyOwned[client] = (StartMoney + additionalstartmoney);
-		}
-		DeleteSavedPlayerData();
-	}
 }
 public Action:WeaponReGiveUpgrades(Handle timer, any:userid)
 {

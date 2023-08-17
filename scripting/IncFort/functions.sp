@@ -3072,7 +3072,7 @@ SentryDelay(entity)
 		}
 	}
 }*/
-public int getClientParticleStatus(int array[33], int client){
+public int getClientParticleStatus(int array[MAXPLAYERS+1], int client){
 	bool particleEnabler = false;
 	if(AreClientCookiesCached(client)){
 		char particleEnabled[64];
@@ -3872,6 +3872,9 @@ ResetVariables(){
 		baseDamage[client] = 0.0;
 		remainderHealthRegeneration[client] = 0.0;
 		armorWeaknessRatio[client] = 0.0;
+		InfernalEnchantmentDuration[client] = 0.0;
+		karmicJusticeScaling[client] = 0.0;
+		snowstormActive[client] = false;
 		for(int buffID = 0; buffID<MAXBUFFS; buffID++){
 			playerBuffs[client][buffID].clear();
 		}

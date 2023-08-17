@@ -572,6 +572,13 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 		if(jaratedIndex != -1){
 			SDKHooks_TakeDamage(victim,playerBuffs[victim][jaratedIndex].inflictor,playerBuffs[victim][jaratedIndex].inflictor,10.0*playerBuffs[victim][jaratedIndex].priority,DMG_DISSOLVE,-1,NULL_VECTOR,NULL_VECTOR);
 		}
+		if(IsValidWeapon(weapon)){
+			float DealsNoKBActive = GetAttribute(weapon, "apply z velocity on damage");
+			if(DealsNoKBActive == 3.0){
+				damagetype |= DMG_PREVENT_PHYSICS_FORCE;
+				ScaleVector(damageForce, 0.0);
+			}
+		}
 	}
 	lastDamageTaken[victim] = damage;
 	if(damage < 0.0)
@@ -1036,9 +1043,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			damage *= Pow(GetAttribute(weapon, "clip size bonus upgrade")+1.0, 0.9);
 			damagetype |= DMG_CRIT;
 		}
-		float DealsNoKBActive = GetAttribute(weapon, "apply z velocity on damage");
-		if(DealsNoKBActive == 3.0)
-			damagetype |= DMG_PREVENT_PHYSICS_FORCE;
 
 		float damageActive = GetAttribute(weapon, "ubercharge", 0.0);
 		if(damageActive != 0.0)

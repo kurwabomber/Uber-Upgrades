@@ -149,8 +149,8 @@ public UberShopinitMenusHandlers()
 	HookEvent("deploy_buff_banner",	Event_BuffDeployed);
 	HookEvent("mvm_pickup_currency", Event_PlayerCollectMoney);
 	HookEvent("mvm_reset_stats", Event_ResetStats);
-	HookEvent("mvm_begin_wave",Event_mvm_wave_begin)
-	HookEvent("mvm_wave_complete",Event_mvm_wave_complete);
+	HookEvent("mvm_begin_wave",Event_mvm_wave_begin);
+	HookEvent("mvm_wave_failed",Event_mvm_wave_failed);
 	HookEvent("player_builtobject", Event_ObjectBuilt);
 	HookEvent("mvm_mission_update",Event_ResetStats);
 	
@@ -439,7 +439,6 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | g_DHookOnBulletTrace fucked up.");
 	else
 		DHookEnableDetour(g_DHookOnBulletTrace, false, OnBulletTrace);
-	
 	
 	g_offset_CTFPlayerShared_pOuter = view_as<Address>(GameConfGetOffset(hConf, "CTFPlayerShared::m_pOuter"));
 	delete hConf;

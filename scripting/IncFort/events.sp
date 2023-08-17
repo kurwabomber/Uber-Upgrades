@@ -583,7 +583,7 @@ public MRESReturn OnBulletTrace(int victim, Handle hParams){
 	return MRES_Ignored;
 }
 public MRESReturn OnKnockbackApply(int client, Handle hParams) {
-	if(IsValidClient(client))
+	if(IsValidClient3(client))
 	{
 		float initKB[3];
 		DHookGetParamVector(hParams,1,initKB);
@@ -593,29 +593,34 @@ public MRESReturn OnKnockbackApply(int client, Handle hParams) {
 		}
 
 		float KBMult = GetAttributeAccumulateMultiplicative(client, "knockback resistance", 1.0);
-		if(KBMult == 1.0){
-			if(knockbackFlags[client] & 1<<0 && client == lastKBSource[client]){
-				if(knockbackFlags[client] & 1<<3){
-					initKB[0] *= KBMult;
-					initKB[1] *= KBMult;
-				}if(knockbackFlags[client] & 1<<4){
-					initKB[2] *= KBMult;
-				}
+		if(KBMult != 1.0){
+			if(IsFakeClient(client)){
+				ScaleVector(initKB, KBMult);
 			}
-			else if(knockbackFlags[client] & 1<<1 && client != lastKBSource[client]){
-				if(knockbackFlags[client] & 1<<3){
-					initKB[0] *= KBMult;
-					initKB[1] *= KBMult;
-				}if(knockbackFlags[client] & 1<<4){
-					initKB[2] *= KBMult;
+			else{
+				if(knockbackFlags[client] & 1<<0 && client == lastKBSource[client]){
+					if(knockbackFlags[client] & 1<<3){
+						initKB[0] *= KBMult;
+						initKB[1] *= KBMult;
+					}if(knockbackFlags[client] & 1<<4){
+						initKB[2] *= KBMult;
+					}
 				}
-			}
-			else if(knockbackFlags[client] & 1<<2 && lastKBSource[client] == 0){
-				if(knockbackFlags[client] & 1<<3){
-					initKB[0] *= KBMult;
-					initKB[1] *= KBMult;
-				}if(knockbackFlags[client] & 1<<4){
-					initKB[2] *= KBMult;
+				else if(knockbackFlags[client] & 1<<1 && client != lastKBSource[client]){
+					if(knockbackFlags[client] & 1<<3){
+						initKB[0] *= KBMult;
+						initKB[1] *= KBMult;
+					}if(knockbackFlags[client] & 1<<4){
+						initKB[2] *= KBMult;
+					}
+				}
+				else if(knockbackFlags[client] & 1<<2 && lastKBSource[client] == 0){
+					if(knockbackFlags[client] & 1<<3){
+						initKB[0] *= KBMult;
+						initKB[1] *= KBMult;
+					}if(knockbackFlags[client] & 1<<4){
+						initKB[2] *= KBMult;
+					}
 				}
 			}
 		}
@@ -1197,7 +1202,6 @@ public Event_PlayerChangeTeam(Handle event, const char[] name, bool:dontBroadcas
 public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 {	
 	PrintToServer("MvM reset stats????");
-	CreateTimer(0.2, LockMission);
 	additionalstartmoney = 0.0;
 	StartMoneySaved = 0.0;
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
@@ -1207,25 +1211,22 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 		{
 			int primary = (GetWeapon(client,0));
 			if(IsValidEdict(primary))
-			{
 				TF2Attrib_RemoveAll(primary);
-			}
+		
 			int secondary = (GetWeapon(client,1));
 			if(IsValidEdict(secondary))
-			{
 				TF2Attrib_RemoveAll(secondary);
-			}
+			
 			int melee = (GetWeapon(client,2));
 			if(IsValidEdict(melee))
-			{
 				TF2Attrib_RemoveAll(melee);
-			}
+			
+			ResetClientUpgrades(client)
 			TF2Attrib_RemoveAll(client);
 			current_class[client] = TF2_GetPlayerClass(client)
 			CancelClientMenu(client);
 			Menu_BuyUpgrade(client, 0);
-			ResetClientUpgrades(client)
-			TF2_RespawnPlayer(client);
+			CreateTimer(0.25, Timer_DelayedRespawn, EntIndexToEntRef(client));
 		}
 		CurrencySaved[client] = 0.0;
 		additionalstartmoney = 0.0;
@@ -1239,106 +1240,30 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 	additionalstartmoney = 0.0;
 	ResetVariables();
 	DeleteSavedPlayerData();
-
-	char responseBuffer[256];
-	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
-	if(IsValidEntity(ObjectiveEntity)){
-		GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", responseBuffer, sizeof(responseBuffer));
-		if(StrContains(responseBuffer, "IF", false) != -1)
-		{
-			if(StrContains(responseBuffer, "_Boss_Rush", false) != -1)
-			{
-				DefenseMod = 2.35;
-				DamageMod = 2.55;
-				DefenseIncreasePerWaveMod = 0.03;
-				OverallMod = 1.8;
-				PrintToServer("IF | Set Mission to Boss Rush");
-			}
-			else if(StrContains(responseBuffer, "_Defend", false) != -1)
-			{
-				DefenseMod = 2.55;
-				DamageMod = 2.55;
-				DefenseIncreasePerWaveMod = 0.03;
-				OverallMod = 1.8;
-				PrintToServer("IF | Set Mission to Defend");
-			}
-			else if(StrContains(responseBuffer, "_Extreme", false) != -1)
-			{
-				DefenseMod = 2.35;
-				DamageMod = 2.55;
-				DefenseIncreasePerWaveMod = 0.03;
-				OverallMod = 1.35;
-				PrintToServer("IF | Set Mission to Extreme");
-			}
-			else if(StrContains(responseBuffer, "_Hard", false) != -1)
-			{
-				DefenseMod = 2.35;
-				DamageMod = 2.55;
-				DefenseIncreasePerWaveMod = 0.03;
-				OverallMod = 1.1;
-				PrintToServer("IF | Set Mission to Hard");
-			}
-			else if(StrContains(responseBuffer, "_Intermediate", false) != -1)
-			{
-				DefenseMod = 2.0;
-				DamageMod = 2.3;
-				DefenseIncreasePerWaveMod = 0.015;
-				OverallMod = 1.5;
-				PrintToServer("IF | Set Mission to Intermediate");
-			}
-			else if(StrContains(responseBuffer, "_Rush", false) != -1)
-			{
-				DefenseMod = 2.35;
-				DamageMod = 2.55;
-				DefenseIncreasePerWaveMod = 0.03;
-				OverallMod = 1.1;
-				PrintToServer("IF | Set Mission to Rush");
-			}
-			else if(StrContains(responseBuffer, "_Survival", false) != -1)
-			{
-				DefenseMod = 2.35;
-				DamageMod = 2.55;
-				DefenseIncreasePerWaveMod = 0.03;
-				OverallMod = 1.5;
-				PrintToServer("IF | Set Mission to Survival");
-			}
-			else
-			{
-				DefenseMod = 1.75;
-				DamageMod = 2.1;
-				DefenseIncreasePerWaveMod = 0.0;
-				OverallMod = 1.0;
-				PrintToServer("IF | Set Mission to Default");
-			}
-		}
-	}
+	failLock = false;
 }
 public Event_mvm_wave_failed(Handle event, const char[] name, bool:dontBroadcast)
 {
-	if(isFailHooked == true)
-	{
-		UnhookEvent("mvm_wave_failed", Event_mvm_wave_failed)
-		isFailHooked = false;
-	}
-	CreateTimer(0.75, THEREWILLBEBLOOD);
-}
-public Event_mvm_wave_complete(Handle event, const char[] name, bool:dontBroadcast)
-{
-	if(isFailHooked == true)
-	{
-		UnhookEvent("mvm_wave_failed", Event_mvm_wave_failed)
-		isFailHooked = false;
+	char oldMission[512];
+	strcopy(oldMission, sizeof(oldMission), missionName);
+
+	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
+	if(IsValidEntity(ObjectiveEntity))
+		GetEntPropString(ObjectiveEntity, Prop_Send, "m_iszMvMPopfileName", missionName, sizeof(missionName));
+	PrintToServer("lol | %s | %s", oldMission, missionName);
+	
+	if(oldMission[0] != '\0' && StrEqual(oldMission, missionName) && failLock){
+		CreateTimer(0.2, WaveFailed);
+	}else{
+		PrintToServer("Mission Loaded");
+		CreateTimer(0.4, MissionLoaded);
 	}
 }
 public Event_mvm_wave_begin(Handle event, const char[] name, bool:dontBroadcast)
 {
 	int client, slot, a;
 	PrintToServer("mvm wave begin");
-	if(isFailHooked == false)
-	{
-		HookEvent("mvm_wave_failed", Event_mvm_wave_failed)
-		isFailHooked = true;
-	}
+	failLock = true;
 	for (client = 1; client < MaxClients; client++)
 	{
 		if(IsValidClient(client))
@@ -1548,6 +1473,142 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		}
 		if(TF2_IsPlayerInCondition(client, TFCond_Charging))
 			TF2_Override_ChargeSpeed(client);
+
+		if(powerupParticle[client] <= currentGameTime && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
+		{
+			
+			Address strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");
+			if(strengthPowerup != Address_Null && TF2Attrib_GetValue(strengthPowerup) > 0.0)
+			{
+				CreateParticle(client, "utaunt_tarotcard_orange_wind", true, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
+			if(resistancePowerup != Address_Null && TF2Attrib_GetValue(resistancePowerup) > 0.0)
+			{
+				CreateParticleEx(client, "soldierbuff_red_spikes", 1, _, _, 2.0);
+				powerupParticle[client] = currentGameTime+2.1;
+			}
+			Address vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
+			if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
+			{
+				CreateParticleEx(client, "utaunt_hellpit_parent", 1, _, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
+			if(regenerationPowerup != Address_Null && TF2Attrib_GetValue(regenerationPowerup) > 0.0)
+			{
+				int iTeam = GetClientTeam(client);
+				if(iTeam == 2)
+					CreateParticle(client, "medic_megaheal_red_shower", true, _, 5.0);
+				else
+					CreateParticle(client, "medic_megaheal_blue_shower", true, _, 5.0);
+				
+				powerupParticle[client] = currentGameTime+5.0;
+			}
+			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
+			if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
+			{
+				if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
+					CreateParticle(client, "eye_powerup_blue_lvl_4", true, "righteye", 5.0);
+				else
+					CreateParticle(client, "eye_powerup_blue_lvl_4", true, "eyeglow_R", 5.0);
+
+				powerupParticle[client] = currentGameTime+5.0;
+			}
+			Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");
+			if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
+			{
+				CreateParticleEx(client, "medic_resist_bullet", 1, _, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address knockoutPowerup = TF2Attrib_GetByName(client, "knockout powerup");
+			if(knockoutPowerup != Address_Null && TF2Attrib_GetValue(knockoutPowerup) > 0.0)
+			{
+				CreateParticleEx(client, "medic_resist_blast", 1, _, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
+			if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
+			{
+				int clientTeam = GetClientTeam(client);
+				float clientPos[3];
+				GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
+				Buff kingBuff;
+				kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
+				kingBuff.multiplicativeAttackSpeedMult = 1.33;
+				kingBuff.additiveDamageMult = 0.2;
+				for(int i = 1;i<MaxClients;i++)
+				{
+					if(IsValidClient3(i) && IsPlayerAlive(i))
+					{
+						int iTeam = GetClientTeam(i);
+						if(clientTeam == iTeam)
+						{
+							float VictimPos[3];
+							GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+							VictimPos[2] += 30.0;
+							float Distance = GetVectorDistance(clientPos,VictimPos);
+							if(Distance <= 600.0)
+							{
+								if(iTeam == 2)
+									CreateParticleEx(i, "powerup_king_red", 1, _, _, 2.0);
+								else
+									CreateParticleEx(i, "powerup_king_blue", 1, _, _, 2.0);
+								
+								insertBuff(i, kingBuff);
+							}
+						}
+					}
+				}
+				powerupParticle[client] = currentGameTime+2.1;
+			}
+			Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
+			if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
+			{
+				CreateParticle(client, "powerup_plague_carrier", true, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
+			if(supernovaPowerup != Address_Null && TF2Attrib_GetValue(supernovaPowerup) > 0.0)
+			{
+				CreateParticleEx(client, "powerup_supernova_ready", 1, _, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address infernalPowerup = TF2Attrib_GetByName(client, "infernal powerup");
+			if(infernalPowerup != Address_Null && TF2Attrib_GetValue(infernalPowerup) > 0.0)
+			{
+				CreateParticleEx(client, "heavy_ring_of_fire");
+				powerupParticle[client] = currentGameTime+1.0;
+			}
+			Address thunderstormPowerup = TF2Attrib_GetByName(client, "thunderstorm powerup");
+			if(thunderstormPowerup != Address_Null && TF2Attrib_GetValue(thunderstormPowerup) > 0.0)
+			{
+				CreateParticleEx(client, "utaunt_electric_mist", 1, _, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address martyrPowerup = TF2Attrib_GetByName(client, "martyr powerup");
+			if(martyrPowerup != Address_Null && TF2Attrib_GetValue(martyrPowerup) > 0.0)
+			{
+				CreateParticleEx(client, "utaunt_hearts_beams", 1, _, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address inverterPowerup = TF2Attrib_GetByName(client, "inverter powerup");
+			if(inverterPowerup != Address_Null && TF2Attrib_GetValue(inverterPowerup) > 0.0)
+			{
+				CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+			Address relentlessPowerup = TF2Attrib_GetByName(client, "relentless powerup");
+			if(relentlessPowerup != Address_Null && TF2Attrib_GetValue(relentlessPowerup) > 0.0)
+			{
+				if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
+					CreateParticle(client, "eye_powerup_red_lvl_4", true, "righteye", 5.0);
+				else
+					CreateParticle(client, "eye_powerup_red_lvl_4", true, "eyeglow_R", 5.0);
+				powerupParticle[client] = currentGameTime+5.1;
+			}
+		}
 	}
 	if (!IsFakeClient(client))
 	{
@@ -1724,142 +1785,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					else
 					{
 						SetEntityGravity(client, 1.0);
-					}
-				}
-				
-				if(powerupParticle[client] <= currentGameTime && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
-				{
-					
-					Address strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");
-					if(strengthPowerup != Address_Null && TF2Attrib_GetValue(strengthPowerup) > 0.0)
-					{
-						CreateParticle(client, "utaunt_tarotcard_orange_wind", true, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
-					if(resistancePowerup != Address_Null && TF2Attrib_GetValue(resistancePowerup) > 0.0)
-					{
-						CreateParticleEx(client, "soldierbuff_red_spikes", 1, _, _, 2.0);
-						powerupParticle[client] = currentGameTime+2.0;
-					}
-					Address vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
-					if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
-					{
-						CreateParticleEx(client, "utaunt_hellpit_parent", 1, _, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
-					if(regenerationPowerup != Address_Null && TF2Attrib_GetValue(regenerationPowerup) > 0.0)
-					{
-						int iTeam = GetClientTeam(client);
-						if(iTeam == 2)
-							CreateParticle(client, "medic_megaheal_red_shower", true, _, 5.0);
-						else
-							CreateParticle(client, "medic_megaheal_blue_shower", true, _, 5.0);
-						
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
-					if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
-					{
-						if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
-							CreateParticle(client, "eye_powerup_blue_lvl_4", true, "righteye", 5.0);
-						else
-							CreateParticle(client, "eye_powerup_blue_lvl_4", true, "eyeglow_R", 5.0);
-
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");
-					if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
-					{
-						CreateParticleEx(client, "medic_resist_bullet", 1, _, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address knockoutPowerup = TF2Attrib_GetByName(client, "knockout powerup");
-					if(knockoutPowerup != Address_Null && TF2Attrib_GetValue(knockoutPowerup) > 0.0)
-					{
-						CreateParticleEx(client, "medic_resist_blast", 1, _, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
-					if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
-					{
-						int clientTeam = GetClientTeam(client);
-						float clientPos[3];
-						GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
-						Buff kingBuff;
-						kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
-						kingBuff.multiplicativeAttackSpeedMult = 1.33;
-						kingBuff.additiveDamageMult = 0.2;
-						for(int i = 1;i<MaxClients;i++)
-						{
-							if(IsValidClient3(i) && IsPlayerAlive(i))
-							{
-								int iTeam = GetClientTeam(i);
-								if(clientTeam == iTeam)
-								{
-									float VictimPos[3];
-									GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-									VictimPos[2] += 30.0;
-									float Distance = GetVectorDistance(clientPos,VictimPos);
-									if(Distance <= 600.0)
-									{
-										if(iTeam == 2)
-											CreateParticleEx(i, "powerup_king_red", 1, _, _, 5.0);
-										else
-											CreateParticleEx(i, "powerup_king_blue", 1, _, _, 5.0);
-										
-										insertBuff(i, kingBuff);
-									}
-								}
-							}
-						}
-						powerupParticle[client] = currentGameTime+2.0;
-					}
-					Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
-					if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
-					{
-						CreateParticle(client, "powerup_plague_carrier", true, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
-					if(supernovaPowerup != Address_Null && TF2Attrib_GetValue(supernovaPowerup) > 0.0)
-					{
-						CreateParticleEx(client, "powerup_supernova_ready", 1, _, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address infernalPowerup = TF2Attrib_GetByName(client, "infernal powerup");
-					if(infernalPowerup != Address_Null && TF2Attrib_GetValue(infernalPowerup) > 0.0)
-					{
-						CreateParticleEx(client, "heavy_ring_of_fire");
-						powerupParticle[client] = currentGameTime+1.0;
-					}
-					Address thunderstormPowerup = TF2Attrib_GetByName(client, "thunderstorm powerup");
-					if(thunderstormPowerup != Address_Null && TF2Attrib_GetValue(thunderstormPowerup) > 0.0)
-					{
-						CreateParticleEx(client, "utaunt_electric_mist", 1, _, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address martyrPowerup = TF2Attrib_GetByName(client, "martyr powerup");
-					if(martyrPowerup != Address_Null && TF2Attrib_GetValue(martyrPowerup) > 0.0)
-					{
-						CreateParticleEx(client, "utaunt_hearts_beams", 1, _, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address inverterPowerup = TF2Attrib_GetByName(client, "inverter powerup");
-					if(inverterPowerup != Address_Null && TF2Attrib_GetValue(inverterPowerup) > 0.0)
-					{
-						CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
-					}
-					Address relentlessPowerup = TF2Attrib_GetByName(client, "relentless powerup");
-					if(relentlessPowerup != Address_Null && TF2Attrib_GetValue(relentlessPowerup) > 0.0)
-					{
-						if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
-							CreateParticle(client, "eye_powerup_red_lvl_4", true, "righteye", 5.0);
-						else
-							CreateParticle(client, "eye_powerup_red_lvl_4", true, "eyeglow_R", 5.0);
-						powerupParticle[client] = currentGameTime+5.0;
 					}
 				}
 				
@@ -2143,9 +2068,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, _, 3.0, _, _, 1);
-								int clients[33], numClients = getClientParticleStatus(clients, client);
+								weaponArtParticle[client] = currentGameTime+7.1;
+								CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, _, 7.0, _, _, 1);
+								int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
 								TE_Send(clients,numClients)
 							}
 							if(weaponArtCooldown[client] > currentGameTime)
@@ -2612,7 +2537,7 @@ public OnGameFrame()
 					if(weaponTrailTimer[client] < currentGameTime)
 					{
 						CreateParticle(CWeapon, "utaunt_auroraglow_orange_parent", true, "", 5.0,_,_,1);
-						int clients[33], numClients = getClientParticleStatus(clients, client);
+						int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
 						TE_Send(clients,numClients)
 						CreateParticle(client, "utaunt_arcane_yellow_parent", true, "", 5.0);
 						
@@ -2629,7 +2554,7 @@ public OnGameFrame()
 					if(weaponTrailTimer[client] < currentGameTime)
 					{
 						CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, "", 5.0,_,_,1);
-						int clients[33], numClients = getClientParticleStatus(clients, client);
+						int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
 						TE_Send(clients,numClients)
 						CreateParticle(client, "utaunt_arcane_purple_parent", true, "", 5.0);
 						weaponTrailTimer[client] = currentGameTime+5.1;
@@ -2727,49 +2652,49 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 	if(IsValidWeapon(CWeapon))
 	{
 		meleeLimiter[client]++;
-		if(!IsFakeClient(client))
+		if(getWeaponSlot(client,CWeapon) == 2)
 		{
-			if(getWeaponSlot(client,CWeapon) == 2)
-			{
-				bool flag = true;
-				float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
-				if(ballCheck == 0.0)
-					ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
+			bool flag = true;
+			float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
+			if(ballCheck == 0.0)
+				ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
 
-				int a = GetCarriedAmmo(client, 2)
-				if(a > 0)
-				{
-					if(ballCheck == 10.0)
-						SDKCall(g_SDKCallLaunchBall, CWeapon);
-					flag = false;
-				}
-				if(flag)
-				{
-					RPS[client] += 0.5;
-					Handle hPack = CreateDataPack();
-					WritePackCell(hPack, client);
-					WritePackFloat(hPack, 0.5);
-					CreateTimer(1.0, RemoveFire, hPack);
-				}
-			}
-			else
+			int a = GetCarriedAmmo(client, 2)
+			if(a > 0)
 			{
+				if(ballCheck == 10.0)
+					SDKCall(g_SDKCallLaunchBall, CWeapon);
+				flag = false;
+			}
+			
+			if(!IsFakeClient(client) && flag)
+			{
+				RPS[client] += 0.5;
+				Handle hPack = CreateDataPack();
+				WritePackCell(hPack, client);
+				WritePackFloat(hPack, 0.5);
+				CreateTimer(1.0, RemoveFire, hPack);
+			}
+		}
+		else
+		{
+			if(!IsFakeClient(client)){
 				RPS[client] += 1.0;
 				Handle hPack = CreateDataPack();
 				WritePackCell(hPack, client);
 				WritePackFloat(hPack, 1.0);
 				CreateTimer(1.0, RemoveFire, hPack);
-				char classname[64]; 
-				GetEdictClassname(CWeapon, classname, sizeof(classname)); 
+			}
+			char classname[32]; 
+			GetEdictClassname(CWeapon, classname, sizeof(classname)); 
 
-				if(StrEqual(classname, "tf_weapon_cleaver"))
+			if(StrEqual(classname, "tf_weapon_cleaver"))
+			{
+				if(weaponFireRate[CWeapon] > 5.0)
 				{
-					if(weaponFireRate[CWeapon] > 5.0)
-					{
-						Address override = TF2Attrib_GetByName(CWeapon, "override projectile type");
-						if(override == Address_Null)
-							SDKCall(g_SDKCallJar, CWeapon);
-					}
+					Address override = TF2Attrib_GetByName(CWeapon, "override projectile type");
+					if(override == Address_Null)
+						SDKCall(g_SDKCallJar, CWeapon);
 				}
 			}
 		}
@@ -3321,13 +3246,8 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 public OnClientDisconnect(client)
 {
 	if(!IsFakeClient(client))
-	{
 		SavePlayerData(client);
-		if(IsMvM())
-		{
-			CreateTimer(0.2, ResetMission);
-		}
-	}
+	
 	DamageDealt[client] = 0.0;
 	Kills[client] = 0;
 	Deaths[client] = 0;
@@ -3440,7 +3360,6 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 		client_respawn_handled[client] = 1;
 		CreateTimer(0.4, WeaponReGiveUpgrades, GetClientUserId(client));
-		SetEntProp(client, Prop_Send, "m_nCurrency", 0);
 		CancelClientMenu(client);
 		if(AreClientCookiesCached(client))
 		{

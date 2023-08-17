@@ -306,6 +306,7 @@ char upgrades_weapon_description[NB_WEAPONS][512]
 char upgrades_weapon[NB_WEAPONS][128];
 char ArmorXPos[MAXPLAYERS+1][64];
 char ArmorYPos[MAXPLAYERS+1][64];
+char missionName[512];
 char SpellList[][] = {"Zap","Lightning Strike","Projected Healing","A Call Beyond","Blacksky Eye","Sunlight Spear",
 "Lightning Enchantment","Snap Freeze","Arcane Prison","Darkmoon Blade","Speed Aura","Aerial Strike","Inferno",
 "Mine Field","Shockwave","Auto-Sentry","Soothing Sunlight","Arcane Hunter","Sabotage","Infernal Enchantment",
@@ -314,7 +315,6 @@ char SpellList[][] = {"Zap","Lightning Strike","Projected Healing","A Call Beyon
 //Bools
 bool inScore[MAXPLAYERS+1];
 bool hardcapWarning = false;
-bool isFailHooked = false;
 bool isEntitySentry[MAXENTITIES+1];
 bool sentryThought[MAXENTITIES+1];
 bool b_Hooked[MAXPLAYERS+1];
@@ -336,6 +336,7 @@ bool isPenetrated[MAXENTITIES+1];
 bool canOverride[MAXPLAYERS+1];
 bool isPrimed[MAXENTITIES+1];
 bool snowstormActive[MAXPLAYERS+1];
+bool failLock;
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]

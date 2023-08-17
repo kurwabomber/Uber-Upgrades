@@ -1511,7 +1511,7 @@
 		}
 		"Flaregun specific upgrades"
 		{
-			"Attr1"		"fire rate bonus(multshit)"
+			"Attr1"		"fire rate bonus(fortified)"
 			"Attr2"		"Projectile speed increased"
 		}
 		"Special Tweaks"
@@ -1538,7 +1538,7 @@
 		}
 		"Flaregun specific upgrades"
 		{
-			"Attr1"		"fire rate bonus(multshit)"
+			"Attr1"		"fire rate bonus(fortified)"
 			"Attr2"		"blast radius increased"
 			"Attr3"		"dmg falloff decreased"
 		}
@@ -1566,7 +1566,7 @@
 		}
 		"Flaregun specific upgrades"
 		{
-			"Attr1"		"fire rate bonus(multshit)"
+			"Attr1"		"fire rate bonus(fortified)"
 			"Attr2"		"Projectile speed increased(DH)"
 		}		
 		"Special Tweaks"
@@ -1961,7 +1961,7 @@
 	}
 	"menuKatana"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1981,6 +1981,11 @@
 			"Attr0"		"melee attack rate bonus"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
 		}
 	}
 	"scoclea"
