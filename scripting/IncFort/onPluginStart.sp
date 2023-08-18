@@ -160,13 +160,6 @@ public UberShopinitMenusHandlers()
 }
 public OnMapStart()
 {
-	if(IsMvM(true))
-	{
-		char mapName[64]
-		GetCurrentMap(mapName, sizeof(mapName))
-		StrCat(mapName, sizeof(mapName),"_if_normal");
-		ServerCommand("tf_mvm_popfile %s", mapName)
-	}
 	GameRules_SetProp("m_bPlayingMedieval", 0)
 	PrecacheSound(SOUND_THUNDER, true);
 	PrecacheSound(SOUND_ZAP, true);

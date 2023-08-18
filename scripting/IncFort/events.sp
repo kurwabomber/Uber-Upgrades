@@ -1229,16 +1229,12 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 			CreateTimer(0.25, Timer_DelayedRespawn, EntIndexToEntRef(client));
 		}
 		CurrencySaved[client] = 0.0;
-		additionalstartmoney = 0.0;
-		StartMoneySaved = 0.0;
 		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
 		for(int j = 0; j < Max_Attunement_Slots;j++)
 		{
 			SpellCooldowns[client][j] = 0.0;
 		}
 	}
-	additionalstartmoney = 0.0;
-	ResetVariables();
 	DeleteSavedPlayerData();
 	failLock = false;
 }
@@ -3412,7 +3408,7 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 	}
 	if(IsMvM() && IsFakeClient(client))
 	{
-		BotTimer[client] = 120.0;
+		BotTimer[client] = 45.0;
 		if(IsValidForDamage(TankTeleporter) && !GetEntProp(TankTeleporter, Prop_Send, "m_bDisabled"))
 		{
 			char classname[128]; 

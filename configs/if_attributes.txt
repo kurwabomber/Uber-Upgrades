@@ -506,7 +506,7 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed(SC)"
-			"increase_ratio" 	"1.0"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
 			"value"		"0.10"
 			"init"		"1.00"
@@ -516,7 +516,7 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed(SO)"
-			"increase_ratio" 	"1.25"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
 			"value"		"0.1"
 			"init"		"1.00"
@@ -526,7 +526,7 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed(PY)"
-			"increase_ratio" 	"1.1"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
 			"value"		"0.10"
 			"init"		"1.00"
@@ -536,7 +536,7 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed(DE)"
-			"increase_ratio" 	"1.15"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
 			"value"		"0.10"
 			"init"		"1.00"
@@ -546,8 +546,8 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed (heavy)"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
-			"increase_ratio" 	"1.5"
 			"value"		"0.10"
 			"init"		"1.00"
 			"max"		"2.1"
@@ -556,7 +556,7 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed(EN)"
-			"increase_ratio" 	"1.1"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
 			"value"		"0.10"
 			"init"		"1.00"
@@ -566,7 +566,7 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed(ME)"
-			"increase_ratio" 	"1.05"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
 			"value"		"0.10"
 			"init"		"1.00"
@@ -576,7 +576,7 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed(SN)"
-			"increase_ratio" 	"1.05"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
 			"value"		"0.10"
 			"init"		"1.00"
@@ -586,7 +586,7 @@
 		{
 			"name"		"move speed bonus"
 			"ref"		"move speed(SP)"
-			"increase_ratio" 	"1.05"
+			"increase_ratio" 	"0.4"
 			"cost"		"400"
 			"value"		"0.10"
 			"init"		"1.00"
@@ -3208,8 +3208,8 @@
 			"name"		"flame_speed"
 			"ref"		"flame_speed"
 			"cost"		"500"
-			"increase_ratio"	"0.3"
-			"value"		"350"
+			"increase_ratio"	"0.2"
+			"value"		"450"
 			"init"		"0"
 			"max"		"14000"
 		}

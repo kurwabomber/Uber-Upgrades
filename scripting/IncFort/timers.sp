@@ -92,7 +92,7 @@ public Action:Timer_Second(Handle timer)
 					BotTimer[i] -= 1.0;
 					if(BotTimer[i] <= 0.0)
 					{
-						BotTimer[i] = 120.0;
+						BotTimer[i] = 45.0;
 						if(TF2_IsPlayerInCondition(i, TFCond_UberchargedHidden) || TF2Spawn_IsClientInSpawn(i))
 						{
 							PrintToServer("Slaying %N due to staying ubered for too long.", i);
@@ -1182,7 +1182,6 @@ public Action WaveFailed(Handle timer)
 					}
 					CreateTimer(0.25, MvMFailTimer, GetClientUserId(client));
 					PrintToServer("%N has %.0f saved currency.", client, CurrencySaved[client]);
-					client_respawn_checkpoint[client] = 1
 				}
 				CurrencyOwned[client] = CurrencySaved[client];
 				for(int j = 0; j < Max_Attunement_Slots;j++)

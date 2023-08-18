@@ -1,16 +1,12 @@
 // Includes
-#pragma tabsize 0
 #include <sourcemod>
 #include <sdktools>
 #include <sdkhooks>
 #include <tf2>
 #include <tf2_stocks>
-#include <sm_chaosmvm>
+#include <tf2utils>
 #include <tf2attributes>
-#include <tf2_isPlayerInSpawn>
-#include <vphysics>
-#include <dhooks>
-#include <weapondata>
+#include <razorstocks>
 
 // Plugin Info
 public Plugin:myinfo =
@@ -55,16 +51,28 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3], float angles[3], int& weapon, int& subtype, int& cmdnum, int& tickcount, int& seed, int mouse[2])
 {
 	new bool:changed = false;
-	if(IsMvM() && IsValidClient3(client) && IsFakeClient(client)) // Alright, we have a bot.
+	if(IsMvM() && IsValidClient3(client) && IsFakeClient(client))
 	{
 		if(BotTimer[client] < 0)
 		{
-			new currentWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			new primary = GetPlayerWeaponSlot(client,0)
-			new secondary = GetPlayerWeaponSlot(client,1)
-			new melee = GetPlayerWeaponSlot(client,2)
-			new TFClassType:CurrentClass = TF2_GetPlayerClass(client)
-
+			int currentWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			int melee = GetPlayerWeaponSlot(client,2)
+			if(currentWeapon == melee && IsValidWeapon(melee)){
+				float totalRange = TF2Attrib_HookValueFloat(90.0, "melee range multiplier", melee);
+				for(int i = 1;i<=MaxClients;++i){
+					if(!IsValidClient3(i))
+						continue;
+					if(!IsPlayerAlive(i))
+						continue;
+					if(!IsOnDifferentTeams(client, i))
+						continue;
+					
+					if(IsTargetInSightRange(client, i, 10.0, totalRange) && ClientCanSeeClient(client, i)){
+						autoAim(client, i, angles);
+						AttackTicks[client] = 6;
+					}
+				}
+			}
 			BotTimer[client] = 3;
 		}
 		else
@@ -72,103 +80,21 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			BotTimer[client] -= 1;
 		}
 		if(AttackTicks[client] > 0){
-		AttackTicks[client]--;buttons |= IN_ATTACK;changed=true}
+		AttackTicks[client]--;buttons |= IN_ATTACK;changed=true;}
 		if(SecondaryTicks[client] > 0){
-		SecondaryTicks[client]--;buttons |= IN_ATTACK2;changed=true}
+		SecondaryTicks[client]--;buttons |= IN_ATTACK2;changed=true;}
 		if(CrouchTicks[client] > 0){
-		CrouchTicks[client]--;buttons |= IN_DUCK;changed=true}
+		CrouchTicks[client]--;buttons |= IN_DUCK;changed=true;}
 		if(JumpTicks[client] > 0){
-		JumpTicks[client]--;buttons |= IN_JUMP;changed=true}
+		JumpTicks[client]--;buttons |= IN_JUMP;changed=true;}
 		if(LeftTicks[client] > 0){
-		LeftTicks[client]--;buttons |= IN_MOVELEFT;changed=true}
+		LeftTicks[client]--;buttons |= IN_MOVELEFT;changed=true;}
 		if(RightTicks[client] > 0){
-		RightTicks[client]--;buttons |= IN_MOVERIGHT;changed=true}
+		RightTicks[client]--;buttons |= IN_MOVERIGHT;changed=true;}
 	}
 	if(changed)
 		return Plugin_Changed;
 	return Plugin_Continue;
-}
-
-stock AnglesToVelocity( Float:fAngle[3], Float:fVelocity[3], Float:fSpeed = 1.0 )
-{
-    fVelocity[0] = Cosine( DegToRad( fAngle[1] ) ); 
-    fVelocity[1] = Sine( DegToRad( fAngle[1] ) ); 
-    fVelocity[2] = Sine( DegToRad( fAngle[0] ) ) * -1.0; 
-    
-    NormalizeVector( fVelocity, fVelocity ); 
-    
-    ScaleVector( fVelocity, fSpeed ); 
-}
-
-stock bool:IsValidClient( client, bool:replaycheck = true )
-{
-    if ( client <= 0 || client > MaxClients ) return false; 
-    if ( !IsClientInGame( client ) ) return false; 
-    if ( IsFakeClient( client ) ) return false; 
-    if ( !IsClientConnected( client ) ) return false; 
-    if ( GetEntProp( client, Prop_Send, "m_bIsCoaching" ) ) return false; 
-    if ( replaycheck )
-    {
-        if ( IsClientSourceTV( client ) || IsClientReplay( client ) ) return false; 
-    }
-    return true; 
-}
-stock bool:IsValidClient3( client, bool:replaycheck = true )
-{
-    if ( client <= 0 || client > MaxClients ) return false; 
-    if ( !IsClientInGame( client ) ) return false; 
-    if ( !IsClientConnected( client ) ) return false; 
-    if ( GetEntProp( client, Prop_Send, "m_bIsCoaching" ) ) return false; 
-    if ( replaycheck )
-    {
-        if ( IsClientSourceTV( client ) || IsClientReplay( client ) ) return false; 
-    }
-    return true; 
-}
-stock bool:IsTargetInSightRange(client, target, Float:angle=90.0, Float:distance=0.0, bool:heightcheck=true, bool:negativeangle=false)
-{
-	if(angle > 360.0 || angle < 0.0)
-		ThrowError("Angle Max : 360 & Min : 0. %d isn't proper angle.", angle);
-	if(!IsClientConnected(client) && IsPlayerAlive(client))
-		ThrowError("Client is not Alive.");
-	if(!IsClientConnected(target) && IsPlayerAlive(target))
-		ThrowError("Target is not Alive.");
-		
-	decl Float:clientpos[3], Float:targetpos[3], Float:anglevector[3], Float:targetvector[3], Float:resultangle, Float:resultdistance;
-	
-	GetClientEyeAngles(client, anglevector);
-	anglevector[0] = anglevector[2] = 0.0;
-	GetAngleVectors(anglevector, anglevector, NULL_VECTOR, NULL_VECTOR);
-	NormalizeVector(anglevector, anglevector);
-	if(negativeangle)
-		NegateVector(anglevector);
-
-	GetClientAbsOrigin(client, clientpos);
-	GetClientAbsOrigin(target, targetpos);
-	if(heightcheck && distance > 0)
-		resultdistance = GetVectorDistance(clientpos, targetpos);
-	clientpos[2] = targetpos[2] = 0.0;
-	MakeVectorFromPoints(clientpos, targetpos, targetvector);
-	NormalizeVector(targetvector, targetvector);
-	
-	resultangle = RadToDeg(ArcCosine(GetVectorDotProduct(targetvector, anglevector)));
-	
-	if(resultangle <= angle/2)	
-	{
-		if(distance > 0)
-		{
-			if(!heightcheck)
-				resultdistance = GetVectorDistance(clientpos, targetpos);
-			if(distance >= resultdistance)
-				return true;
-			else
-				return false;
-		}
-		else
-			return true;
-	}
-	else
-		return false;
 }
 stock bool:ClientCanSeeClient(client, target, Float:distance = 0.0, Float:height = 50.0)
 {
@@ -195,23 +121,6 @@ stock bool:ClientCanSeeClient(client, target, Float:distance = 0.0, Float:height
             return (true);
         }
         return false;
-}
-stock bool:IsMvM(bool:forceRecalc = false)
-{
-	static bool:found = false;
-	static bool:ismvm = false;
-	if (forceRecalc)
-	{
-		found = false;
-		ismvm = false;
-	}
-	if (!found)
-	{
-		new i = FindEntityByClassname(-1, "tf_logic_mann_vs_machine");
-		if (i > MaxClients && IsValidEntity(i)) ismvm = true;
-		found = true;
-	}
-	return ismvm;
 }
 public bool:Base_TraceFilter(entity, contentsMask, any:data)
 {

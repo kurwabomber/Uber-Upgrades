@@ -190,7 +190,7 @@ stock int getWeaponSlot(int client, int entity)
 {
 	return TF2Econ_GetItemLoadoutSlot(GetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(client));
 }
-void GetCleaverAngularImpulse(float vecAngImpulse[3]) {
+stock void GetCleaverAngularImpulse(float vecAngImpulse[3]) {
 	vecAngImpulse[0] = 0.0;
 	vecAngImpulse[1] = 1000.0;
 	vecAngImpulse[2] = 0.0;
@@ -1280,7 +1280,7 @@ stock bool IsTargetInSightRange(client, target, float angle=90.0, float distance
 	GetClientAbsOrigin(target, targetpos);
 	if(heightcheck && distance > 0){
 		targetpos[2] -= 40.0;
-		resultdistance = GetVectorDistance(clientpos, targetpos);
+		resultdistance = GetVectorDistance(clientpos, targetpos, true);
 	}
 	if(heightcheck == false){
 		clientpos[2] = targetpos[2] = 0.0;
@@ -1297,8 +1297,8 @@ stock bool IsTargetInSightRange(client, target, float angle=90.0, float distance
 		if(distance > 0)
 		{
 			if(!heightcheck)
-				resultdistance = GetVectorDistance(clientpos, targetpos);
-			if(distance >= resultdistance)
+				resultdistance = GetVectorDistance(clientpos, targetpos, true);
+			if(distance*distance >= resultdistance)
 				return true;
 			else
 				return false;
@@ -2158,7 +2158,7 @@ stock bool TF2_AttribListAttributesBySlot(client, iSlot = -1)
 	//PrintToChatAll("%i weapon",weapon);
     return true; 
 }
-int EHandleToEntIndex(int ehandle) {
+stock int EHandleToEntIndex(int ehandle) {
 	return EntRefToEntIndex(ehandle | (1 << 31));
 }
 //Ammo
