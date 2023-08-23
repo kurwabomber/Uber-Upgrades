@@ -207,10 +207,11 @@ public OnMapStart()
 	PrecacheModel("materials/effects/animatedsheen/animatedsheen0.vmt");
 	PrecacheModel("models/weapons/w_models/w_stickybomb3.mdl");
 	//AltLaser = PrecacheModel("materials/sprites/arrow.vmt");
-	int entity = FindEntityByClassname(-1, "func_upgradestation");
-	if (entity > -1)
+	int entity;
+	while ((entity = FindEntityByClassname(entity, "func_upgradestation")) != -1)
 	{
-		RemoveEntity(entity);
+		if(IsValidEntity(entity))
+			RemoveEntity(entity);
 	}
 	ResetVariables();
 }

@@ -101,7 +101,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 				if(singularBuysPerMinute[client] >= 50)
 				{
 					singularBuysPerMinute[client] = 0
-					PrintToChat(client,"You can use the QBUY system by using /qbuy.\nOr you can CROUCH for 10x purchasing and RELOAD for 100x purchasing.");
+					PrintToChat(client,"You can CROUCH for 10x purchasing and RELOAD for 100x purchasing.");
 					PrintToChat(client,"Downgrading is possible by using JUMP key while upgrading.");
 				}
 				if(upgrades[upgrade_choice].description[0])
