@@ -1082,7 +1082,7 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus"
+			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
 			"Attr0"		"Overall Damage Bonus"
@@ -1138,7 +1138,7 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus"
+			"Attr0"		"damage bonus(H)"
 			"Attr22"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
 			"Attr0"		"Overall Damage Bonus"
@@ -1198,7 +1198,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp1"		"Explosive Bullets(S)"
+			"Sp0"		"Explosive Bullets(S)"
+			"Sp1"		"Lacerating Rounds"
 		}
 	}
 	"rayweap"
@@ -1580,7 +1581,7 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus"
+			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr11"	"Accuracy Scales DMG Replacement"
 			"Attr0"		"Overall Damage Bonus"
@@ -1611,7 +1612,7 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus"
+			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr11"	"Accuracy Scales DMG Replacement"
 			"Attr0"		"Overall Damage Bonus"
@@ -1792,7 +1793,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp3"		"Explosive Bullets(S)"
+			"Sp0"		"Explosive Bullets(S)"
+			"Sp1"		"Lacerating Rounds"
 		}
 	}
 	"spysap"
@@ -2310,7 +2312,7 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus"
+			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
 			"Attr0"		"Overall Damage Bonus"
@@ -2375,7 +2377,7 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus"
+			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
 			"Attr0"		"Overall Damage Bonus"
@@ -2397,10 +2399,6 @@
 		{
 			"Sp4"		"Explosive Bullets(P)"
 			"Sp5"		"Lacerating Rounds"
-		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Stun Shot"
 		}
 	}
 	"ball"

@@ -42,19 +42,18 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 				if (IsValidEdict(CWeapon))
 				{
-					if(getWeaponSlot(client,CWeapon) == 2)
+					if(TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 					{
 						ConcussionBuildup[client] += (damage/TF2_GetMaxHealth(client))*175.0;
 						if(ConcussionBuildup[client] >= 100.0)
 						{
 							ConcussionBuildup[client] = 0.0;
-
 							if(GetAttribute(client, "inverter powerup", 0.0)){
 								TF2_AddCondition(client, TFCond_MegaHeal, 10.0);
 								TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, 10.0);
 							}else{
-							miniCritStatusVictim[client] = currentGameTime+10.0;
-							TF2_StunPlayer(client, 1.0, 1.0, TF_STUNFLAGS_NORMALBONK, attacker);
+								miniCritStatusVictim[client] = currentGameTime+10.0;
+								TF2_StunPlayer(client, 1.0, 1.0, TF_STUNFLAGS_NORMALBONK, attacker);
 							}
 						}
 					}
@@ -352,7 +351,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						TF2Attrib_SetByName(client, "health from healers reduced", 0.5*GetAttribute(client,"health from healers reduced", 1.0));
 				}
 			}
-			case TFCond_Slowed:
+			case TFCond_Slowed, TFCond_Dazed:
 			{
 				Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
 				if(slowResistance != Address_Null)
@@ -1258,7 +1257,6 @@ public Event_mvm_wave_failed(Handle event, const char[] name, bool:dontBroadcast
 public Event_mvm_wave_begin(Handle event, const char[] name, bool:dontBroadcast)
 {
 	int client, slot, a;
-	PrintToServer("mvm wave begin");
 	failLock = true;
 	for (client = 1; client < MaxClients; client++)
 	{
@@ -3188,7 +3186,7 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 					fVelocity[1] = vBuffer[1]*Speed;
 					fVelocity[2] = vBuffer[2]*Speed;
 					SetEntPropVector( iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-					float ProjectileDamage = 20.0;
+					float ProjectileDamage = 100.0;
 					
 					Address DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "taunt is highfive");
 					Address DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
@@ -3229,7 +3227,7 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 					SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, ProjectileDamage, true);  
 					TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 				}
-				ShotsLeft[client] = 30;
+				ShotsLeft[client] = 25;
 			}
 			else
 			{

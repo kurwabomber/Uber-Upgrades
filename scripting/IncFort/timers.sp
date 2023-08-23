@@ -1143,6 +1143,10 @@ public Action MissionLoaded(Handle timer){
 //On a wave fail:
 public Action WaveFailed(Handle timer)
 {
+	if(!failLock)
+		return Plugin_Stop;
+
+	failLock = false;
     int ent, round
 
     ent = FindEntityByClassname(-1, "tf_objective_resource");

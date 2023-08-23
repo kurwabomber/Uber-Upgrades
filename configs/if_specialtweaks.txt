@@ -130,9 +130,9 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"fire rate penalty(unremoveable)"		"3.0"
-			"bleeding duration"						"5"
-			"Bleed Per Hit"							"2"
+			"bleeding duration"						"10"
+			"Bleed Per Hit"							"4"
+			"Crit Damage Bonus"				"10.0"
 		}
 		"Scorchiest Shot"
 		{
