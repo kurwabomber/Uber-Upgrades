@@ -23,13 +23,10 @@ public Action:OnStartTouchStomp(client, other)
 	if(vec[2] > -300.0)
 		return Plugin_Continue;
 
-	float stompDamage = TF2_GetDPSModifiers(client, CWeapon, false, false) * 80.0;
+	float stompDamage = TF2_GetDamageModifiers(client, CWeapon, false) * 350.0;
 	stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 300.0)/1000.0)
-	Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
-	if(multiHitActive != Address_Null)
-		stompDamage *= TF2Attrib_GetValue(multiHitActive) + 1.0;
 	
-	SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB+DMG_CRIT,CWeapon, NULL_VECTOR, NULL_VECTOR);
+	SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
 }
 
 public Action:AddArrowCollisionFunction(entity, client)

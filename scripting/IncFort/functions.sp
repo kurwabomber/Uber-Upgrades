@@ -243,19 +243,6 @@ public void ManagePlayerBuffs(int i){
 		Format(details, sizeof(details), "%s\n%s %.2fx", details, "Thunderstorm Powerup",buff);
 	}
 
-	if(LightningEnchantmentDuration[i] > currentGameTime){
-		Format(details, sizeof(details), "%s\nLightning Enchantment | %.2fs | +%s DPS", details, LightningEnchantmentDuration[i] - currentGameTime,  GetAlphabetForm(LightningEnchantment[i]*20.0));
-	}
-	if(DarkmoonBladeDuration[i] > currentGameTime){
-		Format(details, sizeof(details), "%s\nDarkmoon Blade | %.2fs | +%s Melee Damage", details, DarkmoonBladeDuration[i] - currentGameTime, GetAlphabetForm(DarkmoonBlade[i]));
-	}
-	if(InfernalEnchantmentDuration[i] > currentGameTime){
-		Format(details, sizeof(details), "%s\nInfernal Enchantment | %.2fs | +%s Infernal DPS", details, InfernalEnchantmentDuration[i] - currentGameTime, GetAlphabetForm(InfernalEnchantment[i]));
-	}
-	if(karmicJusticeScaling[i]){
-		Format(details, sizeof(details), "%s\nKarmic Justice | %.2f Scaling", details, karmicJusticeScaling[i]);
-	}
-
 	float ArmorRechargeMult = 1.0;
 	fl_ArmorRegenConstant[i] = 0.0;
 	Address armorRecharge = TF2Attrib_GetByName(i, "tmp dmgbuff on hit");
@@ -305,13 +292,6 @@ public void ManagePlayerBuffs(int i){
 		}
 	}
 
-	if(miniCritStatusVictim[i]-currentGameTime > 0.0)
-		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
-	if(miniCritStatusAttacker[i]-currentGameTime > 0.0)
-		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Minicrits", miniCritStatusAttacker[i]-currentGameTime);
-	if(TF2_IsPlayerInCondition(i, TFCond_AfterburnImmune))
-		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Afterburn Immunity", TF2Util_GetPlayerConditionDuration(i, TFCond_AfterburnImmune));
-
 	if(buffChange[i])
 	{
 		TF2Attrib_SetByName(i, "additive damage bonus", additiveDamageRawBuff);
@@ -328,6 +308,27 @@ public void ManagePlayerBuffs(int i){
 
 	if(IsFakeClient(i) || disableIFMiniHud[i] > currentGameTime)
 		return;
+
+	if(LightningEnchantmentDuration[i] > currentGameTime){
+		Format(details, sizeof(details), "%s\nLightning Enchantment | %.2fs | +%s DPS", details, LightningEnchantmentDuration[i] - currentGameTime,  GetAlphabetForm(LightningEnchantment[i]*20.0));
+	}
+	if(DarkmoonBladeDuration[i] > currentGameTime){
+		Format(details, sizeof(details), "%s\nDarkmoon Blade | %.2fs | +%s Melee Damage", details, DarkmoonBladeDuration[i] - currentGameTime, GetAlphabetForm(DarkmoonBlade[i]));
+	}
+	if(InfernalEnchantmentDuration[i] > currentGameTime){
+		Format(details, sizeof(details), "%s\nInfernal Enchantment | %.2fs | +%s Infernal DPS", details, InfernalEnchantmentDuration[i] - currentGameTime, GetAlphabetForm(InfernalEnchantment[i]));
+	}
+	if(karmicJusticeScaling[i]){
+		Format(details, sizeof(details), "%s\nKarmic Justice | %.2f Scaling", details, karmicJusticeScaling[i]);
+	}
+
+
+	if(miniCritStatusVictim[i]-currentGameTime > 0.0)
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
+	if(miniCritStatusAttacker[i]-currentGameTime > 0.0)
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Minicrits", miniCritStatusAttacker[i]-currentGameTime);
+	if(TF2_IsPlayerInCondition(i, TFCond_AfterburnImmune))
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Afterburn Immunity", TF2Util_GetPlayerConditionDuration(i, TFCond_AfterburnImmune));
 
 	if(additiveDamageRawBuff != 0.0)
 		Format(details, sizeof(details), "%s\n+%i Damage", details, RoundToNearest(additiveDamageRawBuff));
@@ -2581,8 +2582,8 @@ ApplyFullHoming(int entity){
 	if(!IsValidWeapon(CWeapon))
 		return;
 
-	Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
-	if(homingActive == Address_Null)
+	float homingActive = GetAttribute(CWeapon, "crit from behind", 0.0);
+	if(homingActive)
 		return;
 
 	isProjectileHoming[entity] = true;
@@ -2599,11 +2600,12 @@ ApplyHomingCharacteristics(DataPack pack)//int,float,int,int
 	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 	if(!IsValidWeapon(CWeapon))
 		return;
-	Address homingActive = TF2Attrib_GetByName(CWeapon, "crit from behind");
-	if(homingActive == Address_Null)
+	float homingActive = GetAttribute(CWeapon, "crit from behind", 0.0)
+	+ GetAttribute(owner, "crit from behind", 0.0);
+	if(!homingActive)
 		return;
 	
-	homingRadius[entity] = TF2Attrib_GetValue(homingActive);
+	homingRadius[entity] = homingActive;
 	homingDelay[entity] = pack.ReadFloat();
 	homingTickRate[entity] = pack.ReadCell();
 	homingAimStyle[entity] = pack.ReadCell();
@@ -2935,7 +2937,7 @@ ChangeProjModel(entity)
 		{
 			client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 		}
-		if(IsValidClient(client) && canOverride[client])
+		if(IsValidClient3(client) && canOverride[client])
 		{
 			canOverride[client] = false;
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
@@ -3602,18 +3604,19 @@ projGravity(entity)
 			if(IsValidEdict(ClientWeapon))
 			{
 				//PrintToChatAll("2");
-				Address projgravity = TF2Attrib_GetByName(ClientWeapon, "cloak_consume_on_feign_death_activate");
+				float projgravity = GetAttribute(ClientWeapon, "cloak_consume_on_feign_death_activate", 0.0)
+				+ GetAttribute(client, "cloak_consume_on_feign_death_activate", 0.0);
 
 				char strClassname[64];
 				GetEntityClassname( entity, strClassname, sizeof(strClassname) );
 
-				if(projgravity != Address_Null && TF2Attrib_GetValue(projgravity) != 0.0)
+				if(projgravity)
 				{
 					//PrintToChatAll("3");
 					if(GetEntityMoveType(entity) != MOVETYPE_VPHYSICS)
 					{
 						SetEntityMoveType(entity, MOVETYPE_FLYGRAVITY);
-						SetEntityGravity(entity, TF2Attrib_GetValue(projgravity));
+						SetEntityGravity(entity, projgravity);
 						RequestFrame(PrecisionHoming, EntIndexToEntRef(entity));
 					}
 					else

@@ -4,7 +4,7 @@ public Action:Timer_Second(Handle timer)
 	{
 		if(singularBuysPerMinute[client] > 0)
 			singularBuysPerMinute[client]--;
-		if (IsValidClient3(client) && !IsFakeClient(client))
+		if (IsValidClient3(client))
 		{
 			if(GetAttribute(client, "regeneration powerup", 0.0)){
 				for(int i=0;i<3;i++){
@@ -19,66 +19,76 @@ public Action:Timer_Second(Handle timer)
 				}
 			}
 
-			
-			fl_MaxArmor[client] = 300.0
-			Address armorActive = TF2Attrib_GetByName(client, "mult max health")
-			if(armorActive != Address_Null)
-				fl_MaxArmor[client] *= TF2Attrib_GetValue(armorActive);
-				
-			fl_CalculatedMaxArmor[client] = fl_MaxArmor[client];
-			if(hasBuffIndex(client, Buff_ShatteredArmor))
-				fl_CalculatedMaxArmor[client] *= 0.75;
+			if(IsFakeClient(client)){
+				fl_MaxArmor[client] = 2.0*TF2Util_GetEntityMaxHealth(client);
+				fl_CalculatedMaxArmor[client] = fl_MaxArmor[client];
 
-			Address resActive = TF2Attrib_GetByName(client, "energy weapon no drain")
-			if(resActive != Address_Null)
-			{
-				float resAmount = TF2Attrib_GetValue(resActive);
-				fl_ArmorRes[client] = resAmount+1.0;
+				if(hasBuffIndex(client, Buff_ShatteredArmor))
+					fl_CalculatedMaxArmor[client] *= 0.75;
+
+				Address resActive = TF2Attrib_GetByName(client, "energy weapon no drain")
+				if(resActive != Address_Null)
+				{
+					float resAmount = TF2Attrib_GetValue(resActive);
+					fl_ArmorRes[client] = resAmount+1.0;
+				}
+				else
+				{
+					fl_ArmorRes[client] = 1.0;
+				}
+			}else{
+				fl_MaxArmor[client] = 300.0
+				Address armorActive = TF2Attrib_GetByName(client, "mult max health")
+				if(armorActive != Address_Null)
+					fl_MaxArmor[client] *= TF2Attrib_GetValue(armorActive);
+					
+				fl_CalculatedMaxArmor[client] = fl_MaxArmor[client];
+				if(hasBuffIndex(client, Buff_ShatteredArmor))
+					fl_CalculatedMaxArmor[client] *= 0.75;
+
+				Address resActive = TF2Attrib_GetByName(client, "energy weapon no drain")
+				if(resActive != Address_Null)
+				{
+					float resAmount = TF2Attrib_GetValue(resActive);
+					fl_ArmorRes[client] = resAmount+1.0;
+				}
+				else
+				{
+					fl_ArmorRes[client] = 1.0;
+				}
+				fl_ArmorCap[client] = GetResistance(client);
+				
+				GetClientCookie(client, hArmorXPos, ArmorXPos[client], sizeof(ArmorXPos));
+				GetClientCookie(client, hArmorYPos, ArmorYPos[client], sizeof(ArmorYPos));
 			}
-			else
-			{
-				fl_ArmorRes[client] = 1.0;
-			}
-			fl_ArmorCap[client] = GetResistance(client);
-			
-			GetClientCookie(client, hArmorXPos, ArmorXPos[client], sizeof(ArmorXPos));
-			GetClientCookie(client, hArmorYPos, ArmorYPos[client], sizeof(ArmorYPos));
 
 			//Arcane
 			float arcanePower = 1.0;
 			
 			Address ArcaneActive = TF2Attrib_GetByName(client, "arcane power")
 			if(ArcaneActive != Address_Null)
-			{
 				arcanePower = TF2Attrib_GetValue(ArcaneActive);
-			}
+
 			ArcanePower[client] = arcanePower;
 			
 			float arcaneDamageMult = 1.0;
 			Address ArcaneDamageActive = TF2Attrib_GetByName(client, "arcane damage")
 			if(ArcaneDamageActive != Address_Null)
-			{
 				arcaneDamageMult = TF2Attrib_GetValue(ArcaneDamageActive);
-			}
+
 			ArcaneDamage[client] = arcaneDamageMult;
+
 			Address focusActive = TF2Attrib_GetByName(client, "arcane focus max")
 			if(focusActive != Address_Null)
-			{
 				fl_MaxFocus[client] = (TF2Attrib_GetValue(focusActive)+100.0)* Pow(arcanePower, 2.0);
-			}
 			else
-			{
 				fl_MaxFocus[client] = 100.0*arcanePower;
-			}
+
 			Address regenActive = TF2Attrib_GetByName(client, "arcane focus regeneration")
 			if(regenActive != Address_Null)
-			{
 				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.00015 * TF2Attrib_GetValue(regenActive) *  Pow(arcanePower, 2.0);
-			}
 			else
-			{
 				fl_RegenFocus[client] = fl_MaxFocus[client] * 0.00015 *  Pow(arcanePower, 2.0);
-			}
 		}
 	}
 	if(IsMvM())

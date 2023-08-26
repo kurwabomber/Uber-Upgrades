@@ -58,7 +58,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			int currentWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			int melee = GetPlayerWeaponSlot(client,2)
 			if(currentWeapon == melee && IsValidWeapon(melee)){
-				float totalRange = TF2Attrib_HookValueFloat(90.0, "melee range multiplier", melee);
+				float totalRange = TF2Attrib_HookValueFloat(90.0, "melee range multiplier", client);
 				for(int i = 1;i<=MaxClients;++i){
 					if(!IsValidClient3(i))
 						continue;

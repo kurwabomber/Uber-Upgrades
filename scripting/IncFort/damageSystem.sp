@@ -94,8 +94,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		if(!(currentDamageType[attacker].second & DMG_PIERCING))
-			damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
 		Address bossType = TF2Attrib_GetByName(victim, "damage force increase text");
 		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 		{
@@ -172,18 +170,24 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		}
 	}
 
-	if(!(currentDamageType[attacker].second & DMG_PIERCING) && IsValidClient(victim))
+	if(!(currentDamageType[attacker].second & DMG_PIERCING))
 	{
 		float pctArmor = (fl_AdditionalArmor[victim] + fl_CurrentArmor[victim])/fl_MaxArmor[victim];
 		if(pctArmor < 0.01)
 		{
 			pctArmor = 0.01
 		}
-		if(fl_ArmorCap[victim] < 1.0)
-		{
-			fl_ArmorCap[victim] = 1.0;
+		float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
+		if(dmgReduction != 1.0)
+			damage *= (1-dmgReduction)-((1-dmgReduction)*pctArmor) + dmgReduction;
+
+		if(IsValidClient(victim)){
+			if(fl_ArmorCap[victim] < 1.0)
+			{
+				fl_ArmorCap[victim] = 1.0;
+			}
+			damage /= (1-fl_ArmorCap[victim])-((1-fl_ArmorCap[victim])*pctArmor) + fl_ArmorCap[victim];
 		}
-		damage /= ((1-fl_ArmorCap[victim])-((1-fl_ArmorCap[victim])*pctArmor) + fl_ArmorCap[victim]);
 		int VictimCWeapon = GetEntPropEnt(victim, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEdict(VictimCWeapon))
 		{
@@ -428,35 +432,40 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				SDKHooks_TakeDamage(attacker, victim, victim, ReflectDamage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
 			}
 		}
-		
+
 		for(int i = 1; i < MaxClients; i++)
 		{
-			if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(victim) && i != victim)
+			if(!IsValidClient3(i))
+				continue;
+			if(!IsPlayerAlive(i))
+				continue;
+			if(GetClientTeam(i) != GetClientTeam(victim))
+				continue;
+			if(i == victim)
+				continue;
+
+			float victimPos[3];
+			float guardianPos[3];
+			GetClientEyePosition(victim,victimPos);
+			GetClientEyePosition(i,guardianPos);
+			if(GetVectorDistance(victimPos,guardianPos, true) < 1400.0*1400.0)
 			{
-				float victimPos[3];
-				float guardianPos[3];
-				GetClientEyePosition(victim,victimPos);
-				GetClientEyePosition(i,guardianPos);
-				if(GetVectorDistance(victimPos,guardianPos, false) < 1400.0)
+				Address RedirectActive = TF2Attrib_GetByName(i, "mult cloak meter regen rate");
+				if(RedirectActive != Address_Null)
 				{
-					Address RedirectActive = TF2Attrib_GetByName(i, "mult cloak meter regen rate");
-					if(RedirectActive != Address_Null)
-					{
-						float redirect = TF2Attrib_GetValue(RedirectActive);
-						SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
-						damage *= (1-redirect);
-					}
-					if(damage > GetClientHealth(victim) && GetAttribute(i, "martyr powerup", 0.0)){
-						SDKHooks_TakeDamage(i, attacker, attacker, damage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
+					float redirect = TF2Attrib_GetValue(RedirectActive);
+					SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
+					damage *= (1-redirect);
+				}
+				if(damage > GetClientHealth(victim) && GetAttribute(i, "martyr powerup", 0.0)){
+					SDKHooks_TakeDamage(i, attacker, attacker, damage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
 
-						currentDamageType[attacker].second |= DMG_PIERCING;
-						SDKHooks_TakeDamage(i, attacker, attacker, GetClientHealth(i) * 0.15, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
-						damage *= 0.0;
-
-						TF2_AddCondition(victim, TFCond_UberchargedCanteen, 2.0, i);
-						TF2_AddCondition(i, TFCond_UberchargedCanteen, 0.5, i);
-						break;
-					}
+					currentDamageType[attacker].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(i, attacker, attacker, GetClientHealth(i) * 0.15, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
+					damage *= 0.0;
+					TF2_AddCondition(victim, TFCond_UberchargedCanteen, 0.5, i);
+					TF2_AddCondition(i, TFCond_UberchargedCanteen, 0.1, i);
+					break;
 				}
 			}
 		}
@@ -1019,6 +1028,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			float burndmgMult = 1.0;
 			burndmgMult *= GetAttribute(weapon, "shot penetrate all players");
 			burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
+			burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 
 
 			if(damagetype & DMG_ACTUALIGNITE || (GetClientTeam(attacker) != GetClientTeam(victim) && (GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) || GetAttribute(attacker, "infernal powerup", 0.0)) &&
