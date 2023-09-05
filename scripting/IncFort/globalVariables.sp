@@ -15,6 +15,7 @@ Handle cvar_BotMultiplier
 Handle DB = null;
 Handle hArmorXPos;
 Handle hArmorYPos;
+Handle disableOptimizer;
 Handle respawnMenu;
 Handle particleToggle;
 Handle knockbackToggle;

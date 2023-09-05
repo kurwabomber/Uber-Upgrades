@@ -440,6 +440,7 @@ public void OnPluginStart()
 	//Cookies
 	hArmorXPos = RegClientCookie("razor_armorxpos", "X Coordinate of armor bar.", CookieAccess_Protected);
 	hArmorYPos = RegClientCookie("razor_armorypos", "Y Coordinate of armor bar.", CookieAccess_Protected);
+	disableOptimizer = RegClientCookie("if_disableoptimizer", "Toggles the in-game optimizer.", CookieAccess_Protected);
 	respawnMenu = RegClientCookie("if_respawnmenu", "Toggles if you get the respawn menu on spawn.", CookieAccess_Protected);
 	EngineerTutorial = RegClientCookie("tutorial_engineer", "State of Tutorial", CookieAccess_Protected);
 	ArmorTutorial = RegClientCookie("tutorial_armor", "State of Tutorial", CookieAccess_Protected);

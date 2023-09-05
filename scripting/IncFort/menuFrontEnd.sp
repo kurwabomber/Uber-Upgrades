@@ -33,6 +33,7 @@ public Action Menu_BuyUpgrade(client, args)
 		AddMenuItem(menuBuy, "wiki", "Display In-Game Wiki");
 		
 		DisplayMenuAtItem(menuBuy, client, args, MENU_TIME_FOREVER)
+
 	}
 	return Plugin_Handled;
 }
@@ -82,6 +83,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 		int attributeDisabled[MAX_ATTRIBUTES]
 		bool isBuildingPage = StrContains(TitleStr, "Building Upgrades", false) != -1;
 		//PrintToServer("%i | %i", cat_choice, subcat_choice)
+
 		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); ++i)
 		{
 			//PrintToServer("%i", tmp_up_idx);
@@ -441,6 +443,18 @@ public Action:Menu_ChooseCategory(client, char[] TitleStr)
 			AddMenuItem(menu, "upgrade", buf);
 		}
 	}
+	int tmp_up_idx;
+	for (int i = 0; i < LISTS_CATEGORIES; ++i){
+		for(int j = 0; j < LISTS_CATEGORIES; ++j){
+			for (int a = 0; (tmp_up_idx = given_upgrd_list[w_id][i][j][a]); ++a){
+				if(upgrades[tmp_up_idx].display_style == 1)
+					upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*
+					(((upgrades[tmp_up_idx].i_val+upgrades[tmp_up_idx].ratio)/upgrades[tmp_up_idx].i_val)-1.0)/upgrades[tmp_up_idx].cost;
+				else if(upgrades[tmp_up_idx].display_style == 6)
+					upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(0.05)/upgrades[tmp_up_idx].cost;
+			}
+		}
+	}
 	SetMenuTitle(menu, TitleStr);
 	SetMenuExitBackButton(menu, true);
 	if (IsValidClient(client) && IsPlayerAlive(client))
@@ -691,6 +705,7 @@ public Menu_ChangePreferences(client)
 		AddMenuItem(menu, "particleToggle", "Toggle self-viewable particles.");
 		AddMenuItem(menu, "knockbackToggle", "Change knockback preferences.");
 		AddMenuItem(menu, "resetTutorial", "Reset all tutorial HUD elements.");
+		AddMenuItem(menu, "optimizerToggle", "Toggle optimizer.");
 		DisplayMenu(menu, client, MENU_TIME_FOREVER);
 	}
 }

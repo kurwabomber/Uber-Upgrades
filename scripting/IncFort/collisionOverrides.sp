@@ -660,7 +660,7 @@ public Action:OnTouchExplodeJar(entity, other)
 	int mode=jarateType[entity];
 	GetEntPropVector(entity, Prop_Send, "m_vecOrigin", clientvec);
 	int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity"); 
-	if(!IsValidClient(owner))
+	if(!IsValidClient3(owner))
 		return Plugin_Continue;
 	
 	int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);

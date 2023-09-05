@@ -23,7 +23,13 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int subcat_id = current_w_sc_list_id[client]
 		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
 		playerUpgradeMenuPage[client] = param2;
+
 		if(upgrades[upgrade_choice].display_style == 0)
+			return RedrawMenuItem(desc_str);
+
+		char ToggleEnabled[32];
+		GetClientCookie(client, disableOptimizer, ToggleEnabled, sizeof(ToggleEnabled));
+		if(StringToInt(ToggleEnabled))
 			return RedrawMenuItem(desc_str);
 
 		bool isBuildingPage = StrContains(title_str, "Building Upgrades", false) != -1;
@@ -934,6 +940,20 @@ public MenuHandler_Preferences(Handle menu, MenuAction:action, client, param2)
 					SetClientCookie(client, ArcaneTutorial, "0");
 					SetClientCookie(client, WeaponTutorial, "0");
 					PrintHintText(client, "Reset all tutorial HUD messages.");
+				}
+				case 8:
+				{
+					char ToggleEnabled[64];
+					GetClientCookie(client, disableOptimizer, ToggleEnabled, sizeof(ToggleEnabled));
+					float ToggleValue = StringToFloat(ToggleEnabled);
+					
+					if(ToggleValue == 0.0){
+						SetClientCookie(client, disableOptimizer, "1");
+						PrintHintText(client, "Optimizer is now disabled.");
+					}else{
+						SetClientCookie(client, disableOptimizer, "0");
+						PrintHintText(client, "Optimizer is now enabled.");
+					}
 				}
 				default:
 				{

@@ -1010,10 +1010,6 @@ DisplayItemChange(client,itemidx)
 		{
 			ChangeString = "The Soda Popper | You drain your maximum health down to 100 while held. Slows you down by -20% but increases speed by 80% when held.";
 		}
-		case 1103:
-		{
-			ChangeString = "The Back Scatter | 2.5x damage if victim is below 40% health. 3x self push force.";
-		}
 		//scout secondaries
 		case 46:
 		{
