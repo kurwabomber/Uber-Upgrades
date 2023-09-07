@@ -447,11 +447,16 @@ public Action:Menu_ChooseCategory(client, char[] TitleStr)
 	for (int i = 0; i < LISTS_CATEGORIES; ++i){
 		for(int j = 0; j < LISTS_CATEGORIES; ++j){
 			for (int a = 0; (tmp_up_idx = given_upgrd_list[w_id][i][j][a]); ++a){
-				if(upgrades[tmp_up_idx].display_style == 1)
+				if(upgrades_efficiency[client][slot][tmp_up_idx])
+					continue;	
+
+				if(upgrades[tmp_up_idx].display_style == 1){
 					upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*
 					(((upgrades[tmp_up_idx].i_val+upgrades[tmp_up_idx].ratio)/upgrades[tmp_up_idx].i_val)-1.0)/upgrades[tmp_up_idx].cost;
-				else if(upgrades[tmp_up_idx].display_style == 6)
+				}
+				else if(upgrades[tmp_up_idx].display_style == 6){
 					upgrades_efficiency[client][slot][tmp_up_idx] = 50000.0*(0.05)/upgrades[tmp_up_idx].cost;
+				}
 			}
 		}
 	}
