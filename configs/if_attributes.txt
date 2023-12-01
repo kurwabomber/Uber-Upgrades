@@ -4628,26 +4628,6 @@
 			"init"		"1"
 			"max"		"500"
 		}
-		"1518"
-		{
-			"name"		"mod demo buff type"
-			"ref"		"Armor Recharge Delay Multiplier"
-			"cost"		"300"
-			"increase_ratio"	"0.8"
-			"value"		"-0.075"
-			"init"		"1"
-			"max"		"0.025"
-		}
-		"1519"
-		{
-			"name"		"tmp dmgbuff on hit"
-			"ref"		"Armor Recharge Rate Multiplier"
-			"cost"		"300"
-			"increase_ratio"	".3"
-			"value"		"0.25"
-			"init"		"0"
-			"max"		"4.0"
-		}
 		"1520"
 		{
 			"name"		"bot medic uber health threshold"
@@ -5051,16 +5031,6 @@
 			"value"		"5"
 			"init"		"0.00"
 			"max"		"100.0"
-		}
-		"1559"
-		{
-			"name"		"mvm completed challenges bitmask"
-			"ref"		"Armor Recharge Rate When Eaten"
-			"cost"		"1000"
-			"increase_ratio" 	"0.20"
-			"value"		"0.25"
-			"init"		"0.00"
-			"max"		"3.0"
 		}
 		"1560"
 		{

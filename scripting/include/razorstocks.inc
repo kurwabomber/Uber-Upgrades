@@ -2106,6 +2106,11 @@ stock char[] GetAlphabetForm(float number)
 			Format(output, sizeof(output), "%.6s", output);
 			StrCat(output, sizeof(output), "T");
 		}
+		default:
+		{
+			FloatToString(number/Pow(10.0,float(digits-1)), output, sizeof(output));
+			Format(output, sizeof(output), "%.4se%i", output,digits-1);
+		}
 	}
 	return output;
 }

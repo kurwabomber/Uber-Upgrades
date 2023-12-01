@@ -172,21 +172,16 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 	if(!(currentDamageType[attacker].second & DMG_PIERCING))
 	{
-		float pctArmor = (fl_AdditionalArmor[victim] + fl_CurrentArmor[victim])/fl_MaxArmor[victim];
-		if(pctArmor < 0.01)
-		{
-			pctArmor = 0.01
-		}
 		float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
 		if(dmgReduction != 1.0)
-			damage *= (1-dmgReduction)-((1-dmgReduction)*pctArmor) + dmgReduction;
+			damage *= dmgReduction
 
 		if(IsValidClient(victim)){
 			if(fl_ArmorCap[victim] < 1.0)
 			{
 				fl_ArmorCap[victim] = 1.0;
 			}
-			damage /= (1-fl_ArmorCap[victim])-((1-fl_ArmorCap[victim])*pctArmor) + fl_ArmorCap[victim];
+			damage /= fl_ArmorCap[victim];
 		}
 		int VictimCWeapon = GetEntPropEnt(victim, Prop_Send, "m_hActiveWeapon");
 		if(IsValidEdict(VictimCWeapon))
@@ -737,7 +732,6 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 				{
 					int HealthGained = RoundToCeil(damage * TF2Attrib_GetValue(LifestealActive))
 					AddPlayerHealth(SapperOwner, HealthGained, 1.0, true, attacker);
-					fl_CurrentArmor[SapperOwner] += float(HealthGained) * 0.2;
 				}
 				Address DamageActive = TF2Attrib_GetByName(sapperItem,"sapper damage bonus");
 				if(DamageActive != Address_Null)
@@ -821,16 +815,8 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 	{
 		if(!IsFakeClient(owner))
 		{
-			float pctArmor = (fl_AdditionalArmor[owner] + fl_CurrentArmor[owner])/fl_MaxArmor[owner];
-			if(pctArmor <= 0.0)
-			{
-				pctArmor = 0.01
-			}
 			float armorAmt = fl_ArmorCap[owner] * 2.0;
-			damage /= ((1-armorAmt)-((1-armorAmt)*pctArmor) + armorAmt);
-			fl_CurrentArmor[owner] -= damage*0.8;
-			if(fl_CurrentArmor[owner] < 0.0)
-				fl_CurrentArmor[owner] = 0.0
+			damage /= armorAmt;
 		}
 		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", owner);
 
@@ -1630,12 +1616,6 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			if(IsValidEdict(inflictor) && !IsValidClient3(inflictor) && !HasEntProp(inflictor, Prop_Send, "m_iItemDefinitionIndex"))
 				{damagetype |= DMG_CLUB;damagetype |= DMG_BULLET;}
 
-			if(damagetype & DMG_CLUB && isVictimPlayer)
-			{
-				//Melee reduces on average 5% of their armor per second.
-				float multiHitActive = GetAttribute(weapon, "taunt move acceleration time",0.0);
-				fl_CurrentArmor[victim] -= fl_CurrentArmor[victim]*0.05/(weaponFireRate[weapon]*(multiHitActive+1));
-			}
 			if(damagetype & DMG_BULLET || damagetype & DMG_BUCKSHOT)
 			{
 				//Deal 3 piercing damage.
@@ -1713,11 +1693,5 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 		if(dmgMasteryAddr != Address_Null)
 			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr) + (bits.second & DMG_ACTUALCRIT ? 0.2 : 0.0) );
 
-		if(bits.second & DMG_ACTUALCRIT && isVictimPlayer)
-		{
-			Buff critAffinityDebuff;
-			critAffinityDebuff.init("Shattered Armor", "-25% Armor", Buff_ShatteredArmor, 1, attacker, 8.0);
-			insertBuff(victim, critAffinityDebuff);
-		}
 	}
 }

@@ -19,45 +19,8 @@ public Action:Timer_Second(Handle timer)
 				}
 			}
 
-			if(IsFakeClient(client)){
-				fl_MaxArmor[client] = 2.0*TF2Util_GetEntityMaxHealth(client);
-				fl_CalculatedMaxArmor[client] = fl_MaxArmor[client];
-
-				if(hasBuffIndex(client, Buff_ShatteredArmor))
-					fl_CalculatedMaxArmor[client] *= 0.75;
-
-				Address resActive = TF2Attrib_GetByName(client, "energy weapon no drain")
-				if(resActive != Address_Null)
-				{
-					float resAmount = TF2Attrib_GetValue(resActive);
-					fl_ArmorRes[client] = resAmount+1.0;
-				}
-				else
-				{
-					fl_ArmorRes[client] = 1.0;
-				}
-			}else{
-				fl_MaxArmor[client] = 300.0
-				Address armorActive = TF2Attrib_GetByName(client, "mult max health")
-				if(armorActive != Address_Null)
-					fl_MaxArmor[client] *= TF2Attrib_GetValue(armorActive);
-					
-				fl_CalculatedMaxArmor[client] = fl_MaxArmor[client];
-				if(hasBuffIndex(client, Buff_ShatteredArmor))
-					fl_CalculatedMaxArmor[client] *= 0.75;
-
-				Address resActive = TF2Attrib_GetByName(client, "energy weapon no drain")
-				if(resActive != Address_Null)
-				{
-					float resAmount = TF2Attrib_GetValue(resActive);
-					fl_ArmorRes[client] = resAmount+1.0;
-				}
-				else
-				{
-					fl_ArmorRes[client] = 1.0;
-				}
-				fl_ArmorCap[client] = GetResistance(client);
-				
+			fl_ArmorCap[client] = GetResistance(client);
+			if(IsValidClient(client)){
 				GetClientCookie(client, hArmorXPos, ArmorXPos[client], sizeof(ArmorXPos));
 				GetClientCookie(client, hArmorYPos, ArmorYPos[client], sizeof(ArmorYPos));
 			}
@@ -181,7 +144,7 @@ public Action:Timer_FixedVariables(Handle timer)
 			char ArmorLeft[64]
 			if(IsValidEdict(CWeapon))
 			{
-				Format(ArmorLeft, sizeof(ArmorLeft), "Armor | %i / %i", RoundToCeil(fl_CurrentArmor[client] + fl_AdditionalArmor[client]), RoundToNearest(fl_MaxArmor[client])); 
+				Format(ArmorLeft, sizeof(ArmorLeft), "Effective Health | %s", GetAlphabetForm(GetResistance(client, true)*GetClientHealth(client))); 
 				if(CheckForAttunement(client))
 				{
 					Format(ArmorLeft, sizeof(ArmorLeft), "%s\nFocus  | %.0f / %.0f", ArmorLeft, fl_CurrentFocus[client],fl_MaxFocus[client]); 
@@ -209,31 +172,12 @@ public Action:Timer_FixedVariables(Handle timer)
 					ShowSyncHudText(client, hudSpells, spellHUD);
 				}
 
-				if (AreClientCookiesCached(client))
-				{
-					if(fl_AdditionalArmor[client] <= 0.0)
-					{
-						SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
-						ShowSyncHudText(client, hudSync, ArmorLeft);
-					}
-					else
-					{
-						SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-						ShowSyncHudText(client, hudSync, ArmorLeft);
-					}
-				}
-				else
-				{
-					if(fl_AdditionalArmor[client] <= 0.0)
-					{
-						SetHudTextParams(-0.75, -0.2, 0.5, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
-						ShowSyncHudText(client, hudSync, ArmorLeft);
-					}
-					else
-					{
-						SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-						ShowSyncHudText(client, hudSync, ArmorLeft);
-					}
+				if (AreClientCookiesCached(client)){
+					SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+					ShowSyncHudText(client, hudSync, ArmorLeft);
+				}else{
+					SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+					ShowSyncHudText(client, hudSync, ArmorLeft);
 				}
 			}
 		}

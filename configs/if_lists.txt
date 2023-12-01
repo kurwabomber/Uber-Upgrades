@@ -9,7 +9,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -119,7 +118,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -225,7 +223,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -331,7 +328,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -436,7 +432,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -542,7 +537,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -648,7 +642,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -753,7 +746,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -861,7 +853,6 @@
 			"Attr1"		"health regen"
 			"Attr3"		"Armor Capability"
 			"Attr19"	"Defense"
-			"Attr19"	"Armor Recharge Rate Multiplier"
 			"Attr16"	"patient overheal bonus"
 			"Attr10"	"health from healers increased"
 		}
@@ -2018,8 +2009,6 @@
 			"Attr0"		"mult_item_meter_charge_rate"
 			"Attr1"		"Resistance when eaten"
 			"Attr4"		"lunchbox healing decreased"
-			"Attr5"		"Armor Recharge Rate When Eaten"
-			"Attr6"		"Armor Refilled When Eaten"
 		}
 	}
 	"jarat"
@@ -2607,8 +2596,6 @@
 			"Attr2"		"dmg from all reduced(wearable)"
 			"Attr0"		"effect bar recharge rate increased"
 			"Attr4"		"Resistance when eaten"
-			"Attr5"		"Armor Recharge Rate When Eaten"
-			"Attr6"		"Armor Refilled When Eaten"
 		}
 	}	
 }

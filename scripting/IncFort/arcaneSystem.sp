@@ -1254,7 +1254,6 @@ public Action:SoothingSunlight(Handle timer, client)
 	float radius[] = {0.0,900.0,1500.0,5000.0}
 	float incHealDuration[] = {0.0,6.5,15.0,30.0}
 	float overhealMax[] = {0.0,3.0,5.0,10.0}
-	float additiveArmorBonus[] = {0.0,1.0,1.5,2.0}
 	for(int i = 1; i<MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
@@ -1271,9 +1270,6 @@ public Action:SoothingSunlight(Handle timer, client)
 
 		float AmountHealing = TF2_GetMaxHealth(i) * ArcanePower[client];
 		AddPlayerHealth(i, RoundToCeil(AmountHealing), overhealMax[spellLevel] * ArcanePower[client], true, client);
-		fl_CurrentArmor[i] += AmountHealing * 2.0 * ArcanePower[client];
-		if(fl_AdditionalArmor[i] < fl_MaxArmor[i] * ArcanePower[client] * additiveArmorBonus[spellLevel])
-			fl_AdditionalArmor[i] = fl_MaxArmor[i] * ArcanePower[client] * additiveArmorBonus[spellLevel];
 		TF2_AddCondition(i,TFCond_MegaHeal,incHealDuration[spellLevel]);
 
 		CreateParticleEx(i, "utaunt_glitter_parent_gold", 1, _, _, incHealDuration[spellLevel]);

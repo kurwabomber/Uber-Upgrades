@@ -228,7 +228,6 @@ public Action:ProjectedHealingCollision(entity, client)
 				if(Distance <= Range)
 				{
 					AddPlayerHealth(i, RoundToCeil(AmountHealing), 2.0 * ArcanePower[owner], true, owner);
-					fl_CurrentArmor[i] += AmountHealing * 1.35 * ArcanePower[owner];
 					TF2_AddCondition(i,TFCond_MegaHeal,3.0);
 				}
 			}

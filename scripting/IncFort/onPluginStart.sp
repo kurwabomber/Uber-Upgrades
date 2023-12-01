@@ -476,8 +476,6 @@ public void OnPluginStart()
 		if(!IsValidClient(client))
 			continue;
 
-		fl_MaxArmor[client] = 300.0;
-		fl_CurrentArmor[client] = 300.0;
 		fl_MaxFocus[client] = 100.0;
 		fl_CurrentFocus[client] = 100.0;
 		client_no_d_team_upgrade[client] = 1
@@ -503,8 +501,6 @@ public OnPluginEnd()
 	for(int i=0; i<=MaxClients; i++)
 	{
 		if(!IsValidClient3(i)){continue;}
-		fl_MaxArmor[i] = 300.0;
-		fl_CurrentArmor[i] = 300.0;
 		fl_MaxFocus[i] = 100.0;
 		fl_CurrentFocus[i] = 100.0;
 		TF2Attrib_ClearCache(i);

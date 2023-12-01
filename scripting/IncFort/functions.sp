@@ -179,7 +179,6 @@ public void ManagePlayerBuffs(int i){
 	float additiveMoveSpeedMultBuff = 1.0;
 	float additiveDamageTakenBuff = 1.0;
 	float multiplicativeDamageTakenBuff = 1.0;
-	float additiveArmorRechargeBuff = 1.0;
 
 	char details[255] = "Statuses Active:"
 
@@ -216,7 +215,6 @@ public void ManagePlayerBuffs(int i){
 		additiveMoveSpeedMultBuff += playerBuffs[i][buff].additiveMoveSpeedMult;
 		additiveDamageTakenBuff += playerBuffs[i][buff].additiveDamageTaken;
 		multiplicativeDamageTakenBuff *= playerBuffs[i][buff].multiplicativeDamageTaken;
-		additiveArmorRechargeBuff += playerBuffs[i][buff].additiveArmorRecharge;
 
 		if(playerBuffs[i][buff].description[0] != '\0')
 			Format(details, sizeof(details), "%s\n%s: - %.1fs\n  %s", details, playerBuffs[i][buff].name, playerBuffs[i][buff].duration - currentGameTime, playerBuffs[i][buff].description);
@@ -243,23 +241,6 @@ public void ManagePlayerBuffs(int i){
 		Format(details, sizeof(details), "%s\n%s %.2fx", details, "Thunderstorm Powerup",buff);
 	}
 
-	float ArmorRechargeMult = 1.0;
-	fl_ArmorRegenConstant[i] = 0.0;
-	Address armorRecharge = TF2Attrib_GetByName(i, "tmp dmgbuff on hit");
-
-	if(TF2_IsPlayerInCondition(i, TFCond_MegaHeal))
-		additiveArmorRechargeBuff += 1.0;
-
-	if(armorRecharge != Address_Null)
-		additiveArmorRechargeBuff += TF2Attrib_GetValue(armorRecharge);
-	
-	if(GetAttribute(i, "regeneration powerup", 0.0) > 0.0)
-		ArmorRechargeMult *= 2.0;
-
-	Address HealingReductionActive = TF2Attrib_GetByName(i, "health from healers reduced");
-	if(HealingReductionActive != Address_Null)
-		ArmorRechargeMult *= TF2Attrib_GetValue(HealingReductionActive);
-
 	for (int h = 1; h < MaxClients; h++)
 	{
 		if (!IsValidClient3(h))
@@ -268,18 +249,6 @@ public void ManagePlayerBuffs(int i){
 		int healerweapon = GetEntPropEnt(h, Prop_Send, "m_hActiveWeapon");
 		if(!IsValidEdict(healerweapon))
 			continue;
-
-		if(HasEntProp(healerweapon, Prop_Send, "m_hHealingTarget") 
-		&& GetEntPropEnt(healerweapon, Prop_Send, "m_hHealingTarget") == i)
-		{
-			Address overhealBonus = TF2Attrib_GetByName(healerweapon, "overheal bonus");
-			if(overhealBonus != Address_Null)
-				additiveArmorRechargeBuff += (TF2Attrib_GetValue(overhealBonus)-1.0);
-
-			Address constantArmorRegen = TF2Attrib_GetByName(healerweapon, "SRifle Charge rate increased");
-			if(constantArmorRegen != Address_Null)
-				fl_ArmorRegenConstant[i] = (fl_CalculatedMaxArmor[i]*TF2Attrib_GetValue(constantArmorRegen)*TICKINTERVAL);
-		}
 	}
 
 	if(TF2_IsPlayerInCondition(i, TFCond_Sapped))
@@ -303,8 +272,6 @@ public void ManagePlayerBuffs(int i){
 		TF2Attrib_SetByName(i, "damage taken mult 4", additiveDamageTakenBuff*multiplicativeDamageTakenBuff);
 		buffChange[i] = false;
 	}
-
-	fl_ArmorRegen[i] = (fl_CalculatedMaxArmor[i]*0.0002) + (fl_CalculatedMaxArmor[i]*0.0002*ArmorRechargeMult*additiveArmorRechargeBuff);
 
 	if(IsFakeClient(i) || disableIFMiniHud[i] > currentGameTime)
 		return;
@@ -346,9 +313,6 @@ public void ManagePlayerBuffs(int i){
 		Format(details, sizeof(details), "%s\n+%ipct Damage Vulnerability", details, RoundToNearest(((additiveDamageTakenBuff*multiplicativeDamageTakenBuff)-1.0)*100.0) );
 	else if (additiveDamageTakenBuff*multiplicativeDamageTakenBuff < 1.0)
 		Format(details, sizeof(details), "%s\n-%ipct Damage Taken", details, RoundToNearest( (1.0-(additiveDamageTakenBuff*multiplicativeDamageTakenBuff)) *100.0) );
-
-	if(additiveArmorRechargeBuff != 1.0)
-		Format(details, sizeof(details), "%s\n+%ipct Armor Recharge Rate", details, RoundToNearest((additiveArmorRechargeBuff-1.0)*100.0) );
 
 	SendItemInfo(i, details);
 }
@@ -398,7 +362,6 @@ public ApplyUberBuffs(int medic, int target, int medigun){
 		Buff speedBuff;
 		speedBuff.init("Major Speed Bonus", "", Buff_Speed, 2, medic, 0.2);
 		speedBuff.additiveMoveSpeedMult = 0.4;
-		speedBuff.additiveArmorRecharge = 1.0;
 		insertBuff(medic, speedBuff);
 
 		if(applyToTarget)
@@ -1421,8 +1384,6 @@ RespawnEffect(client)
 	{
 		current_class[client] = TF2_GetPlayerClass(client)
 		fl_CurrentFocus[client] = fl_MaxFocus[client];
-		fl_CurrentArmor[client] = fl_MaxArmor[client];
-		fl_AdditionalArmor[client] = 0.0;
 		LightningEnchantmentDuration[client] = 0.0;
 		DarkmoonBladeDuration[client] = 0.0;
 		TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
@@ -1912,17 +1873,6 @@ refreshUpgrades(client, slot)
 				TF2Attrib_SetByName(client,"mult max health", TF2Attrib_GetValue(healthActive));
 				if(current_class[client] == TFClass_Engineer)
 					TF2Attrib_SetByName(client,"engy building health bonus", 1.0+TF2Attrib_GetValue(healthActive));
-			}
-			if(fl_AdditionalArmor[client] > 0.0)
-			{
-				float postArmorAmount = 300.0
-				Address armorActive = TF2Attrib_GetByName(client, "mult max health")
-				if(armorActive != Address_Null)
-					postArmorAmount = TF2Attrib_GetValue(armorActive)*300.0;
-				
-				if(postArmorAmount < fl_MaxArmor[client] && fl_AdditionalArmor[client] > postArmorAmount)
-					fl_AdditionalArmor[client] = postArmorAmount
-				
 			}
 			
 			//Powerups
@@ -2712,9 +2662,9 @@ checkRadiation(victim,attacker)
 	{
 		RadiationBuildup[victim] = 0.0;
 
-		int armorLost = RoundToNearest(fl_CalculatedMaxArmor[victim]/2.0);
-		DealFakeDamage(victim,attacker,-1, armorLost);
-		armorWeaknessRatio[victim] += 0.5;
+		//uhh wtf radiation do now...
+
+		DealFakeDamage(victim,attacker,-1, 100);
 		
 		float particleOffset[3] = {0.0,0.0,10.0};
 		CreateParticleEx(victim, "utaunt_electricity_cloud_electricity_WY", 1, 0, particleOffset, 5.0);
@@ -3842,7 +3792,6 @@ ResetVariables(){
 		relentlessTicks[client] = 0;
 		Kills[client] = 0;
 		Deaths[client] = 0;
-		armorTicks[client] = 0;
 		currentGameTime = 0.0;
 		efficiencyCalculationTimer[client] = 0.0;
 		DamageDealt[client] = 0.0;
@@ -3870,7 +3819,6 @@ ResetVariables(){
 		miniCritStatusAttacker[client] = 0.0;
 		baseDamage[client] = 0.0;
 		remainderHealthRegeneration[client] = 0.0;
-		armorWeaknessRatio[client] = 0.0;
 		InfernalEnchantmentDuration[client] = 0.0;
 		karmicJusticeScaling[client] = 0.0;
 		snowstormActive[client] = false;

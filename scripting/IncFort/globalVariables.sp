@@ -90,7 +90,6 @@ enum struct Buff{
 	float additiveMoveSpeedMult;
 	float additiveDamageTaken;
 	float multiplicativeDamageTaken;
-	float additiveArmorRecharge;
 
 	void clear(){
 		this.name = "";
@@ -107,7 +106,6 @@ enum struct Buff{
 		this.additiveMoveSpeedMult = 0.0;
 		this.additiveDamageTaken = 0.0;
 		this.multiplicativeDamageTaken = 1.0;
-		this.additiveArmorRecharge = 0.0;
 	}
 	void init(const char sName[32], const char sDescription[64], int iID, int iPriority, int iInflictor, float fDuration)
 	{
@@ -129,8 +127,7 @@ enum {
 	Buff_LunchboxArmor=5,
 	Buff_Haste=6,
 	Buff_Speed=7,
-	Buff_ShatteredArmor=8,
-	Buff_Jarated=9,
+	Buff_Jarated=8,
 };
 
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
@@ -211,8 +208,7 @@ int lastKBSource[MAXPLAYERS+1];
 int knockbackFlags[MAXPLAYERS+1];
 int relentlessTicks[MAXPLAYERS+1];
 int Kills[MAXPLAYERS+1]
-int Deaths[MAXPLAYERS+1]
-int armorTicks[MAXPLAYERS+1];
+int Deaths[MAXPLAYERS+1];
 int LightningEnchantmentLevel[MAXPLAYERS+1];
 int DarkmoonBladeLevel[MAXPLAYERS+1];
 int InfernalEnchantmentLevel[MAXPLAYERS+1];
@@ -240,14 +236,7 @@ float StartMoneySaved;
 float blankArray2[MAXPLAYERS+1][16][MAX_ATTRIBUTES_ITEM]
 float MenuTimer[MAXPLAYERS +1];
 float ImpulseTimer[MAXPLAYERS +1];
-float fl_MaxArmor[MAXPLAYERS+1];
-float fl_CalculatedMaxArmor[MAXPLAYERS+1];
-float fl_CurrentArmor[MAXPLAYERS+1];
-float fl_AdditionalArmor[MAXPLAYERS+1];
 float fl_ArmorCap[MAXPLAYERS+1];
-float fl_ArmorRes[MAXPLAYERS+1];
-float fl_ArmorRegen[MAXPLAYERS+1];
-float fl_ArmorRegenConstant[MAXPLAYERS+1];
 float g_flLastAttackTime[MAXPLAYERS+1];
 float MadmilkDuration[MAXPLAYERS+1];
 float fl_MaxFocus[MAXPLAYERS+1];
@@ -290,7 +279,6 @@ float corrosiveDOT[MAXPLAYERS+1][MAXPLAYERS+1][2]
 float entitySpawnPositions[MAXENTITIES][3];
 float baseDamage[MAXPLAYERS+1];
 float remainderHealthRegeneration[MAXPLAYERS+1];
-float armorWeaknessRatio[MAXPLAYERS+1];
 float karmicJusticeScaling[MAXPLAYERS+1];
 
 //String

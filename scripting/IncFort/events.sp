@@ -61,29 +61,15 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			}
 		}
 	}
-	float armorLoss = damage/fl_ArmorRes[client];
-
 	if(karmicJusticeScaling[client]){
-		karmicJusticeScaling[client] += 400.0*armorLoss/fl_MaxArmor[client];
+		karmicJusticeScaling[client] += 400.0*damage/float(TF2Util_GetEntityMaxHealth(client));
 		if(karmicJusticeScaling[client] >= 280.0){
 			karmicJusticeScaling[client] = 280.0;
 			KarmicJusticeExplosion(client);
 		}
 	}
-
-	if(IsValidClient3(attacker))
-	{
-		if(TF2_IsPlayerInCondition(attacker, TFCond_CritCanteen))
-			armorLoss *= 1.4;
-	}
-	if(!GetAttribute(client, "regeneration powerup", 0.0))
-		armorWeaknessRatio[client] += armorLoss/fl_MaxArmor[client];
-
 	if(IsValidClient3(client))
 	{
-		if(GetAttribute(client, "martyr powerup", 0.0))
-			armorLoss *= 0.0;
-
 		Address revengePowerup = TF2Attrib_GetByName(client, "revenge powerup");
 		if(revengePowerup != Address_Null)
 		{
@@ -103,23 +89,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				SupernovaBuildup[client] = 1.0;
 		}
 	}
-	if(fl_AdditionalArmor[client] > 0.0)
-	{
-		fl_AdditionalArmor[client] -= armorLoss;
-		if(fl_AdditionalArmor[client] < 0.0)
-		{
-			fl_AdditionalArmor[client] = 0.0;
-		}
-	}
-	else
-	{
-		fl_CurrentArmor[client] -= armorLoss;
-		if(fl_CurrentArmor[client] < 0.0)
-		{
-			fl_CurrentArmor[client] = 0.0;
-		}
-	}
-	
+
 	if(IsValidClient3(attacker) && !IsFakeClient(attacker))
 	{
 		/*if(client != attacker && attacker != 0 && damage >= 1.0)
@@ -148,7 +118,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				{
 					int HealthGained = RoundToCeil(0.1 * damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
-					fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 				}
 				
 				Address vampirePowerup = TF2Attrib_GetByName(attacker, "vampire powerup");//Vampire Powerup
@@ -156,14 +125,12 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				{
 					int HealthGained = RoundToCeil(0.8 * damage * lifestealFactor);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal*2.0, true, attacker);
-					fl_CurrentArmor[attacker] += float(HealthGained);
 				}
 				
 				if(TF2_IsPlayerInCondition(attacker, TFCond_MedigunDebuff))// Conch
 				{
 					int HealthGained = RoundToCeil(damage * 0.15 * lifestealFactor);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
-					fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 				}
 				if(GetEventInt(event, "custom") == 2)//backstab
 				{
@@ -172,14 +139,12 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 					{
 						int HealthGained = RoundToCeil(damage * 0.5 * TF2Attrib_GetValue(BackstabLifestealActive));
 						AddPlayerHealth(attacker, HealthGained, maximumOverheal*1.5, true, attacker);
-						fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 					}
 				}
 				if(MadmilkDuration[client] > currentGameTime)
 				{
 					int HealthGained = RoundToCeil(lifestealFactor * damage * (MadmilkDuration[client]-currentGameTime) * 1.66 / 100.0);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
-					fl_CurrentArmor[attacker] += float(HealthGained) * 0.2;
 				}
 			}
 		}
@@ -372,34 +337,6 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 				{
 					char classname[64];
 					GetEdictClassname(CWeapon, classname, sizeof(classname)); 
-					if(StrContains(classname, "tf_weapon_lunchbox",false) == 0)
-					{//Hook onto all sandvich stuff or something to that effect
-						Address ArmorGain = TF2Attrib_GetByName(CWeapon, "squad surplus claimer id DEPRECATED");
-						Address ArmorRegen = TF2Attrib_GetByName(CWeapon, "mvm completed challenges bitmask");
-						Address ShieldingActive = TF2Attrib_GetByName(CWeapon, "energy weapon charged shot");
-						if(ArmorGain != Address_Null)
-						{
-							fl_CurrentArmor[client] += TF2Attrib_GetValue(ArmorGain)
-							if(fl_CurrentArmor[client] > fl_CalculatedMaxArmor[client])
-							{
-								fl_CurrentArmor[client] = fl_CalculatedMaxArmor[client]
-							}
-						}
-						if(ArmorRegen != Address_Null)
-						{
-							Buff lunchboxBonus;
-							lunchboxBonus.init("Lunchbox Armor Recharge", "", Buff_LunchboxArmor, 1, client, 8.0);
-							lunchboxBonus.additiveArmorRecharge = TF2Attrib_GetValue(ArmorRegen);
-							insertBuff(client, lunchboxBonus);
-						}
-						if(ShieldingActive != Address_Null)
-						{
-							if(fl_AdditionalArmor[client] < TF2Attrib_GetValue(ShieldingActive))
-							{
-								fl_AdditionalArmor[client] = TF2Attrib_GetValue(ShieldingActive)
-							}
-						}
-					}
 					float damageReduction = GetAttribute(CWeapon, "energy buff dmg taken multiplier", 1.0);
 					if(damageReduction != 1.0)
 						TF2Attrib_AddCustomPlayerAttribute(client, "damage taken mult 3", damageReduction, 16.0);
@@ -2555,41 +2492,6 @@ public OnGameFrame()
 					}
 				}
 			}
-			if(fl_CurrentArmor[client] < fl_CalculatedMaxArmor[client])
-			{
-				/* Essentially the greater amount of armor percentage you lose, the more ticks it requires to increment armor by armor regen. */
-				if(armorWeaknessRatio[client] > 0.75){
-					if(armorTicks[client] % 5 == 0)
-						fl_CurrentArmor[client] += fl_ArmorRegen[client];
-				}
-				else if(armorWeaknessRatio[client] > 0.5){
-					if(armorTicks[client] % 4 == 0)
-						fl_CurrentArmor[client] += fl_ArmorRegen[client];
-				}
-				else if(armorWeaknessRatio[client] > 0.35){
-					if(armorTicks[client] % 3 == 0)
-						fl_CurrentArmor[client] += fl_ArmorRegen[client];
-				}
-				else if(armorWeaknessRatio[client] > 0.2){
-					if(armorTicks[client] % 2 == 0)
-						fl_CurrentArmor[client] += fl_ArmorRegen[client];
-				}
-				else if(armorWeaknessRatio[client] > 0.1){
-					fl_CurrentArmor[client] += fl_ArmorRegen[client]*0.75;
-				}
-				else{
-					fl_CurrentArmor[client] += fl_ArmorRegen[client];
-				}
-
-				fl_CurrentArmor[client] += fl_ArmorRegenConstant[client];
-				armorTicks[client]++;
-			}
-			if(armorWeaknessRatio[client] > 0.0){
-				//About -7% every second
-				armorWeaknessRatio[client] *= 0.999;
-				//-2% every second.
-				armorWeaknessRatio[client] -= 0.02*TICKINTERVAL;
-			}
 			
 			if(fl_CurrentFocus[client] + fl_RegenFocus[client] < fl_MaxFocus[client])
 				fl_CurrentFocus[client] += fl_RegenFocus[client];
@@ -2599,11 +2501,6 @@ public OnGameFrame()
 			if(fl_CurrentFocus[client] > fl_MaxFocus[client])
 				fl_CurrentFocus[client] = fl_MaxFocus[client];
 
-			if(fl_CurrentArmor[client] > fl_CalculatedMaxArmor[client])
-				fl_CurrentArmor[client] = fl_CalculatedMaxArmor[client];
-			
-			if(fl_CurrentArmor[client] < 0.0)
-				fl_CurrentArmor[client] = 0.0;
 			if(fl_CurrentFocus[client] < 0.0)
 				fl_CurrentFocus[client] = 0.0;
 
@@ -3248,9 +3145,6 @@ public OnClientDisconnect(client)
 	dps[client] = 0.0;
 	Healed[client] = 0.0;
 	current_class[client] = TFClass_Unknown;
-	fl_MaxArmor[client] = 300.0;
-	fl_CurrentArmor[client] = 300.0;
-	fl_AdditionalArmor[client] = 0.0;
 	fl_MaxFocus[client] = 100.0;
 	fl_CurrentFocus[client] = 100.0;
 	BleedBuildup[client] = 0.0;
@@ -3292,9 +3186,6 @@ public OnClientDisconnect(client)
 }
 public OnClientPutInServer(client)
 {
-	fl_MaxArmor[client] = 300.0;
-	fl_CurrentArmor[client] = 300.0;
-	fl_AdditionalArmor[client] = 0.0;
 	fl_MaxFocus[client] = 100.0;
 	fl_CurrentFocus[client] = 100.0;
 	BleedMaximum[client] = 100.0;

@@ -5,13 +5,10 @@
 #include <sdkhooks>
 #include <tf2>
 #include <tf2_stocks>
-#include <sm_chaosmvm>
 #include <tf2attributes>
 #include <tf2_isPlayerInSpawn>
 #include <vphysics>
 #include <dhooks>
-#include <weapondata>
-
 // Plugin Info
 public Plugin:myinfo =
 {
