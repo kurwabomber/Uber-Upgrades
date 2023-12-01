@@ -82,8 +82,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -96,7 +94,6 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{
@@ -191,8 +188,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -205,7 +200,6 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{
@@ -300,8 +294,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -314,7 +306,6 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{
@@ -408,8 +399,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -422,7 +411,6 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{
@@ -477,38 +465,6 @@
 		}
 		"Arcane Upgrades"
 		{
-			"!Arcane Stats"
-			{
-				"Attr1"		"Max Focus"
-				"Attr2"		"Focus Regeneration"
-				"Attr3"		"Arcane Power"
-				"Attr4"		"Arcane Damage"
-				"Attr5"		"Attunement Slots"
-				"Attr6"		"Arcane Cooldown Reduction"
-			}
-			"!Tier 1 Arcane Spells"
-			{
-				"Attr1"		"Arcane - Zap"
-				"Attr2"		"Arcane - Blacksky Eye"
-				"Attr3"		"Arcane - Lightning Strike"
-				"Attr4"		"Arcane - Healing Aura"
-				"Attr5"		"Arcane - Darkmoon Blade"
-			}
-			"!Tier 2 Arcane Spells"
-			{
-				"Attr1"		"Arcane - Sunlight Spear"
-				"Attr2"		"Arcane - Lightning Enchantment"
-				"Attr3"		"Arcane - Snap Freeze"
-				"Attr4"		"Arcane - Arcane Prison"
-				"Attr5"		"Arcane - Shockwave"
-			}
-			"!Tier 3 Arcane Spells"
-			{
-				"Attr7"		"Arcane - A Call Beyond"
-			}
-		}
-		"Powerup Upgrades"
-		{
 			"!Offensive Powerups"
 			{
 				"Attr0"		"Strength Powerup"
@@ -517,8 +473,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -531,7 +485,34 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
+			}
+			"!Misc. Powerups"
+			{
+				"Attr0"		"Agility Powerup"
+			}
+		}
+		"Powerup Upgrades"
+		{
+			"!Offensive Powerups"
+			{
+				"Attr0"		"Strength Powerup"
+				"Attr1"		"Vampire Powerup"
+				"Attr2"		"Revenge Powerup"
+				"Attr3"		"Precision Powerup"
+				"Attr4"		"Knockout Powerup"
+				"Attr5"		"Supernova Powerup"
+				"Attr8"		"Relentless Powerup"
+			}
+			"!Defensive Powerups"
+			{
+				"Attr0"		"Resistance Powerup"
+				"Attr1"		"Regeneration Powerup"
+				"Attr2"		"Inverter Powerup"
+			}
+			"!Support Powerups"
+			{
+				"Attr0"		"King Powerup"
+				"Attr1"		"Plague Powerup"
 			}
 			"!Misc. Powerups"
 			{
@@ -630,8 +611,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -644,7 +623,6 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{
@@ -738,8 +716,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -752,7 +728,6 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{
@@ -849,8 +824,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -863,7 +836,6 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{
@@ -961,8 +933,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr6"		"Infernal Powerup"
-				"Attr7"		"Thunderstorm Powerup"
 				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
@@ -975,7 +945,6 @@
 			{
 				"Attr0"		"King Powerup"
 				"Attr1"		"Plague Powerup"
-				"Attr2"		"Martyr Powerup"
 			}
 			"!Misc. Powerups"
 			{
