@@ -5032,16 +5032,6 @@
 			"init"		"0.00"
 			"max"		"100.0"
 		}
-		"1560"
-		{
-			"name"		"squad surplus claimer id DEPRECATED"
-			"ref"		"Armor Refilled When Eaten"
-			"cost"		"500"
-			"increase_ratio" 	"0.15"
-			"value"		"5"
-			"init"		"0.00"
-			"max"		"50.0"
-		}
 		"1561"
 		{
 			"name"		"Converts Firerate to Damage"
@@ -5837,7 +5827,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All outgoing damage is multiplied by 2x."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.1"
@@ -5849,7 +5839,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All incoming damage is multiplied by 0.5x.\nGives immunity to crits and minicrits."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.2"
@@ -5861,7 +5851,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All incoming damage is multiplied by 0.75x.\n+25% bleed damage.\nGives 80% lifesteal."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.4"
@@ -5873,7 +5863,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"66% of incoming damage is given to filling revenge meter.\nAll incoming damage is multiplied by 0.8x.\nOn activation:\nGrants +40% armor damage, +50% damage and full crits."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.5"
@@ -5885,7 +5875,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"Removes armor weakness ratio.\nAll damage taken is multiplied by 0.75x.\n+15% max health regeneration per second and 2x armor regeneration.\n100% ammo regeneration."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.6"
@@ -5897,7 +5887,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"-95% weapon spread, 2x projectile speed.\nCertain projectile weapons are given homing\nGrants headshot capability.\nGrants demoman instant detonation of stickies.\nAll outgoing damage is multiplied by 1.35x"	
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.7"
@@ -5909,7 +5899,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"Grants 1.33x reload and fire rate, infinite jumps, speed boost\nand 1.4x speed, 1.3x jump height, 1.75x self push force,\nand 35% dodge chance."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.8"
@@ -5921,7 +5911,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All outgoing melee damage is multiplied by 1.75x.\nAll incoming damage is multiplied by 0.8x.\nDamage causes concussion buildup.\nUnstunnable victims take minicrits."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.9"
@@ -5933,7 +5923,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"Gives 1.33x reload and fire rate.\n1.5x uber and heal rate for medics\n1.2x outgoing damage for teammates nearby\nand 0.8x incoming damage for yourself."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.10"
@@ -5945,7 +5935,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"Steals all healthpacks nearby,\ngiving 2s of 2x armor regeneration and 25% max health heal.\nEnemies nearby will get plagued for 12s,\ndecreasing damage dealt by 0.5x.\nAll incoming damage is multiplied by 0.75x."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.11"
@@ -5957,7 +5947,7 @@
 			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All incoming damage is multiplied by 0.8x\nOutgoing splash damage is given 1.8x damage\nnon splash weapons deal 1.35x damage and splash 100% damage dealt with falloff.\nOn proc:\nStuns all nearby enemies for 6s and buildings for 10s."
+			"display_style" "8"
 			"max"		"3.00"
 		}
 		"2100.14"
@@ -5968,7 +5958,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"All incoming damage is multiplied by 0.8x.\nFlips the effects of ailments.\nEx: Jarate gives you battalion's backup effect."
+			"display_style" "8"
 			"max"		"1.00"
 		}
 		"2100.15"
@@ -5979,7 +5969,7 @@
 			"cost"		"40000"
 			"value"		"1"
 			"init"		"0.00"
-			"description"	"+20% Attackspeed per second you hold fire.\nCapped at +200% and is removed when not firing (including reload)."
+			"display_style" "8"
 			"max"		"1.00"
 		}
 	}

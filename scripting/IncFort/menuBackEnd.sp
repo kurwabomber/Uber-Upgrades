@@ -120,6 +120,16 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "pct");
 					SendItemInfo(client, upgradeDescription);
 				}
+				if(upgrades[upgrade_choice].display_style == 8){
+					int amount
+					if(currentupgrades_i[client][slot][inum] != 0.0)
+						amount = RoundFloat((currentupgrades_val[client][slot][inum] - currentupgrades_i[client][slot][inum])/ upgrades[upgrade_choice].ratio)
+					else
+						amount = RoundFloat((currentupgrades_val[client][slot][inum] - upgrades[upgrade_choice].i_val)/ upgrades[upgrade_choice].ratio)
+					
+					//really... why
+					GivePowerupDescription(client, upgrades[upgrade_choice].attr_name, amount);
+				}
 			}
 		}
 		else if(rate > 1)
