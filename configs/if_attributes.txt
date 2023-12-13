@@ -5956,21 +5956,11 @@
 			"ref"		"Inverter Powerup"
 			"restriction_category"	"1"
 			"cost"		"40000"
+			"increase_ratio"	"-0.5"
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"max"		"1.00"
-		}
-		"2100.15"
-		{
-			"name"		"relentless powerup"
-			"ref"		"Relentless Powerup"
-			"restriction_category"	"1"
-			"cost"		"40000"
-			"value"		"1"
-			"init"		"0.00"
-			"display_style" "8"
-			"max"		"1.00"
+			"max"		"3.00"
 		}
 	}
 }

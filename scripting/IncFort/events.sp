@@ -97,8 +97,30 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			PrintToConsole(attacker, "%.1f post damage dealt.", damage);
 		}*/
 
-		if(IsValidClient3(attacker) && damage > 0.0 && attacker != client && IsValidClient3(client))
+		if(damage > 0.0 && attacker != client && IsValidClient3(client))
 		{
+			if(GetAttribute(attacker, "regeneration powerup", 0.0) == 3){
+				float heal = damage;
+				if(heal > bloodAcolyteBloodPool[attacker])
+					heal = bloodAcolyteBloodPool[attacker];
+				
+				if(heal > 0.0){
+					for(int i = 1; i<=MaxClients;++i){
+						if(!IsValidClient3(i))
+							continue;
+						if(!IsPlayerAlive(i))
+							continue;
+						if(IsOnDifferentTeams(attacker, i))
+							continue;
+						if(GetPlayerDistance(attacker, i) > 800.0)
+							continue;
+
+						AddPlayerHealth(i, RoundToCeil(heal), 3.0, true, attacker);
+					}
+					bloodAcolyteBloodPool[attacker] -= heal;
+				}
+			}
+
 			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
@@ -1662,6 +1684,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						TF2_AddCondition(client, TFCond_UberchargedHidden, 1.0);
 						TF2_AddCondition(client, TFCond_KingAura, 1.0);
 					}
+					if(duplicationCooldown[client] <= currentGameTime){
+						if(GetAttribute(client, "regeneration powerup", 0.0) == 2.0){
+							duplicationCooldown[client] = currentGameTime+10.0;
+							AddPlayerHealth(client, GetClientHealth(client), 2.0);
+						}
+					}
+
 					if(SupernovaBuildup[client] >= 1.0)
 					{
 						SupernovaBuildup[client] = 0.0;
@@ -2330,39 +2359,50 @@ public OnGameFrame()
 				int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
 				int clientMaxHealth = TF2_GetMaxHealth(client);
 				
-				if(clientHealth < clientMaxHealth){
-					float RegenPerTick = 0.0;
+				float RegenPerTick = 0.0;
 
-					Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
-					if(RegenActive != Address_Null)
-						RegenPerTick += TF2Attrib_GetValue(RegenActive)*TICKINTERVAL;
+				Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
+				if(RegenActive != Address_Null)
+					RegenPerTick += TF2Attrib_GetValue(RegenActive)*TICKINTERVAL;
 
-					Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
-					if(HealingReductionActive != Address_Null)
-						RegenPerTick *= TF2Attrib_GetValue(HealingReductionActive);
-					
-					Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
-					if(regenerationPowerup != Address_Null)
-						if(TF2Attrib_GetValue(regenerationPowerup) > 0.0)
-							RegenPerTick += TF2_GetMaxHealth(client)*TICKINTERVAL*0.15;//+15% maxHPR/s
-
-					if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
-						RegenPerTick *= 2.0;
-					
-					if(TF2_IsPlayerInCondition(client, TFCond_Plague))
-						RegenPerTick *= 0.0;
-		
-					remainderHealthRegeneration[client] += RegenPerTick;
-
-					if(remainderHealthRegeneration[client] > 1.0){
-						int heal = RoundToFloor(remainderHealthRegeneration[client]);
-						if(float(clientHealth) + heal < clientMaxHealth)
-							SetEntProp(client, Prop_Data, "m_iHealth", clientHealth+heal);
-						else
-							SetEntProp(client, Prop_Data, "m_iHealth", clientMaxHealth);
-						
-						remainderHealthRegeneration[client] -= heal;
+				Address HealingReductionActive = TF2Attrib_GetByName(client, "health from healers reduced");
+				if(HealingReductionActive != Address_Null)
+					RegenPerTick *= TF2Attrib_GetValue(HealingReductionActive);
+				
+				Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
+				if(regenerationPowerup != Address_Null)
+					if(TF2Attrib_GetValue(regenerationPowerup) == 1.0)
+						RegenPerTick += TF2_GetMaxHealth(client)*TICKINTERVAL*0.1;//+10% maxHPR/s
+					else if(TF2Attrib_GetValue(regenerationPowerup) == 3.0){
+						if(GetClientHealth(client) >= TF2_GetMaxHealth(client) * 0.2){
+							RegenPerTick -= TF2_GetMaxHealth(client)*TICKINTERVAL*0.08;
+							bloodAcolyteBloodPool[client] += TF2_GetMaxHealth(client)*TICKINTERVAL*0.08;
+						}
 					}
+
+				if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
+					RegenPerTick *= 2.0;
+				
+				if(TF2_IsPlayerInCondition(client, TFCond_Plague))
+					RegenPerTick *= 0.0;
+	
+				remainderHealthRegeneration[client] += RegenPerTick;
+
+				if(remainderHealthRegeneration[client] > 1.0){
+					int heal = RoundToFloor(remainderHealthRegeneration[client]);
+					if(float(clientHealth) + heal < clientMaxHealth)
+						SetEntProp(client, Prop_Data, "m_iHealth", clientHealth+heal);
+					else
+						SetEntProp(client, Prop_Data, "m_iHealth", clientMaxHealth);
+					
+					remainderHealthRegeneration[client] -= heal;
+				}
+				//drain
+				else if(remainderHealthRegeneration[client] < -1.0){
+					int heal = RoundToFloor(remainderHealthRegeneration[client]);
+					SetEntProp(client, Prop_Data, "m_iHealth", clientHealth+heal);
+
+					remainderHealthRegeneration[client] -= heal;
 				}
 
 				if(RageActive[client])
@@ -3234,30 +3274,25 @@ public OnClientPostAdminCheck(client)
 		}
 	}
 }
-public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
+public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 {
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	bossPhase[client] = 0;
 	RespawnEffect(client);
-	if(IsClientInGame(client) && IsValidClient(client))
-	{
+	if(IsClientInGame(client) && IsValidClient(client)){
 		CancelClientMenu(client);
 		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 		client_respawn_handled[client] = 1;
 		CreateTimer(0.4, WeaponReGiveUpgrades, GetClientUserId(client));
 		CancelClientMenu(client);
-		if(AreClientCookiesCached(client))
-		{
+		if(AreClientCookiesCached(client)){
 			char menuEnabled[64];
 			GetClientCookie(client, respawnMenu, menuEnabled, sizeof(menuEnabled));
 			float menuValue = StringToFloat(menuEnabled);
 			if(menuValue == 0.0)
-			{
 				Menu_BuyUpgrade(client, 0);
-			}
 		}
-		else
-		{
+		else{
 			Menu_BuyUpgrade(client, 0);
 		}
 		TF2_RemoveCondition(client,TFCond_Plague);
@@ -3275,6 +3310,8 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 		lastDamageTaken[client] = 0.0;
 		critStatus[client] = false;
 		plagueAttacker[client] = -1;
+		bloodAcolyteBloodPool[client] = 0.0;
+		duplicationCooldown[client] = 0.0;
 		SetEntityRenderColor(client, 255,255,255,255);
 		for(int i=1;i<MaxClients;i++)
 		{
@@ -3291,24 +3328,22 @@ public Event_PlayerreSpawn(Handle event, const char[] name, bool:dontBroadcast)
 			snowstormActive[client] = false;
 		}
 	}
-	if(!IsMvM() && IsFakeClient(client))
-	{
-		CreateTimer(0.4, GiveBotUpgrades, GetClientUserId(client));
-	}
-	if(IsMvM() && IsFakeClient(client))
-	{
-		BotTimer[client] = 45.0;
-		if(IsValidForDamage(TankTeleporter) && !GetEntProp(TankTeleporter, Prop_Send, "m_bDisabled"))
-		{
-			char classname[128]; 
-			GetEdictClassname(TankTeleporter, classname, sizeof(classname)); 
-			if(!strcmp("tank_boss", classname))
-			{
-				float telePos[3];
-				GetEntPropVector(TankTeleporter,Prop_Send, "m_vecOrigin",telePos);
-				telePos[2]+= 220.0;
-				TeleportEntity(client, telePos, NULL_VECTOR, NULL_VECTOR);
+	if(IsFakeClient(client)){
+		if(IsMvM()){
+			BotTimer[client] = 45.0;
+			if(IsValidForDamage(TankTeleporter) && !GetEntProp(TankTeleporter, Prop_Send, "m_bDisabled")){
+				char classname[128]; 
+				GetEdictClassname(TankTeleporter, classname, sizeof(classname)); 
+				if(!strcmp("tank_boss", classname)){
+					float telePos[3];
+					GetEntPropVector(TankTeleporter,Prop_Send, "m_vecOrigin",telePos);
+					telePos[2]+= 220.0;
+					TeleportEntity(client, telePos, NULL_VECTOR, NULL_VECTOR);
+				}
 			}
+		}
+		else{
+			CreateTimer(0.4, GiveBotUpgrades, GetClientUserId(client));
 		}
 	}
 }

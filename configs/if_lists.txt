@@ -81,7 +81,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -186,7 +185,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -291,7 +289,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -395,7 +392,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -468,7 +464,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -496,7 +491,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -605,7 +599,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -709,7 +702,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -816,7 +808,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{
@@ -924,7 +915,6 @@
 				"Attr3"		"Precision Powerup"
 				"Attr4"		"Knockout Powerup"
 				"Attr5"		"Supernova Powerup"
-				"Attr8"		"Relentless Powerup"
 			}
 			"!Defensive Powerups"
 			{

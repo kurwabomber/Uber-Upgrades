@@ -279,7 +279,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			RadiationBuildup[victim] += damage;
 			checkRadiation(victim,attacker);
 		}
-		if(GetAttribute(victim, "resistance powerup", 0.0))
+		if(GetAttribute(victim, "resistance powerup", 0.0) == 1)
 		{
 			if(critStatus[victim] == true){
 				critStatus[victim] = false;
@@ -288,32 +288,42 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				miniCritStatus[victim] = false;
 				damage /= 1.4;
 			}
-			damage /= 2.0;
+			damage *= 0.5;
 		}
+		else if(GetAttribute(victim, "resistance powerup", 0.0) == 1)
+			damage *= 0.66;
 
-		if(GetAttribute(victim, "revenge powerup", 0.0))
+		//Just in case in the future I ever want multiple powerups...
+		if(GetAttribute(victim, "revenge powerup", 0.0) == 1)
 			damage *= 0.8;
 
-		if(GetAttribute(victim, "knockout powerup", 0.0))
+		if(GetAttribute(victim, "knockout powerup", 0.0) == 1)
 			damage *= 0.8;
+		else if(GetAttribute(victim, "knockout powerup", 0.0) == 2)
+			damage *= 0.66;
 
-		if(GetAttribute(victim, "king powerup", 0.0))
+		if(GetAttribute(victim, "king powerup", 0.0) == 1)
 			damage *= 0.8;
 		
-		if(GetAttribute(victim, "supernova powerup", 0.0))
+		if(GetAttribute(victim, "supernova powerup", 0.0) == 1)
 			damage *= 0.8;
 
-		if(GetAttribute(victim, "inverter powerup", 0.0))
+		if(GetAttribute(victim, "inverter powerup", 0.0) == 1)
+			damage *= 0.8;
+		else if(GetAttribute(victim, "inverter powerup", 0.0) == 2)
 			damage *= 0.8;
 
-		if(GetAttribute(victim, "regeneration powerup", 0.0))
+		if(GetAttribute(victim, "regeneration powerup", 0.0) == 1)
 			damage *= 0.75;
 
-		if(GetAttribute(victim, "vampire powerup", 0.0))
+		if(GetAttribute(victim, "vampire powerup", 0.0) == 1)
 			damage *= 0.75;
 
-		if(GetAttribute(victim, "plague powerup", 0.0))
-			damage *= 0.7;
+		//This is actually valid.
+		if(1 <= GetAttribute(victim, "plague powerup", 0.0) <= 2){
+			damage *= 0.75;
+			PrintToServer("YUP IT WORKS | %.2f", GetAttribute(victim, "plague powerup", 0.0));
+		}
 		
 		if(TF2_IsPlayerInCondition(attacker, TFCond_Plague))
 		{

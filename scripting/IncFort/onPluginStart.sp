@@ -138,13 +138,13 @@ public UberShopinitMenusHandlers()
 	
 	HookEvent("player_hurt", Event_Playerhurt, EventHookMode_Pre)
 	HookEvent("player_chargedeployed", Event_UberDeployed);
-	HookEvent("post_inventory_application", Event_PlayerreSpawn)
+	HookEvent("post_inventory_application", Event_PlayerRespawn)
 	HookEvent("player_death", Event_PlayerDeath)
 	HookEvent("player_changeclass", Event_PlayerChangeClass)
 	HookEvent("player_class", Event_PlayerChangeClass)
 	HookEvent("player_team", Event_PlayerChangeTeam)
 	HookEvent("player_healed", Event_PlayerHealed)
-	HookEvent("player_spawn", Event_PlayerreSpawn)
+	HookEvent("player_spawn", Event_PlayerRespawn)
 	HookEvent("player_teleported", Event_Teleported)
 	HookEvent("deploy_buff_banner",	Event_BuffDeployed);
 	HookEvent("mvm_pickup_currency", Event_PlayerCollectMoney);

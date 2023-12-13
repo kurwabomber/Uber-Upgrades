@@ -6,7 +6,7 @@ public Action:Timer_Second(Handle timer)
 			singularBuysPerMinute[client]--;
 		if (IsValidClient3(client))
 		{
-			if(GetAttribute(client, "regeneration powerup", 0.0)){
+			if(GetAttribute(client, "regeneration powerup", 0.0) == 1.0){
 				for(int i=0;i<3;i++){
 					int weapon = GetWeapon(client, i);
 					if(!IsValidWeapon(weapon))
@@ -16,6 +16,27 @@ public Action:Timer_Second(Handle timer)
 					
 					int type = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType"); 
 					SetAmmo_Weapon(weapon, TF2Util_GetPlayerMaxAmmo(client, type, current_class[client]));
+				}
+			}
+			else if(GetAttribute(client, "regeneration powerup", 0.0) == 2.0){
+				for(int i=0;i<3;i++){
+					int weapon = GetWeapon(client, i);
+					if(!IsValidWeapon(weapon))
+						continue;
+					if(!HasEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType"))
+						continue;
+					if(GetAttribute(weapon, "auto fires full clip all at once", 0.0) || GetAttribute(weapon, "auto fires full clip", 0.0))
+						continue;
+
+					if(HasEntProp(weapon, Prop_Send, "m_iClip1")){
+						if(GetEntProp(weapon,Prop_Data,"m_iClip1")  == -1)
+							SetAmmo_Weapon(weapon, TF2Util_GetPlayerMaxAmmo(client, GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType"), current_class[client]));
+						else
+							SetEntProp(weapon, Prop_Send, "m_iClip1", 200);
+					}
+					if(HasEntProp(weapon, Prop_Send, "m_flEnergy")){
+						SetEntPropFloat(weapon, Prop_Send, "m_flEnergy", 10000.0);
+					}
 				}
 			}
 
@@ -145,6 +166,10 @@ public Action:Timer_FixedVariables(Handle timer)
 			if(IsValidEdict(CWeapon))
 			{
 				Format(ArmorLeft, sizeof(ArmorLeft), "Effective Health | %s", GetAlphabetForm(GetResistance(client, true)*GetClientHealth(client))); 
+
+				if(GetAttribute(client, "regeneration powerup", 0.0) == 3.0){
+					Format(ArmorLeft, sizeof(ArmorLeft), "%s\nBlood Pool  | %.0f / 10000", ArmorLeft, bloodAcolyteBloodPool[client]); 
+				}
 				if(CheckForAttunement(client))
 				{
 					Format(ArmorLeft, sizeof(ArmorLeft), "%s\nFocus  | %.0f / %.0f", ArmorLeft, fl_CurrentFocus[client],fl_MaxFocus[client]); 
@@ -228,7 +253,7 @@ public Action:Timer_Every100MS(Handle timer)
 					SetHudTextParams(0.43, 0.21, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 					ShowSyncHudText(client, hudStatus, StatusEffectText);
 				}
-				if(GetAttribute(client, "revenge powerup", 0.0) && RageBuildup[client] > 0.0)
+				if(1 <= GetAttribute(client, "revenge powerup", 0.0) <= 2 && RageBuildup[client] > 0.0)
 				{
 					char StatusEffectText[256]
 					if(RageBuildup[client] < 1.0)
@@ -254,7 +279,7 @@ public Action:Timer_Every100MS(Handle timer)
 						TE_SendToAll();
 					}
 				}
-				if(GetAttribute(client, "supernova powerup", 0.0) && SupernovaBuildup[client] > 0.0)
+				if(GetAttribute(client, "supernova powerup", 0.0) == 1 && SupernovaBuildup[client] > 0.0)
 				{
 					char StatusEffectText[256]
 					if(SupernovaBuildup[client] < 1.0)
@@ -263,8 +288,19 @@ public Action:Timer_Every100MS(Handle timer)
 					}
 					else
 					{
-						Format(StatusEffectText, sizeof(StatusEffectText),"Supernova: READY (Crouch + Mouse3)", SupernovaBuildup[client]*100.0);
+						Format(StatusEffectText, sizeof(StatusEffectText),"Supernova: READY (Crouch + Mouse3)");
 					}
+					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
+					ShowHudText(client, 9, StatusEffectText);
+				}
+				if(GetAttribute(client, "regeneration powerup", 0.0) == 2.0)
+				{
+					char StatusEffectText[256]
+					if(duplicationCooldown[client] > currentGameTime)
+						Format(StatusEffectText, sizeof(StatusEffectText),"Duplication: %.2fs", duplicationCooldown[client] - currentGameTime);
+					else
+						Format(StatusEffectText, sizeof(StatusEffectText),"Duplication: READY (Crouch + Mouse3)");
+					
 					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 					ShowHudText(client, 9, StatusEffectText);
 				}

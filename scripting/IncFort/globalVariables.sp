@@ -280,6 +280,8 @@ float entitySpawnPositions[MAXENTITIES][3];
 float baseDamage[MAXPLAYERS+1];
 float remainderHealthRegeneration[MAXPLAYERS+1];
 float karmicJusticeScaling[MAXPLAYERS+1];
+float bloodAcolyteBloodPool[MAXPLAYERS+1];
+float duplicationCooldown[MAXPLAYERS+1];
 
 //String
 char given_upgrd_classnames[LISTS][LISTS_CATEGORIES][128]
