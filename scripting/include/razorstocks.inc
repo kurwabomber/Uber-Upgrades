@@ -1691,7 +1691,7 @@ stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true,
     }
 	return 1.0;
 }
-stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_per_shot = true)
+stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_per_shot = true, bool heavy_weapon_allowed = true)
 {
 	if(IsValidClient3(client))
     {
@@ -1751,6 +1751,9 @@ stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_
 
 			float damageBonus = TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", weapon);
 			dpsMult *= damageBonus;
+
+			if(!heavy_weapon_allowed)
+				dpsMult /= GetAttribute(weapon, "damage mult 15", 1.0);
 
 			//Body Stats
 			Address BodyDPSMult1 = TF2Attrib_GetByName(client, "mod rage damage boost");

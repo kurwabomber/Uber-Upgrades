@@ -23,7 +23,7 @@ public Action:OnStartTouchStomp(client, other)
 	if(vec[2] > -300.0)
 		return Plugin_Continue;
 
-	float stompDamage = TF2_GetDamageModifiers(client, CWeapon, false) * 350.0;
+	float stompDamage = TF2_GetDamageModifiers(client, CWeapon, true, true, false) * 200.0;
 	stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 300.0)/1000.0)
 	
 	SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);

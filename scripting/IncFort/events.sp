@@ -1688,6 +1688,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						if(GetAttribute(client, "regeneration powerup", 0.0) == 2.0){
 							duplicationCooldown[client] = currentGameTime+10.0;
 							AddPlayerHealth(client, GetClientHealth(client), 2.0);
+							float fOrigin[3];
+							GetClientAbsOrigin(client, fOrigin);
+							EmitSoundToAll(SOUND_HEAL, client, _, _, _, _, _, _, fOrigin);
+						}
+					}
+					if(warpCooldown[client] <= currentGameTime){
+						if(GetAttribute(client, "agility powerup", 0.0) == 3.0){
+							CastWarp(client);
 						}
 					}
 
@@ -3312,6 +3320,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		plagueAttacker[client] = -1;
 		bloodAcolyteBloodPool[client] = 0.0;
 		duplicationCooldown[client] = 0.0;
+		warpCooldown[client] = 0.0;
 		SetEntityRenderColor(client, 255,255,255,255);
 		for(int i=1;i<MaxClients;i++)
 		{

@@ -1837,3 +1837,50 @@ CastHealing(client, attuneSlot)//Projected Healing
 		CreateTimer(0.03, HeavyFriendlyHoming, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
+
+CastWarp(client){
+	warpCooldown[client] = currentGameTime+(0.5/ArcanePower[client]);
+	float focusCost = fl_MaxFocus[client]*0.1/ArcanePower[client];
+	if(fl_CurrentFocus[client] < focusCost)
+	{
+		PrintHintText(client, "Not enough focus! Requires %.2f focus.",focusCost);
+		return;
+	}
+
+	PrintHintText(client, "Used Warp! -%.2f focus.",focusCost);
+	fl_CurrentFocus[client] -= focusCost;
+
+    float vec[3], telepos[3], vecangles[3], vecorigin[3], fwd[3], mins[3], maxs[3];
+    GetClientEyeAngles(client, vecangles);
+    GetClientEyePosition(client, vecorigin);
+	GetAngleVectors(vecangles,fwd, NULL_VECTOR, NULL_VECTOR);
+
+	ScaleVector(fwd, 2000.0);
+	AddVectors(vecorigin, fwd, telepos);
+
+    for (int i = 0; i < 3; ++i){
+        mins[i] -= 3;
+        maxs[i] += 3;
+    }
+
+    TR_TraceHullFilter(vecorigin, telepos, mins, maxs, MASK_PLAYERSOLID,TraceEntityWarp, client);
+    TR_GetEndPosition(vec);
+
+    GetClientMins(client, mins);
+    GetClientMaxs(client, maxs);
+    
+    for (int i = 0; i < 3; ++i){
+        mins[i] -= 9;
+        maxs[i] += 9;
+    }
+
+	float startpos[3];
+	ScaleVector(fwd, -0.05);
+	
+	AddVectors(vecorigin, fwd, startpos);
+
+    TR_TraceHullFilter(startpos, vec, mins, maxs, MASK_PLAYERSOLID, TraceEntityFilterPlayers, client);
+    TR_GetEndPosition(vec);//Stop players from getting stuck
+
+	TeleportEntity(client, vec);
+}

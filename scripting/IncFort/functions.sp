@@ -188,8 +188,11 @@ public void ManagePlayerBuffs(int i){
 			continue;
 
 		//Clear out any non-active buffs.
-		if(playerBuffs[i][buff].duration != 0.0 && playerBuffs[i][buff].duration < currentGameTime)
-			{playerBuffs[i][buff].clear();buffChange[i]=true;continue;}
+		if(playerBuffs[i][buff].duration != 0.0 && playerBuffs[i][buff].duration < currentGameTime){
+			playerBuffs[i][buff].clear();
+			buffChange[i]=true;
+			continue;
+		}
 
 		bool flag;
 		
@@ -1880,23 +1883,26 @@ refreshUpgrades(client, slot)
 			if(kingPowerup != Address_Null)
 			{
 				float kingPowerupValue = TF2Attrib_GetValue(kingPowerup);
-				if(kingPowerupValue > 0.0)
-				{
+				if(kingPowerupValue == 1.0){
 					TF2Attrib_SetByName(client,"ubercharge rate bonus", 1.5);
 					TF2Attrib_SetByName(client,"heal rate bonus", 1.5);
 				}
-				else
-				{
+				else{
 					TF2Attrib_RemoveByName(client,"ubercharge rate bonus");
 					TF2Attrib_RemoveByName(client,"heal rate bonus");
 				}
+
+				if(TF2Attrib_GetValue(kingPowerup) == 3)
+					TF2Attrib_SetByName(client, "health from healers reduced", 0.2);
+				else
+					TF2Attrib_SetByName(client, "health from healers reduced", TF2_IsPlayerInCondition(client, TFCond_Bleeding) ? 0.5 : 1.0);
 			}
 			
 			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 			if(precisionPowerup != Address_Null)
 			{
 				float precisionPowerupValue = TF2Attrib_GetValue(precisionPowerup);
-				if(precisionPowerupValue > 0.0){
+				if(precisionPowerupValue == 1){
 					TF2Attrib_SetByName(client,"weapon spread bonus", 0.05);
 					TF2Attrib_SetByName(client,"Projectile speed increased", 2.0);
 					TF2Attrib_SetByName(client,"Projectile range increased", 1.35);
@@ -1930,7 +1936,7 @@ refreshUpgrades(client, slot)
 			Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
 			if(agilityPowerup != Address_Null)
 			{
-				if(TF2Attrib_GetValue(agilityPowerup) > 0.0)
+				if(TF2Attrib_GetValue(agilityPowerup) == 1)
 				{
 					TF2Attrib_SetByName(client,"major move speed bonus", 1.4);
 					TF2Attrib_SetByName(client,"major increased jump height", 1.3);
@@ -1946,22 +1952,24 @@ refreshUpgrades(client, slot)
 					TF2Attrib_RemoveByName(client,"SET BONUS: chance of hunger decrease");
 					TF2Attrib_RemoveByName(client,"has pipboy build interface");
 				}
+
+				if(TF2Attrib_GetValue(agilityPowerup) == 3){
+					TF2Attrib_SetByName(client,"damage mult 1", 6.0);
+					TF2Attrib_SetByName(client,"fire rate penalty", 4.0);
+				}
+				else{
+					TF2Attrib_RemoveByName(client,"damage mult 1");
+					TF2Attrib_RemoveByName(client,"fire rate penalty");
+				}
 			}
 
-			Address infernalPowerup = TF2Attrib_GetByName(client, "infernal powerup");
-			if(infernalPowerup != Address_Null)
+			Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
+			if(supernovaPowerup != Address_Null)
 			{
-				if(TF2Attrib_GetValue(infernalPowerup) > 0.0)
+				if(TF2Attrib_GetValue(supernovaPowerup) == 2)
 					TF2Attrib_SetByName(client,"mult afterburn delay", 1.55);
 				else
 					TF2Attrib_RemoveByName(client,"mult afterburn delay");
-			}
-			Address martyrPowerup = TF2Attrib_GetByName(client, "martyr powerup");
-			if(martyrPowerup != Address_Null){
-				if(TF2Attrib_GetValue(martyrPowerup) > 0.0)
-					TF2Attrib_SetByName(client, "health from healers reduced", 0.2);
-				else
-					TF2Attrib_SetByName(client, "health from healers reduced", TF2_IsPlayerInCondition(client, TFCond_Bleeding) ? 0.5 : 1.0);
 			}
 
 		}
@@ -3621,7 +3629,7 @@ projGravity(entity)
 GivePowerupDescription(int client, char[] name, int amount){
 	if(StrEqual("strength powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Dexterity Powerup {default}| {lightcyan}As your firerate increases (up to 66/s), you deal up to 3x damage. This bonus increases ammo consumption.");
+			CPrintToChat(client, "{community}Dexterity Powerup {default}| {lightcyan}As your firerate increases (up to 66/s), you deal up to 3x damage. +1 ammo consumption per +100% dmg.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Bruised Powerup {default}| {lightcyan}Tagged enemies will be hit with a finisher that is a crit + dealts 25%% maxHP. Hits above 40%% maxHP instantly kill for -5%% of your health.");
 		}else{
@@ -3677,7 +3685,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Quaker Powerup {default}| {lightcyan}Weighdown is automatically activated at apex of jump, and upon falling you deal an explosive shock (10 bDPS). Stomp damage is spread to 2 oter targets and deals 4x dmg. 2x jump height.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces middle click with teleport to crosshair. Deals 300 base damage to all enemies through path of teleport. Each use consumes 10%% focus.4x slower fire rate, 6x damage. Applies +4 additive dmg taken on hit.");
+			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces shift middle click with teleport to crosshair. Deals 300 base damage to all enemies through path of teleport. Each use consumes 10%% focus.4x slower fire rate, 6x damage. Applies +4 additive dmg taken on hit.");
 		}else{
 			CPrintToChat(client, "{community}Agility Powerup {default}| {lightcyan}1.33x reload & fire rate. infinite jumps, speed boost, 1.4x speed, 1.3x jump height, 1.75x self push force, and 35%% dodge chance.");
 		}
@@ -3952,12 +3960,27 @@ public Menu_BuyNewWeapon(client)
 		CreateBuyNewWeaponMenu(client);
 	}
 }
-stock bool TraceEntityFilterPlayers(int entity, int contentsMask) {
-    return entity > MaxClients;
+public bool TraceEntityFilterPlayers(int entity, int contentsMask) {
+    if (0 < entity <= MaxClients)
+        return false;
+    return true;
 }
 public bool TEF_HitSelfFilterPassClients(int entity, int contentsMask, any data) {
 	return entity > MaxClients && entity != data;
 }
 public bool TraceWorldOnly(int entity, int contentsMask) {
 	return entity == 0;
+}
+public bool TraceEntityWarp(int entity, int contentsMask, any data) {
+    if (0 < entity <= MaxClients){
+		if(IsValidClient3(entity) && IsPlayerAlive(entity) && IsOnDifferentTeams(entity, data)){
+			float damageBoost = TF2_GetDamageModifiers(data, GetEntPropEnt(data, Prop_Send, "m_hActiveWeapon"), true, true, false);
+			SDKHooks_TakeDamage(entity,data,data,damageBoost*200.0,DMG_CLUB|DMG_CRUSH,GetEntPropEnt(data, Prop_Send, "m_hActiveWeapon"));
+
+			Buff jarateDebuff; jarateDebuff.init("Jarated", "", Buff_Jarated, 4*RoundToNearest(damageBoost), data, 8.0);
+			insertBuff(entity, jarateDebuff);
+		}
+		return false;
+	}
+    return true;
 }

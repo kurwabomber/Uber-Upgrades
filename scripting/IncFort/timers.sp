@@ -304,6 +304,17 @@ public Action:Timer_Every100MS(Handle timer)
 					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 					ShowHudText(client, 9, StatusEffectText);
 				}
+				if(GetAttribute(client, "agility powerup", 0.0) == 3.0)
+				{
+					char StatusEffectText[256]
+					if(warpCooldown[client] > currentGameTime)
+						Format(StatusEffectText, sizeof(StatusEffectText),"Warp: %.2fs", warpCooldown[client] - currentGameTime);
+					else
+						Format(StatusEffectText, sizeof(StatusEffectText),"Warp: READY (Crouch + Mouse3)");
+					
+					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
+					ShowHudText(client, 9, StatusEffectText);
+				}
 			}
 			float plaguePower = 0.0;
 			Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
