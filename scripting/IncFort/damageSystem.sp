@@ -337,9 +337,32 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		if(strengthPowerup != Address_Null)
 		{
 			float strengthPowerupValue = TF2Attrib_GetValue(strengthPowerup);
-			if(strengthPowerupValue > 0.0){
+			if(strengthPowerupValue == 1.0){
 				damagetype |= DMG_NOCLOSEDISTANCEMOD;
 				damage *= 2.0;
+			}
+			else if(strengthPowerupValue == 2.0){
+				damage *= 1+2*(weaponFireRate[weapon]/TICKRATE);
+			}
+			else if(strengthPowerupValue == 3.0){
+				Buff finisherDebuff; finisherDebuff.init("Bruised", "Marked-for-Finisher", Buff_Bruised, 1, attacker, 8.0);
+				insertBuff(victim, finisherDebuff);
+
+				float bruisedDamage = damage;
+				if(!critStatus[victim]){
+					critStatus[victim] = true;
+					bruisedDamage *= 2.25;
+				}
+
+				if(damage >= TF2Util_GetEntityMaxHealth(victim) * 0.4){
+					currentDamageType[attacker].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(victim, attacker, attacker, 3.0*TF2Util_GetEntityMaxHealth(victim))
+				}
+				else if(GetClientHealth(victim) - bruisedDamage <= 0.25){
+					damage = bruisedDamage;
+					currentDamageType[attacker].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(victim, attacker, attacker, 0.25*TF2Util_GetEntityMaxHealth(victim))
+				}
 			}
 		}
 		
@@ -462,7 +485,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
 					damage *= (1-redirect);
 				}
-				if(damage > GetClientHealth(victim) && GetAttribute(i, "martyr powerup", 0.0)){
+				if(damage > GetClientHealth(victim) && GetAttribute(i, "king powerup", 0.0) == 3.0){
 					SDKHooks_TakeDamage(i, attacker, attacker, damage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
 
 					currentDamageType[attacker].second |= DMG_PIERCING;

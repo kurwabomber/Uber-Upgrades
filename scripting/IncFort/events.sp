@@ -1523,28 +1523,18 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				powerupParticle[client] = currentGameTime+5.1;
 			}
 			Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
-			if(supernovaPowerup != Address_Null && TF2Attrib_GetValue(supernovaPowerup) > 0.0)
+			if(supernovaPowerup != Address_Null)
 			{
-				CreateParticleEx(client, "powerup_supernova_ready", 1, _, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
-			}
-			Address infernalPowerup = TF2Attrib_GetByName(client, "infernal powerup");
-			if(infernalPowerup != Address_Null && TF2Attrib_GetValue(infernalPowerup) > 0.0)
-			{
-				CreateParticleEx(client, "heavy_ring_of_fire");
-				powerupParticle[client] = currentGameTime+1.0;
-			}
-			Address thunderstormPowerup = TF2Attrib_GetByName(client, "thunderstorm powerup");
-			if(thunderstormPowerup != Address_Null && TF2Attrib_GetValue(thunderstormPowerup) > 0.0)
-			{
-				CreateParticleEx(client, "utaunt_electric_mist", 1, _, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
-			}
-			Address martyrPowerup = TF2Attrib_GetByName(client, "martyr powerup");
-			if(martyrPowerup != Address_Null && TF2Attrib_GetValue(martyrPowerup) > 0.0)
-			{
-				CreateParticleEx(client, "utaunt_hearts_beams", 1, _, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
+				if(TF2Attrib_GetValue(supernovaPowerup) == 1.0){
+					CreateParticleEx(client, "powerup_supernova_ready", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}else if(TF2Attrib_GetValue(supernovaPowerup) == 2.0){
+					CreateParticleEx(client, "heavy_ring_of_fire");
+					powerupParticle[client] = currentGameTime+1.0;
+				}else if(TF2Attrib_GetValue(supernovaPowerup) == 3.0){
+					CreateParticleEx(client, "utaunt_electric_mist", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
 			}
 			Address inverterPowerup = TF2Attrib_GetByName(client, "inverter powerup");
 			if(inverterPowerup != Address_Null && TF2Attrib_GetValue(inverterPowerup) > 0.0)

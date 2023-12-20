@@ -3629,11 +3629,11 @@ projGravity(entity)
 GivePowerupDescription(int client, char[] name, int amount){
 	if(StrEqual("strength powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Dexterity Powerup {default}| {lightcyan}As your firerate increases (up to 66/s), you deal up to 3x damage. +1 ammo consumption per +100% dmg.");
+			CPrintToChat(client, "{community}Dexterity Powerup {default}| {lightcyan}As your firerate increases (up to 66/s), you deal up to 3x damage.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Bruised Powerup {default}| {lightcyan}Tagged enemies will be hit with a finisher that is a crit + dealts 25%% maxHP. Hits above 40%% maxHP instantly kill for -5%% of your health.");
 		}else{
-			CPrintToChat(client, "{community}Strength Powerup {default}| {lightcyan}2x damage.");
+			CPrintToChat(client, "{community}Strength Powerup {default}| {lightcyan}2x damage & consistent damage.");
 		}
 	}
 	else if(StrEqual("resistance powerup", name)){
