@@ -357,6 +357,9 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				if(damage >= TF2Util_GetEntityMaxHealth(victim) * 0.4){
 					currentDamageType[attacker].second |= DMG_PIERCING;
 					SDKHooks_TakeDamage(victim, attacker, attacker, 3.0*TF2Util_GetEntityMaxHealth(victim))
+
+					currentDamageType[victim].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(attacker, victim, victim, 0.05*TF2Util_GetEntityMaxHealth(attacker))
 				}
 				else if(GetClientHealth(victim) - bruisedDamage <= 0.25){
 					damage = bruisedDamage;
