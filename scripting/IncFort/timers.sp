@@ -315,6 +315,17 @@ public Action:Timer_Every100MS(Handle timer)
 					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 					ShowHudText(client, 9, StatusEffectText);
 				}
+				if(GetAttribute(client, "resistance powerup", 0.0) == 2.0)
+				{
+					char StatusEffectText[256]
+					if(frayNextTime[client] > currentGameTime)
+						Format(StatusEffectText, sizeof(StatusEffectText),"Fray: %.2fs", frayNextTime[client] - currentGameTime);
+					else
+						Format(StatusEffectText, sizeof(StatusEffectText),"Fray: READY");
+					
+					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
+					ShowHudText(client, 9, StatusEffectText);
+				}
 			}
 			float plaguePower = 0.0;
 			Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");

@@ -1271,6 +1271,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 		
 	fanOfKnivesCount[client] = 0;
 	RageBuildup[client] = 0.0;
+	frayNextTime[attack] = 0.0;
 
 	CancelClientMenu(client);
 	clearAllBuffs(client);
@@ -3311,6 +3312,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		bloodAcolyteBloodPool[client] = 0.0;
 		duplicationCooldown[client] = 0.0;
 		warpCooldown[client] = 0.0;
+		frayNextTime[client] = 0.0;
 		SetEntityRenderColor(client, 255,255,255,255);
 		for(int i=1;i<MaxClients;i++)
 		{

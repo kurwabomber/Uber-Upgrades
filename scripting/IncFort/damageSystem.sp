@@ -20,6 +20,13 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 	if(IsValidClient3(victim))
 	{
 		lastKBSource[victim] = attacker;
+		if(GetAttribute(victim, "resistance powerup", 0.0) == 2.0){
+			if(frayNextTime[victim] <= currentGameTime){
+				damage = 0.0;
+				frayNextTime[victim] = currentGameTime+3.0
+				return Plugin_Stop;
+			}
+		}
 		if(TF2Spawn_IsClientInSpawn(victim))
 		{
 			if(victim == attacker)
