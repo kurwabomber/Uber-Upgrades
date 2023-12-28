@@ -32,13 +32,14 @@ public Action:Timer_Second(Handle timer)
 						if(GetEntProp(weapon,Prop_Data,"m_iClip1")  == -1)
 							SetAmmo_Weapon(weapon, TF2Util_GetPlayerMaxAmmo(client, GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType"), current_class[client]));
 						else
-							SetEntProp(weapon, Prop_Send, "m_iClip1", 200);
+							SetEntProp(weapon, Prop_Send, "m_iClip1", 4*TF2Util_GetWeaponMaxClip(weapon));
 					}
 					if(HasEntProp(weapon, Prop_Send, "m_flEnergy")){
-						SetEntPropFloat(weapon, Prop_Send, "m_flEnergy", 10000.0);
+						SetEntPropFloat(weapon, Prop_Send, "m_flEnergy", 4.0*TF2Util_GetWeaponMaxClip(weapon));
 					}
 				}
 			}
+			
 
 			fl_ArmorCap[client] = GetResistance(client);
 			if(IsValidClient(client)){
@@ -253,23 +254,16 @@ public Action:Timer_Every100MS(Handle timer)
 					SetHudTextParams(0.43, 0.21, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 					ShowSyncHudText(client, hudStatus, StatusEffectText);
 				}
+				char StatusEffectText[256]
+
 				if(1 <= GetAttribute(client, "revenge powerup", 0.0) <= 2 && RageBuildup[client] > 0.0)
 				{
-					char StatusEffectText[256]
 					if(RageBuildup[client] < 1.0)
-					{
 						Format(StatusEffectText, sizeof(StatusEffectText),"Revenge: %.0f%", RageBuildup[client]*100.0);
-					}
 					else
-					{
-						Format(StatusEffectText, sizeof(StatusEffectText),"Revenge: READY (Crouch + Mouse3)", RageBuildup[client]*100.0);
-					}
+						Format(StatusEffectText, sizeof(StatusEffectText),"Revenge: READY", RageBuildup[client]*100.0);
 					
-					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 9, StatusEffectText);
-					
-					if(RageActive[client] == true)
-					{
+					if(RageActive[client] == true){
 						TF2_AddCondition(client, TFCond_CritCanteen, 1.0);
 						TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 						TF2_AddCondition(client, TFCond_DefenseBuffMmmph, 1.0);
@@ -279,50 +273,43 @@ public Action:Timer_Every100MS(Handle timer)
 						TE_SendToAll();
 					}
 				}
-				if(GetAttribute(client, "supernova powerup", 0.0) == 1 && SupernovaBuildup[client] > 0.0)
+				else if(GetAttribute(client, "supernova powerup", 0.0) == 1 && SupernovaBuildup[client] > 0.0)
 				{
-					char StatusEffectText[256]
 					if(SupernovaBuildup[client] < 1.0)
-					{
 						Format(StatusEffectText, sizeof(StatusEffectText),"Supernova: %.0f%", SupernovaBuildup[client]*100.0);
-					}
 					else
-					{
 						Format(StatusEffectText, sizeof(StatusEffectText),"Supernova: READY (Crouch + Mouse3)");
-					}
-					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 9, StatusEffectText);
 				}
-				if(GetAttribute(client, "regeneration powerup", 0.0) == 2.0)
+				else if(GetAttribute(client, "regeneration powerup", 0.0) == 2.0)
 				{
-					char StatusEffectText[256]
 					if(duplicationCooldown[client] > currentGameTime)
 						Format(StatusEffectText, sizeof(StatusEffectText),"Duplication: %.2fs", duplicationCooldown[client] - currentGameTime);
 					else
 						Format(StatusEffectText, sizeof(StatusEffectText),"Duplication: READY (Crouch + Mouse3)");
-					
-					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 9, StatusEffectText);
 				}
-				if(GetAttribute(client, "agility powerup", 0.0) == 3.0)
+				else if(GetAttribute(client, "agility powerup", 0.0) == 3.0)
 				{
-					char StatusEffectText[256]
 					if(warpCooldown[client] > currentGameTime)
 						Format(StatusEffectText, sizeof(StatusEffectText),"Warp: %.2fs", warpCooldown[client] - currentGameTime);
 					else
 						Format(StatusEffectText, sizeof(StatusEffectText),"Warp: READY (Crouch + Mouse3)");
-					
-					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 9, StatusEffectText);
 				}
-				if(GetAttribute(client, "resistance powerup", 0.0) == 2.0)
+				else if(GetAttribute(client, "resistance powerup", 0.0) == 2.0)
 				{
-					char StatusEffectText[256]
 					if(frayNextTime[client] > currentGameTime)
 						Format(StatusEffectText, sizeof(StatusEffectText),"Fray: %.2fs", frayNextTime[client] - currentGameTime);
 					else
 						Format(StatusEffectText, sizeof(StatusEffectText),"Fray: READY");
-					
+				}
+				else if(GetAttribute(client, "resistance powerup", 0.0) == 3.0)
+				{
+					if(!strongholdEnabled[client])
+						Format(StatusEffectText, sizeof(StatusEffectText),"Stronghold: INACTIVE");
+					else
+						Format(StatusEffectText, sizeof(StatusEffectText),"Stronghold: ACTIVE");
+				}
+
+				if(StatusEffectText[0] != '\0'){
 					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 					ShowHudText(client, 9, StatusEffectText);
 				}
@@ -365,7 +352,21 @@ public Action:Timer_Every100MS(Handle timer)
 					}
 				}
 			}
-			for(int i=1;i<MaxClients;i++)
+			if(strongholdEnabled[client]){
+				if(GetAttribute(client, "resistance powerup", 0.0) == 3.0){
+					Buff strongholdBonus;
+					strongholdBonus.init("Stronghold", "Crit immunity & 1.33x healing", Buff_Stronghold, 1, client, 1.0);
+					for(int i=1;i<=MaxClients;++i){
+						if(!IsValidClient3(i)) continue;
+						if(IsOnDifferentTeams(client, i)) continue;
+						if(!IsPlayerAlive(i)) continue;
+						if(GetPlayerDistance(client, i) > 800.0) continue;
+
+						insertBuff(i, strongholdBonus);
+					}
+				}
+			}
+			for(int i=1;i<=MaxClients;i++)
 			{
 				if(corrosiveDOT[client][i][0] != 0.0 && corrosiveDOT[client][i][1] >= 0.0)
 				{
@@ -459,7 +460,7 @@ public Action:Timer_Every100MS(Handle timer)
 						case 129,1001:
 						{
 							float ClientPos[3], VictimPos[3];
-							for(int i=1;i<MaxClients;i++)
+							for(int i=1;i<=MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
@@ -477,7 +478,7 @@ public Action:Timer_Every100MS(Handle timer)
 						case 226:
 						{
 							float ClientPos[3], VictimPos[3];
-							for(int i=1;i<MaxClients;i++)
+							for(int i=1;i<=MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
@@ -493,7 +494,7 @@ public Action:Timer_Every100MS(Handle timer)
 						case 354:
 						{
 							float ClientPos[3], VictimPos[3];
-							for(int i=1;i<MaxClients;i++)
+							for(int i=1;i<=MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
@@ -599,7 +600,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 						SetEntityRenderColor(client, 190,0,0,255);
 						int counter = 0;
 						bool clientList[MAXPLAYERS+1];
-						for(int i = 1; i<MaxClients; i++)
+						for(int i = 1; i<=MaxClients; i++)
 						{
 							if (IsValidClient3(i) && IsPlayerAlive(i))
 							{
@@ -628,7 +629,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 						{
 							TF2_AddCondition(client, TFCond_MVMBotRadiowave, 2.0);
 							
-							for(int buffed = 1; buffed<MaxClients;buffed++)
+							for(int buffed = 1; buffed<=MaxClients;buffed++)
 							{
 								if(clientList[buffed])
 								{

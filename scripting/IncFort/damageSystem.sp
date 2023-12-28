@@ -140,7 +140,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 						damage = GetClientHealth(victim) - (TF2_GetMaxHealth(victim) - (TF2_GetMaxHealth(victim)*(0.25*(bossPhase[victim]+1))));
 						TF2_AddCondition(victim, TFCond_MegaHeal, 5.0);
 						TF2_AddCondition(victim, TFCond_UberchargedHidden, 0.5);
-						for(int i=1;i<MaxClients;i++)
+						for(int i=1;i<=MaxClients;i++)
 						{
 							if(IsValidClient3(i) && IsOnDifferentTeams(victim,i) && !IsClientObserver(i) && IsPlayerAlive(i))
 							{
@@ -297,8 +297,18 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 			damage *= 0.5;
 		}
-		else if(GetAttribute(victim, "resistance powerup", 0.0) == 1)
-			damage *= 0.66;
+		else if(GetAttribute(victim, "resistance powerup", 0.0) == 3)
+			damage *= 0.5;
+		
+		if(hasBuffIndex(victim, Buff_Stronghold)){
+			if(critStatus[victim] == true){
+				critStatus[victim] = false;
+				damage /= 2.25;
+			}else if(miniCritStatus[victim] == true){
+				miniCritStatus[victim] = false;
+				damage /= 1.4;
+			}
+		}
 
 		//Just in case in the future I ever want multiple powerups...
 		if(GetAttribute(victim, "revenge powerup", 0.0) == 1)
@@ -834,7 +844,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		}
 		if(GetEntProp(victim, Prop_Send, "m_bDisabled") == 1)
 		{
-			for(int i = 1;i<MaxClients;i++)
+			for(int i = 1;i<=MaxClients;i++)
 			{
 				if(!IsValidClient3(i) || GetClientTeam(i) != GetClientTeam(attacker))
 					continue;
@@ -1119,7 +1129,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				LastCharge[attacker] = 0.0;
 				int i = 0
 				int maxBounces = RoundToNearest(bouncingBullets);
-				for(int client=1;client<MaxClients && i < maxBounces;client++)
+				for(int client=1;client<=MaxClients && i < maxBounces;client++)
 				{
 					if(!IsValidClient3(client)) {continue;}
 					if(!IsPlayerAlive(client)) {continue;}
@@ -1275,7 +1285,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		if(isVictimPlayer && StrContains(getDamageCategory(currentDamageType[attacker], attacker),"electric",false) != -1){
 			int team = GetClientTeam(attacker);
 			float arcDamage = baseDamage[attacker] * TF2_GetDamageModifiers(attacker, weapon, true) * 0.5;
-			for(int i = 1;i<MaxClients;i++){
+			for(int i = 1;i<=MaxClients;i++){
 				if(!IsValidClient3(i))
 					continue;
 				if(!IsPlayerAlive(i))
@@ -1681,7 +1691,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 
 			int team = GetClientTeam(attacker);
 			float piercingDamage = 100.0/weaponFireRate[weapon];
-			for(int i = 1;i<MaxClients;i++){
+			for(int i = 1;i<=MaxClients;i++){
 				if(!IsValidClient3(i))
 					continue;
 				if(!IsPlayerAlive(i))
@@ -1711,7 +1721,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 
 		if(GetAttribute(attacker, "thunderstorm powerup", 0.0)){
 			float buff = 1.0;
-			for(int i = 1;i<MaxClients;i++){
+			for(int i = 1;i<=MaxClients;i++){
 				if(isTagged[attacker][i])
 					buff += 0.08;
 			}

@@ -622,7 +622,7 @@ public OnCvarChanged(Handle cvar, const char[] oldVal, const char[] newVal)
 		ServerMoneyMult = GetConVarFloat(cvar_ServerMoneyMult);
 	else if(cvar == cvar_BotMultiplier){
 		OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
-		for(int i=1;i<MaxClients;i++){
+		for(int i=1;i<=MaxClients;i++){
 			if(IsValidClient3(i) && IsFakeClient(i)){
 				ForcePlayerSuicide(i);
 			}
@@ -630,7 +630,7 @@ public OnCvarChanged(Handle cvar, const char[] oldVal, const char[] newVal)
 	}
 	else if(cvar == cvar_DisableBotUpgrade){
 		DisableBotUpgrades = GetConVarInt(cvar_DisableBotUpgrade);
-		for(int i=1;i<MaxClients;i++){
+		for(int i=1;i<=MaxClients;i++){
 			if(IsValidClient3(i) && IsFakeClient(i)){
 				ForcePlayerSuicide(i);
 			}
@@ -640,7 +640,7 @@ public OnCvarChanged(Handle cvar, const char[] oldVal, const char[] newVal)
 		StartMoney = GetConVarFloat(cvar_StartMoney);
 	else if(cvar == cvar_DisableCooldowns){
 		DisableCooldowns = GetConVarInt(cvar_DisableCooldowns);
-		for(int client=1;client<MaxClients;client++){
+		for(int client=1;client<=MaxClients;client++){
 			if(IsValidClient(client)){
 				if(CheckForAttunement(client)){
 					for(int i = 0; i < Max_Attunement_Slots;i++){

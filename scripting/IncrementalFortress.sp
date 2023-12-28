@@ -5,8 +5,6 @@
 #include <tf_ontakedamage>
 #include <sourcemod>
 #include <functions>
-#include <keyvalues>
-#include <sdktools>
 #include <dhooks>
 #include <clientprefs>
 #include <morecolors>
@@ -14,7 +12,7 @@
 #include <stocksoup/memory>
 #include <vphysics>
 #include <tf2utils>
-#include <profiler>
+#include <takehealth_proxy>
 #include <classdefs/CTakeDamageInfo.sp>
 
 #pragma tabsize 0
@@ -63,6 +61,8 @@
 #define SOUND_SUPERNOVA "items/powerup_pickup_supernova_activate.wav"
 #define SOUND_DASH "weapons/bumper_car_jump.wav"
 #define SOUND_JAR_EXPLOSION "weapons/jar_explode.wav"
+#define SOUND_STRONGHOLD "items/powerup_pickup_resistance.wav"
+#define SOUND_TELEPORT "weapons/teleporter_receive.wav"
 
 #define PLUGIN_VERSION "INDEV-1.0"
 
@@ -83,6 +83,7 @@ public Plugin:myinfo =
 #include "IncFort/onPluginStart.sp"
 #include "IncFort/commands.sp"
 #include "IncFort/damageSystem.sp"
+#include "IncFort/healingSystem.sp"
 #include "IncFort/menuFrontEnd.sp"
 #include "IncFort/menuBackEnd.sp"
 #include "IncFort/collisionOverrides.sp"

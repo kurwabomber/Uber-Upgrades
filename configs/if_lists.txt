@@ -456,29 +456,33 @@
 		}
 		"Arcane Upgrades"
 		{
-			"!Offensive Powerups"
+			"!Arcane Stats"
 			{
-				"Attr0"		"Strength Powerup"
-				"Attr1"		"Vampire Powerup"
-				"Attr2"		"Revenge Powerup"
-				"Attr3"		"Precision Powerup"
-				"Attr4"		"Knockout Powerup"
-				"Attr5"		"Supernova Powerup"
+				"Attr1"		"Max Focus"
+				"Attr2"		"Focus Regeneration"
+				"Attr3"		"Arcane Power"
+				"Attr4"		"Arcane Damage"
+				"Attr5"		"Attunement Slots"
+				"Attr6"		"Arcane Cooldown Reduction"
 			}
-			"!Defensive Powerups"
+			"!Tier 1 Arcane Spells"
 			{
-				"Attr0"		"Resistance Powerup"
-				"Attr1"		"Regeneration Powerup"
-				"Attr2"		"Inverter Powerup"
+				"Attr1"		"Arcane - Zap"
+				"Attr2"		"Arcane - Blacksky Eye"
+				"Attr3"		"Arcane - Lightning Strike"
+				"Attr4"		"Arcane - Healing Aura"
+				"Attr5"		"Arcane - Darkmoon Blade"
 			}
-			"!Support Powerups"
+			"!Tier 2 Arcane Spells"
 			{
-				"Attr0"		"King Powerup"
-				"Attr1"		"Plague Powerup"
+				"Attr1"		"Arcane - Sunlight Spear"
+				"Attr2"		"Arcane - Lightning Enchantment"
+				"Attr3"		"Arcane - Snap Freeze"
+				"Attr4"		"Arcane - Arcane Prison"
 			}
-			"!Misc. Powerups"
+			"!Tier 3 Arcane Spells"
 			{
-				"Attr0"		"Agility Powerup"
+				"Attr7"		"Arcane - A Call Beyond"
 			}
 		}
 		"Powerup Upgrades"

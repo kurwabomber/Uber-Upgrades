@@ -1188,24 +1188,6 @@ stock bool IsMvM(bool forceRecalc = false)
 	}
 	return ismvm;
 }
-stock AddPlayerHealth(client, iAdd, float flOverheal = 1.5, bool bEvent = false, healer = -1)
-{
-    int iHealth = GetClientHealth(client);
-    int iNewHealth = iHealth + iAdd;
-    int iMax = RoundFloat(float(TF2_GetMaxHealth(client)) * flOverheal)
-	if(iNewHealth > iMax && iHealth < iMax)
-	{
-		iNewHealth = iMax;
-	}
-    if (iNewHealth <= iMax && iHealth != iMax)
-    {
-        if (bEvent)
-        {
-            ShowHealthGain(client, iNewHealth-iHealth, healer);
-        }
-        SetEntityHealth(client, iNewHealth);
-    }
-}
 stock VisualHealing(patient, healer, amount)
 {
     Event event = CreateEvent("player_healed");

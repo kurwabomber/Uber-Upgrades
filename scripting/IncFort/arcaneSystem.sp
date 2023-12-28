@@ -436,7 +436,7 @@ CastAntisepticBlast(client, attuneSlot)
 	float splashRadius[] = {0.0,200.0,350.0,500.0}
 	float aimAssist[] = {0.0,10.0,20.0,40.0}//In degrees
 
-	for(int i=1;i<MaxClients;i++)
+	for(int i=1;i<=MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -750,7 +750,7 @@ CastArcanePrison(client, attuneSlot)
 	}else{
 		//Level 3 autotargets anyone within 35 degree radius
 		int afflictedTargets=0;
-		for(int i = 1; i<MaxClients && afflictedTargets<=magnitude[spellLevel];i++)
+		for(int i = 1; i<=MaxClients && afflictedTargets<=magnitude[spellLevel];i++)
 		{
 			if(!IsValidClient3(i))
 				continue;
@@ -801,7 +801,7 @@ CastSpeedAura(client, attuneSlot)
 	float radius[] = {0.0,800.0,100000.0,100000.0}
 	float buffDuration[] = {0.0,8.0,16.0,60.0}
 
-	for(int i = 1; i<MaxClients;i++)
+	for(int i = 1; i<=MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -1254,7 +1254,7 @@ public Action:SoothingSunlight(Handle timer, client)
 	float radius[] = {0.0,900.0,1500.0,5000.0}
 	float incHealDuration[] = {0.0,6.5,15.0,30.0}
 	float overhealMax[] = {0.0,3.0,5.0,10.0}
-	for(int i = 1; i<MaxClients;i++)
+	for(int i = 1; i<=MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -1312,7 +1312,7 @@ public Action:ArcaneHunter(Handle timer, client)
 	float splashRadius[] = {0.0,200.0,350.0,500.0}
 	float aimAssist[] = {0.0,10.0,20.0,40.0}//In degrees
 
-	for(int i=1;i<MaxClients;i++)
+	for(int i=1;i<=MaxClients;i++)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -1853,6 +1853,9 @@ CastWarp(client){
     float vec[3], telepos[3], vecangles[3], vecorigin[3], fwd[3], mins[3], maxs[3];
     GetClientEyeAngles(client, vecangles);
     GetClientEyePosition(client, vecorigin);
+	EmitSoundToAll(SOUND_TELEPORT, _, client, _, _, 1.0, _,_,vecorigin);
+	CreateParticle(client, "teleported_red");
+
 	GetAngleVectors(vecangles,fwd, NULL_VECTOR, NULL_VECTOR);
 
 	ScaleVector(fwd, 2000.0);
@@ -1874,13 +1877,38 @@ CastWarp(client){
         maxs[i] += 9;
     }
 
-	float startpos[3];
-	ScaleVector(fwd, -0.05);
+	float endpos[3];
+	ScaleVector(fwd, -0.2);
 	
-	AddVectors(vecorigin, fwd, startpos);
+	AddVectors(vecorigin, fwd, endpos);
 
-    TR_TraceHullFilter(startpos, vec, mins, maxs, MASK_PLAYERSOLID, TraceEntityFilterPlayers, client);
+    TR_TraceHullFilter(vec, endpos, mins, maxs, MASK_PLAYERSOLID, TraceEntityFilterPlayers, client);
+    TR_GetEndPosition(endpos);
+
+    TR_TraceHullFilter(endpos, vec, mins, maxs, MASK_PLAYERSOLID, TraceEntityFilterPlayers, client);
     TR_GetEndPosition(vec);//Stop players from getting stuck
 
 	TeleportEntity(client, vec);
+
+	int iPart1 = CreateEntityByName("info_particle_system");
+	int iPart2 = CreateEntityByName("info_particle_system");
+
+	if (IsValidEdict(iPart1) && IsValidEdict(iPart2))
+	{
+		char szCtrlParti[32];
+		Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
+		DispatchKeyValue(iPart2, "targetname", szCtrlParti);
+
+		DispatchKeyValue(iPart1, "effect_name", "dxhr_sniper_rail_red");
+		DispatchKeyValue(iPart1, "cpoint1", szCtrlParti);
+		DispatchSpawn(iPart1);
+		TeleportEntity(iPart1, vecorigin, NULL_VECTOR, NULL_VECTOR);
+		TeleportEntity(iPart2, vec, NULL_VECTOR, NULL_VECTOR);
+		ActivateEntity(iPart1);
+		AcceptEntityInput(iPart1, "Start");
+		
+		CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
+		CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
+	}
+	CreateParticle(client, "teleportedin_red");
 }

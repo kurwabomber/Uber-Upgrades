@@ -331,12 +331,6 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 						return MRES_Supercede;
 					}
 				}
-				if(!TF2_IsPlayerInCondition(client, cond)){
-					if(GetAttribute(client, "inverter powerup", 0.0))
-						TF2Attrib_SetByName(client, "health from healers reduced", 2.0);
-					else
-						TF2Attrib_SetByName(client, "health from healers reduced", 0.5*GetAttribute(client,"health from healers reduced", 1.0));
-				}
 			}
 			case TFCond_Slowed, TFCond_Dazed:
 			{
@@ -830,9 +824,6 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 {
 	switch(cond)
 	{
-		case TFCond_Bleeding:{
-			TF2Attrib_SetByName(client, "health from healers reduced", 1.0);
-		}
 		case TFCond_TeleportedGlow:{
 			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.0);
 		}
@@ -997,7 +988,7 @@ public OnEntityDestroyed(entity)
 
 	char classname[32];
 	GetEntityClassname(entity, classname, 32)
-	for(int i=1;i<MaxClients;i++)
+	for(int i=1;i<=MaxClients;i++)
 	{ShouldNotHome[entity][i] = false;}
 	for(int i=0;i<MAXENTITIES;i++)
 	{ShouldNotHit[entity][i] = false;}
@@ -1492,7 +1483,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
 				kingBuff.multiplicativeAttackSpeedMult = 1.33;
 				kingBuff.additiveDamageMult = 0.2;
-				for(int i = 1;i<MaxClients;i++)
+				for(int i = 1;i<=MaxClients;i++)
 				{
 					if(IsValidClient3(i) && IsPlayerAlive(i))
 					{
@@ -1660,8 +1651,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 
 					fanOfKnivesCount[client] = 0;
 				}
-				if(buttons & IN_DUCK && buttons & IN_ATTACK3)
+				if(buttons & IN_DUCK && buttons & IN_ATTACK3 && fl_GlobalCoolDown[client] <= currentGameTime)
 				{
+					fl_GlobalCoolDown[client] = currentGameTime+0.4;
 					if(RageActive[client] == false && RageBuildup[client] >= 1.0)
 					{
 						RageActive[client] = true;
@@ -1688,6 +1680,21 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						if(GetAttribute(client, "agility powerup", 0.0) == 3.0){
 							CastWarp(client);
 						}
+					}
+					if(GetAttribute(client, "resistance powerup", 0.0) == 3.0){
+						strongholdEnabled[client] = !strongholdEnabled[client];
+
+						if(strongholdEnabled[client]){
+							SetEntityMoveType(client, MOVETYPE_NONE);
+							float fOrigin[3];
+							GetClientAbsOrigin(client, fOrigin);
+							EmitSoundToAll(SOUND_STRONGHOLD, 0,_,_,_,1.0, _, _, fOrigin);
+							PrintHintText(client, "Stronghold Enabled");
+						}else{
+							SetEntityMoveType(client, MOVETYPE_WALK);
+							PrintHintText(client, "Stronghold Disabled");
+						}
+						TeleportEntity(client, _, _, {0.0,0.0,0.0});
 					}
 
 					if(SupernovaBuildup[client] >= 1.0)
@@ -3211,7 +3218,7 @@ public OnClientDisconnect(client)
 	{
 		AttunedSpells[client][i] = 0.0;
 	}
-	for(i = 1;i<MaxClients;i++){
+	for(i = 1;i<=MaxClients;i++){
 		isTagged[i][client] = false;
 	}
 	if(b_Hooked[client])
@@ -3313,8 +3320,9 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		duplicationCooldown[client] = 0.0;
 		warpCooldown[client] = 0.0;
 		frayNextTime[client] = 0.0;
+		strongholdEnabled[client] = false;
 		SetEntityRenderColor(client, 255,255,255,255);
-		for(int i=1;i<MaxClients;i++)
+		for(int i=1;i<=MaxClients;i++)
 		{
 			corrosiveDOT[client][i][0] = 0.0;
 			corrosiveDOT[client][i][1] = 0.0;

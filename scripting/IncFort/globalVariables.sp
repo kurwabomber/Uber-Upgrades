@@ -128,7 +128,8 @@ enum {
 	Buff_Haste=6,
 	Buff_Speed=7,
 	Buff_Jarated=8,
-	Buff_Bruised=9
+	Buff_Bruised=9,
+	Buff_Stronghold=10
 };
 
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
@@ -331,6 +332,8 @@ bool canOverride[MAXPLAYERS+1];
 bool isPrimed[MAXENTITIES+1];
 bool snowstormActive[MAXPLAYERS+1];
 bool failLock;
+bool strongholdEnabled[MAXPLAYERS+1];
+
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]

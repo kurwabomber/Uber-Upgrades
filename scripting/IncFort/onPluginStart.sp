@@ -174,7 +174,10 @@ public OnMapStart()
 	PrecacheSound(SOUND_INFERNO, true);
 	PrecacheSound(SOUND_SPEEDAURA, true);
 	PrecacheSound(SOUND_SABOTAGE, true);
-	PrecacheSound(SOUND_ARROW);
+	PrecacheSound(SOUND_ARROW, true);
+	PrecacheSound(SOUND_STRONGHOLD, true);
+	PrecacheSound(SOUND_TELEPORT, true);
+
 	PrecacheSound(ExplosionSound1);
 	PrecacheSound(ExplosionSound2);
 	PrecacheSound(ExplosionSound3);

@@ -98,6 +98,42 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 	
 	TE_SendToAllInRange(fOffset, RangeType_Visibility);
 }
+float GetPlayerHealingMultiplier(client){
+	float multiplier = 1.0;
+
+	if(TF2_IsPlayerInCondition(client, TFCond_Bleeding)){
+		if(GetAttribute(client, "inverter powerup", 0.0) == 1.0){
+			multiplier *= 2.0;
+		}
+		else
+			multiplier *= 0.5;
+	}
+	if(GetAttribute(client, "regeneration powerup", 0.0) == 3.0)
+		multiplier *= 1.6;
+	if(hasBuffIndex(client, Buff_Stronghold))
+		multiplier *= 1.33;
+
+	return multiplier;
+}
+void AddPlayerHealth(client, iAdd, float flOverheal = 1.5, bool bEvent = false, healer = -1)
+{
+	iAdd = RoundToCeil(iAdd * GetPlayerHealingMultiplier(client));
+    int iHealth = GetClientHealth(client);
+    int iNewHealth = iHealth + iAdd;
+    int iMax = RoundFloat(float(TF2_GetMaxHealth(client)) * flOverheal)
+	if(iNewHealth > iMax && iHealth < iMax)
+	{
+		iNewHealth = iMax;
+	}
+    if (iNewHealth <= iMax && iHealth != iMax)
+    {
+        if (bEvent)
+        {
+            ShowHealthGain(client, iNewHealth-iHealth, healer);
+        }
+        SetEntityHealth(client, iNewHealth);
+    }
+}
 //Replaces any old buff with same details, else inserts a new one.
 public void insertBuff(int client, Buff newBuff){
 	int replacementID = getNextBuff(client);
@@ -237,7 +273,7 @@ public void ManagePlayerBuffs(int i){
 	}
 	if(GetAttribute(i, "thunderstorm powerup", 0.0)){
 		float buff = 1.0;
-		for(int victims = 1;victims<MaxClients;victims++){
+		for(int victims = 1;victims<=MaxClients;victims++){
 			if(isTagged[i][victims])
 				buff += 0.08;
 		}
@@ -1894,8 +1930,6 @@ refreshUpgrades(client, slot)
 
 				if(TF2Attrib_GetValue(kingPowerup) == 3)
 					TF2Attrib_SetByName(client, "health from healers reduced", 0.2);
-				else
-					TF2Attrib_SetByName(client, "health from healers reduced", TF2_IsPlayerInCondition(client, TFCond_Bleeding) ? 0.5 : 1.0);
 			}
 			
 			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
@@ -3039,7 +3073,7 @@ public int getClientParticleStatus(int array[MAXPLAYERS+1], int client){
 		}
 	}
 	int numClients;
-	for(int i=1;i<MaxClients;i++){
+	for(int i=1;i<=MaxClients;i++){
 		if(IsValidClient3(i) && (i != client || particleEnabler == true)){
 			array[numClients++] = i;
 		}
@@ -3631,7 +3665,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Dexterity Powerup {default}| {lightcyan}As your firerate increases (up to 66/s), you deal up to 3x damage.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Bruised Powerup {default}| {lightcyan}Tagged enemies will be hit with a finisher that is a crit + dealts 25%% maxHP. Hits above 40%% maxHP instantly kill for -5%% of your health.");
+			CPrintToChat(client, "{community}Bruised Powerup {default}| {lightcyan}Tagged enemies will be hit with a finisher that is a crit + deals 25%% maxHP. Hits above 40%% maxHP instantly kill for -5%% of your health.");
 		}else{
 			CPrintToChat(client, "{community}Strength Powerup {default}| {lightcyan}2x damage & consistent damage.");
 		}
@@ -3640,9 +3674,9 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Fray Powerup {default}| {lightcyan}Every 3s, avoid one hit taken. Refreshed on kill.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Stronghold Powerup {default}| {lightcyan}2/3x damage taken, middle click to enter stronghold, completely immobilizing you but giving crit and status immunities. Nearby teammates get stronghold bonus.");
+			CPrintToChat(client, "{community}Stronghold Powerup {default}| {lightcyan}1/2x damage taken, middle click to enter stronghold, completely immobilizing you but giving crit and status immunities with 1.33x healing. Nearby teammates get stronghold bonus.");
 		}else{
-			CPrintToChat(client, "{community}Resistance Powerup {default}| {lightcyan}1/2x damage taken.");
+			CPrintToChat(client, "{community}Resistance Powerup {default}| {lightcyan}1/2x damage taken. Immunity to crit.");
 		}
 	}
 	else if(StrEqual("vampire powerup", name)){
@@ -3888,7 +3922,7 @@ stock fixPiercingVelocity(entity)
 	}
 }
 ResetVariables(){
-	for(int client = 1;client<MaxClients;client++){
+	for(int client = 1;client<=MaxClients;client++){
 		buffChange[client] = false;
 		playerUpgradeMenus[client] = 0;
 		playerUpgradeMenuPage[client] = 0;
