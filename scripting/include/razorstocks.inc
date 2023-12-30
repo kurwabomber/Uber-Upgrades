@@ -402,14 +402,6 @@ stock float GetResistance(int client, bool includeReduction = false, float incre
 	}
 	return 1.00;
 }
-stock float GetPlayerDistance(client1,client2)
-{
-	static float vec1[3];
-	static float vec2[3];
-	GetEntPropVector(client1, Prop_Data, "m_vecAbsOrigin", vec1);
-	GetEntPropVector(client2, Prop_Data, "m_vecAbsOrigin", vec2);
-	return GetVectorDistance(vec1,vec2);
-}
 stock MoveForward(const float vPos[3], const float vAng[3], float vReturn[3], float fDistance)
 {
     float vDir[3];
@@ -441,7 +433,7 @@ stock GetClosestTarget(entity, owner, bool isFriendly = false, bool pierceWalls 
 				}
 				
 				CloseHandle( hTrace ); 
-				float distance = GetVectorDistance(EntityLocation, TargetLocation);
+				float distance = GetVectorDistance(EntityLocation, TargetLocation, true);
 				if(TargetDistance)
 				{
 					if(distance < TargetDistance) 
@@ -459,7 +451,7 @@ stock GetClosestTarget(entity, owner, bool isFriendly = false, bool pierceWalls 
 		}
 		else
 		{
-			float distance = GetVectorDistance(EntityLocation, TargetLocation);
+			float distance = GetVectorDistance(EntityLocation, TargetLocation, true);
 			if(TargetDistance)
 			{
 				if(distance < TargetDistance) 
@@ -584,9 +576,8 @@ stock bool IsValidForHoming( client, owner, entity)
     {
         float OwnerPos[3], TargetPos[3]; 
         GetClientAbsOrigin( owner, OwnerPos ); 
-        GetClientAbsOrigin( client, TargetPos ); 
-        float distance_d = GetVectorDistance( OwnerPos, TargetPos ); 
-        if ( distance_d <= 146.0 ) return false; 
+        GetClientAbsOrigin( client, TargetPos );
+        if ( GetVectorDistance(OwnerPos, TargetPos, true) <= 21316.0 ) return false; 
     
         int team = GetEntProp( entity, Prop_Send, "m_iTeamNum" ); 
         if (IsPlayerAlive( client ) && client != owner)
@@ -627,8 +618,8 @@ public Action:HomingFlareThink(Handle timer, any:ref)
 					float EntityPos[3], TargetPos[3]; 
 					GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", EntityPos ); 
 					GetClientAbsOrigin( Target, TargetPos ); 
-					float distance = GetVectorDistance( EntityPos, TargetPos ); 
-					if( distance <= 800.0 )
+					float distance = GetVectorDistance(EntityPos, TargetPos, true); 
+					if( distance <= 640000.0 )
 					{
 						float ProjLocation[3], ProjVector[3], BaseSpeed, NewSpeed, ProjAngle[3], AimVector[3], InitialSpeed[3]; 
 						
@@ -694,9 +685,9 @@ public Action:HomingThink(Handle timer, any:ref)
 							float EntityPos[3], TargetPos[3];
 							GetEntPropVector(entity, Prop_Data, "m_vecAbsOrigin", EntityPos);
 							GetClientAbsOrigin( Target, TargetPos ); 
-							float distance = GetVectorDistance( EntityPos, TargetPos ); 
+							float distance = GetVectorDistance(EntityPos, TargetPos, true); 
 							
-							if( distance <= maxDistance )
+							if( distance <= maxDistance*maxDistance )
 							{
 								float ProjLocation[3], ProjVector[3], BaseSpeed, NewSpeed, ProjAngle[3], AimVector[3], InitialSpeed[3]; 
 								
@@ -761,9 +752,9 @@ public Action:HeavyFriendlyHoming(Handle timer, any:ref)
 					float EntityPos[3], TargetPos[3]; 
 					GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", EntityPos ); 
 					GetClientAbsOrigin( Target, TargetPos ); 
-					float distance = GetVectorDistance( EntityPos, TargetPos ); 
+					float distance = GetVectorDistance(EntityPos, TargetPos, true); 
 					
-					if( distance <= 800.0 )
+					if( distance <= 640000.0 )
 					{
 						float ProjLocation[3], ProjVector[3], BaseSpeed, NewSpeed, ProjAngle[3], AimVector[3], InitialSpeed[3]; 
 						

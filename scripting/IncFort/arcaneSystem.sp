@@ -312,8 +312,7 @@ CastMarkForDeath(client, attuneSlot)
 		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 30.0;
-		float Distance = GetVectorDistance(clientpos,VictimPos);
-		if(Distance > Range)
+		if(GetVectorDistance(clientpos,VictimPos,true) > Range*Range)
 			continue;
 
 		if(!IsPointVisible(clientpos,VictimPos))
@@ -480,9 +479,8 @@ CastAntisepticBlast(client, attuneSlot)
 		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 30.0;
-		float Distance = GetVectorDistance(clientpos,VictimPos);
 
-		if(Distance > splashRadius[spellLevel])
+		if(GetVectorDistance(clientpos,VictimPos, true) > splashRadius[spellLevel]*splashRadius[spellLevel])
 			continue;
 
 		if(!IsPointVisible(clientpos,VictimPos))
@@ -681,7 +679,7 @@ CastSnapFreeze(client, attuneSlot)
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 15.0;
 
-		if(GetVectorDistance(clientpos,VictimPos) > 500.0)
+		if(GetVectorDistance(clientpos,VictimPos, true) > 250000.0)
 			continue;
 		
 		if(!IsPointVisible(clientpos,VictimPos))
@@ -809,8 +807,8 @@ CastSpeedAura(client, attuneSlot)
 			continue;
 		float VictimPos[3];
 		GetClientEyePosition(i,VictimPos);
-		float Distance = GetVectorDistance(ClientPos,VictimPos);
-		if(Distance > radius[spellLevel])
+
+		if(GetVectorDistance(ClientPos,VictimPos,true) > radius[spellLevel]*radius[spellLevel])
 			continue;
 
 		TF2_AddCondition(i, TFCond_SpeedBuffAlly, buffDuration[spellLevel]);
@@ -972,8 +970,7 @@ CastInferno(client, attuneSlot)
 
 		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-		float Distance = GetVectorDistance(ClientPos,VictimPos);
-		if(Distance > range[spellLevel])
+		if(GetVectorDistance(ClientPos,VictimPos,true) > range[spellLevel]*range[spellLevel])
 			continue;
 
 		CreateParticleEx(i, "dragons_fury_effect_parent", 1, _, _, hitRate[spellLevel]*maxHits[spellLevel]);
@@ -1095,7 +1092,7 @@ public Action:Timer_GrenadeMines(Handle timer, any:ref)
 			continue;
 
 		GetClientAbsOrigin(i, targetvec);
-		if(GetVectorDistance(grenadevec, targetvec, false) > distance)
+		if(GetVectorDistance(grenadevec, targetvec, true) > distance*distance)
 			continue;
 
 		if(TF2Spawn_IsClientInSpawn(i))
@@ -1139,7 +1136,7 @@ CastShockwave(client, attuneSlot)
 		if(!IsPointVisible(ClientPos,VictimPos))
 			continue;
 
-		if(GetVectorDistance(ClientPos,VictimPos) > 500.0)
+		if(GetVectorDistance(ClientPos,VictimPos,true) > 250000.0)
 			continue;
 
 		SDKHooks_TakeDamage(i,client,client,damageDealt,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
@@ -1264,8 +1261,7 @@ public Action:SoothingSunlight(Handle timer, client)
 
 		float VictimPos[3];
 		GetClientEyePosition(i,VictimPos);
-		float Distance = GetVectorDistance(ClientPos,VictimPos);
-		if(Distance > radius[spellLevel])
+		if(GetVectorDistance(ClientPos,VictimPos,true) > radius[spellLevel]*radius[spellLevel])
 			continue;
 
 		float AmountHealing = TF2_GetMaxHealth(i) * ArcanePower[client];
@@ -1388,9 +1384,8 @@ public Action:ArcaneHunter(Handle timer, client)
 		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 30.0;
-		float Distance = GetVectorDistance(clientpos,VictimPos);
 
-		if(Distance > splashRadius[spellLevel])
+		if(GetVectorDistance(clientpos,VictimPos,true) > splashRadius[spellLevel]*splashRadius[spellLevel])
 			continue;
 
 		if(!IsPointVisible(clientpos,VictimPos))
@@ -1595,7 +1590,7 @@ CastZap(client, attuneSlot)
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	clientpos[2] -= 15.0;
-	float closestDistance = 2000.0;
+	float closestDistance = 100000000.0;
 	int validCount = 0;
 	int maximumTargets[] = {0,1,2,3};
 	float range[] = {0.0,600.0,1500.0,1500.0};
@@ -1610,9 +1605,9 @@ CastZap(client, attuneSlot)
 		float VictimPos[3];
 		GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 		VictimPos[2] += 15.0;
-		float Distance = GetVectorDistance(clientpos,VictimPos);
+		float Distance = GetVectorDistance(clientpos,VictimPos,true);
 
-		if(Distance < closestDistance && Distance < range[spellLevel])
+		if(Distance < closestDistance && Distance < range[spellLevel]*range[spellLevel])
 		{
 			if(IsPointVisible(clientpos,VictimPos))
 			{
@@ -1751,8 +1746,7 @@ CastLightning(client, attuneSlot)
 			float VictimPos[3];
 			GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 			VictimPos[2] += 30.0;
-			float Distance = GetVectorDistance(clientpos,VictimPos);
-			if(Distance > range[spellLevel])
+			if(GetVectorDistance(clientpos,VictimPos,true) > range[spellLevel]*range[spellLevel])
 				continue;
 
 			if(!IsPointVisible(clientpos,VictimPos))

@@ -39,7 +39,7 @@ public Action:OnStartTouchStomp(client, other)
 
 			float splashOrigin[3];
 			GetClientAbsOrigin(i, splashOrigin);
-			if(GetVectorDistance(splashOrigin, ClientPos) > 500.0) continue;
+			if(GetVectorDistance(splashOrigin, ClientPos, true) > 250000.0) continue;
 
 			SDKHooks_TakeDamage(i,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
 			++splash;
@@ -243,9 +243,7 @@ public Action:ProjectedHealingCollision(entity, client)
 			{
 				float VictimPos[3];
 				GetClientEyePosition(i,VictimPos);
-				float Distance = GetVectorDistance(projvec,VictimPos);
-				float Range = 1000.0;
-				if(Distance <= Range)
+				if(GetVectorDistance(projvec,VictimPos, true) <= 1000000)
 				{
 					AddPlayerHealth(i, RoundToCeil(AmountHealing), 2.0 * ArcanePower[owner], true, owner);
 					TF2_AddCondition(i,TFCond_MegaHeal,3.0);

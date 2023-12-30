@@ -332,7 +332,7 @@ public Action:Timer_Every100MS(Handle timer)
 						{
 							float VictimPos[3];
 							GetEntPropVector(e, Prop_Data, "m_vecOrigin", VictimPos);
-							if(GetVectorDistance(clientPos,VictimPos) <= 600.0)
+							if(GetVectorDistance(clientPos,VictimPos, true) <= 360000.0)
 							{
 								AddPlayerHealth(client, RoundToCeil(TF2_GetMaxHealth(client) * 0.25), 3.0, true, client);
 								TF2_RemoveCondition(client,TFCond_NoTaunting_DEPRECATED);
@@ -360,34 +360,47 @@ public Action:Timer_Every100MS(Handle timer)
 						if(!IsValidClient3(i)) continue;
 						if(IsOnDifferentTeams(client, i)) continue;
 						if(!IsPlayerAlive(i)) continue;
-						if(GetPlayerDistance(client, i) > 800.0) continue;
+
+						float VictimPos[3];
+						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+						if(GetVectorDistance(clientPos, VictimPos, true) > 640000.0) continue;
 
 						insertBuff(i, strongholdBonus);
 					}
 				}
 			}
-			for(int i=1;i<=MaxClients;i++)
+
+			Buff leechDebuff;
+			leechDebuff.init("Leeched", "-33% healing", Buff_Leech, 1, client, 2.0);
+
+			for(int i=1;i<=MaxClients;++i)
 			{
+				if(!IsValidClient(i)) continue; 
+				if(!IsOnDifferentTeams(client,i)) continue;
+				if(!IsPlayerAlive(i)) continue;
+
 				if(corrosiveDOT[client][i][0] != 0.0 && corrosiveDOT[client][i][1] >= 0.0)
 				{
-					corrosiveDOT[client][i][1] -= 0.07
+					corrosiveDOT[client][i][1] -= TICKINTERVAL;
 					if(IsValidClient3(i))
-					{
 						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],DMG_BLAST,-1, NULL_VECTOR, NULL_VECTOR);
+				}
+				if(plaguePower > 0.0 && plagueAttacker[i] == -1)
+				{
+					float VictimPos[3];
+					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+					if(GetVectorDistance(clientPos,VictimPos, true) <= 10000.0)
+					{
+						plagueAttacker[i] = GetClientUserId(client);
+						TF2_AddCondition(i, TFCond_Plague, 12.0);
 					}
 				}
-				if(plaguePower > 0.0 && IsValidClient3(i) && IsPlayerAlive(i) && plagueAttacker[i] == -1)
-				{
-					if(IsOnDifferentTeams(client,i))
-					{
+				if(!hasBuffIndex(i, Buff_Leech)){
+					if(GetAttribute(i, "vampire powerup", 0.0) != 2.0 && GetAttribute(client, "vampire powerup", 0.0) == 2.0){
 						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-						if(GetVectorDistance(clientPos,VictimPos) <= 100.0)
-						{
-							plagueAttacker[i] = GetClientUserId(client);
-							TF2_AddCondition(i, TFCond_Plague, 12.0);
-							TF2_AddCondition(i, TFCond_NoTaunting_DEPRECATED, 2.0);
-						}
+						if(GetVectorDistance(clientPos,VictimPos, true) <= 640000.0)
+							insertBuff(i, leechDebuff);
 					}
 				}
 			}
@@ -460,13 +473,13 @@ public Action:Timer_Every100MS(Handle timer)
 						case 129,1001:
 						{
 							float ClientPos[3], VictimPos[3];
+							GetClientAbsOrigin(client, ClientPos);
 							for(int i=1;i<=MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
-									GetClientAbsOrigin(client, ClientPos);
 									GetClientAbsOrigin(i, VictimPos);
-									if(GetVectorDistance(ClientPos,VictimPos) <= range)
+									if(GetVectorDistance(ClientPos,VictimPos,true ) <= range*range)
 									{
 										TF2_AddCondition(i, TFCond_DisguiseRemoved, 0.3)//Buff Banner | 1.8x dmg
 										if(miniCritStatusAttacker[i] < currentGameTime+0.3)
@@ -478,32 +491,28 @@ public Action:Timer_Every100MS(Handle timer)
 						case 226:
 						{
 							float ClientPos[3], VictimPos[3];
+							GetClientAbsOrigin(client, ClientPos);
 							for(int i=1;i<=MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
-									GetClientAbsOrigin(client, ClientPos);
 									GetClientAbsOrigin(i, VictimPos);
-									if(GetVectorDistance(ClientPos,VictimPos) <= range)
-									{
+									if(GetVectorDistance(ClientPos,VictimPos, true) <= range*range)
 										TF2_AddCondition(i, TFCond_DefenseBuffNoCritBlock, 0.3)//Battalion's Backup | No more crit immunity
-									}
 								}
 							}
 						}
 						case 354:
 						{
 							float ClientPos[3], VictimPos[3];
+							GetClientAbsOrigin(client, ClientPos);
 							for(int i=1;i<=MaxClients;i++)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
-									GetClientAbsOrigin(client, ClientPos);
 									GetClientAbsOrigin(i, VictimPos);
-									if(GetVectorDistance(ClientPos,VictimPos) <= range)
-									{
+									if(GetVectorDistance(ClientPos,VictimPos,true) <= range*range)
 										TF2_AddCondition(i, TFCond_MedigunDebuff, 0.3)//concheror | 15% lifesteal (150% lifesteal attribute)
-									}
 								}
 							}
 						}
@@ -560,14 +569,9 @@ public Action:Timer_Every100MS(Handle timer)
 									float VictimPos[3];
 									GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 									VictimPos[2] += 30.0;
-									float Distance = GetVectorDistance(clientpos,VictimPos);
-									if(Distance <= range*0.3)
-									{
+									if(GetVectorDistance(clientpos,VictimPos,true) <= range*range*0.3)
 										if(IsPointVisible(clientpos,VictimPos))
-										{
 											SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, secondary, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
-										}
-									}
 								}
 							}
 							lightningCounter[client] = 0;
@@ -611,8 +615,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 										float clientpos[3], targetpos[3];
 										GetClientAbsOrigin(client, clientpos);
 										GetClientAbsOrigin(i, targetpos);
-										float distance = GetVectorDistance(clientpos, targetpos);
-										if(distance <= 900.0)
+										if(GetVectorDistance(clientpos, targetpos, true) <= 810000.0)
 										{
 											counter++;
 											clientList[i] = true;
@@ -710,8 +713,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 										{
 											float VictimPos[3];
 											GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-											float Distance = GetVectorDistance(ClientPos,VictimPos);
-											if(Distance <= 800.0)
+											if(GetVectorDistance(ClientPos,VictimPos,true) <= 640000.0)
 											{
 												CreateParticleEx(i, "dragons_fury_effect_parent", 1, _, _, 2.0);
 												CreateParticleEx(i, "utaunt_glowyplayer_orange_glow", 1);
@@ -864,8 +866,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 									float VictimPos[3];
 									GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 									VictimPos[2] += 30.0;
-									float Distance = GetVectorDistance(clientpos,VictimPos);
-									if(Distance <= 500.0)
+									if(GetVectorDistance(clientpos,VictimPos) <= 250000.0)
 									{
 										if(IsPointVisible(clientpos,VictimPos))
 										{
@@ -1464,8 +1465,7 @@ public Action:eurekaDelayed(Handle timer, int client)
 						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 						VictimPos[2] += 30.0;
-						float Distance = GetVectorDistance(clientpos,VictimPos);
-						if(Distance <= 1000.0)
+						if(GetVectorDistance(clientpos,VictimPos) <= 1000000.0)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
 							{
@@ -1536,9 +1536,7 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 				float VictimPos[3];
 				GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 				VictimPos[2] += 30.0;
-				float Distance = GetVectorDistance(fOrigin,VictimPos);
-				float Range = 500.0;
-				if(Distance <= Range)
+				if(GetVectorDistance(fOrigin,VictimPos,true) <= 250000)
 				{
 					if(IsPointVisible(PlayerOrigin,VictimPos))
 					{
@@ -1879,7 +1877,7 @@ public Action:Timer_PlayerGrenadeMines(Handle timer, any:ref)
 			{
 				if(!IsValidClient3(i)){continue;}
 				GetClientAbsOrigin(i, targetvec);
-				if(!IsClientObserver(i) && GetClientTeam(i) != GetClientTeam(client) && GetVectorDistance(grenadevec, targetvec, false) < distance)
+				if(!IsClientObserver(i) && GetClientTeam(i) != GetClientTeam(client) && GetVectorDistance(grenadevec, targetvec, true) < distance*distance)
 				{
 					if(!TF2Spawn_IsClientInSpawn(i) && client != i && IsAbleToSee(client,i))
 					{

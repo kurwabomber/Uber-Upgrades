@@ -129,7 +129,8 @@ enum {
 	Buff_Speed=7,
 	Buff_Jarated=8,
 	Buff_Bruised=9,
-	Buff_Stronghold=10
+	Buff_Stronghold=10,
+	Buff_Leech=11,
 };
 
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];

@@ -147,7 +147,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 								float fOrigin[3], fVictimPos[3];
 								GetClientAbsOrigin(i, fOrigin)
 								GetClientAbsOrigin(victim,fVictimPos);
-								if(GetVectorDistance(fOrigin,fVictimPos) <= 1000.0)
+								if(GetVectorDistance(fOrigin,fVictimPos, true) <= 1000000.0)
 								{
 									int iEntity = CreateEntityByName("tf_projectile_lightningorb");
 									if (IsValidEdict(iEntity)) 
@@ -496,7 +496,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			float guardianPos[3];
 			GetClientEyePosition(victim,victimPos);
 			GetClientEyePosition(i,guardianPos);
-			if(GetVectorDistance(victimPos,guardianPos, true) < 1400.0*1400.0)
+			if(GetVectorDistance(victimPos,guardianPos, true) < 1960000)
 			{
 				Address RedirectActive = TF2Attrib_GetByName(i, "mult cloak meter regen rate");
 				if(RedirectActive != Address_Null)
@@ -1138,8 +1138,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 
 					float VictimPos[3]; 
 					GetClientEyePosition(client, VictimPos); 
-					float distance = GetVectorDistance(lastBouncedPosition, VictimPos);
-					if(distance > 350.0) {continue;}
+					if(GetVectorDistance(lastBouncedPosition, VictimPos, true) > 122500.0) {continue;}
 					
 					isBounced[client] = true;
 					GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
@@ -1691,6 +1690,10 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 
 			int team = GetClientTeam(attacker);
 			float piercingDamage = 100.0/weaponFireRate[weapon];
+
+			float victimOrigin[3];
+			GetClientAbsOrigin(victim, victimOrigin);
+			
 			for(int i = 1;i<=MaxClients;i++){
 				if(!IsValidClient3(i))
 					continue;
@@ -1698,7 +1701,10 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 					continue;
 				if(GetClientTeam(i) == team)
 					continue;
-				if(GetPlayerDistance(victim,i) > 500)
+
+				float splashOrigin[3];
+				GetClientAbsOrigin(i, splashOrigin);
+				if(GetVectorDistance(victimOrigin, splashOrigin, true) > 250000)
 					continue;
 				
 				currentDamageType[attacker].second |= DMG_PIERCING;

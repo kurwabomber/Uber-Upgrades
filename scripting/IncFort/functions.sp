@@ -98,42 +98,6 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 	
 	TE_SendToAllInRange(fOffset, RangeType_Visibility);
 }
-float GetPlayerHealingMultiplier(client){
-	float multiplier = 1.0;
-
-	if(TF2_IsPlayerInCondition(client, TFCond_Bleeding)){
-		if(GetAttribute(client, "inverter powerup", 0.0) == 1.0){
-			multiplier *= 2.0;
-		}
-		else
-			multiplier *= 0.5;
-	}
-	if(GetAttribute(client, "regeneration powerup", 0.0) == 3.0)
-		multiplier *= 1.6;
-	if(hasBuffIndex(client, Buff_Stronghold))
-		multiplier *= 1.33;
-
-	return multiplier;
-}
-void AddPlayerHealth(client, iAdd, float flOverheal = 1.5, bool bEvent = false, healer = -1)
-{
-	iAdd = RoundToCeil(iAdd * GetPlayerHealingMultiplier(client));
-    int iHealth = GetClientHealth(client);
-    int iNewHealth = iHealth + iAdd;
-    int iMax = RoundFloat(float(TF2_GetMaxHealth(client)) * flOverheal)
-	if(iNewHealth > iMax && iHealth < iMax)
-	{
-		iNewHealth = iMax;
-	}
-    if (iNewHealth <= iMax && iHealth != iMax)
-    {
-        if (bEvent)
-        {
-            ShowHealthGain(client, iNewHealth-iHealth, healer);
-        }
-        SetEntityHealth(client, iNewHealth);
-    }
-}
 //Replaces any old buff with same details, else inserts a new one.
 public void insertBuff(int client, Buff newBuff){
 	int replacementID = getNextBuff(client);
@@ -2550,7 +2514,7 @@ void DoSapperEffects(int client){
 
 			float teammatePos[3];
 			GetClientAbsOrigin(i, teammatePos);
-			if(GetVectorDistance(teammatePos, victimPos) > magnitude*2.0)
+			if(GetVectorDistance(teammatePos, victimPos, true) > magnitude*magnitude*2.0)
 				continue;
 			
 			PushEntity(i, client, -1.0 * magnitude);
@@ -3110,9 +3074,9 @@ public void OnHomingThink(entity)
 	TargetPos[2]+=40.0;
 	float flRocketPos[3];
 	GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
-	float distance = GetVectorDistance( flRocketPos, TargetPos ); 
+	float distance = GetVectorDistance(flRocketPos, TargetPos, true); 
 	
-	if( distance <= projectileHomingDegree[entity] && currentGameTime - entitySpawnTime[entity] < 3.0 )
+	if( distance*distance <= projectileHomingDegree[entity] && currentGameTime - entitySpawnTime[entity] < 3.0 )
 	{
 		float ProjVector[3],BaseSpeed,NewSpeed,ProjAngle[3],AimVector[3],InitialSpeed[3]; 
 		
@@ -3125,7 +3089,7 @@ public void OnHomingThink(entity)
 		TargetPos[2] += 20.0;
 		MakeVectorFromPoints( flRocketPos, TargetPos, AimVector ); 
 		
-		if(distance <= projectileHomingDegree[entity]*2.0 + 20.0)
+		if(distance*distance <= projectileHomingDegree[entity]*2.0 + 20.0)
 		{
 			SubtractVectors( TargetPos, flRocketPos, ProjVector ); //100% HOME
 		}
@@ -3166,7 +3130,6 @@ public OnThinkPost(entity)
 	if(homingActive == Address_Null)
 		return;
 
-	float maxDistance = TF2Attrib_GetValue(homingActive)
 	if(owner != Target)
 	{
 		float flTargetPos[3];
@@ -3174,9 +3137,9 @@ public OnThinkPost(entity)
 		flTargetPos[2]+=40.0;
 		float flRocketPos[3];
 		GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
-		float distance = GetVectorDistance( flRocketPos, flTargetPos ); 
+		float distance = GetVectorDistance(flRocketPos, flTargetPos, true); 
 		
-		if( distance <= maxDistance )
+		if( distance*distance <= TF2Attrib_GetValue(homingActive) )
 		{
 			float flVelocityChange[3];
 			TeleportEntity(entity, flTargetPos, NULL_VECTOR, flVelocityChange);
@@ -3215,7 +3178,7 @@ public OnFireballThink(entity)
 		float distance = GetAttribute(CWeapon, "fireball distance", 500.0);
 		float origin[3];
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
-		if(GetVectorDistance(entitySpawnPositions[entity], origin) > distance)
+		if(GetVectorDistance(entitySpawnPositions[entity], origin, true) > distance*distance)
 			{RemoveEntity(entity);}
 	}
 }
@@ -3241,9 +3204,8 @@ public OnEntityHomingThink(entity)
 	float EntityPos[3], TargetPos[3]; 
 	GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", EntityPos ); 
 	GetClientAbsOrigin( Target, TargetPos ); 
-	float distance = GetVectorDistance( EntityPos, TargetPos ); 
-
-	if( distance > homingRadius[entity] )
+	
+	if( GetVectorDistance(EntityPos, TargetPos, true) > homingRadius[entity]*homingRadius[entity] )
 		return;
 
 	if(homingTickRate[entity] == 0 || homingTicks[entity] % homingTickRate[entity] == 0)

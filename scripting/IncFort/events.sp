@@ -105,6 +105,9 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 					heal = bloodAcolyteBloodPool[attacker];
 				
 				if(heal > 0.0){
+					float attackerOrigin[3];
+					GetClientAbsOrigin(attacker, attackerOrigin);
+
 					for(int i = 1; i<=MaxClients;++i){
 						if(!IsValidClient3(i))
 							continue;
@@ -112,7 +115,10 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 							continue;
 						if(IsOnDifferentTeams(attacker, i))
 							continue;
-						if(GetPlayerDistance(attacker, i) > 800.0)
+						
+						float victimOrigin[3];
+						GetClientAbsOrigin(i, victimOrigin);
+						if(GetVectorDistance(attackerOrigin, victimOrigin, true) > 640000.0)
 							continue;
 
 						AddPlayerHealth(i, RoundToCeil(heal), 3.0, true, attacker);
@@ -1493,8 +1499,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							float VictimPos[3];
 							GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 							VictimPos[2] += 30.0;
-							float Distance = GetVectorDistance(clientPos,VictimPos);
-							if(Distance <= 600.0)
+							if(GetVectorDistance(clientPos,VictimPos,true) <= 360000.0)
 							{
 								if(iTeam == 2)
 									CreateParticleEx(i, "powerup_king_red", 1, _, _, 2.0);
@@ -1719,8 +1724,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								float VictimPos[3];
 								GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 								VictimPos[2] += 30.0;
-								float Distance = GetVectorDistance(clientpos,VictimPos);
-								if(Distance <= 800.0)
+								if(GetVectorDistance(clientpos,VictimPos,true) <= 640000.0)
 								{
 									if(IsValidClient3(i))
 									{
@@ -3465,8 +3469,7 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 						VictimPos[2] += 30.0;
-						float Distance = GetVectorDistance(clientpos,VictimPos);
-						if(Distance <= 500.0)
+						if(GetVectorDistance(clientpos,VictimPos, true) <= 250000.0)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
 							{
