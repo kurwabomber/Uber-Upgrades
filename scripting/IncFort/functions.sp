@@ -1973,7 +1973,6 @@ refreshUpgrades(client, slot)
 				if(TF2Attrib_GetValue(agilityPowerup) == 1)
 				{
 					TF2Attrib_SetByName(client,"major move speed bonus", 1.4);
-					TF2Attrib_SetByName(client,"major increased jump height", 1.3);
 					TF2Attrib_SetByName(client,"self dmg push force increased", 1.75);
 					TF2Attrib_SetByName(client,"SET BONUS: chance of hunger decrease", 0.35);
 					TF2Attrib_SetByName(client,"has pipboy build interface", 72.0);
@@ -1981,7 +1980,6 @@ refreshUpgrades(client, slot)
 				else
 				{
 					TF2Attrib_RemoveByName(client,"major move speed bonus");
-					TF2Attrib_RemoveByName(client,"major increased jump height");
 					TF2Attrib_RemoveByName(client,"self dmg push force increased");
 					TF2Attrib_RemoveByName(client,"SET BONUS: chance of hunger decrease");
 					TF2Attrib_RemoveByName(client,"has pipboy build interface");
@@ -1995,6 +1993,8 @@ refreshUpgrades(client, slot)
 					TF2Attrib_RemoveByName(client,"damage mult 1");
 					TF2Attrib_RemoveByName(client,"fire rate penalty");
 				}
+
+				TF2Attrib_SetByName(client,"major increased jump height", TF2Attrib_GetValue(agilityPowerup) == 1 ? 1.3 : (TF2Attrib_GetValue(agilityPowerup) == 2 ? 2.0 : 1.0));
 			}
 
 			Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
@@ -3717,7 +3717,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("agility powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Quaker Powerup {default}| {lightcyan}Weighdown is automatically activated at apex of jump, and upon falling you deal an explosive shock (10 bDPS). Stomp damage is spread to 2 oter targets and deals 4x dmg. 2x jump height.");
+			CPrintToChat(client, "{community}Quaker Powerup {default}| {lightcyan}Weighdown is automatically activated after jumping. Stomp damage is spread to 2 other targets and deals 2x dmg. 2x jump height.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces shift middle click with teleport to crosshair. Deals 300 base damage to all enemies through path of teleport. Each use consumes 10%% focus.4x slower fire rate, 6x damage. Applies +4 additive dmg taken on hit.");
 		}else{

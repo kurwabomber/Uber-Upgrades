@@ -25,6 +25,26 @@ public Action:OnStartTouchStomp(client, other)
 
 	float stompDamage = TF2_GetDamageModifiers(client, CWeapon, true, true, false) * 200.0;
 	stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 300.0)/1000.0)
+
+	if(GetAttribute(client, "agility powerup", 0.0) == 2.0){
+		stompDamage *= 2.0;
+
+		int splash = 0;
+		for(int i = 1;i <= MaxClients; ++i){
+			if(!IsValidClient3(i)) continue;
+			if(IsOnDifferentTeams(other, i)) continue;
+			if(!IsPlayerAlive(i)) continue;
+			if(i == other) continue;
+			if(splash == 2) break;
+
+			float splashOrigin[3];
+			GetClientAbsOrigin(i, splashOrigin);
+			if(GetVectorDistance(splashOrigin, ClientPos) > 500.0) continue;
+
+			SDKHooks_TakeDamage(i,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
+			++splash;
+		}
+	}
 	
 	SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
 }

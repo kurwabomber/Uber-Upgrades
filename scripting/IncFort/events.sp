@@ -1740,18 +1740,32 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				
 				if(!(flags & FL_ONGROUND))
 				{
-					if(buttons & IN_DUCK)
-					{
-						Address weighDownAbility = TF2Attrib_GetByName(client, "noise maker");
-						if(weighDownAbility != Address_Null && TF2Attrib_GetValue(weighDownAbility) > 0.0)
-						{
-							SetEntityGravity(client, TF2Attrib_GetValue(weighDownAbility) + 1.0);
+					if(GetAttribute(client, "agility powerup", 0.0) == 2.0){
+						quakerTime[client]+=TICKINTERVAL;
+						if(quakerTime[client] >= 1.0){
+							Address weighDownAbility = TF2Attrib_GetByName(client, "noise maker");
+							if(weighDownAbility != Address_Null && TF2Attrib_GetValue(weighDownAbility) > 0.0)
+							{
+								SetEntityGravity(client, TF2Attrib_GetValue(weighDownAbility) + 1.0);
+							}
 						}
 					}
-					else
-					{
-						SetEntityGravity(client, 1.0);
+					else{
+						if(buttons & IN_DUCK)
+						{
+							Address weighDownAbility = TF2Attrib_GetByName(client, "noise maker");
+							if(weighDownAbility != Address_Null && TF2Attrib_GetValue(weighDownAbility) > 0.0)
+							{
+								SetEntityGravity(client, TF2Attrib_GetValue(weighDownAbility) + 1.0);
+							}
+						}
+						else
+						{
+							SetEntityGravity(client, 1.0);
+						}
 					}
+				}else{
+					quakerTime[client] = 0.0;
 				}
 				
 				GetEntPropVector(client, Prop_Data, "m_vecAbsVelocity", trueVel[client]);
