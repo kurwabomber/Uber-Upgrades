@@ -3645,7 +3645,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Leech Powerup {default}| {lightcyan}25%% lifesteal, drains healing of everyone (including teammates!) by 33%% if nearby.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Bloodbound Powerup {default}| {lightcyan}-100%% lifesteal, all damage taken -> piercing damage dealt. No fatal damage from self. If fatal damage, refill HP with damage dealt.");
+			CPrintToChat(client, "{community}Bloodbound Powerup {default}| {lightcyan}-100%% lifesteal, all damage taken -> piercing damage dealt. No fatal damage from self. If fatal damage, refill HP with bonus damage dealt.");
 		}else{
 			CPrintToChat(client, "{community}Vampire Powerup {default}| {lightcyan}80%% lifesteal, 1.25x bleed damage, and 0.75x damage taken.");
 		}

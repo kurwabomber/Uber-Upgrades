@@ -88,6 +88,14 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			if(SupernovaBuildup[client] > 1.0)
 				SupernovaBuildup[client] = 1.0;
 		}
+		if(GetAttribute(client, "vampire powerup", 0.0) == 3.0){
+			bloodboundDamage[client] += damage;
+			if(bloodboundHealing[client] > 0 && bloodboundCooldown[client] <= currentGameTime && float(GetClientHealth(client)) - damage <= 0){
+				AddPlayerHealth(client, RoundToCeil(bloodboundHealing[client]), 4.0, true, client);
+				bloodboundCooldown[client] = currentGameTime + 20.0;
+				bloodboundHealing[client] = 0.0;
+			}
+		}
 	}
 
 	if(IsValidClient3(attacker) && !IsFakeClient(attacker))
@@ -124,6 +132,17 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 						AddPlayerHealth(i, RoundToCeil(heal), 3.0, true, attacker);
 					}
 					bloodAcolyteBloodPool[attacker] -= heal;
+				}
+			}
+			if(GetAttribute(attacker, "vampire powerup", 0.0) == 3.0 && !(currentDamageType[attacker].second & DMG_PIERCING)){
+				AddPlayerHealth(attacker, -RoundToCeil(damage));
+				bloodboundDamage[attacker] += damage;
+
+				if(bloodboundDamage[attacker]){
+					currentDamageType[attacker].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(client, attacker, attacker, bloodboundDamage[attacker]);
+					bloodboundDamage[attacker] = 0.0
+					bloodboundHealing[attacker] += damage;
 				}
 			}
 
@@ -3339,6 +3358,9 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		warpCooldown[client] = 0.0;
 		frayNextTime[client] = 0.0;
 		strongholdEnabled[client] = false;
+		bloodboundCooldown[client] = 0.0;
+		bloodboundDamage[client] = 0.0;
+		bloodboundHealing[client] = 0.0;
 		SetEntityRenderColor(client, 255,255,255,255);
 		for(int i=1;i<=MaxClients;i++)
 		{
