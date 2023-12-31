@@ -393,7 +393,6 @@ public Action:Timer_Every100MS(Handle timer)
 			for(int i=1;i<=MaxClients;++i)
 			{
 				if(!IsValidClient(i)) continue; 
-				if(!IsOnDifferentTeams(client,i)) continue;
 				if(!IsPlayerAlive(i)) continue;
 
 				if(corrosiveDOT[client][i][0] != 0.0 && corrosiveDOT[client][i][1] >= 0.0)
@@ -402,7 +401,7 @@ public Action:Timer_Every100MS(Handle timer)
 					if(IsValidClient3(i))
 						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],DMG_BLAST,-1, NULL_VECTOR, NULL_VECTOR);
 				}
-				if(plaguePower > 0.0 && plagueAttacker[i] == -1)
+				if(IsOnDifferentTeams(client,i) && plaguePower > 0.0 && plagueAttacker[i] == -1)
 				{
 					float VictimPos[3];
 					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);

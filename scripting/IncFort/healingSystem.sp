@@ -24,8 +24,13 @@ float GetPlayerHealingMultiplier(client){
 		if(GetAttribute(client, "inverter powerup", 0.0) == 1.0){
 			multiplier *= 2.0;
 		}
-		else
-			multiplier *= 0.5;
+		else{
+			int inflictor = TF2Util_GetPlayerConditionProvider(client, TFCond_Bleeding);
+			if(IsValidClient3(inflictor) && GetAttribute(client, "knockout powerup", 0.0) == 2)
+				multiplier *= 0.1667;
+			else
+				multiplier *= 0.5;
+		}
 	}
 	if(GetAttribute(client, "regeneration powerup", 0.0) == 3.0)
 		multiplier *= 1.6;

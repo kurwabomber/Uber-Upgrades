@@ -67,12 +67,18 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					burndmgMult *= GetAttribute(weapon, "weapon burn dmg reduced");
 					burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
+					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+						burndmgMult *= 5;
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
 					if(GetAttribute(victim, "inverter powerup", 0.0)){
 						AddPlayerHealth(victim, RoundToFloor(damage/GetResistance(victim, true)), 2.0, true, 0);
 						damage *= 0.0;
 					}
 				}
+				if(damagetype & DMG_SLASH)
+					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+						damage *= 5;
+
 				if(currentDamageType[attacker].second & DMG_ARCANE)
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
 				if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
@@ -283,6 +289,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			ShouldNotHome[inflictor][victim] = true;
 		if(damagetype == (DMG_RADIATION+DMG_DISSOLVE))//Radiation.
 		{
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2)
+				damage *= 3;
 			RadiationBuildup[victim] += damage;
 			checkRadiation(victim,attacker);
 		}
@@ -398,20 +406,36 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		if(GetAttribute(attacker, "revenge powerup", 0.0) == 2)
 			damage *= 1 + RageBuildup[attacker]*0.5;
 		
-		if(GetAttribute(attacker, "precision powerup", 0.0))
+		if(GetAttribute(attacker, "precision powerup", 0.0) == 1)
 			damage *= 1.35;
 		
-		if(GetAttribute(attacker, "knockout powerup", 0.0))
+		if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
 			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 				damage *= 1.75
+		else if(GetAttribute(attacker, "knockout powerup", 0.0) == 2)
+			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				damage *= 0.5;
+		else if(GetAttribute(attacker, "knockout powerup", 0.0) == 3 && !isTagged[attacker][victim])
+			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2){
+				damage *= 4.0;
+				if(!critStatus[victim]){
+					critStatus[victim] = true;
+					damage *= 2.25;
+				}
+			}
 
 		Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
 		if(bleedBuild != Address_Null)
 		{
-			BleedBuildup[victim] += TF2Attrib_GetValue(bleedBuild);
-			if(BleedBuildup[victim] >= BleedMaximum[victim])
+			float bleedAdd = TF2Attrib_GetValue(bleedBuild);
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				bleedAdd *= 3;
+
+			BleedBuildup[victim] += bleedAdd;
+
+			while(BleedBuildup[victim] >= BleedMaximum[victim])
 			{
-				BleedBuildup[victim] = 0.0;
+				BleedBuildup[victim] -= BleedMaximum[victim];
 				
 				float bleedBonus = 1.0;
 				Address vampirePowerupAttacker = TF2Attrib_GetByName(attacker, "unlimited quantity");
@@ -427,7 +451,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		Address radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");
 		if(radiationBuild != Address_Null)
 		{
-			RadiationBuildup[victim] += TF2Attrib_GetValue(radiationBuild);
+			float radiationAdd = TF2Attrib_GetValue(radiationBuild);
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				radiationAdd *= 3;
+			RadiationBuildup[victim] += radiationAdd;
 			checkRadiation(victim,attacker);
 		}
 		if(StunShotStun[attacker])
@@ -945,6 +972,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				float backstabRadiation = GetAttribute(weapon, "no double jump");
 				if(backstabRadiation != 1.0)
 				{
+					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2)
+						backstabRadiation *= 3;
 					RadiationBuildup[victim] += backstabRadiation;
 					checkRadiation(victim,attacker);
 				}
@@ -1071,6 +1100,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
 			burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				burndmgMult *= 3;
 
 			if(damagetype & DMG_ACTUALIGNITE || (GetClientTeam(attacker) != GetClientTeam(victim) && (GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) || GetAttribute(attacker, "infernal powerup", 0.0)) &&
 			TF2_GetDPSModifiers(attacker, weapon)*burndmgMult >= fl_HighestFireDamage[victim] && 
