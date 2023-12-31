@@ -256,7 +256,7 @@ public Action:Timer_Every100MS(Handle timer)
 				}
 				char StatusEffectText[256]
 
-				if(1 <= GetAttribute(client, "revenge powerup", 0.0) <= 2 && RageBuildup[client] > 0.0)
+				if(GetAttribute(client, "revenge powerup", 0.0) == 1)
 				{
 					if(RageBuildup[client] < 1.0)
 						Format(StatusEffectText, sizeof(StatusEffectText),"Revenge: %.0f%", RageBuildup[client]*100.0);
@@ -269,9 +269,26 @@ public Action:Timer_Every100MS(Handle timer)
 						TF2_AddCondition(client, TFCond_DefenseBuffMmmph, 1.0);
 						TF2_AddCondition(client, TFCond_PreventDeath, 1.0);
 						TF2_AddCondition(client, TFCond_KingAura, 1.0);
-						CreateParticleEx(client, "critgun_weaponmodel_red", 1, _, _, 1.0);
-						TE_SendToAll();
 					}
+				}
+				else if(GetAttribute(client, "revenge powerup", 0.0) == 2)
+				{
+					Format(StatusEffectText, sizeof(StatusEffectText),"Berserk: %.0f%", RageBuildup[client]*100.0);
+					
+					miniCritStatusAttacker[client] = currentGameTime + 1.0;
+					TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
+					if(RageBuildup[client] > 0.3){
+						TF2_AddCondition(client, TFCond_DefenseBuffMmmph, 1.0);
+						TF2_AddCondition(client, TFCond_PreventDeath, 1.0);
+						TF2_AddCondition(client, TFCond_KingAura, 1.0);
+					}
+					if(RageBuildup[client] > 0.65){
+						TF2_AddCondition(client, TFCond_CritCanteen, 1.0);
+					}
+
+					RageBuildup[client] -= 0.007
+					if(RageBuildup[client] < 0)
+						RageBuildup[client] = 0.0;
 				}
 				else if(GetAttribute(client, "supernova powerup", 0.0) == 1 && SupernovaBuildup[client] > 0.0)
 				{

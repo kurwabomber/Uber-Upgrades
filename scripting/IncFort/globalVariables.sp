@@ -372,6 +372,7 @@ float RadiationMaximum[MAXPLAYERS+1];
 bool isProjectileHoming[MAXENTITIES];
 bool isProjectileBoomerang[MAXENTITIES];
 bool isProjectileFireball[MAXENTITIES];
+bool isAimlessProjectile[MAXENTITIES];
 float projectileHomingDegree[MAXENTITIES];
 float projectileDamage[MAXENTITIES];
 float entitySpawnTime[MAXENTITIES];

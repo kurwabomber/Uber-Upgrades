@@ -386,7 +386,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 		
-		if(RageActive[attacker] == true && GetAttribute(attacker, "revenge powerup"))
+		if(RageActive[attacker] == true && GetAttribute(attacker, "revenge powerup", 0.0) == 1)
 		{
 			damage *= 1.5;
 			if(powerupParticle[attacker] <= currentGameTime)
@@ -395,6 +395,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				powerupParticle[attacker] = currentGameTime+0.2;
 			}
 		}
+		if(GetAttribute(attacker, "revenge powerup", 0.0) == 2)
+			damage *= 1 + RageBuildup[attacker]*0.5;
 		
 		if(GetAttribute(attacker, "precision powerup", 0.0))
 			damage *= 1.35;

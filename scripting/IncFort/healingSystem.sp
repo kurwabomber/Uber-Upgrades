@@ -33,7 +33,9 @@ float GetPlayerHealingMultiplier(client){
 		multiplier *= 1.33;
 	if(hasBuffIndex(client, Buff_Leech))
 		multiplier *= 0.667;
-
+	if(GetAttribute(client, "revenge powerup", 0.0) == 2.0)
+		multiplier *= 1.0 + RageBuildup[client]*0.5;
+	
 	return multiplier;
 }
 void AddPlayerHealth(client, iAdd, float flOverheal = 1.5, bool bEvent = false, healer = -1)

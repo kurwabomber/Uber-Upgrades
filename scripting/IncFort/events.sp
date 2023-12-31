@@ -1022,6 +1022,7 @@ public OnEntityDestroyed(entity)
 	isProjectileBoomerang[entity] = false;
 	isProjectileFireball[entity] = false;
 	projectileHomingDegree[entity] = 0.0;
+	isAimlessProjectile[entity] = false;
 	gravChanges[entity] = false;
 	homingRadius[entity] = 0.0;
 	homingTickRate[entity] = 0;
@@ -2384,6 +2385,9 @@ public OnGameFrame()
 			
 			if(isProjectileFireball[i])
 				OnFireballThink(i);
+
+			if(isAimlessProjectile[i])
+				OnAimlessThink(i);
 		}
 	}
 	for(int client=1; client<=MaxClients; client++)

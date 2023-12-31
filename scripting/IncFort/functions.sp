@@ -3109,6 +3109,20 @@ public void OnHomingThink(entity)
 		TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
 	}
 }
+public OnAimlessThink(entity){
+	if(!IsValidEdict(entity))
+		return;
+
+	float ProjAngle[3], ProjVector[3], ProjVelocity[3];
+	GetEntPropVector( entity, Prop_Data, "m_angRotation", ProjAngle ); 
+	ProjAngle[1] += GetRandomFloat(-5.0, 5.0);
+	GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", ProjVelocity ); 
+
+	GetAngleVectors(ProjAngle, ProjVector, NULL_VECTOR, NULL_VECTOR);
+
+	ScaleVector(ProjVector, GetVectorLength(ProjVelocity));
+	TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
+}
 public OnThinkPost(entity) 
 { 
 	if(!IsValidEdict(entity))
@@ -3495,10 +3509,13 @@ PrecisionHoming(entity)
 		if(IsValidClient3(client))
 		{
 			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
-			if(precisionPowerup != Address_Null && TF2Attrib_GetValue(precisionPowerup) > 0.0)
-			{
+			if(precisionPowerup == Address_Null) return;
+
+
+			if(TF2Attrib_GetValue(precisionPowerup) == 1)
 				projectileHomingDegree[entity] = 200.0;
-			}
+			else if(TF2Attrib_GetValue(precisionPowerup) == 2)
+				isAimlessProjectile[entity] = true;
 		}
     } 
 }
@@ -3670,11 +3687,11 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("revenge powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Berserk Powerup {default}| {lightcyan}Revenge instead becomes passive that drains by -3%%/s. Up to 1.5x lifesteal effectiveness when meter is at 100%%. Effects are scaled to %%.");
+			CPrintToChat(client, "{community}Berserk Powerup {default}| {lightcyan}Revenge instead becomes passive that drains by -7%%/s. Up to 1.5x lifesteal effectiveness when meter is at 100%%. Effects are scaled to %%.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Equalizer Powerup {default}| {lightcyan}Gives an assortment of debuffs and buffs at certain health thresholds (JUST USE EQUALIZER)");
 		}else{
-			CPrintToChat(client, "{community}Revenge Powerup {default}| {lightcyan}66%% of damage taken is filled to revenge meter. 0.8x damage taken. On activation: +50%% dmg and full crits, hits apply -20%% armor effectiveness.");
+			CPrintToChat(client, "{community}Revenge Powerup {default}| {lightcyan}66%% of damage taken is filled to revenge meter. 0.8x damage taken. On activation: +50%% dmg and full crits.");
 		}
 	}
 	else if(StrEqual("agility powerup", name)){
@@ -3697,7 +3714,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("king powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Tag-Team Blade Powerup {default}| {lightcyan}Press RELOAD to link yourself to a teammate:\n Giving both of you 1.4x damage. Healing is shared between both of you and attacking an enemy makes the other linked person deal 1.75x vs that victim.");
+			CPrintToChat(client, "{community}Tag-Team Powerup {default}| {lightcyan}Press RELOAD to link yourself to a teammate:\n Giving both of you 1.4x damage. Healing is shared between both of you and attacking an enemy makes the other linked person deal 1.75x vs that victim.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Martyr Powerup {default}| {lightcyan}-66%% healing from all sources. Sacrifice (15%% max health + dmg taken) to absorb fatal teammate damage and give uber for 0.5s.");
 		}else{
