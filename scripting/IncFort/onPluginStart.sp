@@ -36,7 +36,7 @@ public Action:Timer_WaitForTF2Econ(Handle timer)
 public UberShopDefineUpgradeTabs()
 {
 	int i = 0
-	while (i < MaxClients)
+	while (i <= MaxClients)
 	{
 		client_respawn_handled[i] = 0
 		client_respawn_checkpoint[i] = 0

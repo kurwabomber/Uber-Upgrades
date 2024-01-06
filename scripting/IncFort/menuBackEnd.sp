@@ -820,7 +820,7 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 			}
 			char clname[255]
 			GetClientName(client, clname, sizeof(clname))
-			for (int i = 1; i < MaxClients; ++i)
+			for (int i = 1; i <= MaxClients; ++i)
 			{
 				if (IsValidClient(i) && !client_no_d_team_upgrade[i])
 				{

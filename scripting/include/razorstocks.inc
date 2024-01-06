@@ -1788,7 +1788,7 @@ stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_
 				int healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
 				if(healers > 0)
 				{
-					for (int i = 1; i < MaxClients; ++i)
+					for (int i = 1; i <= MaxClients; ++i)
 					{
 						if (IsValidClient(i))
 						{

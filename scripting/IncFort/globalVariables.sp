@@ -133,6 +133,7 @@ enum {
 	Buff_Leech=11,
 	Buff_Decay=12,
 	Buff_TagTeam=13,
+	Buff_LifeLink=14,
 };
 
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];

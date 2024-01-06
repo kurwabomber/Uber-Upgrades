@@ -60,6 +60,16 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				}
 			}
 		}
+		if(GetAttribute(attacker, "plague powerup", 0.0) == 3.0){
+			if(!hasBuffIndex(client, Buff_LifeLink)){
+				currentDamageType[attacker].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.1);
+
+				Buff lifelinkDebuff;
+				lifelinkDebuff.init("Life Link", "-25% HP drain", Buff_LifeLink, 1, attacker, 10.0);
+				insertBuff(client, lifelinkDebuff);
+			}
+		}
 	}
 	if(karmicJusticeScaling[client]){
 		karmicJusticeScaling[client] += 400.0*damage/float(TF2Util_GetEntityMaxHealth(client));
@@ -724,7 +734,7 @@ public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
 	float amount = DHookGetParam(hParams, 1);
 
 	additionalstartmoney += amount;
-	for (int i = 1; i < MaxClients; ++i) 
+	for (int i = 1; i <= MaxClients; ++i) 
 	{
 		CurrencyOwned[i] += amount;
 
@@ -1234,7 +1244,7 @@ public Event_mvm_wave_begin(Handle event, const char[] name, bool:dontBroadcast)
 {
 	int client, slot, a;
 	failLock = true;
-	for (client = 1; client < MaxClients; client++)
+	for (client = 1; client <= MaxClients; client++)
 	{
 		if(IsValidClient(client))
 		{
@@ -1333,7 +1343,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 			if((StartMoney + additionalstartmoney + BotMoneyKill) > MAXMONEY)
 				BotMoneyKill = MAXMONEY - StartMoney - additionalstartmoney;
 		
-			for (int i = 1; i < MaxClients; ++i) 
+			for (int i = 1; i <= MaxClients; ++i) 
 			{
 				CurrencyOwned[i] += BotMoneyKill
 				if (IsValidClient(i))
@@ -1347,7 +1357,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 			if((StartMoney + additionalstartmoney + PlayerMoneyKill) > MAXMONEY)
 				PlayerMoneyKill = MAXMONEY - StartMoney - additionalstartmoney;
 
-			for (int i = 1; i < MaxClients; ++i) 
+			for (int i = 1; i <= MaxClients; ++i) 
 			{
 				CurrencyOwned[i] += PlayerMoneyKill
 				if(IsValidClient(i))
@@ -1500,7 +1510,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				powerupParticle[client] = currentGameTime+5.1;
 			}
 			Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
-			if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 0.0)
+			if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) == 1)
 			{
 				int clientTeam = GetClientTeam(client);
 				float clientPos[3];
@@ -1557,15 +1567,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			if(inverterPowerup != Address_Null && TF2Attrib_GetValue(inverterPowerup) > 0.0)
 			{
 				CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
-			}
-			Address relentlessPowerup = TF2Attrib_GetByName(client, "relentless powerup");
-			if(relentlessPowerup != Address_Null && TF2Attrib_GetValue(relentlessPowerup) > 0.0)
-			{
-				if(TF2_GetPlayerClass(client) != TFClass_Pyro && TF2_GetPlayerClass(client) != TFClass_Engineer)
-					CreateParticle(client, "eye_powerup_red_lvl_4", true, "righteye", 5.0);
-				else
-					CreateParticle(client, "eye_powerup_red_lvl_4", true, "eyeglow_R", 5.0);
 				powerupParticle[client] = currentGameTime+5.1;
 			}
 		}
@@ -1785,11 +1786,11 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				{
 					if(GetAttribute(client, "agility powerup", 0.0) == 2.0){
 						quakerTime[client]+=TICKINTERVAL;
-						if(quakerTime[client] >= 1.0){
+						if(quakerTime[client] >= 0.4){
 							Address weighDownAbility = TF2Attrib_GetByName(client, "noise maker");
 							if(weighDownAbility != Address_Null && TF2Attrib_GetValue(weighDownAbility) > 0.0)
 							{
-								SetEntityGravity(client, TF2Attrib_GetValue(weighDownAbility) + 1.0);
+								SetEntityGravity(client, 1.5*TF2Attrib_GetValue(weighDownAbility) + 1.0);
 							}
 						}
 					}

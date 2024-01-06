@@ -424,9 +424,11 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 
-		if(isTagged[tagTeamTarget[attacker]][victim]){
-			if(GetAttribute(victim, "king powerup", 0.0) == 2)
-				damage *= 1.75
+		if(IsValidClient3(tagTeamTarget[attacker])){
+			if(isTagged[tagTeamTarget[attacker]][victim]){
+				if(GetAttribute(victim, "king powerup", 0.0) == 2)
+					damage *= 1.75
+			}
 		}
 
 		Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
@@ -515,7 +517,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 
-		for(int i = 1; i < MaxClients; ++i)
+		for(int i = 1; i <= MaxClients; ++i)
 		{
 			if(!IsValidClient3(i))
 				continue;
@@ -638,7 +640,7 @@ int damagecustom, CritType &critType)
 }
 public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom)
 {
-	if(0 < attacker < MaxClients)
+	if(0 < attacker <= MaxClients)
 		baseDamage[attacker] = damage;
 
 	if(damagetype & DMG_CRIT)
@@ -1067,7 +1069,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
 		if(healers > 0)
 		{
-			for (int i = 1; i < MaxClients; ++i)
+			for (int i = 1; i <= MaxClients; ++i)
 			{
 				if (!IsValidClient3(i))
 					continue;

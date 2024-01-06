@@ -500,7 +500,7 @@ public Action:Menu_QuickBuyUpgrade(client, args)
 public Action:ReloadCfgFiles(client, args)
 {
 	CreateTimer(0.1, Timer_WaitForTF2Econ, _);	   
-	for (int cl = 0; cl < MaxClients; cl++)
+	for (int cl = 0; cl <= MaxClients; cl++)
 	{
 		if(IsValidClient3(cl))
 		{
@@ -549,7 +549,7 @@ public Action:GiveAllMoney(client, args)
 
 public Action:ShowSpentMoney(client, args)
 {
-	for(int i = 0; i < MaxClients; ++i)
+	for(int i = 0; i <= MaxClients; ++i)
 	{
 		if (IsValidClient(i))
 		{
@@ -566,7 +566,7 @@ public Action:ShowSpentMoney(client, args)
 }
 public Action:ShowStats(client, args)
 {
-	for(int i = 0; i < MaxClients; ++i)
+	for(int i = 0; i <= MaxClients; ++i)
 	{
 		if (IsValidClient(i))
 		{
@@ -580,7 +580,7 @@ public Action:ShowStats(client, args)
 }
 public Action:ShowTeamMoneyRatio(admid, args)
 {
-	for(int i = 0; i < MaxClients; ++i)
+	for(int i = 0; i <= MaxClients; ++i)
 	{
 		if (IsValidClient(i))
 		{

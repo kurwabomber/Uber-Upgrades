@@ -235,23 +235,14 @@ public void ManagePlayerBuffs(int i){
 		else
 			TF2Attrib_RemoveByName(i, "relentless powerup");
 	}
-	if(GetAttribute(i, "thunderstorm powerup", 0.0)){
+
+	if(GetAttribute(i, "supernova powerup", 0.0) == 3){
 		float buff = 1.0;
 		for(int victims = 1;victims<=MaxClients;victims++){
 			if(isTagged[i][victims])
 				buff += 0.08;
 		}
 		Format(details, sizeof(details), "%s\n%s %.2fx", details, "Thunderstorm Powerup",buff);
-	}
-
-	for (int h = 1; h < MaxClients; h++)
-	{
-		if (!IsValidClient3(h))
-			continue;
-
-		int healerweapon = GetEntPropEnt(h, Prop_Send, "m_hActiveWeapon");
-		if(!IsValidEdict(healerweapon))
-			continue;
 	}
 
 	if(TF2_IsPlayerInCondition(i, TFCond_Sapped))
@@ -3680,7 +3671,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Duplication Powerup {default}| {lightcyan}Shift middle click to double current HP (2x overheal max, 10s cd). All weapons have infinite clip.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Blood Acolyte Powerup {default}| {lightcyan}-8%% maxHPR, but health drained goes into a health pool, which dealing damage gives back (can overheal & heals nearby teammates). 1.6x all healing.");
+			CPrintToChat(client, "{community}Redistribution Powerup {default}| {lightcyan}-8%% maxHPR, but health drained goes into a health pool, which dealing damage gives back (can overheal & heals nearby teammates). 1.6x all healing.");
 		}else{
 			CPrintToChat(client, "{community}Regeneration Powerup {default}| {lightcyan}0.75x damage taken, +10%% max HPR. 100%% ammo regeneration.");
 		}

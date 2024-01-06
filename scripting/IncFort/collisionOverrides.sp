@@ -237,7 +237,7 @@ public Action:ProjectedHealingCollision(entity, client)
 	{
 		float AmountHealing = (TF2_GetMaxHealth(owner) * 0.2);
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
-		for(int i = 1; i<MaxClients;++i)
+		for(int i = 1; i<= MaxClients;++i)
 		{
 			if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(owner))
 			{
