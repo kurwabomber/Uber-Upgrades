@@ -151,7 +151,7 @@ BrowseAttributesKV(Handle kv)
 					char parts[MAX_STAGES][256];
 					int it = ExplodeString(Buf, ",", parts, MAX_STAGES, 64);
 
-					for(int i = 1;i<it;i++)
+					for(int i = 1;i<it;++i)
 					{
 						//PrintToServer("Stage %i | Set to %.2f max.", i, StringToFloat(parts[i])) //it works :D
 						upgrades[_u_id].staged_max[i] = StringToFloat(parts[i-1]);

@@ -3,14 +3,14 @@ public Action:Timer_WaitForTF2Econ(Handle timer)
 	int i = 0
 	if (TF2Econ_IsValidAttributeDefinition(1))
 	{
-		for (i = 0; i < 7000; i++)
+		for (i = 0; i < 7000; ++i)
 		{
 			if(TF2Econ_IsValidAttributeDefinition(i))
 			{
 				TF2Econ_GetAttributeName( i, upgrades[i].attr_name, 64 );
 			}
 		}
-		for (i = 0; i < MAX_ATTRIBUTES; i++)
+		for (i = 0; i < MAX_ATTRIBUTES; ++i)
 		{
 			upgrades[i].ratio = 0.0;
 			upgrades[i].i_val = 0.0;
@@ -22,7 +22,7 @@ public Action:Timer_WaitForTF2Econ(Handle timer)
 			upgrades[i].description = "";
 			upgrades[i].requirement = 0.0;
 		}
-		for (i = 0; i < LISTS; i++)
+		for (i = 0; i < LISTS; ++i)
 		{
 			given_upgrd_classnames_tweak_idx[i] = -1
 			given_upgrd_list_nb[i] = 0
@@ -57,7 +57,7 @@ public UberShopDefineUpgradeTabs()
 			}
 			j++
 		}	
-		i++
+		++i
 	
 	}
 	
@@ -501,7 +501,7 @@ public OnPluginEnd()
 	hudSpells.Close();
 	hudAbility.Close();
 	hudStatus.Close();
-	for(int i=0; i<=MaxClients; i++)
+	for(int i=0; i<=MaxClients; ++i)
 	{
 		if(!IsValidClient3(i)){continue;}
 		fl_MaxFocus[i] = 100.0;
@@ -509,7 +509,7 @@ public OnPluginEnd()
 		TF2Attrib_ClearCache(i);
 		TF2Attrib_RemoveAll(i);
 	}
-	for (int i = 1 ; i <= MaxClients ; i++)
+	for (int i = 1 ; i <= MaxClients ; ++i)
 		if(IsValidClient3(i))
 			OnClientDisconnect(i);
 

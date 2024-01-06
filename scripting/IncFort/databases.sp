@@ -14,7 +14,7 @@ SavePlayerData(client)
 	{
 		for(int s = 0; s < NB_SLOTS_UED; s++)
 		{
-			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
+			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
 			{
 				pack.WriteCell(currentupgrades_idx[client][s][i]);
 				pack.WriteFloat(currentupgrades_val[client][s][i]);
@@ -38,7 +38,7 @@ SavePlayerData(client)
 	{
 		for(int s = 0; s < NB_SLOTS_UED; s++)
 		{
-			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
+			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
 			{
 				pack.WriteCell(currentupgrades_idx_mvm_chkp[client][s][i]);
 				pack.WriteFloat(currentupgrades_val_mvm_chkp[client][s][i]);
@@ -108,7 +108,7 @@ GivePlayerData(client)
 		float spentMoney = 0.0;
 		for(int s = 0; s < NB_SLOTS_UED; s++)
 		{
-			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
+			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
 			{
 				currentupgrades_idx[client][s][i] = pack.ReadCell();
 				currentupgrades_val[client][s][i] = pack.ReadFloat();

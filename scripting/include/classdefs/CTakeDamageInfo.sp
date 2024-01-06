@@ -42,12 +42,12 @@ methodmap IMPL_internal_method_array_float3 {
 		}
 	}
 	public void Get(float value[3]) {
-		for (int i; i < 3; i++) {
+		for (int i; i < 3; ++i) {
 			value[i] = view_as<float>(LoadFromAddress(this.Address + view_as<Address>(4 * i), NumberType_Int32));
 		}
 	}
 	public void Set(const float value[3]) {
-		for (int i; i < 3; i++) {
+		for (int i; i < 3; ++i) {
 			StoreToAddress(this.Address + view_as<Address>(4 * i), view_as<any>(value[i]), NumberType_Int32);
 		}
 	}

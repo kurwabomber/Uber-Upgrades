@@ -618,7 +618,7 @@ public MRESReturn OnAirblast(int weapon, Handle hParams){
 
 		AirblastDamage *= TF2_GetDamageModifiers(owner, weapon);
 
-		for(int i=1; i<=MaxClients; i++)
+		for(int i=1; i<=MaxClients; ++i)
 		{
 			if(IsValidClient3(i) && IsClientInGame(i) && IsPlayerAlive(i))
 			{
@@ -724,7 +724,7 @@ public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
 	float amount = DHookGetParam(hParams, 1);
 
 	additionalstartmoney += amount;
-	for (int i = 1; i < MaxClients; i++) 
+	for (int i = 1; i < MaxClients; ++i) 
 	{
 		CurrencyOwned[i] += amount;
 
@@ -1013,9 +1013,9 @@ public OnEntityDestroyed(entity)
 
 	char classname[32];
 	GetEntityClassname(entity, classname, 32)
-	for(int i=1;i<=MaxClients;i++)
+	for(int i=1;i<=MaxClients;++i)
 	{ShouldNotHome[entity][i] = false;}
-	for(int i=0;i<MAXENTITIES;i++)
+	for(int i=0;i<MAXENTITIES;++i)
 	{ShouldNotHit[entity][i] = false;}
 	isEntitySentry[entity] = false;
 	isProjectileHoming[entity] = false;
@@ -1073,7 +1073,7 @@ public OnEntityDestroyed(entity)
 public Action removeAllBuildings(client, const char[] command, argc) 
 {
 	if(GetCmdArgInt(1) == 2){
-		for(int i=1;i<2048;i++){
+		for(int i=1;i<2048;++i){
 
 			if(!IsValidEntity(i)){
 				continue;
@@ -1093,7 +1093,7 @@ public Action removeAllBuildings(client, const char[] command, argc)
 			AcceptEntityInput(i,"RemoveHealth");
 		}
 	}else if(GetCmdArgInt(1) == 0){
-		for(int i=1;i<2048;i++){
+		for(int i=1;i<2048;++i){
 
 			if(!IsValidEntity(i)){
 				continue;
@@ -1267,7 +1267,7 @@ public Action:Event_PlayerCollectMoney(Handle event, const char[] name, bool:don
 {
 	int money = GetEventInt(event, "currency");
 	additionalstartmoney += float(money);
-	for (int i = 0; i <= MaxClients; i++) 
+	for (int i = 0; i <= MaxClients; ++i) 
 	{
 		CurrencyOwned[i] += money;
 	}
@@ -1333,7 +1333,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 			if((StartMoney + additionalstartmoney + BotMoneyKill) > MAXMONEY)
 				BotMoneyKill = MAXMONEY - StartMoney - additionalstartmoney;
 		
-			for (int i = 1; i < MaxClients; i++) 
+			for (int i = 1; i < MaxClients; ++i) 
 			{
 				CurrencyOwned[i] += BotMoneyKill
 				if (IsValidClient(i))
@@ -1347,7 +1347,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 			if((StartMoney + additionalstartmoney + PlayerMoneyKill) > MAXMONEY)
 				PlayerMoneyKill = MAXMONEY - StartMoney - additionalstartmoney;
 
-			for (int i = 1; i < MaxClients; i++) 
+			for (int i = 1; i < MaxClients; ++i) 
 			{
 				CurrencyOwned[i] += PlayerMoneyKill
 				if(IsValidClient(i))
@@ -1509,7 +1509,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
 				kingBuff.multiplicativeAttackSpeedMult = 1.33;
 				kingBuff.additiveDamageMult = 0.2;
-				for(int i = 1;i<=MaxClients;i++)
+				for(int i = 1;i<=MaxClients;++i)
 				{
 					if(IsValidClient3(i) && IsPlayerAlive(i))
 					{
@@ -1649,7 +1649,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 
 					fAngles[1] -= 15.0 + 15.0/fanOfKnivesCount[client];
 					fAngles[0] -= 2.0;
-					for(int i = 0; i < fanOfKnivesCount[client]; i++)
+					for(int i = 0; i < fanOfKnivesCount[client]; ++i)
 					{
 						fAngles[1] += 30.0/fanOfKnivesCount[client]
 						int iEntity = CreateEntityByName("tf_projectile_cleaver");
@@ -1699,6 +1699,25 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							float fOrigin[3];
 							GetClientAbsOrigin(client, fOrigin);
 							EmitSoundToAll(SOUND_HEAL, client, _, _, _, _, _, _, fOrigin);
+						}
+					}
+					if(GetAttribute(client, "king powerup", 0.0) == 2.0){
+						for(int i=1;i<=MaxClients;++i)
+						{
+							if(!IsValidClient3(i))
+								continue;
+							
+							if(IsOnDifferentTeams(client,i))
+								continue;
+							
+							if(!IsTargetInSightRange(client, i, 10.0, 2000.0, true, false))
+								continue;
+
+							if(!IsAbleToSee(client,i, false))
+								continue;
+								
+							tagTeamTarget[client] = i;
+							break;
 						}
 					}
 					if(warpCooldown[client] <= currentGameTime){
@@ -1951,7 +1970,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										weaponArtCooldown[client] = currentGameTime+15.0;
 										fl_GlobalCoolDown[client] = currentGameTime+0.8;
 										
-										for(int i = 0;i<5;i++)
+										for(int i = 0;i<5;++i)
 										{
 											int iEntity = CreateEntityByName("tf_projectile_spellfireball");
 											if (IsValidEdict(iEntity)) 
@@ -2202,7 +2221,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
 										RequestFrame(disableWeapon,client);
 										
-										for(int i=0;i<20;i++)
+										for(int i=0;i<20;++i)
 										{
 											Handle hPack = CreateDataPack();
 											WritePackCell(hPack, EntIndexToEntRef(CWeapon));
@@ -2247,7 +2266,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										fl_GlobalCoolDown[client] = currentGameTime+0.2;
 										int iTeam = GetClientTeam(client);
 										float fAngles[3],fOrigin[3],vBuffer[3],vRight[3],fVelocity[3],fwd[3]
-										for(int i=0;i<3;i++)
+										for(int i=0;i<3;++i)
 										{
 											int iEntity = CreateEntityByName("tf_projectile_flare");
 											if (IsValidEdict(iEntity)) 
@@ -2593,7 +2612,7 @@ public OnGameFrame()
 
 			if(CheckForAttunement(client))
 			{
-				for(i = 0; i < Max_Attunement_Slots;i++)
+				for(i = 0; i < Max_Attunement_Slots;++i)
 				{
 					if(SpellCooldowns[client][i] == 0.0)
 						continue;
@@ -3046,7 +3065,7 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 
 					int times = 100;
 
-					for(int i=0;i<times;i++){
+					for(int i=0;i<times;++i){
 						CreateTimer(0.5+(i*0.02), orbitalStrike, pack);
 					}
 					CreateTimer(0.6+(times*0.02), deletePack, pack);
@@ -3111,7 +3130,7 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 					float velocity = 6000.0;
 					float vecAngImpulse[3];
 					GetCleaverAngularImpulse(vecAngImpulse);
-					for(int i = 0; i < fanOfKnivesCount[client]; i++)
+					for(int i = 0; i < fanOfKnivesCount[client]; ++i)
 					{
 						char projName[32] = "tf_projectile_cleaver";
 						int iEntity = CreateEntityByName(projName);
@@ -3255,11 +3274,11 @@ public OnClientDisconnect(client)
 	}
 
 	int i;
-	for(i = 0; i < Max_Attunement_Slots; i++)
+	for(i = 0; i < Max_Attunement_Slots; ++i)
 	{
 		AttunedSpells[client][i] = 0.0;
 	}
-	for(i = 1;i<=MaxClients;i++){
+	for(i = 1;i<=MaxClients;++i){
 		isTagged[i][client] = false;
 	}
 	if(b_Hooked[client])
@@ -3281,7 +3300,7 @@ public OnClientPutInServer(client)
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
 	plagueAttacker[client] = -1;
-	for(int i = 0; i < Max_Attunement_Slots; i++)
+	for(int i = 0; i < Max_Attunement_Slots; ++i)
 	{
 		AttunedSpells[client][i] = 0.0;
 	}
@@ -3365,11 +3384,14 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		bloodboundCooldown[client] = 0.0;
 		bloodboundDamage[client] = 0.0;
 		bloodboundHealing[client] = 0.0;
+		tagTeamTarget[client] = -1;
 		SetEntityRenderColor(client, 255,255,255,255);
-		for(int i=1;i<=MaxClients;i++)
+		for(int i=1;i<=MaxClients;++i)
 		{
 			corrosiveDOT[client][i][0] = 0.0;
 			corrosiveDOT[client][i][1] = 0.0;
+			if(i == tagTeamTarget[client])
+				tagTeamTarget[client] = -1;
 		}
 		if(snowstormActive[client]){
 			int particleEffect = EntRefToEntIndex(snowstormParticle[client]);
@@ -3425,7 +3447,7 @@ public Event_PlayerChangeClass(Handle event, const char[] name, bool:dontBroadca
 				currentupgrades_i[client][slot] = blankArray2[client][slot]
 				currentupgrades_number[client][slot] = blankArray[client][slot]
 			}
-			for(int i = 0; i < Max_Attunement_Slots; i++)
+			for(int i = 0; i < Max_Attunement_Slots; ++i)
 			{
 				AttunedSpells[client][i] = 0.0;
 			}

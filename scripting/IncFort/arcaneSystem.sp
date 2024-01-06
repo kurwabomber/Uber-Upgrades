@@ -346,7 +346,7 @@ CastSunlightSpear(client, attuneSlot)
 	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_NORMAL, _, 0.8, _,_,clientpos);
 	int projectileAmount[] = {0,1,2,5};
 	float projectileSpeed[] = {0.0,2500.0,4000.0,6000.0};
-	for(int i=0;i<projectileAmount[spellLevel];i++){
+	for(int i=0;i<projectileAmount[spellLevel];++i){
 		int iEntity = CreateEntityByName("tf_projectile_arrow");
 		if (!IsValidEdict(iEntity)) 
 			return;
@@ -435,7 +435,7 @@ CastAntisepticBlast(client, attuneSlot)
 	float splashRadius[] = {0.0,200.0,350.0,500.0}
 	float aimAssist[] = {0.0,10.0,20.0,40.0}//In degrees
 
-	for(int i=1;i<=MaxClients;i++)
+	for(int i=1;i<=MaxClients;++i)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -723,7 +723,7 @@ CastArcanePrison(client, attuneSlot)
 	if(spellLevel < 3){
 		if(LookPoint(client,fOrigin))
 		{
-			for(int i=0;i<magnitude[spellLevel];i++){
+			for(int i=0;i<magnitude[spellLevel];++i){
 				int iEntity = CreateEntityByName("tf_projectile_lightningorb");
 				if (!IsValidEdict(iEntity)) 
 					continue;
@@ -748,7 +748,7 @@ CastArcanePrison(client, attuneSlot)
 	}else{
 		//Level 3 autotargets anyone within 35 degree radius
 		int afflictedTargets=0;
-		for(int i = 1; i<=MaxClients && afflictedTargets<=magnitude[spellLevel];i++)
+		for(int i = 1; i<=MaxClients && afflictedTargets<=magnitude[spellLevel];++i)
 		{
 			if(!IsValidClient3(i))
 				continue;
@@ -799,7 +799,7 @@ CastSpeedAura(client, attuneSlot)
 	float radius[] = {0.0,800.0,100000.0,100000.0}
 	float buffDuration[] = {0.0,8.0,16.0,60.0}
 
-	for(int i = 1; i<=MaxClients;i++)
+	for(int i = 1; i<=MaxClients;++i)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -871,7 +871,7 @@ public Action:aerialStrike(Handle timer,any:data)
 
 	int quantity[] = {0,30,40,50}
 	float spread[] = {0.0,300.0,200.0,100.0}
-	for(int i = 0;i<quantity[spellLevel];i++)
+	for(int i = 0;i<quantity[spellLevel];++i)
 	{
 		int iEntity = CreateEntityByName("tf_projectile_rocket");
 		if (!IsValidEdict(iEntity)) 
@@ -996,7 +996,7 @@ CastMineField(client, attuneSlot)
 	float spread[] = {0.0,300.0,200.0,100.0}
 	float radius = spellRadius[spellLevel]*ArcanePower[client];
 	float damage = 90.0 + (Pow(ArcaneDamage[client]*Pow(ArcanePower[client], 4.0),spellScaling[spellLevel]) * 6.5);
-	for(int i = 0;i<quantity[spellLevel];i++)
+	for(int i = 0;i<quantity[spellLevel];++i)
 	{
 		int iEntity = CreateEntityByName("tf_projectile_pipe_remote");
 		if (!IsValidEdict(iEntity)) 
@@ -1080,7 +1080,7 @@ public Action:Timer_GrenadeMines(Handle timer, any:ref)
 
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", grenadevec);
 	
-	for(int i=1; i<=MaxClients; i++)
+	for(int i=1; i<=MaxClients; ++i)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -1095,7 +1095,7 @@ public Action:Timer_GrenadeMines(Handle timer, any:ref)
 		if(GetVectorDistance(grenadevec, targetvec, true) > distance*distance)
 			continue;
 
-		if(TF2Spawn_IsClientInSpawn(i))
+		if(IsPlayerInSpawn(i))
 			continue;
 
 		if(!IsAbleToSee(client,i))
@@ -1251,7 +1251,7 @@ public Action:SoothingSunlight(Handle timer, client)
 	float radius[] = {0.0,900.0,1500.0,5000.0}
 	float incHealDuration[] = {0.0,6.5,15.0,30.0}
 	float overhealMax[] = {0.0,3.0,5.0,10.0}
-	for(int i = 1; i<=MaxClients;i++)
+	for(int i = 1; i<=MaxClients;++i)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -1283,14 +1283,14 @@ CastArcaneHunter(client, attuneSlot)
 	float CPOS[3];
 	GetClientEyePosition(client,CPOS)
 	
-	for(int i=0;i<30;i++)
+	for(int i=0;i<30;++i)
 	{
 		EmitSoundToAll(SOUND_ARCANESHOOTREADY, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,CPOS);
 	}
 	
 	int MaxUses[] = {0, 5,10,30}
 	float duration[] = {0.0,0.4,0.3,0.1}
-	for(int i = 1;i<=MaxUses[spellLevel];i++)
+	for(int i = 1;i<=MaxUses[spellLevel];++i)
 	{
 		CreateTimer(duration[spellLevel]*i,ArcaneHunter,client);
 	}
@@ -1308,7 +1308,7 @@ public Action:ArcaneHunter(Handle timer, client)
 	float splashRadius[] = {0.0,200.0,350.0,500.0}
 	float aimAssist[] = {0.0,10.0,20.0,40.0}//In degrees
 
-	for(int i=1;i<=MaxClients;i++)
+	for(int i=1;i<=MaxClients;++i)
 	{
 		if(!IsValidClient3(i))
 			continue;
@@ -1507,7 +1507,7 @@ public Action:ACallBeyond(Handle timer, client)
 	int projCount[] = {0,15,25,40};
 	float radius[] = {0.0,1500.0,2500.0,2500.0};
 	int tickRate[] = {0,5,2,0};
-	for(int i = 0;i<projCount[spellLevel];i++)
+	for(int i = 0;i<projCount[spellLevel];++i)
 	{
 		int iEntity = CreateEntityByName("tf_projectile_arrow");
 		if (!IsValidEdict(iEntity)) 

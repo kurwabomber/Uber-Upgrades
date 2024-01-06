@@ -131,6 +131,8 @@ enum {
 	Buff_Bruised=9,
 	Buff_Stronghold=10,
 	Buff_Leech=11,
+	Buff_Decay=12,
+	Buff_TagTeam=13,
 };
 
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
@@ -216,6 +218,7 @@ int LightningEnchantmentLevel[MAXPLAYERS+1];
 int DarkmoonBladeLevel[MAXPLAYERS+1];
 int InfernalEnchantmentLevel[MAXPLAYERS+1];
 int snowstormParticle[MAXPLAYERS+1];
+int tagTeamTarget[MAXPLAYERS+1];
 
 //Floats
 float currentGameTime

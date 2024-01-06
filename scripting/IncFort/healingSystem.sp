@@ -1,4 +1,3 @@
-//Added since 12/27/23
 public Action TF2_OnTakeHealthGetMultiplier(int client, float &flMultiplier){
 	float amt = GetPlayerHealingMultiplier(client);
 	if(amt != 1.0){
@@ -7,10 +6,16 @@ public Action TF2_OnTakeHealthGetMultiplier(int client, float &flMultiplier){
 	}
 	return Plugin_Continue;
 }
+
 public Action TF2_OnTakeHealthPre(int client, float &flAmount, int &flags){
 	if(hasBuffIndex(client, Buff_Leech)){
-		AddPlayerHealth(client, RoundToCeil(flAmount*0.334));
+		AddPlayerHealth(playerBuffs[client][getBuffInArray(client, Buff_Leech)].inflictor, RoundToCeil(flAmount*0.334));
 	}
+	if(GetAttribute(client, "king powerup", 0.0) == 2.0){
+		if(IsValidClient3(tagTeamTarget[client]) && IsPlayerAlive(tagTeamTarget[client]) && !IsOnDifferentTeams(client, tagTeamTarget[client]) ){
+			AddPlayerHealth(tagTeamTarget[client], RoundToCeil(flAmount), _, true, client);
+		}
+	} 
 	return Plugin_Continue;
 }
 

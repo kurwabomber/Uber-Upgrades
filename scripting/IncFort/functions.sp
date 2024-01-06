@@ -102,7 +102,7 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 public void insertBuff(int client, Buff newBuff){
 	int replacementID = getNextBuff(client);
 
-	for(int i = 0;i < MAXBUFFS;i++){
+	for(int i = 0;i < MAXBUFFS;++i){
 		if(playerBuffs[client][i].id == newBuff.id && playerBuffs[client][i].priority <= newBuff.priority)
 			{replacementID = i;break;}
 	}
@@ -111,28 +111,28 @@ public void insertBuff(int client, Buff newBuff){
 	//PrintToServer("added %s to %N for %.2fs. ID = %i, index = %i", newBuff.name, client, newBuff.duration -GetGameTime(), newBuff.id, replacementID);
 }
 public bool hasBuffIndex(int client, int index){
-	for(int i = 0; i < MAXBUFFS; i++){
+	for(int i = 0; i < MAXBUFFS; ++i){
 		if(playerBuffs[client][i].id == index)
 			return true;
 	}
 	return false;
 }
 public int getBuffInArray(int client, int index){
-	for(int i = 0; i < MAXBUFFS; i++){
+	for(int i = 0; i < MAXBUFFS; ++i){
 		if(playerBuffs[client][i].id == index)
 			return i;
 	}
 	return -1;
 }
 public int getNextBuff(int client){
-	for(int i = 0; i < MAXBUFFS; i++){
+	for(int i = 0; i < MAXBUFFS; ++i){
 		if(playerBuffs[client][i].id == 0)
 			return i;
 	}
 	return 0;
 }
 public void clearAllBuffs(int client){
-	for(int i = 0; i < MAXBUFFS; i++){
+	for(int i = 0; i < MAXBUFFS; ++i){
 		playerBuffs[client][i].clear();
 	}
 }
@@ -377,7 +377,7 @@ public GetUpgrade_CatList(char[] WCName)
 	
 	wis = 0
 	
-	for (i = wis, w_id = -1; i < WCNAMELISTSIZE; i++)
+	for (i = wis, w_id = -1; i < WCNAMELISTSIZE; ++i)
 	{
 		if (!strcmp(wcnamelist[i], WCName, false))
 		{
@@ -553,7 +553,7 @@ stock char[] getDamageCategory(extendedDamageTypes damagetype, int attacker = -1
 CheckForAttunement(client)
 {
 	bool flag = false;
-	for(int i = 0;i<Max_Attunement_Slots;i++)
+	for(int i = 0;i<Max_Attunement_Slots;++i)
 	{
 		if(AttunedSpells[client][i] != 0.0)
 		{
@@ -682,7 +682,7 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 			if(inum == 20000)//havent upgraded
 			{
 				//PrintToChat(client, "E");
-				for(int i = 1;i<5;i++)
+				for(int i = 1;i<5;++i)
 				{
 					if(currentupgrades_restriction[client][slot][i] == upgrades[upgrade_choice].restriction_category)
 					{
@@ -695,7 +695,7 @@ stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 			}
 			else if(currentupgrades_val[client][slot][inum] - upgrades[upgrade_choice].i_val == 0.0)
 			{
-				for(int i = 1;i<5;i++)
+				for(int i = 1;i<5;++i)
 				{
 					if(currentupgrades_restriction[client][slot][i] == upgrades[upgrade_choice].restriction_category)
 					{
@@ -766,7 +766,7 @@ public ResetClientUpgrade_slot(client, slot)
 	}
 	
 	
-	for (int i = 0; i < iNumAttributes; i++)
+	for (int i = 0; i < iNumAttributes; ++i)
 	{
 		currentupgrades_val_mvm_chkp[client][slot][i] = 0.0;
 		currentupgrades_val[client][slot][i] = 0.0;
@@ -776,7 +776,7 @@ public ResetClientUpgrade_slot(client, slot)
 	}
 	//I AM THE STORM THAT IS APPROACHING
 	//Thank you retard MR L
-	for(int i = 0; i < MAX_ATTRIBUTES; i++)
+	for(int i = 0; i < MAX_ATTRIBUTES; ++i)
 	{
 		upgrades_ref_to_idx[client][slot][i] = 20000;
 		upgrades_ref_to_idx_mvm_chkp[client][slot][i] = 20000;
@@ -806,7 +806,7 @@ public ResetClientUpgrade_slot(client, slot)
 	{
 		currentitem_idx[client][slot] = 20000
 		GiveNewUpgradedWeapon_(client, slot)
-		for(int i = 0; i < Max_Attunement_Slots; i++)
+		for(int i = 0; i < Max_Attunement_Slots; ++i)
 		{
 			AttunedSpells[client][i] = 0.0;
 		}
@@ -1295,7 +1295,7 @@ public remove_attribute(client, inum)
 	{
 		if(upgrades[u].restriction_category != 0)
 		{
-			for(int i = 1;i<5;i++)
+			for(int i = 1;i<5;++i)
 			{
 				if(i == upgrades[u].restriction_category)
 				{
@@ -1400,7 +1400,7 @@ RespawnEffect(client)
 }
 UpdateMaxValuesStage(int stage)
 {
-	for(int i = 0;i<MAX_ATTRIBUTES;i++)
+	for(int i = 0;i<MAX_ATTRIBUTES;++i)
 	{
 		if(upgrades[i].staged_max[stage] != 0.0)
 		{
@@ -1416,7 +1416,7 @@ ChangeClassEffect(client)
 	}
 	TF2Attrib_RemoveAll(client)
 	RespawnEffect(client);
-	if(!TF2Spawn_IsClientInSpawn(client))
+	if(!IsPlayerInSpawn(client))
 	{
 		ForcePlayerSuicide(client);
 	}
@@ -1513,7 +1513,7 @@ public void function_AllowBuilding(int client){
 	int DispenserCount = 0;
 	int SentryCount = 0;
 
-	for(int i=0;i<2048;i++){
+	for(int i=0;i<2048;++i){
 
 		if(!IsValidEntity(i)){
 			continue;
@@ -1557,7 +1557,7 @@ public void function_AllowBuilding(int client){
 	}
 }
 public void function_AllowDestroying(int client){
-	for(int i=1;i<2048;i++){
+	for(int i=1;i<2048;++i){
 
 		if(!IsValidEntity(i)){
 			continue;
@@ -1614,7 +1614,7 @@ refreshUpgrades(client, slot)
 		if(slot == 4)
 		{
 			bool isUsed[32];
-			for(int i = 0; i<Max_Attunement_Slots;i++)
+			for(int i = 0; i<Max_Attunement_Slots;++i)
 			{
 				AttunedSpells[client][i] = 0.0;
 				Address zapActive = TF2Attrib_GetByName(client, "arcane zap");
@@ -2172,7 +2172,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 			TF2Attrib_SetByName(client,"damage mult 2",1+((additionalstartmoney+StartMoney)/15000.0)*OverAllMultiplier);
 			TF2Attrib_SetByName(client,"damage mult 1",1+((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
 		}
-		for(i=0;i<2;i++)
+		for(i=0;i<2;++i)
 		{
 			int weap = GetWeapon(client,i);
 			if(!IsValidWeapon(weap))
@@ -2207,7 +2207,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				{
 					TF2Attrib_SetByName(client,"damage bonus", 4.0);
 				}
-				for(i=0;i<3;i++)
+				for(i=0;i<3;++i)
 				{
 					int weap = GetWeapon(client,i);
 					if(!IsValidWeapon(weap))
@@ -2236,7 +2236,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				{
 					TF2Attrib_SetByName(client,"damage bonus", 4.0);
 				}
-				for(i=0;i<3;i++)
+				for(i=0;i<3;++i)
 				{
 					int weap = GetWeapon(client,i);
 					if(!IsValidWeapon(weap))
@@ -2290,7 +2290,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 					TF2Attrib_SetByName(secondary,"Blast radius increased",(4.0));
 					TF2Attrib_SetByName(secondary,"Projectile speed increased",(3.5));
 				}
-				for(i=0;i<3;i++)
+				for(i=0;i<3;++i)
 				{
 					int weap = GetWeapon(client,i);
 					if(!IsValidWeapon(weap))
@@ -2331,7 +2331,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				TF2Attrib_SetByName(secondary, "sticky arm time bonus", -0.25);
 				TF2Attrib_SetByName(primary,"Projectile speed increased",(2.5));
 				TF2Attrib_SetByName(secondary,"Projectile speed increased",(3.5));
-				for(i=0;i<3;i++)
+				for(i=0;i<3;++i)
 				{
 					int weap = GetWeapon(client,i);
 					if(!IsValidWeapon(weap))
@@ -2369,7 +2369,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				{
 					TF2Attrib_SetByName(client,"damage bonus", 4.0);
 				}
-				for(i=0;i<3;i++)
+				for(i=0;i<3;++i)
 				{
 					int weap = GetWeapon(client,i);
 					if(!IsValidWeapon(weap))
@@ -2401,7 +2401,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				{
 					TF2Attrib_SetByName(client,"damage bonus", 4.0);
 				}
-				for(i=0;i<3;i++)
+				for(i=0;i<3;++i)
 				{
 					int weap = GetWeapon(client,i);
 					if(!IsValidWeapon(weap))
@@ -3037,7 +3037,7 @@ public int getClientParticleStatus(int array[MAXPLAYERS+1], int client){
 		}
 	}
 	int numClients;
-	for(int i=1;i<=MaxClients;i++){
+	for(int i=1;i<=MaxClients;++i){
 		if(IsValidClient3(i) && (i != client || particleEnabler == true)){
 			array[numClients++] = i;
 		}
@@ -3996,4 +3996,8 @@ public bool TraceEntityWarp(int entity, int contentsMask, any data) {
 		return false;
 	}
     return true;
+}
+public bool IsPlayerInSpawn(int client){
+	float pos[3]; GetEntPropVector(client, Prop_Data, "m_vecAbsOrigin", pos); 
+	return TF2Util_IsPointInRespawnRoom(pos, client, true);
 }

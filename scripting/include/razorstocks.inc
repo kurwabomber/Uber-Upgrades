@@ -112,7 +112,7 @@ stock float GetAttributeAccumulateAdditive(int client, const char[] attrName, fl
 		value += TF2Attrib_GetValue(attribute_address);
 
 	int weapon;
-	for(int i=0;i<3;i++)
+	for(int i=0;i<3;++i)
 	{
 		weapon = GetWeapon(client,i);
 		if(!IsValidWeapon(weapon))
@@ -147,7 +147,7 @@ stock float GetAttributeAccumulateMultiplicative(int client, const char[] attrNa
 
 	int weapon;
 
-	for(int i=0;i<3;i++)
+	for(int i=0;i<3;++i)
 	{
 		weapon = GetWeapon(client,i);
 		if(!IsValidWeapon(weapon))
@@ -296,7 +296,7 @@ stock Entity_SetName(entity, const char[] name, any:...)
 stock refreshAllWeapons(client)
 {
 	TF2Attrib_ClearCache(client);
-	for(int i=0;i<5;i++)
+	for(int i=0;i<5;++i)
 	{
 		int weapon = GetWeapon(client,i);
 		if(IsValidEdict(weapon))
@@ -415,7 +415,7 @@ stock GetClosestTarget(entity, owner, bool isFriendly = false, bool pierceWalls 
 {
 	float TargetDistance = 0.0;
 	int ClosestTarget = 0;
-	for(int i = 1; i <= MaxClients; i++) 
+	for(int i = 1; i <= MaxClients; ++i) 
 	{
 		if(ShouldNotHome[entity][i] || !IsValidClient3(i) || !IsValidClient3(owner) || i == owner || (!isFriendly && GetClientTeam(owner) == GetClientTeam(i)) || (isFriendly && GetClientTeam(owner) != GetClientTeam(i)) || !IsValidForHoming( i, owner, entity) || !IsAbleToSee(owner, i)) continue;
 		float EntityLocation[3], TargetLocation[3];
@@ -471,7 +471,7 @@ stock GetClosestTarget(entity, owner, bool isFriendly = false, bool pierceWalls 
 }
 stock CreateLaser(float StartPos[3],int times,float length,int BeamSprite,int HaloSprite, int color[4])
 {
-	for(int i=0;i<times;i++)
+	for(int i=0;i<times;++i)
 	{
 		float EndPos[3];
 		EndPos[0] = StartPos[0];
@@ -950,7 +950,7 @@ bool IsAbleToSee(entity, client, bool forWeapon = true)
 }
 stock void insertionSort(any[] arr, int arrSize){
 	int i, key, j;
-    for (i = 1; i < arrSize; i++)
+    for (i = 1; i < arrSize; ++i)
     {
         key = arr[i];
         j = i - 1;
@@ -975,11 +975,11 @@ stock int partition(any[] arr, int low, int high, int pivot){
 	int j = low;
 	while( i <= high){
 		if(arr[i] > pivot){
-			i++;
+			++i;
 		}
 		else{
 			swap(arr,i,j);
-			i++;
+			++i;
 			j++;
 		}
 	}
@@ -1152,7 +1152,7 @@ bool IsRectangleVisible(const float start[3], const float end[3], const float mi
     }
 
     // Run traces on all corners.
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; ++i)
     {
         if (IsPointVisible(start, vRectangle[i]))
         {
@@ -1788,7 +1788,7 @@ stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_
 				int healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
 				if(healers > 0)
 				{
-					for (int i = 1; i < MaxClients; i++)
+					for (int i = 1; i < MaxClients; ++i)
 					{
 						if (IsValidClient(i))
 						{
@@ -2124,7 +2124,7 @@ stock bool TF2_AttribListAttributesBySlot(client, iSlot = -1)
     int iCount = TF2Attrib_ListDefIndices(iEntity, iAttribList); 
     if (iCount > 0) 
     { 
-        for (int i = 0; i < iCount; i++) 
+        for (int i = 0; i < iCount; ++i) 
         {
             aAttr = TF2Attrib_GetByDefIndex(iEntity, iAttribList[i]); 
             flAttribValues[i] = TF2Attrib_GetValue(aAttr); 
@@ -2267,7 +2267,7 @@ stock GetClientBaseHP(client){
 			HP += 100;
 		}
 	}
-	for(int i = 0; i<2; i++){
+	for(int i = 0; i<2; ++i){
 		int weap = TF2Util_GetPlayerLoadoutEntity(client, i);
 		if(IsValidEdict(weap))
 		{
@@ -2445,7 +2445,7 @@ stock DelayedTeleportEntity(Handle pack)
 	float origin[3]
 	float angles[3] 
 	float velocity[3]
-	for(int i=0;i<3;i++)
+	for(int i=0;i<3;++i)
 	{
 		origin[i] = ReadPackFloat(pack);
 		angles[i] = ReadPackFloat(pack);
@@ -2475,7 +2475,7 @@ stock TE_SetupKillPlayerAttachments(client) {
 stock bool IsStringBlank(const char[] input)
 {
 	int len = strlen(input);
-	for (int i=0; i<len; i++)
+	for (int i=0; i<len; ++i)
 	{
 		if (!IsCharSpace(input[i]))
 		{

@@ -328,7 +328,7 @@ void ParseItemsEntry(KeyValues kv, Handle entry) {
 			// Retrieve item definition index and store.
 			KvGetSectionName(kv, buffer, sizeof(buffer));
 			int amountItems = ExplodeString(buffer,",",explBuffer, 16, 64);
-			for(int i = 0;i < amountItems; i++)
+			for(int i = 0;i < amountItems; ++i)
 			{
 				if (buffer[0] == '*')
 					TF2Items_SetItemIndex(item, -1);

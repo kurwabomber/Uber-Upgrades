@@ -1,7 +1,14 @@
+/* Dependency Breakdown
+ * TF2Items
+ * SM-TFOnTakeDamage https://github.com/nosoop/SM-TFOnTakeDamage
+ * stocksoup https://github.com/nosoop/stocksoup
+ * vphysics https://builds.limetech.io/?project=vphysics
+ * SM-TFUtils https://github.com/nosoop/SM-TFUtils
+ * SM-TFTakeHealthProxy https://github.com/nosoop/SM-TFTakeHealthProxy
+*/
 #include <tf2>
 #include <tf2_stocks>
 #include <tf2items>
-#include <tf2_isPlayerInSpawn>
 #include <tf_ontakedamage>
 #include <sourcemod>
 #include <functions>
@@ -14,6 +21,7 @@
 #include <tf2utils>
 #include <takehealth_proxy>
 #include <classdefs/CTakeDamageInfo.sp>
+#include <sendproxy>
 
 #pragma tabsize 0
 

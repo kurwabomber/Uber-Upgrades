@@ -237,7 +237,7 @@ public Action:ProjectedHealingCollision(entity, client)
 	{
 		float AmountHealing = (TF2_GetMaxHealth(owner) * 0.2);
 		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
-		for(int i = 1; i<MaxClients;i++)
+		for(int i = 1; i<MaxClients;++i)
 		{
 			if(IsValidClient3(i) && GetClientTeam(i) == GetClientTeam(owner))
 			{
@@ -772,7 +772,7 @@ public Action:OnTouchExplodeJar(entity, other)
 		Address jarFragsToggle = TF2Attrib_GetByName(CWeapon, "overheal decay penalty");
 		if(jarFragsToggle != Address_Null)
 		{
-			for(i = 0;i<RoundToNearest(TF2Attrib_GetValue(jarFragsToggle));i++)
+			for(i = 0;i<RoundToNearest(TF2Attrib_GetValue(jarFragsToggle));++i)
 			{
 				int iEntity = CreateEntityByName("tf_projectile_syringe");
 				if (IsValidEdict(iEntity)) 
@@ -1030,7 +1030,7 @@ public Action:OnTouch(entity, other)
 	
 	Handle datapack = CreateDataPack();
 	WritePackCell(datapack,EntIndexToEntRef(entity));
-	for(int i=0;i<3;i++)
+	for(int i=0;i<3;++i)
 	{
 		WritePackFloat(datapack,0.0);
 		WritePackFloat(datapack,vNewAngles[i]);

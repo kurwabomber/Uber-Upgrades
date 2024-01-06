@@ -27,7 +27,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				return Plugin_Stop;
 			}
 		}
-		if(TF2Spawn_IsClientInSpawn(victim))
+		if(IsPlayerInSpawn(victim))
 		{
 			if(victim == attacker)
 			{
@@ -146,7 +146,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 						damage = GetClientHealth(victim) - (TF2_GetMaxHealth(victim) - (TF2_GetMaxHealth(victim)*(0.25*(bossPhase[victim]+1))));
 						TF2_AddCondition(victim, TFCond_MegaHeal, 5.0);
 						TF2_AddCondition(victim, TFCond_UberchargedHidden, 0.5);
-						for(int i=1;i<=MaxClients;i++)
+						for(int i=1;i<=MaxClients;++i)
 						{
 							if(IsValidClient3(i) && IsOnDifferentTeams(victim,i) && !IsClientObserver(i) && IsPlayerAlive(i))
 							{
@@ -424,6 +424,11 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 
+		if(isTagged[tagTeamTarget[attacker]][victim]){
+			if(GetAttribute(victim, "king powerup", 0.0) == 2)
+				damage *= 1.75
+		}
+
 		Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
 		if(bleedBuild != Address_Null)
 		{
@@ -510,7 +515,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 
-		for(int i = 1; i < MaxClients; i++)
+		for(int i = 1; i < MaxClients; ++i)
 		{
 			if(!IsValidClient3(i))
 				continue;
@@ -873,7 +878,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		}
 		if(GetEntProp(victim, Prop_Send, "m_bDisabled") == 1)
 		{
-			for(int i = 1;i<=MaxClients;i++)
+			for(int i = 1;i<=MaxClients;++i)
 			{
 				if(!IsValidClient3(i) || GetClientTeam(i) != GetClientTeam(attacker))
 					continue;
@@ -912,7 +917,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 
 	if(isVictimPlayer)
 	{
-		if(IsFakeClient(attacker) && TF2Spawn_IsClientInSpawn(attacker))
+		if(IsFakeClient(attacker) && IsPlayerInSpawn(attacker))
 		{
 			return 0.0;
 		}
@@ -1062,7 +1067,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
 		if(healers > 0)
 		{
-			for (int i = 1; i < MaxClients; i++)
+			for (int i = 1; i < MaxClients; ++i)
 			{
 				if (!IsValidClient3(i))
 					continue;
@@ -1199,7 +1204,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 					}
 					SDKHooks_TakeDamage(client,attacker,attacker,damage,damagetype,-1,NULL_VECTOR,NULL_VECTOR)
-					i++
+					++i
 				}
 			}
 			float conferenceBonus = GetAttribute(weapon, "conference call damage", 0.0);
@@ -1208,7 +1213,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				float victimPos[3];
 				GetClientEyePosition(victim, victimPos);
 
-				for(int i = 0; i < 3; i++){
+				for(int i = 0; i < 3; ++i){
 					float pos1[3],pos2[3];
 
 					float vecangles[3];
@@ -1260,7 +1265,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 					}
 				}
-				for(int i = 1; i< MAXENTITIES; i++){
+				for(int i = 1; i< MAXENTITIES; ++i){
 					if(isPenetrated[i]){
 						SDKHooks_TakeDamage(i,attacker,attacker,baseDamage[attacker]*TF2_GetDamageModifiers(attacker, weapon)*conferenceBonus,damagetype,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 						isPenetrated[i] = false;
@@ -1317,7 +1322,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		if(isVictimPlayer && StrContains(getDamageCategory(currentDamageType[attacker], attacker),"electric",false) != -1){
 			int team = GetClientTeam(attacker);
 			float arcDamage = baseDamage[attacker] * TF2_GetDamageModifiers(attacker, weapon, true) * 0.5;
-			for(int i = 1;i<=MaxClients;i++){
+			for(int i = 1;i<=MaxClients;++i){
 				if(!IsValidClient3(i))
 					continue;
 				if(!IsPlayerAlive(i))
@@ -1326,7 +1331,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					continue;
 				if(!isTagged[attacker][i])
 					continue;
-				if(TF2Spawn_IsClientInSpawn(i))
+				if(IsPlayerInSpawn(i))
 					continue;
 
 				SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK, weapon);
@@ -1727,7 +1732,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			float victimOrigin[3];
 			GetClientAbsOrigin(victim, victimOrigin);
 			
-			for(int i = 1;i<=MaxClients;i++){
+			for(int i = 1;i<=MaxClients;++i){
 				if(!IsValidClient3(i))
 					continue;
 				if(!IsPlayerAlive(i))
@@ -1760,7 +1765,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 
 		if(GetAttribute(attacker, "thunderstorm powerup", 0.0)){
 			float buff = 1.0;
-			for(int i = 1;i<=MaxClients;i++){
+			for(int i = 1;i<=MaxClients;++i){
 				if(isTagged[attacker][i])
 					buff += 0.08;
 			}

@@ -7,7 +7,7 @@ public Action:Timer_Second(Handle timer)
 		if (IsValidClient3(client))
 		{
 			if(GetAttribute(client, "regeneration powerup", 0.0) == 1.0){
-				for(int i=0;i<3;i++){
+				for(int i=0;i<3;++i){
 					int weapon = GetWeapon(client, i);
 					if(!IsValidWeapon(weapon))
 						continue;
@@ -19,7 +19,7 @@ public Action:Timer_Second(Handle timer)
 				}
 			}
 			else if(GetAttribute(client, "regeneration powerup", 0.0) == 2.0){
-				for(int i=0;i<3;i++){
+				for(int i=0;i<3;++i){
 					int weapon = GetWeapon(client, i);
 					if(!IsValidWeapon(weapon))
 						continue;
@@ -78,7 +78,7 @@ public Action:Timer_Second(Handle timer)
 	}
 	if(IsMvM())
 	{
-		for(int i = 1; i < MaxClients; i++)
+		for(int i = 1; i < MaxClients; ++i)
 		{
 			if(IsValidClient3(i))
 			{
@@ -88,7 +88,7 @@ public Action:Timer_Second(Handle timer)
 					if(BotTimer[i] <= 0.0)
 					{
 						BotTimer[i] = 45.0;
-						if(TF2_IsPlayerInCondition(i, TFCond_UberchargedHidden) || TF2Spawn_IsClientInSpawn(i))
+						if(TF2_IsPlayerInCondition(i, TFCond_UberchargedHidden) || IsPlayerInSpawn(i))
 						{
 							PrintToServer("Slaying %N due to staying ubered for too long.", i);
 							ForcePlayerSuicide(i);
@@ -183,7 +183,7 @@ public Action:Timer_FixedVariables(Handle timer)
 					{
 						attunement += RoundToNearest(TF2Attrib_GetValue(attuneActive));
 					}
-					for(int i = 0;i<Max_Attunement_Slots && attunement > activeSpells;i++)
+					for(int i = 0;i<Max_Attunement_Slots && attunement > activeSpells;++i)
 					{
 						if(AttunedSpells[client][i] != 0.0)
 						{
@@ -325,6 +325,13 @@ public Action:Timer_Every100MS(Handle timer)
 					else
 						Format(StatusEffectText, sizeof(StatusEffectText),"Stronghold: ACTIVE");
 				}
+				else if(GetAttribute(client, "king powerup", 0.0) == 2.0)
+				{
+					if(!IsValidClient(tagTeamTarget[client]))
+						Format(StatusEffectText, sizeof(StatusEffectText),"Tag-Team: INACTIVE");
+					else
+						Format(StatusEffectText, sizeof(StatusEffectText),"Tag-Team: %N", tagTeamTarget[client]);
+				}
 
 				if(StatusEffectText[0] != '\0'){
 					SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
@@ -387,8 +394,21 @@ public Action:Timer_Every100MS(Handle timer)
 				}
 			}
 
+			if(GetAttribute(client, "king powerup", 0.0) == 2.0){
+				if(IsValidClient3(tagTeamTarget[client]) && !IsOnDifferentTeams(client, tagTeamTarget[client]) && IsPlayerAlive(client)){
+					Buff tagteamBuff;
+					tagteamBuff.additiveDamageMult = 0.4;
+					tagteamBuff.init("Tag-Team Linked", "", Buff_TagTeam, 1, client, 1.0);
+
+					insertBuff(client, tagteamBuff);
+					insertBuff(tagTeamTarget[client], tagteamBuff);
+				}
+			}
+
 			Buff leechDebuff;
-			leechDebuff.init("Leeched", "-33% healing", Buff_Leech, 1, client, 2.0);
+			leechDebuff.init("Leeched", "-33% healing", Buff_Leech, 1, client, 1.0);
+			Buff decayDebuff;
+			decayDebuff.init("Decay", "-100% healing", Buff_Decay, 1, client, 1.0);
 
 			for(int i=1;i<=MaxClients;++i)
 			{
@@ -417,6 +437,14 @@ public Action:Timer_Every100MS(Handle timer)
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 						if(GetVectorDistance(clientPos,VictimPos, true) <= 640000.0)
 							insertBuff(i, leechDebuff);
+					}
+				}
+				if(!hasBuffIndex(i, Buff_Decay)){
+					if(GetAttribute(client, "plague powerup", 0.0) == 2.0){
+						float VictimPos[3];
+						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+						if(GetVectorDistance(clientPos,VictimPos, true) <= 640000.0)
+							insertBuff(i, decayDebuff);
 					}
 				}
 			}
@@ -490,7 +518,7 @@ public Action:Timer_Every100MS(Handle timer)
 						{
 							float ClientPos[3], VictimPos[3];
 							GetClientAbsOrigin(client, ClientPos);
-							for(int i=1;i<=MaxClients;i++)
+							for(int i=1;i<=MaxClients;++i)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
@@ -508,7 +536,7 @@ public Action:Timer_Every100MS(Handle timer)
 						{
 							float ClientPos[3], VictimPos[3];
 							GetClientAbsOrigin(client, ClientPos);
-							for(int i=1;i<=MaxClients;i++)
+							for(int i=1;i<=MaxClients;++i)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
@@ -522,7 +550,7 @@ public Action:Timer_Every100MS(Handle timer)
 						{
 							float ClientPos[3], VictimPos[3];
 							GetClientAbsOrigin(client, ClientPos);
-							for(int i=1;i<=MaxClients;i++)
+							for(int i=1;i<=MaxClients;++i)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
 								{
@@ -620,7 +648,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 						SetEntityRenderColor(client, 190,0,0,255);
 						int counter = 0;
 						bool clientList[MAXPLAYERS+1];
-						for(int i = 1; i<=MaxClients; i++)
+						for(int i = 1; i<=MaxClients; ++i)
 						{
 							if (IsValidClient3(i) && IsPlayerAlive(i))
 							{
@@ -674,7 +702,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 								GetClientAbsOrigin(client,ClientPos);
 								float sphereRadius = 700.0;
 								float tempdiameter;
-								for(int i=-9;i<=8;i++){
+								for(int i=-9;i<=8;++i){
 									float rad=float(i*10)/360.0*(3.14159265*2);
 									tempdiameter=sphereRadius*Cosine(rad)*2;
 									float heightoffset=sphereRadius*Sine(rad);
@@ -754,7 +782,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 						else if(spellCasted == 3 || spellCasted == 1)
 						{
 							int iTeam = GetClientTeam(client);
-							for(int i=0;i<3;i++)
+							for(int i=0;i<3;++i)
 							{
 								int iEntity = CreateEntityByName("tf_projectile_flare");
 								if (IsValidEdict(iEntity)) 
@@ -1052,7 +1080,7 @@ public Action Timer_UberCheck(Handle timer, int medigun){
 }
 public Action:refreshallweapons(Handle timer, int client) 
 {
-	for(int i = 0;i < 6;i++){
+	for(int i = 0;i < 6;++i){
 		refreshUpgrades(client,i);
 	}
 }
@@ -1193,12 +1221,12 @@ public Action WaveFailed(Handle timer)
 				{
 					for (slot = 0; slot < NB_SLOTS_UED; slot++)
 					{
-						for(i = 0; i < MAX_ATTRIBUTES_ITEM; i++)
+						for(i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
 						{
 							currentupgrades_idx[client][slot][i] = currentupgrades_idx_mvm_chkp[client][slot][i]
 							currentupgrades_val[client][slot][i] = currentupgrades_val_mvm_chkp[client][slot][i]
 						}
-						for(i = 0; i < MAX_ATTRIBUTES; i++)
+						for(i = 0; i < MAX_ATTRIBUTES; ++i)
 						{
 							upgrades_ref_to_idx[client][slot][i] = upgrades_ref_to_idx_mvm_chkp[client][slot][i]
 						}
@@ -1889,13 +1917,13 @@ public Action:Timer_PlayerGrenadeMines(Handle timer, any:ref)
 			float damage = GetEntPropFloat(entity, Prop_Send, "m_flDamage")
 			float grenadevec[3], targetvec[3];
 			GetEntPropVector(entity, Prop_Data, "m_vecOrigin", grenadevec);
-			for(int i=0; i<=MaxClients; i++)
+			for(int i=0; i<=MaxClients; ++i)
 			{
 				if(!IsValidClient3(i)){continue;}
 				GetClientAbsOrigin(i, targetvec);
 				if(!IsClientObserver(i) && GetClientTeam(i) != GetClientTeam(client) && GetVectorDistance(grenadevec, targetvec, true) < distance*distance)
 				{
-					if(!TF2Spawn_IsClientInSpawn(i) && client != i && IsAbleToSee(client,i))
+					if(!IsPlayerInSpawn(i) && client != i && IsAbleToSee(client,i))
 					{
 						EntityExplosion(client, damage, distance, grenadevec, 0,_,entity);
 						RemoveEntity(entity);

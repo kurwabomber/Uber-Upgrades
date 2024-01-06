@@ -140,7 +140,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			}
 
 
-			for(new i = 1; i < MaxClients; i++)//Aimbot 
+			for(new i = 1; i < MaxClients; ++i)//Aimbot 
 			{
 				if(!IsValidClient3(i))
 					continue;
