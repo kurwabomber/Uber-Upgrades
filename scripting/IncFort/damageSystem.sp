@@ -347,12 +347,11 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		//This is actually valid.
 		if(1 <= GetAttribute(victim, "plague powerup", 0.0) <= 2){
 			damage *= 0.75;
-			PrintToServer("YUP IT WORKS | %.2f", GetAttribute(victim, "plague powerup", 0.0));
 		}
 		
 		if(TF2_IsPlayerInCondition(attacker, TFCond_Plague))
 		{
-			int plagueInflictor = GetClientOfUserId(plagueAttacker[attacker]);
+			int plagueInflictor = TF2Util_GetPlayerConditionProvider(attacker, TFCond_Plague);
 			if(IsValidClient3(plagueInflictor))
 				if(GetAttribute(plagueInflictor, "plague powerup", 0.0))
 					damage /= 2.0;

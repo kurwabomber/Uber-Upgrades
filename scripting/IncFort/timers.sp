@@ -335,13 +335,13 @@ public Action:Timer_Every100MS(Handle timer)
 				SetHudTextParams(0.1, 0.85, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 				ShowHudText(client, 9, StatusEffectText);
 			}
-			float plaguePower = 0.0;
+			bool plagueActive = false;
 			Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
 			float clientPos[3];
 			GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
 			if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) == 1)
 			{
-				plaguePower = 1.0;
+				plagueActive = true;
 				int e = 33;
 				while ((e = FindEntityByClassname(e, "item_healthkit_*")) != -1)
 				{
@@ -418,15 +418,12 @@ public Action:Timer_Every100MS(Handle timer)
 					if(IsValidClient3(i))
 						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],DMG_BLAST,-1, NULL_VECTOR, NULL_VECTOR);
 				}
-				if(IsOnDifferentTeams(client,i) && plaguePower && plagueAttacker[i] == -1)
+				if(IsOnDifferentTeams(client,i) && plagueActive && !TF2_IsPlayerInCondition(i, TFCond_Plague))
 				{
 					float VictimPos[3];
 					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 					if(GetVectorDistance(clientPos,VictimPos, true) <= 10000.0)
-					{
-						plagueAttacker[i] = GetClientUserId(client);
-						TF2_AddCondition(i, TFCond_Plague, 12.0);
-					}
+						TF2_AddCondition(i, TFCond_Plague, TFCondDuration_Infinite, client);
 				}
 				if(!hasBuffIndex(i, Buff_Leech)){
 					if(GetAttribute(i, "vampire powerup", 0.0) != 2.0 && GetAttribute(client, "vampire powerup", 0.0) == 2.0){
@@ -458,15 +455,16 @@ public Action:Timer_Every100MS(Handle timer)
 				Buff lifelink; lifelink = playerBuffs[client][getBuffInArray(client, Buff_LifeLink)];
 				if(IsValidClient3(lifelink.inflictor)){
 					currentDamageType[lifelink.inflictor].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.025);
+					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025);
 				}
 			}
 
-			if(IsValidClient3(GetClientOfUserId(plagueAttacker[client])))
+			int inflictor = TF2Util_GetPlayerConditionProvider(client, TFCond_Plague);
+			if(IsValidClient3(inflictor))
 			{
 				//Deal 3 piercing damage to plagued opponents.
-				currentDamageType[plagueAttacker[client]].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(client, GetClientOfUserId(plagueAttacker[client]), GetClientOfUserId(plagueAttacker[client]), 3.0);
+				currentDamageType[inflictor].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(client, inflictor, inflictor, 3.0);
 			}
 			if(IsValidEdict(CWeapon))
 			{

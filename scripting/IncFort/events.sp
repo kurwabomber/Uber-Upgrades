@@ -885,9 +885,6 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 				EntityExplosion(client, damage, distance, grenadevec, 1);
 			}
 		}
-		case TFCond_Plague:{
-			plagueAttacker[client] = -1;
-		}
 	}
 	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.001);
 }
@@ -3300,7 +3297,6 @@ public OnClientPutInServer(client)
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
-	plagueAttacker[client] = -1;
 	for(int i = 0; i < Max_Attunement_Slots; ++i)
 	{
 		AttunedSpells[client][i] = 0.0;
@@ -3376,7 +3372,6 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		meleeLimiter[client] = 0;
 		lastDamageTaken[client] = 0.0;
 		critStatus[client] = false;
-		plagueAttacker[client] = -1;
 		bloodAcolyteBloodPool[client] = 0.0;
 		duplicationCooldown[client] = 0.0;
 		warpCooldown[client] = 0.0;

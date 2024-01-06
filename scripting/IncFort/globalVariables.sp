@@ -208,7 +208,6 @@ int jarateType[MAXENTITIES];
 int jarateWeapon[MAXENTITIES];
 int meleeLimiter[MAXPLAYERS+1];
 int lightningCounter[MAXPLAYERS+1];
-int plagueAttacker[MAXPLAYERS+1];
 int g_nBounces[MAXENTITIES];
 int lastKBSource[MAXPLAYERS+1];
 int knockbackFlags[MAXPLAYERS+1];
