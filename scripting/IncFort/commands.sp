@@ -37,6 +37,30 @@ public Action:Command_ShowStats(client, args)
 	}
 	return Plugin_Handled;
 }
+public Action:Command_SetHealth(client, args)
+{
+	if(args != 2)
+	{
+		ReplyToCommand(client, "[SM] Usage: sm_sethealth \"target\" \"amount\"");
+		return Plugin_Handled;
+	}
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strVal[128];
+	int target_list[MAXPLAYERS], target_count;
+	bool tn_is_ml;
+	GetCmdArg(1, strTarget, sizeof(strTarget));
+	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, COMMAND_FILTER_ALIVE, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+	{
+		ReplyToTargetError(client, target_count);
+		return Plugin_Handled;
+	}
+	GetCmdArg(2, strVal, sizeof(strVal));
+
+	for(int i = 0; i < target_count; ++i)
+	{
+		SetEntityHealth(target_list[i], StringToInt(strVal));
+	}
+	return Plugin_Handled;
+}
 public Action:Command_SetCash(client, args)
 {
 	if(args != 2)
@@ -44,7 +68,7 @@ public Action:Command_SetCash(client, args)
 		ReplyToCommand(client, "[SM] Usage: sm_setcash \"target\" \"amount\"");
 		return Plugin_Handled;
 	}
-	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strCash[128];
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strVal[128];
 	int target_list[MAXPLAYERS], target_count;
 	bool tn_is_ml;
 	float GivenCash;
@@ -55,8 +79,8 @@ public Action:Command_SetCash(client, args)
 		return Plugin_Handled;
 	}
 
-	GetCmdArg(2, strCash, sizeof(strCash));
-	GivenCash = StringToFloat(strCash);
+	GetCmdArg(2, strVal, sizeof(strVal));
+	GivenCash = StringToFloat(strVal);
 
 	for(int i = 0; i < target_count; ++i)
 	{
@@ -73,7 +97,7 @@ public Action:Command_AddCash(client, args)
 		return Plugin_Handled;
 	}
 
-	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strCash[128];
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strVal[128];
 	int target_list[MAXPLAYERS], target_count;
 	bool tn_is_ml;
 	float GivenCash;
@@ -85,8 +109,8 @@ public Action:Command_AddCash(client, args)
 		return Plugin_Handled;
 	}
 	
-	GetCmdArg(2, strCash, sizeof(strCash));
-	GivenCash = StringToFloat(strCash);
+	GetCmdArg(2, strVal, sizeof(strVal));
+	GivenCash = StringToFloat(strVal);
 	for(int i = 0; i < target_count; ++i)
 	{
 		
@@ -101,7 +125,7 @@ public Action:Command_RemoveCash(client, args)
 		ReplyToCommand(client, "[SM] Usage: sm_removecash \"target\" \"amount\"");
 		return Plugin_Handled;
 	}
-	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strCash[128];
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH], strVal[128];
 	int target_list[MAXPLAYERS], target_count;
 	bool tn_is_ml;
 	float GivenCash;
@@ -112,8 +136,8 @@ public Action:Command_RemoveCash(client, args)
 		return Plugin_Handled;
 	}
 
-	GetCmdArg(2, strCash, sizeof(strCash));
-	GivenCash = StringToFloat(strCash);
+	GetCmdArg(2, strVal, sizeof(strVal));
+	GivenCash = StringToFloat(strVal);
 
 	for(int i = 0; i < target_count; ++i)
 	{

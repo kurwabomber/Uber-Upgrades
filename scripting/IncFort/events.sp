@@ -62,12 +62,12 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		}
 		if(GetAttribute(attacker, "plague powerup", 0.0) == 3.0){
 			if(!hasBuffIndex(client, Buff_LifeLink)){
-				currentDamageType[attacker].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.1);
-
 				Buff lifelinkDebuff;
-				lifelinkDebuff.init("Life Link", "-25% HP drain", Buff_LifeLink, 1, attacker, 10.0);
+				lifelinkDebuff.init("Life Link", "-25% HP drain", Buff_LifeLink, RoundToCeil(GetClientHealth(attacker)*0.5), attacker, 10.0);
 				insertBuff(client, lifelinkDebuff);
+
+				currentDamageType[attacker].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.5);
 			}
 		}
 	}
@@ -145,7 +145,8 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				}
 			}
 			if(GetAttribute(attacker, "vampire powerup", 0.0) == 3.0 && !(currentDamageType[attacker].second & DMG_PIERCING)){
-				AddPlayerHealth(attacker, -RoundToCeil(damage));
+				currentDamageType[attacker].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(attacker, attacker, attacker, damage);
 				bloodboundDamage[attacker] += damage;
 
 				if(bloodboundDamage[attacker]){
