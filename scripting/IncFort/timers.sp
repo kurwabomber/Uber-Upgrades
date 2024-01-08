@@ -288,7 +288,14 @@ public Action:Timer_Every100MS(Handle timer)
 				if(RageBuildup[client] < 0)
 					RageBuildup[client] = 0.0;
 			}
-			else if(GetAttribute(client, "supernova powerup", 0.0) == 1 && SupernovaBuildup[client] > 0.0)
+			else if(GetAttribute(client, "vampire powerup", 0.0) == 3)
+			{
+				if(bloodboundCooldown[client] > currentGameTime)
+					Format(StatusEffectText, sizeof(StatusEffectText),"Bloodbound: +%.0f% dmg | +%.0f heal | %.1fs cd", bloodboundDamage[client], bloodboundHealing[client], bloodboundCooldown[client]-currentGameTime);
+				else
+					Format(StatusEffectText, sizeof(StatusEffectText),"Bloodbound: +%.0f% dmg | +%.0f heal | READY", bloodboundDamage[client], bloodboundHealing[client]);
+			}
+			else if(GetAttribute(client, "supernova powerup", 0.0) == 1)
 			{
 				if(SupernovaBuildup[client] < 1.0)
 					Format(StatusEffectText, sizeof(StatusEffectText),"Supernova: %.0f%", SupernovaBuildup[client]*100.0);

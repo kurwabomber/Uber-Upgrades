@@ -67,7 +67,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				insertBuff(client, lifelinkDebuff);
 
 				currentDamageType[attacker].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.5);
+				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.5, DMG_PREVENT_PHYSICS_FORCE);
 			}
 		}
 	}
@@ -100,10 +100,11 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		}
 		if(GetAttribute(client, "vampire powerup", 0.0) == 3.0){
 			bloodboundDamage[client] += damage;
-			if(bloodboundHealing[client] > 0 && bloodboundCooldown[client] <= currentGameTime && float(GetClientHealth(client)) - damage <= 0){
-				AddPlayerHealth(client, RoundToCeil(bloodboundHealing[client]), 4.0, true, client);
-				bloodboundCooldown[client] = currentGameTime + 20.0;
+			if(bloodboundHealing[client] > 0 && bloodboundCooldown[client] <= currentGameTime && float(GetClientHealth(client)) - damage < -1){
+				AddPlayerHealth(client, RoundToCeil(bloodboundHealing[client]), 6.0, true, client);
+				bloodboundCooldown[client] = currentGameTime + 4.0;
 				bloodboundHealing[client] = 0.0;
+				bloodboundDamage[client] = 0.0;
 			}
 		}
 	}
@@ -145,15 +146,21 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				}
 			}
 			if(GetAttribute(attacker, "vampire powerup", 0.0) == 3.0 && !(currentDamageType[attacker].second & DMG_PIERCING)){
-				currentDamageType[attacker].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(attacker, attacker, attacker, damage);
-				bloodboundDamage[attacker] += damage;
+				float tempDmg = damage;
+				if(GetClientHealth(attacker) - tempDmg < TF2Util_GetEntityMaxHealth(attacker)*0.2)
+					tempDmg = GetClientHealth(attacker) - TF2Util_GetEntityMaxHealth(attacker)*0.2;
 
-				if(bloodboundDamage[attacker]){
+				if(tempDmg > 0){
 					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, attacker, attacker, bloodboundDamage[attacker]);
+					SDKHooks_TakeDamage(attacker, attacker, attacker, tempDmg, DMG_PREVENT_PHYSICS_FORCE);
+					bloodboundDamage[attacker] += tempDmg;
+				}
+
+				if(bloodboundDamage[attacker] > 0){
+					currentDamageType[attacker].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(client, attacker, attacker, bloodboundDamage[attacker], DMG_PREVENT_PHYSICS_FORCE);
+					bloodboundHealing[attacker] += bloodboundDamage[attacker];
 					bloodboundDamage[attacker] = 0.0
-					bloodboundHealing[attacker] += damage;
 				}
 			}
 
@@ -179,7 +186,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				}
 				
 				Address vampirePowerup = TF2Attrib_GetByName(attacker, "vampire powerup");//Vampire Powerup
-				if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
+				if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) == 1)
 				{
 					int HealthGained = RoundToCeil(0.8 * damage * lifestealFactor);
 					AddPlayerHealth(attacker, HealthGained, maximumOverheal*2.0, true, attacker);
