@@ -1431,7 +1431,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				}
 			}
 			Address resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
-			if(resistancePowerup != Address_Null && TF2Attrib_GetValue(resistancePowerup) > 0.0)
+			if(resistancePowerup != Address_Null)
 			{
 				if(TF2Attrib_GetValue(resistancePowerup) == 1){
 					CreateParticleEx(client, "soldierbuff_red_spikes", 1, _, _, 2.0);
@@ -1447,10 +1447,23 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				}
 			}
 			Address vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
-			if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)
+			if(vampirePowerup != Address_Null)
 			{
-				CreateParticleEx(client, "utaunt_hellpit_parent", 1, _, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
+				if(TF2Attrib_GetValue(vampirePowerup) == 1){
+					CreateParticleEx(client, "utaunt_hellpit_parent", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(vampirePowerup) == 2){
+					CreateParticle(client, "utaunt_spider_purple_drop", true, _, 5.0);
+					CreateParticleEx(client, "utaunt_hellpit_parent", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(vampirePowerup) == 3){
+					CreateParticle(client, "utaunt_hands_floor1_red", true, _, 5.0);
+					CreateParticle(client, "utaunt_hands_floor2_red", true, _, 5.0);
+					CreateParticleEx(client, "utaunt_hellpit_parent", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
 			}
 			Address regenerationPowerup = TF2Attrib_GetByName(client, "regeneration powerup");
 			if(regenerationPowerup != Address_Null && TF2Attrib_GetValue(regenerationPowerup) > 0.0)
@@ -1460,6 +1473,12 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					CreateParticle(client, "medic_megaheal_red_shower", true, _, 5.0);
 				else
 					CreateParticle(client, "medic_megaheal_blue_shower", true, _, 5.0);
+
+				if(TF2Attrib_GetValue(regenerationPowerup) == 3){
+					CreateParticle(client, "utaunt_spider_purple_drop", true, _, 5.0);
+					CreateParticleEx(client, "utaunt_hellpit_parent", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
 				
 				powerupParticle[client] = currentGameTime+5.0;
 			}
@@ -1476,54 +1495,91 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");
 			if(agilityPowerup != Address_Null && TF2Attrib_GetValue(agilityPowerup) > 0.0)
 			{
+				if(TF2Attrib_GetValue(agilityPowerup) == 1){
+					CreateParticle(client, "utaunt_pedalfly_blue_spins", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(agilityPowerup) == 2){
+					CreateParticle(client, "utaunt_pedalfly_blue_spins", true, _, 5.0);
+					CreateParticle(client, "utaunt_pedalfly_blue_sparkles", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(agilityPowerup) == 3){
+					CreateParticle(client, "utaunt_constellations_purple_cloud", true, _, 5.0);
+					CreateParticle(client, "utaunt_pedalfly_teamcolor_blue", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+
 				CreateParticleEx(client, "medic_resist_bullet", 1, _, _, 5.0);
 				powerupParticle[client] = currentGameTime+5.1;
 			}
 			Address knockoutPowerup = TF2Attrib_GetByName(client, "knockout powerup");
-			if(knockoutPowerup != Address_Null && TF2Attrib_GetValue(knockoutPowerup) > 0.0)
+			if(knockoutPowerup != Address_Null)
 			{
-				CreateParticleEx(client, "medic_resist_blast", 1, _, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
+				if(TF2Attrib_GetValue(knockoutPowerup) == 1){
+					CreateParticleEx(client, "medic_resist_blast", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(knockoutPowerup) == 2){
+					CreateParticle(client, "utaunt_spellsplash_parent", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(knockoutPowerup) == 3){
+					CreateParticle(client, "utaunt_smoke_moon_child", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
 			}
 			Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
-			if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) == 1)
+			if(kingPowerup != Address_Null)
 			{
-				int clientTeam = GetClientTeam(client);
-				float clientPos[3];
-				GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
-				Buff kingBuff;
-				kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
-				kingBuff.multiplicativeAttackSpeedMult = 1.33;
-				kingBuff.additiveDamageMult = 0.2;
-				for(int i = 1;i<=MaxClients;++i)
-				{
-					if(IsValidClient3(i) && IsPlayerAlive(i))
+				if(TF2Attrib_GetValue(kingPowerup) == 1){
+					int clientTeam = GetClientTeam(client);
+					float clientPos[3];
+					GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
+					Buff kingBuff;
+					kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
+					kingBuff.multiplicativeAttackSpeedMult = 1.33;
+					kingBuff.additiveDamageMult = 0.2;
+					for(int i = 1;i<=MaxClients;++i)
 					{
-						int iTeam = GetClientTeam(i);
-						if(clientTeam == iTeam)
+						if(IsValidClient3(i) && IsPlayerAlive(i))
 						{
-							float VictimPos[3];
-							GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-							VictimPos[2] += 30.0;
-							if(GetVectorDistance(clientPos,VictimPos,true) <= 360000.0)
+							int iTeam = GetClientTeam(i);
+							if(clientTeam == iTeam)
 							{
-								if(iTeam == 2)
-									CreateParticleEx(i, "powerup_king_red", 1, _, _, 2.0);
-								else
-									CreateParticleEx(i, "powerup_king_blue", 1, _, _, 2.0);
-								
-								insertBuff(i, kingBuff);
+								float VictimPos[3];
+								GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+								VictimPos[2] += 30.0;
+								if(GetVectorDistance(clientPos,VictimPos,true) <= 360000.0)
+								{
+									if(iTeam == 2)
+										CreateParticleEx(i, "powerup_king_red", 1, _, _, 2.0);
+									else
+										CreateParticleEx(i, "powerup_king_blue", 1, _, _, 2.0);
+									
+									insertBuff(i, kingBuff);
+								}
 							}
 						}
 					}
+					powerupParticle[client] = currentGameTime+2.1;
 				}
-				powerupParticle[client] = currentGameTime+2.1;
 			}
 			Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
 			if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) > 0.0)
 			{
-				CreateParticle(client, "powerup_plague_carrier", true, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
+				if(TF2Attrib_GetValue(plaguePowerup) == 1){
+					CreateParticle(client, "powerup_plague_carrier", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(plaguePowerup) == 2){
+					CreateParticle(client, "utaunt_poison_parent_green", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(plaguePowerup) == 3){
+					CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1, _, _, 2.0);
+					powerupParticle[client] = currentGameTime+2.1;
+				}
 			}
 			Address supernovaPowerup = TF2Attrib_GetByName(client, "supernova powerup");
 			if(supernovaPowerup != Address_Null)
@@ -1540,10 +1596,19 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				}
 			}
 			Address inverterPowerup = TF2Attrib_GetByName(client, "inverter powerup");
-			if(inverterPowerup != Address_Null && TF2Attrib_GetValue(inverterPowerup) > 0.0)
+			if(inverterPowerup != Address_Null)
 			{
-				CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
+				if(TF2Attrib_GetValue(inverterPowerup) == 1.0){
+					CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}else if(TF2Attrib_GetValue(inverterPowerup) == 2.0){
+
+					powerupParticle[client] = currentGameTime+5.1;
+				}else if(TF2Attrib_GetValue(inverterPowerup) == 3.0){
+					CreateParticle(client, "utaunt_cremation_black_parent", true, _, 5.0);
+					CreateParticle(client, "utaunt_cremation_purple_parent", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
 			}
 		}
 	}
