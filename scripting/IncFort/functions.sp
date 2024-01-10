@@ -111,6 +111,13 @@ public void insertBuff(int client, Buff newBuff){
 	//PrintToServer("added %s to %N for %.2fs. ID = %i, index = %i", newBuff.name, client, newBuff.duration -GetGameTime(), newBuff.id, replacementID);
 }
 public bool hasBuffIndex(int client, int index){
+	if(isBonus[index]){
+		for(int i = 0; i < MAXBUFFS; ++i){
+			if(playerBuffs[client][i].id == Buff_Nullification)
+				return false;
+		}
+	}
+
 	for(int i = 0; i < MAXBUFFS; ++i){
 		if(playerBuffs[client][i].id == index)
 			return true;

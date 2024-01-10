@@ -70,7 +70,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 						burndmgMult *= 5;
 					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
-					if(GetAttribute(victim, "inverter powerup", 0.0)){
+					if(GetAttribute(victim, "inverter powerup", 0.0) == 1.0){
 						AddPlayerHealth(victim, RoundToFloor(damage/GetResistance(victim, true)), 2.0, true, 0);
 						damage *= 0.0;
 					}
@@ -258,9 +258,13 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 				if(StrEqual(weaponClassName,"tf_weapon_jar_milk",false))
 				{
-					if(GetAttribute(victim, "inverter powerup", 0.0)){
+					if(GetAttribute(victim, "inverter powerup", 0.0) == 1.0){
 						MadmilkDuration[attacker] = currentGameTime+6.0;
 						MadmilkInflictor[attacker] = victim;
+					}
+					else if(GetAttribute(victim, "inverter powerup", 0.0) == 2.0){
+						MadmilkDuration[victim] = currentGameTime+12.0;
+						MadmilkInflictor[victim] = victim;
 					}
 					else if(MadmilkDuration[victim] < currentGameTime+6.0)
 					{
@@ -274,9 +278,13 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			{
 				float value = TF2Attrib_GetValue(MadMilkOnhit);
 
-				if(GetAttribute(victim, "inverter powerup", 0.0)){
+				if(GetAttribute(victim, "inverter powerup", 0.0) == 1){
 					MadmilkDuration[attacker] = currentGameTime+value;
 					MadmilkInflictor[attacker] = victim;
+				}
+				else if(GetAttribute(victim, "inverter powerup", 0.0) == 2.0){
+					MadmilkDuration[victim] = currentGameTime+2*value;
+					MadmilkInflictor[victim] = victim;
 				}
 				else if(MadmilkDuration[victim] < currentGameTime+value)
 				{
@@ -294,6 +302,30 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			RadiationBuildup[victim] += damage;
 			checkRadiation(victim,attacker);
 		}
+
+		if(GetAttribute(attacker, "inverter powerup", 0.0) == 2){
+			if(hasBuffIndex(attacker, Buff_CritMarkedForDeath)){
+				Buff critligma;
+				critligma.init("Marked for Crits", "All hits taken are critical", Buff_CritMarkedForDeath, 1, victim, 8.0);
+				insertBuff(victim, critligma);
+			}
+			if(TF2_IsPlayerInCondition(attacker, TFCond_Bleeding)){
+				TF2Util_MakePlayerBleed(victim, attacker, 8.0, weapon, RoundToCeil(TF2_GetDamageModifiers(attacker, weapon)*2));
+			}
+			if(TF2_IsPlayerInCondition(attacker, TFCond_OnFire)){
+				TF2Util_IgnitePlayer(victim, attacker, 10.0, weapon);
+			}
+			if(TF2_IsPlayerInCondition(attacker, TFCond_Dazed) || TF2_IsPlayerInCondition(attacker, TFCond_FreezeInput)){
+				TF2_StunPlayer(victim, 0.5, _, TF_STUNFLAGS_BIGBONK);
+			}
+		}
+
+		if(GetAttribute(attacker, "inverter powerup", 0.0) == 3){
+			Buff nullification;
+			nullification.init("Nullification", "No status effects", Buff_Nullification, 1, victim, 2.0);
+			insertBuff(victim, nullification);
+		}
+
 		if(GetAttribute(victim, "resistance powerup", 0.0) == 1)
 		{
 			if(critStatus[victim] == true){
@@ -336,7 +368,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		if(GetAttribute(victim, "inverter powerup", 0.0) == 1)
 			damage *= 0.8;
 		else if(GetAttribute(victim, "inverter powerup", 0.0) == 2)
-			damage *= 0.8;
+			damage *= 0.5;
 
 		if(GetAttribute(victim, "regeneration powerup", 0.0) == 1)
 			damage *= 0.75;
@@ -562,7 +594,7 @@ public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 	if(!IsValidClient3(attacker))
 		attacker = EntRefToEntIndex(attacker);
 
-	if(critType == CritType_Crit)
+	if(critType == CritType_Crit || (!critStatus[victim] && hasBuffIndex(victim, Buff_CritMarkedForDeath)))
 	{
 		critStatus[victim] = true
 		damagetype &= ~DMG_CRIT;
@@ -596,7 +628,7 @@ int damagecustom, CritType &critType)
 		return Plugin_Continue;
 
 	attacker = EntRefToEntIndex(attacker);
-	if(critType == CritType_Crit)
+	if(critType == CritType_Crit || (!critStatus[victim] && hasBuffIndex(victim, Buff_CritMarkedForDeath)))
 	{
 		critStatus[victim] = true;
 		damagetype &= ~DMG_CRIT;
@@ -642,7 +674,7 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 	if(0 < attacker <= MaxClients)
 		baseDamage[attacker] = damage;
 
-	if(damagetype & DMG_CRIT)
+	if(damagetype & DMG_CRIT || (!critStatus[victim] && hasBuffIndex(victim, Buff_CritMarkedForDeath)))
 	{
 		critStatus[victim] = true
 		damagetype &= ~DMG_CRIT;

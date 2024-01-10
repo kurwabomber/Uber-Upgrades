@@ -48,7 +48,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 						if(ConcussionBuildup[client] >= 100.0)
 						{
 							ConcussionBuildup[client] = 0.0;
-							if(GetAttribute(client, "inverter powerup", 0.0)){
+							if(GetAttribute(client, "inverter powerup", 0.0) == 1){
 								TF2_AddCondition(client, TFCond_MegaHeal, 10.0);
 								TF2_AddCondition(client, TFCond_DefenseBuffNoCritBlock, 10.0);
 							}else{
@@ -425,29 +425,18 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			{
 				return MRES_Supercede;
 			}
-			case TFCond_Jarated:
+			case TFCond_Jarated, TFCond_MarkedForDeath, TFCond_MarkedForDeathSilent:
 			{
-				if(GetAttribute(client, "inverter powerup", 0.0))
+				if(GetAttribute(client, "inverter powerup", 0.0) == 1)
 					giveDefenseBuff(client, duration);
-				else{
+				else if(GetAttribute(client, "inverter powerup", 0.0) == 2){
+					Buff critligma;
+					critligma.init("Marked for Crits", "All hits taken are critical", Buff_CritMarkedForDeath, 1, client, duration);
+					insertBuff(client, critligma);
+				}
+				else if(GetAttribute(client, "inverter powerup", 0.0) != 3){
 					miniCritStatusVictim[client] = currentGameTime+duration;
 				}
-				return MRES_Supercede;
-			}
-			case TFCond_MarkedForDeath:
-			{
-				if(GetAttribute(client, "inverter powerup", 0.0))
-					giveDefenseBuff(client, duration);
-				else
-					miniCritStatusVictim[client] = currentGameTime+duration;
-				return MRES_Supercede;
-			}
-			case TFCond_MarkedForDeathSilent:
-			{
-				if(GetAttribute(client, "inverter powerup", 0.0))
-					giveDefenseBuff(client, duration);
-				else
-					miniCritStatusVictim[client] = currentGameTime+duration;
 				return MRES_Supercede;
 			}
 			case TFCond_MiniCritOnKill:
@@ -458,84 +447,45 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			case TFCond_CritCola:
 			{
 				miniCritStatusAttacker[client] = currentGameTime+duration;
-				if(GetAttribute(client, "inverter powerup", 0.0))
+				if(GetAttribute(client, "inverter powerup", 0.0) == 1)
 					giveDefenseBuff(client, duration);
-				else
+				else if(GetAttribute(client, "inverter powerup", 0.0) == 2){
+					Buff critligma;
+					critligma.init("Marked for Crits", "All hits taken are critical", Buff_CritMarkedForDeath, 1, client, duration);
+					insertBuff(client, critligma);
+				}
+				else if(GetAttribute(client, "inverter powerup", 0.0) != 3){
 					miniCritStatusVictim[client] = currentGameTime+duration;
+				}
 				return MRES_Supercede;
 			}
 			case TFCond_RestrictToMelee:
 			{
-				if(GetAttribute(client, "inverter powerup", 0.0))
+				if(GetAttribute(client, "inverter powerup", 0.0) == 1 || GetAttribute(client, "inverter powerup", 0.0) == 3)
 					return MRES_Supercede;
 			}
 			case TFCond_Sapped:
 			{
-				TF2_RemoveCondition(client, TFCond_Ubercharged);
-				TF2_RemoveCondition(client, TFCond_Cloaked);
-				TF2_RemoveCondition(client, TFCond_Disguised);
-				TF2_RemoveCondition(client, TFCond_MegaHeal);
-				TF2_RemoveCondition(client, TFCond_DefenseBuffNoCritBlock);
-				TF2_RemoveCondition(client, TFCond_DefenseBuffMmmph);
-				TF2_RemoveCondition(client, TFCond_UberchargedHidden);
-				TF2_RemoveCondition(client, TFCond_UberBulletResist);
-				TF2_RemoveCondition(client, TFCond_UberBlastResist);
-				TF2_RemoveCondition(client, TFCond_UberFireResist);
-				TF2_RemoveCondition(client, TFCond_AfterburnImmune);
-			}
-			case TFCond_Ubercharged:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
+				if(GetAttribute(client, "inverter powerup", 0.0) != 3){
+					TF2_RemoveCondition(client, TFCond_Ubercharged);
+					TF2_RemoveCondition(client, TFCond_Cloaked);
+					TF2_RemoveCondition(client, TFCond_Disguised);
+					TF2_RemoveCondition(client, TFCond_MegaHeal);
+					TF2_RemoveCondition(client, TFCond_DefenseBuffNoCritBlock);
+					TF2_RemoveCondition(client, TFCond_DefenseBuffMmmph);
+					TF2_RemoveCondition(client, TFCond_UberchargedHidden);
+					TF2_RemoveCondition(client, TFCond_UberBulletResist);
+					TF2_RemoveCondition(client, TFCond_UberBlastResist);
+					TF2_RemoveCondition(client, TFCond_UberFireResist);
+					TF2_RemoveCondition(client, TFCond_AfterburnImmune);
+				}else{
 					return MRES_Supercede;
+				}
 			}
-			case TFCond_Cloaked:
+			case TFCond_Ubercharged, TFCond_Cloaked, TFCond_Disguised, TFCond_MegaHeal, TFCond_DefenseBuffNoCritBlock,TFCond_DefenseBuffMmmph,
+			TFCond_UberchargedHidden, TFCond_UberBulletResist, TFCond_UberBlastResist, TFCond_UberFireResist, TFCond_AfterburnImmune:
 			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_Disguised:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_MegaHeal:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_DefenseBuffNoCritBlock:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_DefenseBuffMmmph:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_UberchargedHidden:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_UberBulletResist:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_UberBlastResist:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_UberFireResist:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
-					return MRES_Supercede;
-			}
-			case TFCond_AfterburnImmune:
-			{
-				if(TF2_IsPlayerInCondition(client, TFCond_Sapped))
+				if(TF2_IsPlayerInCondition(client, TFCond_Sapped) || GetAttribute(client, "inverter powerup", 0.0) == 3)
 					return MRES_Supercede;
 			}
 			case TFCond_ParachuteDeployed:
@@ -852,7 +802,7 @@ public void TF2_OnConditionAdded(client, TFCond cond)
 		TF2_Override_ChargeSpeed(client);
 	}
 	if(cond == TFCond_Slowed){
-		if(GetAttribute(client, "inverter powerup", 0.0)){
+		if(GetAttribute(client, "inverter powerup", 0.0) == 1){
 			TF2_AddCondition(client, TFCond_HalloweenSpeedBoost, 3.0);
 			TF2_RemoveCondition(client, cond);
 		}
@@ -1464,16 +1414,37 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		{
 			
 			Address strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");
-			if(strengthPowerup != Address_Null && TF2Attrib_GetValue(strengthPowerup) > 0.0)
+			if(strengthPowerup != Address_Null)
 			{
-				CreateParticle(client, "utaunt_tarotcard_orange_wind", true, _, 5.0);
-				powerupParticle[client] = currentGameTime+5.1;
+				if(TF2Attrib_GetValue(strengthPowerup) == 1){
+					CreateParticle(client, "utaunt_tarotcard_orange_wind", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(strengthPowerup) == 2){
+					CreateParticle(client, "utaunt_tarotcard_orange_wind", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
+				else if(TF2Attrib_GetValue(strengthPowerup) == 3){
+					CreateParticle(client, "utaunt_tarotcard_orange_wind", true, _, 5.0);
+					CreateParticle(client, "critical_rocket_redsparks", true, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
 			}
 			Address resistancePowerup = TF2Attrib_GetByName(client, "resistance powerup");
 			if(resistancePowerup != Address_Null && TF2Attrib_GetValue(resistancePowerup) > 0.0)
 			{
-				CreateParticleEx(client, "soldierbuff_red_spikes", 1, _, _, 2.0);
-				powerupParticle[client] = currentGameTime+2.1;
+				if(TF2Attrib_GetValue(resistancePowerup) == 1){
+					CreateParticleEx(client, "soldierbuff_red_spikes", 1, _, _, 2.0);
+					powerupParticle[client] = currentGameTime+2.1;
+				}
+				else if(TF2Attrib_GetValue(resistancePowerup) == 2){
+					CreateParticleEx(client, "utaunt_prismatichaze_parent", 1, _, _, 4.0);
+					powerupParticle[client] = currentGameTime+4.1;
+				}
+				else if(TF2Attrib_GetValue(resistancePowerup) == 3){
+					CreateParticleEx(client, "soldierbuff_mvm", 1, _, _, 5.0);
+					powerupParticle[client] = currentGameTime+5.1;
+				}
 			}
 			Address vampirePowerup = TF2Attrib_GetByName(client, "vampire powerup");
 			if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) > 0.0)

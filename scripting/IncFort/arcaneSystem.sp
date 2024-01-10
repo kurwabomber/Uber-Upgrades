@@ -1882,7 +1882,7 @@ CastWarp(client){
     TR_TraceHullFilter(endpos, vec, mins, maxs, MASK_PLAYERSOLID, TraceEntityFilterPlayers, client);
     TR_GetEndPosition(vec);//Stop players from getting stuck
 
-	TeleportEntity(client, vec);
+	TeleportEntity(client, vec, _, {0.0,0.0,0.0});
 
 	int iPart1 = CreateEntityByName("info_particle_system");
 	int iPart2 = CreateEntityByName("info_particle_system");

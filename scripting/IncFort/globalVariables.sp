@@ -145,8 +145,29 @@ enum {
 	Buff_Decay=12,
 	Buff_TagTeam=13,
 	Buff_LifeLink=14,
+	Buff_CritMarkedForDeath=15,
+	Buff_Nullification=16,
+	BuffAmt
 };
-
+bool isBonus[BuffAmt] = {
+	false,
+	true,
+	false,
+	true,
+	true,
+	true,
+	true,
+	true,
+	false,
+	false,
+	true,
+	false,
+	false,
+	true,
+	false,
+	false,
+	false,
+}
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
 bool buffChange[MAXPLAYERS+1] = {false,...};
 //oh boy
