@@ -4,7 +4,6 @@ Specifically only applies for TF2.
 
 # Features
 Basically just a fully fledged out 1.0.0 for UU.
-
 - Equal money distribution
 - Revamped scaling
 - (hopefully) balanced build choices
@@ -21,6 +20,6 @@ Basically just a fully fledged out 1.0.0 for UU.
 	![stats page](incremental.png)
 
 # Future
-I am currently actively developing it:
 Future features (currently being developed) - 
+
 Powerup variants, like tainted and tarnished from Binding of Isaac
