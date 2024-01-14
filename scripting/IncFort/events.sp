@@ -511,7 +511,7 @@ public MRESReturn OnBulletTrace(int victim, Handle hParams){
 
 			float explosiveBullet = GetAttribute(weapon, "explosive bullets radius", 0.0);
 			if(explosiveBullet)
-				EntityExplosion(attacker, info.m_flDamage * TF2_GetDamageModifiers(attacker, weapon, _, false), explosiveBullet, endpos, _, _, _, _, _, weapon, 0.3, _, false);
+				EntityExplosion(attacker, info.m_flDamage * TF2_GetDamageModifiers(attacker, weapon, _, false), explosiveBullet, endpos, _, _, _, _, _, weapon, 0.3, _, false, _,_,_,"ExplosionCore_sapperdestroyed");
 
 			float dragonBullet = GetAttribute(weapon, "dragon bullets radius", 0.0);
 			if(dragonBullet){

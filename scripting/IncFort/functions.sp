@@ -402,7 +402,7 @@ public float ParseShorthand(char[] input, int size){
 
 	return num;
 }
-stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0)
+stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0, char[] particle = "ExplosionCore_MidAir")
 {
 	if(entity == -1 || !IsValidEdict(entity))
 		entity = owner;
@@ -465,7 +465,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 			AcceptEntityInput( particle, "FireUser1" );
 			CreateTimer(0.01, SelfDestruct, EntIndexToEntRef(particle));
 		}*/
-		CreateParticleEx(-1, "ExplosionCore_MidAir", -1, -1, pos);
+		CreateParticleEx(-1, particle, -1, -1, pos);
 	}
 	int random = GetRandomInt(1,3)
 	switch(soundType)
@@ -3061,6 +3061,7 @@ public void OnHomingThink(entity)
 public OnAimlessThink(entity){
 	if(!IsValidEdict(entity))
 		return;
+		
 	char classname[32];
 	GetEntityClassname(entity, classname, sizeof(classname));
 
@@ -3076,12 +3077,7 @@ public OnAimlessThink(entity){
 
 	ScaleVector(ProjVector, GetVectorLength(ProjVelocity));
 
-
-	if(StrEqual(classname, "tf_projectile_pipe")){
-		Phys_SetVelocity( entity, ProjVector, NULL_VECTOR);
-	}else{
-		TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
-	}
+	TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
 }
 public OnThinkPost(entity) 
 { 
@@ -3474,7 +3470,8 @@ PrecisionHoming(entity)
 			if(TF2Attrib_GetValue(precisionPowerup) == 1)
 				projectileHomingDegree[entity] = 200.0;
 			else if(TF2Attrib_GetValue(precisionPowerup) == 2)
-				isAimlessProjectile[entity] = true;
+				if(!Phys_IsPhysicsObject(entity))
+					isAimlessProjectile[entity] = true;
 		}
     } 
 }
@@ -3628,7 +3625,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("precision powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Aimless Powerup {default}| {lightcyan}Projectiles randomly sway and deal up to 6x damage based on distance of landing. Bullet weapons gain +10 additive spread and can crit^2.");
+			CPrintToChat(client, "{community}Aimless Powerup {default}| {lightcyan}Projectiles randomly sway and deal up to +300%% damage based on distance of landing. Bullet weapons gain +10 additive spread and can crit^2.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Railgun Powerup {default}| {lightcyan}While holding m1: charge up a shot that deals (shots over time)/2 times damage. Projectiles instantly land and bullets have no spread.");
 		}else{

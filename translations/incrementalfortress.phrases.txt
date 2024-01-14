@@ -918,7 +918,7 @@
 	}
 	"Health Bonus (Heavy)"
 	{
-		"en"		"Health/Armor Bonus"
+		"en"		"Health Bonus"
 	}
 	"Remove bleed chance"
 	{
@@ -1102,7 +1102,7 @@
 	}
 	"Health Bonus"
 	{
-		"en"		"Health/Armor Bonus"
+		"en"		"Health Bonus"
 	}
 	"Weapons Deals No Knockback"
 	{

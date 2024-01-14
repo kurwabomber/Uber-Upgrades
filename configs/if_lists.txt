@@ -1047,7 +1047,7 @@
 		}
 		"Weapon Specific upgrades"
 		{
-			"Attr0"		"fire rate bonus(multshit)"
+			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"clip size bonus"
 			"Attr2"		"faster reload rate"
 			"Attr3"		"bullets per shot bonus"
@@ -1106,7 +1106,7 @@
 		}
 		"Gun specific upgrades"
 		{
-			"Attr0"		"fire rate bonus(multshit)"
+			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"clip size bonus"
 			"Attr2"		"faster reload rate"
 			"Attr3"		"bullets per shot bonus"
@@ -1548,7 +1548,7 @@
 		}
 		"Scattergun specific upgrades"
 		{
-			"Attr7"		"fire rate bonus(multshit)"
+			"Attr7"		"fire rate bonus(old)"
 			"Attr12"	"clip size bonus"
 			"Attr14"	"faster reload rate"
 			"Attr8"		"bullets per shot bonus"
@@ -1579,7 +1579,7 @@
 		}
 		"Scattergun specific upgrades"
 		{
-			"Attr7"		"fire rate bonus(multshit)"
+			"Attr7"		"fire rate bonus(old)"
 			"Attr12"	"clip size bonus"
 			"Attr14"	"faster reload rate"
 			"Attr8"		"bullets per shot bonus"
@@ -2342,7 +2342,7 @@
 		}
 		"Weapon Specific upgrades"
 		{
-			"Attr0"		"fire rate bonus(multshit)"
+			"Attr0"		"fire rate bonus(old)"
 			"Attr3"		"bullets per shot bonus"
 			"Attr4"		"weapon spread bonus(H)"
 			"Attr5"		"projectile penetration heavy"

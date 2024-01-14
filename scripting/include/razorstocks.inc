@@ -186,6 +186,7 @@ stock int getOwner(int entity)
 	 	return GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
 	return -1;
 }
+
 stock int getWeaponSlot(int client, int entity)
 {
 	return TF2Econ_GetItemLoadoutSlot(GetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(client));

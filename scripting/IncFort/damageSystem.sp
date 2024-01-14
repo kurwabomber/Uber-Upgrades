@@ -439,6 +439,18 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		
 		if(GetAttribute(attacker, "precision powerup", 0.0) == 1)
 			damage *= 1.35;
+		else if(GetAttribute(attacker, "precision powerup", 0.0) == 2){
+			if(IsValidEntity(inflictor) && isAimlessProjectile[inflictor]){
+				float victimPosition[3];
+				GetEntPropVector(victim, Prop_Data, "m_vecAbsOrigin", victimPosition); 
+				float projectilePosition[3];
+				GetEntPropVector(inflictor, Prop_Data, "m_vecAbsOrigin", projectilePosition); 
+				float distance = GetVectorDistance(victimPosition, projectilePosition);
+				if(distance <= 200){
+					damage *= 1+3*((200-distance)/200);
+				}
+			}
+		}
 		
 		if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
 			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
@@ -1086,16 +1098,26 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				damage *= 1.3;
 			}
 		}
-		if(TF2_GetPlayerClass(attacker) == TFClass_Medic)
-		{
-			char classname[128]; 
-			GetEdictClassname(weapon, classname, sizeof(classname)); 
-			if(weapon == GetPlayerWeaponSlot(attacker,0) && StrContains(classname, "crossbow") == -1)
-			{
-				damagetype |= DMG_ENERGYBEAM;
-				damage *= 1.8;
-			}
+		char classname[32]; 
+		GetEdictClassname(weapon, classname, sizeof(classname)); 
+		if(StrEqual(classname, "tf_weapon_syringegun_medic"))
+			damage *= 1.8
+		else if(StrEqual(classname, "tf_weapon_scattergun") ||
+		StrEqual(classname, "tf_weapon_handgun_scout_primary") ||
+		StrEqual(classname, "tf_weapon_soda_popper") ||
+		StrEqual(classname, "tf_weapon_pep_brawler_blaster") ||
+		StrContains(classname, "shotgun") != -1){
+			float victimPosition[3];
+			GetEntPropVector(victim, Prop_Data, "m_vecAbsOrigin", victimPosition); 
+			float attackerPosition[3];
+			GetEntPropVector(attacker, Prop_Data, "m_vecAbsOrigin", attackerPosition); 
+			float distance = GetVectorDistance(victimPosition, attackerPosition);
+			if(distance > 200)
+				distance = 200.0;
+
+			damage *= 2+1.75*((200-distance)/200);
 		}
+
 		float medicDMGBonus = 1.0;
 		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
 		if(healers > 0)
