@@ -20,7 +20,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		"Ammo upgrades"
 		{
@@ -128,7 +128,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		"Ammo upgrades"
 		{
@@ -232,7 +232,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"	
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		"Ammo upgrades"
 		{
@@ -336,7 +336,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		"Ammo upgrades"
 		{
@@ -439,7 +439,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		"Ammo upgrades"
 		{
@@ -546,7 +546,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		"Ammo upgrades"
 		{
@@ -650,7 +650,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		"Ammo upgrades"
 		{
@@ -753,7 +753,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		"Ammo & Cloak upgrades"
 		{
@@ -859,7 +859,7 @@
 			"Attr3"		"knockback resistance"
 			"Attr6"		"cancel falling damage"
 			"Attr8"		"Weighdown Ability"
-			"Attr7"		"gesture speed increase"
+			
 		}
 		
 		"Ammo upgrades"

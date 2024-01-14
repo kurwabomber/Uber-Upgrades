@@ -1,4 +1,4 @@
-stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] strAttachmentPoint="", float time = 2.0,float fOffset[3]={0.0, 0.0, 0.0}, bool parentAngle = false, attachType = 0)
+stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] strAttachmentPoint="", float time = 2.0,float fOffset[3]={0.0, 0.0, 0.0}, bool parentAngle = false, attachType = 0, bool terminate = false)
 {
 	if(attachType == 0)
 	{
@@ -1304,15 +1304,6 @@ public remove_attribute(client, inum)
 	}
 	GiveNewUpgradedWeapon_(client, slot)
 }
-bool LookupOffset(int &iOffset, const char[] strClass, const char[] strProp)
-{
-	iOffset = FindSendPropInfo(strClass, strProp);
-	if (iOffset <= 0)
-	{
-		SetFailState("Could not locate offset for %s::%s", strClass, strProp);
-	}
-	return true;
-}
 public GetEntLevel(entity)
 {
     return GetEntProp(entity, Prop_Send, "m_iUpgradeLevel", 1);
@@ -1321,46 +1312,6 @@ public AddEntHealth(entity, amount)
 {
     SetVariantInt(amount);
     AcceptEntityInput(entity, "AddHealth");
-}
-public void SetTauntAttackSpeed(int client, float speed)
-{
-	float flTauntAttackTime = GetEntDataFloat(client, g_iOffset);
-	float flCurrentTime = currentGameTime;
-	float flNextTauntAttackTime = flCurrentTime + ((flTauntAttackTime - flCurrentTime) / speed);
-	if (flTauntAttackTime > 0.0)
-	{
-		SetEntDataFloat(client, g_iOffset, flNextTauntAttackTime, true);
-		g_flLastAttackTime[client] = flNextTauntAttackTime;
-		DataPack hPack;
-		CreateDataTimer(0.1, Timer_SetNextAttackTime, hPack, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
-		hPack.WriteCell(GetClientUserId(client));
-		hPack.WriteFloat(speed);
-	}
-}
-public Action Timer_SetNextAttackTime(Handle timer, DataPack hPack)
-{
-	hPack.Reset();
-	int client = GetClientOfUserId(hPack.ReadCell());
-	float flTauntAttackTime = GetEntDataFloat(client, g_iOffset);
-	
-	if (g_flLastAttackTime[client] == flTauntAttackTime)
-	{
-		return Plugin_Continue;
-	}
-	else if (g_flLastAttackTime[client] > 0.0 && flTauntAttackTime == 0.0)
-	{
-		g_flLastAttackTime[client] = 0.0;
-		return Plugin_Stop;
-	}
-	else
-	{
-		float speed = hPack.ReadFloat();
-		float flCurrentTime = currentGameTime;
-		float flNextTauntAttackTime = flCurrentTime + ((flTauntAttackTime - flCurrentTime) / speed);
-		SetEntDataFloat(client, g_iOffset, flNextTauntAttackTime, true);
-		g_flLastAttackTime[client] = flNextTauntAttackTime;
-	}
-	return Plugin_Continue;
 }
 public Action:RemoveDamage(Handle timer, any:data)
 {
@@ -3052,10 +3003,10 @@ public void SetZeroGravity(ref)
 }
 public void OnHomingThink(entity) 
 { 
-	if(!IsValidEdict(entity))
+	if(!IsValidEntity(entity))
 		return;
 
-	int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+	int owner = getOwner(entity);
 	if(!IsValidClient3(owner))
 		return;
 
@@ -3074,7 +3025,7 @@ public void OnHomingThink(entity)
 	GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
 	float distance = GetVectorDistance(flRocketPos, TargetPos, true); 
 	
-	if( distance*distance <= projectileHomingDegree[entity] && currentGameTime - entitySpawnTime[entity] < 3.0 )
+	if( distance <= projectileHomingDegree[entity]*projectileHomingDegree[entity] && currentGameTime - entitySpawnTime[entity] < 3.0 )
 	{
 		float ProjVector[3],BaseSpeed,NewSpeed,ProjAngle[3],AimVector[3],InitialSpeed[3]; 
 		
@@ -3087,7 +3038,7 @@ public void OnHomingThink(entity)
 		TargetPos[2] += 20.0;
 		MakeVectorFromPoints( flRocketPos, TargetPos, AimVector ); 
 		
-		if(distance*distance <= projectileHomingDegree[entity]*2.0 + 20.0)
+		if(distance <= projectileHomingDegree[entity]*projectileHomingDegree[entity]*2.0 + 20.0)
 		{
 			SubtractVectors( TargetPos, flRocketPos, ProjVector ); //100% HOME
 		}
@@ -3110,16 +3061,27 @@ public void OnHomingThink(entity)
 public OnAimlessThink(entity){
 	if(!IsValidEdict(entity))
 		return;
+	char classname[32];
+	GetEntityClassname(entity, classname, sizeof(classname));
 
 	float ProjAngle[3], ProjVector[3], ProjVelocity[3];
 	GetEntPropVector( entity, Prop_Data, "m_angRotation", ProjAngle ); 
 	ProjAngle[1] += GetRandomFloat(-5.0, 5.0);
-	GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", ProjVelocity ); 
+
+	GetEntPropVector( entity, Prop_Send, "m_vInitialVelocity", ProjVelocity ); 
+	if ( GetVectorLength( ProjVelocity ) < 10.0 )
+		GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", ProjVelocity ); 
 
 	GetAngleVectors(ProjAngle, ProjVector, NULL_VECTOR, NULL_VECTOR);
 
 	ScaleVector(ProjVector, GetVectorLength(ProjVelocity));
-	TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
+
+
+	if(StrEqual(classname, "tf_projectile_pipe")){
+		Phys_SetVelocity( entity, ProjVector, NULL_VECTOR);
+	}else{
+		TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
+	}
 }
 public OnThinkPost(entity) 
 { 
@@ -3503,12 +3465,11 @@ PrecisionHoming(entity)
 	entity = EntRefToEntIndex(entity);
     if(IsValidEdict(entity)) 
     { 
-		int client = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+		int client = getOwner(entity);
 		if(IsValidClient3(client))
 		{
 			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
 			if(precisionPowerup == Address_Null) return;
-
 
 			if(TF2Attrib_GetValue(precisionPowerup) == 1)
 				projectileHomingDegree[entity] = 200.0;

@@ -253,9 +253,6 @@ public void OnPluginStart()
 	//Offsets
 	Handle hConf = LoadGameConfigFile("tf2.incrementalfortress");
 	
-	if (LookupOffset(g_iOffset, "CTFPlayer", "m_iSpawnCounter"))
-	g_iOffset -= GameConfGetOffset(hConf, "m_flTauntAttackTime");
-	
 	//Grenade Call
 	StartPrepSDKCall(SDKCall_Entity);
 	PrepSDKCall_SetFromConf(hConf, SDKConf_Virtual, "CTFWeaponBaseGrenadeProj::InitGrenade(int float)");

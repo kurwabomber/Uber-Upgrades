@@ -210,8 +210,7 @@ int client_respawn_handled[MAXPLAYERS+1]
 int client_respawn_checkpoint[MAXPLAYERS+1]
 int client_no_d_team_upgrade[MAXPLAYERS+1]
 int blankArray[MAXPLAYERS+1][16]
-int blankArray1[MAXPLAYERS+1][16][MAX_ATTRIBUTES_ITEM]
-int g_iOffset;
+int blankArray1[MAXPLAYERS+1][16][MAX_ATTRIBUTES_ITEM];
 int MadmilkInflictor[MAXPLAYERS+1];
 int g_SmokeSprite;
 int g_LightningSprite;
@@ -251,7 +250,6 @@ int DarkmoonBladeLevel[MAXPLAYERS+1];
 int InfernalEnchantmentLevel[MAXPLAYERS+1];
 int snowstormParticle[MAXPLAYERS+1];
 int tagTeamTarget[MAXPLAYERS+1];
-
 //Floats
 float currentGameTime
 float MoneyBonusKill

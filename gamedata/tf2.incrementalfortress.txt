@@ -15,11 +15,6 @@
 				"linux"		"396"
 				"windows"	"396"
 			}
-			"m_flTauntAttackTime" 
-			{
-				"windows"	"32"
-				"linux"		"28"
-			}
 		}
 		"Functions"
 		{

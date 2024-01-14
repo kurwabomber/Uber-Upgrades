@@ -322,7 +322,7 @@ stock void SetPawnTimer(Function func, float thinktime = 0.1, any[] variables, i
 	}
 	CreateTimer(thinktime, DoThinkTimed, thinkpack, TIMER_DATA_HNDL_CLOSE);
 }
-public Action DoThinkTimed(Handle t, DataPack pack)
+stock Action  DoThinkTimed(Handle t, DataPack pack)
 {
 	pack.Reset();
 	Function fn = pack.ReadFunction();
@@ -533,29 +533,29 @@ stock CreateSmoke(float location[3],float time,int red,int green, int blue,char[
 	}
 }
 
-public Action:Timer_KillSmoke(Handle timer, Handle pack)
+stock Action Timer_KillSmoke(Handle timer, Handle pack)
 {	
 	ResetPack(pack)
 	int SmokeEnt = ReadPackCell(pack)
-	
 	StopSmokeEnt(SmokeEnt);
+
+	return Plugin_Stop;
 }
 
 StopSmokeEnt(target)
 {
-
 	if (IsValidEdict(target))
 	{
 		AcceptEntityInput(target, "TurnOff");
 	}
 }
 
-public Action:Timer_StopSmoke(Handle timer, Handle pack)
+stock Action Timer_StopSmoke(Handle timer, Handle pack)
 {	
 	ResetPack(pack)
 	int SmokeEnt = ReadPackCell(pack)
-	
 	RemoveSmokeEnt(SmokeEnt);
+	return Plugin_Stop;
 }
 
 RemoveSmokeEnt(target)
@@ -593,7 +593,7 @@ stock bool IsValidForHoming( client, owner, entity)
     }
     return false; 
 }
-public Action:HomingFlareThink(Handle timer, any:ref) 
+stock Action HomingFlareThink(Handle timer, any:ref) 
 {
 	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
@@ -659,9 +659,10 @@ public Action:HomingFlareThink(Handle timer, any:ref)
 	if(flag == true){
 		KillTimer(timer);
 	}
+	return Plugin_Continue;
 }
 
-public Action:HomingThink(Handle timer, any:ref) 
+stock Action HomingThink(Handle timer, any:ref) 
 { 
 	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
@@ -734,8 +735,9 @@ public Action:HomingThink(Handle timer, any:ref)
 	if(flag == true){
 		KillTimer(timer);
 	}
+	return Plugin_Continue;
 }
-public Action:HeavyFriendlyHoming(Handle timer, any:ref) 
+stock Action HeavyFriendlyHoming(Handle timer, any:ref) 
 { 
 	int entity = EntRefToEntIndex(ref); 
 	bool flag = false;
@@ -795,6 +797,7 @@ public Action:HeavyFriendlyHoming(Handle timer, any:ref)
 	if(flag == true){
 		KillTimer(timer);
 	}
+	return Plugin_Continue;
 }
 stock bool TracePlayerAim(int client, float vec[3]) {
     if (!IsClientInGame(client))
@@ -2298,7 +2301,7 @@ stock DealFakeDamage(victim, attacker, weapon = -1, damage = 0, custom = 0)
 	event.SetInt("custom", custom);
     event.Fire();
 }
-public Action SetTransmit(int entity, int client) 
+stock Action  SetTransmit(int entity, int client) 
 { 
 	SetFlags(entity);
 	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity");
@@ -2342,7 +2345,7 @@ stock void DOTStock(int victim,int attacker,float damage,int weapon = -1,int dam
 		}
 	}
 }
-public Action:DOTDamage(Handle timer,any:data)
+stock Action DOTDamage(Handle timer,any:data)
 {
 	ResetPack(data);
 	int victim = EntRefToEntIndex(ReadPackCell(data));
@@ -2383,41 +2386,53 @@ public Action:DOTDamage(Handle timer,any:data)
 		DOTStacked[victim][attacker] = false;
 	}
 	CloseHandle(data);
+	return Plugin_Continue;
 }
-public Action:ReEnableBuilding(Handle timer, int entity)
+stock Action ReEnableBuilding(Handle timer, int entity)
 {
 	entity = EntRefToEntIndex(entity);
 	if(IsValidEdict(entity))
 	{
 		SetEntProp(entity, Prop_Send, "m_bDisabled", 0);
 	}
+	return Plugin_Continue;
 }
-//Thanks to Patka.
-public Action:Timer_MoveParticle(Handle timer, Handle pack)
+stock Action Timer_TerminateParticle(Handle timer, any data)
 {
-	ResetPack(pack);	
-	int entity = EntRefToEntIndex(ReadPackCell(pack));
-	
-	if (IsValidEdict(entity))
-	{
-		float newVector[3] = {9999.0,9999.0,9999.0};
-		TeleportEntity(entity, newVector, NULL_VECTOR, NULL_VECTOR);
+	int entity = EntRefToEntIndex(data);
+	if (IsValidEdict(entity)){
+		AcceptEntityInput(entity, "DestroyImmediately");
 	}
 	
 	return Plugin_Stop;
 }
-public Action Timer_KillParticle(Handle timer, any data)
+stock Action Timer_MoveParticle(Handle timer, any data)
+{
+	int entity = EntRefToEntIndex(data);
+	if (IsValidEdict(entity))
+		TeleportEntity(entity, {9999.0,9999.0,9999.0}, NULL_VECTOR, NULL_VECTOR);
+	
+	return Plugin_Stop;
+}
+stock Action Timer_RemoveEntity(Handle timer, any data)
+{	
+	int entity = EntRefToEntIndex(data);
+	if (IsValidEdict(entity))
+		RemoveEntity(entity);
+	
+	return Plugin_Stop;
+}
+stock Action Timer_KillParticle(Handle timer, any data)
 {	
 	int entity = EntRefToEntIndex(data);
 	if (IsValidEdict(entity))
 	{
-		SetVariantString("ParticleEffectStop");
-		AcceptEntityInput(entity, "DispatchEffect");
-		RemoveEdict(entity);
+		AcceptEntityInput(entity, "Stop");
+		CreateTimer(2.0, Timer_RemoveEntity, EntIndexToEntRef(entity));
 	}
 	return Plugin_Stop;
 }
-public Action:Timer_KillTEParticle(Handle timer, Handle pack)
+stock Action Timer_KillTEParticle(Handle timer, Handle pack)
 {
 	ResetPack(pack);	
 	int entity = EntRefToEntIndex(ReadPackCell(pack));
