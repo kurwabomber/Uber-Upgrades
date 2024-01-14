@@ -11,12 +11,16 @@ Basically just a fully fledged out 1.0.0 for UU.
 - Arcane System (which is meant to be a replacement for Ubertech)
 - Powerups
 - Weapon Modifiers instead of Special Tweaks
-- MvM Wave Generator (currently not public as I'm rewriting it)
+- [MvM Wave Generator](https://github.com/kurwabomber/mvm_generator)
 - Way too many additional attributes added
 - Armor/defense system revamp
 - Movement oriented combat (don't stand still)
 - Actually fully working MvM support
 - no windows support!
 
+	![stats page](incremental.png)
+
 # Future
-probably going to just leave it here to rot
+I am currently actively developing it:
+Future features (currently being developed) - 
+Powerup variants, like tainted and tarnished from Binding of Isaac
