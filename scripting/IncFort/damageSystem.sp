@@ -75,24 +75,25 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 						damage *= 0.0;
 					}
 				}
+				if(InfernalEnchantmentDuration[attacker] >= currentGameTime){
+					Buff infernalDOT; infernalDOT.init("Infernal Flames", "", Buff_InfernalDOT, 1, attacker, 8.0);
+					insertBuff(victim, infernalDOT);
+				}
 				if(damagetype & DMG_SLASH)
 					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 						damage *= 5;
 
-				if(currentDamageType[attacker].second & DMG_ARCANE)
-					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
 				if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
 				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
 					damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
-				if(currentDamageType[attacker].second & DMG_FROST)
-					TF2_StunPlayer(victim, 2.0, 0.6, TF_STUNFLAG_SLOWDOWN | TF_STUNFLAG_NOSOUNDOREFFECT, attacker);
-				
+
 				else if(DarkmoonBladeDuration[attacker] > currentGameTime)
 				{
 					int melee = GetWeapon(attacker,2);
 					if(melee == weapon)
 						damage += DarkmoonBlade[attacker];
 				}
+				
 				float arcaneWeaponScaling = GetAttribute(weapon,"arcane weapon scaling",0.0);
 				if(arcaneWeaponScaling != 0.0)
 					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * arcaneWeaponScaling));
@@ -411,10 +412,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 				if(damage >= TF2Util_GetEntityMaxHealth(victim) * 0.4){
 					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(victim, attacker, attacker, 3.0*TF2Util_GetEntityMaxHealth(victim))
+					SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim))
 
 					currentDamageType[victim].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(attacker, victim, victim, 0.05*TF2Util_GetEntityMaxHealth(attacker))
+					SDKHooks_TakeDamage(attacker, victim, victim, 0.05*TF2Util_GetEntityMaxHealth(attacker), DMG_PREVENT_PHYSICS_FORCE);
 				}
 				else if((GetClientHealth(victim) - bruisedDamage)/TF2Util_GetEntityMaxHealth(victim) <= 0.25){
 					critStatus[victim] = true;

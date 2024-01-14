@@ -122,6 +122,7 @@ public Action:OnSunlightSpearCollision(entity, client)
 
 				float scaling[] = {0.0, 35.0, 70.0, 140.0};
 				float ProjectileDamage = 140.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
+				currentDamageType[client].second |= DMG_ARCANE;
 				SDKHooks_TakeDamage(client, owner, owner, ProjectileDamage, DMG_SHOCK, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 				RemoveEntity(entity);
 				CreateParticleEx(client, "dragons_fury_effect_parent", 1);

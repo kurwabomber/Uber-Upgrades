@@ -147,6 +147,7 @@ enum {
 	Buff_LifeLink=14,
 	Buff_CritMarkedForDeath=15,
 	Buff_Nullification=16,
+	Buff_InfernalDOT=17,
 	BuffAmt
 };
 bool isBonus[BuffAmt] = {
@@ -164,6 +165,7 @@ bool isBonus[BuffAmt] = {
 	false,
 	false,
 	true,
+	false,
 	false,
 	false,
 	false,

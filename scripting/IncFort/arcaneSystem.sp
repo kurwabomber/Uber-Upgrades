@@ -486,7 +486,8 @@ CastAntisepticBlast(client, attuneSlot)
 		if(!IsPointVisible(clientpos,VictimPos))
 			continue;
 
-		SDKHooks_TakeDamage(i,client,client,LightningDamage * (1.0 + 0.5*GetAmountOfDebuffs(i)),1073741824,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
+		currentDamageType[client].second |= DMG_ARCANE;
+		SDKHooks_TakeDamage(i,client,client,LightningDamage * (1.0 + 0.5*GetAmountOfDebuffs(i)),_,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 	}
 }
 CastSnowstorm(client, attuneSlot){
@@ -494,15 +495,13 @@ CastSnowstorm(client, attuneSlot){
 	if(spellLevel < 1)
 		return;
 
-	if(applyArcaneRestrictions(client, attuneSlot, 5.0, 1.0))
+	if(applyArcaneRestrictions(client, attuneSlot, 0.0, 1.0))
 		return;
 
 	if(snowstormActive[client]){
 		int particleEffect = EntRefToEntIndex(snowstormParticle[client]);
 		if(IsValidEntity(particleEffect)){
-			SetVariantString("ParticleEffectStop");
-			AcceptEntityInput(particleEffect, "DispatchEffect");
-			RemoveEdict(particleEffect);
+			CreateTimer(0.1, Timer_KillParticle, snowstormParticle[client]);
 		}
 		snowstormActive[client] = false;
 	}else{
@@ -538,7 +537,7 @@ KarmicJusticeExplosion(client){
 	float explosionRadius[] = {0.0, 500.0, 1000.0, 1250.0};
 	float pos[3];
 	GetEntPropVector(client, Prop_Data, "m_vecOrigin", pos);
-	EntityExplosion(client, damageDealt, explosionRadius[spellLevel], pos, 1, _, client);
+	EntityExplosion(client, damageDealt, explosionRadius[spellLevel], pos, 1, _, client, _,_,_,_,_,_,_,DMG_ARCANE);
 	CreateParticleEx(client, "drg_cow_explosioncore_charged_blue", -1, -1, pos);
 	CreateParticleEx(client, "rd_robot_explosion", -1, -1, pos);
 
@@ -587,7 +586,9 @@ CastSplittingThunder(client, attuneSlot)
 	if(applyArcaneRestrictions(client, attuneSlot, 400.0 + (120.0 * ArcaneDamage[client]), 50.0))
 		return; 
 	
-	
+	float clientpos[3];
+	GetClientAbsOrigin(client, clientpos);
+	EmitSoundToAll(SOUND_ARCANESHOOTREADY, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	int args[2];args[0] = EntIndexToEntRef(client);args[1] = spellLevel;
 	SetPawnTimer(FinishCastSplittingThunder, 5.0, args, 2);
 	CreateParticleEx(client, "utaunt_electricity_discharge");
@@ -685,6 +686,8 @@ CastSnapFreeze(client, attuneSlot)
 		if(!IsPointVisible(clientpos,VictimPos))
 			continue;
 
+		currentDamageType[client].second |= DMG_FROST;
+		currentDamageType[client].second |= DMG_ARCANE;
 		SDKHooks_TakeDamage(i,client,client,damage,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 		if(IsValidClient3(i))
 		{
@@ -1391,6 +1394,7 @@ public Action:ArcaneHunter(Handle timer, client)
 		if(!IsPointVisible(clientpos,VictimPos))
 			continue;
 
+		currentDamageType[client].second |= DMG_ARCANE;
 		SDKHooks_TakeDamage(i,client,client,LightningDamage,1073741824,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 	}
 }
@@ -1464,12 +1468,9 @@ CastBlackskyEye(client, attuneSlot)
 		SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
 		TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 		DispatchSpawn(iEntity);
+
+		CreateParticleEx(iEntity, "drg_cow_rockettrail_charged_blue", 1);
 		
-		TE_SetupKillPlayerAttachments(iEntity);
-		TE_SendToAll();
-		int color[4]={100, 100, 100,255};
-		TE_SetupBeamFollow(iEntity,Laser,0,2.5,4.0,8.0,3,color);
-		TE_SendToAll();
 		SDKHook(iEntity, SDKHook_StartTouchPost, BlackskyEyeCollision);
 		SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
 		homingRadius[iEntity] = radius[spellLevel];
@@ -1547,12 +1548,6 @@ public Action:ACallBeyond(Handle timer, client)
 		TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 		DispatchSpawn(iEntity);
 		SetEntityRenderMode(iEntity, RENDER_NONE);
-		
-		TE_SetupKillPlayerAttachments(iEntity);
-		TE_SendToAll();
-		int color[4]={255, 255, 255,225};
-		TE_SetupBeamFollow(iEntity,Laser,0,2.5,4.0,8.0,3,color);
-		TE_SendToAll();
 
 		CreateParticleEx(iEntity, "drg_cow_rockettrail_charged_blue", 1);
 		
@@ -1658,6 +1653,7 @@ DoZap(client,victim,spellLevel)
 	float LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 3.0));
 	float radiationAmount[] = {0.0,6.0,10.0,25.0};
 	SDKHooks_TakeDamage(victim,client,client, radiationAmount[spellLevel], (DMG_RADIATION+DMG_DISSOLVE), -1, NULL_VECTOR, NULL_VECTOR);
+	currentDamageType[client].second |= DMG_ARCANE;
 	SDKHooks_TakeDamage(victim,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(victim));
 	float chance[] = {0.0,0.3,0.6,0.9};
 		
@@ -1736,6 +1732,7 @@ CastLightning(client, attuneSlot)
 		TE_SendToAll();
 		
 		int i = -1;
+		float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
 		while ((i = FindEntityByClassname(i, "*")) != -1)
 		{
 			if(!IsValidForDamage(i)) 
@@ -1752,7 +1749,7 @@ CastLightning(client, attuneSlot)
 			if(!IsPointVisible(clientpos,VictimPos))
 				continue;
 
-			float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
+			currentDamageType[client].second |= DMG_ARCANE;
 			SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 
 			CreateParticleEx(i, "utaunt_auroraglow_orange_parent", 1, _, _, 3.5);
