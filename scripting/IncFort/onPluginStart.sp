@@ -103,7 +103,7 @@ public UberShopinitMenusHandlers()
 	StartMoney = GetConVarFloat(cvar_StartMoney);
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	
-	RegAdminCmd("reload_cfg", ReloadCfgFiles, ADMFLAG_ROOT, "Reloads All CFG files for Uberupgrades");
+	RegAdminCmd("reload_cfg", ReloadCfgFiles, ADMFLAG_ROOT, "Reloads All CFG files for Incremental Fortres");
 	RegAdminCmd("sm_ifspentmoney", ShowSpentMoney, ADMFLAG_GENERIC, "Shows everyones upgrades");
 	RegAdminCmd("sm_sethealth", Command_SetHealth, ADMFLAG_GENERIC, "Sets health of selected target/targets.");
 	RegAdminCmd("sm_setcash", Command_SetCash, ADMFLAG_GENERIC, "Sets cash of selected target/targets.");

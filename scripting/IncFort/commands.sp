@@ -660,8 +660,25 @@ public OnCvarChanged(Handle cvar, const char[] oldVal, const char[] newVal)
 			}
 		}
 	}
-	else if(cvar == cvar_StartMoney)
+	else if(cvar == cvar_StartMoney){
 		StartMoney = GetConVarFloat(cvar_StartMoney);
+		bool success = true;
+		while(success){
+			success = false;
+			if(gameStage == 0 && (StartMoney + additionalstartmoney) >= STAGEONE){
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 1st stage! New upgrades & tweaks unlocked.");
+				gameStage = 1; UpdateMaxValuesStage(gameStage); success = true;
+			}
+			else if(gameStage == 1 && (StartMoney + additionalstartmoney) >= STAGETWO){
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 2nd stage! New upgrades & tweaks unlocked.");
+				gameStage = 2; UpdateMaxValuesStage(gameStage); success = true;
+			}
+			else if(gameStage == 2 && (StartMoney + additionalstartmoney) >= STAGETHREE){
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 3rd stage! New upgrades & tweaks unlocked.");
+				gameStage = 3; UpdateMaxValuesStage(gameStage); success = true;
+			}
+		}
+	}
 	else if(cvar == cvar_DisableCooldowns){
 		DisableCooldowns = GetConVarInt(cvar_DisableCooldowns);
 		for(int client=1;client<=MaxClients;client++){

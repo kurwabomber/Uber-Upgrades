@@ -381,7 +381,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 				if(slowResistance != Address_Null)
 				{
 					DHookSetParam(hParams, 2, duration * TF2Attrib_GetValue(slowResistance));
-					return MRES_Override;
+					return MRES_ChangedHandled;
 				}
 			}
 			case TFCond_Taunting:
@@ -1316,23 +1316,21 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 			additionalstartmoney += PlayerMoneyKill;
 		}
 	
-		if(gameStage == 0 && (StartMoney + additionalstartmoney) > STAGEONE)
-		{
-			gameStage = 1;
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Vector stage! New upgrades unlocked.");
-			UpdateMaxValuesStage(gameStage);
-		}
-		else if(gameStage == 1 && (StartMoney + additionalstartmoney) > STAGETWO)
-		{
-			gameStage = 2;
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Dyad stage! New upgrades unlocked.");
-			UpdateMaxValuesStage(gameStage);
-		}
-		else if(gameStage == 2 && (StartMoney + additionalstartmoney) > STAGETHREE)
-		{
-			gameStage = 3;
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the Triad stage! New upgrades unlocked.");
-			UpdateMaxValuesStage(gameStage);
+		bool success = true;
+		while(success){
+			success = false;
+			if(gameStage == 0 && (StartMoney + additionalstartmoney) >= STAGEONE){
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 1st stage! New upgrades & tweaks unlocked.");
+				gameStage = 1; UpdateMaxValuesStage(gameStage); success = true;
+			}
+			else if(gameStage == 1 && (StartMoney + additionalstartmoney) >= STAGETWO){
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 2nd stage! New upgrades & tweaks unlocked.");
+				gameStage = 2; UpdateMaxValuesStage(gameStage); success = true;
+			}
+			else if(gameStage == 2 && (StartMoney + additionalstartmoney) >= STAGETHREE){
+				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 3rd stage! New upgrades & tweaks unlocked.");
+				gameStage = 3; UpdateMaxValuesStage(gameStage); success = true;
+			}
 		}
 	}
 	else if(hardcapWarning == false)

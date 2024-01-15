@@ -12,7 +12,7 @@
 // Plugin Info
 public Plugin:myinfo =
 {
-	name = "UberUpgrades Bot AI",
+	name = "Incremental Fortress Bot AI",
 	author = "Razor",
 	description = "Plugin for handling bots.",
 	version = "2.0",

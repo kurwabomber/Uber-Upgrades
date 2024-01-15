@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"Endurance"
+	{
+		"en"		"Endurance"
+	}
 	"Infernal Impulse"
 	{
 		"en"		"Infernal Impulse"

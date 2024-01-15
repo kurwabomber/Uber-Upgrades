@@ -100,7 +100,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"
@@ -204,7 +204,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"
@@ -308,7 +308,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"
@@ -411,7 +411,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"
@@ -514,7 +514,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"
@@ -622,7 +622,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"
@@ -725,7 +725,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"
@@ -831,7 +831,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"
@@ -938,7 +938,7 @@
 		}
 		"Tiered Upgrades"
 		{
-			"Attr0"			"Rooted damage taken"
+			"Attr0"			"Endurance"
 			"Attr2"			"physical damage affinity"
 			"Attr3"			"explosive damage affinity"
 			"Attr4"			"fire damage affinity"

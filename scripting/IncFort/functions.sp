@@ -102,6 +102,9 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 public void insertBuff(int client, Buff newBuff){
 	int replacementID = getNextBuff(client);
 
+	if(!isBonus[newBuff.id])
+		newBuff.duration /= GetAttribute(client, "endurance bonus", 1.0);
+		
 	for(int i = 0;i < MAXBUFFS;++i){
 		if(playerBuffs[client][i].id == newBuff.id && playerBuffs[client][i].priority <= newBuff.priority)
 			{replacementID = i;break;}

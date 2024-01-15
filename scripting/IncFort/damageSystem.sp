@@ -229,10 +229,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				return Plugin_Changed;
 			}
 		}
-		Address rootedDamage = TF2Attrib_GetByName(victim, "rooted damage taken");
+		Address rootedDamage = TF2Attrib_GetByName(victim, "endurance bonus");
 		if(rootedDamage != Address_Null && TF2Attrib_GetValue(rootedDamage) > 1.0)
 		{
-			damage = Pow(damage, (1.0/TF2Attrib_GetValue(rootedDamage)));
+			damage /= TF2Attrib_GetValue(rootedDamage)*TF2Attrib_GetValue(rootedDamage);
 		}
 	}
 	if(IsValidClient3(attacker) && IsValidClient3(victim) && IsValidWeapon(weapon))
@@ -1757,7 +1757,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "physical damage affinity");
 		if(dmgMasteryAddr != Address_Null){
-			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+			damage *= TF2Attrib_GetValue(dmgMasteryAddr)*TF2Attrib_GetValue(dmgMasteryAddr);
 
 			if(IsValidEdict(inflictor) && !IsValidClient3(inflictor) && !HasEntProp(inflictor, Prop_Send, "m_iItemDefinitionIndex"))
 				{damagetype |= DMG_CLUB;damagetype |= DMG_BULLET;}
@@ -1774,7 +1774,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 	{
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "fire damage affinity");
 		if(dmgMasteryAddr != Address_Null){
-			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+			damage *= TF2Attrib_GetValue(dmgMasteryAddr)*TF2Attrib_GetValue(dmgMasteryAddr);
 			if(isVictimPlayer)
 				damage *= 1.0+(TF2Util_GetPlayerBurnDuration(victim)*0.05);
 		}
@@ -1810,14 +1810,14 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 	{
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "explosive damage affinity");
 		if(dmgMasteryAddr != Address_Null)
-			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+			damage *= TF2Attrib_GetValue(dmgMasteryAddr)*TF2Attrib_GetValue(dmgMasteryAddr);
 		
 	}
 	else if(StrContains(damageCategory, "electric") != -1)
 	{
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "electric damage affinity");
 		if(dmgMasteryAddr != Address_Null)
-			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+			damage *= TF2Attrib_GetValue(dmgMasteryAddr)*TF2Attrib_GetValue(dmgMasteryAddr);
 
 		if(GetAttribute(attacker, "thunderstorm powerup", 0.0)){
 			float buff = 1.0;
@@ -1837,7 +1837,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 		}
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "arcane damage affinity");
 		if(dmgMasteryAddr != Address_Null)
-			damage = Pow(damage, TF2Attrib_GetValue(dmgMasteryAddr));
+			damage *= TF2Attrib_GetValue(dmgMasteryAddr)*TF2Attrib_GetValue(dmgMasteryAddr);
 	}
 
 	if(StrContains(damageCategory, "crit") != -1)

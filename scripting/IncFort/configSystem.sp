@@ -411,7 +411,7 @@ public _load_cfg_files()
 		return false;
 	}
 	int siz = GetWeaponsCatKVSize(kv)
-	PrintToServer("[UberUpgrades] %d weapons loaded", siz)
+	PrintToServer("[Incremental Fortress] %d weapons loaded", siz)
 	KvRewind(kv);
 	BrowseWeaponsCatKV(kv)
 	CloseHandle(kv);
@@ -421,7 +421,7 @@ public _load_cfg_files()
 	FileToKeyValues(kv, "addons/sourcemod/configs/if_attributes.txt");
 	_u_id = 1
 	BrowseAttributesKV(kv)
-	PrintToServer("[UberUpgrades] %d attributes loaded", _u_id)
+	PrintToServer("[Incremental Fortress] %d attributes loaded", _u_id)
 	CloseHandle(kv);
 
 
@@ -430,14 +430,14 @@ public _load_cfg_files()
 	kv = CreateKeyValues("special_tweaks");
 	FileToKeyValues(kv, "addons/sourcemod/configs/if_specialtweaks.txt");
 	BrowseSpeTweaksKV(kv, static_uid)
-	PrintToServer("[UberUpgrades] %d special tweaks loaded", static_uid)
+	PrintToServer("[Incremental Fortress] %d special tweaks loaded", static_uid)
 	CloseHandle(kv);
 
 	static_uid = 0
 	kv = CreateKeyValues("lists");
 	FileToKeyValues(kv, "addons/sourcemod/configs/if_lists.txt");
 	BrowseAttListKV(kv, static_uid)
-	PrintToServer("[UberUpgrades] %d lists loaded", static_uid)
+	PrintToServer("[Incremental Fortress] %d lists loaded", static_uid)
 	CloseHandle(kv);
 	
 	static_uid = -1
@@ -445,7 +445,7 @@ public _load_cfg_files()
 	kv = CreateKeyValues("buyableWeapons");
 	FileToKeyValues(kv, "addons/sourcemod/configs/if_buyableweapons.txt");
 	BrowseWeaponsListKV(kv, static_uid)
-	PrintToServer("[UberUpgrades] %d buyable weapons loaded", static_uid+1)
+	PrintToServer("[Incremental Fortress] %d buyable weapons loaded", static_uid+1)
 	CloseHandle(kv);
 	
 	return true
