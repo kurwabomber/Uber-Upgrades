@@ -1869,17 +1869,14 @@ CastWarp(client){
     }
 
 	float endpos[3];
-	ScaleVector(fwd, -0.2);
+	ScaleVector(fwd, -0.02);
 	
-	AddVectors(vecorigin, fwd, endpos);
-
-    TR_TraceHullFilter(vec, endpos, mins, maxs, MASK_PLAYERSOLID, TraceEntityFilterPlayers, client);
-    TR_GetEndPosition(endpos);
+	AddVectors(vec, fwd, endpos);
 
     TR_TraceHullFilter(endpos, vec, mins, maxs, MASK_PLAYERSOLID, TraceEntityFilterPlayers, client);
-    TR_GetEndPosition(vec);//Stop players from getting stuck
+    TR_GetEndPosition(endpos);
 
-	TeleportEntity(client, vec, _, {0.0,0.0,0.0});
+	TeleportEntity(client, endpos, _, {0.0,0.0,0.0});
 
 	int iPart1 = CreateEntityByName("info_particle_system");
 	int iPart2 = CreateEntityByName("info_particle_system");

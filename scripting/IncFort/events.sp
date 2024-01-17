@@ -99,10 +99,9 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				SupernovaBuildup[client] = 1.0;
 		}
 		if(GetAttribute(client, "vampire powerup", 0.0) == 3.0){
-			bloodboundDamage[client] += damage;
-			if(bloodboundHealing[client] > 0 && bloodboundCooldown[client] <= currentGameTime && float(GetClientHealth(client)) - damage < -1){
+			bloodboundDamage[client] += damage*0.75;
+			if(bloodboundHealing[client] > 0 && float(GetClientHealth(client)) - damage < -1){
 				AddPlayerHealth(client, RoundToCeil(bloodboundHealing[client]), 6.0, true, client);
-				bloodboundCooldown[client] = currentGameTime + 4.0;
 				bloodboundHealing[client] = 0.0;
 				bloodboundDamage[client] = 0.0;
 			}
@@ -1249,6 +1248,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 	fanOfKnivesCount[client] = 0;
 	RageBuildup[client] = 0.0;
 	frayNextTime[attack] = 0.0;
+	enragedKills[client] = 0;
 
 	CancelClientMenu(client);
 	clearAllBuffs(client);
@@ -1270,6 +1270,14 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 		RemoveEntity(autoSentryID[client]);
 		autoSentryID[client] = -1;
 	}
+
+	if(!IsValidClient3(attack))
+		return;
+
+	if(GetAttribute(attack, "revenge powerup", 0.0) == 3){
+		AddPlayerHealth(attack, RoundToCeil(GetClientHealth(attack)*0.06), 1.0);
+	}
+
 	if(attack != client && !(GetEventInt(event, "death_flags") & 32))
 	{
 		Kills[attack]++;
@@ -1280,9 +1288,6 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 		return;
 
 	if (IsMvM())
-		return;
-
-	if(!IsValidClient3(attack))
 		return;
 
 	if((StartMoney + additionalstartmoney) < MAXMONEY)
@@ -1419,7 +1424,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				}
 				else if(TF2Attrib_GetValue(strengthPowerup) == 3){
 					CreateParticle(client, "utaunt_tarotcard_orange_wind", true, _, 5.0,_,_,_,true);
-					CreateParticle(client, "utaunt_pedalfly_teamcolor_red", true, _, 5.0,_,_,_,true);
+					CreateParticle(client, "utaunt_pedalfly_red_pedals", true, _, 5.0,_,_,_,true);
 					CreateParticle(client, "critical_rocket_redsparks", true, _, 5.0,_,_,_,true);
 					powerupParticle[client] = currentGameTime+5.1;
 				}
@@ -1499,8 +1504,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					powerupParticle[client] = currentGameTime+5.1;
 				}
 				else if(TF2Attrib_GetValue(agilityPowerup) == 3){
-					CreateParticle(client, "utaunt_constellations_purple_cloud", true, _, 5.0,_,_,_,true);
-					CreateParticle(client, "utaunt_pedalfly_teamcolor_blue", true, _, 5.0,_,_,_,true);
+					CreateParticle(client, "utaunt_pedalfly_blue_pedals", true, _, 5.0,_,_,_,true);
 					powerupParticle[client] = currentGameTime+5.1;
 				}
 
@@ -1715,7 +1719,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				if(buttons & IN_DUCK && buttons & IN_ATTACK3 && fl_GlobalCoolDown[client] <= currentGameTime)
 				{
 					fl_GlobalCoolDown[client] = currentGameTime+0.4;
-					if(RageActive[client] == false && RageBuildup[client] >= 1.0)
+					if(GetAttribute(client, "revenge powerup", 0.0) == 1 && RageActive[client] == false && RageBuildup[client] >= 1.0)
 					{
 						RageActive[client] = true;
 						EmitSoundToAll(SOUND_REVENGE, client, -1, 150, 0, 1.0);
@@ -1727,6 +1731,19 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						TF2_AddCondition(client, TFCond_PreventDeath, 1.0);
 						TF2_AddCondition(client, TFCond_UberchargedHidden, 1.0);
 						TF2_AddCondition(client, TFCond_KingAura, 1.0);
+					}
+					if(GetAttribute(client, "revenge powerup", 0.0) == 3 && enragedKills[client] >= 80){
+						EmitSoundToAll(SOUND_REVENGE, client, -1, 150, 0, 1.0);
+						EmitSoundToAll(SOUND_REVENGE, client, -1, 150, 0, 1.0);
+						enragedKills[client] = 0;
+						TF2_AddCondition(client, TFCond_CritCanteen, 16.0);
+						TF2_AddCondition(client, TFCond_SpeedBuffAlly, 16.0);
+						Buff enraged;
+						enraged.init("Enraged", "", Buff_Enraged, 1, client, 16.0);
+						enraged.additiveAttackSpeedMult = 1.0;
+						enraged.multiplicativeDamageTaken = 0.4;
+
+						insertBuff(client, enraged);
 					}
 					if(duplicationCooldown[client] <= currentGameTime){
 						if(GetAttribute(client, "regeneration powerup", 0.0) == 2.0){
@@ -3414,7 +3431,6 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		warpCooldown[client] = 0.0;
 		frayNextTime[client] = 0.0;
 		strongholdEnabled[client] = false;
-		bloodboundCooldown[client] = 0.0;
 		bloodboundDamage[client] = 0.0;
 		bloodboundHealing[client] = 0.0;
 		tagTeamTarget[client] = -1;

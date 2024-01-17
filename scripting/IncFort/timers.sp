@@ -264,7 +264,7 @@ public Action:Timer_Every100MS(Handle timer)
 				if(RageBuildup[client] < 1.0)
 					Format(StatusEffectText, sizeof(StatusEffectText),"Revenge: %.0f%", RageBuildup[client]*100.0);
 				else
-					Format(StatusEffectText, sizeof(StatusEffectText),"Revenge: READY", RageBuildup[client]*100.0);
+					Format(StatusEffectText, sizeof(StatusEffectText),"Revenge: READY (Crouch + Mouse3)", RageBuildup[client]*100.0);
 				
 				if(RageActive[client] == true){
 					TF2_AddCondition(client, TFCond_CritCanteen, 1.0);
@@ -293,12 +293,16 @@ public Action:Timer_Every100MS(Handle timer)
 				if(RageBuildup[client] < 0)
 					RageBuildup[client] = 0.0;
 			}
+			else if(GetAttribute(client, "revenge powerup", 0.0) == 3)
+			{
+				if(enragedKills[client] < 80)
+					Format(StatusEffectText, sizeof(StatusEffectText),"Enraged: %d kills remaining", 80-enragedKills[client]);
+				else
+					Format(StatusEffectText, sizeof(StatusEffectText),"Enraged: READY (Crouch + Mouse3)");
+			}
 			else if(GetAttribute(client, "vampire powerup", 0.0) == 3)
 			{
-				if(bloodboundCooldown[client] > currentGameTime)
-					Format(StatusEffectText, sizeof(StatusEffectText),"Bloodbound: +%.0f% dmg | +%.0f heal | %.1fs cd", bloodboundDamage[client], bloodboundHealing[client], bloodboundCooldown[client]-currentGameTime);
-				else
-					Format(StatusEffectText, sizeof(StatusEffectText),"Bloodbound: +%.0f% dmg | +%.0f heal | READY", bloodboundDamage[client], bloodboundHealing[client]);
+				Format(StatusEffectText, sizeof(StatusEffectText),"Bloodbound: +%.0f% dmg | +%.0f heal", bloodboundDamage[client], bloodboundHealing[client]);
 			}
 			else if(GetAttribute(client, "supernova powerup", 0.0) == 1)
 			{
@@ -331,14 +335,14 @@ public Action:Timer_Every100MS(Handle timer)
 			else if(GetAttribute(client, "resistance powerup", 0.0) == 3.0)
 			{
 				if(!strongholdEnabled[client])
-					Format(StatusEffectText, sizeof(StatusEffectText),"Stronghold: INACTIVE");
+					Format(StatusEffectText, sizeof(StatusEffectText),"Stronghold: INACTIVE (Crouch + Mouse3)");
 				else
-					Format(StatusEffectText, sizeof(StatusEffectText),"Stronghold: ACTIVE");
+					Format(StatusEffectText, sizeof(StatusEffectText),"Stronghold: ACTIVE (Crouch + Mouse3)");
 			}
 			else if(GetAttribute(client, "king powerup", 0.0) == 2.0)
 			{
 				if(!IsValidClient(tagTeamTarget[client]))
-					Format(StatusEffectText, sizeof(StatusEffectText),"Tag-Team: INACTIVE");
+					Format(StatusEffectText, sizeof(StatusEffectText),"Tag-Team: INACTIVE (Crouch + Mouse3)");
 				else
 					Format(StatusEffectText, sizeof(StatusEffectText),"Tag-Team: %N", tagTeamTarget[client]);
 			}

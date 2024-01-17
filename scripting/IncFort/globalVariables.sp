@@ -148,6 +148,7 @@ enum {
 	Buff_CritMarkedForDeath=15,
 	Buff_Nullification=16,
 	Buff_InfernalDOT=17,
+	Buff_Enraged=18,
 	BuffAmt
 };
 bool isBonus[BuffAmt] = {
@@ -168,6 +169,7 @@ bool isBonus[BuffAmt] = {
 	false,
 	false,
 	false,
+	true,
 	false,
 }
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
@@ -252,6 +254,8 @@ int DarkmoonBladeLevel[MAXPLAYERS+1];
 int InfernalEnchantmentLevel[MAXPLAYERS+1];
 int snowstormParticle[MAXPLAYERS+1];
 int tagTeamTarget[MAXPLAYERS+1];
+int enragedKills[MAXPLAYERS+1];
+
 //Floats
 float currentGameTime
 float MoneyBonusKill
@@ -323,7 +327,6 @@ float duplicationCooldown[MAXPLAYERS+1];
 float warpCooldown[MAXPLAYERS+1];
 float frayNextTime[MAXPLAYERS+1];
 float quakerTime[MAXPLAYERS+1];
-float bloodboundCooldown[MAXPLAYERS+1];
 float bloodboundDamage[MAXPLAYERS+1];
 float bloodboundHealing[MAXPLAYERS+1];
 

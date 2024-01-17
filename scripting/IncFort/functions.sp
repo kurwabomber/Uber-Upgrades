@@ -3621,7 +3621,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Leech Powerup {default}| {lightcyan}25%% lifesteal, drains healing of everyone (including teammates!) by 33%% if nearby.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Bloodbound Powerup {default}| {lightcyan}-100%% lifesteal, all damage taken -> piercing damage dealt. No fatal damage from self. If fatal damage, refill HP with bonus damage dealt.");
+			CPrintToChat(client, "{community}Bloodbound Powerup {default}| {lightcyan}-100%% lifesteal, 75%% damage taken -> piercing damage dealt. No fatal damage from self. If fatal damage, refill HP with bonus damage dealt.");
 		}else{
 			CPrintToChat(client, "{community}Vampire Powerup {default}| {lightcyan}80%% lifesteal, 1.25x bleed damage, and 0.75x damage taken.");
 		}
@@ -3648,7 +3648,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Berserk Powerup {default}| {lightcyan}Revenge instead becomes passive that drains by -7%%/s. Up to 1.5x lifesteal effectiveness when meter is at 100%%. Effects are scaled to %%.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Equalizer Powerup {default}| {lightcyan}Gives an assortment of debuffs and buffs at certain health thresholds (JUST USE EQUALIZER)");
+			CPrintToChat(client, "{community}Enraged Powerup {default}| {lightcyan}Every kill gives +6%% pctHP healing. Every 80 kills, you can turn enraged, which gives:\n+100%% fire rate, full crits, and 0.4x damage taken.");
 		}else{
 			CPrintToChat(client, "{community}Revenge Powerup {default}| {lightcyan}66%% of damage taken is filled to revenge meter. 0.8x damage taken. On activation: +50%% dmg and full crits.");
 		}
