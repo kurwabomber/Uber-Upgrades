@@ -399,7 +399,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				damage *= 2.0;
 			}
 			else if(strengthPowerupValue == 2.0){
-				damage *= 1+2*(weaponFireRate[weapon]/TICKRATE);
+				if(weaponFireRate[weapon] < TICKRATE)
+					damage *= 1+2*(weaponFireRate[weapon]/TICKRATE);
+				else
+					damage *= 3;
 			}
 			else if(strengthPowerupValue == 3.0){
 				Buff finisherDebuff; finisherDebuff.init("Bruised", "Marked-for-Finisher", Buff_Bruised, 1, attacker, 8.0);
