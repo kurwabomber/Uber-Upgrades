@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"Burst Fire Count"
+	{
+		"en"		"Burst Fire Count"
+	}
+	"Burst Fire Delay"
+	{
+		"en"		"Burst Fire Delay"
+	}
 	"Endurance"
 	{
 		"en"		"Endurance"

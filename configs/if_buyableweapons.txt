@@ -30,10 +30,10 @@
 		"weapon_class"	"tf_weapon_crossbow"
 		"weapon_menu"	"menuCrossbow"
 		"class"			"medic"
-		"description"	"Has Beggar's Bazooka's fire clip as barrage ability.\n3x fire rate, but 3x reload time and cannot upgrade reload rate.\nReloads entire clip at once.\nShoots arrows that have headshot capability but cannot heal."
+		"description"	"Has Beggar's Bazooka's fire clip as barrage ability.\n2x fire rate, but 3x reload time and cannot upgrade reload rate.\nReloads entire clip at once.\nShoots arrows that have headshot capability but cannot heal."
 		"cost"			"40000.0"
 		"auto fires full clip"	"1"
-		"extra fire rate HIDDEN(tweak)"	"0.2"
+		"extra fire rate HIDDEN(tweak)"	"0.5"
 		"Reload Time Decreased Hidden"	"3"
 		"reload clip all at once"	"1"
 		"projectile spread angle penalty"	"1"
@@ -125,7 +125,7 @@
 		"Increased Overall Damage"	"1.65"
 		"Stealth On Backstab"	"3"
 	}
-	"Blitzkrieg"
+	"High Calibre Pistol"
 	{
 		"index"			"15148"
 		"weapon_class"	"tf_weapon_pistol"
@@ -192,6 +192,20 @@
 		"Dragon Bullets Radius"			"200.0"
 		"Sniper Rifle Charge Rate Penalty"	"0"
 		"paintkit_proto_def_index"	"390"
+		"set_item_texture_wear"		"0.0"
+	}
+	"Hyper Scorch Shot"
+	{
+		"index"			"740"
+		"weapon_class"	"tf_weapon_flaregun"
+		"weapon_menu"	"detonator"
+		"class"			"pyro"
+		"description"	"Shoots 20 round bursts that have a huge delay in between them."
+		"cost"			"100000.0"
+		"Burst Fire Count"		"5"
+		"Burst Fire Delay"		"1"
+		"weapon fire rate"		"0.3"
+		"paintkit_proto_def_index"	"414"
 		"set_item_texture_wear"		"0.0"
 	}
 }

@@ -5672,6 +5672,26 @@
 			"init"		"0"
 			"max"		"1"
 		}
+		"1623"
+		{
+			"name"		"burst fire count"
+			"ref"		"Burst Fire Count"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1624"
+		{
+			"name"		"burst fire rate mult"
+			"ref"		"Burst Fire Delay"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{

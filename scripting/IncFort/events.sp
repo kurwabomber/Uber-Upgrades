@@ -2134,6 +2134,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										flVel[0] = flSpeed * vBuffer[0] * 1.5;
 										flVel[1] = flSpeed * vBuffer[1] * 1.5;
 										flVel[2] = 100.0 + (flSpeed * (vBuffer[2] * 0.75));
+										if(flags & FL_ONGROUND)
+											flVel[2] += 200;
 										TeleportEntity(client, NULL_VECTOR,NULL_VECTOR, flVel)
 										EmitSoundToAll(SOUND_DASH, client, -1, 80, 0, 1.0);
 									}
@@ -2404,6 +2406,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 										
 										if(flVel[2] < -100.0)
 											flVel[2] *= 2.5;
+
+										if(flags & FL_ONGROUND)
+											flVel[2] += 200;
+
 										TeleportEntity(client, NULL_VECTOR,NULL_VECTOR, flVel)
 									}
 								}

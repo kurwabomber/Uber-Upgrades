@@ -1229,7 +1229,7 @@ DisplayItemChange(client,itemidx)
 		//Spy Primaries
 		case 61,1006:
 		{
-			ChangeString = "The Ambassador | Has 15% more fall-off. Can constantly headshot. Headshots deal minicrits.";
+			ChangeString = "The Ambassador | Converts fire rate to damage. Can constantly headshot. 2x slower fire rate.";
 		}
 		case 460:
 		{
@@ -1237,7 +1237,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 525:
 		{
-			ChangeString = "The Diamondback | Converts fire rate to damage.";
+			ChangeString = "The Diamondback | Converts fire rate to damage. Fires 3 round bursts and has a slight delay afterwards.";
 		}
 		//Spy Melees
 		case 356:
@@ -1947,19 +1947,16 @@ refreshUpgrades(client, slot)
 				}
 			}
 			if(Spread != 0.0)
-			{
 				TF2Attrib_SetByName(slotItem, "projectile spread angle penalty", Spread);
-			}
+
 			Address reloadActive = TF2Attrib_GetByName(slotItem, "multiple sentries");
 			if(reloadActive!=Address_Null)
-			{
-				SetEntProp(slotItem, Prop_Data, "m_bReloadsSingly", 0);
-			}
+				SetEntProp(slotItem, Prop_Data, "m_bReloadsSingly", TF2Attrib_GetValue(reloadActive) != 0 ? 0 : 1);
+
 			Address explosiveBullets = TF2Attrib_GetByName(slotItem, "explosive bullets");
 			if(explosiveBullets!=Address_Null)
-			{
 				TF2Attrib_SetFromStringValue(slotItem, "explosion particle", "ExplosionCore_sapperdestroyed");
-			}
+
 			Address firerateActive = TF2Attrib_GetByName(slotItem, "disguise speed penalty");
 			Address heavyweaponActive = TF2Attrib_GetByName(slotItem, "Converts Firerate to Damage");//Implement "Heavy" Weapons
 			if(heavyweaponActive != Address_Null && TF2Attrib_GetValue(heavyweaponActive) != 0.0)
