@@ -1881,6 +1881,15 @@ refreshUpgrades(client, slot)
 						}
 					}
 				}
+
+				if(precisionPowerupValue == 3){
+					TF2Attrib_SetByName(client,"damage mult 1", 4.0);
+					TF2Attrib_SetByName(client,"fire rate penalty", 4.0);
+				}
+				else{
+					TF2Attrib_RemoveByName(client,"damage mult 1");
+					TF2Attrib_RemoveByName(client,"fire rate penalty");
+				}
 			}
 			
 			Address agilityPowerup = TF2Attrib_GetByName(client, "agility powerup");		
@@ -1899,15 +1908,6 @@ refreshUpgrades(client, slot)
 					TF2Attrib_RemoveByName(client,"self dmg push force increased");
 					TF2Attrib_RemoveByName(client,"SET BONUS: chance of hunger decrease");
 					TF2Attrib_RemoveByName(client,"has pipboy build interface");
-				}
-
-				if(TF2Attrib_GetValue(agilityPowerup) == 3){
-					TF2Attrib_SetByName(client,"damage mult 1", 6.0);
-					TF2Attrib_SetByName(client,"fire rate penalty", 4.0);
-				}
-				else{
-					TF2Attrib_RemoveByName(client,"damage mult 1");
-					TF2Attrib_RemoveByName(client,"fire rate penalty");
 				}
 
 				TF2Attrib_SetByName(client,"major increased jump height", TF2Attrib_GetValue(agilityPowerup) == 1 ? 1.3 : (TF2Attrib_GetValue(agilityPowerup) == 2 ? 2.0 : 1.0));
@@ -3625,9 +3625,9 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("precision powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Aimless Powerup {default}| {lightcyan}Projectiles randomly sway and deal up to +300%% damage based on distance of landing. Bullet weapons gain +10 additive spread and can crit^2.");
+			CPrintToChat(client, "{community}Aimless Powerup {default}| {lightcyan}Projectiles randomly sway and deal up to +300%% damage based on distance of landing.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Railgun Powerup {default}| {lightcyan}While holding m1: charge up a shot that deals (shots over time)/2 times damage. Projectiles instantly land and bullets have no spread.");
+			CPrintToChat(client, "{community}Railgun Powerup {default}| {lightcyan}All weapons have 4x slower fire rate, but 4x damage.");
 		}else{
 			CPrintToChat(client, "{community}Precision Powerup {default}| {lightcyan}+100%% projectile speed, charge rate, and no spread. 1.35x damage and hitscan can headshot. Certain projectiles will home aggressively.");
 		}
@@ -3654,7 +3654,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Quaker Powerup {default}| {lightcyan}Weighdown is automatically activated after jumping. Stomp damage is spread to 2 other targets and deals 2x dmg. 2x jump height.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces shift middle click with teleport to crosshair. Deals 300 base damage to all enemies through path of teleport. Each use consumes 10%% focus.4x slower fire rate, 6x damage. Applies +4 additive dmg taken on hit.");
+			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces shift middle click with teleport to crosshair. Deals 1200 base damage to all enemies through path of teleport. Each use consumes 10%% focus. Applies +4 additive dmg taken on teleport hit.");
 		}else{
 			CPrintToChat(client, "{community}Agility Powerup {default}| {lightcyan}1.33x reload & fire rate. infinite jumps, speed boost, 1.4x speed, 1.3x jump height, 1.75x self push force, and 35%% dodge chance.");
 		}
@@ -3943,7 +3943,7 @@ public bool TraceEntityWarp(int entity, int contentsMask, any data) {
     if (0 < entity <= MaxClients){
 		if(IsValidClient3(entity) && IsPlayerAlive(entity) && IsOnDifferentTeams(entity, data)){
 			float damageBoost = TF2_GetDamageModifiers(data, GetEntPropEnt(data, Prop_Send, "m_hActiveWeapon"), true, true, false);
-			SDKHooks_TakeDamage(entity,data,data,damageBoost*200.0,DMG_CLUB|DMG_CRUSH,GetEntPropEnt(data, Prop_Send, "m_hActiveWeapon"));
+			SDKHooks_TakeDamage(entity,data,data,damageBoost*1200.0,DMG_CLUB|DMG_CRUSH,GetEntPropEnt(data, Prop_Send, "m_hActiveWeapon"));
 
 			Buff jarateDebuff; jarateDebuff.init("Jarated", "", Buff_Jarated, 4*RoundToNearest(damageBoost), data, 8.0);
 			insertBuff(entity, jarateDebuff);

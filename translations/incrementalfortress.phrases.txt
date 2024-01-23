@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"Minimal Explosion Particle"
+	{
+		"en"		"Minimal Explosion Particle"
+	}
 	"Burst Fire Count"
 	{
 		"en"		"Burst Fire Count"

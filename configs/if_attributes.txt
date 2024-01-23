@@ -569,7 +569,7 @@
 			"value"		"1.0"
 			"init"		"1.00"
 			"display_style" "1"
-			"description"	"1:1 pure damage multiplier.\Never increases in cost.\nFortfied compound replaces firerate with damage."
+			"description"	"1:1 pure damage multiplier.\nNever increases in cost.\nThis weapon replaces firerate with damage."
 			"max"		"70.0"
 		}
 		"14"
@@ -5686,6 +5686,16 @@
 		{
 			"name"		"burst fire rate mult"
 			"ref"		"Burst Fire Delay"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1625"
+		{
+			"name"		"explosive bullets"
+			"ref"		"Minimal Explosion Particle"
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"0"

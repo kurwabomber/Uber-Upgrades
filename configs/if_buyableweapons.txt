@@ -56,7 +56,7 @@
 		"Bleed Per Hit"	"90.0"
 		"bleeding duration"	"6.0"
 	}
-	"Photoviscerator"
+	"Haunted Hex"
 	{
 		"index"			"215"
 		"weapon_class"	"tf_weapon_flamethrower"
@@ -70,7 +70,7 @@
 		"paintkit_proto_def_index"	"255"
 		"set_item_texture_wear"		"0.0"
 	}
-	"Chaos Bed Vestige"
+	"Cast Fireball"
 	{
 		"index"			"812"
 		"weapon_class"	"tf_weapon_cleaver"
@@ -194,18 +194,27 @@
 		"paintkit_proto_def_index"	"390"
 		"set_item_texture_wear"		"0.0"
 	}
-	"Hyper Scorch Shot"
+	"Sacred Slayer"
 	{
-		"index"			"740"
-		"weapon_class"	"tf_weapon_flaregun"
-		"weapon_menu"	"detonator"
+		"index"			"415"
+		"weapon_class"	"tf_weapon_shotgun_pyro"
+		"weapon_menu"	"tf_weapon_flaregun"
 		"class"			"pyro"
-		"description"	"Shoots 20 round bursts that have a huge delay in between them."
-		"cost"			"100000.0"
-		"Burst Fire Count"		"5"
-		"Burst Fire Delay"		"1"
-		"weapon fire rate"		"0.3"
-		"paintkit_proto_def_index"	"414"
+		"description"	"Shoots a burst of 4 rockets with a large interval in between.\nConverts fire rate into damage and shoots 5 rockets per shot with small spread.\nIgnites targets and deals 3x afterburn damage."
+		"cost"			"50000.0"
+		"Converts Firerate to Damage"	"1"
+		"Burst Fire Count"		"-4"
+		"Burst Fire Delay"		"50"
+		"weapon fire rate"		"0.1"
+		"projectile spread angle penalty"	"2"
+		"Increased Projectile Count" "5"
+		"weapon damage mult"		"1.75"
+		"override projectile type"	"2.0"
+		"Set DamageType Ignite"		"1"
+		"reload clip all at once"	"1"
+		"Afterburn Damage Multiplier"	"3"
+		"Minimal Explosion Particle"	"0"
+		"paintkit_proto_def_index"	"403"
 		"set_item_texture_wear"		"0.0"
 	}
 }
