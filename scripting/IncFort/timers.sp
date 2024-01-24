@@ -1819,13 +1819,13 @@ public Action Timer_ThrownSentryDeploy(Handle timer, any data){
 	isPrimed[entity] = true;
 	return Plugin_Stop;
 }
-public Action:SetTankTeleporter(Handle timer, int entity) 
-{  
+public Action SetTankTeleporter(Handle timer, int entity) 
+{ 
 	entity = EntRefToEntIndex(entity)
 	if(IsValidEdict(entity))
-	{
 		TankTeleporter = entity;
-	}
+	
+	return Plugin_Stop;
 }
 public Action:ShootTwice(Handle timer, any:data) 
 {  

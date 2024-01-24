@@ -148,7 +148,7 @@
 		"weapon fire rate"				"2"
 		"weapon damage mult"			"2"
 	}
-	"Carpet Bomber"
+	"Sky Stallion"
 	{
 		"index"			"205"
 		"weapon_class"	"tf_weapon_rocketlauncher"
@@ -215,6 +215,24 @@
 		"Afterburn Damage Multiplier"	"3"
 		"Minimal Explosion Particle"	"0"
 		"paintkit_proto_def_index"	"403"
+		"set_item_texture_wear"		"0.0"
+	}
+	"Carpet Bomber"
+	{
+		"index"			"207"
+		"weapon_class"	"tf_weapon_pipebomblauncher"
+		"weapon_menu"	"tf_weapon_pipebomblauncher"
+		"class"			"demo"
+		"description"	""
+		"cost"			"50000.0"
+		"Converts Firerate to Damage"	"1"
+		"weapon fire rate"		"0.2"
+		"weapon damage mult"	"0.1"
+		"projectile spread angle penalty"	"3"
+		"Projectile speed increased"	"3"
+		"mult projectile count"		"5"
+		"override projectile type"	"17"
+		"paintkit_proto_def_index"	"104"
 		"set_item_texture_wear"		"0.0"
 	}
 }
