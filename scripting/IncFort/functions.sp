@@ -1022,7 +1022,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 730:
 		{
-			ChangeString = "The Beggar's Bazooka | 10% faster fire rate with rocket specialist.";
+			ChangeString = "The Beggar's Bazooka | 10% faster fire rate.";
 		}
 		//Soldier Secondary
 		case 129,1001:

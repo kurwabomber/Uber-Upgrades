@@ -38,7 +38,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		if(knockoutPowerup != Address_Null)
 		{
 			float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
-			if(knockoutPowerupValue > 0.0){
+			if(knockoutPowerupValue == 1){
 				int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 				if (IsValidEdict(CWeapon))
 				{
