@@ -1106,6 +1106,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		GetEdictClassname(weapon, classname, sizeof(classname)); 
 		if(StrEqual(classname, "tf_weapon_syringegun_medic"))
 			damage *= 1.8
+		else if(StrEqual(classname, "tf_weapon_medigun")){
+			currentDamageType[attacker].second |= DMG_PIERCING;
+			damage *= 0.5;
+		}
 		else if(StrEqual(classname, "tf_weapon_scattergun") ||
 		StrEqual(classname, "tf_weapon_handgun_scout_primary") ||
 		StrEqual(classname, "tf_weapon_soda_popper") ||

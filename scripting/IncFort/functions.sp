@@ -1,4 +1,4 @@
-stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] strAttachmentPoint="", float time = 2.0,float fOffset[3]={0.0, 0.0, 0.0}, bool parentAngle = false, attachType = 0, bool terminate = false)
+stock int CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] strAttachmentPoint="", float time = 2.0,float fOffset[3]={0.0, 0.0, 0.0}, bool parentAngle = false, attachType = 0, bool terminate = false)
 {
 	if(attachType == 0)
 	{
@@ -28,7 +28,7 @@ stock CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] s
 				SetVariantString("!activator");
 				AcceptEntityInput(iParticle, "SetParent", iEntity, iParticle, 0);            
 				
-				if (StrEqual(strAttachmentPoint, "") == false)
+				if (strAttachmentPoint[0] != '\0')
 				{
 					SetVariantString(strAttachmentPoint);
 					AcceptEntityInput(iParticle, "SetParentAttachmentMaintainOffset", iEntity, iParticle, 0);                

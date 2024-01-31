@@ -580,6 +580,7 @@
 			"value"		"0.25"
 			"increase_ratio" 	"0.35"
 			"init"		"1.00"
+			"display_style" "1"
 			"max"		"500.00"
 		}
 		"15"
@@ -3286,6 +3287,7 @@
 			"value"		"0.2"
 			"increase_ratio"	"0.60"
 			"init"		"1"
+			"display_style" "1"
 			"max"		"10"
 		}
 		"298"
@@ -3294,9 +3296,10 @@
 			"ref"		"overheal fill rate bonus"
 			"cost"		"600"
 			"increase_ratio"	"0.25"
-			"value"		"0.35"
+			"value"		"0.1"
 			"init"		"1"
-			"max"		"3"
+			"display_style" "1"
+			"max"		"2"
 		}
 		"299"
 		{
@@ -5696,6 +5699,36 @@
 		{
 			"name"		"explosive bullets"
 			"ref"		"Minimal Explosion Particle"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1626"
+		{
+			"name"		"medigun attack enemy"
+			"ref"		"medigun attack enemy"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1627"
+		{
+			"name"		"medigun self drain"
+			"ref"		"medigun self drain"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1628"
+		{
+			"name"		"medigun attack enemy heal mult"
+			"ref"		"medigun attack enemy heal mult"
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"0"

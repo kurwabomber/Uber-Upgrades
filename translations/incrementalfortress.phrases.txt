@@ -1,5 +1,17 @@
 "Phrases"
 {
+	"medigun attack enemy heal mult"
+	{
+		"en"		"Medigun Life Drain Percent"
+	}
+	"medigun attack enemy"
+	{
+		"en"		"Medigun Can Attack Enemies"
+	}
+	"medigun self drain"
+	{
+		"en"		"Medigun Healing Damages Healer"
+	}
 	"Minimal Explosion Particle"
 	{
 		"en"		"Minimal Explosion Particle"
