@@ -191,6 +191,9 @@ public OnMapStart()
 	PrecacheSound(SOUND_SUPERNOVA);
 	PrecacheSound(SOUND_DASH);
 	PrecacheSound(SOUND_JAR_EXPLOSION);
+	PrecacheSound(SOUND_SLASHHIT1);
+	PrecacheSound(SOUND_SLASHHIT2);
+	PrecacheSound(SOUND_SLASHHIT3);
 	PrecacheSound(OrnamentExplosionSound);
 	PrecacheSound(")items/powerup_pickup_plague_infected_loop.wav");
 	PrecacheModel("models/weapons/c_models/c_madmilk/c_madmilk.mdl");

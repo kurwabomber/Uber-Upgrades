@@ -312,7 +312,7 @@ public Action:ExplosiveArrowCollision(entity, client)
 		int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
 		if(IsValidEdict(CWeapon))
 		{
-			EntityExplosion(owner, TF2_GetDamageModifiers(owner, CWeapon) * 250.0, 400.0, projvec, 1, _,entity,1.0,_,_,0.75);
+			EntityExplosion(owner, TF2_GetDamageModifiers(owner, CWeapon) * 60.0, 400.0, projvec, 1, _,entity,1.0,_,_,0.75);
 		}
 		fl_ArrowStormDuration[owner]--;
 	}

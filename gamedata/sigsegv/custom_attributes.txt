@@ -3917,4 +3917,14 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "6039"
+    {
+        "name"	"additive piercing damage"
+        "attribute_class"	"additive_piercing_damage"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
 }

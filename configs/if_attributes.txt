@@ -2878,6 +2878,8 @@
 			"cost"		"1000"
 			"value"		"0.25"
 			"init"		"1.00"
+			"display_style" "1"
+			"description"	"1:1 pure damage multiplier.\nIncreases in cost by +$350 per purchase."
 			"max"		"1000.00"		
 		}
 		"243"
@@ -5729,6 +5731,26 @@
 		{
 			"name"		"medigun attack enemy heal mult"
 			"ref"		"medigun attack enemy heal mult"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1629"
+		{
+			"name"		"damage bonus bullet vs sentry target"
+			"ref"		"damage bonus bullet vs sentry target"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1630"
+		{
+			"name"		"additive piercing damage"
+			"ref"		"additive piercing damage"
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"0"

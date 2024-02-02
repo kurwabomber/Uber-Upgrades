@@ -1161,6 +1161,14 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		if(HeadshotDamage != 1.0 && damagecustom == 1)
 			damage *= HeadshotDamage;
 
+		if(!(currentDamageType[attacker].second & DMG_PIERCING)){
+			float additivePiercingDamage = GetAttribute(weapon, "additive piercing damage", 0.0);
+			if(additivePiercingDamage != 0){
+				currentDamageType[attacker].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(victim, inflictor, attacker, additivePiercingDamage);
+			}
+		}
+
 		if(isVictimPlayer)
 		{
 			float burndmgMult = 1.0;

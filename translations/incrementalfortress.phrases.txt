@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"additive piercing damage"
+	{
+		"en"		"Additive Piercing Damage"
+	}
+	"damage bonus bullet vs sentry target"
+	{
+		"en"		"Damage Bonus VS Sentry Target"
+	}
 	"medigun attack enemy heal mult"
 	{
 		"en"		"Medigun Life Drain Percent"

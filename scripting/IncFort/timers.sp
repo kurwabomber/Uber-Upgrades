@@ -144,6 +144,14 @@ public Action:Timer_FixedVariables(Handle timer)
 			}
 		}
 
+		if(GetAttribute(client, "resistance powerup", 0.0) != 3.0){
+			if(strongholdEnabled[client]){
+				SetEntityMoveType(client, MOVETYPE_WALK);
+				PrintHintText(client, "Stronghold Disabled");
+				strongholdEnabled[client] = false;
+			}
+		}
+
 		if(IsFakeClient(client))
 			continue;
 
@@ -1585,7 +1593,7 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 	if(IsValidEdict(client) && IsValidEdict(weapon))
 	{
 		float fAngles[3], fOrigin[3], vBuffer[3], fOriginEnd[3], fwd[3], opposite[3], PlayerOrigin[3];
-		TracePlayerAimRanged(client, 800.0, fOrigin);
+		TracePlayerAimRanged(client, 1000.0, fOrigin);
 		GetClientEyePosition(client, PlayerOrigin);
 		GetClientEyeAngles(client, fAngles);
 		GetAngleVectors(fAngles, fwd, NULL_VECTOR, vBuffer);
@@ -1627,8 +1635,19 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 			}
 		}
 		
-		fOrigin[0] += opposite[0]
-		fOrigin[1] += opposite[1]
+		switch(GetRandomInt(1,3)){
+			case 1:{
+				EmitSoundToAll(SOUND_SLASHHIT1, 0,_,SNDLEVEL_NORMAL,_,1.0, _, _, fOrigin);
+			}
+			case 2:{
+				EmitSoundToAll(SOUND_SLASHHIT2, 0,_,SNDLEVEL_NORMAL,_,1.0, _, _, fOrigin);
+			}
+			case 3:{
+				EmitSoundToAll(SOUND_SLASHHIT3, 0,_,SNDLEVEL_NORMAL,_,1.0, _, _, fOrigin);
+			}
+		}
+		fOrigin[0] += opposite[0] + GetRandomFloat( -200.0, 200.0 );
+		fOrigin[1] += opposite[1] + GetRandomFloat( -200.0, 200.0 );
 		fOrigin[2] += opposite[2]
 		
 		fOriginEnd[0] -= opposite[0]
@@ -1637,7 +1656,7 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 
 		int color[4];
 		color = {255, 0, 0, 255}
-		TE_SetupBeamPoints(fOrigin,fOriginEnd,Laser,Laser,0,5,2.5,4.0,8.0,3,1.0,color,10);
+		TE_SetupBeamPoints(fOrigin,fOriginEnd,Laser,Laser,0,5,2.5,2.0,2.0,3,1.0,color,10);
 		TE_SendToAll();
 		
 		shouldAttack[client] = true;

@@ -71,6 +71,10 @@
 #define SOUND_JAR_EXPLOSION "weapons/jar_explode.wav"
 #define SOUND_STRONGHOLD "items/powerup_pickup_resistance.wav"
 #define SOUND_TELEPORT "weapons/teleporter_receive.wav"
+#define SOUND_SLASHHIT1 "weapons/samurai/tf_katana_slice_01.wav"
+#define SOUND_SLASHHIT2 "weapons/samurai/tf_katana_slice_02.wav"
+#define SOUND_SLASHHIT3 "weapons/samurai/tf_katana_slice_03.wav"
+
 
 #define PLUGIN_VERSION "INDEV-1.0"
 
