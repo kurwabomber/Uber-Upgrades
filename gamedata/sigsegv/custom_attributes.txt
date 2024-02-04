@@ -3927,4 +3927,14 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "6040"
+    {
+        "name"	"cond on hit"
+        "attribute_class"	"cond_on_hit"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
 }

@@ -5757,6 +5757,26 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1631"
+		{
+			"name"		"add cond on hit"
+			"ref"		"add cond on hit"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1632"
+		{
+			"name"		"add cond on hit duration"
+			"ref"		"add cond on hit duration"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{

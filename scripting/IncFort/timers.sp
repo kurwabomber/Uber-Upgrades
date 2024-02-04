@@ -349,7 +349,7 @@ public Action:Timer_Every100MS(Handle timer)
 			}
 			else if(GetAttribute(client, "king powerup", 0.0) == 2.0)
 			{
-				if(!IsValidClient(tagTeamTarget[client]))
+				if(!IsValidClient3(tagTeamTarget[client]))
 					Format(StatusEffectText, sizeof(StatusEffectText),"Tag-Team: INACTIVE (Crouch + Mouse3)");
 				else
 					Format(StatusEffectText, sizeof(StatusEffectText),"Tag-Team: %N", tagTeamTarget[client]);
@@ -418,8 +418,8 @@ public Action:Timer_Every100MS(Handle timer)
 			if(GetAttribute(client, "king powerup", 0.0) == 2.0){
 				if(IsValidClient3(tagTeamTarget[client]) && !IsOnDifferentTeams(client, tagTeamTarget[client]) && IsPlayerAlive(client)){
 					Buff tagteamBuff;
-					tagteamBuff.additiveDamageMult = 0.4;
 					tagteamBuff.init("Tag-Team Linked", "", Buff_TagTeam, 1, client, 1.0);
+					tagteamBuff.additiveDamageMult = 0.4;
 
 					insertBuff(client, tagteamBuff);
 					insertBuff(tagTeamTarget[client], tagteamBuff);

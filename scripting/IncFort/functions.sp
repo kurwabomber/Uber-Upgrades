@@ -259,9 +259,11 @@ public void ManagePlayerBuffs(int i){
 	{
 		int spy = TF2Util_GetPlayerConditionProvider(i, TFCond_Sapped);
 		if(IsValidClient3(spy)){
-			int sapper = GetWeapon(spy,6);
-			if(IsValidWeapon(sapper))
+			int sapper = GetWeapon(spy,5);
+			if(IsValidWeapon(sapper)){
 				multiplicativeDamageTakenBuff *= GetAttribute(sapper, "scattergun knockback mult");
+				buffChange[i] = true;
+			}
 		}
 	}
 
@@ -625,6 +627,7 @@ public GiveNewUpgradedWeapon_(client, slot)
 					continue;
 					
 				TF2Attrib_SetByName(iEnt, upgrades[ifid].attr_name,currentupgrades_val[client][slot][a]);
+				PrintToServer("%i", iEnt);
 			}
 		}
 		float bpsMult = GetAttribute(iEnt, "bullets per shot bonus", 1.0);
@@ -856,24 +859,26 @@ public DefineAttributesTab(client, itemidx, slot, entity)
 
 
 			ArrayList inumAttr = TF2Econ_GetItemStaticAttributes(itemidx);
-			for( a=0; a < inumAttr.Length && a < 21; a++ )
-			{
-				bool cancel = false;
-				a_i = inumAttr.Get(a,0);
-				for(int e = 0;e<sizeof(attributeIndexes);e++){
-					if(attributeIndexes[e] == a_i){cancel = true;break;}
-				}
-				if(cancel){continue;}
-
-				char Buf[64]
-				TF2Econ_GetAttributeName( a_i, Buf, 64);
-				if (GetTrieValue(_upg_names, Buf, i))
+			if(inumAttr != null){
+				for( a=0; a < inumAttr.Length && a < 21; a++ )
 				{
-					currentupgrades_idx[client][slot][a2] = i
-					upgrades_ref_to_idx[client][slot][i] = a2;
-					currentupgrades_val[client][slot][a2] = inumAttr.Get(a,1);
-					currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
-					a2++
+					bool cancel = false;
+					a_i = inumAttr.Get(a,0);
+					for(int e = 0;e<sizeof(attributeIndexes);e++){
+						if(attributeIndexes[e] == a_i){cancel = true;break;}
+					}
+					if(cancel){continue;}
+
+					char Buf[64]
+					TF2Econ_GetAttributeName( a_i, Buf, 64);
+					if (GetTrieValue(_upg_names, Buf, i))
+					{
+						currentupgrades_idx[client][slot][a2] = i
+						upgrades_ref_to_idx[client][slot][i] = a2;
+						currentupgrades_val[client][slot][a2] = inumAttr.Get(a,1);
+						currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
+						a2++
+					}
 				}
 			}
 			delete inumAttr;
@@ -2448,7 +2453,7 @@ void DoSapperEffects(int client){
 	if(!IsValidClient(inflictor))
 		return;
 
-	int sapper = GetWeapon(inflictor,6);
+	int sapper = GetWeapon(inflictor,5);
 	if(!IsValidWeapon(sapper))
 		return;
 

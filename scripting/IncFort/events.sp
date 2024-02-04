@@ -1551,9 +1551,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								if(GetVectorDistance(clientPos,VictimPos,true) <= 360000.0)
 								{
 									if(iTeam == 2)
-										CreateParticleEx(i, "powerup_king_red", 1, _, _, 2.0);
+										CreateParticle(i, "powerup_king_red", true, _, 2.0);
 									else
-										CreateParticleEx(i, "powerup_king_blue", 1, _, _, 2.0);
+										CreateParticle(i, "powerup_king_blue", true, _, 2.0);
 									
 									insertBuff(i, kingBuff);
 								}
@@ -1561,6 +1561,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						}
 					}
 					powerupParticle[client] = currentGameTime+2.1;
+				}
+				else if(TF2Attrib_GetValue(kingPowerup) == 2){
+					if(IsValidClient3(tagTeamTarget[client])){
+						CreateParticleEx(client, "utaunt_lavalamp_green_particles", 1, _, _, 4.0);
+						CreateParticleEx(tagTeamTarget[client], "utaunt_lavalamp_green_particles", 1, _, _, 4.0);
+						powerupParticle[client] = currentGameTime+4.1;
+					}
 				}
 			}
 			Address plaguePowerup = TF2Attrib_GetByName(client, "plague powerup");
@@ -3634,6 +3641,7 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 					currentitem_classname[client][1] = "tf_weapon_pda_spy"
 					currentitem_ent_idx[client][1] = entityIndex
 					DefineAttributesTab(client, 735, 1, entityIndex)
+					PrintToServer("%i", entityIndex);
 					currentitem_catidx[client][1] = GetUpgrade_CatList("tf_weapon_pda_spy")
 					GiveNewUpgradedWeapon_(client, 1)
 				}

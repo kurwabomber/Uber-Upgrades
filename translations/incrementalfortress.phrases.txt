@@ -4,6 +4,14 @@
 	{
 		"en"		"Additive Piercing Damage"
 	}
+	"add cond on hit"
+	{
+		"en"		"Add Condition on Hit"
+	}
+	"add cond on hit duration"
+	{
+		"en"		"Add Condition on Hit Duration"
+	}
 	"damage bonus bullet vs sentry target"
 	{
 		"en"		"Damage Bonus VS Sentry Target"

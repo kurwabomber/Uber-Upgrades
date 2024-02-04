@@ -279,4 +279,18 @@
 		"weapon fire rate"		"2.0"
 		"Converts Firerate to Damage"	"1"
 	}
+	"The Saboteur"
+	{
+		"index"			"161"
+		"weapon_class"	"tf_weapon_revolver"
+		"weapon_menu"	"tf_weapon_revolver"
+		"class"			"spy"
+		"description"	"Deals +300 piercing damage. Adds sapped condition on hit for 6s.\n2x slower fire rate, and converts firerate into damage."
+		"cost"			"40000.0"
+		"additive piercing damage"		"300"
+		"weapon fire rate"		"2.0"
+		"add cond on hit"		"50"
+		"add cond on hit duration"		"6"
+		"Converts Firerate to Damage"	"1"
+	}
 }

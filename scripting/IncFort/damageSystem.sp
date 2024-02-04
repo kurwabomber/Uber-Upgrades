@@ -551,6 +551,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
+
 		Address ReflectActive = TF2Attrib_GetByName(victim, "extinguish restores health");
 		if(ReflectActive != Address_Null)
 		{
@@ -917,7 +918,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 			}
 			if(damagecustom == TF_CUSTOM_PLASMA_CHARGED || damagecustom == TF_CUSTOM_PLASMA){
 				if(!GetAttribute(weapon, "energy weapon no hurt building", 1.0)){
-					damage /= 0.2;
+					damage *= 5.0;
 				}
 			}
 		}
@@ -935,7 +936,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 				if(TF2_GetPlayerClass(i) != TFClass_Spy)
 					continue;
 
-				int sapper = GetWeapon(i,6);
+				int sapper = GetWeapon(i,5);
 				if(!IsValidWeapon(sapper))
 					continue;
 
