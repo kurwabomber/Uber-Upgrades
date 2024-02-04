@@ -262,7 +262,6 @@ public void ManagePlayerBuffs(int i){
 			int sapper = GetWeapon(spy,5);
 			if(IsValidWeapon(sapper)){
 				multiplicativeDamageTakenBuff *= GetAttribute(sapper, "scattergun knockback mult");
-				buffChange[i] = true;
 			}
 		}
 	}

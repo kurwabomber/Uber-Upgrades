@@ -791,20 +791,24 @@ public Event_BuffDeployed( Handle event, const char[] name, bool:broadcast )
 public void TF2_OnConditionAdded(client, TFCond cond)
 {
 	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.01);
-	if(cond == TFCond_Charging)
-	{
-		TF2_Override_ChargeSpeed(client);
-	}
-	if(cond == TFCond_Slowed){
-		if(GetAttribute(client, "inverter powerup", 0.0) == 1){
-			TF2_AddCondition(client, TFCond_HalloweenSpeedBoost, 3.0);
+	switch(cond){
+		case TFCond_Sapped:{
+			buffChange[client] = true;
+		}
+		case TFCond_Charging:{
+			TF2_Override_ChargeSpeed(client);
+		}
+		case TFCond_Slowed:{
+			if(GetAttribute(client, "inverter powerup", 0.0) == 1){
+				TF2_AddCondition(client, TFCond_HalloweenSpeedBoost, 3.0);
+				TF2_RemoveCondition(client, cond);
+			}
+		}
+		case TFCond_Bonked:{
+			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 8.0);
+			TF2_AddCondition(client, TFCond_HalloweenQuickHeal, 8.0);
 			TF2_RemoveCondition(client, cond);
 		}
-	}
-	if(cond == TFCond_Bonked){
-		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 8.0);
-		TF2_AddCondition(client, TFCond_HalloweenQuickHeal, 8.0);
-		TF2_RemoveCondition(client, cond);
 	}
 }
 public void TF2_OnConditionRemoved(client, TFCond:cond)
@@ -836,6 +840,9 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 				}
 				EntityExplosion(client, damage, distance, grenadevec, 1);
 			}
+		}
+		case TFCond_Sapped:{
+			buffChange[client] = true;
 		}
 	}
 	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.001);
