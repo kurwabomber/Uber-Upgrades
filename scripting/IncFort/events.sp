@@ -2263,7 +2263,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1);
+								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 2.6);
 								SetEntityRenderColor(CWeapon, 255,0,0,200);
 							}
 							if(weaponArtCooldown[client] > currentGameTime)
@@ -3648,7 +3648,6 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 					currentitem_classname[client][1] = "tf_weapon_pda_spy"
 					currentitem_ent_idx[client][1] = entityIndex
 					DefineAttributesTab(client, 735, 1, entityIndex)
-					PrintToServer("%i", entityIndex);
 					currentitem_catidx[client][1] = GetUpgrade_CatList("tf_weapon_pda_spy")
 					GiveNewUpgradedWeapon_(client, 1)
 				}

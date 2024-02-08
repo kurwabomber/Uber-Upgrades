@@ -434,8 +434,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			damage *= 1.5;
 			if(powerupParticle[attacker] <= currentGameTime)
 			{
-				CreateParticleEx(victim, "critgun_weaponmodel_red", 1, 0, damagePosition);
-				powerupParticle[attacker] = currentGameTime+0.2;
+				CreateParticleEx(victim, "critgun_weaponmodel_red", 1, 0, damagePosition, 0.5);
+				powerupParticle[attacker] = currentGameTime+0.6;
 			}
 		}
 		if(GetAttribute(attacker, "revenge powerup", 0.0) == 2)
@@ -499,7 +499,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 				
 				SDKHooks_TakeDamage(victim, attacker, attacker, TF2_GetDamageModifiers(attacker, weapon)*100.0*bleedBonus,DMG_PREVENT_PHYSICS_FORCE, -1, NULL_VECTOR, NULL_VECTOR);
-				CreateParticleEx(victim, "env_sawblood", 1, 0, damagePosition);
+				CreateParticleEx(victim, "env_sawblood", 1, 0, damagePosition, 2.0);
 			}
 		}
 		Address radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");

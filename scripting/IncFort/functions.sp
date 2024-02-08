@@ -626,7 +626,6 @@ public GiveNewUpgradedWeapon_(client, slot)
 					continue;
 					
 				TF2Attrib_SetByName(iEnt, upgrades[ifid].attr_name,currentupgrades_val[client][slot][a]);
-				PrintToServer("%i", iEnt);
 			}
 		}
 		float bpsMult = GetAttribute(iEnt, "bullets per shot bonus", 1.0);

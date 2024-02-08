@@ -86,7 +86,6 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 
 		for (i = 0; (tmp_up_idx = given_upgrd_list[w_id][cat_choice][subcat_choice][i]); ++i)
 		{
-			//PrintToServer("%i", tmp_up_idx);
 			up_cost = upgrades[tmp_up_idx].cost;
 			if (slot == 1)
 				up_cost = RoundToCeil(up_cost*SecondaryCostReduction);
