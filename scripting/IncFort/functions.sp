@@ -1030,7 +1030,7 @@ DisplayItemChange(client,itemidx)
 		//Soldier Secondary
 		case 129,1001:
 		{
-			ChangeString = "The Buff Banner | Gives a +35% damage boost while still giving minicrits. Rage scales off of firerate of weapon.";
+			ChangeString = "The Buff Banner | Rage scales off of firerate of weapon.";
 		}
 		case 226:
 		{
@@ -1218,7 +1218,7 @@ DisplayItemChange(client,itemidx)
 		//Sniper Secondaries
 		case 751:
 		{
-			ChangeString = "The Cleaner's Carbine | No longer has crikey. Close ranged backattacks do minicrits. Converts fire rate to damage.";
+			ChangeString = "The Cleaner's Carbine | Crikey now applies mark for death. Close ranged backattacks do minicrits. Converts fire rate to damage.";
 		}
 		case 58	:
 		{

@@ -255,47 +255,49 @@ public MRESReturn OnModifyRagePre(Address pPlayerShared, Handle hParams) {
 	if(!IsValidClient(client))
 		return MRES_Ignored;	
 
-	if(TF2_GetPlayerClass(client) == TFClass_Soldier)
+	switch(TF2_GetPlayerClass(client))
 	{
-		float flMultiplier = 1.0;
-		
-		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-		if (IsValidEdict(CWeapon))
-		{
-			Address FireRate1 = TF2Attrib_GetByName(CWeapon, "fire rate bonus");
-			Address FireRate2 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
-			Address FireRate3 = TF2Attrib_GetByName(CWeapon, "fire rate penalty HIDDEN");
-			Address FireRate4 = TF2Attrib_GetByName(CWeapon, "fire rate bonus HIDDEN");
-			
-			if(FireRate1 != Address_Null)
-			{
-				flMultiplier *= TF2Attrib_GetValue(FireRate1);
-			}
-			if(FireRate2 != Address_Null)
-			{
-				flMultiplier *= TF2Attrib_GetValue(FireRate2);
-			}
-			if(FireRate3 != Address_Null)
-			{
-				flMultiplier *= TF2Attrib_GetValue(FireRate3);
-			}
-			if(FireRate4 != Address_Null)
-			{
-				flMultiplier *= TF2Attrib_GetValue(FireRate4);
-			}
+		case TFClass_Scout:{
+			DHookSetParam(hParams, 1, 2.0);
 		}
-		DHookSetParam(hParams, 1, 7.5 * flMultiplier);
-	}
-	if(TF2_GetPlayerClass(client) == TFClass_Pyro)
-	{
-		DHookSetParam(hParams, 1, 0.4);
-	}
-	if(TF2_GetPlayerClass(client) == TFClass_Sniper)
-	{
-		int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-		if (IsValidEdict(CWeapon) && GetWeapon(client,1) == CWeapon)
-		{
-			DHookSetParam(hParams, 1, 1.0);
+		case TFClass_Soldier:{
+			float flMultiplier = 1.0;
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			if (IsValidEdict(CWeapon))
+			{
+				Address FireRate1 = TF2Attrib_GetByName(CWeapon, "fire rate bonus");
+				Address FireRate2 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
+				Address FireRate3 = TF2Attrib_GetByName(CWeapon, "fire rate penalty HIDDEN");
+				Address FireRate4 = TF2Attrib_GetByName(CWeapon, "fire rate bonus HIDDEN");
+				
+				if(FireRate1 != Address_Null)
+				{
+					flMultiplier *= TF2Attrib_GetValue(FireRate1);
+				}
+				if(FireRate2 != Address_Null)
+				{
+					flMultiplier *= TF2Attrib_GetValue(FireRate2);
+				}
+				if(FireRate3 != Address_Null)
+				{
+					flMultiplier *= TF2Attrib_GetValue(FireRate3);
+				}
+				if(FireRate4 != Address_Null)
+				{
+					flMultiplier *= TF2Attrib_GetValue(FireRate4);
+				}
+			}
+			DHookSetParam(hParams, 1, 7.5 * flMultiplier);
+		}
+		case TFClass_Pyro:{
+			DHookSetParam(hParams, 1, 0.4);
+		}
+		case TFClass_Sniper:{
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			if (IsValidEdict(CWeapon) && GetWeapon(client,1) == CWeapon)
+			{
+				DHookSetParam(hParams, 1, 1.0);
+			}
 		}
 	}
 	return MRES_ChangedHandled;

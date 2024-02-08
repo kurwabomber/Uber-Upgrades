@@ -569,7 +569,6 @@ public Action:Timer_Every100MS(Handle timer)
 									GetClientAbsOrigin(i, VictimPos);
 									if(GetVectorDistance(ClientPos,VictimPos,true ) <= range*range)
 									{
-										TF2_AddCondition(i, TFCond_DisguiseRemoved, 0.3)//Buff Banner | 1.8x dmg
 										if(miniCritStatusAttacker[i] < currentGameTime+0.3)
 											miniCritStatusAttacker[i] = currentGameTime+0.3
 									}
@@ -586,7 +585,7 @@ public Action:Timer_Every100MS(Handle timer)
 								{
 									GetClientAbsOrigin(i, VictimPos);
 									if(GetVectorDistance(ClientPos,VictimPos, true) <= range*range)
-										TF2_AddCondition(i, TFCond_DefenseBuffNoCritBlock, 0.3)//Battalion's Backup | No more crit immunity
+										TF2_AddCondition(i, TFCond_DefenseBuffNoCritBlock, 0.3)
 								}
 							}
 						}
@@ -600,7 +599,7 @@ public Action:Timer_Every100MS(Handle timer)
 								{
 									GetClientAbsOrigin(i, VictimPos);
 									if(GetVectorDistance(ClientPos,VictimPos,true) <= range*range)
-										TF2_AddCondition(i, TFCond_MedigunDebuff, 0.3)//concheror | 15% lifesteal (150% lifesteal attribute)
+										TF2_AddCondition(i, TFCond_MedigunDebuff, 0.3)
 								}
 							}
 						}

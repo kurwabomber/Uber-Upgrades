@@ -996,10 +996,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			damage *= 0.35;
 		}
 	}
-	if(TF2_IsPlayerInCondition(attacker, TFCond_DisguiseRemoved))
-	{
-		damage *= 1.8;
-	}
 	if(IsValidWeapon(weapon))
 	{
 		int weaponIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
