@@ -114,7 +114,9 @@
 		"426"//Eviction Notice
 		{
 			"preserve_attributes"	"1"
-			"1"				"348 ; 0.5"
+			"1"				"394 ; 0.5"
+			"2"				"6012 ; 0.5"
+			"3"				"6023 ; 1"
 		}
 		"1101"//B.A.S.E Jumper
 		{
@@ -495,7 +497,8 @@
 		"730"//Beggar's Bazooka
 		{
 			"preserve_attributes"	"1"
-			"1"				"394 ; 0.9"
+			"1"				"394 ; 0.3"
+			"2"				"6012 ; 0.4"
 		}
 		"142"//Gunslinger
 		{

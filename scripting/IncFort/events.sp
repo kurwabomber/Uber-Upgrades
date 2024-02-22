@@ -234,6 +234,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			}
 		}
 	}
+	currentDamageType[attacker].clear();
 }
 public Event_UberDeployed(Event event, const char[] name, bool dontBroadcast){
 	int medic = GetClientOfUserId(GetEventInt(event, "userid"));
@@ -632,6 +633,7 @@ public MRESReturn OnThermalThrusterLaunch(int weapon){
 	}
 	return MRES_Ignored;
 }
+//New bot speed cap is 3khu/s
 public MRESReturn OnCalculateBotSpeedPost(int client, Handle hReturn) {
 	DHookSetReturn(hReturn, 3000.0);
 	return MRES_Supercede;
@@ -2264,8 +2266,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						{
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 2.6);
+								weaponArtParticle[client] = currentGameTime+14.0;
+								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 15.0);
 								SetEntityRenderColor(CWeapon, 255,0,0,200);
 							}
 							if(weaponArtCooldown[client] > currentGameTime)
@@ -3418,6 +3420,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	bossPhase[client] = 0;
 	RespawnEffect(client);
+	currentDamageType[client].clear();
 	if(IsClientInGame(client) && IsValidClient(client)){
 		CancelClientMenu(client);
 		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);

@@ -1025,7 +1025,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 730:
 		{
-			ChangeString = "The Beggar's Bazooka | 10% faster fire rate.";
+			ChangeString = "The Beggar's Bazooka | 70% faster fire rate, but you deal 66% less damage.";
 		}
 		//Soldier Secondary
 		case 129,1001:
