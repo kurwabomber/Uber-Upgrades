@@ -4205,6 +4205,16 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
+    "6041"
+	{
+        "name"	"additive damage bonus"
+        "attribute_class"	"additive_damage"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+        "stored_as_integer"	"0"
+    }
     //200 series
     "6200"
     {
