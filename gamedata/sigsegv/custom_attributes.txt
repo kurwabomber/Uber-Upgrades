@@ -4205,7 +4205,7 @@
         "effect_type"	"positive"
         "stored_as_integer"	"0"
     }
-    "6041"
+    "6042"
 	{
         "name"	"additive damage bonus"
         "attribute_class"	"additive_damage"

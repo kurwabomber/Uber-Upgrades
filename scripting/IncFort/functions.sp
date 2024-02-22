@@ -516,7 +516,7 @@ stock char[] getDamageCategory(extendedDamageTypes damagetype, int attacker = -1
 	char damageCategory[64];
 
 	if(IsValidClient3(attacker)){
-		if(GetAttribute(attacker, "thunderstorm powerup", 0.0))
+		if(GetAttribute(attacker, "supernova powerup", 0.0) == 3)
 			StrCat(damageCategory, sizeof(damageCategory), "electric");
 	}
 

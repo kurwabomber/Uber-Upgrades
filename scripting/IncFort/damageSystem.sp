@@ -1176,7 +1176,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 				burndmgMult *= 3;
 
-			if(damagetype & DMG_ACTUALIGNITE || (GetClientTeam(attacker) != GetClientTeam(victim) && (GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) || GetAttribute(attacker, "infernal powerup", 0.0)) &&
+			if(damagetype & DMG_ACTUALIGNITE || (GetClientTeam(attacker) != GetClientTeam(victim) && (GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) || GetAttribute(attacker, "supernova powerup", 0.0) == 2) &&
 			TF2_GetDPSModifiers(attacker, weapon)*burndmgMult >= fl_HighestFireDamage[victim] && 
 			!(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE) && !(damagetype & DMG_ENERGYBEAM))) // int afterburn system.
 			{
@@ -1831,7 +1831,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 		if(dmgMasteryAddr != Address_Null)
 			damage *= TF2Attrib_GetValue(dmgMasteryAddr)*TF2Attrib_GetValue(dmgMasteryAddr);
 
-		if(GetAttribute(attacker, "thunderstorm powerup", 0.0)){
+		if(GetAttribute(attacker, "supernova powerup", 0.0) == 3){
 			float buff = 1.0;
 			for(int i = 1;i<=MaxClients;++i){
 				if(isTagged[attacker][i])
