@@ -583,6 +583,8 @@ public MRESReturn OnAirblast(int weapon, Handle hParams){
 
 		AirblastDamage *= TF2_GetDamageModifiers(owner, weapon);
 
+		Buff dragonDance;
+		dragonDance.init("Combo Starter", "", Buff_DragonDance, weapon, owner, 2.0);
 		for(int i=1; i<=MaxClients; ++i)
 		{
 			if(IsValidClient3(i) && IsClientInGame(i) && IsPlayerAlive(i))
@@ -611,6 +613,13 @@ public MRESReturn OnAirblast(int weapon, Handle hParams){
 								TF2Attrib_SetByName(i,"major increased jump height", Pow(1.2/SlowForce,0.3));
 							}
 
+							if(GetAttribute(weapon, "airblast flings enemy")){
+								float flingVelocity[3];
+								flingVelocity[2] = GetAttribute(weapon, "airblast flings enemy");
+								TeleportEntity(i, NULL_VECTOR, NULL_VECTOR, flingVelocity);
+
+								insertBuff(i, dragonDance);
+							}
 						}
 						else//Teammates buffed.
 						{

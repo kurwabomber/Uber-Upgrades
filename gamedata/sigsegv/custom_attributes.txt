@@ -4686,4 +4686,14 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "6317"
+    {
+        "name"  "airblast flings enemy"
+        "attribute_class"   "airblast_flings_enemy"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
 }

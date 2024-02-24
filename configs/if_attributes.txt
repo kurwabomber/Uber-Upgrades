@@ -5777,6 +5777,16 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1633"
+		{
+			"name"		"airblast flings enemy"
+			"ref"		"airblast flings enemy"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{

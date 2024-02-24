@@ -720,6 +720,14 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 				ScaleVector(damageForce, 0.0);
 			}
 		}
+		if(hasBuffIndex(victim, Buff_DragonDance)){
+			int temp = getBuffInArray(victim, Buff_DragonDance);
+			if(playerBuffs[victim][temp].priority != weapon){
+				damage += TF2_GetWeaponclassDPS(attacker, playerBuffs[victim][temp].priority) * TF2_GetDPSModifiers(attacker, playerBuffs[victim][temp].priority) * 2.5;
+				playerBuffs[victim][temp].clear();
+				buffChange[victim]=true;
+			}
+		}
 	}
 	lastDamageTaken[victim] = damage;
 	if(damage < 0.0)

@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"airblast flings enemy"
+	{
+		"en"		"Airblast Flings Enemy"
+	}
 	"additive piercing damage"
 	{
 		"en"		"Additive Piercing Damage"
