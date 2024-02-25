@@ -4696,4 +4696,14 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "6318"
+    {
+        "name"  "damage causes freeze"
+        "attribute_class"   "damage_causes_freeze"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
 }

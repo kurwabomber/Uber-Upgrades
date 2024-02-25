@@ -101,6 +101,10 @@ enum struct Buff{
 						AddPlayerHealth(i, this.priority, 2.0, true, this.inflictor);
 				}
 			}
+			case Buff_Frozen:{
+				SetEntityRenderColor(this.priority, 255, 255, 255, 255);
+				SetEntityMoveType(this.priority, MOVETYPE_WALK);
+			}
 		}
 
 		this.name = "";
@@ -150,6 +154,7 @@ enum {
 	Buff_InfernalDOT=17,
 	Buff_Enraged=18,
 	Buff_DragonDance=19,
+	Buff_Frozen=20,
 	BuffAmt
 };
 bool isBonus[BuffAmt] = {
@@ -171,6 +176,7 @@ bool isBonus[BuffAmt] = {
 	false,
 	false,
 	true,
+	false,
 	false,
 	false,
 }
@@ -406,7 +412,7 @@ float SupernovaBuildup[MAXPLAYERS+1];
 float ConcussionBuildup[MAXPLAYERS+1];
 float BleedMaximum[MAXPLAYERS+1];
 float RadiationMaximum[MAXPLAYERS+1];
-
+float FreezeBuildup[MAXPLAYERS+1];
 
 //Projectile Properties
 bool isProjectileHoming[MAXENTITIES];

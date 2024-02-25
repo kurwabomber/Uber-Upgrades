@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"damage causes freeze"
+	{
+		"en"		"Damage Causes Freeze Buildup"
+	}
+	"attach particle effect"
+	{
+		"en"		"Unusual Effect Applied"
+	}
 	"airblast flings enemy"
 	{
 		"en"		"Airblast Flings Enemy"

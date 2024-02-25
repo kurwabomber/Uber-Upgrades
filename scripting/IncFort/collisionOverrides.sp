@@ -864,6 +864,28 @@ public Action:OnCollisionJarateFrag(entity, client)
 	RemoveEntity(entity);
 	return Plugin_Stop;
 }
+public Action:CollisionFrozenFrag(entity, client)
+{
+	int CWeapon = EntRefToEntIndex(jarateWeapon[entity])
+	if(IsValidEdict(CWeapon))
+	{
+		int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+		if(IsValidClient3(owner))
+		{
+			if(IsValidForDamage(client))
+			{
+				if(IsOnDifferentTeams(owner,client))
+				{
+					currentDamageType[owner].second |= DMG_PIERCING;
+					float damageDealt = 0.5*TF2Util_GetEntityMaxHealth(jarateWeapon[entity]);
+					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+					RemoveEntity(entity);
+				}
+			}
+		}
+	}
+	return Plugin_Stop;
+}
 public Action:meteorCollision(entity, client)
 {		
 	if(!IsValidEdict(entity))

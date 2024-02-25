@@ -261,6 +261,12 @@ public Action:Timer_Every100MS(Handle timer)
 					Format(buildup, sizeof(buildup),"\n   CONCUSSION: %.0f%", ConcussionBuildup[client]*100.0);
 					StrCat(StatusEffectText,sizeof(StatusEffectText),buildup);
 				}
+				if(FreezeBuildup[client] > 0.0)
+				{
+					char buildup[512];
+					Format(buildup, sizeof(buildup),"\n   FREEZE: %.0f%", FreezeBuildup[client]*100.0);
+					StrCat(StatusEffectText,sizeof(StatusEffectText),buildup);
+				}
 				
 				SetHudTextParams(0.43, 0.21, 0.21, 199, 28, 28, 255, 0, 0.0, 0.0, 0.0);
 				ShowSyncHudText(client, hudStatus, StatusEffectText);

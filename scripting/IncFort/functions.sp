@@ -2630,6 +2630,26 @@ checkRadiation(victim,attacker)
 		CreateParticleEx(victim, "merasmus_blood", 1, 0, particleOffset);
 	}
 }
+checkFreeze(int victim,int attacker)
+{
+	float clientpos[3];
+	GetClientAbsOrigin(victim, clientpos);
+	while (FreezeBuildup[victim] >= 100.0)
+	{
+		FreezeBuildup[victim] -= 100.0;
+		EmitSoundToAll(SOUND_FREEZE, _, victim, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
+
+		Buff frozen;
+		frozen.init("Frozen", "", Buff_Frozen, victim, attacker, 6.0);
+		insertBuff(victim, frozen);
+
+		TF2_AddCondition(victim, TFCond_FreezeInput, 6.0, attacker);
+		currentDamageType[attacker].second |= DMG_PIERCING;
+		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.2, DMG_PREVENT_PHYSICS_FORCE);
+		SetEntityRenderColor(victim, 0, 128, 255, 80);
+		SetEntityMoveType(victim, MOVETYPE_NONE);
+	}
+}
 monoculusBonus(entity) 
 {
 	entity = EntRefToEntIndex(entity);

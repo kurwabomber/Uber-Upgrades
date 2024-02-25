@@ -300,11 +300,22 @@
 		"weapon_menu"	"tf_weapon_flamethrower"
 		"class"			"pyro"
 		"description"	"Airblast flings enemies into air instead:\nEnemies will take +250% DPS of this weapon when hit with your secondary or melee."
-		"cost"			"100000.0"
+		"cost"			"60000.0"
 		"mult airblast refire time"	"2.0"
 		"airblast flings enemy"		"800"
 		"maxammo primary increased"	"5.0"
 		"paintkit_proto_def_index"	"390"
 		"set_item_texture_wear"		"0.0"
+	}
+	"Frozen Edge"
+	{
+		"index"			"452"
+		"weapon_class"	"tf_weapon_bat"
+		"weapon_menu"	"tf_weapon_bat"
+		"class"			"scout"
+		"description"	"200% of damage will go into freezing victims."
+		"cost"			"20000.0"
+		"damage causes freeze"	"2.0"
+		"attach particle effect"	"143"
 	}
 }

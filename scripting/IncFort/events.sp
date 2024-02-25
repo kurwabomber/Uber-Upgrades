@@ -166,6 +166,18 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
+				//Freeze
+				float freezeRatio = GetAttribute(CWeapon, "damage causes freeze");
+				if(freezeRatio > 0){
+					float frostIncrease = 100.0*freezeRatio*damage/TF2Util_GetEntityMaxHealth(client);
+					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+						frostIncrease *= 2.0;
+
+					FreezeBuildup[client] += frostIncrease;
+					checkFreeze(client, attacker);
+				}
+
+				//Lifesteal
 				float lifestealFactor = 1.0;
 				float maximumOverheal = 1.5;
 				if(IsFakeClient(client))
@@ -1271,6 +1283,68 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 	enragedKills[client] = 0;
 
 	CancelClientMenu(client);
+
+	if(hasBuffIndex(client, Buff_Frozen)){
+		int owner = playerBuffs[client][getBuffInArray(client, Buff_Frozen)].inflictor;
+		for(int i = 0;i<9;++i)
+		{
+			int iEntity = CreateEntityByName("tf_projectile_syringe");
+			if (!IsValidEdict(iEntity)) 
+				continue;
+
+			int iTeam = GetClientTeam(owner);
+			float fAngles[3],fOrigin[3],vBuffer[3]
+			float fVelocity[3]
+			float fwd[3]
+			SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", owner);
+			SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+			GetEntPropVector(client, Prop_Send, "m_vecOrigin", fOrigin);
+			fAngles[0] = GetRandomFloat(0.0,-60.0)
+			fAngles[1] = GetRandomFloat(-179.0,179.0)
+
+			GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+			ScaleVector(fwd, 30.0);
+			
+			AddVectors(fOrigin, fwd, fOrigin);
+			GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+			
+			float velocity = 2000.0;
+			fVelocity[0] = vBuffer[0]*velocity;
+			fVelocity[1] = vBuffer[1]*velocity;
+			fVelocity[2] = vBuffer[2]*velocity;
+			
+			TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+			DispatchSpawn(iEntity);
+			SetEntityGravity(iEntity, 9.0);
+
+			jarateWeapon[iEntity] = client;
+			SDKHook(iEntity, SDKHook_Touch, CollisionFrozenFrag);
+			SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.5);
+
+			float vecBossMin[3], vecBossMax[3];
+			GetEntPropVector(iEntity, Prop_Send, "m_vecMins", vecBossMin);
+			GetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecBossMax);
+			
+			float vecScaledBossMin[3], vecScaledBossMax[3];
+			
+			vecScaledBossMin = vecBossMin;
+			vecScaledBossMax = vecBossMax;
+
+			vecScaledBossMin[0] -= 3.0;
+			vecScaledBossMax[0] += 3.0;
+			vecScaledBossMin[1] -= 3.0;
+			vecScaledBossMax[1] += 3.0;
+			vecScaledBossMin[2] -= 3.0;
+			vecScaledBossMax[2] += 3.0;
+			
+			SetEntPropVector(iEntity, Prop_Send, "m_vecMins", vecScaledBossMin);
+			SetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecScaledBossMax);
+			SetEntityRenderColor(iEntity, 0, 128, 255, 90);
+			SetEntityRenderFx(iEntity, RENDERFX_STROBE_FAST);
+			CreateTimer(3.0, SelfDestruct, EntIndexToEntRef(iEntity));
+		}
+	}
+
 	clearAllBuffs(client);
 
 	if(snowstormActive[client]){
@@ -2505,7 +2579,9 @@ public OnGameFrame()
 				if(BleedBuildup[client] > 0.0){
 				BleedBuildup[client] -= (BleedMaximum[client] * 0.143) * TICKINTERVAL; }//Fully remove bleed within 7 seconds.
 				if(ConcussionBuildup[client] > 0.0){
-				ConcussionBuildup[client] -= 100.0 * 0.03 * TICKINTERVAL; }//Fully remove concussion within 30 seconds.
+				ConcussionBuildup[client] -= 3.0 * TICKINTERVAL; }
+				if(FreezeBuildup[client] > 0.0){
+				FreezeBuildup[client] -= 3.0 * TICKINTERVAL; }
 
 				int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
 				int clientMaxHealth = TF2_GetMaxHealth(client);
@@ -3344,6 +3420,7 @@ public OnClientDisconnect(client)
 	RageBuildup[client] = 0.0;
 	SupernovaBuildup[client] = 0.0;
 	ConcussionBuildup[client] = 0.0;
+	FreezeBuildup[client] = 0.0;
 	fl_HighestFireDamage[client] = 0.0;
 	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
@@ -3430,28 +3507,34 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 	bossPhase[client] = 0;
 	RespawnEffect(client);
 	currentDamageType[client].clear();
-	if(IsClientInGame(client) && IsValidClient(client)){
-		CancelClientMenu(client);
-		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
-		client_respawn_handled[client] = 1;
-		CreateTimer(0.4, WeaponReGiveUpgrades, GetClientUserId(client));
-		CancelClientMenu(client);
-		if(AreClientCookiesCached(client)){
-			char menuEnabled[64];
-			GetClientCookie(client, respawnMenu, menuEnabled, sizeof(menuEnabled));
-			float menuValue = StringToFloat(menuEnabled);
-			if(menuValue == 0.0)
+	if(IsValidClient3(client)){
+
+		if(!IsFakeClient(client)){
+			CancelClientMenu(client);
+			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
+			client_respawn_handled[client] = 1;
+			CreateTimer(0.4, WeaponReGiveUpgrades, GetClientUserId(client));
+			CancelClientMenu(client);
+			if(AreClientCookiesCached(client)){
+				char menuEnabled[64];
+				GetClientCookie(client, respawnMenu, menuEnabled, sizeof(menuEnabled));
+				float menuValue = StringToFloat(menuEnabled);
+				if(menuValue == 0.0)
+					Menu_BuyUpgrade(client, 0);
+			}
+			else{
 				Menu_BuyUpgrade(client, 0);
+			}
 		}
-		else{
-			Menu_BuyUpgrade(client, 0);
-		}
+
+		SetEntityRenderColor(client, 255, 255, 255, 255);
 		TF2_RemoveCondition(client,TFCond_Plague);
 		BleedBuildup[client] = 0.0;
 		RadiationBuildup[client] = 0.0;
 		RageActive[client] = false;
 		SupernovaBuildup[client] = 0.0;
 		ConcussionBuildup[client] = 0.0;
+		FreezeBuildup[client] = 0.0;
 		fl_HighestFireDamage[client] = 0.0;
 		miniCritStatusAttacker[client] = 0.0;
 		miniCritStatusVictim[client] = 0.0;
@@ -3468,7 +3551,6 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		bloodboundDamage[client] = 0.0;
 		bloodboundHealing[client] = 0.0;
 		tagTeamTarget[client] = -1;
-		SetEntityRenderColor(client, 255,255,255,255);
 		for(int i=1;i<=MaxClients;++i)
 		{
 			corrosiveDOT[client][i][0] = 0.0;
@@ -3485,6 +3567,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 			}
 			snowstormActive[client] = false;
 		}
+
 	}
 	if(IsFakeClient(client)){
 		if(IsMvM()){

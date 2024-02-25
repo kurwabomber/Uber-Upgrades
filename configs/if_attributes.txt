@@ -5787,6 +5787,26 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1634"
+		{
+			"name"		"attach particle effect"
+			"ref"		"attach particle effect"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1635"
+		{
+			"name"		"damage causes freeze"
+			"ref"		"damage causes freeze"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{
