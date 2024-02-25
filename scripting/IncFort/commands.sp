@@ -774,3 +774,141 @@ public Action:Command_GiveKills(client, args)
 	}
 	return Plugin_Handled;
 }
+
+public Action Command_AutoOptimize(int client, int args){
+	char strTarget[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH]
+	int target_list[MAXPLAYERS], target_count;
+	bool tn_is_ml;
+	GetCmdArg(1, strTarget, sizeof(strTarget));
+	if((target_count = ProcessTargetString(strTarget, client, target_list, MAXPLAYERS, 0, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+	{
+		ReplyToTargetError(client, target_count);
+		return Plugin_Handled;
+	}
+
+	int slot = GetCmdArgInt(2);
+	
+	for(int i = 0; i < target_count; ++i)
+	{
+		if(!IsValidClient3(target_list[i]))
+			continue;
+
+		PrintToServer("Auto-optimizing for %N", client);
+		int upgrade_choice
+		int w_id = currentitem_catidx[target_list[i]][slot];
+		bool escape = false;
+		for(int ii = 0; ii< LISTS_CATEGORIES;++ii){
+			if(escape)
+				break;
+
+			for(int iii = 0; iii< MAX_ATTRIBUTES_ITEM;++iii){
+				if(escape)
+					break;
+
+				if(upgrades_efficiency_list[target_list[i]][slot][given_upgrd_list[w_id][ii][0][iii]] == 1){
+					upgrade_choice = given_upgrd_list[w_id][ii][0][iii];
+					escape = true;
+				}
+			}
+		}
+
+		int inum = upgrades_ref_to_idx[target_list[i]][slot][upgrade_choice]
+
+		while(is_client_got_req(target_list[i], upgrade_choice, slot, inum)){
+			UpgradeItem(target_list[i], upgrade_choice, inum, 1.0, slot)
+
+			int numEff = 0;
+			for(int e=0;e<MAX_ATTRIBUTES;++e)
+			{
+				if(upgrades_efficiency[target_list[i]][slot][e])
+					++numEff;
+			}
+			float max = 0.0;
+			int highestIndex = 0;
+			bool toBlock[MAX_ATTRIBUTES];
+			for(int k=0;k<numEff;++k){
+				for(int t=0;t<MAX_ATTRIBUTES;++t)
+				{
+					int tempNum = upgrades_ref_to_idx[target_list[i]][slot][t];
+					if(tempNum == 20000)
+						continue;
+
+					float val = currentupgrades_val[target_list[i]][slot][tempNum];
+					int up_cost = upgrades[t].cost;
+					up_cost += RoundFloat(up_cost * (val / upgrades[t].ratio) * upgrades[t].cost_inc_ratio)
+					if (up_cost < 0.0)
+					{
+						up_cost *= -1;
+						if (up_cost < upgrades[t].cost)
+							up_cost = upgrades[t].cost
+					}
+
+					switch(upgrades[t].display_style)
+					{
+						case 1:
+						{
+							if(val == 0.0)
+								val = upgrades[t].i_val;
+		
+							upgrades_efficiency[client][slot][t] = 50000.0*(((val+upgrades[t].ratio)/val)-1.0)/up_cost;
+						}
+						case 6:
+						{
+							if(val == 0.0)
+								val = upgrades[t].i_val;
+							upgrades_efficiency[client][slot][t] = 50000.0*(0.05)/up_cost;
+						}
+					}
+				}
+			}
+
+			for(int k=0;k<numEff;++k) 
+			{
+				for(int t=0;t<MAX_ATTRIBUTES;++t)
+				{
+					int tempNum = upgrades_ref_to_idx[target_list[i]][slot][t];
+					if(tempNum == 20000)
+						continue;
+
+					if(RoundFloat(currentupgrades_val[target_list[i]][slot][tempNum]*100) == RoundFloat(upgrades[t].m_val * 100))
+					{
+						toBlock[t] = true;
+						upgrades_efficiency_list[target_list[i]][slot][t] = 0;
+						upgrades_efficiency[target_list[i]][slot][t] = 0.0;
+					}
+
+					if(!toBlock[t] && upgrades_efficiency[target_list[i]][slot][t])
+					{
+						if(upgrades_efficiency[target_list[i]][slot][t] > max)
+						{
+							max = upgrades_efficiency[target_list[i]][slot][t]
+							highestIndex = t;
+						}
+					}
+				}
+				max = 0.0;
+				toBlock[highestIndex] = true;
+				upgrades_efficiency_list[target_list[i]][slot][highestIndex] = k+1;
+			}
+
+			escape = false;
+			for(int ii = 0; ii< LISTS_CATEGORIES;++ii){
+				if(escape)
+					break;
+
+				for(int iii = 0; iii< MAX_ATTRIBUTES_ITEM;++iii){
+					if(escape)
+						break;
+
+					if(upgrades_efficiency_list[target_list[i]][slot][given_upgrd_list[w_id][ii][0][iii]] == 1){
+						upgrade_choice = given_upgrd_list[w_id][ii][0][iii];
+						escape = true;
+					}
+				}
+			}
+			inum = upgrades_ref_to_idx[target_list[i]][slot][upgrade_choice];
+		}
+	}
+
+	return Plugin_Handled;
+}

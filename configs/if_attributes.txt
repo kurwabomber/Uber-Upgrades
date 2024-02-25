@@ -2234,7 +2234,6 @@
 			"value"		"0.25"
 			"increase_ratio" 	"0.4"
 			"init"		"1.00"
-			"display_style"		"1"
 			"max"		"20.00"
 		}
 		"170"

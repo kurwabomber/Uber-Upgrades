@@ -115,6 +115,7 @@ public UberShopinitMenusHandlers()
 	RegAdminCmd("sm_test", TestCommand, ADMFLAG_ROOT, "Filler Test");
 	RegAdminCmd("sm_damage", Command_DealDamage, ADMFLAG_ROOT, "Deals damage to a player.")
 	RegAdminCmd("sm_giveKills", Command_GiveKills, ADMFLAG_ROOT, "Feeds kills to a strange weapon.")
+	RegAdminCmd("sm_ifautooptimize", Command_AutoOptimize, ADMFLAG_ROOT, "Automatically upgrades a weapon with max money.");
 	
 	RegConsoleCmd("sm_scoreboard", ShowStats, "Shows everyones statisics");
 	RegConsoleCmd("scoreboard", ShowStats, "Shows everyones statisics");

@@ -1340,7 +1340,6 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 			SetEntPropVector(iEntity, Prop_Send, "m_vecMins", vecScaledBossMin);
 			SetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecScaledBossMax);
 			SetEntityRenderColor(iEntity, 0, 128, 255, 90);
-			SetEntityRenderFx(iEntity, RENDERFX_STROBE_FAST);
 			CreateTimer(3.0, SelfDestruct, EntIndexToEntRef(iEntity));
 		}
 	}
