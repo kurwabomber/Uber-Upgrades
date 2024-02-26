@@ -1046,7 +1046,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 442:
 		{
-			ChangeString = "The Righteous Bison | Shoots tracer rounds that also deals damage to enemies in a cross pattern. Converts fire rate to damage.";
+			ChangeString = "The Righteous Bison | Shoots tracer rounds that also deals (1.25x) damage to enemies in a cross pattern. Converts fire rate to damage. 4x faster fire rate.";
 		}
 		case 1101:
 		{
@@ -1136,14 +1136,6 @@ DisplayItemChange(client,itemidx)
 		{
 			ChangeString = "Buffalo Steak Sandvich | No longer limits speed.";
 		}
-		case 159:
-		{
-			ChangeString = "The Dalokohs Bar | Adds an additional 15 armor when eaten.";
-		}
-		case 433:
-		{
-			ChangeString = "Fishcake | Adds an additional 15 armor when eaten.";
-		}
 		//Heavy Melee
 		case 310:
 		{
@@ -1156,7 +1148,7 @@ DisplayItemChange(client,itemidx)
 		//Engineer Primary
 		case 588:
 		{
-			ChangeString = "The Pomson 6000 | Shoots tracer rounds that also deals damage to enemies in a cross pattern. Converts fire rate to damage.";
+			ChangeString = "The Pomson 6000 | Shoots tracer rounds that also deals (1.25x) damage to enemies in a cross pattern. Converts fire rate to damage. 4x faster fire rate.";
 		}
 		case 141,1004:
 		{

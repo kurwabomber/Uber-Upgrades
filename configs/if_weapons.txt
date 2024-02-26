@@ -12,7 +12,7 @@
 		"tf_weapon_shotgun_primary"				"engweap"		//engineer shotgun
 		"tf_weapon_shotgun_building_rescue"		"engweap_c"		//rescue ranger
 		"tf_weapon_sentry_revenge"				"engweap"		//frontier justice
-		"tf_weapon_drg_pomson"					"rayengweap"	//pomson
+		"tf_weapon_drg_pomson"					"rayweap"	//pomson
 		"tf_weapon_pistol"						"sprweap1"		//all pistols
 		"tf_weapon_mechanical_arm"				"engiecircuit"	//shortcircut
 		"tf_weapon_wrench"						"engmelweap"	//wrenchs

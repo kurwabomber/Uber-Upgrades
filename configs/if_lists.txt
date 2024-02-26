@@ -1064,29 +1064,6 @@
 			"Attr0"		"Ability : Stun Shot"
 		}
 	}
-	"rayengweap"
-	{
-		"special_tweaks_listid"		"-1"
-		"Damage upgrades"
-		{
-			"Attr0"		"damage bonus"
-			"Attr24"	"ap (condensedlaser)"
-			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr0"		"Overall Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			"Attr13"	"Life Steal Ability"
-			"Attr23"	"Set DamageType Ignite"
-			"Attr21"	"afterburn time increased(N)"
-			"Attr9"		"reveal cloaked victim on hit"
-			"Attr10"	"reveal disguised victim on hit"
-		}
-		"Laser weapon specific upgrades"
-		{
-			"Attr0"		"fire rate bonus(multshit)"
-			"Attr1"		"faster reload rate"
-			"Attr2"		"clip size bonus (E)"
-		}
-	}
 	"sprweap2"
 	{
 		"special_tweaks_listid"		"2"
@@ -1158,7 +1135,7 @@
 	}
 	"rayweap"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1177,6 +1154,11 @@
 			"Attr0"		"fire rate bonus(multshit)"
 			"Attr1"		"faster reload rate"
 			"Attr2"		"clip size bonus (E)"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Focal Point"
+			"Sp1"		"Siphon"
 		}
 	}
 	

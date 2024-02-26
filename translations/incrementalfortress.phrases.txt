@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"Focal Point"
+	{
+		"en"		"Focal Point"
+	}
+	"Siphon"
+	{
+		"en"		"Siphon"
+	}
 	"damage causes freeze"
 	{
 		"en"		"Damage Causes Freeze Buildup"

@@ -142,5 +142,20 @@
 			"minicrits become crits"		"1.0"
 			"Crit Damage Bonus"				"3.0"
 		}
+		"Focal Point"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"revolver use hit locations"	"2.0"
+			"weapon spread bonus"			"9.5"
+		}
+		"Siphon"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"additive piercing damage"		"300"
+			"damage causes freeze"			"150"
+			"Crit Damage Bonus"				"10.0"
+		}
 	}
 }
