@@ -5806,6 +5806,16 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1636"
+		{
+			"name"		"mult_item_meter_charge_rate 2"
+			"ref"		"Charge Rate Multiplier"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{

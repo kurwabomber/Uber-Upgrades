@@ -167,14 +167,16 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			if(IsValidEdict(CWeapon))
 			{
 				//Freeze
-				float freezeRatio = GetAttribute(CWeapon, "damage causes freeze");
-				if(freezeRatio > 0){
-					float frostIncrease = 100.0*freezeRatio*damage/TF2Util_GetEntityMaxHealth(client);
-					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-						frostIncrease *= 2.0;
+				if(!(currentDamageType[attacker].second & DMG_FROST)){
+					float freezeRatio = GetAttribute(CWeapon, "damage causes freeze", 0.0);
+					if(freezeRatio > 0){
+						float frostIncrease = 100.0*freezeRatio*damage/TF2Util_GetEntityMaxHealth(client);
+						if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+							frostIncrease *= 2.0;
 
-					FreezeBuildup[client] += frostIncrease;
-					checkFreeze(client, attacker);
+						FreezeBuildup[client] += frostIncrease;
+						checkFreeze(client, attacker);
+					}
 				}
 
 				//Lifesteal

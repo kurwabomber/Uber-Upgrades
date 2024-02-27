@@ -1059,10 +1059,6 @@
 			"Sp5"		"Explosive Bullets(P)"
 			"Sp6"		"Lacerating Rounds"
 		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Stun Shot"
-		}
 	}
 	"sprweap2"
 	{
@@ -1094,10 +1090,6 @@
 		{
 			"Sp5"		"Explosive Bullets(P)"
 			"Sp6"		"Lacerating Rounds"
-		}
-		"Special Abilities"
-		{
-			"Attr0"		"Ability : Stun Shot"
 		}
 	}
 	"sprweap1"
@@ -2270,7 +2262,7 @@
 	}
 	"fireball"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(H)"
@@ -2278,9 +2270,7 @@
 			"Attr1"		"Extra Damage Bonus(fireball)"
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
-			"Attr5"		"speed boost on hit"
 			"Attr6"		"afterburn time increased"
 		}
 		"Weapon Specific upgrades"
@@ -2288,9 +2278,9 @@
 			"Attr0"		"Fireball Recharge Rate"
 			"Attr1"		"Projectile Distance Increased"
 		}
-		"Special Abilities"
+		"Special Tweaks"
 		{
-			"Attr0"		"Ability : Fireball Volley"
+			"Sp0"		"Fireball Volley"
 		}
 	}
 	"rocketpack"

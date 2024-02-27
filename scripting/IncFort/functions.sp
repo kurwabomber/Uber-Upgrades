@@ -2637,6 +2637,7 @@ checkFreeze(int victim,int attacker)
 
 		TF2_AddCondition(victim, TFCond_FreezeInput, 6.0, attacker);
 		currentDamageType[attacker].second |= DMG_PIERCING;
+		currentDamageType[attacker].second |= DMG_FROST;
 		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.2, DMG_PREVENT_PHYSICS_FORCE);
 		SetEntityRenderColor(victim, 0, 128, 255, 80);
 		SetEntityMoveType(victim, MOVETYPE_NONE);

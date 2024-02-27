@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"Fireball Volley"
+	{
+		"en"		"Fireball Volley"
+	}
+	"Charge Rate Multiplier"
+	{
+		"en"		"Charge Rate Multiplier"
+	}
 	"Focal Point"
 	{
 		"en"		"Focal Point"

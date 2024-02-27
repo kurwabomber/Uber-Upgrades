@@ -107,6 +107,7 @@
 			"Overall Damage"				"96"
 			"Explosive Bullets Radius (tweak)"	"350.0"
 			"fire rate penalty(unremoveable)"	"50"
+			"Ability : Stun Shot"			"1"
 		}
 		"Explosive Bullets(Shortstop)"
 		{
@@ -156,6 +157,14 @@
 			"additive piercing damage"		"300"
 			"damage causes freeze"			"150"
 			"Crit Damage Bonus"				"10.0"
+		}
+		"Fireball Volley"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Charge Rate Multiplier"		"0.6"
+			"Ability : Fireball Volley"		"1"
+			"Afterburn Tick Rate"			"5.0"
 		}
 	}
 }
