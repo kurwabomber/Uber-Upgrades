@@ -706,7 +706,7 @@ public MRESReturn CheckEntityVelocity(Address pPlayerShared, Handle hReturn)  {
 	return MRES_Supercede;
 }
 public MRESReturn OnRecoilApplied(int entity, Handle hParams)  {
-	DHookSetParamVector(hParams, 1, NULL_VECTOR);
+	DHookSetParamVector(hParams, 1, {0.0,0.0,0.0});
 	return MRES_ChangedHandled;
 }
 public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {

@@ -1157,7 +1157,7 @@ DisplayItemChange(client,itemidx)
 		//Engineer Secondary
 		case 528:
 		{
-			ChangeString = "The Short Circuit | Shoots explosive bullets instead. Applies burn. Shoots 2x slower. -20% damage.";
+			ChangeString = "The Short Circuit | Shoots explosive bullets instead. Applies burn.";
 		}
 		//Engineer Melee
 		case 329:
@@ -1175,7 +1175,7 @@ DisplayItemChange(client,itemidx)
 		//Medic Secondaries
 		case 411:
 		{
-			ChangeString = "The Quick-Fix | Healing target constantly gives a 3% armor regeneration. Uber gives an additional 2x health regeneration and armor regeneration.";
+			ChangeString = "The Quick-Fix | Uber gives an additional 2x health regeneration.";
 		}
 		//Medic Melee
 		case 37:
