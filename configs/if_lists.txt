@@ -2526,7 +2526,7 @@
 	}
 	"autofirebow"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(H)"
@@ -2536,6 +2536,7 @@
 			"Attr0"		"Overall Damage Bonus"
 			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
+			"Attr14"	"afterburn dmg increased (E)"
 			"Attr8"		"reveal cloaked victim on hit"
 			"Attr9"		"reveal disguised victim on hit"
 		}
@@ -2545,13 +2546,10 @@
 			"Attr3"		"clip size bonus (B)"
 			"Attr4"		"faster reload rate (U)"
 		}
-		"Unique Upgrades"
+		"Special Tweaks"
 		{
-			"Attr1"		"Arrow Ignition Chance"
-			"Attr2"		"afterburn dmg increased (E)"
-			"Attr3"		"afterburn time increased(N)"
-			"Attr4"		"Ignited Arrows Explode"
-			"Attr5"		"Ignited Arrows Explosion Radius"
+			"Sp0"		"Fire Infusion"
+			"Sp1"		"Frost Infusion"
 		}
 	}
 	"lunchbox_bonk"//cola & bonk

@@ -4696,7 +4696,7 @@
 		"1529"
 		{
 			"name"		"apply look velocity on damage"
-			"ref"		"Ability : Arrow Storm"
+			"ref"		"Ability : Explosive Arrow"
 			"cost"		"25000"
 			"increase_ratio"	"0"
 			"value"		"2"

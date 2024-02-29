@@ -131,9 +131,9 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"bleeding duration"						"10"
-			"Bleed Per Hit"							"4"
-			"Crit Damage Bonus"				"10.0"
+			"bleeding duration"				"4"
+			"Bleed Per Hit"					"3"
+			"Crit Damage Bonus"				"6.0"
 		}
 		"Scorchiest Shot"
 		{
@@ -165,6 +165,24 @@
 			"Charge Rate Multiplier"		"0.6"
 			"Ability : Fireball Volley"		"1"
 			"Afterburn Tick Rate"			"5.0"
+		}
+		"Fire Infusion"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Arrow Ignition Chance"			"20.0"
+			"Ignited Arrows Explode"		"6.0"
+			"Ignited Arrows Explosion Radius"	"2.0"
+			"Afterburn Tick Rate"			"3.0"
+		}
+		"Frost Infusion"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"additive piercing damage"		"30"
+			"damage causes freeze"			"200"
+			"Crit Damage Bonus"				"5.0"
+			"bleeding duration"				"5"
 		}
 	}
 }

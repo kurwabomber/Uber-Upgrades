@@ -628,11 +628,14 @@ public GiveNewUpgradedWeapon_(client, slot)
 				TF2Attrib_SetByName(iEnt, upgrades[ifid].attr_name,currentupgrades_val[client][slot][a]);
 			}
 		}
+
 		float bpsMult = GetAttribute(iEnt, "bullets per shot bonus", 1.0);
 		bpsMult *= GetAttribute(iEnt, "bullets per shot mult", 1.0);
 		bpsMult *= GetAttribute(iEnt, "bullets per shot mult 2", 1.0);
 		if(bpsMult != 1.0)
 			TF2Attrib_SetByName(iEnt, "bullets per shot bonus", bpsMult);
+		else
+			TF2Attrib_RemoveByName(iEnt, "bullets per shot bonus");
 
 		refreshUpgrades(client, slot);
 	}
@@ -2469,17 +2472,14 @@ ApplyFullHoming(int entity){
 	entity = EntRefToEntIndex(entity);
 	if(!IsValidEdict(entity))
 		return;
-
 	int owner = getOwner(entity);
 	if(!IsValidClient3(owner))
 		return;
-
 	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 	if(!IsValidWeapon(CWeapon))
 		return;
-
 	float homingActive = GetAttribute(CWeapon, "crit from behind", 0.0);
-	if(homingActive)
+	if(!homingActive)
 		return;
 
 	isProjectileHoming[entity] = true;
@@ -3125,7 +3125,7 @@ public OnThinkPost(entity)
 		GetEntPropVector(entity, Prop_Send, "m_vecOrigin", flRocketPos);
 		float distance = GetVectorDistance(flRocketPos, flTargetPos, true); 
 		
-		if( distance*distance <= TF2Attrib_GetValue(homingActive) )
+		if( distance <= TF2Attrib_GetValue(homingActive)*TF2Attrib_GetValue(homingActive) )
 		{
 			float flVelocityChange[3];
 			TeleportEntity(entity, flTargetPos, NULL_VECTOR, flVelocityChange);

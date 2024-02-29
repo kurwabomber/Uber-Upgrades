@@ -1,5 +1,13 @@
 "Phrases"
 {
+	"Frost Infusion"
+	{
+		"en"		"Frost Infusion"
+	}
+	"Fire Infusion"
+	{
+		"en"		"Fire Infusion"
+	}
 	"Fireball Volley"
 	{
 		"en"		"Fireball Volley"
@@ -378,7 +386,7 @@
 	}
 	"Projectile speed decreased(t)"
 	{
-		"en"		"Projectile speed increased"
+		"en"		"Projectile Speed Increased"
 	}
 	"Status Effect Upgrades"
 	{
@@ -1090,7 +1098,7 @@
 	}
 	"Projectile speed increased(ARROW)"
 	{
-		"en"		"Projectile speed increased"
+		"en"		"Projectile Speed Increased"
 	}
 	"Life Steal Ability"
 	{
@@ -1400,17 +1408,13 @@
 	{
 		"en"		"Ragdolls Become Ash"
 	}
-	"UberUpgrades Shop - /buy"
-	{
-		"en"		"Uber Upgrades - /buy or RELOAD&SHOWSCORES"
-	}
 	"move speed(aesc)"
 	{
 		"en"		"Move Speed Increased"
 	}
 	"Projectile speed increased(DH)"
 	{
-		"en"		"Projectile Speed Increased+++"
+		"en"		"Projectile Speed Increased"
 	}
 	"crit chance(M)"
 	{
