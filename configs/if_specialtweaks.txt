@@ -184,5 +184,21 @@
 			"Crit Damage Bonus"				"5.0"
 			"bleeding duration"				"5"
 		}
+		"Toxic Infusion"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Radiation Buildup"				"150"
+			"projectile penetration"		"1"
+			"weapon fire rate"				"0.66"
+			"Projectile speed decreased"	"6.0"
+		}
+		"Explosive Arrows"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Ability : Explosive Arrow"		"1"
+			"arrow ignite"					"1"
+		}
 	}
 }

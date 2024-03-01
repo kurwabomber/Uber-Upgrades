@@ -2543,7 +2543,7 @@ ExplosiveArrow(entity)
 		}
 	}
 
-	if(fl_ArrowStormDuration[owner] > 0.0)
+	if(GetAttribute(CWeapon, "apply look velocity on damage", 0.0) == 2)
 	{
 		jarateWeapon[entity] = EntIndexToEntRef(CWeapon)
 		SDKHook(entity, SDKHook_StartTouchPost, ExplosiveArrowCollision);
@@ -2612,14 +2612,18 @@ checkRadiation(victim,attacker)
 	{
 		RadiationBuildup[victim] = 0.0;
 
-		//uhh wtf radiation do now...
+		currentDamageType[attacker].second |= DMG_PIERCING;
+		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.35, DMG_PREVENT_PHYSICS_FORCE);
 
-		DealFakeDamage(victim,attacker,-1, 100);
+		Buff radiation;
+		radiation.init("Radiation", "", Buff_Radiation, 1, attacker, 8.0);
+		radiation.multiplicativeDamageTaken = 2.0;
+		radiation.multiplicativeAttackSpeedMult = 0.66;
+		insertBuff(victim, radiation);
 		
 		float particleOffset[3] = {0.0,0.0,10.0};
-		CreateParticleEx(victim, "utaunt_electricity_cloud_electricity_WY", 1, 0, particleOffset, 5.0);
-		CreateParticleEx(victim, "utaunt_auroraglow_green_parent", 1, 0, particleOffset);
-		CreateParticleEx(victim, "merasmus_blood", 1, 0, particleOffset);
+		CreateParticle(victim, "utaunt_electricity_cloud_electricity_WY", true, _, 8.0, particleOffset);
+		CreateParticle(victim, "merasmus_blood", true, _, 4.0, particleOffset);
 	}
 }
 checkFreeze(int victim,int attacker)
@@ -3051,7 +3055,7 @@ public void OnHomingThink(entity)
 		
 		GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", flRocketPos ); 
 		GetClientAbsOrigin( Target, TargetPos ); 
-		TargetPos[2] += 20.0;
+		TargetPos[2] += 45.0;
 		MakeVectorFromPoints( flRocketPos, TargetPos, AimVector ); 
 		
 		if(distance <= projectileHomingDegree[entity]*projectileHomingDegree[entity]*2.0 + 20.0)
@@ -3068,7 +3072,7 @@ public void OnHomingThink(entity)
 		GetEntPropVector( entity, Prop_Data, "m_angRotation", ProjAngle ); 
 		GetVectorAngles( ProjVector, ProjAngle ); 
 		
-		NewSpeed = ( BaseSpeed * 2.0 ) + 1.0 * BaseSpeed * 1.02; 
+		NewSpeed = ( BaseSpeed * 2.0 ) + 1.0 * BaseSpeed; 
 		ScaleVector( ProjVector, NewSpeed ); 
 		
 		TeleportEntity( entity, NULL_VECTOR, ProjAngle, ProjVector ); 
@@ -3910,7 +3914,6 @@ ResetVariables(){
 		weaponArtCooldown[client] = 0.0;
 		weaponArtParticle[client] = 0.0;
 		powerupParticle[client] = 0.0;
-		fl_ArrowStormDuration[client] = 0.0;
 		BotTimer[client] = 0.0;
 		LastCharge[client] = 0.0;
 		lastDamageTaken[client] = 0.0;

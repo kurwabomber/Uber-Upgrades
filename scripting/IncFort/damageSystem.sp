@@ -54,6 +54,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					damage = projectileDamage[inflictor];
 				}
 				isSentry = !strcmp("obj_sentrygun", classname) || !strcmp("tf_projectile_sentryrocket", classname);
+
+				
 			}
 
 			if(IsValidWeapon(weapon) && !isSentry)

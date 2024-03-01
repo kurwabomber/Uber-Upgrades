@@ -2018,33 +2018,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 								}
 							}
 						}
-						case 2.0: //Explosive Shot
-						{
-							if(weaponArtCooldown[client] > currentGameTime)
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Explosive Shot: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Explosive Shot: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK3)
-								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
-									{
-										weaponArtCooldown[client] = currentGameTime+7.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.8;
-										fl_ArrowStormDuration[client] = 1.0;
-										SetEntProp(CWeapon, Prop_Send, "m_bArrowAlight", 1);
-									}
-								}
-							}
-						}
 						case 3.0: //Stun Shot
 						{
 							if(weaponArtCooldown[client] > currentGameTime)

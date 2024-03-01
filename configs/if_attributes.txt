@@ -4807,11 +4807,11 @@
 		{
 			"name"		"crit from behind"
 			"ref"		"Homing Projectiles (crossbow)"
-			"cost"		"10000"
-			"increase_ratio"	"0.5"
-			"value"		"100"
+			"cost"		"7000"
+			"increase_ratio"	"0.4"
+			"value"		"50"
 			"init"		"0"
-			"max"		"300"
+			"max"		"150"
 		}
 		"1534.6"
 		{
@@ -4819,9 +4819,9 @@
 			"ref"		"Homing Projectiles (cleaver)"
 			"cost"		"5000"
 			"increase_ratio"	"0.4"
-			"value"		"75"
+			"value"		"35"
 			"init"		"0"
-			"max"		"225"
+			"max"		"105"
 		}
 		"1535"
 		{
@@ -5810,6 +5810,26 @@
 		{
 			"name"		"mult_item_meter_charge_rate 2"
 			"ref"		"Charge Rate Multiplier"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1637"
+		{
+			"name"		"strong homing projectile radius"
+			"ref"		"strong homing projectile radius"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1638"
+		{
+			"name"		"arrow ignite"
+			"ref"		"arrow ignite"
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"1"

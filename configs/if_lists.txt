@@ -1669,7 +1669,7 @@
 	}
 	"c_bow"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr2"		"damage bonus SPECIAL"
@@ -1688,9 +1688,10 @@
 			"Attr0"		"fire rate bonus(fortified)"
 			"Attr6"		"Projectile speed increased(ARROW)"
 		}
-		"Special Abilities"
+		"Special Tweaks"
 		{
-			"Attr15"	"Ability : Arrow Storm"
+			"Sp0"		"Toxic Infusion"
+			"Sp1"		"Explosive Arrows"
 		}
 	}
 	"spyweap"

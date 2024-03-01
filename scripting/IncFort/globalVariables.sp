@@ -155,6 +155,7 @@ enum {
 	Buff_Enraged=18,
 	Buff_DragonDance=19,
 	Buff_Frozen=20,
+	Buff_Radiation=21,
 	BuffAmt
 };
 bool isBonus[BuffAmt] = {
@@ -176,6 +177,7 @@ bool isBonus[BuffAmt] = {
 	false,
 	false,
 	true,
+	false,
 	false,
 	false,
 	false,
@@ -313,7 +315,6 @@ float fl_GlobalCoolDown[MAXPLAYERS+1];
 float weaponArtCooldown[MAXPLAYERS+1];
 float weaponArtParticle[MAXPLAYERS+1];
 float powerupParticle[MAXPLAYERS+1];
-float fl_ArrowStormDuration[MAXPLAYERS+1];
 float spellScaling[] = {0.0,2.45,2.55,2.65};
 float BotTimer[MAXPLAYERS+1];
 float LastCharge[MAXPLAYERS+1];

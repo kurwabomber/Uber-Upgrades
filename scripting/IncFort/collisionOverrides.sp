@@ -314,7 +314,6 @@ public Action:ExplosiveArrowCollision(entity, client)
 		{
 			EntityExplosion(owner, TF2_GetDamageModifiers(owner, CWeapon) * 60.0, 400.0, projvec, 1, _,entity,1.0,_,_,0.75);
 		}
-		fl_ArrowStormDuration[owner]--;
 	}
 	return Plugin_Continue;
 }

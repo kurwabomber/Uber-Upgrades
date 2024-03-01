@@ -4706,4 +4706,14 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "6319"
+    {
+        "name"  "strong homing projectile radius"
+        "attribute_class"   "strong_homing_projectile_radius"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "0"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
 }
