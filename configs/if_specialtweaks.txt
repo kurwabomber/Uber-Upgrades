@@ -26,7 +26,7 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"Honorbound"					"1.0"
-			"percent of hp healed on kill"	"15.0"
+			"percent of hp healed on kill"	"5.0"
 			"melee cleave attack"			"1"
 			"weapon fire rate"				"0.75"
 		}
@@ -37,6 +37,7 @@
 			"melee cleave attack"			"1"
 			"Dragon Bullets Radius"			"400.0"
 			"Afterburn Tick Rate"			"4.0"
+			"damage bonus HIDDEN(b)"		"3.0"
 			"weapon fire rate(tweak)"		"2.0"
 		}
 		"Stat Boost Ubercharge"
@@ -58,7 +59,7 @@
 			"requirement"					"50k"
 			"restriction"					"1"
 			"Homing Projectiles"			"200"
-			"Bleed Per Hit"					"2"
+			"Bleed Per Hit"					"3"
 		}
 		"Guardian"
 		{
@@ -183,6 +184,7 @@
 			"damage causes freeze"			"200"
 			"Crit Damage Bonus"				"5.0"
 			"bleeding duration"				"5"
+			"projectile penetration"		"1"
 		}
 		"Toxic Infusion"
 		{
@@ -199,6 +201,22 @@
 			"restriction"					"1"
 			"Ability : Explosive Arrow"		"1"
 			"arrow ignite"					"1"
+		}
+		"Scorching Napalm"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Set DamageType Ignite"			"1"
+			"Afterburn Tick Rate"			"5.0"
+			"minicrit vs burning player"	"1.0"
+		}
+		"Rockets' Red Glare"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"mult crit when health is below percent"	"7.0"
+			"projectile acceleration"		"800.0"
+			"Projectile speed decreased"	"8.0"
 		}
 	}
 }

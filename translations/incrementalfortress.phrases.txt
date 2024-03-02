@@ -1,5 +1,21 @@
 "Phrases"
 {
+	"projectile acceleration"
+	{
+		"en"		"Projectile Acceleration"
+	}
+	"mult crit when health is below percent"
+	{
+		"en"		"100%% Crits when Below %%HP"
+	}
+	"Rockets' Red Glare"
+	{
+		"en"		"Rockets' Red Glare"
+	}
+	"Scorching Napalm"
+	{
+		"en"		"Scorching Napalm"
+	}
 	"arrow ignite"
 	{
 		"en"		"Arrows are Always Lit"

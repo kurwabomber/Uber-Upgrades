@@ -2443,7 +2443,7 @@
 	}//direct hit
 	"directhit"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus"
@@ -2469,10 +2469,15 @@
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Scorching Napalm"
+			"Sp1"		"Rockets' Red Glare"
+		}
 	}
 	"rlauncher"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus(H)"
@@ -2496,6 +2501,11 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Scorching Napalm"
+			"Sp1"		"Rockets' Red Glare"
 		}
 	}
 	"liberty"
