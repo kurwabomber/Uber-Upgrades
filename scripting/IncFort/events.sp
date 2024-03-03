@@ -3257,44 +3257,35 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 				{
 					if(fanOfKnivesCount[client] < 100)
 						fanOfKnivesCount[client]++;
-					/*
-					float fwd[3]
-					GetClientEyePosition(client, fOrigin);
-					GetClientEyeAngles(client, fAngles);
-					float tempAngle[3] = fAngles;
-					float velocity = 6000.0;
-					float vecAngImpulse[3];
-					GetCleaverAngularImpulse(vecAngImpulse);
-					for(int i = 0; i < fanOfKnivesCount[client]; ++i)
+				}
+				case 47.0:
+				{
+					int iEntity = CreateEntityByName("tf_projectile_mechanicalarmorb");
+					if (IsValidEdict(iEntity)) 
 					{
-						char projName[32] = "tf_projectile_cleaver";
-						int iEntity = CreateEntityByName(projName);
-						if (IsValidEdict(iEntity)) 
-						{
-							int iTeam = GetClientTeam(client);
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-							tempAngle = fAngles[1] + GetRandomFloat(-35.0,35.0);
-							GetAngleVectors(tempAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
-							GetAngleVectors(tempAngle,fwd, NULL_VECTOR, NULL_VECTOR);
-							ScaleVector(fwd, 30.0);
-							AddVectors(fOrigin, fwd, fOrigin);
-							fVelocity[0] = vBuffer[0]*velocity;
-							fVelocity[1] = vBuffer[1]*velocity;
-							fVelocity[2] = vBuffer[2]*velocity;
-
-							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-							SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+						int iTeam = GetClientTeam(client);
+						float fwd[3]
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+						GetClientEyePosition(client, fOrigin);
+						GetClientEyeAngles(client, fAngles);
+						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+						GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+						ScaleVector(fwd, 30.0);
+						AddVectors(fOrigin, fwd, fOrigin);
 						
-							DispatchSpawn(iEntity);
-							TeleportEntity(iEntity, fOrigin, tempAngle, NULL_VECTOR);
-							SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
-						}
+						float velocity = 700.0;
+						velocity *= GetAttribute(CWeapon, "Projectile speed increased");
+						velocity *= GetAttribute(CWeapon, "Projectile speed decreased");
+						ScaleVector(vBuffer,velocity);
+					
+						DispatchSpawn(iEntity);
+						TeleportEntity(iEntity, fOrigin, fAngles, vBuffer);
+
+						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+						CreateTimer(0.1, ElectricBallThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 					}
-					fanOfKnivesCount[client] = 0;
-					*/
 				}
 			}
 		}

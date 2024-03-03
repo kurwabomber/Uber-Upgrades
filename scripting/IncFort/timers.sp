@@ -1964,6 +1964,37 @@ public Action:ArrowThink(Handle timer, any:ref)
 		KillTimer(timer)
 	}
 }
+public Action ElectricBallThink(Handle timer, any ref){
+	int entity = EntRefToEntIndex(ref); 
+    if(IsValidEntity(entity)) 
+    { 
+		int client = getOwner(entity);
+		int weapon = GetEntPropEnt(entity, Prop_Send, "m_hLauncher");
+		float damage = 25.0*TF2_GetDPSModifiers(client, weapon);
+		float radius = 240.0*GetAttribute(weapon, "Blast radius increased");
+		float position[3];
+		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", position);
+
+		for(int i = 1; i<=MaxClients; ++i){
+			if(!IsValidClient3(i))
+				continue;
+			if(!IsPlayerAlive(i))
+				continue;
+			if(!IsOnDifferentTeams(client, i))
+				continue;
+
+			float victimPosition[3];
+			GetEntPropVector(i, Prop_Data, "m_vecOrigin", victimPosition);
+
+			if(GetVectorDistance(position, victimPosition, true) > radius*radius)
+				continue;
+			
+			SDKHooks_TakeDamage(i, entity, client, damage, DMG_BURN, weapon);
+		}
+		return Plugin_Continue;
+    }
+	return Plugin_Stop;
+}
 public Action:Timer_PlayerGrenadeMines(Handle timer, any:ref) 
 {
     int entity = EntRefToEntIndex(ref);

@@ -1,5 +1,25 @@
 "Phrases"
 {
+	"override projectile type (EP)"
+	{
+		"en"		"Weapon Shoots Electric Orbs"
+	}
+	"alt-fire disabled"
+	{
+		"en"		"Alt-Fire Disabled"
+	}
+	"Focused Lens"
+	{
+		"en"		"Focused Lens"
+	}
+	"Wave Dispersement"
+	{
+		"en"		"Wave Dispersement"
+	}
+	"mult dmg direct hit"
+	{
+		"en"		"Direct Hit Damage Multiplier"
+	}
 	"projectile acceleration"
 	{
 		"en"		"Projectile Acceleration"

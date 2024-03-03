@@ -3037,6 +3037,15 @@
 			"init"		"7.00"
 			"max"		"8.00"
 		}
+		"261.3"
+		{
+			"name"		"override projectile type"
+			"ref"		"override projectile type (EP)"
+			"cost"		"0"
+			"value"		"1.00"
+			"init"		"46.00"
+			"max"		"47.00"
+		}
 		"263"
 		{
 			"name"		"increased air control"
@@ -5852,6 +5861,26 @@
 		{
 			"name"		"projectile acceleration"
 			"ref"		"projectile acceleration"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1641"
+		{
+			"name"		"mult dmg direct hit"
+			"ref"		"mult dmg direct hit"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
+			"init"		"1"
+			"max"		"0"
+		}
+		"1642"
+		{
+			"name"		"alt-fire disabled"
+			"ref"		"alt-fire disabled"
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"1"

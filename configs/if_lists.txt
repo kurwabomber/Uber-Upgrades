@@ -948,7 +948,7 @@
 	}
 	"cow_m"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr1"		"damage bonus(H)"
@@ -972,6 +972,11 @@
 			"Attr3"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
 			"Attr5"		"charge movespeed increased"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Focused Lens"
+			"Sp1"		"Wave Dispersement"
 		}
 	}
 	"airstrike"
