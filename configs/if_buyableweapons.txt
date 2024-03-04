@@ -19,9 +19,9 @@
 		"weapon_class"	"tf_weapon_katana"
 		"weapon_menu"	"menuKatana"
 		"class"			"demo"
-		"description"	"Has innate 7.25 arcane scaling (About 2x stronger than zap).\nTransient Moonlight fires a projectile that has a large vertical hitbox\nOn direct contact, it deals 25 arcane scaling multiplied\nby your additional attacks stat."
+		"description"	"Has innate 4.5 arcane scaling.\nTransient Moonlight fires a projectile that has a large vertical hitbox\nOn direct contact, it deals 25 arcane scaling multiplied\nby your additional attacks stat."
 		"cost"			"50000.0"
-		"Arcane Weapon Scaling"	"7.25"
+		"Arcane Weapon Scaling"	"4.5"
 		"Ability : Transient Moonlight"	"8"
 	}
 	"Repeater Crossbow"

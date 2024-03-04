@@ -981,7 +981,7 @@
 	}
 	"airstrike"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr1"			"damage bonus"
@@ -1005,6 +1005,10 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Focused Lens"
 		}
 	}
 	"scomelweap"

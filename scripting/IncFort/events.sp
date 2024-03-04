@@ -72,9 +72,9 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		}
 	}
 	if(karmicJusticeScaling[client]){
-		karmicJusticeScaling[client] += 400.0*damage/float(TF2Util_GetEntityMaxHealth(client));
-		if(karmicJusticeScaling[client] >= 280.0){
-			karmicJusticeScaling[client] = 280.0;
+		karmicJusticeScaling[client] += 800.0*damage/float(TF2Util_GetEntityMaxHealth(client));
+		if(karmicJusticeScaling[client] >= 400.0){
+			karmicJusticeScaling[client] = 400.0;
 			KarmicJusticeExplosion(client);
 		}
 	}
@@ -932,7 +932,7 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(ExplosiveArrow, reference);
 			RequestFrame(ChangeProjModel, reference);
 			RequestFrame(PrecisionHoming, reference);
-			CreateTimer(4.0, SelfDestruct, reference);
+			CreateTimer(6.0, SelfDestruct, reference);
 			CreateTimer(0.1, ArrowThink, reference, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 			RequestFrame(ApplyFullHoming, reference);
 		}
@@ -2324,9 +2324,10 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							if(weaponArtParticle[client] <= currentGameTime)
 							{
 								weaponArtParticle[client] = currentGameTime+14.0;
-								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 15.0);
+								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, -1, _, 13.0);
 								SetEntityRenderColor(CWeapon, 255,0,0,200);
 							}
+
 							if(weaponArtCooldown[client] > currentGameTime)
 							{
 								char CooldownTime[32]

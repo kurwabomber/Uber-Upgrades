@@ -514,10 +514,10 @@ CastKarmicJustice(client, attuneSlot){
 	if(spellLevel < 1)
 		return;
 
-	if(applyArcaneRestrictions(client, attuneSlot, 60.0 + (40.0 * ArcaneDamage[client]), 30.0))
+	if(applyArcaneRestrictions(client, attuneSlot, 60.0 + (40.0 * ArcaneDamage[client]), 15.0))
 		return;
 
-	karmicJusticeScaling[client] = 4.0;
+	karmicJusticeScaling[client] = 8.0;
 	int args[1];args[0] = EntIndexToEntRef(client);
 	SetPawnTimer(FinishKarmicJustice, 8.0, args, 1);
 	CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 7.0);
@@ -541,15 +541,18 @@ KarmicJusticeExplosion(client){
 	CreateParticleEx(client, "drg_cow_explosioncore_charged_blue", -1, -1, pos);
 	CreateParticleEx(client, "rd_robot_explosion", -1, -1, pos);
 
-	for(int i = 1; i<=MaxClients; ++i){
-		if(!IsValidClient(i))
-			continue;
+	int Ent = CreateEntityByName("env_shake");
+	TeleportEntity(Ent, pos, NULL_VECTOR, NULL_VECTOR);
+	DispatchSpawn(Ent)
+	DispatchKeyValueFloat(Ent, "amplitude", 5.0);
+	DispatchKeyValueFloat(Ent, "radius", 1200.0);
+	DispatchKeyValueFloat(Ent, "duration", 3.0);
+	DispatchKeyValueFloat(Ent, "frequency", 3.0);
+	SetVariantString("spawnflags 8");
+	AcceptEntityInput(Ent,"AddOutput");
+	AcceptEntityInput(Ent, "StartShake", client);
 
-		new flags = GetCommandFlags("shake");
-		SetCommandFlags("shake", flags & ~FCVAR_CHEAT);
-		FakeClientCommand(i, "shake");
-		SetCommandFlags("shake", flags);
-	}
+	CreateTimer(10.0, Timer_RemoveEntity, Ent);
 
 	karmicJusticeScaling[client] = 0.0;
 }
@@ -559,7 +562,7 @@ CastInfernalEnchantment(client, attuneSlot)
 	if(spellLevel < 1)
 		return;
 
-	if(applyArcaneRestrictions(client, attuneSlot, 400.0 + (120.0 * ArcaneDamage[client]), 50.0))
+	if(applyArcaneRestrictions(client, attuneSlot, 400.0 + (120.0 * ArcaneDamage[client]), 120.0))
 		return; 
 	
 	int args[2];args[0] = EntIndexToEntRef(client);args[1] = spellLevel;
@@ -570,7 +573,7 @@ FinishCastInfernalEnchantment(int client, int spellLevel)
 {
 	client = EntRefToEntIndex(client)
 	if(IsValidClient3(client) && IsPlayerAlive(client)){
-		InfernalEnchantment[client] = (10000.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 100.0));
+		InfernalEnchantment[client] = (3000.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 100.0));
 		InfernalEnchantmentLevel[client] = spellLevel;
 		InfernalEnchantmentDuration[client] = currentGameTime + 30.0*ArcanePower[client];
 		CreateParticleEx(client, "utaunt_auroraglow_orange_parent", _, _, _, 30.0*ArcanePower[client]);
@@ -1405,7 +1408,7 @@ CastBlackskyEye(client, attuneSlot)
 	if(spellLevel < 1)
 		return;
 
-	if(applyArcaneRestrictions(client, attuneSlot, 8.0 + (3.0 * ArcaneDamage[client]), 0.3))
+	if(applyArcaneRestrictions(client, attuneSlot, 8.0 + (3.0 * ArcaneDamage[client]), 0.25))
 		return; 
 
 	float clientpos[3];

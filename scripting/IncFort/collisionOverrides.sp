@@ -473,13 +473,9 @@ public Action:OnCollisionMoonveil(entity, client)
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEdict(CWeapon))
 				{
-					float mult = 1.0
-					Address multiHitActive = TF2Attrib_GetByName(CWeapon, "taunt move acceleration time");
-					if(multiHitActive != Address_Null)
-						mult *= TF2Attrib_GetValue(multiHitActive) + 1.0;
-					
+					float mult = 1.0/GetAttribute(CWeapon, "fire rate bonus", 1.0);
 					currentDamageType[owner].second |= DMG_ARCANE;
-					SDKHooks_TakeDamage(client,owner,owner,mult*35.0,DMG_GENERIC,CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+					SDKHooks_TakeDamage(client,owner,owner,mult*25.0,DMG_GENERIC,CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 				}
 				RemoveEntity(entity);
 			}

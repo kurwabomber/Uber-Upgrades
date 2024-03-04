@@ -346,7 +346,7 @@
 			"value"		"1"
 			"init"		"0"
 			"staged_max"		"1,2,3"
-			"description"	"For every 1% armor damage received during a 8s period:\n+4 arcane scaling to damage dealt. Automatically procs upon\nhitting 280 arcane scaling."
+			"description"	"For every 1% damage received during a 8s period:\n+7 arcane scaling to damage dealt. Automatically procs upon\nhitting 400 arcane scaling."
 			"max"		"1"
 		}
 		"1543.5"

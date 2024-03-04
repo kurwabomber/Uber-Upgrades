@@ -76,7 +76,9 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 	TE_WriteNum("m_iParticleSystemIndex", FindStringIndex(table, strParticle));
 	if(m_iAttachType != -1){
 		TE_WriteNum("m_iAttachType", m_iAttachType);
-		TE_WriteNum("m_iAttachmentPointIndex", m_iAttachmentPointIndex);
+
+		if(m_iAttachmentPointIndex != -1)
+			TE_WriteNum("m_iAttachmentPointIndex", m_iAttachmentPointIndex);
 	}else{
 		TE_WriteNum("m_iAttachType", 2);
 	}
