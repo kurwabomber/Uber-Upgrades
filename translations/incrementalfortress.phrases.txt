@@ -1,5 +1,45 @@
 "Phrases"
 {
+	"Magnification Pylon"
+	{
+		"en"		"Magnification Pylon"
+	}
+	"Blossom of Life"
+	{
+		"en"		"Blossom of Life"
+	}
+	"patient damage taken to self heal"
+	{
+		"en"		"Patient Damage Taken to Self Heal"
+	}
+	"patient damage taken to uber"
+	{
+		"en"		"Patient Damage Taken to Uber"
+	}
+	"healing aoe radius"
+	{
+		"en"		"Healing AOE Radius"
+	}
+	"escape plan healing"
+	{
+		"en"		"Swap Health when Fatal"
+	}
+	"patient overheal to damage mult"
+	{
+		"en"		"Overheal Increases Armor Effectiveness"
+	}
+	"healing patient power"
+	{
+		"en"		"Healing Patient Power"
+	}
+	"ubercharge effectiveness"
+	{
+		"en"		"Ubercharge Effectiveness"
+	}
+	"magnify patient damage"
+	{
+		"en"		"Magnify Patient Damage"
+	}
 	"Healing Upgrades"
 	{
 		"en"		"Healing Upgrades"

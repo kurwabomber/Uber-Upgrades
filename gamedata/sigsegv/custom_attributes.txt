@@ -4736,4 +4736,44 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "6322"
+    {
+        "name"  "ubercharge effectiveness"
+        "attribute_class"   "ubercharge_effectiveness"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6323"
+    {
+        "name"  "patient overheal to damage mult"
+        "attribute_class"   "patient_overheal_to_damage_mult"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6324"
+    {
+        "name"  "escape plan healing"
+        "attribute_class"   "escape_plan_healing"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6324"
+    {
+        "name"  "escape plan healing"
+        "attribute_class"   "escape_plan_healing"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
 }

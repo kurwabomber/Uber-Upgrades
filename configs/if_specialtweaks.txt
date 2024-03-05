@@ -233,5 +233,24 @@
 			"alt-fire disabled"				"1"
 			"override projectile type (EP)"	"1"
 		}
+		"Magnification Pylon"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"magnify patient damage"		"1"
+			"max health additive bonus"		"4.286"
+			"ubercharge effectiveness"		"5.0"
+			"healing patient power"			"2.5"
+		}
+		"Blossom of Life"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"patient overheal to damage mult"	"2"
+			"escape plan healing"			"1"
+			"healing aoe radius"			"500"
+			"patient damage taken to uber"		"2"
+			"patient damage taken to self heal"	"4"
+		}
 	}
 }

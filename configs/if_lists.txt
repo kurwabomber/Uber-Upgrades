@@ -2388,7 +2388,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp0"		"Stat Boost Ubercharge"
+			"Sp0"		"Magnification Pylon"
+			"Sp1"		"Blossom of Life"
 		}
 	}
 	"medigun"

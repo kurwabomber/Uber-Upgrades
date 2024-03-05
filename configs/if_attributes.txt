@@ -4975,16 +4975,6 @@
 			"init"		"1.00"
 			"max"		"1.2"
 		}
-		"1553"
-		{
-			"name"		"zombiezombiezombiezombie"
-			"ref"		"Maximum Caber Charges"
-			"cost"		"750"
-			"increase_ratio" "0.2"
-			"value"		"1"
-			"init"		"1.00"
-			"max"		"10"
-		}
 		"1554"
 		{
 			"name"		"powerup max charges"
@@ -5899,6 +5889,86 @@
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1643"
+		{
+			"name"		"magnify patient damage"
+			"ref"		"magnify patient damage"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1644"
+		{
+			"name"		"ubercharge effectiveness"
+			"ref"		"ubercharge effectiveness"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
+			"init"		"1"
+			"max"		"0"
+		}
+		"1645"
+		{
+			"name"		"healing patient power"
+			"ref"		"healing patient power"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
+			"init"		"1"
+			"max"		"0"
+		}
+		"1646"
+		{
+			"name"		"patient overheal to damage mult"
+			"ref"		"patient overheal to damage mult"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1647"
+		{
+			"name"		"escape plan healing"
+			"ref"		"escape plan healing"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1648"
+		{
+			"name"		"healing aoe radius"
+			"ref"		"healing aoe radius"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1649"
+		{
+			"name"		"patient damage taken to uber"
+			"ref"		"patient damage taken to uber"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1650"
+		{
+			"name"		"patient damage taken to self heal"
+			"ref"		"patient damage taken to self heal"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
 			"init"		"0"
 			"max"		"0"
 		}
