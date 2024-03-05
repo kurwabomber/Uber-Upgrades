@@ -1822,12 +1822,12 @@ refreshUpgrades(client, slot)
 					continue;
 				}
 			}
-			Address healthActive = TF2Attrib_GetByName(client, "health from packs decreased");		
+			Address healthActive = TF2Attrib_GetByName(client, "max health multiplier");		
 			if(healthActive != Address_Null)
 			{
-				TF2Attrib_SetByName(client,"mult max health", TF2Attrib_GetValue(healthActive));
+				TF2Attrib_SetByName(client,"hidden maxhealth non buffed", GetClientBaseHP(client)*(TF2Attrib_GetValue(healthActive)-1.0));
 				if(current_class[client] == TFClass_Engineer)
-					TF2Attrib_SetByName(client,"engy building health bonus", 1.0+TF2Attrib_GetValue(healthActive));
+					TF2Attrib_SetByName(client,"engy building health bonus", TF2Attrib_GetValue(healthActive));
 			}
 			
 			//Powerups

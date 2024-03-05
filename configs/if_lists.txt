@@ -1008,7 +1008,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp0"		"Focused Lens"
+			"Sp0"		"Scorching Napalm"
+			"Sp1"		"Rockets' Red Glare"
 		}
 	}
 	"scomelweap"
@@ -2371,16 +2372,19 @@
 	}
 	"medi"
 	{
-		"special_tweaks_listid"		"1"
+		"special_tweaks_listid"		"2"
+		"Healing Upgrades"
+		{
+			"Attr0"		"heal rate bonus"
+			"Attr1"		"heal rate bonus(A)"
+			"Attr2"		"overheal bonus"
+			"Attr3"		"Healing for Buildings"
+		}
 		"Medigun Specific upgrades"
 		{
-			"Attr7"		"Medigun Heal Range Bonus"
-			"Attr2"		"heal rate bonus"
-			"Attr8"		"heal rate bonus(A)"
-			"Attr4"		"overheal bonus"
-			"Attr3"		"ubercharge rate bonus"
-			"Attr8"		"Damage Multiplier for healed player"
-			"Attr9"		"Healing for Buildings"
+			"Attr0"		"Medigun Heal Range Bonus"
+			"Attr1"		"ubercharge rate bonus"
+			"Attr2"		"Damage Multiplier for healed player"
 		}
 		"Special Tweaks"
 		{

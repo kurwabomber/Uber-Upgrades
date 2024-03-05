@@ -4471,7 +4471,7 @@
 		}
 		"1505"
 		{
-			"name"		"health from packs decreased"
+			"name"		"max health multiplier"
 			"ref"		"Health Bonus"
 			"cost"		"600"
 			"increase_ratio"	"0.04"
@@ -4482,7 +4482,7 @@
 		}
 		"1505.1"
 		{
-			"name"		"health from packs decreased"
+			"name"		"max health multiplier"
 			"ref"		"Health Bonus (Heavy)"
 			"cost"		"500"
 			"increase_ratio"	"0.04"
@@ -4822,6 +4822,7 @@
 			"increase_ratio"	"0.4"
 			"value"		"50"
 			"init"		"0"
+			"description"	"Enemies within X hammer units of the projectile get hit."
 			"max"		"150"
 		}
 		"1534.6"
@@ -4832,6 +4833,7 @@
 			"increase_ratio"	"0.4"
 			"value"		"35"
 			"init"		"0"
+			"description"	"Enemies within X hammer units of the projectile get hit."
 			"max"		"105"
 		}
 		"1535"
@@ -4874,6 +4876,8 @@
 			"increase_ratio"	"0"
 			"value"		"2"
 			"init"		"31"
+			"restriction_category"	"2"
+			"description"	"Replaces sentry bullets with extreme speed fireballs.\nShoots 4x slower, but fireballs deal 80 base damage and splash."
 			"max"		"33"
 		}
 		"1538.1"
@@ -4884,6 +4888,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Adds +1 rocket per rocket attack."
 			"max"		"4"
 		}
 		"1538.1"
@@ -4894,6 +4899,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Players taking the teleporter will get the agility powerup bonuses for 6s."
 			"max"		"1"
 		}
 		//Class Tweaks
@@ -4925,6 +4931,7 @@
 			"cost"		"800"
 			"value"		"4"
 			"init"		"0"
+			"description"	"Every hit with this weapon applies +X bleed status buildup.\nUpon reaching 100 bleed buildup: victim takes 100 base damage."
 			"max"		"48"
 		}
 		"1549.5"
@@ -4935,6 +4942,7 @@
 			"cost"		"700"
 			"value"		"5"
 			"init"		"0"
+			"description"	"Every hit with this weapon applies +X bleed status buildup.\nUpon reaching 100 bleed buildup: victim takes 100 base damage."
 			"max"		"65"
 		}
 		"1550"
@@ -5035,6 +5043,7 @@
 			"increase_ratio"	"0"
 			"value"		"0.15"
 			"init"		"1"
+			"description"	"Banner will occasionally strike down lightning that deals 10*X*DPSMod damage.\nReach and radius of lightning strike is multiplied by banner range."
 			"max"		"4.0"
 		}
 		"1558"
@@ -5136,6 +5145,7 @@
 			"increase_ratio"	"0.4"
 			"value"		"1"
 			"init"		"0"
+			"description"	"Upon jar shatter: shoots out X fragments that deal 15 base damage."
 			"max"		"5"
 		}
 		"1571"
@@ -5146,6 +5156,7 @@
 			"increase_ratio"	"0.3"
 			"value"		"5"
 			"init"		"0"
+			"description"	"Upon fragment touching anything:\ndeals X damage within a 50*BlastRadiusAttribute hammer unit radius."
 			"max"		"300"
 		}
 		"1572"
@@ -5156,6 +5167,7 @@
 			"increase_ratio"	"0.3"
 			"value"		"1.0"
 			"init"		"0"
+			"description"	"Upon splashing your teammates: +X seconds of afterburn immunity."
 			"max"		"10"
 		}
 		"1573"
@@ -5166,6 +5178,7 @@
 			"increase_ratio"	"0.6"
 			"value"		"0.05"
 			"init"		"0"
+			"description"	"Upon splashing your teammates: +X seconds of minor haste (+50% fire rate)."
 			"max"		"0.5"
 		}
 		"1574"
@@ -5176,6 +5189,7 @@
 			"increase_ratio"	"0.6"
 			"value"		"0.05"
 			"init"		"0"
+			"description"	"Upon splashing your teammates: +X seconds of prevent death to teammates.\nTeammates that are already on 1HP die regardless."
 			"max"		"0.5"
 		}
 		"1575"
@@ -5186,6 +5200,7 @@
 			"increase_ratio"	"0.6"
 			"value"		"0.05"
 			"init"		"0"
+			"description"	"Upon splashing your teammates: +X seconds of battalion's backup effect (-35% dmg taken)."
 			"max"		"0.5"
 		}
 		"1576"

@@ -2772,6 +2772,10 @@ public MRESReturn OnFinishReload(int weapon)
 		return MRES_Ignored;
 
 	relentlessTicks[client] = 0;
+	if(HasEntProp(weapon, Prop_Send, "m_flEnergy")){
+		if(!GetEntProp(weapon, Prop_Data, "m_bReloadsSingly"))
+			SetEntPropFloat(weapon, Prop_Send, "m_flEnergy", 1.0*TF2Util_GetWeaponMaxClip(weapon));
+	}
 	return MRES_Ignored;
 }
 public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname, bool& result)
@@ -3303,10 +3307,11 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 					SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 					SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
 					
-					
 					SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
 					DispatchSpawn(iEntity);
-								
+
+					SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+					SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", CWeapon);
 					GetClientEyePosition(client, fOrigin);
 					fAngles = fEyeAngles[client];
 					
@@ -3316,44 +3321,8 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 					fVelocity[1] = vBuffer[1]*Speed;
 					fVelocity[2] = vBuffer[2]*Speed;
 					SetEntPropVector( iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-					float ProjectileDamage = 100.0;
+					float ProjectileDamage = 100.0 * GetAttribute(CWeapon, "bullets per shot bonus", 1.0);
 					
-					Address DMGVSPlayer = TF2Attrib_GetByName(CWeapon, "taunt is highfive");
-					Address DamagePenalty = TF2Attrib_GetByName(CWeapon, "damage penalty");
-					Address DamageBonus = TF2Attrib_GetByName(CWeapon, "damage bonus");
-					Address DamageBonusHidden = TF2Attrib_GetByName(CWeapon, "damage bonus HIDDEN");
-					Address BulletsPerShot = TF2Attrib_GetByName(CWeapon, "bullets per shot bonus");
-					Address AccuracyScales = TF2Attrib_GetByName(CWeapon, "disguise damage reduction");
-					Address damageActive = TF2Attrib_GetByName(CWeapon, "ubercharge");
-					
-					if(damageActive != Address_Null)
-					{
-						ProjectileDamage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
-					}
-					if(DMGVSPlayer != Address_Null)
-					{
-						ProjectileDamage *= TF2Attrib_GetValue(DMGVSPlayer);
-					}
-					if(DamagePenalty != Address_Null)
-					{
-						ProjectileDamage *= TF2Attrib_GetValue(DamagePenalty);
-					}
-					if(DamageBonus != Address_Null)
-					{
-						ProjectileDamage *= TF2Attrib_GetValue(DamageBonus);
-					}
-					if(DamageBonusHidden != Address_Null)
-					{
-						ProjectileDamage *= TF2Attrib_GetValue(DamageBonusHidden);
-					}
-					if(BulletsPerShot != Address_Null)
-					{
-						ProjectileDamage *= TF2Attrib_GetValue(BulletsPerShot);
-					}
-					if(AccuracyScales != Address_Null)
-					{
-						ProjectileDamage *= TF2Attrib_GetValue(AccuracyScales);
-					}
 					SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, ProjectileDamage, true);  
 					TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 				}

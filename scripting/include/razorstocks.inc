@@ -2226,66 +2226,28 @@ stock void SendItemInfo(int client, const char[] text)
 	BfWriteString(hBuffer, text);
 	EndMessage();
 }
-stock GetClientBaseHP(client){
+stock int GetClientBaseHP(client){
 	int HP;
-	if(TF2_GetPlayerClass(client) == TFClass_Scout || TF2_GetPlayerClass(client) == TFClass_Engineer || TF2_GetPlayerClass(client) == TFClass_Spy || TF2_GetPlayerClass(client) == TFClass_Sniper){
-		HP = 125;
-	}
-	if(TF2_GetPlayerClass(client) == TFClass_Medic){
-		HP = 150;
-	}
-	if(TF2_GetPlayerClass(client) == TFClass_Pyro || TF2_GetPlayerClass(client) == TFClass_DemoMan){
-		HP = 175;
-	}
-	if(TF2_GetPlayerClass(client) == TFClass_Soldier){
-		HP = 200;
-	}
-	if(TF2_GetPlayerClass(client) == TFClass_Heavy){
-		HP = 300;
+	switch(TF2_GetPlayerClass(client)){
+		case TFClass_Scout, TFClass_Engineer, TFClass_Spy, TFClass_Sniper: {HP=125;}
+		case TFClass_Medic: {HP=150;}
+		case TFClass_Pyro, TFClass_DemoMan: {HP=175;}
+		case TFClass_Soldier: {HP=200;}
+		case TFClass_Heavy: {HP=300;}
 	}
 	
-	Address vampirePowerup = TF2Attrib_GetByName(client, "unlimited quantity");//Vampire Powerup
-	if(vampirePowerup != Address_Null)
-	{
-		float vampirePowerupValue = TF2Attrib_GetValue(vampirePowerup);
-		if(vampirePowerupValue > 1.0)
-		{
-			HP += 80;
-		}
-	}
-	Address knockoutPowerup = TF2Attrib_GetByName(client, "taunt is press and hold");//Vampire Powerup
-	if(knockoutPowerup != Address_Null)
-	{
-		float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
-		if(knockoutPowerupValue > 1.0)
-		{
-			HP += 100;
-		}
-	}
-	Address kingPowerup = TF2Attrib_GetByName(client, "attack projectiles");
-	if(kingPowerup != Address_Null && TF2Attrib_GetValue(kingPowerup) > 1.0)
-	{
-		float kingPowerupValue = TF2Attrib_GetValue(kingPowerup);
-		if(kingPowerupValue > 1.0)
-		{
-			HP += 100;
-		}
-	}
-	for(int i = 0; i<2; ++i){
+	for(int i = 0; i<5; ++i){
 		int weap = TF2Util_GetPlayerLoadoutEntity(client, i);
-		if(IsValidEdict(weap))
-		{
-			Address HPActive1 = TF2Attrib_GetByName(weap, "max health additive bonus");
-			Address HPActive2 = TF2Attrib_GetByName(weap, "max health additive penalty");
-			
-			if(HPActive1 != Address_Null){
-				HP += RoundToCeil(TF2Attrib_GetValue(HPActive1));
-			}
-			if(HPActive2 != Address_Null){
-				HP += RoundToCeil(TF2Attrib_GetValue(HPActive2));
-			}		
-		}
+		if(!IsValidWeapon(weap))
+			continue;
+
+		HP += RoundToCeil(GetAttribute(weap, "max health additive bonus", 0.0));
+		HP += RoundToCeil(GetAttribute(weap, "max health additive penalty", 0.0));
 	}
+
+	HP += RoundToCeil(GetAttribute(client, "max health additive bonus", 0.0));
+	HP += RoundToCeil(GetAttribute(client, "max health additive penalty", 0.0));
+
 	return HP;
 }
 stock DealFakeDamage(victim, attacker, weapon = -1, damage = 0, custom = 0)

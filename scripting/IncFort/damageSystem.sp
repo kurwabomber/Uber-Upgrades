@@ -785,7 +785,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		if(IsValidWeapon(weapon))
 		{
-			if(GetAttribute(attacker, "knockout powerup", 0.0))
+			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2 && GetAttribute(attacker, "knockout powerup", 0.0) == 1)
 				damage *= 1.35;
 			
 			if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
@@ -795,18 +795,15 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 			}
 			else if(DarkmoonBladeDuration[attacker] > currentGameTime)
 			{
-				int melee = GetWeapon(attacker,2);
-				if(IsValidWeapon(melee) && melee == weapon)
-				{
+				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 					damage += DarkmoonBlade[attacker];
-				}
 			}
 			if(currentDamageType[attacker].second & DMG_ARCANE)
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
 			Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
 			if(arcaneWeaponScaling != Address_Null)
 				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
-			
+
 			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
 			if(i <= 6)
 			{
@@ -897,7 +894,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		if(IsValidWeapon(weapon))
 		{
-			if(GetAttribute(attacker, "knockout powerup", 0.0) != 0.0)
+			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2 && GetAttribute(attacker, "knockout powerup", 0.0) == 1)
 				damage *= 1.35;
 			
 			if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
@@ -907,11 +904,8 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 			}
 			else if(DarkmoonBladeDuration[attacker] > currentGameTime)
 			{
-				int melee = GetWeapon(attacker,2);
-				if(IsValidWeapon(melee) && melee == weapon)
-				{
+				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 					damage += DarkmoonBlade[attacker];
-				}
 			}
 			//PrintToServer("%i damagebit", damagetype);
 			if(currentDamageType[attacker].second & DMG_ARCANE)
@@ -1746,7 +1740,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 						}
 						else if(sentryOverride == 33.0)
 						{
-							damage = 60.0;
+							damage = 80.0;
 							damagetype |= DMG_PREVENT_PHYSICS_FORCE;
 						}
 					}

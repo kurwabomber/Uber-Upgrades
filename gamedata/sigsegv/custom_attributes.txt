@@ -4716,4 +4716,24 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "6320"
+    {
+        "name"  "max health multiplier"
+        "attribute_class"   "max_health_multiplier"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6321"
+    {
+        "name"  "magnify patient damage"
+        "attribute_class"   "max_health_multiplier"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
 }

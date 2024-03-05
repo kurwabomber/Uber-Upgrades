@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"Healing Upgrades"
+	{
+		"en"		"Healing Upgrades"
+	}
 	"override projectile type (EP)"
 	{
 		"en"		"Weapon Shoots Electric Orbs"
