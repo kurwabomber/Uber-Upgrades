@@ -182,7 +182,7 @@ public Action:Timer_FixedVariables(Handle timer)
 				Format(ArmorLeft, sizeof(ArmorLeft), "Effective Health | %s", GetAlphabetForm(GetResistance(client, true)*GetClientHealth(client))); 
 
 				if(GetAttribute(client, "regeneration powerup", 0.0) == 3.0){
-					Format(ArmorLeft, sizeof(ArmorLeft), "%s\nBlood Pool  | %.0f / 10000", ArmorLeft, bloodAcolyteBloodPool[client]); 
+					Format(ArmorLeft, sizeof(ArmorLeft), "%s\nBlood Pool  | %.0f", ArmorLeft, bloodAcolyteBloodPool[client]); 
 				}
 				if(CheckForAttunement(client))
 				{
@@ -433,9 +433,9 @@ public Action:Timer_Every100MS(Handle timer)
 			}
 
 			Buff leechDebuff;
-			leechDebuff.init("Leeched", "-33pct healing", Buff_Leech, 1, client, 1.0);
+			leechDebuff.init("Leeched", "", Buff_Leech, 1, client, 1.0);
 			Buff decayDebuff;
-			decayDebuff.init("Decay", "-100pct healing", Buff_Decay, 1, client, 1.0);
+			decayDebuff.init("Decay", "", Buff_Decay, 1, client, 1.0);
 
 			for(int i=1;i<=MaxClients;++i)
 			{

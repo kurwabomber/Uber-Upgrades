@@ -321,6 +321,12 @@ public void ManagePlayerBuffs(int i){
 	else if (additiveDamageTakenBuff*multiplicativeDamageTakenBuff < 1.0)
 		Format(details, sizeof(details), "%s\n-%ipct Damage Taken", details, RoundToNearest( (1.0-(additiveDamageTakenBuff*multiplicativeDamageTakenBuff)) *100.0) );
 
+	float healingMult = GetPlayerHealingMultiplier(i);
+	if(healingMult > 1.0)
+		Format(details, sizeof(details), "%s\n+%ipct Healing Received", details, RoundToNearest( (healingMult - 1.0) * 100.0) );
+	else if (healingMult < 1.0)
+		Format(details, sizeof(details), "%s\n-%ipct Healing Received", details, RoundToNearest( (1.0-healingMult) * 100.0) );
+
 	SendItemInfo(i, details);
 }
 public ApplyUberBuffs(int medic, int target, int medigun){

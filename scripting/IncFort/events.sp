@@ -2576,7 +2576,7 @@ public OnGameFrame()
 					if(TF2Attrib_GetValue(regenerationPowerup) == 1.0)
 						RegenPerTick += TF2_GetMaxHealth(client)*TICKINTERVAL*0.1;//+10% maxHPR/s
 					else if(TF2Attrib_GetValue(regenerationPowerup) == 3.0){
-						if(GetClientHealth(client) >= TF2_GetMaxHealth(client) * 0.2){
+						if(bloodAcolyteBloodPool[client] < 3*TF2_GetMaxHealth(client) && GetClientHealth(client) >= TF2_GetMaxHealth(client) * 0.2){
 							RegenPerTick -= TF2_GetMaxHealth(client)*TICKINTERVAL*0.08;
 							bloodAcolyteBloodPool[client] += TF2_GetMaxHealth(client)*TICKINTERVAL*0.08;
 						}
@@ -2594,7 +2594,7 @@ public OnGameFrame()
 					int heal = RoundToFloor(remainderHealthRegeneration[client]);
 					if(float(clientHealth) + heal < clientMaxHealth)
 						SetEntProp(client, Prop_Data, "m_iHealth", clientHealth+heal);
-					else
+					else if(clientHealth < clientMaxHealth)
 						SetEntProp(client, Prop_Data, "m_iHealth", clientMaxHealth);
 					
 					remainderHealthRegeneration[client] -= heal;

@@ -6128,8 +6128,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.1"
 		{
@@ -6141,8 +6141,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.2"
 		{
@@ -6154,8 +6154,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.4"
 		{
@@ -6167,8 +6167,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.5"
 		{
@@ -6180,8 +6180,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.6"
 		{
@@ -6193,8 +6193,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.7"
 		{
@@ -6206,8 +6206,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.8"
 		{
@@ -6219,8 +6219,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.9"
 		{
@@ -6232,8 +6232,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.10"
 		{
@@ -6245,8 +6245,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.11"
 		{
@@ -6258,8 +6258,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 		"2100.14"
 		{
@@ -6271,8 +6271,8 @@
 			"value"		"1"
 			"init"		"0.00"
 			"display_style" "8"
-			"staged_max"		"2,3,3"
-			"max"		"1.00"
+			"staged_max"		"3,3,3"
+			"max"		"2.00"
 		}
 	}
 }
