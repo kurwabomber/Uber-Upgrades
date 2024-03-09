@@ -10,7 +10,7 @@
 	}
 	"patient damage taken to self heal"
 	{
-		"en"		"Patient Damage Taken to Self Heal"
+		"en"		"Patient Damage Taken Heals"
 	}
 	"patient damage taken to uber"
 	{
@@ -26,7 +26,7 @@
 	}
 	"patient overheal to damage mult"
 	{
-		"en"		"Overheal Increases Armor Effectiveness"
+		"en"		"Overheal Reduces Damage Taken"
 	}
 	"healing patient power"
 	{

@@ -4766,12 +4766,42 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
-    "6324"
+    "6325"
     {
-        "name"  "escape plan healing"
-        "attribute_class"   "escape_plan_healing"
+        "name"  "healing aoe radius"
+        "attribute_class"   "healing_aoe_radius"
         "description_string"    ""
         "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6326"
+    {
+        "name"  "patient damage taken to uber"
+        "attribute_class"   "patient_damage_taken_to_uber"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6327"
+    {
+        "name"  "patient damage taken to self heal"
+        "attribute_class"   "patient_damage_taken_to_self_heal"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6328"
+    {
+        "name"  "healing patient power"
+        "attribute_class"   "healing_patient_power"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
         "hidden"    "1"
         "effect_type"   "positive"
         "stored_as_integer" "0"

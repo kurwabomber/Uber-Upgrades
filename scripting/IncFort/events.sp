@@ -115,6 +115,14 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			PrintToConsole(attacker, "%.1f post damage dealt.", damage);
 		}*/
 
+		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
+		for(int i = 1;i<=healers;++i){
+			int healer = TF2Util_GetPlayerHealer(attacker,i);
+			if(!IsValidClient3(healer))
+				continue;
+
+					
+		}
 		if(damage > 0.0 && attacker != client && IsValidClient3(client))
 		{
 			if(GetAttribute(attacker, "regeneration powerup", 0.0) == 3){

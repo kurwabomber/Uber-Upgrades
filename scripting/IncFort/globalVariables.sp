@@ -338,6 +338,7 @@ float frayNextTime[MAXPLAYERS+1];
 float quakerTime[MAXPLAYERS+1];
 float bloodboundDamage[MAXPLAYERS+1];
 float bloodboundHealing[MAXPLAYERS+1];
+float pylonCharge[MAXPLAYERS+1];
 
 //String
 char given_upgrd_classnames[LISTS][LISTS_CATEGORIES][128]
