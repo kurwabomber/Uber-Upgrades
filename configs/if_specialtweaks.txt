@@ -240,7 +240,7 @@
 			"magnify patient damage"		"1"
 			"max health additive bonus"		"4.286"
 			"ubercharge effectiveness"		"5.0"
-			"healing patient power"			"2.5"
+			"healing patient power"			"1.0"
 		}
 		"Blossom of Life"
 		{

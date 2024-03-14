@@ -2086,7 +2086,6 @@
 			"Attr5"		"melee attack rate bonus"
 			"Attr1"		"melee range multiplier"
 			"Attr2"		"self dmg push force increased"
-			"Attr6"		"Maximum Caber Charges"
 		}
 		"Special Tweaks"
 		{

@@ -176,48 +176,57 @@ public Action:Timer_FixedVariables(Handle timer)
 				}
 			}
 
+			if(IsValidWeapon(CWeapon)){
+				if(GetAttribute(CWeapon, "magnify patient damage", 0.0)){
+					char buffer[32]
+					if(pylonCharge[client] < TF2Util_GetEntityMaxHealth(client))
+						Format(buffer, sizeof(buffer), "Pylon Charge: %.1f%", 100.0*pylonCharge[client]/float(TF2Util_GetEntityMaxHealth(client)));
+					else
+					 	Format(buffer, sizeof(buffer), "Pylon Charge: READY");
+
+					SetHudTextParams(0.8, 0.9, 0.4, 232, 133, 2, 200);
+					ShowSyncHudText(client, hudAbility, buffer);
+				}
+			}
 			char ArmorLeft[64]
-			if(IsValidEdict(CWeapon))
+			Format(ArmorLeft, sizeof(ArmorLeft), "Effective Health | %s", GetAlphabetForm(GetResistance(client, true)*GetClientHealth(client))); 
+
+			if(GetAttribute(client, "regeneration powerup", 0.0) == 3.0){
+				Format(ArmorLeft, sizeof(ArmorLeft), "%s\nBlood Pool  | %.0f", ArmorLeft, bloodAcolyteBloodPool[client]); 
+			}
+			if(CheckForAttunement(client))
 			{
-				Format(ArmorLeft, sizeof(ArmorLeft), "Effective Health | %s", GetAlphabetForm(GetResistance(client, true)*GetClientHealth(client))); 
-
-				if(GetAttribute(client, "regeneration powerup", 0.0) == 3.0){
-					Format(ArmorLeft, sizeof(ArmorLeft), "%s\nBlood Pool  | %.0f", ArmorLeft, bloodAcolyteBloodPool[client]); 
-				}
-				if(CheckForAttunement(client))
+				Format(ArmorLeft, sizeof(ArmorLeft), "%s\nFocus  | %.0f / %.0f", ArmorLeft, fl_CurrentFocus[client],fl_MaxFocus[client]); 
+				char spellHUD[1024]
+				Format(spellHUD, sizeof(spellHUD), "Current Spells Active | \n");
+				int activeSpells = 0;
+				int attunement = 1;
+				Address attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
+				if(attuneActive != Address_Null)
 				{
-					Format(ArmorLeft, sizeof(ArmorLeft), "%s\nFocus  | %.0f / %.0f", ArmorLeft, fl_CurrentFocus[client],fl_MaxFocus[client]); 
-					char spellHUD[1024]
-					Format(spellHUD, sizeof(spellHUD), "Current Spells Active | \n");
-					int activeSpells = 0;
-					int attunement = 1;
-					Address attuneActive = TF2Attrib_GetByName(client, "arcane attunement slots");
-					if(attuneActive != Address_Null)
-					{
-						attunement += RoundToNearest(TF2Attrib_GetValue(attuneActive));
-					}
-					for(int i = 0;i<Max_Attunement_Slots && attunement > activeSpells;++i)
-					{
-						if(AttunedSpells[client][i] != 0.0)
-						{
-							activeSpells++;
-							int spellID = RoundToNearest(AttunedSpells[client][i]-1.0)
-							char spellnum[64]
-							Format(spellnum, sizeof(spellnum),"%i - %s | Cooldown %.1f\n", i+1, SpellList[spellID], SpellCooldowns[client][i]);
-							StrCat(spellHUD,sizeof(spellHUD),spellnum);
-						}
-					}
-					SetHudTextParams(0.02, 0.02, 0.21, 69, 245, 66, 255, 0, 0.0, 0.0, 0.0);
-					ShowSyncHudText(client, hudSpells, spellHUD);
+					attunement += RoundToNearest(TF2Attrib_GetValue(attuneActive));
 				}
+				for(int i = 0;i<Max_Attunement_Slots && attunement > activeSpells;++i)
+				{
+					if(AttunedSpells[client][i] != 0.0)
+					{
+						activeSpells++;
+						int spellID = RoundToNearest(AttunedSpells[client][i]-1.0)
+						char spellnum[64]
+						Format(spellnum, sizeof(spellnum),"%i - %s | Cooldown %.1f\n", i+1, SpellList[spellID], SpellCooldowns[client][i]);
+						StrCat(spellHUD,sizeof(spellHUD),spellnum);
+					}
+				}
+				SetHudTextParams(0.02, 0.02, 0.21, 69, 245, 66, 255, 0, 0.0, 0.0, 0.0);
+				ShowSyncHudText(client, hudSpells, spellHUD);
+			}
 
-				if (AreClientCookiesCached(client)){
-					SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-					ShowSyncHudText(client, hudSync, ArmorLeft);
-				}else{
-					SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
-					ShowSyncHudText(client, hudSync, ArmorLeft);
-				}
+			if (AreClientCookiesCached(client)){
+				SetHudTextParams(StringToFloat(ArmorXPos[client]), StringToFloat(ArmorYPos[client]), 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+				ShowSyncHudText(client, hudSync, ArmorLeft);
+			}else{
+				SetHudTextParams(-0.75, -0.2, 0.5, 255, 187, 0, 255, 0, 0.0, 0.0, 0.0);
+				ShowSyncHudText(client, hudSync, ArmorLeft);
 			}
 		}
 		oldPlayerButtons[client] = globalButtons[client];

@@ -121,7 +121,11 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			if(!IsValidClient3(healer))
 				continue;
 
-					
+			int healingWeapon = GetWeapon(attacker, 1);
+			if(!IsValidWeapon(healingWeapon))
+				continue;
+
+			
 		}
 		if(damage > 0.0 && attacker != client && IsValidClient3(client))
 		{

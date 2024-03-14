@@ -1121,27 +1121,26 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			float attackerPosition[3];
 			GetEntPropVector(attacker, Prop_Data, "m_vecAbsOrigin", attackerPosition); 
 			float distance = GetVectorDistance(victimPosition, attackerPosition);
-			if(distance > 200)
-				distance = 200.0;
+			if(distance > 400)
+				distance = 400.0;
 
-			damage *= 2+1.75*((200-distance)/200);
+			damage *= 2+1.75*((400-distance)/400);
 		}
 
 		float medicDMGBonus = 1.0;
 		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
 		if(healers > 0)
 		{
-			for (int i = 1; i <= MaxClients; ++i)
-			{
-				if (!IsValidClient3(i))
+			for(int i = 1;i<=healers;++i){
+				int healer = TF2Util_GetPlayerHealer(attacker,i);
+				if(!IsValidClient3(healer))
 					continue;
-				int healerweapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
-				if(!IsValidWeapon(healerweapon))
-					continue;
-				if(!HasEntProp(healerweapon, Prop_Send, "m_hHealingTarget") || GetEntPropEnt(healerweapon, Prop_Send, "m_hHealingTarget") != attacker)
+					
+				int healingWeapon = GetWeapon(attacker, 1);
+				if(!IsValidWeapon(healingWeapon))
 					continue;
 				
-				float dmgActive = GetAttribute(healerweapon, "hidden secondary max ammo penalty");
+				float dmgActive = GetAttribute(healingWeapon, "hidden secondary max ammo penalty");
 				if(dmgActive != 1.0)
 					medicDMGBonus += dmgActive;
 			}
