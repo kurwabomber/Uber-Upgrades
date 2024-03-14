@@ -1162,7 +1162,7 @@
 	}
 	"Damage Multiplier for healed player"
 	{
-		"en"		"Damage Multiplier for healed player"
+		"en"		"Damage Multiplier for Patient"
 	}
 	"Heavy Melee"
 	{

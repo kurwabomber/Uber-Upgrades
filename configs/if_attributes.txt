@@ -4679,8 +4679,9 @@
 			"cost"		"900"
 			"increase_ratio"	".9"
 			"value"		"0.05"
-			"init"		"1"
-			"max"		"2"
+			"init"		"0"
+			"description"	"Gives damage boost to player healed.\nStacks additively with other medics' boost"
+			"max"		"1"
 		}
 		"1525"
 		{
@@ -5350,8 +5351,8 @@
 		{
 			"name"		"mult medigun range"
 			"ref"		"Medigun Heal Range Bonus"
-			"cost"		"750"
-			"increase_ratio"	"0.3"
+			"cost"		"500"
+			"increase_ratio"	"0.1"
 			"value"		"0.25"
 			"init"		"1.0"
 			"max"		"6.0"
