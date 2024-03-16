@@ -116,12 +116,12 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		}*/
 
 		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
-		for(int i = 1;i<=healers;++i){
+		for(int i = 0;i<healers;++i){
 			int healer = TF2Util_GetPlayerHealer(attacker,i);
 			if(!IsValidClient3(healer))
 				continue;
 
-			int healingWeapon = GetWeapon(attacker, 1);
+			int healingWeapon = GetWeapon(healer, 1);
 			if(!IsValidWeapon(healingWeapon))
 				continue;
 
@@ -2594,9 +2594,6 @@ public OnGameFrame()
 						}
 					}
 
-				if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal))
-					RegenPerTick *= 2.0;
-				
 				if(TF2_IsPlayerInCondition(client, TFCond_Plague))
 					RegenPerTick *= 0.0;
 	

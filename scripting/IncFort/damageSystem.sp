@@ -1127,26 +1127,49 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			damage *= 2+1.75*((400-distance)/400);
 		}
 
+		//Healers of attacker
 		float medicDMGBonus = 1.0;
 		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
 		if(healers > 0)
 		{
-			for(int i = 1;i<=healers;++i){
+			for(int i = 0;i<healers;++i){
 				int healer = TF2Util_GetPlayerHealer(attacker,i);
 				if(!IsValidClient3(healer))
 					continue;
 					
-				int healingWeapon = GetWeapon(attacker, 1);
+				int healingWeapon = GetWeapon(healer, 1);
 				if(!IsValidWeapon(healingWeapon))
 					continue;
 				
-				float dmgActive = GetAttribute(healingWeapon, "hidden secondary max ammo penalty");
-				if(dmgActive != 1.0)
-					medicDMGBonus += dmgActive;
+				medicDMGBonus += GetAttribute(healingWeapon, "hidden secondary max ammo penalty", 0.0);
+
+				if(TF2_IsPlayerInCondition(attacker, TFCond_Kritzkrieged))
+					medicDMGBonus += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
 			}
 		}
 		damage *= medicDMGBonus;
 		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", weapon);
+
+		//Healers of victim
+		float medicRESBonus = 1.0;
+		healers = GetEntProp(victim, Prop_Send, "m_nNumHealers");
+		if(healers > 0)
+		{
+			for(int i = 0;i<healers;++i){
+				int healer = TF2Util_GetPlayerHealer(victim,i);
+				if(!IsValidClient3(healer))
+					continue;
+					
+				int healingWeapon = GetWeapon(healer, 1);
+				if(!IsValidWeapon(healingWeapon))
+					continue;
+
+				if(TF2_IsPlayerInCondition(healer, TFCond_UberFireResist) || TF2_IsPlayerInCondition(healer, TFCond_UberBulletResist) || TF2_IsPlayerInCondition(healer, TFCond_UberBlastResist))
+					medicRESBonus += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
+			}
+		}
+		damage /= medicRESBonus;
+
 		float SniperChargingFactorActive = GetAttribute(weapon, "no charge impact range");
 		if(SniperChargingFactorActive != 1.0)
 		{

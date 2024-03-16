@@ -37,6 +37,23 @@ float GetPlayerHealingMultiplier(client){
 				multiplier *= 0.5;
 		}
 	}
+	if(TF2_IsPlayerInCondition(client, TFCond_MegaHeal)){
+		float effectMult = 1.0;
+		
+		int healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
+		for(int i = 0;i<healers;++i){
+			int healer = TF2Util_GetPlayerHealer(client,i);
+			if(!IsValidClient3(healer))
+				continue;
+
+			int healingWeapon = GetWeapon(healer, 1);
+			if(!IsValidWeapon(healingWeapon))
+				continue;
+
+			effectMult += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
+		}
+		multiplier *= 1.0 + effectMult;
+	}
 	if(GetAttribute(client, "regeneration powerup", 0.0) == 3.0)
 		multiplier *= 1.6;
 	if(hasBuffIndex(client, Buff_Stronghold))

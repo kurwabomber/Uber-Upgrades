@@ -1186,7 +1186,7 @@ DisplayItemChange(client,itemidx)
 		//Medic Secondaries
 		case 411:
 		{
-			ChangeString = "The Quick-Fix | Uber gives an additional 2x health regeneration.";
+			ChangeString = "The Quick-Fix | Uber gives an additional 2x healing received.";
 		}
 		//Medic Melee
 		case 37:
