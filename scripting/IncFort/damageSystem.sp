@@ -235,7 +235,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 				}
 			}
-			SDKHooks_TakeDamage(victim,healer,healer,1.5*pylonCap,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR)
+			SDKHooks_TakeDamage(victim,healer,healer,0.15*pylonCap,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR)
 
 			for(int client=1;client<=MaxClients && iterations < maxBounces;client++)
 			{
@@ -270,7 +270,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
 					CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 				}
-				SDKHooks_TakeDamage(client,healer,healer,1.5*pylonCap,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR)
+				SDKHooks_TakeDamage(client,healer,healer,0.15*pylonCap,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR)
 				++iterations
 			}
 
