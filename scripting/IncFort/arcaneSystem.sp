@@ -1334,7 +1334,7 @@ public Action:ArcaneHunter(Handle timer, client)
 	
 	GetClientEyePosition(client, soundPos);
 	GetClientEyeAngles(client, clientAng);
-	EmitSoundToAll(SOUND_ARCANESHOOT, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
+	EmitSoundToAll(SOUND_ARCANESHOOT, 1, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
 	// define the direction of the sparks
 	float dir[3] = {0.0, 0.0, 0.0};
 	

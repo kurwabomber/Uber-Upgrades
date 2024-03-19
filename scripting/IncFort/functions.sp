@@ -1251,10 +1251,6 @@ DisplayItemChange(client,itemidx)
 			ChangeString = "The Conniver's Kunai | Backstabs instead have a 50% lifesteal bonus.";
 		}
 		//Spy Misc
-		case 59:
-		{
-			ChangeString = "The Dead Ringer | Now gives 90% damage reduction on main hit. 75% while cloaked.";
-		}
 		case 735,736,810,831,933,1080,1102:
 		{
 			ChangeString = "Sappers | Destroys buildings within 110 damage ticks (regardless of damage modifiers.)";
