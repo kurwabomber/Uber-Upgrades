@@ -114,19 +114,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		{
 			PrintToConsole(attacker, "%.1f post damage dealt.", damage);
 		}*/
-
-		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
-		for(int i = 0;i<healers;++i){
-			int healer = TF2Util_GetPlayerHealer(attacker,i);
-			if(!IsValidClient3(healer))
-				continue;
-
-			int healingWeapon = GetWeapon(healer, 1);
-			if(!IsValidWeapon(healingWeapon))
-				continue;
-
-			
-		}
 		if(damage > 0.0 && attacker != client && IsValidClient3(client))
 		{
 			if(GetAttribute(attacker, "regeneration powerup", 0.0) == 3){
@@ -3494,6 +3481,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		strongholdEnabled[client] = false;
 		bloodboundDamage[client] = 0.0;
 		bloodboundHealing[client] = 0.0;
+		pylonCharge[client] = 0.0;
 		tagTeamTarget[client] = -1;
 		for(int i=1;i<=MaxClients;++i)
 		{

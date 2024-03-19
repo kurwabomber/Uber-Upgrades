@@ -186,6 +186,26 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		}
 	}
 
+	int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
+	for(int i = 0;i<healers;++i){
+		int healer = TF2Util_GetPlayerHealer(attacker,i);
+		if(!IsValidClient3(healer))
+			continue;
+
+		int healingWeapon = GetWeapon(healer, 1);
+		if(!IsValidWeapon(healingWeapon))
+			continue;
+
+		if(GetAttribute(healingWeapon, "", 0.0))
+			pylonCharge[healer] += damage;
+
+		if(pylonCharge[healer] >= TF2Util_GetEntityMaxHealth(healer)){
+			pylonCharge[healer] = 0.0;
+
+
+		}
+	}
+
 	if(!(currentDamageType[attacker].second & DMG_PIERCING))
 	{
 		float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
@@ -1145,6 +1165,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 
 				if(TF2_IsPlayerInCondition(attacker, TFCond_Kritzkrieged))
 					medicDMGBonus += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
+
+				medicDMGBonus *= GetAttribute(healingWeapon, "healing patient power", 1.0);
 			}
 		}
 		damage *= medicDMGBonus;
@@ -1166,6 +1188,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 
 				if(TF2_IsPlayerInCondition(healer, TFCond_UberFireResist) || TF2_IsPlayerInCondition(healer, TFCond_UberBulletResist) || TF2_IsPlayerInCondition(healer, TFCond_UberBlastResist))
 					medicRESBonus += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
+
+				medicRESBonus *= GetAttribute(healingWeapon, "healing patient power", 1.0);
 			}
 		}
 		damage /= medicRESBonus;
