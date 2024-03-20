@@ -450,6 +450,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 
 					if(IsValidEdict(weapon) && IsValidClient3(i))
 					{
+						PrintToServer("%.2f damage", damage);
 						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
 						if(ignition)
 							TF2Util_IgnitePlayer(i, owner, 7.0, weapon);

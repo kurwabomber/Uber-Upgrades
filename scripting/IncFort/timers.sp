@@ -180,12 +180,34 @@ public Action:Timer_FixedVariables(Handle timer)
 				if(GetAttribute(CWeapon, "magnify patient damage", 0.0)){
 					char buffer[32]
 					if(pylonCharge[client] < 10.0*TF2Util_GetEntityMaxHealth(client)*GetResistance(client, true))
-						Format(buffer, sizeof(buffer), "Pylon Charge: %.1f%", 100.0*pylonCharge[client]/(TF2Util_GetEntityMaxHealth(client)*GetResistance(client, true)));
+						Format(buffer, sizeof(buffer), "Pylon Charge: %.1f%", 10.0*pylonCharge[client]/(TF2Util_GetEntityMaxHealth(client)*GetResistance(client, true)));
 					else
 					 	Format(buffer, sizeof(buffer), "Pylon Charge: READY");
 
 					SetHudTextParams(0.8, 0.9, 0.4, 232, 133, 2, 200);
 					ShowSyncHudText(client, hudAbility, buffer);
+				}
+				if(GetAttribute(CWeapon, "healing aoe radius", 0.0)){
+					float range = GetAttribute(CWeapon, "healing aoe radius", 0.0);
+					range *= range;
+					float healRate = 1.5 * TF2Attrib_HookValueFloat(1.0, "mult_medigun_healrate", CWeapon);
+					float overheal = 1.5 * TF2Attrib_HookValueFloat(1.0, "mult_medigun_overheal_amount", CWeapon);
+					float position[3], patientPosition[3];
+					GetEntPropVector(client, Prop_Data, "m_vecOrigin", position);
+					for(int i = 1; i <= MaxClients;++i){
+						if(!IsValidClient3(i))
+							continue;
+						if(!IsPlayerAlive(i))
+							continue;
+						if(IsOnDifferentTeams(client, i))
+							continue;
+
+						GetEntPropVector(i, Prop_Data, "m_vecOrigin", patientPosition);
+						if(GetVectorDistance(position, patientPosition, true) > range)
+							continue;
+							
+						AddPlayerHealth(i, RoundToCeil(healRate), overheal, true, client);
+					}
 				}
 			}
 			char ArmorLeft[64]

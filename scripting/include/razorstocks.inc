@@ -363,7 +363,13 @@ void DoThink(DataPack pack)
 
 	Call_Finish();
 }
-
+stock void AddUbercharge(int weapon, float add){
+	float uber = GetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel");
+	if(uber + add > 100)
+		SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 100.0);
+	else
+		SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", uber + add);
+}
 stock float GetResistance(int client, bool includeReduction = false, float increaseBase = 0.0, float increaseMult = 0.0)
 {
 	if(IsValidClient3(client))

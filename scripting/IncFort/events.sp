@@ -116,6 +116,25 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		}*/
 		if(damage > 0.0 && attacker != client && IsValidClient3(client))
 		{
+			int healers = GetEntProp(client, Prop_Send, "m_nNumHealers");
+			if(healers > 0)
+			{
+				for(int i = 0;i<healers;++i){
+					int healer = TF2Util_GetPlayerHealer(client,i);
+					if(!IsValidClient3(healer))
+						continue;
+						
+					int healingWeapon = GetWeapon(healer, 1);
+					if(!IsValidWeapon(healingWeapon))
+						continue;
+
+					if(GetAttribute(healingWeapon, "patient damage taken to uber", 0.0))
+						AddUbercharge(healingWeapon, 100.0 * damage * GetAttribute(healingWeapon, "patient damage taken to uber", 0.0) / TF2Util_GetEntityMaxHealth(client));
+					if(GetAttribute(healingWeapon, "patient damage taken to self heal", 0.0))
+						AddPlayerHealth(healer,RoundToCeil(damage * GetAttribute(healingWeapon, "patient damage taken to self heal", 0.0)), _, true, healer);
+				}
+			}
+	
 			if(GetAttribute(attacker, "regeneration powerup", 0.0) == 3){
 				float heal = damage;
 				if(heal > bloodAcolyteBloodPool[attacker])
@@ -513,7 +532,15 @@ public MRESReturn OnBulletTrace(int victim, Handle hParams){
 	DHookGetParamVector(hParams, 2, direction);
 	CTakeDamageInfo info = CTakeDamageInfo.FromAddress(DHookGetParam(hParams, 1));
 	int attacker = EHandleToEntIndex(info.m_hAttacker);
+	if(!IsValidClient3(attacker))
+		return MRES_Ignored;
+
 	int weapon = EHandleToEntIndex(info.m_hWeapon);
+	if(!IsValidWeapon(weapon))
+		return MRES_Ignored;
+
+	if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+		return MRES_Ignored;
 
 	if(IsValidClient3(attacker) && IsValidWeapon(weapon)){
 		float pos[3];

@@ -110,6 +110,7 @@
 		{
 			"preserve_attributes"	"1"
 			"1"				"476 ; 1.15"
+			"2"				"200 ; 1"
 		}
 		"426"//Eviction Notice
 		{
