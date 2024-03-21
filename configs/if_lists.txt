@@ -1578,7 +1578,7 @@
 	}
 	"classic"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr1"		"damage bonus"
@@ -1600,6 +1600,11 @@
 			"Attr2"		"bullets per shot bonus (single)"
 			"Attr8"		"Increased Charge percent"
 			"Attr5"		"aiming movespeed increased"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Explosive Rounds"
+			"Sp1"		"Sniper Mastery"
 		}
 	}
 	"hitmans"
@@ -1631,7 +1636,7 @@
 	}
 	"snipe"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr1"		"damage bonus"
@@ -1654,10 +1659,15 @@
 			"Attr7"		"Increased Charge percent"
 			"Attr5"		"aiming movespeed increased"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Explosive Rounds"
+			"Sp1"		"Sniper Mastery"
+		}
 	}
 	"chargelessRifle"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr1"		"damage bonus"
@@ -1675,6 +1685,11 @@
 			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"faster reload rate"
 			"Attr5"		"aiming movespeed increased"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Explosive Rounds"
+			"Sp1"		"Sniper Mastery"
 		}
 	}
 	"c_bow"

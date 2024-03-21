@@ -1954,10 +1954,10 @@
 		{
 			"name"		"mult sniper charge after headshot"
 			"ref"		"mult sniper charge after headshot"
-			"cost"		"100"
-			"value"		"-0.25"
-			"init"		"1.00"
-			"max"		"0.10"
+			"cost"		"0"
+			"value"		"1.0"
+			"init"		"0.00"
+			"max"		"150"
 		}
 		"133"
 		{
@@ -5968,6 +5968,26 @@
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"0.1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1651"
+		{
+			"name"		"explosive sniper shot"
+			"ref"		"explosive sniper shot"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1652"
+		{
+			"name"		"flame size penalty"
+			"ref"		"Fully Charged Shots Ricochet"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
 			"init"		"0"
 			"max"		"0"
 		}

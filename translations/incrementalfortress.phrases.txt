@@ -1,5 +1,21 @@
 "Phrases"
 {
+	"Explosive Rounds"
+	{
+		"en"		"Explosive Rounds"
+	}
+	"Sniper Mastery"
+	{
+		"en"		"Sniper Mastery"
+	}
+	"explosive sniper shot"
+	{
+		"en"		"Explosive Headshots"
+	}
+	"Fully Charged Shots Ricochet"
+	{
+		"en"		"Fully Charged Shots Ricochet"
+	}
 	"Magnification Pylon"
 	{
 		"en"		"Magnification Pylon"
@@ -3374,7 +3390,7 @@
 	}
 	"mult sniper charge after headshot"
 	{
-		"en"		"Broken Attribute"
+		"en"		"Additional Charge After Headshot"
 	}
 	"minigun no spin sounds"
 	{

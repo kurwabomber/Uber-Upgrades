@@ -252,5 +252,20 @@
 			"patient damage taken to uber"		"2"
 			"patient damage taken to self heal"	"4"
 		}
+		"Explosive Rounds"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"explosive sniper shot"			"1"
+			"headshot damage increase"		"1.0"
+			"damage bonus HIDDEN(b)"		"1.0"
+		}
+		"Sniper Mastery"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Fully Charged Shots Ricochet"	"3"
+			"mult sniper charge after headshot"	"75"
+		}
 	}
 }

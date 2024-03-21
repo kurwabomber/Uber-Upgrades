@@ -1787,8 +1787,13 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 			if(HasEntProp(CWeapon, Prop_Send, "m_flChargedDamage"))
 			{
 				float charging = GetEntPropFloat(CWeapon, Prop_Send, "m_flChargedDamage");
-				if(charging > 0.0)
+				if(charging > 0.0 || TF2_IsPlayerInCondition(client, TFCond_Zoomed))
 				{
+					if(charging < savedCharge[client]){
+						charging = savedCharge[client];
+						SetEntPropFloat(CWeapon, Prop_Send, "m_flChargedDamage", savedCharge[client]);
+						savedCharge[client] = 0.0;
+					}
 					Address tracer = TF2Attrib_GetByName(CWeapon, "sniper fires tracer");
 					LastCharge[client] = charging;
 					if(LastCharge[client] >= 150.0 && tracer != Address_Null && TF2Attrib_GetValue(tracer) == 0.0)

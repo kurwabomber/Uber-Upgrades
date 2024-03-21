@@ -716,6 +716,11 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
+
+		if(damagecustom == TF_CUSTOM_HEADSHOT){
+			if(GetAttribute(weapon, "mult sniper charge after headshot", 0.0))
+				savedCharge[attacker] = GetAttribute(weapon, "mult sniper charge after headshot", 0.0);
+		}
 	}
 	if(damage < 0.0)
 		damage = 0.0;
