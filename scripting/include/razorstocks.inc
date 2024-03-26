@@ -1732,6 +1732,8 @@ stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_
 			dpsMult *= TF2Attrib_GetValue(DPSMult10);
 			}
 
+			dpsMult *= GetAttribute(weapon, "mult projectile count", 1.0);
+
 			float damageBonus = TF2Attrib_HookValueFloat(1.0, "dmg_outgoing_mult", weapon);
 			dpsMult *= damageBonus;
 

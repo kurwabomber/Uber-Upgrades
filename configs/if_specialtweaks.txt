@@ -217,6 +217,8 @@
 			"mult crit when health is below percent"	"7.0"
 			"projectile acceleration"		"800.0"
 			"Projectile speed decreased"	"8.0"
+			"Blast radius decreased"		"2.0"
+			"damage bonus HIDDEN(b)"		"1.0"
 		}
 		"Focused Lens"
 		{
@@ -266,6 +268,19 @@
 			"restriction"					"1"
 			"Fully Charged Shots Ricochet"	"3"
 			"mult sniper charge after headshot"	"75"
+		}
+		"Weapon Inheritance"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"dps inheritance ratio"			"3"
+		}
+		"Agile Latticing"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"move speed bonus"				"3"
+			"max health additive bonus"		"2"
 		}
 	}
 }

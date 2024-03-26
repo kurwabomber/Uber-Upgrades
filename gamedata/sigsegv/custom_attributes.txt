@@ -4806,4 +4806,14 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "6329"
+    {
+        "name"  "dps inheritance ratio"
+        "attribute_class"   "dps_inheritance_ratio"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
 }

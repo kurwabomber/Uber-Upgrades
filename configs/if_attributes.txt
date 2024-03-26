@@ -5991,6 +5991,16 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1653"
+		{
+			"name"		"dps inheritance ratio"
+			"ref"		"dps inheritance ratio"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
+			"init"		"0"
+			"max"		"0"
+		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{

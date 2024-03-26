@@ -88,7 +88,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
 				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
 					damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
-
 				else if(DarkmoonBladeDuration[attacker] > currentGameTime)
 				{
 					int melee = GetWeapon(attacker,2);
@@ -106,6 +105,24 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					{
 						if(i == 0) i = 1;
 						damage *= i*weaponFireRate[weapon]/TICKRATE;
+					}
+
+					int secondary = GetWeapon(attacker, 1);
+					if(IsValidWeapon(secondary)){
+						float inheritanceRatio = GetAttribute(secondary, "dps inheritance ratio", 0.0);
+						if(inheritanceRatio){
+							float strongestDPS = 0.0;
+							for(int e = 0;e<3;++e){
+								int tempWeapon = GetWeapon(attacker, e);
+								if(!IsValidWeapon(tempWeapon) || tempWeapon == weapon)
+									continue;
+								float currentDPS = TF2_GetWeaponclassDPS(attacker, tempWeapon) * TF2_GetDPSModifiers(attacker, tempWeapon);
+								if(currentDPS > strongestDPS)
+									strongestDPS = currentDPS;
+							}
+
+							damage += inheritanceRatio*strongestDPS/weaponFireRate[weapon];
+						}
 					}
 				}
 			}
@@ -1345,7 +1362,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		}
 		if(damagecustom == TF_CUSTOM_PLASMA_CHARGED)
 		{
-			PrintToConsole(attacker, "Full charge hit!");
 			damage *= Pow(GetAttribute(weapon, "clip size bonus upgrade")+1.0, 0.9);
 			damagetype |= DMG_CRIT;
 		}

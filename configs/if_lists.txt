@@ -1816,7 +1816,7 @@
 	}
 	"ali_shoes"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Protection upgrades"
 		{
 			"Attr1"		"dmg from all reduced(wearable)"
@@ -1825,6 +1825,10 @@
 		{
 			"Attr0"		"charge time increased"
 			"Attr4"		"charge recharge rate increased"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Agile Latticing"
 		}
 	}
 	
@@ -2210,7 +2214,7 @@
 	}
 	"chute"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"1"
 		"Protection upgrades"
 		{
 			"Attr0"		"self dmg push force increased"
@@ -2218,15 +2222,25 @@
 			"Attr2"		"increased air control"
 			"Attr3"		"Is Parachute Re-Openable"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Weapon Inheritance"
+			"Sp1"		"Agile Latticing"
+		}
 	}
 	"wearable"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"1"
 		"Protection upgrades"
 		{
 			"Attr0"		"blast dmg to self decreased"
 			"Attr1"		"dmg from all reduced(wearable)"
 			"Attr15"	"jarate backstabber"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Weapon Inheritance"
+			"Sp1"		"Agile Latticing"
 		}
 	}
 	"medmel"

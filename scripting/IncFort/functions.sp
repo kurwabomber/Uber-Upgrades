@@ -450,7 +450,6 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 
 					if(IsValidEdict(weapon) && IsValidClient3(i))
 					{
-						PrintToServer("%.2f damage", damage);
 						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
 						if(ignition)
 							TF2Util_IgnitePlayer(i, owner, 7.0, weapon);
@@ -995,7 +994,7 @@ DisplayItemChange(client,itemidx)
 		//scout secondaries
 		case 46:
 		{
-			ChangeString = "Bonk! Atomic Punch | You gain a speed boost and some healing when used.";
+			ChangeString = "Bonk! Atomic Punch | You gain a speed boost and some healing when used instead of invulnerability.";
 		}
 		case 449:
 		{
@@ -1107,7 +1106,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1151:
 		{
-			ChangeString = "The Iron Bomber | Shoots grenades that explode when victims are within 70% of the blast radius. 15% more damage. Has no splash fall-off.";
+			ChangeString = "The Iron Bomber | Shoots grenades that explode when victims are within 70% of the blast radius. Has no splash fall-off.";
 		}
 		//Demo Secondaries
 		case 131,1144:
@@ -1130,10 +1129,15 @@ DisplayItemChange(client,itemidx)
 		{
 			ChangeString = "The Quickiebomb Launcher | Middle click is a fast dash that scales off movespeed multipliers. -25% damage dealt. Converts fire rate bonuses to damage.";
 		}
+		//Demo Melees
+		case 307:
+		{
+			ChangeString = "Ullapool Caber | Infinite explosive charges.";
+		}
 		//Heavy Primaries
 		case 312:
 		{
-			ChangeString = "The Brass Beast | Shoots rockets that have 150 base damage and 144HU blast radius and can penetrate enemies. Cannot hit enemies multiple times. 3x slower fire rate.";
+			ChangeString = "The Brass Beast | Shoots rockets that have 150 base damage and 144HU blast radius and can penetrate enemies. Cannot hit enemies multiple times. 3x slower fire rate. Has distance falloff.";
 		}
 		case 811,832:
 		{
@@ -1825,10 +1829,10 @@ refreshUpgrades(client, slot)
 					continue;
 				}
 			}
-			Address healthActive = TF2Attrib_GetByName(client, "max health multiplier");		
+			Address healthActive = TF2Attrib_GetByName(client, "max health multiplier");
 			if(healthActive != Address_Null)
 			{
-				TF2Attrib_SetByName(client,"hidden maxhealth non buffed", GetClientBaseHP(client)*(TF2Attrib_GetValue(healthActive)-1.0));
+				TF2Attrib_SetByName(client,"hidden maxhealth non buffed", float(RoundToCeil(GetClientBaseHP(client)*(TF2Attrib_GetValue(healthActive)-1.0))) );
 				if(current_class[client] == TFClass_Engineer)
 					TF2Attrib_SetByName(client,"engy building health bonus", TF2Attrib_GetValue(healthActive));
 			}
@@ -3256,21 +3260,21 @@ TF2_Override_ChargeSpeed(client)
 CheckGrenadeMines(ref)
 {
 	int entity = EntRefToEntIndex(ref); 
-	if(IsValidEdict(entity) && HasEntProp(entity, Prop_Data, "m_hThrower") == true)
+	if(IsValidEdict(entity) && HasEntProp(entity, Prop_Data, "m_hThrower"))
     {
         int client = GetEntPropEnt(entity, Prop_Data, "m_hThrower"); 
-        if (IsValidClient(client) && IsPlayerAlive(client))
+        if (IsValidClient3(client) && IsPlayerAlive(client))
 		{
 			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
 				Address minesActive = TF2Attrib_GetByName(CWeapon, "enables aoe heal");
-				if(minesActive != Address_Null && TF2Attrib_GetValue(minesActive) <= 0.01)
+				if(minesActive != Address_Null && TF2Attrib_GetValue(minesActive) < 0)
 				{
 					float damage = 90.0 * TF2_GetDamageModifiers(client,CWeapon);
 					float radius = 100.8;
-					CreateTimer(0.04,Timer_PlayerGrenadeMines,  EntIndexToEntRef(entity), TIMER_REPEAT);
-					CreateTimer(TF2Attrib_GetValue(minesActive) * -3.0,SelfDestruct,  EntIndexToEntRef(entity));
+					CreateTimer(0.04,Timer_PlayerGrenadeMines, ref, TIMER_REPEAT);
+					CreateTimer(TF2Attrib_GetValue(minesActive) * -3.0,SelfDestruct, ref);
 					
 					Address blastRadius1 = TF2Attrib_GetByName(CWeapon, "Blast radius increased");
 					Address blastRadius2 = TF2Attrib_GetByName(CWeapon, "Blast radius decreased");

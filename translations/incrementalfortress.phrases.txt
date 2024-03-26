@@ -1,5 +1,17 @@
 "Phrases"
 {
+	"dps inheritance ratio"
+	{
+		"en"		"Weapons Inherit DPS From Strongest Weapon"
+	}
+	"Agile Latticing"
+	{
+		"en"		"Agile Latticing"
+	}
+	"Weapon Inheritance"
+	{
+		"en"		"Weapon Inheritance"
+	}
 	"Explosive Rounds"
 	{
 		"en"		"Explosive Rounds"
