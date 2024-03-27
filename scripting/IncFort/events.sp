@@ -913,6 +913,8 @@ public OnEntityCreated(entity, const char[] classname)
 
 	int reference = EntIndexToEntRef(entity);
 	weaponFireRate[entity] = -1.0;
+	isAimlessProjectile[entity] = false;
+	
 	if(StrEqual(classname, "obj_attachment_sapper"))
 	{
 		SDKHook(entity, SDKHook_OnTakeDamage, OnTakeDamagePre_Sapper); 
@@ -1047,7 +1049,6 @@ public OnEntityDestroyed(entity)
 	isProjectileBoomerang[entity] = false;
 	isProjectileFireball[entity] = false;
 	projectileHomingDegree[entity] = 0.0;
-	isAimlessProjectile[entity] = false;
 	gravChanges[entity] = false;
 	homingRadius[entity] = 0.0;
 	homingTickRate[entity] = 0;
