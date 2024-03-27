@@ -443,6 +443,11 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 							ratio = 1.0;
 						damage *= ratio
 					}
+					if(isAimlessProjectile[entity]){
+						if(distance <= 200){
+							damage *= 1+3*((200-distance)/200);
+						}
+					}
 					
 					currentDamageType[owner].first = damagetype | firstBits;
 					currentDamageType[owner].second = secondBits;

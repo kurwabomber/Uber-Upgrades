@@ -200,6 +200,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				//Lifesteal
 				float lifestealFactor = 1.0;
 				float maximumOverheal = 1.5;
+				int healthHealed;
 				if(IsFakeClient(client))
 					lifestealFactor = 0.3;
 				
@@ -211,36 +212,41 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				
 				Address LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");//Lifesteal attribute
 				if(LifestealActive != Address_Null)
-				{
-					int HealthGained = RoundToCeil(0.1 * damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
-					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
-				}
+					healthHealed += RoundToCeil(0.1 * damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
 				
 				Address vampirePowerup = TF2Attrib_GetByName(attacker, "vampire powerup");//Vampire Powerup
 				if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) == 1)
-				{
-					int HealthGained = RoundToCeil(0.8 * damage * lifestealFactor);
-					AddPlayerHealth(attacker, HealthGained, maximumOverheal*2.0, true, attacker);
-				}
+					healthHealed += RoundToCeil(0.8 * damage * lifestealFactor);
 				
 				if(TF2_IsPlayerInCondition(attacker, TFCond_MedigunDebuff))// Conch
-				{
-					int HealthGained = RoundToCeil(damage * 0.15 * lifestealFactor);
-					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
-				}
+					healthHealed += RoundToCeil(damage * 0.15 * lifestealFactor);
+				
 				if(GetEventInt(event, "custom") == 2)//backstab
 				{
 					Address BackstabLifestealActive = TF2Attrib_GetByName(CWeapon, "sanguisuge"); //Kunai
 					if(BackstabLifestealActive != Address_Null && TF2Attrib_GetValue(BackstabLifestealActive) > 0.0)
-					{
-						int HealthGained = RoundToCeil(damage * 0.5 * TF2Attrib_GetValue(BackstabLifestealActive));
-						AddPlayerHealth(attacker, HealthGained, maximumOverheal*1.5, true, attacker);
-					}
+						healthHealed += RoundToCeil(damage * 0.5 * TF2Attrib_GetValue(BackstabLifestealActive));
 				}
 				if(MadmilkDuration[client] > currentGameTime)
-				{
-					int HealthGained = RoundToCeil(lifestealFactor * damage * (MadmilkDuration[client]-currentGameTime) * 1.66 / 100.0);
-					AddPlayerHealth(attacker, HealthGained, maximumOverheal, true, attacker);
+					healthHealed += RoundToCeil(lifestealFactor * damage * (MadmilkDuration[client]-currentGameTime) * 1.66 / 100.0);
+				
+				if(healthHealed > 0){
+					AddPlayerHealth(attacker, healthHealed, maximumOverheal, true, attacker);
+					float spreadRatio = GetAttribute(CWeapon, "lifesteal to team", 0.0);
+					if(spreadRatio > 0){
+						for(int i = 1; i<= MaxClients; ++i){
+							if(!IsValidClient3(i))
+								continue;
+							if(!IsPlayerAlive(i))
+								continue;
+							if(IsOnDifferentTeams(attacker, i))
+								continue;
+							if(i == attacker)
+								continue;
+
+							AddPlayerHealth(i, RoundToFloor(healthHealed*spreadRatio), maximumOverheal, true, attacker);
+						}
+					}
 				}
 			}
 		}

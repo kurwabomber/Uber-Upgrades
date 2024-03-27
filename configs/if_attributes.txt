@@ -6001,6 +6001,26 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1654"
+		{
+			"name"		"lifesteal to team"
+			"ref"		"lifesteal to team"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1655"
+		{
+			"name"		"fires milk bolt"
+			"ref"		"fires milk bolt"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{

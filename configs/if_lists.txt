@@ -1326,7 +1326,7 @@
 	}
 	"medweap_c"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1347,10 +1347,15 @@
 			"Attr4"		"faster reload rate (U)"
 			"Attr6"		"Homing Projectiles (crossbow)"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Frost Infusion"
+			"Sp1"		"Blood Siphon"
+		}
 	}
 	"menuCrossbow"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1369,6 +1374,11 @@
 			"Attr2"		"fire rate bonus(multshit)"
 			"Attr3"		"clip size bonus (B)"
 			"Attr6"		"Homing Projectiles (crossbow)"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Frost Infusion"
+			"Sp1"		"Blood Siphon"
 		}
 	}
 	"pyroweap"

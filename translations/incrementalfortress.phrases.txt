@@ -1,5 +1,17 @@
 "Phrases"
 {
+	"Blood Siphon"
+	{
+		"en"		"Blood Siphon"
+	}
+	"fires milk bolt"
+	{
+		"en"		"Alt-Fire: Mad Milk Bolt"
+	}
+	"lifesteal to team"
+	{
+		"en"		"%% Lifesteal Heals Team"
+	}
 	"dps inheritance ratio"
 	{
 		"en"		"Weapons Inherit DPS From Strongest Weapon"
@@ -443,10 +455,6 @@
 	"Medigun Heal Range Bonus"
 	{
 		"en"		"Medigun Heal Range Bonus"
-	}
-	"fires milk bolt"
-	{
-		"en"		"fires milk bolt"
 	}
 	"Arrow Mastery"
 	{

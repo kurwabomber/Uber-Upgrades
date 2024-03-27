@@ -4816,4 +4816,14 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "6330"
+    {
+        "name"  "lifesteal to team"
+        "attribute_class"   "lifesteal to team"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
 }
