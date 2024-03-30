@@ -421,7 +421,7 @@
 	}
 	"body_heavy"
 	{
-		"special_tweaks_listid"		"7"
+		"special_tweaks_listid"		"-1"
 		"Protection upgrades"
 		{
 			"Attr0"		"Health Bonus (Heavy)"
@@ -520,10 +520,6 @@
 			"Attr4"			"fire damage affinity"
 			"Attr5"			"electric damage affinity"
 			"Attr6"			"crit damage affinity"
-		}
-		"Special Tweaks"
-		{
-			"Sp0"		"Guardian"
 		}
 	}
 	"body_demoman"
@@ -1166,7 +1162,7 @@
 	
 	"engiecircuit"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus(IS)"
@@ -1184,6 +1180,11 @@
 		{
 			"Attr0"		"fire rate bonus(shrtcrt)"
 			"Attr1"		"Increased Shock Range"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Lightning Affinity"
+			"Sp1"		"Sunstar"
 		}
 	}
 	"engmelweap"
@@ -1240,7 +1241,7 @@
 	}
 	"minigunweap"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1267,10 +1268,15 @@
 			"Attr16"	"spunup_push_force_immunity"
 			"Attr13"	"generate rage on damage"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Team Tactics"
+			"Sp1"		"Divine Bloodline"
+		}
 	}
 	"brassBeast"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1293,6 +1299,11 @@
 			"Attr15"	"spunup_damage_resistance"
 			"Attr16"	"spunup_push_force_immunity"
 			"Attr13"	"generate rage on damage"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Team Tactics"
+			"Sp1"		"Divine Bloodline"
 		}
 	}
 	"medweap"
@@ -1810,7 +1821,7 @@
 	}
 	"democharge"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Protection upgrades"
 		{
 			"Attr0"		"blast dmg to self decreased"
@@ -1822,6 +1833,11 @@
 			"Attr2"		"no charge impact range"
 			"Attr3"		"Charging Velocity"
 			"Attr4"		"charge recharge rate increased"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Pain Train"
+			"Sp1"		"Weapon Inheritance"
 		}
 	}
 	"ali_shoes"
@@ -1844,7 +1860,7 @@
 	
 	"demopipe"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1871,10 +1887,15 @@
 			"Attr11"	"self dmg push force increased"
 			"Attr13"	"air control when blast jumping"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Cluster Bomb"
+			"Sp1"		"Chain Reaction"
+		}
 	}
 	"quickiebomb"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1898,6 +1919,11 @@
 			"Attr6"		"rocket jump damage reduction"
 			"Attr11"	"self dmg push force increased"
 			"Attr13"	"air control when blast jumping"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Cluster Bomb"
+			"Sp1"		"Chain Reaction"
 		}
 	}
 	"demomel"
@@ -2008,20 +2034,30 @@
 			"Attr2"		"blast dmg to self decreased"
 			"Attr3"		"Banner Summons Lightning"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Plunder"
+			"Sp1"		"Barrage"
+		}
 	}
 	"lunchbox"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"1"
 		"Lunchbox specific upgrades"
 		{
 			"Attr0"		"mult_item_meter_charge_rate"
 			"Attr1"		"Resistance when eaten"
 			"Attr4"		"lunchbox healing decreased"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Sanity Depletion"
+			"Sp1"		"Weapon Inheritance"
+		}
 	}
 	"jarat"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"4"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -2052,10 +2088,15 @@
 			"Attr3"		"Death Denial Buff Duration"
 			"Attr4"		"Batallion's Buff Duration"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Maelstrom Charge"
+			"Sp1"		"Alchemist's Concoction"
+		}
 	}
 	"jarmilk"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"4"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -2074,13 +2115,10 @@
 			"Attr4"		"Projectile speed increased"
 			"Attr5"		"dmg from all reduced(wearable)"
 		}
-		"Fragmentation Upgrades"
+		"Specialty Upgrades"
 		{
 			"Attr1"		"Jar Fragment Count"
 			"Attr2"		"Fragment Explosion Base Damage"
-		}
-		"Debuff Upgrades"
-		{
 			"Attr1"		"Bleed Per Hit(E)"
 			"Attr2"		"Corrosive Damage Over Time"
 			"Attr3"		"Mad Milk On Hit Duration (MadMilk)"
@@ -2091,6 +2129,11 @@
 			"Attr2"		"Increases Haste Buff Duration"
 			"Attr3"		"Death Denial Buff Duration"
 			"Attr4"		"Batallion's Buff Duration"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Maelstrom Charge"
+			"Sp1"		"Alchemist's Concoction"
 		}
 	}
 	"explmel"
@@ -2124,16 +2167,21 @@
 	}
 	"pointer"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"1"
 		"Weapon Specific upgrades"
 		{
 			"Attr1"		"Sentry Damage While Active"
 			"Attr2"		"air control when blast jumping"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Starstorm"
+			"Sp1"		"Deep Learning Sentry"
+		}
 	}
 	"grenade"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus"
@@ -2162,10 +2210,14 @@
 			"Attr10"	"Iron Bomber Attribute"
 			"Attr9"		"air control when blast jumping"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Splintering Wasps"
+		}
 	}
 	"ironbomber"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus"
@@ -2190,6 +2242,10 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr9"		"air control when blast jumping"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Splintering Wasps"
 		}
 	}
 	"cannon"
@@ -2334,7 +2390,7 @@
 	}
 	"rocketpack"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"1"
 		"Weapon Specific upgrades"
 		{
 			"Attr0"		"Thermal Thruster recharge"
@@ -2343,6 +2399,11 @@
 			"Attr5"		"increased air control(S)"
 			"Attr7"		"dmg from all reduced(wearable)"
 			"Attr8"		"Switch Speed Increased"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Infernal Lunge"
+			"Sp1"		"Weapon Inheritance"
 		}
 	}
 	"shotgun_primary_"
@@ -2452,13 +2513,12 @@
 	}
 	"vacc"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Medigun Specific upgrades"
 		{
 			"Attr7"		"Medigun Heal Range Bonus"
 			"Attr2"		"heal rate bonus"
 			"Attr8"		"heal rate bonus(A)"
-			"Attr9"		"overheal fill rate bonus"
 			"Attr4"		"overheal bonus"
 			//"Attr5"		"overheal decay bonus"
 			"Attr3"		"ubercharge rate bonus"
@@ -2472,10 +2532,14 @@
 			"Attr1"		"medigun blast resist passive"
 			"Attr2"		"medigun fire resist passive"
 		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Exhaust"
+		}
 	}
 	"gas"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr14"	"Gas Passer Explosion Damage"
@@ -2491,6 +2555,11 @@
 			"Attr0"		"explode_on_ignite"
 			"Attr1"		"gas passer recharge"
 			"Attr7"		"blast radius increased(G)"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Immolation"
+			"Sp1"		"Fireworks"
 		}
 	}//direct hit
 	"directhit"
@@ -2617,12 +2686,17 @@
 	}
 	"lunchbox_bonk"//cola & bonk
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"1"
 		"Lunchbox specific upgrades"
 		{
 			"Attr2"		"dmg from all reduced(wearable)"
 			"Attr0"		"effect bar recharge rate increased"
 			"Attr4"		"Resistance when eaten"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Human Stronghold"
+			"Sp1"		"Weapon Inheritance"
 		}
 	}	
 }

@@ -83,19 +83,6 @@
 		"Infinite Ammo Count"	"100.0"
 		"fire rate penalty HIDDEN" "4.0"
 	}
-	"Orbital Strike"
-	{
-		"index"			"30666"
-		"weapon_class"	"tf_weapon_pistol"
-		"weapon_menu"	"tf_weapon_laser_pointer"
-		"class"			"engineer"
-		"description"	"Fires off 100 rockets in battery from the sky to the point of your crosshair.\nEach rocket deals 20 base DPS using your sentry's stats.\nRockets follow splash fall-off and damage fall-off rules.\nUse with wrangler for rocket specialist!"
-		"cost"			"40000.0"
-		"override projectile type"	"44.0"
-		"Infinite Ammo Count"	"1.0"
-		"clip size penalty (G)"	"0.084"
-		"fire rate penalty(unremoveable)"	"15"
-	}
 	"Shredder"
 	{
 		"index"			"850"

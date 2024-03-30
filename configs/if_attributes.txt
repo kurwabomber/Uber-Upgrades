@@ -3893,10 +3893,10 @@
 		{
 			"name"		"spunup_push_force_immunity"
 			"ref"		"spunup_push_force_immunity"
-			"cost"		"500"
-			"init"		"0"
-			"value"		"1"
-			"max"		"1"
+			"cost"		"1500"
+			"init"		"1"
+			"value"		"-1"
+			"max"		"0"
 		}
 		"375"
 		{
@@ -6020,6 +6020,232 @@
 			"value"		"1"
 			"init"		"0"
 			"max"		"0"
+		}
+		"1656"
+		{
+			"name"		"lifesteal effectiveness"
+			"ref"		"lifesteal effectiveness"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0.1"
+			"init"		"1"
+			"max"		"0"
+		}
+		"1657"
+		{
+			"name"		"override projectile type"
+			"ref"		"Maelstrom Charge"
+			"cost"		"0"
+			"value"		"1.00"
+			"init"		"46.00"
+			"max"		"47.00"
+		}
+		"1658"
+		{
+			"name"		"jar applies armor decay"
+			"ref"		"jar applies armor decay"
+			"cost"		"0"
+			"value"		"1.00"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1659"
+		{
+			"name"		"jar gives armor penetration"
+			"ref"		"jar gives armor penetration"
+			"cost"		"0"
+			"value"		"1.00"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1660"
+		{
+			"name"		"buff movement speed"
+			"ref"		"buff movement speed"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"1.00"
+			"max"		"0.00"
+		}
+		"1661"
+		{
+			"name"		"buff damage taken"
+			"ref"		"buff damage taken"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"1.00"
+			"max"		"0.00"
+		}
+		"1662"
+		{
+			"name"		"buff fire rate"
+			"ref"		"buff fire rate"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"1.00"
+			"max"		"0.00"
+		}
+		"1663"
+		{
+			"name"		"buff plunder multiplier"
+			"ref"		"buff plunder multiplier"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"1.00"
+			"max"		"0.00"
+		}
+		"1664"
+		{
+			"name"		"buff barrage"
+			"ref"		"buff barrage"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1665"
+		{
+			"name"		"jetpack charge damage"
+			"ref"		"jetpack charge damage"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1665"
+		{
+			"name"		"immolation ratio"
+			"ref"		"immolation ratio"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1666"
+		{
+			"name"		"fireworks chance"
+			"ref"		"fireworks chance"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1667"
+		{
+			"name"		"explosion wasps"
+			"ref"		"explosion wasps"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1668"
+		{
+			"name"		"dmg per sticky detonated"
+			"ref"		"dmg per sticky detonated"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1669"
+		{
+			"name"		"sticky recursive explosion chance"
+			"ref"		"sticky recursive explosion chance"
+			"cost"		"0"
+			"value"		"0.10"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1670"
+		{
+			"name"		"chain charge on kill"
+			"ref"		"chain charge on kill"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1671"
+		{
+			"name"		"savior sacrifice attribute"
+			"ref"		"savior sacrifice attribute"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1672"
+		{
+			"name"		"damage reduction to additive damage"
+			"ref"		"damage reduction to additive damage"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1673"
+		{
+			"name"		"enraged meter filled when eaten"
+			"ref"		"enraged meter filled when eaten"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1674"
+		{
+			"name"		"chain lightning meter on hit"
+			"ref"		"chain lightning meter on hit"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1675"
+		{
+			"name"		"sunstar beam"
+			"ref"		"sunstar beam"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1676"
+		{
+			"name"		"sentry dmg bonus per kill"
+			"ref"		"sentry dmg bonus per kill"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1677"
+		{
+			"name"		"vaccinator exhaust attribute"
+			"ref"		"vaccinator exhaust attribute"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1678"
+		{
+			"name"		"weapon push force multiplier"
+			"ref"		"weapon push force multiplier"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"1.00"
+			"max"		"0.00"
+		}
+		"1679"
+		{
+			"name"		"dmg per pct hp missing"
+			"ref"		"dmg per pct hp missing"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
 		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"

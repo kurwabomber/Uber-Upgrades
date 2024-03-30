@@ -4826,4 +4826,242 @@
         "effect_type"   "positive"
         "stored_as_integer" "0"
     }
+    "6331"
+    {
+        "name"  "lifesteal effectiveness"
+        "attribute_class"   "lifesteal_effectiveness"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6332"
+    {
+        "name"  "jar applies armor decay"
+        "attribute_class"   "jar_applies_armor_decay"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6333"
+    {
+        "name"  "jar gives armor penetration"
+        "attribute_class"   "jar_gives_armor_penetration"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6334"
+    {
+        "name"  "buff movement speed"
+        "attribute_class"   "buff_movement_speed"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6335"
+    {
+        "name"  "buff damage taken"
+        "attribute_class"   "buff_damage_taken"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6336"
+    {
+        "name"  "buff fire rate"
+        "attribute_class"   "buff_fire_rate"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6337"
+    {
+        "name"  "buff plunder multiplier"
+        "attribute_class"   "buff_plunder_multiplier"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6338"
+    {
+        "name"  "buff barrage"
+        "attribute_class"   "buff_barrage"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6339"
+    {
+        "name"  "jetpack charge damage"
+        "attribute_class"   "jetpack_charge_damage"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6340"
+    {
+        "name"  "immolation ratio"
+        "attribute_class"   "immolation_ratio"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6341"
+    {
+        "name"  "fireworks chance"
+        "attribute_class"   "fireworks_chance"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6342"
+    {
+        "name"  "explosion wasps"
+        "attribute_class"   "explosion_wasps"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6343"
+    {
+        "name"  "dmg per sticky detonated"
+        "attribute_class"   "dmg_per_sticky_detonated"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6344"
+    {
+        "name"  "sticky recursive explosion chance"
+        "attribute_class"   "sticky_recursive_explosion_chance"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6345"
+    {
+        "name"  "chain charge on kill"
+        "attribute_class"   "chain_charge_on_kill"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6346"
+    {
+        "name"  "savior sacrifice attribute"
+        "attribute_class"   "savior_sacrifice_attribute"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6347"
+    {
+        "name"  "damage reduction to additive damage"
+        "attribute_class"   "damage_reduction_to_additive_damage"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6348"
+    {
+        "name"  "enraged meter filled when eaten"
+        "attribute_class"   "enraged_meter_filled_when_eaten"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6349"
+    {
+        "name"  "chain lightning meter on hit"
+        "attribute_class"   "chain_lightning_meter_on_hit"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6350"
+    {
+        "name"  "sunstar beam"
+        "attribute_class"   "sunstar_beam"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6351"
+    {
+        "name"  "sentry dmg bonus per kill"
+        "attribute_class"   "sentry_dmg_bonus_per_kill"
+        "description_string"    ""
+        "description_format"    "value_is_percentage"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6352"
+    {
+        "name"  "vaccinator exhaust attribute"
+        "attribute_class"   "vaccinator exhaust attribute"
+        "description_string"    ""
+        "description_format"    "value_is_additive"
+        "hidden"    "1"
+        "effect_type"   "positive"
+        "stored_as_integer" "0"
+    }
+    "6353"
+    {
+        "name"  "weapon push force multiplier"
+        "attribute_class"   "new_self_push_force"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
+    "6354"
+    {
+        "name"  "dmg per pct hp missing"
+        "attribute_class"   "dmg_per_pct_hp_missing"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
 }

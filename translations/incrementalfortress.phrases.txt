@@ -1,5 +1,169 @@
 "Phrases"
 {
+	"dmg per pct hp missing"
+	{
+		"en"		"Damage per % HP Missing"
+	}
+	"Specialty Upgrades"
+	{
+		"en"		"Specialty Upgrades"
+	}
+	"Lightning Affinity"
+	{
+		"en"		"Lightning Affinity"
+	}
+	"Sanity Depletion"
+	{
+		"en"		"Sanity Depletion"
+	}
+	"Divine Bloodline"
+	{
+		"en"		"Divine Bloodline"
+	}
+	"Team Tactics"
+	{
+		"en"		"Team Tactics"
+	}
+	"Pain Train"
+	{
+		"en"		"Pain Train"
+	}
+	"Chain Reaction"
+	{
+		"en"		"Chain Reaction"
+	}
+	"Cluster Bomb"
+	{
+		"en"		"Cluster Bomb"
+	}
+	"Splintering Wasps"
+	{
+		"en"		"Splintering Wasps"
+	}
+	"Fireworks"
+	{
+		"en"		"Fireworks"
+	}
+	"Infernal Lunge"
+	{
+		"en"		"Infernal Lunge"
+	}
+	"Immolation"
+	{
+		"en"		"Immolation"
+	}
+	"weapon push force multiplier"
+	{
+		"en"		"Weapon Push Force Multiplier"
+	}
+	"Barrage"
+	{
+		"en"		"Barrage"
+	}
+	"Plunder"
+	{
+		"en"		"Plunder"
+	}
+	"Human Stronghold"
+	{
+		"en"		"Human Stronghold"
+	}
+	"vaccinator exhaust attribute"
+	{
+		"en"		"Beam Drains Enemy Damage"
+	}
+	"sentry dmg bonus per kill"
+	{
+		"en"		"Sentry Damage Bonus per Kill"
+	}
+	"sunstar beam"
+	{
+		"en"		"Sacrifice Metal for Beam Damage"
+	}
+	"chain lightning meter on hit"
+	{
+		"en"		"Chain Lightning Meter On Hit"
+	}
+	"enraged meter filled when eaten"
+	{
+		"en"		"Enrage Meter Filled When Eaten"
+	}
+	"damage reduction to additive damage"
+	{
+		"en"		"Damage Reduction -> Base Damage Ratio"
+	}
+	"savior sacrifice attribute"
+	{
+		"en"		"Saviors Sacrifice Damage Boost"
+	}
+	"chain charge on kill"
+	{
+		"en"		"Charges Again After Charge Kill"
+	}
+	"sticky recursive explosion chance"
+	{
+		"en"		"Additional Explosions Chance"
+	}
+	"dmg per sticky detonated"
+	{
+		"en"		"Damage Multiplier per Sticky Detonated"
+	}
+	"explosion wasps"
+	{
+		"en"		"Explosions Sting Count"
+	}
+	"fireworks chance"
+	{
+		"en"		"Chance to Firework Enemies"
+	}
+	"immolation ratio"
+	{
+		"en"		"PCT HP/s Drain to Self & Enemies"
+	}
+	"jetpack charge damage"
+	{
+		"en"		"Charging Damage Percentage"
+	}
+	"buff barrage"
+	{
+		"en"		"Fires Rocket Barrages While Buffed"
+	}
+	"buff plunder multiplier"
+	{
+		"en"		"Buff On Hit/Kill Effect Bonus"
+	}
+	"buff fire rate"
+	{
+		"en"		"Buff Fire Rate"
+	}
+	"buff damage taken"
+	{
+		"en"		"Buff Damage Taken"
+	}
+	"buff movement speed"
+	{
+		"en"		"Buff Movement Speed"
+	}
+	"jar gives armor penetration"
+	{
+		"en"		"Applies Armor Penetration to Teammates"
+	}
+	"jar applies armor decay"
+	{
+		"en"		"Decays Armor Over Time"
+	}
+	"Alchemist's Concoction"
+	{
+		"en"		"Alchemist's Concoction"
+	}
+	"Maelstrom Charge"
+	{
+		"en"		"Maelstrom Charge"
+	}
+	"lifesteal effectiveness"
+	{
+		"en"		"Lifesteal Effectiveness"
+	}
 	"Blood Siphon"
 	{
 		"en"		"Blood Siphon"

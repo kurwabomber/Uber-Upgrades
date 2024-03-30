@@ -61,11 +61,6 @@
 			"Homing Projectiles"			"200"
 			"Bleed Per Hit"					"3"
 		}
-		"Guardian"
-		{
-			"Teammate Damage Redirection"	"6.5"
-			"Damage Reduced"				"5.0"
-		}
 		"Blade Stream"
 		{
 			"requirement"					"150k"
@@ -286,8 +281,138 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"lifesteal to team"				"4"
+			"lifesteal to team"				"6"
+			"lifesteal effectiveness"		"3"
 			"fires milk bolt"				"2"
+		}
+		"Maelstrom Charge"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Maelstrom Charge"				"1"
+		}
+		"Alchemist's Concoction"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"jar applies armor decay"		"10"
+			"jar gives armor penetration"	"3"
+		}
+		"Human Stronghold"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"buff movement speed"			"-9"
+			"buff damage taken"				"-8"
+			"buff fire rate"				"3"
+		}
+		"Plunder"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"buff plunder multiplier"		"10"
+		}
+		"Barrage"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"buff barrage"					"3"
+		}
+		"Infernal Lunge"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"weapon push force multiplier"	"5"
+			"jetpack charge damage"			"10"
+		}
+		"Immolation"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"immolation ratio"				"2"
+		}
+		"Fireworks"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"fireworks chance"				"1"
+		}
+		"Splintering Wasps"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"explosion wasps"				"4"
+		}
+		"Cluster Bomb"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"dmg per sticky detonated"		"0.15"
+		}
+		"Chain Reaction"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"sticky recursive explosion chance"		"2.5"
+		}
+		"Pain Train"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"chain charge on kill"			"1"
+		}
+		"Team Tactics"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"Teammate Damage Redirection"	"6.5"
+			"savior sacrifice attribute"	"0.2"
+		}
+		"Divine Bloodline"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"damage reduction to additive damage"	"2.0"
+			"dmg per pct hp missing"	"0.1"
+		}
+		"Sanity Depletion"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"buff damage taken"				"5.0"
+			"buff fire rate"				"1.5"
+			"enraged meter filled when eaten"	"10"
+		}
+		"Lightning Affinity"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"chain lightning meter on hit"	"10"
+		}
+		"Sunstar"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"sunstar beam"					"20"
+		}
+		"Starstorm"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"override projectile type"	"44.0"
+		}
+		"Deep Learning Sentry"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"sentry dmg bonus per kill"		"0.1"
+		}
+		"Exhaust"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"vaccinator exhaust attribute"	"1"
+			"medigun attack enemy"			"1"
 		}
 	}
 }

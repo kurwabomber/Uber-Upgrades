@@ -203,6 +203,8 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				int healthHealed;
 				if(IsFakeClient(client))
 					lifestealFactor = 0.3;
+
+				lifestealFactor *= GetAttribute(CWeapon, "lifesteal effectiveness", 1.0);
 				
 				Address maximumOverhealModifier = TF2Attrib_GetByName(attacker, "patient overheal penalty");
 				if(maximumOverhealModifier != Address_Null)
@@ -577,6 +579,7 @@ public MRESReturn OnKnockbackApply(int client, Handle hParams) {
 		DHookGetParamVector(hParams,1,initKB);
 
 		if(IsValidWeapon(lastKBSource[client])){
+			ScaleVector(initKB,GetAttribute(lastKBSource[client], "weapon self dmg push force increased", 1.0));
 			ScaleVector(initKB,GetAttribute(lastKBSource[client], "weapon self dmg push force increased", 1.0));
 		}
 
