@@ -680,8 +680,6 @@ public Action:Timer_Every100MS(Handle timer)
 							TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 							TE_SendToAll();
 							
-							CreateParticleEx(client, "utaunt_electricity_cloud_parent_WB", _, _, startpos, 5.0);
-							
 							EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 							
 							float LightningDamage = TF2_GetDPSModifiers(client,CWeapon)*10.0*TF2Attrib_GetValue(lightningBannerActive);
@@ -976,8 +974,6 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 							TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 							TE_SendToAll();
 							
-							CreateParticleEx(client, "utaunt_electricity_cloud_parent_WB", _, _, startpos, 5.0);
-							
 							EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
 							
 							float LightningDamage = 150.0*TF2_GetDPSModifiers(client,CWeapon);
@@ -990,7 +986,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 									float VictimPos[3];
 									GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 									VictimPos[2] += 30.0;
-									if(GetVectorDistance(clientpos,VictimPos) <= 250000.0)
+									if(GetVectorDistance(clientpos,VictimPos,true) <= 250000.0)
 									{
 										if(IsPointVisible(clientpos,VictimPos))
 										{
@@ -1575,9 +1571,7 @@ public Action:eurekaDelayed(Handle timer, int client)
 				TE_SetupBeamRingPoint(clientpos, 20.0, 1000.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 				TE_SendToAll();
 				
-				CreateParticleEx(client, "utaunt_electricity_cloud_parent_WB", _, _, startpos, 5.0);
-				
-				EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
+				EmitSoundToAll(SOUND_THUNDER, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 				
 				float LightningDamage = 500.0 * TF2_GetSentryDPSModifiers(client, melee);
 				
@@ -1589,7 +1583,7 @@ public Action:eurekaDelayed(Handle timer, int client)
 						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 						VictimPos[2] += 30.0;
-						if(GetVectorDistance(clientpos,VictimPos) <= 1000000.0)
+						if(GetVectorDistance(clientpos,VictimPos,true) <= 1000000.0)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
 							{

@@ -429,7 +429,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 			float targetvec[3];
 			float distance;
 			GetEntPropVector(i, Prop_Data, "m_vecOrigin", targetvec);
-			distance = GetVectorDistance(pos, targetvec, false)
+			distance = GetVectorDistance(pos, targetvec)
 			if(distance <= radius)
 			{
 				if(IsPointVisible(pos,targetvec))

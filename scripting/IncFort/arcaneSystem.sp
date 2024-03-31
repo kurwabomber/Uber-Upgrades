@@ -331,7 +331,7 @@ CastMarkForDeath(client, attuneSlot)
 			CreateTimer(5.0, ReEnableBuilding, EntIndexToEntRef(i));
 		}
 	}
-	EmitSoundToAll(SOUND_SABOTAGE, _, client, SNDLEVEL_SNOWMOBILE, _, 1.0, _,_,clientpos);
+	EmitSoundToAll(SOUND_SABOTAGE, 0, client, SNDLEVEL_SNOWMOBILE, _, 1.0, _,_,clientpos);
 }
 CastSunlightSpear(client, attuneSlot)
 {
@@ -343,7 +343,7 @@ CastSunlightSpear(client, attuneSlot)
 
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
-	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_NORMAL, _, 0.8, _,_,clientpos);
+	EmitSoundToAll(SOUND_CALLBEYOND_CAST, 0, client, SNDLEVEL_NORMAL, _, 0.8, _,_,clientpos);
 	int projectileAmount[] = {0,1,2,5};
 	float projectileSpeed[] = {0.0,2500.0,4000.0,6000.0};
 	for(int i=0;i<projectileAmount[spellLevel];++i){
@@ -455,7 +455,7 @@ CastAntisepticBlast(client, attuneSlot)
 	
 	GetClientEyePosition(client, soundPos);
 	GetClientEyeAngles(client, clientAng);
-	EmitSoundToAll(SOUND_ARCANESHOOT, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
+	EmitSoundToAll(SOUND_ARCANESHOOT, 0, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
 	// define the direction of the sparks
 	float dir[3] = {0.0, 0.0, 0.0};
 	
@@ -591,7 +591,7 @@ CastSplittingThunder(client, attuneSlot)
 	
 	float clientpos[3];
 	GetClientAbsOrigin(client, clientpos);
-	EmitSoundToAll(SOUND_ARCANESHOOTREADY, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
+	EmitSoundToAll(SOUND_ARCANESHOOTREADY, 0, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	int args[2];args[0] = EntIndexToEntRef(client);args[1] = spellLevel;
 	SetPawnTimer(FinishCastSplittingThunder, 5.0, args, 2);
 	CreateParticleEx(client, "utaunt_electricity_discharge");
@@ -654,7 +654,7 @@ FinishCastSplittingThunder(int client, int spellLevel)
 
 		float clientpos[3];
 		GetClientEyePosition(client,clientpos);
-		EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
+		EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, 0, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	}
 }
 
@@ -669,7 +669,7 @@ CastSnapFreeze(client, attuneSlot)
 
 	float clientpos[3];
 	GetClientEyePosition(client, clientpos);
-	EmitSoundToAll(SOUND_FREEZE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
+	EmitSoundToAll(SOUND_FREEZE, 0, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	float damage = 100.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 60.0);
 	int i = -1;
 	while ((i = FindEntityByClassname(i, "*")) != -1)
@@ -718,7 +718,7 @@ CastArcanePrison(client, attuneSlot)
 	GetClientEyeAngles(client,ClientAngle);
 	int iTeam = GetClientTeam(client)
 	ClientPos[2] -= 20.0;
-	EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
+	EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, 0, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 	
 	float fAngles[3]
 	float fOrigin[3]
@@ -821,7 +821,7 @@ CastSpeedAura(client, attuneSlot)
 		TF2_AddCondition(i, TFCond_RuneAgility, buffDuration[spellLevel]);
 		TF2_AddCondition(i, TFCond_DodgeChance, 0.5*buffDuration[spellLevel]);
 	}
-	EmitSoundToAll(SOUND_SPEEDAURA, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
+	EmitSoundToAll(SOUND_SPEEDAURA, 0, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 }
 CastAerialStrike(client, attuneSlot)
 {
@@ -850,13 +850,13 @@ CastAerialStrike(client, attuneSlot)
 	CreateTimer(delay[spellLevel],aerialStrike,hPack);
 	if(iTeam == 2)
 	{
-		EmitSoundToAll(SOUND_HORN_RED, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
+		EmitSoundToAll(SOUND_HORN_RED, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 		TE_SetupBeamRingPoint(ClientPos, 20.0, 800.0, g_LightningSprite, spriteIndex, 0, 5, 1.0, 10.0, 1.0, {255,0,0,180}, 400, 0);
 		TE_SendToAll();
 	}
 	else
 	{
-		EmitSoundToAll(SOUND_HORN_BLUE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
+		EmitSoundToAll(SOUND_HORN_BLUE, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 		TE_SetupBeamRingPoint(ClientPos, 20.0, 800.0, g_LightningSprite, spriteIndex, 0, 5, 1.0, 10.0, 1.0, {0,0,255,180}, 400, 0);
 		TE_SendToAll();
 	}
@@ -1154,7 +1154,7 @@ CastShockwave(client, attuneSlot)
 		}
 	}
 	TF2_AddCondition(client, TFCond_ObscuredSmoke, 0.4);
-	EmitSoundToAll(SOUND_SHOCKWAVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
+	EmitSoundToAll(SOUND_SHOCKWAVE, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 	CreateParticleEx(client, "bombinomicon_burningdebris");
 }
 CastAutoSentry(client, attuneSlot)
@@ -1276,7 +1276,7 @@ public Action:SoothingSunlight(Handle timer, client)
 
 		CreateParticleEx(i, "utaunt_glitter_parent_gold", 1, _, _, incHealDuration[spellLevel]);
 	}
-	EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
+	EmitSoundToAll(SOUND_HEAL, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,ClientPos);
 }
 CastArcaneHunter(client, attuneSlot)
 {
@@ -1291,7 +1291,7 @@ CastArcaneHunter(client, attuneSlot)
 	
 	for(int i=0;i<30;++i)
 	{
-		EmitSoundToAll(SOUND_ARCANESHOOTREADY, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,CPOS);
+		EmitSoundToAll(SOUND_ARCANESHOOTREADY, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,CPOS);
 	}
 	
 	int MaxUses[] = {0, 5,10,30}
@@ -1334,7 +1334,7 @@ public Action:ArcaneHunter(Handle timer, client)
 	
 	GetClientEyePosition(client, soundPos);
 	GetClientEyeAngles(client, clientAng);
-	EmitSoundToAll(SOUND_ARCANESHOOT, 1, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
+	EmitSoundToAll(SOUND_ARCANESHOOT, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,soundPos);
 	// define the direction of the sparks
 	float dir[3] = {0.0, 0.0, 0.0};
 	
@@ -1413,7 +1413,7 @@ CastBlackskyEye(client, attuneSlot)
 
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
-	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_NORMAL, _, 0.7, _,_,clientpos);
+	EmitSoundToAll(SOUND_CALLBEYOND_CAST, 0, _, SNDLEVEL_NORMAL, _, 0.7, _,_,clientpos);
 	//Properties
 	int maxCount[] = {0,1,2,3};
 	float projSpeed[] = {0.0,1200.0,2000.0,3000.0};
@@ -1495,7 +1495,7 @@ CastACallBeyond(client, attuneSlot)
 	
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
-	EmitSoundToAll(SOUND_CALLBEYOND_CAST, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
+	EmitSoundToAll(SOUND_CALLBEYOND_CAST, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 	CreateParticleEx(client, "merasmus_tp_bits", 1, _, _, 2.0);
 	CreateParticleEx(client, "spellbook_major_burning", 1);
 	CreateParticle(client, "unusual_meteor_cast_wheel_purple", true);
@@ -1564,7 +1564,7 @@ public Action:ACallBeyond(Handle timer, client)
 
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
-	EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
+	EmitSoundToAll(SOUND_CALLBEYOND_ACTIVE, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 }
 CastZap(client, attuneSlot)
 {
@@ -1651,7 +1651,7 @@ DoZap(client,victim,spellLevel)
 	TE_SendToAll();
 	TE_SetupBeamPoints(clientpos,VictimPosition,g_LightningSprite,spriteIndex,0,35,0.15,6.0,5.0,0,1.0,{255,000,255,255},20);
 	TE_SendToAll();
-	EmitSoundToAll(SOUND_ZAP, _, client, SNDLEVEL_CONVO, _, 1.0, _,_,clientpos);
+	EmitSoundToAll(SOUND_ZAP, 0, _, SNDLEVEL_CONVO, _, 1.0, _,_,clientpos);
 	
 	float LightningDamage = (20.0 + (Pow(level * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 3.0));
 	float radiationAmount[] = {0.0,6.0,10.0,25.0};
@@ -1763,7 +1763,7 @@ CastLightning(client, attuneSlot)
 			DOTStock(i,client,LightningDamage*afterburnDamage[spellLevel],-1,0,20,1.0,0.1,true);//A fake afterburn. This allows for stacking of DOT & custom tick rates.
 		}
 	}
-	EmitSoundToAll(SOUND_THUNDER, _, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
+	EmitSoundToAll(SOUND_THUNDER, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 }
 CastHealing(client, attuneSlot)//Projected Healing
 {
@@ -1778,7 +1778,7 @@ CastHealing(client, attuneSlot)//Projected Healing
 	float clientpos[3];
 	GetClientEyePosition(client,clientpos);
 	int iTeam = GetClientTeam(client);
-	EmitSoundToAll(SOUND_HEAL, _, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
+	EmitSoundToAll(SOUND_HEAL, 0, client, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 
 	float fAngles[3]
 	float fOrigin[3]
@@ -1847,7 +1847,7 @@ CastWarp(client){
     float vec[3], telepos[3], vecangles[3], vecorigin[3], fwd[3], mins[3], maxs[3];
     GetClientEyeAngles(client, vecangles);
     GetClientEyePosition(client, vecorigin);
-	EmitSoundToAll(SOUND_TELEPORT, _, client, _, _, 1.0, _,_,vecorigin);
+	EmitSoundToAll(SOUND_TELEPORT, 0, client, _, _, 1.0, _,_,vecorigin);
 	CreateParticle(client, "teleported_red");
 
 	GetAngleVectors(vecangles,fwd, NULL_VECTOR, NULL_VECTOR);

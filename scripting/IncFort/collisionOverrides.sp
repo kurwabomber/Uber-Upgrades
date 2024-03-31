@@ -54,13 +54,6 @@ public Action:AddArrowCollisionFunction(entity, client)
 	char strName[32];
 	GetEntityClassname(client, strName, 32)
 
-	if(IsValidClient3(client) || !StrContains(strName,"tank_boss",false))
-	{
-		if(HasEntProp(entity, Prop_Send, "m_hOwnerEntity"))
-		{
-			RemoveEntity(entity);
-		}
-	}
 	if(StrEqual(strName,"tf_projectile_arrow"))
 	{
 		float origin[3];
@@ -688,6 +681,48 @@ public Action:OnTouchExplodeJar(entity, other)
 			Radius *= TF2Attrib_GetValue(blastRadius2)
 		}
 		float damageBoost = TF2_GetDamageModifiers(owner, CWeapon);
+		if(entityMaelstromChargeCount[entity] > 0){
+			float startpos[3];
+			startpos[0] = clientvec[0];
+			startpos[1] = clientvec[1];
+			startpos[2] = clientvec[2] + 1600;
+			
+			int color[4];
+			color = {255,228,0,255};
+			
+			// define the direction of the sparks
+			TE_SetupBeamPoints(startpos, clientvec, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
+			TE_SendToAll();
+			TE_SetupSparks(clientvec, {0.0, 0.0, 0.0}, 5000, 1000);
+			TE_SendToAll();
+			TE_SetupEnergySplash(clientvec, {0.0, 0.0, 0.0}, false);
+			TE_SendToAll();
+			TE_SetupSmoke(clientvec, g_SmokeSprite, 5.0, 10);
+			TE_SendToAll();
+			TE_SetupBeamRingPoint(clientvec, 20.0, Radius*(1+0.01*entityMaelstromChargeCount[entity]), g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
+			TE_SendToAll();
+			
+			EmitSoundToAll(SOUND_THUNDER, entity, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientvec);
+			
+			float LightningDamage = 120.0 * damageBoost * entityMaelstromChargeCount[entity];
+			
+			int i = -1;
+			while ((i = FindEntityByClassname(i, "*")) != -1)
+			{
+				if(IsValidForDamage(i) && IsOnDifferentTeams(owner,i))
+				{
+					float VictimPos[3];
+					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+					VictimPos[2] += 30.0;
+					if(GetVectorDistance(clientvec,VictimPos,true) <= Radius*Radius*(1+0.01*entityMaelstromChargeCount[entity]))
+						if(IsPointVisible(clientvec,VictimPos))
+							SDKHooks_TakeDamage(i,owner,owner, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+				}
+			}
+
+			entityMaelstromChargeCount[entity] = 0;
+		}
+
 		int i = -1;
 		while ((i = FindEntityByClassname(i, "*")) != -1)
 		{

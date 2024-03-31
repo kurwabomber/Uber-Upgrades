@@ -6037,8 +6037,8 @@
 			"ref"		"Maelstrom Charge"
 			"cost"		"0"
 			"value"		"1.00"
-			"init"		"46.00"
-			"max"		"47.00"
+			"init"		"47.00"
+			"max"		"48.00"
 		}
 		"1658"
 		{

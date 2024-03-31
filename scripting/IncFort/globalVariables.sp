@@ -243,6 +243,8 @@ int globalButtons[MAXPLAYERS+1];
 int singularBuysPerMinute[MAXPLAYERS+1];
 int bossPhase[MAXPLAYERS+1];
 int fanOfKnivesCount[MAXPLAYERS+1];
+int maelstromChargeCount[MAXPLAYERS+1];
+int entityMaelstromChargeCount[MAXENTITIES];
 int StrangeFarming[MAXPLAYERS+1][MAXPLAYERS+1];
 int firestormCounter[MAXPLAYERS+1];
 int lastFlag[MAXPLAYERS+1];

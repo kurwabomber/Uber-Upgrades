@@ -1316,6 +1316,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 	isTagged[attack][client] = false;
 		
 	fanOfKnivesCount[client] = 0;
+	maelstromChargeCount[client] = 0;
 	RageBuildup[client] = 0.0;
 	frayNextTime[attack] = 0.0;
 	enragedKills[client] = 0;
@@ -1819,45 +1820,73 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						if(buttons & IN_ATTACK3)
 							{buttons |= IN_JUMP;return_value=Plugin_Changed;}
 				}
-				if(!(buttons & IN_ATTACK) && globalButtons[client] & IN_ATTACK && fanOfKnivesCount[client] > 1)
+				if(!(buttons & IN_ATTACK) && globalButtons[client] & IN_ATTACK)
 				{
 					float fOrigin[3], fAngles[3], vBuffer[3], fVelocity[3], vImpulse[3];
-
 					GetCleaverAngularImpulse(vImpulse);
 					GetClientEyePosition(client, fOrigin);
-
 					GetClientEyeAngles(client, fAngles);
-
 					int iTeam = GetClientTeam(client);
 
-					fAngles[1] -= 15.0 + 15.0/fanOfKnivesCount[client];
-					fAngles[0] -= 2.0;
-					for(int i = 0; i < fanOfKnivesCount[client]; ++i)
-					{
-						fAngles[1] += 30.0/fanOfKnivesCount[client]
-						int iEntity = CreateEntityByName("tf_projectile_cleaver");
-						if (!IsValidEdict(iEntity))
-							continue;
+					if(maelstromChargeCount[client] > 1){
+						int iEntity = CreateEntityByName("tf_projectile_arrow");
+						if (IsValidEntity(iEntity)){
+							fAngles[0] -= 3.0;
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
 
-						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 
-						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+							fVelocity[0] = vBuffer[0]*3000.0;
+							fVelocity[1] = vBuffer[1]*3000.0;
+							fVelocity[2] = vBuffer[2]*3000.0;
 
-						fVelocity[0] = vBuffer[0]*4000.0;
-						fVelocity[1] = vBuffer[1]*4000.0;
-						fVelocity[2] = vBuffer[2]*4000.0;
+							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
 
-						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-						SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-						SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
-
-						TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
-						DispatchSpawn(iEntity);
-						Phys_EnableDrag(iEntity, false);
-						SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vImpulse, client, 50, 146.0);
+							TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+							DispatchSpawn(iEntity);
+							
+							SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
+							if(iTeam == 2)
+								CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_red.vmt", "255 255 255");
+							else
+								CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", "materials/effects/arrowtrail_blu.vmt", "255 255 255");
+							entityMaelstromChargeCount[iEntity] = maelstromChargeCount[client];
+							maelstromChargeCount[client] = 0;
+						}
 					}
+					else if(fanOfKnivesCount[client] > 1){
 
-					fanOfKnivesCount[client] = 0;
+						fAngles[1] -= 15.0 + 15.0/fanOfKnivesCount[client];
+						fAngles[0] -= 2.0;
+						for(int i = 0; i < fanOfKnivesCount[client]; ++i)
+						{
+							fAngles[1] += 30.0/fanOfKnivesCount[client]
+							int iEntity = CreateEntityByName("tf_projectile_cleaver");
+							if (!IsValidEdict(iEntity))
+								continue;
+
+							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+
+							GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+
+							fVelocity[0] = vBuffer[0]*4000.0;
+							fVelocity[1] = vBuffer[1]*4000.0;
+							fVelocity[2] = vBuffer[2]*4000.0;
+
+							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+							SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+
+							TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
+							DispatchSpawn(iEntity);
+							Phys_EnableDrag(iEntity, false);
+							SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vImpulse, client, 50, 146.0);
+						}
+
+						fanOfKnivesCount[client] = 0;
+					}
 				}
 				if(buttons & IN_DUCK && buttons & IN_ATTACK3 && fl_GlobalCoolDown[client] <= currentGameTime)
 				{
@@ -3330,6 +3359,11 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 						CreateTimer(0.1, ElectricBallThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 					}
 				}
+				case 48.0:
+				{
+					if(maelstromChargeCount[client] < 50)
+						maelstromChargeCount[client]++;
+				}
 			}
 		}
 		if(projActive != Address_Null && TF2Attrib_GetValue(projActive) == 2.0)
@@ -3643,9 +3677,7 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 				TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
 				TE_SendToAll();
 				
-				CreateParticleEx(client, "utaunt_electricity_cloud_parent_WB", _, _, startpos, 5.0);
-				
-				EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
+				EmitSoundToAll(SOUND_THUNDER, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);
 				
 				float LightningDamage = 325.0 * TF2_GetSentryDPSModifiers(client, melee);
 				

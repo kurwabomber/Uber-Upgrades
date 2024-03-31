@@ -283,7 +283,6 @@
 			"restriction"					"1"
 			"lifesteal to team"				"6"
 			"lifesteal effectiveness"		"3"
-			"fires milk bolt"				"2"
 		}
 		"Maelstrom Charge"
 		{
@@ -347,7 +346,7 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"dmg per sticky detonated"		"0.15"
+			"dmg per sticky detonated"		"0.2"
 		}
 		"Chain Reaction"
 		{
