@@ -761,6 +761,13 @@ public Action:OnTouchExplodeJar(entity, other)
 							}//corrosiveDOT
 							if(isPlayer)
 							{
+								Address jarArmorBrokenBuff = TF2Attrib_GetByName(CWeapon, "jar gives armor penetration");
+								if(jarArmorBrokenBuff != Address_Null)
+								{
+									Buff pierceBuff;
+									pierceBuff.init("Broken Armor", "", Buff_BrokenArmor, RoundFloat(TF2Attrib_GetValue(jarArmorBrokenBuff)), owner, 6.0);
+									insertBuff(i, pierceBuff);
+								}
 								Address jarCorrosive = TF2Attrib_GetByName(CWeapon, "building cost reduction");
 								if(jarCorrosive != Address_Null)
 								{
@@ -793,6 +800,14 @@ public Action:OnTouchExplodeJar(entity, other)
 							Address jarDefensiveBuff = TF2Attrib_GetByName(CWeapon, "set cloak is feign death");
 							if(jarDefensiveBuff != Address_Null)
 								giveDefenseBuff(i,TF2Attrib_GetValue(jarDefensiveBuff));
+
+							Address jarArmorPierceBuff = TF2Attrib_GetByName(CWeapon, "jar gives armor penetration");
+							if(jarArmorPierceBuff != Address_Null)
+							{
+								Buff pierceBuff;
+								pierceBuff.init("Armor Piercing Boost", "", Buff_PiercingBuff, RoundFloat(TF2Attrib_GetValue(jarArmorPierceBuff)), owner, 6.0);
+								insertBuff(i, pierceBuff);
+							}
 							
 							TF2_RemoveCondition(i, TFCond_OnFire);
 						}

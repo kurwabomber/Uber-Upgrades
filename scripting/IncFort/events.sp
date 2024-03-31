@@ -436,6 +436,15 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					float damageReduction = GetAttribute(CWeapon, "energy buff dmg taken multiplier", 1.0);
 					if(damageReduction != 1.0)
 						TF2Attrib_AddCustomPlayerAttribute(client, "damage taken mult 3", damageReduction, 16.0);
+					
+					Buff lunchboxChange;
+					lunchboxChange.init("Eating Buffs", "", Buff_LunchboxChange, 1, client, 12.0);
+					lunchboxChange.additiveMoveSpeedMult = GetAttribute(CWeapon, "buff movement speed", 0.0);
+					lunchboxChange.multiplicativeAttackSpeedMult = GetAttribute(CWeapon, "buff fire rate", 1.0);
+					lunchboxChange.multiplicativeDamageTaken = GetAttribute(CWeapon, "buff damage taken", 1.0);
+					if(lunchboxChange.additiveMoveSpeedMult != 0.0 || lunchboxChange.multiplicativeAttackSpeedMult != 1.0 || lunchboxChange.multiplicativeDamageTaken != 1.0){
+						insertBuff(client, lunchboxChange);
+					}
 				}
 			}
 			case TFCond_Milked:

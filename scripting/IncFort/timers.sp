@@ -591,14 +591,15 @@ public Action:Timer_Every100MS(Handle timer)
 					{
 						range *= TF2Attrib_GetValue(rangeMult);
 					}
+					float ClientPos[3];
+					GetClientAbsOrigin(client, ClientPos);
 					//Base Vanilla Buff Overrides
 					int buff = GetEntProp(secondary, Prop_Send, "m_iItemDefinitionIndex")
 					switch(buff)
 					{
 						case 129,1001:
 						{
-							float ClientPos[3], VictimPos[3];
-							GetClientAbsOrigin(client, ClientPos);
+							float VictimPos[3];
 							for(int i=1;i<=MaxClients;++i)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
@@ -614,8 +615,7 @@ public Action:Timer_Every100MS(Handle timer)
 						}
 						case 226:
 						{
-							float ClientPos[3], VictimPos[3];
-							GetClientAbsOrigin(client, ClientPos);
+							float VictimPos[3];
 							for(int i=1;i<=MaxClients;++i)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
@@ -628,8 +628,7 @@ public Action:Timer_Every100MS(Handle timer)
 						}
 						case 354:
 						{
-							float ClientPos[3], VictimPos[3];
-							GetClientAbsOrigin(client, ClientPos);
+							float VictimPos[3];
 							for(int i=1;i<=MaxClients;++i)
 							{
 								if(IsValidClient(i) && IsPlayerAlive(i) && GetClientTeam(client) == GetClientTeam(i))
@@ -643,65 +642,96 @@ public Action:Timer_Every100MS(Handle timer)
 					}
 					//Custom Buff Effects
 					//Lightning Strike banner : lightningCounter : "has pipboy build interface"
-					Address lightningBannerActive = TF2Attrib_GetByName(secondary, "has pipboy build interface");
-					if(lightningBannerActive != Address_Null && TF2Attrib_GetValue(lightningBannerActive) != 0.0 && IsValidEdict(CWeapon))
-					{
-						if(lightningCounter[client] >= 8)
+					if(IsValidWeapon(CWeapon)){
+						float barrageLevel = GetAttribute(secondary, "buff barrage", 0.0)
+						if(barrageLevel > 0 && lightningCounter[client] % 12 == 0){
+							float fOrigin[3], fAngles[3], vBuffer[3];
+							GetClientEyePosition(client, fOrigin);
+							fAngles = fEyeAngles[client];
+							fAngles[1] -= 15.0 + 15.0/barrageLevel;
+							for(int i=0;i<RoundToCeil(barrageLevel);++i){
+								fAngles[1] += 30.0/barrageLevel;
+								int iEntity = CreateEntityByName("tf_projectile_sentryrocket");
+								int iTeam = GetClientTeam(client);
+								SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+
+								SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
+								SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
+								
+								SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
+								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+								
+								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+
+								ScaleVector(vBuffer, 50.0);
+								AddVectors(vBuffer, fOrigin, fOrigin);
+
+								ScaleVector(vBuffer, 30.0);
+								
+								float ProjectileDamage = 40+10*barrageLevel;
+								SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, ProjectileDamage, true);  
+								
+								TeleportEntity(iEntity, fOrigin, fAngles, vBuffer);
+								DispatchSpawn(iEntity);
+							}
+						}
+
+						Address lightningBannerActive = TF2Attrib_GetByName(secondary, "has pipboy build interface");
+						if(lightningBannerActive != Address_Null && TF2Attrib_GetValue(lightningBannerActive) != 0.0)
 						{
-							float clientpos[3];
-							GetClientAbsOrigin(client,clientpos);
-							clientpos[0] += GetRandomFloat(-500.0,500.0);
-							clientpos[1] += GetRandomFloat(-500.0,500.0);
-							clientpos[2] = getLowestPosition(clientpos);
-							// define where the lightning strike starts
-							float startpos[3];
-							startpos[0] = clientpos[0];
-							startpos[1] = clientpos[1];
-							startpos[2] = clientpos[2] + 1600;
-							
-							int color[4];
-							color = {255,228,0,255};
-							
-							// define the direction of the sparks
-							float dir[3] = {0.0, 0.0, 0.0};
-							
-							TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
-							TE_SendToAll();
-							
-							TE_SetupSparks(clientpos, dir, 5000, 1000);
-							TE_SendToAll();
-							
-							TE_SetupEnergySplash(clientpos, dir, false);
-							TE_SendToAll();
-							
-							TE_SetupSmoke(clientpos, g_SmokeSprite, 5.0, 10);
-							TE_SendToAll();
-							
-							TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
-							TE_SendToAll();
-							
-							EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
-							
-							float LightningDamage = TF2_GetDPSModifiers(client,CWeapon)*10.0*TF2Attrib_GetValue(lightningBannerActive);
-							int i = -1;
-							while ((i = FindEntityByClassname(i, "*")) != -1)
+							if(lightningCounter[client] % 8 == 0)
 							{
-								if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
+								float clientpos[3];
+								GetClientAbsOrigin(client,clientpos);
+								clientpos[0] += GetRandomFloat(-500.0,500.0);
+								clientpos[1] += GetRandomFloat(-500.0,500.0);
+								clientpos[2] = getLowestPosition(clientpos);
+								// define where the lightning strike starts
+								float startpos[3];
+								startpos[0] = clientpos[0];
+								startpos[1] = clientpos[1];
+								startpos[2] = clientpos[2] + 1600;
+								
+								int color[4];
+								color = {255,228,0,255};
+								
+								// define the direction of the sparks
+								float dir[3] = {0.0, 0.0, 0.0};
+								
+								TE_SetupBeamPoints(startpos, clientpos, g_LightningSprite, 0, 0, 0, 0.2, 20.0, 10.0, 0, 1.0, color, 3);
+								TE_SendToAll();
+								
+								TE_SetupSparks(clientpos, dir, 5000, 1000);
+								TE_SendToAll();
+								
+								TE_SetupEnergySplash(clientpos, dir, false);
+								TE_SendToAll();
+								
+								TE_SetupSmoke(clientpos, g_SmokeSprite, 5.0, 10);
+								TE_SendToAll();
+								
+								TE_SetupBeamRingPoint(clientpos, 20.0, 650.0, g_LightningSprite, spriteIndex, 0, 5, 0.5, 10.0, 1.0, color, 200, 0);
+								TE_SendToAll();
+								
+								EmitAmbientSound("ambient/explosions/explode_9.wav", startpos, client, 50);
+								
+								float LightningDamage = TF2_GetDPSModifiers(client,CWeapon)*10.0*TF2Attrib_GetValue(lightningBannerActive);
+								int i = -1;
+								while ((i = FindEntityByClassname(i, "*")) != -1)
 								{
-									float VictimPos[3];
-									GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-									VictimPos[2] += 30.0;
-									if(GetVectorDistance(clientpos,VictimPos,true) <= range*range*0.3)
-										if(IsPointVisible(clientpos,VictimPos))
-											SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, secondary, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+									if(IsValidForDamage(i) && IsOnDifferentTeams(client,i))
+									{
+										float VictimPos[3];
+										GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+										VictimPos[2] += 30.0;
+										if(GetVectorDistance(clientpos,VictimPos,true) <= range*range*0.3)
+											if(IsPointVisible(clientpos,VictimPos))
+												SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, secondary, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+									}
 								}
 							}
-							lightningCounter[client] = 0;
 						}
-						else
-						{
-							lightningCounter[client]++;
-						}
+						lightningCounter[client]++;
 					}
 				}
 			}

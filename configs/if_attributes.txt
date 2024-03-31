@@ -6064,7 +6064,7 @@
 			"ref"		"buff movement speed"
 			"cost"		"0"
 			"value"		"0.10"
-			"init"		"1.00"
+			"init"		"0.00"
 			"max"		"0.00"
 		}
 		"1661"

@@ -1,3 +1,35 @@
+float GetResistance(int client, bool includeReduction = false, float increaseBase = 0.0, float increaseMult = 0.0)
+{
+	Address capActive = TF2Attrib_GetByName(client, "tool escrow until date")
+	Address Defense = TF2Attrib_GetByName(client, "is throwable chargeable");
+	float TotalResistance = 1.0;
+	float DefenseMult = 1.0;
+	float ArmorMult = 1.0;
+	
+	if(capActive != Address_Null)
+		ArmorMult = TF2Attrib_GetValue(capActive);
+	if(Defense != Address_Null)
+		DefenseMult = TF2Attrib_GetValue(Defense);
+	
+	ArmorMult += increaseBase;
+	DefenseMult += increaseMult;
+
+	TotalResistance = ArmorMult*DefenseMult;
+	if(hasBuffIndex(client, Buff_BrokenArmor)){
+		TotalResistance -= playerBuffs[client][getBuffInArray(client,Buff_BrokenArmor)].priority;
+	}
+	
+	TotalResistance = Pow(TotalResistance, 2.35);
+	if(includeReduction)
+	{
+		Address dmgReduction = TF2Attrib_GetByName(client, "sniper zoom penalty");
+		if(dmgReduction != Address_Null)
+		{
+			TotalResistance /= TF2Attrib_GetValue(dmgReduction);
+		}
+	}
+	return TotalResistance;
+}
 stock int CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] strAttachmentPoint="", float time = 2.0,float fOffset[3]={0.0, 0.0, 0.0}, bool parentAngle = false, attachType = 0, bool terminate = false)
 {
 	if(attachType == 0)
@@ -296,7 +328,6 @@ public void ManagePlayerBuffs(int i){
 		Format(details, sizeof(details), "%s\nKarmic Justice | %.2f Scaling", details, karmicJusticeScaling[i]);
 	}
 
-
 	if(miniCritStatusVictim[i]-currentGameTime > 0.0)
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
 	if(miniCritStatusAttacker[i]-currentGameTime > 0.0)
@@ -313,8 +344,10 @@ public void ManagePlayerBuffs(int i){
 	if(additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff != 1.0)
 		Format(details, sizeof(details), "%s\n+%ipct Fire Rate", details, RoundToNearest(((additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff)-1.0)*100.0) );
 
-	if(additiveMoveSpeedMultBuff != 1.0)
+	if(additiveMoveSpeedMultBuff > 1.0)
 		Format(details, sizeof(details), "%s\n+%ipct Move Speed", details, RoundToNearest((additiveMoveSpeedMultBuff-1.0)*100.0) );
+	else if(additiveMoveSpeedMultBuff < 1.0)
+		Format(details, sizeof(details), "%s\n%ipct Move Speed", details, RoundToNearest((additiveMoveSpeedMultBuff-1.0)*100.0) );
 
 	if(additiveDamageTakenBuff*multiplicativeDamageTakenBuff > 1.0)
 		Format(details, sizeof(details), "%s\n+%ipct Damage Vulnerability", details, RoundToNearest(((additiveDamageTakenBuff*multiplicativeDamageTakenBuff)-1.0)*100.0) );
@@ -3218,7 +3251,7 @@ public OnEntityHomingThink(entity)
 		
 		GetEntPropVector( entity, Prop_Send, "m_vInitialVelocity", InitialSpeed ); 
 		if ( GetVectorLength( InitialSpeed ) < 10.0 ) GetEntPropVector( entity, Prop_Data, "m_vecAbsVelocity", InitialSpeed ); 
-		BaseSpeed = GetVectorLength( InitialSpeed ) * 0.3; 
+		BaseSpeed = GetVectorLength( InitialSpeed ) * 0.333; 
 		
 		GetEntPropVector( entity, Prop_Data, "m_vecAbsOrigin", ProjLocation ); 
 		switch(homingAimStyle[entity])

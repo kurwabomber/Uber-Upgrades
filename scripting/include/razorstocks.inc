@@ -370,45 +370,6 @@ stock void AddUbercharge(int weapon, float add){
 	else
 		SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", uber + add);
 }
-stock float GetResistance(int client, bool includeReduction = false, float increaseBase = 0.0, float increaseMult = 0.0)
-{
-	if(IsValidClient3(client))
-	{
-		Address capActive = TF2Attrib_GetByName(client, "tool escrow until date")
-		Address Defense = TF2Attrib_GetByName(client, "is throwable chargeable");
-		float TotalResistance = 1.0;
-		float DefenseMult = 1.0;
-		float ArmorMult = 1.0;
-		
-		if(capActive != Address_Null)
-			ArmorMult = TF2Attrib_GetValue(capActive);
-		if(Defense != Address_Null)
-			DefenseMult = TF2Attrib_GetValue(Defense);
-		/*if(TF2_IsPlayerInCondition(client, TFCond_NoTaunting_DEPRECATED))
-		{
-			ArmorMult -= 1.0;
-			if(ArmorMult <= 0.0)
-			{
-				ArmorMult = 0.01;
-			}
-		}*/
-		
-		ArmorMult += increaseBase;
-		DefenseMult += increaseMult;
-		
-		TotalResistance = Pow(ArmorMult*DefenseMult, 2.35);
-		if(includeReduction)
-		{
-			Address dmgReduction = TF2Attrib_GetByName(client, "sniper zoom penalty");
-			if(dmgReduction != Address_Null)
-			{
-				TotalResistance /= TF2Attrib_GetValue(dmgReduction);
-			}
-		}
-		return TotalResistance;
-	}
-	return 1.00;
-}
 stock MoveForward(const float vPos[3], const float vAng[3], float vReturn[3], float fDistance)
 {
     float vDir[3];
