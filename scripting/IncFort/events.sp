@@ -2904,7 +2904,7 @@ public MRESReturn OnBlastExplosion(int entity, Handle hReturn){
 			SDKHooks_TakeDamage(target, owner, owner, damage);
 			SDKHooks_TakeDamage(target, owner, owner, 3.0, DMG_RADIATION+DMG_DISSOLVE);
 
-			if(hitParticle[target]+0.1 <= currentGameTime){
+			if(hitParticle[target]+0.2 <= currentGameTime){
 				GetEntPropVector(target, Prop_Data, "m_vecOrigin", victimPosition);
 				victimPosition[2] += 30.0;
 				TE_SetupBeamPoints(position,victimPosition,Laser,Laser,0,5,1.0,1.0,1.0,5,1.0,{247, 136, 0, 150},10);
