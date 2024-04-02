@@ -204,15 +204,16 @@
 			"Set DamageType Ignite"			"1"
 			"Afterburn Tick Rate"			"5.0"
 			"minicrit vs burning player"	"1.0"
+			"sticky recursive explosion chance"		"2.5"
+			"additive piercing damage"		"40.0"
 		}
 		"Rockets' Red Glare"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"mult crit when health is below percent"	"7.0"
-			"projectile acceleration"		"800.0"
-			"Projectile speed decreased"	"8.0"
-			"Blast radius decreased"		"2.0"
+			"projectile acceleration"		"1400.0"
+			"Projectile speed decreased"	"9.0"
+			"mult dmg direct hit"			"5.0"
 			"damage bonus HIDDEN(b)"		"1.0"
 		}
 		"Focused Lens"
@@ -263,6 +264,7 @@
 			"restriction"					"1"
 			"Fully Charged Shots Ricochet"	"3"
 			"mult sniper charge after headshot"	"75"
+			"additive piercing damage"		"70"
 		}
 		"Weapon Inheritance"
 		{
@@ -283,12 +285,17 @@
 			"restriction"					"1"
 			"lifesteal to team"				"6"
 			"lifesteal effectiveness"		"3"
+			"Mad Milk On Hit Duration"		"5"
+			"additive piercing damage"		"40"
 		}
 		"Maelstrom Charge"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
 			"Maelstrom Charge"				"1"
+			"weapon fire rate(tweak)"		"1"
+			"damage bonus HIDDEN(b)"		"7"
+			"Crit Damage Bonus"				"3"
 		}
 		"Alchemist's Concoction"
 		{
@@ -296,6 +303,7 @@
 			"restriction"					"1"
 			"jar applies armor decay"		"10"
 			"jar gives armor penetration"	"3"
+			"additive piercing damage"		"70"
 		}
 		"Human Stronghold"
 		{
@@ -310,12 +318,14 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"buff plunder multiplier"		"10"
+			"Banner Summons Lightning"		"10"
 		}
 		"Barrage"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"buff barrage"					"3"
+			"buff barrage"					"5"
+			"Ability : Silent Dash"			"1"
 		}
 		"Infernal Lunge"
 		{
@@ -341,18 +351,24 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"explosion wasps"				"4"
+			"mult dmg direct hit"			"5"
+			"Crit Damage Bonus"				"2"
+			"Bleed Per Hit"					"1"
 		}
 		"Cluster Bomb"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"dmg per sticky detonated"		"0.2"
+			"dmg per sticky detonated"		"0.5"
+			"Radiation Buildup"				"4"
 		}
 		"Chain Reaction"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"sticky recursive explosion chance"		"2.5"
+			"sticky recursive explosion chance"		"3.5"
+			"slow enemy on hit major"		"1"
+			"Set DamageType Ignite"			"1"
 		}
 		"Pain Train"
 		{

@@ -368,6 +368,21 @@
 				"library"	"server"
 				"linux"		"@_ZN15CTFFlameThrower12FireAirBlastEi"
 			}
+			"CTFProjectile_Flare::GetRadius()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN19CTFProjectile_Flare9GetRadiusEv"
+			}
+			"CTFBaseRocket::GetRadius()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN13CTFBaseRocket9GetRadiusEv"
+			}
+			"CTFWeaponBaseGrenadeProj::GetDamageRadius()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN24CTFWeaponBaseGrenadeProj15GetDamageRadiusEv"
+			}
 		}
 	}
 }

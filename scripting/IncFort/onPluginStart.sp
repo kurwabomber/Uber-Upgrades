@@ -432,6 +432,26 @@ public void OnPluginStart()
 	else
 		DHookEnableDetour(g_DHookOnAirblast, true, OnAirblast);
 
+	//Blast Radius Overrides
+	{
+		Handle BlastHook = DHookCreateFromConf(hConf, "CTFProjectile_Flare::GetRadius()");
+		if(!BlastHook)
+			PrintToServer("CustomAttrs | Error with \"CTFProjectile_Flare::GetRadius()\" gamedata.");
+		DHookEnableDetour(BlastHook, true, OnBlastExplosion);
+	}
+	{
+		Handle BlastHook = DHookCreateFromConf(hConf, "CTFBaseRocket::GetRadius()");
+		if(!BlastHook)
+			PrintToServer("CustomAttrs | Error with \"CTFBaseRocket::GetRadius()\" gamedata.");
+		DHookEnableDetour(BlastHook, true, OnBlastExplosion);
+	}
+	{
+		Handle BlastHook = DHookCreateFromConf(hConf, "CTFWeaponBaseGrenadeProj::GetDamageRadius()");
+		if(!BlastHook)
+			PrintToServer("CustomAttrs | Error with \"CTFWeaponBaseGrenadeProj::GetDamageRadius()\" gamedata.");
+		DHookEnableDetour(BlastHook, true, OnBlastExplosion);
+	}
+
 	//On Bullet Trace (THIS HAS A CONFLICT WITH RAFMOD?)
 	Handle g_DHookOnBulletTrace = DHookCreateFromConf(hConf, "CBaseEntity::DispatchTraceAttack()");
 	if(!IsValidHandle(g_DHookOnBulletTrace))

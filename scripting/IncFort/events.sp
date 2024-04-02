@@ -2644,7 +2644,7 @@ public OnGameFrame()
 
 				int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
 				int clientMaxHealth = TF2_GetMaxHealth(client);
-				
+				stickiesDetonated[client] = 0;
 				float RegenPerTick = 0.0;
 
 				Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
@@ -2842,6 +2842,79 @@ public OnGameFrame()
 			}
 		}
 	}
+}
+public MRESReturn OnBlastExplosion(int entity, Handle hReturn){
+	if(!IsValidEntity(entity))
+		return MRES_Ignored;
+
+	int owner = getOwner(entity);
+	if(!IsValidClient(owner))
+		return MRES_Ignored;
+
+	++stickiesDetonated[owner];
+
+	int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+	if(!IsValidWeapon(CWeapon))
+		return MRES_Ignored;
+	
+	float position[3];
+	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", position);
+	position[2] += 15.0;
+
+	float chance = GetAttribute(CWeapon, "sticky recursive explosion chance", 0.0)
+	if(chance >= GetRandomFloat(0.0,1.0)){
+
+		DataPack hPack = CreateDataPack();
+		hPack.Reset();
+		WritePackCell(hPack, EntIndexToEntRef(owner));
+		WritePackCell(hPack, EntIndexToEntRef(CWeapon));
+		WritePackFloat(hPack, position[0]);
+		WritePackFloat(hPack, position[1]);
+		WritePackFloat(hPack, position[2]);
+		WritePackFloat(hPack, 90.0 * TF2_GetDamageModifiers(owner, CWeapon));
+		WritePackFloat(hPack, 120.0 * TF2Attrib_HookValueFloat(1.0, "mult_explosion_radius", CWeapon));
+		CreateTimer(0.2, RecursiveExplosions, hPack, TIMER_REPEAT);
+	}
+
+	float waspsCount = GetAttribute(CWeapon, "explosion wasps", 0.0)
+	if(waspsCount > 0){
+		int targetsList[MAXPLAYERS+1];
+		float victimPosition[3];
+		int index;
+		float damage = 90.0 * TF2_GetDamageModifiers(owner, CWeapon);
+		for(int i=1;i<=MaxClients;++i){
+			if(!IsValidClient3(i))
+				continue;
+			if(!IsPlayerAlive(i))
+				continue;
+			if(!IsOnDifferentTeams(owner, i))
+				continue;
+			
+			GetEntPropVector(i, Prop_Data, "m_vecOrigin", victimPosition);
+			if(GetVectorDistance(position, victimPosition, true) < 250000){
+				targetsList[index] = i;
+				index++;
+			}
+		}
+		for(int i=0;i<waspsCount;++i){
+			int target = targetsList[GetRandomInt(0,index-1)];
+			if(!IsValidClient3(target))
+				continue;
+
+			SDKHooks_TakeDamage(target, owner, owner, damage);
+			SDKHooks_TakeDamage(target, owner, owner, 3.0, DMG_RADIATION+DMG_DISSOLVE);
+
+			if(hitParticle[target]+0.1 <= currentGameTime){
+				GetEntPropVector(target, Prop_Data, "m_vecOrigin", victimPosition);
+				victimPosition[2] += 30.0;
+				TE_SetupBeamPoints(position,victimPosition,Laser,Laser,0,5,1.0,1.0,1.0,5,1.0,{247, 136, 0, 150},10);
+				TE_SendToAll();
+				hitParticle[target] = currentGameTime;
+			}
+		}
+	}
+
+	return MRES_Ignored;
 }
 public MRESReturn OnFinishReload(int weapon)
 {

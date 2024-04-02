@@ -1391,6 +1391,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				damage *= 1+(missingHealthDamageBonus*100.0)*(1-ratio);
 		}
 
+		if(stickiesDetonated[attacker] > 0){
+			damage *= 1+GetAttribute(weapon, "dmg per sticky detonated", 0.0)*stickiesDetonated[attacker];
+		}
+
 		if(isVictimPlayer)
 		{
 			if(damagetype & DMG_CLUB){

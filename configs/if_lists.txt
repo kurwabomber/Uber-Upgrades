@@ -2032,7 +2032,6 @@
 			"Attr0"		"increase buff duration"
 			"Attr1"		"increase buff radius"
 			"Attr2"		"blast dmg to self decreased"
-			"Attr3"		"Banner Summons Lightning"
 		}
 		"Special Tweaks"
 		{

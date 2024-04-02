@@ -275,6 +275,7 @@ int InfernalEnchantmentLevel[MAXPLAYERS+1];
 int snowstormParticle[MAXPLAYERS+1];
 int tagTeamTarget[MAXPLAYERS+1];
 int enragedKills[MAXPLAYERS+1];
+int stickiesDetonated[MAXPLAYERS+1];
 
 //Floats
 float currentGameTime
@@ -325,6 +326,7 @@ float fl_GlobalCoolDown[MAXPLAYERS+1];
 float weaponArtCooldown[MAXPLAYERS+1];
 float weaponArtParticle[MAXPLAYERS+1];
 float powerupParticle[MAXPLAYERS+1];
+float hitParticle[MAXPLAYERS+1];
 float spellScaling[] = {0.0,2.45,2.55,2.65};
 float BotTimer[MAXPLAYERS+1];
 float LastCharge[MAXPLAYERS+1];

@@ -1993,6 +1993,25 @@ public Action:ShootTwice(Handle timer, any:data)
 	}
 	CloseHandle(data);
 }
+public Action RecursiveExplosions(Handle timer, DataPack ref) 
+{
+	ref.Reset();
+    int owner = EntRefToEntIndex(ref.ReadCell()); 
+	int weapon = EntRefToEntIndex(ref.ReadCell());
+	float position[3];
+	position[0] = ref.ReadFloat();
+	position[1] = ref.ReadFloat();
+	position[2] = ref.ReadFloat();
+
+	if(IsValidClient3(owner) && IsValidWeapon(weapon)){
+		EntityExplosion(owner, ref.ReadFloat(), ref.ReadFloat(), position);
+		float chance = GetAttribute(weapon, "sticky recursive explosion chance", 0.0)
+		if(chance >= GetRandomFloat(0.0,1.0)){
+			return Plugin_Continue;
+		}
+	}
+	return Plugin_Stop;
+}
 public Action:ReEnable(Handle timer, any:ref) 
 { 
     int entity = EntRefToEntIndex(ref); 
