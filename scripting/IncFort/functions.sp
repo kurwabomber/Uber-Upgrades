@@ -300,17 +300,25 @@ public void ManagePlayerBuffs(int i){
 		}
 	}
 
-	if(buffChange[i])
-	{
-		TF2Attrib_SetByName(i, "additive damage bonus", additiveDamageRawBuff);
-		TF2Attrib_SetByName(i, "damage bonus", additiveDamageMultBuff*multiplicativeDamageBuff);
-		TF2Attrib_SetByName(i, "firerate player buff", 1.0/(additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff));
-		TF2Attrib_SetByName(i, "recharge rate player buff", 1.0/(additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff));
-		TF2Attrib_SetByName(i, "Reload time decreased", 1.0/(additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff));
-		TF2Attrib_SetByName(i, "movespeed player buff", additiveMoveSpeedMultBuff);
-		TF2Attrib_SetByName(i, "damage taken mult 4", additiveDamageTakenBuff*multiplicativeDamageTakenBuff);
-		buffChange[i] = false;
+
+	for(int savior = 1;savior<=MaxClients;++savior){
+		if(!IsValidClient3(savior))
+			continue;
+		if(!IsPlayerAlive(savior))
+			continue;
+		if(IsOnDifferentTeams(i,savior))
+			continue;
+
+		additiveDamageMultBuff += TeamTacticsBuildup[savior];
 	}
+
+	TF2Attrib_SetByName(i, "additive damage bonus", additiveDamageRawBuff);
+	TF2Attrib_SetByName(i, "damage bonus", additiveDamageMultBuff*multiplicativeDamageBuff);
+	TF2Attrib_SetByName(i, "firerate player buff", 1.0/(additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff));
+	TF2Attrib_SetByName(i, "recharge rate player buff", 1.0/(additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff));
+	TF2Attrib_SetByName(i, "Reload time decreased", 1.0/(additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff));
+	TF2Attrib_SetByName(i, "movespeed player buff", additiveMoveSpeedMultBuff);
+	TF2Attrib_SetByName(i, "damage taken mult 4", additiveDamageTakenBuff*multiplicativeDamageTakenBuff);
 
 	if(IsFakeClient(i) || disableIFMiniHud[i] > currentGameTime)
 		return;

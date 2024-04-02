@@ -421,6 +421,7 @@ float TankSentryDamageMod = 1.0;
 float BleedBuildup[MAXPLAYERS+1];
 float RadiationBuildup[MAXPLAYERS+1];
 float RageBuildup[MAXPLAYERS+1];
+float TeamTacticsBuildup[MAXPLAYERS+1];
 float SupernovaBuildup[MAXPLAYERS+1];
 float ConcussionBuildup[MAXPLAYERS+1];
 float BleedMaximum[MAXPLAYERS+1];

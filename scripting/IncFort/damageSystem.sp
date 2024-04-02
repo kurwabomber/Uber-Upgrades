@@ -681,6 +681,9 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 
+		float victimPos[3];
+		GetClientEyePosition(victim,victimPos);
+		
 		for(int i = 1; i <= MaxClients; ++i)
 		{
 			if(!IsValidClient3(i))
@@ -692,18 +695,18 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(i == victim)
 				continue;
 
-			float victimPos[3];
 			float guardianPos[3];
-			GetClientEyePosition(victim,victimPos);
 			GetClientEyePosition(i,guardianPos);
 			if(GetVectorDistance(victimPos,guardianPos, true) < 1960000)
 			{
-				Address RedirectActive = TF2Attrib_GetByName(i, "mult cloak meter regen rate");
-				if(RedirectActive != Address_Null)
-				{
-					float redirect = TF2Attrib_GetValue(RedirectActive);
-					SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
-					damage *= (1-redirect);
+				int guardianWeapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
+				if(IsValidWeapon(guardianWeapon)){
+					Address RedirectActive = TF2Attrib_GetByName(guardianWeapon, "mult cloak meter regen rate");
+					if(RedirectActive != Address_Null){
+						float redirect = TF2Attrib_GetValue(RedirectActive);
+						SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
+						damage *= (1-redirect);
+					}
 				}
 				if(damage > GetClientHealth(victim) && GetAttribute(i, "king powerup", 0.0) == 3.0){
 					SDKHooks_TakeDamage(i, attacker, attacker, damage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
@@ -733,11 +736,14 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-
+		
 		if(damagecustom == TF_CUSTOM_HEADSHOT){
 			if(GetAttribute(weapon, "mult sniper charge after headshot", 0.0))
 				savedCharge[attacker] = GetAttribute(weapon, "mult sniper charge after headshot", 0.0);
 		}
+		float teamTacticsRatio = GetAttribute(VictimCWeapon, "savior sacrifice attribute", 0.0);
+		if(teamTacticsRatio > 0.0)
+			TeamTacticsBuildup[victim] += teamTacticsRatio * damage / TF2Util_GetEntityMaxHealth(victim);
 	}
 	if(damage < 0.0)
 		damage = 0.0;
@@ -845,17 +851,15 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 	
 	if(IsValidClient3(victim) && IsValidClient3(attacker)){
 		damage += GetAttribute(attacker, "additive damage bonus", 0.0);
+		if(IsValidWeapon(weapon)){
+			if(GetAttribute(weapon, "damage reduction to additive damage", 0.0) > 0.0)
+				damage += GetAttribute(attacker, "tool escrow until date", 0.0) * GetAttribute(attacker, "is throwable chargeable", 0.0) * GetAttribute(weapon, "damage reduction to additive damage", 0.0)
+		}
+
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		int jaratedIndex = getBuffInArray(victim, Buff_Jarated);
 		if(jaratedIndex != -1){
 			SDKHooks_TakeDamage(victim,playerBuffs[victim][jaratedIndex].inflictor,playerBuffs[victim][jaratedIndex].inflictor,10.0*playerBuffs[victim][jaratedIndex].priority,DMG_DISSOLVE,-1,NULL_VECTOR,NULL_VECTOR);
-		}
-		if(IsValidWeapon(weapon)){
-			float DealsNoKBActive = GetAttribute(weapon, "apply z velocity on damage");
-			if(DealsNoKBActive == 3.0){
-				damagetype |= DMG_PREVENT_PHYSICS_FORCE;
-				ScaleVector(damageForce, 0.0);
-			}
 		}
 		if(hasBuffIndex(victim, Buff_DragonDance)){
 			int temp = getBuffInArray(victim, Buff_DragonDance);
@@ -1379,6 +1383,14 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			if(multiHitActive != 0.0)
 				DOTStock(victim,attacker,damage,weapon,damagetype + DMG_VEHICLE,RoundToNearest(multiHitActive),0.4,0.15,true);
 		}
+
+		float missingHealthDamageBonus = GetAttribute(weapon, "dmg per pct hp missing", 0.0)
+		if(missingHealthDamageBonus > 0.0){
+			float ratio = GetClientHealth(attacker)/float(TF2Util_GetEntityMaxHealth(attacker));
+			if(ratio < 1.0)
+				damage *= 1+(missingHealthDamageBonus*100.0)*(1-ratio);
+		}
+
 		if(isVictimPlayer)
 		{
 			if(damagetype & DMG_CLUB){

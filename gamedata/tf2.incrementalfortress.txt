@@ -220,6 +220,27 @@
 					}
 				}
 			}
+			"CTFProjectile_Flare::GetRadius()"
+			{
+				"signature"		"CTFProjectile_Flare::GetRadius()"
+				"callconv"		"thiscall"
+				"return"		"float"
+				"this"			"entity"
+			}
+			"CTFBaseRocket::GetRadius()"
+			{
+				"signature"		"CTFBaseRocket::GetRadius()"
+				"callconv"		"thiscall"
+				"return"		"float"
+				"this"			"entity"
+			}
+			"CTFWeaponBaseGrenadeProj::GetDamageRadius()"
+			{
+				"signature"		"CTFWeaponBaseGrenadeProj::GetDamageRadius()"
+				"callconv"		"thiscall"
+				"return"		"float"
+				"this"			"entity"
+			}
 		}
 		"Signatures"
 		{

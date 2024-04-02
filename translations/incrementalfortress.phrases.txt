@@ -2,7 +2,7 @@
 {
 	"dmg per pct hp missing"
 	{
-		"en"		"Damage per % HP Missing"
+		"en"		"Damage per %% HP Missing"
 	}
 	"Specialty Upgrades"
 	{

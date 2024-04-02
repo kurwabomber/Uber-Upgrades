@@ -1329,6 +1329,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 	RageBuildup[client] = 0.0;
 	frayNextTime[attack] = 0.0;
 	enragedKills[client] = 0;
+	TeamTacticsBuildup[client] = 0.0;
 
 	CancelClientMenu(client);
 
@@ -2636,6 +2637,10 @@ public OnGameFrame()
 				ConcussionBuildup[client] -= 3.0 * TICKINTERVAL; }
 				if(FreezeBuildup[client] > 0.0){
 				FreezeBuildup[client] -= 3.0 * TICKINTERVAL; }
+				if(TeamTacticsBuildup[client] > 0.0){
+					TeamTacticsBuildup[client] -= 0.001*TICKINTERVAL;
+				}else if(TeamTacticsBuildup[client] < 0.0)
+					TeamTacticsBuildup[client] = 0.0;
 
 				int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
 				int clientMaxHealth = TF2_GetMaxHealth(client);
