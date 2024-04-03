@@ -4803,6 +4803,16 @@
 			"init"		"0"
 			"max"		"13"
 		}
+		"1530.0"
+		{
+			"name"		"apply look velocity on damage"
+			"ref"		"Ability : Immolation"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"14"
+			"init"		"0"
+			"max"		"14"
+		}
 		"1534"
 		{
 			"name"		"crit from behind"

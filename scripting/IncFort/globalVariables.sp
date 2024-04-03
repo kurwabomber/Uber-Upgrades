@@ -90,6 +90,7 @@ enum struct Buff{
 	float additiveMoveSpeedMult;
 	float additiveDamageTaken;
 	float multiplicativeDamageTaken;
+	float severity;
 
 	void clear(){
 		switch(this.id){
@@ -121,6 +122,7 @@ enum struct Buff{
 		this.additiveMoveSpeedMult = 0.0;
 		this.additiveDamageTaken = 0.0;
 		this.multiplicativeDamageTaken = 1.0;
+		this.severity = 0.0;
 	}
 	void init(const char sName[32], const char sDescription[64], int iID, int iPriority, int iInflictor, float fDuration)
 	{
@@ -160,6 +162,7 @@ enum {
 	Buff_BrokenArmor=23,
 	Buff_LunchboxChange=24,
 	Buff_Plunder=25,
+	Buff_ImmolationBurn=26,
 	BuffAmt
 };
 bool isBonus[BuffAmt] = {
@@ -188,6 +191,7 @@ bool isBonus[BuffAmt] = {
 	false,
 	true,
 	true,
+	false,
 	false,
 }
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
@@ -399,7 +403,8 @@ bool isPrimed[MAXENTITIES+1];
 bool snowstormActive[MAXPLAYERS+1];
 bool failLock;
 bool strongholdEnabled[MAXPLAYERS+1];
-
+bool immolationActive[MAXPLAYERS+1];
+bool isDeathTick[MAXPLAYERS+1];
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]

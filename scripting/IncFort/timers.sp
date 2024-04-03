@@ -143,6 +143,25 @@ public Action:Timer_FixedVariables(Handle timer)
 				}
 			}
 		}
+		if(IsValidWeapon(CWeapon)){
+			if(immolationActive[client]){
+				float immolationRatio = GetAttribute(CWeapon, "immolation ratio", 0.0);
+				if(immolationRatio > 0.0){
+					currentDamageType[client].second |= DMG_PIERCING
+					SDKHooks_TakeDamage(client, client, client, TF2Util_GetEntityMaxHealth(client)*immolationRatio*0.1, DMG_PREVENT_PHYSICS_FORCE + DMG_BURN);
+				}
+			}
+		}
+		if(hasBuffIndex(client, Buff_ImmolationBurn)){
+			Buff info;
+			info = playerBuffs[client][getBuffInArray(client, Buff_ImmolationBurn)];
+			if(IsValidClient3(info.inflictor)){
+				if(info.severity > 0.0){
+					currentDamageType[info.inflictor].second |= DMG_PIERCING
+					SDKHooks_TakeDamage(client, info.inflictor, info.inflictor, TF2Util_GetEntityMaxHealth(info.inflictor)*info.severity*0.1, DMG_PREVENT_PHYSICS_FORCE + DMG_BURN);
+				}
+			}
+		}
 
 		if(GetAttribute(client, "resistance powerup", 0.0) != 3.0){
 			if(strongholdEnabled[client]){

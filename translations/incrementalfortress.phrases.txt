@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"Ability : Immolation"
+	{
+		"en"		"Ability : Immolation"
+	}
 	"dmg per pct hp missing"
 	{
 		"en"		"Damage per %% HP Missing"
@@ -118,7 +122,7 @@
 	}
 	"immolation ratio"
 	{
-		"en"		"PCT HP/s Drain to Self & Enemies"
+		"en"		"Immolation Damage %%/s"
 	}
 	"jetpack charge damage"
 	{

@@ -16,7 +16,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 {
 	if(currentDamageType[attacker].first == 0)
 		currentDamageType[attacker].first = damagetype;
-
+	
 	if(IsValidClient3(victim))
 	{
 		lastKBSource[victim] = attacker;
@@ -744,6 +744,14 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		float teamTacticsRatio = GetAttribute(VictimCWeapon, "savior sacrifice attribute", 0.0);
 		if(teamTacticsRatio > 0.0)
 			TeamTacticsBuildup[victim] += teamTacticsRatio * damage / TF2Util_GetEntityMaxHealth(victim);
+
+		
+		float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
+		if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat()){
+			currentDamageType[attacker].second |= DMG_PIERCING;
+			SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim));
+			EmitSoundToAll(DetonatorExplosionSound, victim);
+		}
 	}
 	if(damage < 0.0)
 		damage = 0.0;
@@ -1397,6 +1405,15 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 
 		if(isVictimPlayer)
 		{
+			if(immolationActive[attacker]){
+				float immolationRatio = GetAttribute(weapon, "immolation ratio", 0.0);
+				if(immolationRatio > 0.0){
+					Buff immolationStatus;
+					immolationStatus.init("Immolation Burn", "Rapidly losing health", Buff_ImmolationBurn, TF2Util_GetEntityMaxHealth(attacker)*RoundFloat(immolationRatio*100), attacker, 5.0);
+					immolationStatus.severity = immolationRatio;
+					insertBuff(victim, immolationStatus);
+				}
+			}
 			if(damagetype & DMG_CLUB){
 				float infernalExplosive = GetAttribute(weapon, "Dragon Bullets Radius", 0.0);
 				if(infernalExplosive){

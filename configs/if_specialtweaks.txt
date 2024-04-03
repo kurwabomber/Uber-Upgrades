@@ -338,13 +338,19 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
+			"Ability : Immolation"			"1"
 			"immolation ratio"				"2"
+			"Afterburn Tick Rate"			"3"
+			"dmg per pct hp missing"		"0.1"
+			"additive piercing damage"		"40"
 		}
 		"Fireworks"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"fireworks chance"				"1"
+			"fireworks chance"				"2.5"
+			"Crit Damage Bonus"				"7"
+			"damage bonus HIDDEN(b)"		"2"
 		}
 		"Splintering Wasps"
 		{
@@ -353,7 +359,7 @@
 			"explosion wasps"				"4"
 			"mult dmg direct hit"			"5"
 			"Crit Damage Bonus"				"2"
-			"Bleed Per Hit"					"1"
+			"Bleed Per Hit"					"3"
 		}
 		"Cluster Bomb"
 		{
@@ -414,7 +420,7 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"override projectile type"	"44.0"
+			"override projectile type"		"44.0"
 		}
 		"Deep Learning Sentry"
 		{

@@ -1398,6 +1398,7 @@ RespawnEffect(client)
 		TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
 		TF2Attrib_SetByName(client,"ignores other projectiles", 1.0);
 		TF2Attrib_SetByName(client,"penetrate teammates", 1.0);
+		TF2Attrib_SetByName(client, "no damage view flinch", 1.0);
 		CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
 		CreateTimer(0.2,GiveMaxAmmo,GetClientUserId(client));
 	}

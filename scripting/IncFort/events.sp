@@ -29,6 +29,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			SetEventInt(event, "damageamount", 0);
 			PrintCenterText(attacker, "OVERLOAD DMG | %s |", GetAlphabetForm(damage));
 		}
+		int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 		Handle hPack = CreateDataPack();
 		WritePackCell(hPack, EntIndexToEntRef(attacker));
 		WritePackFloat(hPack, damage);
@@ -39,7 +40,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		{
 			float knockoutPowerupValue = TF2Attrib_GetValue(knockoutPowerup);
 			if(knockoutPowerupValue == 1){
-				int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 				if (IsValidEdict(CWeapon))
 				{
 					if(TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
@@ -1312,8 +1312,13 @@ public Action:Event_PlayerCollectMoney(Handle event, const char[] name, bool:don
 }
 public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadcast)
 {
+	//prevent death triggering multiple times
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
-	
+	if(isDeathTick[client]){
+		dontBroadcast = true;
+		return;
+	}
+
 	if((GetEventInt(event, "death_flags") & 32))
 		return;
 
@@ -1330,9 +1335,19 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 	frayNextTime[attack] = 0.0;
 	enragedKills[client] = 0;
 	TeamTacticsBuildup[client] = 0.0;
+	isDeathTick[client] = true;
 
 	CancelClientMenu(client);
 
+	int CWeapon = GetEntPropEnt(attack, Prop_Send, "m_hActiveWeapon");
+	if(IsValidWeapon(CWeapon)){
+		float fireworksChance = GetAttribute(CWeapon, "fireworks chance", 0.0)
+		if(fireworksChance > 0.0){
+			float position[3];
+			GetEntPropVector(client, Prop_Send, "m_vecOrigin", position);
+			EntityExplosion(attack, 100.0*TF2_GetDPSModifiers(attack, CWeapon)*fireworksChance, 400.0, position, _, _, client);
+		}
+	}
 	if(hasBuffIndex(client, Buff_Frozen)){
 		int owner = playerBuffs[client][getBuffInArray(client, Buff_Frozen)].inflictor;
 		for(int i = 0;i<9;++i)
@@ -2070,14 +2085,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -2104,14 +2119,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -2136,14 +2151,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -2162,14 +2177,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Fireball Volley: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Fireball Volley: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -2226,14 +2241,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -2266,14 +2281,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dash: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Dash: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
@@ -2310,14 +2325,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: R (MOUSE2)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
@@ -2412,14 +2427,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
@@ -2460,14 +2475,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK2)
 								{
@@ -2536,14 +2551,14 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 							}
 							else
 							{
 								char CooldownTime[32]
 								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*5, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
 								ShowSyncHudText(client, hudAbility, CooldownTime);
 								if(buttons & IN_ATTACK3)
 								{
@@ -2577,6 +2592,31 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								weaponArtParticle[client] = currentGameTime+3.0;
 								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 3.0);
+							}
+						}
+						case 14.0:
+						{
+							if(!immolationActive[client])
+							{
+								char CooldownTime[32]
+								Format(CooldownTime, sizeof(CooldownTime), "Immolation: INACTIVE"); 
+								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
+								ShowSyncHudText(client, hudAbility, CooldownTime);
+							}
+							else
+							{
+								char CooldownTime[32]
+								Format(CooldownTime, sizeof(CooldownTime), "Immolation: ACTIVE"); 
+								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
+								ShowSyncHudText(client, hudAbility, CooldownTime);
+							}
+							if(buttons & IN_ATTACK3)
+							{
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
+								{
+									fl_GlobalCoolDown[client] = currentGameTime+0.5;
+									immolationActive[client] = !immolationActive[client];
+								}
 							}
 						}
 					}
@@ -2645,6 +2685,7 @@ public OnGameFrame()
 				int clientHealth = GetEntProp(client, Prop_Data, "m_iHealth");
 				int clientMaxHealth = TF2_GetMaxHealth(client);
 				stickiesDetonated[client] = 0;
+				isDeathTick[client] = false;
 				float RegenPerTick = 0.0;
 
 				Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
@@ -3646,6 +3687,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		bloodboundHealing[client] = 0.0;
 		pylonCharge[client] = 0.0;
 		tagTeamTarget[client] = -1;
+		immolationActive[client] = false;
 		for(int i=1;i<=MaxClients;++i)
 		{
 			corrosiveDOT[client][i][0] = 0.0;
