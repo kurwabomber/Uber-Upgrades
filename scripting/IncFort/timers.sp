@@ -206,12 +206,8 @@ public Action:Timer_FixedVariables(Handle timer)
 						ActivateEntity(iParti);
 						AcceptEntityInput(iParti, "Start");
 						
-						Handle pack;
-						CreateDataTimer(1.0, Timer_KillParticle, pack);
-						WritePackCell(pack, EntIndexToEntRef(iParti));
-						Handle pack2;
-						CreateDataTimer(1.0, Timer_KillParticle, pack2);
-						WritePackCell(pack2, EntRefToEntIndex(iPart2));
+						CreateTimer(0.5, Timer_KillParticle, iParti);
+						CreateTimer(0.5, Timer_KillParticle, iPart2);
 					}
 
 					float LightningDamage = 10*TF2_GetDPSModifiers(client, CWeapon);

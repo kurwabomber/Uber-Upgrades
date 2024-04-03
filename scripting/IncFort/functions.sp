@@ -89,9 +89,7 @@ stock int CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char
 		TE_WriteNum("m_iAttachType", 1); // Create at absorigin, and update to follow the entity
 		
 		if(time > 0.0){
-			Handle pack;
-			CreateDataTimer(time, Timer_KillTEParticle, pack);
-			WritePackCell(pack, EntIndexToEntRef(iEntity));
+			CreateTimer(time, Timer_KillTEParticle, EntIndexToEntRef(iEntity))
 		}
 	}
 	return true
@@ -117,9 +115,7 @@ void CreateParticleEx(iEntity, char[] strParticle, m_iAttachType = 0, m_iAttachm
 	if(iEntity != -1 && IsValidEntity(iEntity)){
 		TE_WriteNum("entindex", iEntity);
 		if(time > 0.0){
-			Handle pack;
-			CreateDataTimer(time, Timer_KillTEParticle, pack);
-			WritePackCell(pack, EntIndexToEntRef(iEntity));
+			CreateTimer(time, Timer_KillTEParticle, EntIndexToEntRef(iEntity))
 		}
 		if(IsNullVector(fOffset)){
 			GetEntPropVector(iEntity, Prop_Data, "m_vecOrigin", fOffset);

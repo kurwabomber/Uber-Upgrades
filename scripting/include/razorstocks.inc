@@ -489,24 +489,17 @@ stock CreateSmoke(float location[3],float time,int red,int green, int blue,char[
 		DispatchSpawn(SmokeEnt);
 		AcceptEntityInput(SmokeEnt, "TurnOn");
 
-		Handle pack
-		CreateDataTimer(timeTaken, Timer_KillSmoke, pack)
-		WritePackCell(pack, SmokeEnt);
+		CreateTimer(timeTaken, Timer_KillSmoke, SmokeEnt);
 		
 		//Start timer to remove smoke
 		float longerdelay = 5.0 + timeTaken;
-		Handle pack2
-		CreateDataTimer(longerdelay, Timer_StopSmoke, pack2)
-		WritePackCell(pack2, SmokeEnt);
+		CreateTimer(timeTaken+5.0, Timer_StopSmoke, SmokeEnt)
 	}
 }
 
-stock Action Timer_KillSmoke(Handle timer, Handle pack)
+stock Action Timer_KillSmoke(Handle timer, any SmokeEnt)
 {	
-	ResetPack(pack)
-	int SmokeEnt = ReadPackCell(pack)
 	StopSmokeEnt(SmokeEnt);
-
 	return Plugin_Stop;
 }
 
@@ -518,10 +511,8 @@ StopSmokeEnt(target)
 	}
 }
 
-stock Action Timer_StopSmoke(Handle timer, Handle pack)
-{	
-	ResetPack(pack)
-	int SmokeEnt = ReadPackCell(pack)
+stock Action Timer_StopSmoke(Handle timer, any SmokeEnt)
+{
 	RemoveSmokeEnt(SmokeEnt);
 	return Plugin_Stop;
 }
@@ -2360,7 +2351,7 @@ stock Action Timer_KillParticle(Handle timer, any data)
 	if (IsValidEdict(entity))
 	{
 		AcceptEntityInput(entity, "Stop");
-		CreateTimer(2.0, Timer_RemoveEntity, EntIndexToEntRef(entity));
+		CreateTimer(2.0, Timer_RemoveEntity, data);
 	}
 	return Plugin_Stop;
 }
