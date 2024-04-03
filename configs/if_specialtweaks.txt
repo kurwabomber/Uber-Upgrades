@@ -366,7 +366,7 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"dmg per sticky detonated"		"0.5"
-			"Radiation Buildup"				"4"
+			"Radiation Buildup"				"9"
 		}
 		"Chain Reaction"
 		{

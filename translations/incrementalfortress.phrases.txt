@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"Sunstar"
+	{
+		"en"		"Sunstar"
+	}
 	"Ability : Immolation"
 	{
 		"en"		"Ability : Immolation"

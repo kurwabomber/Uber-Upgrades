@@ -44,7 +44,15 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				{
 					if(TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 					{
-						ConcussionBuildup[client] += (damage/TF2_GetMaxHealth(client))*175.0;
+						float buildupIncrease = (damage/TF2_GetMaxHealth(client))*175.0;
+						
+						if(hasBuffIndex(attacker, Buff_Plunder)){
+							Buff plunderBuff;
+							plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+							buildupIncrease *= plunderBuff.severity;
+						}
+
+						ConcussionBuildup[client] += buildupIncrease;
 						if(ConcussionBuildup[client] >= 100.0)
 						{
 							ConcussionBuildup[client] = 0.0;
@@ -191,6 +199,11 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 						float frostIncrease = 100.0*freezeRatio*damage/TF2Util_GetEntityMaxHealth(client);
 						if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 							frostIncrease *= 2.0;
+						if(hasBuffIndex(attacker, Buff_Plunder)){
+							Buff plunderBuff;
+							plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+							frostIncrease *= plunderBuff.severity;
+						}
 
 						FreezeBuildup[client] += frostIncrease;
 						checkFreeze(client, attacker);
@@ -210,6 +223,12 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				if(maximumOverhealModifier != Address_Null)
 				{
 					maximumOverheal *= TF2Attrib_GetValue(maximumOverhealModifier);
+				}
+
+				if(hasBuffIndex(attacker, Buff_Plunder)){
+					Buff plunderBuff;
+					plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+					lifestealFactor *= plunderBuff.severity;
 				}
 				
 				Address LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");//Lifesteal attribute
@@ -909,7 +928,7 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 						damage *= TF2Attrib_GetValue(bashBonusActive);
 					}
 				}
-				EntityExplosion(client, damage, distance, grenadevec, 1);
+				EntityExplosion(client, damage, distance, grenadevec, 1, _, _, _, DMG_ALWAYSGIB + DMG_DISSOLVE, secondary);
 			}
 		}
 		case TFCond_Sapped:{
@@ -1339,13 +1358,24 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 
 	CancelClientMenu(client);
 
-	int CWeapon = GetEntPropEnt(attack, Prop_Send, "m_hActiveWeapon");
-	if(IsValidWeapon(CWeapon)){
-		float fireworksChance = GetAttribute(CWeapon, "fireworks chance", 0.0)
+	int weapon = GetEntPropEnt(attack, Prop_Send, "m_hActiveWeapon");
+	if(IsValidWeapon(weapon)){
+		float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
 		if(fireworksChance > 0.0){
 			float position[3];
 			GetEntPropVector(client, Prop_Send, "m_vecOrigin", position);
-			EntityExplosion(attack, 100.0*TF2_GetDPSModifiers(attack, CWeapon)*fireworksChance, 400.0, position, _, _, client);
+			EntityExplosion(attack, 100.0*TF2_GetDPSModifiers(attack, weapon)*fireworksChance, 400.0, position, _, _, client);
+		}
+	}
+	int secondary = GetWeapon(attack, 1);
+	if(IsValidWeapon(secondary)){
+		int damagetype = GetEventInt(event, "damagebits");
+		if(damagetype == DMG_ALWAYSGIB + DMG_DISSOLVE){
+			float painTrainActive = GetAttribute(secondary, "chain charge on kill", 0.0)
+			if(painTrainActive){
+				SetEntPropFloat(attack, Prop_Send, "m_flChargeMeter", 100.0);
+				TF2_AddCondition(attack, TFCond_Charging);
+			}
 		}
 	}
 	if(hasBuffIndex(client, Buff_Frozen)){

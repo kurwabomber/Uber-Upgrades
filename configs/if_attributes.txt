@@ -569,7 +569,7 @@
 			"value"		"1.0"
 			"init"		"1.00"
 			"display_style" "1"
-			"description"	"1:1 pure damage multiplier.\nNever increases in cost.\nThis weapon replaces firerate with damage."
+			"description"	"1:1 pure fire rate multiplier.\nNever increases in cost."
 			"max"		"70.0"
 		}
 		"14"

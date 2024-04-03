@@ -416,6 +416,11 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		{
 			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2)
 				damage *= 3;
+			if(hasBuffIndex(attacker, Buff_Plunder)){
+				Buff plunderBuff;
+				plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+				damage *= plunderBuff.severity;
+			}
 			RadiationBuildup[victim] += damage;
 			checkRadiation(victim,attacker);
 		}
@@ -601,6 +606,12 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 				bleedAdd *= 3;
 
+			if(hasBuffIndex(attacker, Buff_Plunder)){
+				Buff plunderBuff;
+				plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+				bleedAdd *= plunderBuff.severity;
+			}
+
 			BleedBuildup[victim] += bleedAdd;
 
 			while(BleedBuildup[victim] >= BleedMaximum[victim])
@@ -624,6 +635,13 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			float radiationAdd = TF2Attrib_GetValue(radiationBuild);
 			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
 				radiationAdd *= 3;
+
+			if(hasBuffIndex(attacker, Buff_Plunder)){
+				Buff plunderBuff;
+				plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+				radiationAdd *= plunderBuff.severity;
+			}
+
 			RadiationBuildup[victim] += radiationAdd;
 			checkRadiation(victim,attacker);
 		}
@@ -1176,6 +1194,13 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				{
 					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2)
 						backstabRadiation *= 3;
+
+					if(hasBuffIndex(attacker, Buff_Plunder)){
+						Buff plunderBuff;
+						plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+						backstabRadiation *= plunderBuff.severity;
+					}
+
 					RadiationBuildup[victim] += backstabRadiation;
 					checkRadiation(victim,attacker);
 				}
