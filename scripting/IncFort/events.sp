@@ -192,6 +192,60 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
+				float chainLightningAttribute = GetAttribute(CWeapon, "chain lightning meter on hit", 0.0)
+				if(chainLightningAttribute){
+					chainLightningAbilityCharge[attacker] += chainLightningAttribute;
+					PrintToServer("%.2f", chainLightningAbilityCharge[attacker]);
+					if(chainLightningAbilityCharge[attacker] >= 100.0){
+						chainLightningAbilityCharge[attacker] -= 100.0;
+						bool isBounced[MAXPLAYERS+1];
+						int lastBouncedTarget = attacker;
+						float lastBouncedPosition[3];
+						GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
+						LastCharge[attacker] = 0.0;
+						int i = 0
+						int maxBounces = 6;
+						for(int target=1;target<=MaxClients && i < maxBounces;target++)
+						{
+							if(!IsValidClient3(target)) {continue;}
+							if(!IsPlayerAlive(target)) {continue;}
+							if(!IsOnDifferentTeams(target,attacker)) {continue;}
+							if(isBounced[target]) {continue;}
+
+							float VictimPos[3]; 
+							GetClientEyePosition(target, VictimPos); 
+							if(!IsAbleToSee(lastBouncedTarget, target)) continue;
+
+							isBounced[target] = true;
+							GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
+							lastBouncedTarget = target
+							int iPart1 = CreateEntityByName("info_particle_system");
+							int iPart2 = CreateEntityByName("info_particle_system");
+
+							if (IsValidEdict(iPart1) && IsValidEdict(iPart2))
+							{
+								char szCtrlParti[32];
+								char particleName[32];
+								particleName = GetClientTeam(attacker) == 2 ? "dxhr_sniper_rail_red" : "dxhr_sniper_rail_blue";
+								Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
+								DispatchKeyValue(iPart2, "targetname", szCtrlParti);
+
+								DispatchKeyValue(iPart1, "effect_name", particleName);
+								DispatchKeyValue(iPart1, "cpoint1", szCtrlParti);
+								DispatchSpawn(iPart1);
+								TeleportEntity(iPart1, lastBouncedPosition, NULL_VECTOR, NULL_VECTOR);
+								TeleportEntity(iPart2, VictimPos, NULL_VECTOR, NULL_VECTOR);
+								ActivateEntity(iPart1);
+								AcceptEntityInput(iPart1, "Start");
+								
+								CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
+								CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
+							}
+							SDKHooks_TakeDamage(target,attacker,attacker,100.0*TF2_GetDPSModifiers(attacker, CWeapon),DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR)
+							++i
+						}
+					}
+				}
 				//Freeze
 				if(!(currentDamageType[attacker].second & DMG_FROST)){
 					float freezeRatio = GetAttribute(CWeapon, "damage causes freeze", 0.0);
@@ -463,6 +517,10 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					lunchboxChange.multiplicativeDamageTaken = GetAttribute(CWeapon, "buff damage taken", 1.0);
 					if(lunchboxChange.additiveMoveSpeedMult != 0.0 || lunchboxChange.multiplicativeAttackSpeedMult != 1.0 || lunchboxChange.multiplicativeDamageTaken != 1.0){
 						insertBuff(client, lunchboxChange);
+					}
+					float enrageBonus = GetAttribute(CWeapon, "enraged meter filled when eaten");
+					if(enrageBonus){
+						enragedKills[client] += RoundFloat(enrageBonus);
 					}
 				}
 			}
@@ -2092,564 +2150,591 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				}
 				
 				GetEntPropVector(client, Prop_Data, "m_vecAbsVelocity", trueVel[client]);
-				Address Skill = TF2Attrib_GetByName(CWeapon, "apply look velocity on damage");
-				if(Skill != Address_Null)
-				{
-					float SkillNumber = TF2Attrib_GetValue(Skill);
-					float x = 0.8;
-					float y = 0.9;
-					int red = 0;
-					int blue = 101;
-					int green = 189;
-					
-					int Readyred = 0;
-					int Readyblue = 219;
-					int Readygreen = 15;
-					
-					int alpha = 255;
-					switch(SkillNumber)
-					{
-						case 1.0: //Teleport
-						{
-							if(weaponArtCooldown[client] > currentGameTime)
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK3)
-								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
-									{
-										fl_GlobalCoolDown[client] = currentGameTime+0.3;
-										weaponArtCooldown[client] = currentGameTime+15.0;
-										BleedBuildup[client] = 0.0;
-										RadiationBuildup[client] = 0.0;
-										miniCritStatusAttacker[client] = currentGameTime+5.0
-										TF2_AddCondition(client, TFCond_RestrictToMelee, 5.0);
-										TF2_AddCondition(client, TFCond_DodgeChance, 2.5);
-										TF2_AddCondition(client, TFCond_AfterburnImmune, 2.5);
-										TF2_AddCondition(client, TFCond_UberchargedHidden, 0.01);
-										EmitSoundToAll(SOUND_ADRENALINE, client, -1, 150, 0, 1.0);
-										CreateParticleEx(client, "utaunt_tarotcard_red_wind", 1, _, _, 5.0);
-									}
-								}
-							}
-						}
-						case 3.0: //Stun Shot
-						{
-							if(weaponArtCooldown[client] > currentGameTime)
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK3)
-								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
-									{
-										weaponArtCooldown[client] = currentGameTime+7.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.8;
-										TF2Attrib_SetByName(client, "bullets per shot bonus", 5.0);
-										refreshAllWeapons(client);
-										SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
-										buttons |= IN_ATTACK;
-										StunShotBPS[client] = true;
-										StunShotStun[client] = true;
-										RequestFrame(StunShotFunc, client);
-									}
-								}
-							}
-						}
-						case 4.0: //Juggernaut
-						{
-							if(weaponArtCooldown[client] > currentGameTime)
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK3)
-								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
-									{
-										weaponArtCooldown[client] = currentGameTime+30.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.8;
-										TF2_AddCondition(client, TFCond_MegaHeal, 5.0);
-									}
-								}
-							}
-						}
-						case 5.0: //Fireball Volley
-						{
-							if(weaponArtCooldown[client] > currentGameTime)
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Fireball Volley: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Fireball Volley: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK3)
-								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
-									{
-										weaponArtCooldown[client] = currentGameTime+15.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.8;
-										
-										for(int i = 0;i<5;++i)
-										{
-											int iEntity = CreateEntityByName("tf_projectile_spellfireball");
-											if (IsValidEdict(iEntity)) 
-											{
-												int iTeam = GetClientTeam(client);
-												float fAngles[3]
-												float fOrigin[3]
-												float vBuffer[3]
-												float fVelocity[3]
-												float fwd[3]
-												SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-												SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-												GetClientEyeAngles(client, fAngles);
-												GetClientEyePosition(client, fOrigin);
-												
-												fAngles[1] -= 10.0*(5/2);
-												fAngles[1] += i*10.0;
+				float SkillNumber = GetAttribute(CWeapon, "apply look velocity on damage", 0.0);
 
-												GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-												ScaleVector(fwd, 30.0);
-												
-												AddVectors(fOrigin, fwd, fOrigin);
-												GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-												
-												float velocity = 1300.0;
-												fVelocity[0] = vBuffer[0]*velocity;
-												fVelocity[1] = vBuffer[1]*velocity;
-												fVelocity[2] = vBuffer[2]*velocity;
-												
-												TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-												DispatchSpawn(iEntity);
-												SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchDragonsBreath);
-												CreateTimer(10.0,SelfDestruct,EntIndexToEntRef(iEntity));
-												homingRadius[iEntity] = 400.0;
-												homingTickRate[iEntity] = 3;
-											}
-										}
-									}
+				switch(SkillNumber)
+				{
+					case 1.0: //Teleport
+					{
+						if(weaponArtCooldown[client] > currentGameTime)
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Adrenaline: READY (MOUSE3)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK3)
+							{
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
+								{
+									fl_GlobalCoolDown[client] = currentGameTime+0.3;
+									weaponArtCooldown[client] = currentGameTime+15.0;
+									BleedBuildup[client] = 0.0;
+									RadiationBuildup[client] = 0.0;
+									miniCritStatusAttacker[client] = currentGameTime+5.0
+									TF2_AddCondition(client, TFCond_RestrictToMelee, 5.0);
+									TF2_AddCondition(client, TFCond_DodgeChance, 2.5);
+									TF2_AddCondition(client, TFCond_AfterburnImmune, 2.5);
+									TF2_AddCondition(client, TFCond_UberchargedHidden, 0.01);
+									EmitSoundToAll(SOUND_ADRENALINE, client, -1, 150, 0, 1.0);
+									CreateParticleEx(client, "utaunt_tarotcard_red_wind", 1, _, _, 5.0);
 								}
 							}
 						}
-						case 6.0: //Detonate
+					}
+					case 3.0: //Stun Shot
+					{
+						if(weaponArtCooldown[client] > currentGameTime)
 						{
-							if(weaponArtCooldown[client] > currentGameTime)
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Stun Shot: READY (MOUSE3)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK3)
 							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK3)
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
 								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
-									{
-										weaponArtCooldown[client] = currentGameTime+0.2;
-										fl_GlobalCoolDown[client] = currentGameTime+0.2;
-										
-										float damageMult = TF2_GetDamageModifiers(client,CWeapon)
-										float m_fOrigin[3];
-										int entity = -1; 
-										while((entity = FindEntityByClassname(entity, "tf_projectile_flare"))!=INVALID_ENT_REFERENCE)
-										{
-											int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
-											if(!IsValidClient(owner)) continue;
-											if(owner == client)
-											{
-												GetEntPropVector(entity, Prop_Data, "m_vecOrigin", m_fOrigin);
-												EntityExplosion(client, 22.0*damageMult, 300.0, m_fOrigin, 2, _, entity);
-												RemoveEntity(entity);
-											}
-										}
-									}
+									weaponArtCooldown[client] = currentGameTime+7.0;
+									fl_GlobalCoolDown[client] = currentGameTime+0.8;
+									TF2Attrib_SetByName(client, "bullets per shot bonus", 5.0);
+									refreshAllWeapons(client);
+									SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
+									buttons |= IN_ATTACK;
+									StunShotBPS[client] = true;
+									StunShotStun[client] = true;
+									RequestFrame(StunShotFunc, client);
 								}
 							}
 						}
-						case 7.0: //Weak Dash
+					}
+					case 4.0: //Juggernaut
+					{
+						if(weaponArtCooldown[client] > currentGameTime)
 						{
-							if(weaponArtCooldown[client] > currentGameTime)
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Juggernaut: READY (MOUSE3)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK3)
 							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Dash: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Dash: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK2)
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
 								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
-									{
-										weaponArtCooldown[client] = currentGameTime+1.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.2;
-										
-										float flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
-										float flVel[3],flAng[3], vBuffer[3]
-										GetClientEyeAngles(client,flAng)
-										GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR)
-										flVel[0] = flSpeed * vBuffer[0] * 1.5;
-										flVel[1] = flSpeed * vBuffer[1] * 1.5;
-										flVel[2] = 100.0 + (flSpeed * (vBuffer[2] * 0.75));
-										if(flags & FL_ONGROUND)
-											flVel[2] += 200;
-										TeleportEntity(client, NULL_VECTOR,NULL_VECTOR, flVel)
-										EmitSoundToAll(SOUND_DASH, client, -1, 80, 0, 1.0);
-									}
+									weaponArtCooldown[client] = currentGameTime+30.0;
+									fl_GlobalCoolDown[client] = currentGameTime+0.8;
+									TF2_AddCondition(client, TFCond_MegaHeal, 5.0);
 								}
 							}
 						}
-						case 8.0: //Transient Moonlight
+					}
+					case 5.0: //Fireball Volley
+					{
+						if(weaponArtCooldown[client] > currentGameTime)
 						{
-							if(weaponArtParticle[client] <= currentGameTime)
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Fireball Volley: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Fireball Volley: READY (MOUSE3)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK3)
 							{
-								weaponArtParticle[client] = currentGameTime+7.1;
-								CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, _, 7.0, _, _, 1);
-								int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
-								TE_Send(clients,numClients)
-							}
-							if(weaponArtCooldown[client] > currentGameTime)
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: R (MOUSE2)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK2)
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
 								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
+									weaponArtCooldown[client] = currentGameTime+15.0;
+									fl_GlobalCoolDown[client] = currentGameTime+0.8;
+									
+									for(int i = 0;i<5;++i)
 									{
-										weaponArtCooldown[client] = currentGameTime+6.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.2;
-										
-										float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3], fwd[3];
-										char projName[32] = "tf_projectile_arrow";
-										int iEntity = CreateEntityByName(projName);
+										int iEntity = CreateEntityByName("tf_projectile_spellfireball");
 										if (IsValidEdict(iEntity)) 
 										{
 											int iTeam = GetClientTeam(client);
+											float fAngles[3]
+											float fOrigin[3]
+											float vBuffer[3]
+											float fVelocity[3]
+											float fwd[3]
 											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
-
-											//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
-											//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
-								
 											SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
-											SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-											GetClientEyePosition(client, fOrigin);
 											GetClientEyeAngles(client, fAngles);
-											GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+											GetClientEyePosition(client, fOrigin);
+											
+											fAngles[1] -= 10.0*(5/2);
+											fAngles[1] += i*10.0;
+
 											GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-											ScaleVector(fwd, 50.0);
+											ScaleVector(fwd, 30.0);
+											
 											AddVectors(fOrigin, fwd, fOrigin);
-											float velocity = 5000.0;
+											GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+											
+											float velocity = 1300.0;
 											fVelocity[0] = vBuffer[0]*velocity;
 											fVelocity[1] = vBuffer[1]*velocity;
 											fVelocity[2] = vBuffer[2]*velocity;
 											
 											TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 											DispatchSpawn(iEntity);
-											//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
-											SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-											if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
-											{
-												SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
-											}
-											SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-											SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
-											SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
-											SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13);
-											SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchMoonveil);
-											
-											float vecBossMin[3], vecBossMax[3];
-											GetEntPropVector(iEntity, Prop_Send, "m_vecMins", vecBossMin);
-											GetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecBossMax);
-											
-											float vecScaledBossMin[3], vecScaledBossMax[3];
-											
-											vecScaledBossMin = vecBossMin;
-											vecScaledBossMax = vecBossMax;
-											
-											//PrintToChat(client, "%.2f | %.2f",vecScaledBossMin[0],vecScaledBossMax[0])
-											//PrintToChat(client, "%.2f | %.2f",vecScaledBossMin[1],vecScaledBossMax[1])
-											//PrintToChat(client, "%.2f | %.2f",vecScaledBossMin[2],vecScaledBossMax[2])
-
-											vecScaledBossMin[0] -= 10.0;
-											vecScaledBossMax[0] += 10.0;
-											vecScaledBossMin[1] -= 10.0;
-											vecScaledBossMax[1] += 10.0;
-											vecScaledBossMin[2] -= 20.0;
-											vecScaledBossMax[2] += 20.0;
-											
-											
-											SetEntPropVector(iEntity, Prop_Send, "m_vecMins", vecScaledBossMin);
-											SetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecScaledBossMax);
-											
-											float particleOffset[3];
-											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
-											particleOffset[2] -= 20.0;
-											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
-											particleOffset[2] += 40.0;
-											CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
+											SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchDragonsBreath);
+											CreateTimer(10.0,SelfDestruct,EntIndexToEntRef(iEntity));
+											homingRadius[iEntity] = 400.0;
+											homingTickRate[iEntity] = 3;
 										}
 									}
 								}
 							}
 						}
-						case 9.0: //Corpse Piler
+					}
+					case 6.0: //Detonate
+					{
+						if(weaponArtCooldown[client] > currentGameTime)
 						{
-							if(weaponArtParticle[client] <= currentGameTime)
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: READY (MOUSE3)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK3)
 							{
-								weaponArtParticle[client] = currentGameTime+14.0;
-								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, -1, _, 13.0);
-								SetEntityRenderColor(CWeapon, 255,0,0,200);
-							}
-
-							if(weaponArtCooldown[client] > currentGameTime)
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK2)
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
 								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
+									weaponArtCooldown[client] = currentGameTime+0.2;
+									fl_GlobalCoolDown[client] = currentGameTime+0.2;
+									
+									float damageMult = TF2_GetDamageModifiers(client,CWeapon)
+									float m_fOrigin[3];
+									int entity = -1; 
+									while((entity = FindEntityByClassname(entity, "tf_projectile_flare"))!=INVALID_ENT_REFERENCE)
 									{
-										weaponArtCooldown[client] = currentGameTime+30.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.2;
-										
-										buttons |= IN_ATTACK;
-										SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
-										RequestFrame(disableWeapon,client);
-										
-										for(int i=0;i<20;++i)
+										int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+										if(!IsValidClient(owner)) continue;
+										if(owner == client)
 										{
-											Handle hPack = CreateDataPack();
-											WritePackCell(hPack, EntIndexToEntRef(CWeapon));
-											WritePackCell(hPack, EntIndexToEntRef(client));
-											CreateTimer(0.06*i, CreateBloodTracer, hPack);
+											GetEntPropVector(entity, Prop_Data, "m_vecOrigin", m_fOrigin);
+											EntityExplosion(client, 22.0*damageMult, 300.0, m_fOrigin, 2, _, entity);
+											RemoveEntity(entity);
 										}
 									}
 								}
 							}
 						}
-						case 10.0: //Homing Flares
+					}
+					case 7.0: //Weak Dash
+					{
+						if(weaponArtCooldown[client] > currentGameTime)
 						{
-							if(weaponArtParticle[client] <= currentGameTime)
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Dash: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Dash: READY (MOUSE2)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK2)
 							{
-								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 4.0);
-								
-								SetEntityRenderColor(CWeapon, 255, 162, 0,200);
-								TF2Attrib_SetByName(CWeapon,"SPELL: Halloween green flames", 1.0);
-								TF2Attrib_SetByName(client,"SPELL: Halloween green flames", 1.0);
-								TF2Attrib_ClearCache(client);
-								TF2Attrib_ClearCache(CWeapon);
-							}
-							if(weaponArtCooldown[client] > currentGameTime)
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: READY (MOUSE2)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK2)
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
 								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
+									weaponArtCooldown[client] = currentGameTime+1.0;
+									fl_GlobalCoolDown[client] = currentGameTime+0.2;
+									
+									float flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
+									float flVel[3],flAng[3], vBuffer[3]
+									GetClientEyeAngles(client,flAng)
+									GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR)
+									flVel[0] = flSpeed * vBuffer[0] * 1.5;
+									flVel[1] = flSpeed * vBuffer[1] * 1.5;
+									flVel[2] = 100.0 + (flSpeed * (vBuffer[2] * 0.75));
+									if(flags & FL_ONGROUND)
+										flVel[2] += 200;
+									TeleportEntity(client, NULL_VECTOR,NULL_VECTOR, flVel)
+									EmitSoundToAll(SOUND_DASH, client, -1, 80, 0, 1.0);
+								}
+							}
+						}
+					}
+					case 8.0: //Transient Moonlight
+					{
+						if(weaponArtParticle[client] <= currentGameTime)
+						{
+							weaponArtParticle[client] = currentGameTime+7.1;
+							CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, _, 7.0, _, _, 1);
+							int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
+							TE_Send(clients,numClients)
+						}
+						if(weaponArtCooldown[client] > currentGameTime)
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Transient Moonlight: R (MOUSE2)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK2)
+							{
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
+								{
+									weaponArtCooldown[client] = currentGameTime+6.0;
+									fl_GlobalCoolDown[client] = currentGameTime+0.2;
+									
+									float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3], fwd[3];
+									char projName[32] = "tf_projectile_arrow";
+									int iEntity = CreateEntityByName(projName);
+									if (IsValidEdict(iEntity)) 
 									{
-										weaponArtCooldown[client] = currentGameTime+3.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.2;
 										int iTeam = GetClientTeam(client);
-										float fAngles[3],fOrigin[3],vBuffer[3],vRight[3],fVelocity[3],fwd[3]
-										for(int i=0;i<3;++i)
-										{
-											int iEntity = CreateEntityByName("tf_projectile_flare");
-											if (IsValidEdict(iEntity)) 
-											{
-												SetEntityRenderColor(iEntity, 255, 255, 255, 0);
-												SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+										SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
 
-												SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
-												SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
-												SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
-												SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
-												SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008 + 0x0004);
-												SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
-												SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 2);
-															
-												GetClientEyePosition(client, fOrigin);
-												GetClientEyeAngles(client,fAngles);
-												
-												GetAngleVectors(fAngles, vBuffer, vRight, NULL_VECTOR);
-												GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-												ScaleVector(fwd, 60.0);
-												ScaleVector(vRight, 30.0*(i-1))
-												AddVectors(fOrigin, vRight, fOrigin);
-												AddVectors(fOrigin, fwd, fOrigin);
-												
-												float Speed = 1200.0;
-												fVelocity[0] = vBuffer[0]*Speed;
-												fVelocity[1] = vBuffer[1]*Speed;
-												fVelocity[2] = vBuffer[2]*Speed;
-												SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
-												TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-												DispatchSpawn(iEntity);
-												SetEntityGravity(iEntity,0.01);
-												
-												SDKHook(iEntity, SDKHook_Touch, OnCollisionPhotoViscerator);
-												CreateTimer(0.01, HomingFlareThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-												CreateParticle(iEntity, "utaunt_auroraglow_green_parent", true, _, 5.0);
-												CreateTimer(5.0, SelfDestruct, EntIndexToEntRef(iEntity));
-											}
+										//SetEntityRenderMode(iEntity, RENDER_TRANSCOLOR);
+										//SetEntityRenderColor(iEntity, 0, 0, 0, 0);
+							
+										SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+										SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+										GetClientEyePosition(client, fOrigin);
+										GetClientEyeAngles(client, fAngles);
+										GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
+										GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+										ScaleVector(fwd, 50.0);
+										AddVectors(fOrigin, fwd, fOrigin);
+										float velocity = 5000.0;
+										fVelocity[0] = vBuffer[0]*velocity;
+										fVelocity[1] = vBuffer[1]*velocity;
+										fVelocity[2] = vBuffer[2]*velocity;
+										
+										TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+										DispatchSpawn(iEntity);
+										//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, client, 0, 5.0);
+										SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+										if(HasEntProp(iEntity, Prop_Send, "m_hLauncher"))
+										{
+											SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
+										}
+										SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+										SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
+										SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
+										SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13);
+										SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchMoonveil);
+										
+										float vecBossMin[3], vecBossMax[3];
+										GetEntPropVector(iEntity, Prop_Send, "m_vecMins", vecBossMin);
+										GetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecBossMax);
+										
+										float vecScaledBossMin[3], vecScaledBossMax[3];
+										
+										vecScaledBossMin = vecBossMin;
+										vecScaledBossMax = vecBossMax;
+										
+										//PrintToChat(client, "%.2f | %.2f",vecScaledBossMin[0],vecScaledBossMax[0])
+										//PrintToChat(client, "%.2f | %.2f",vecScaledBossMin[1],vecScaledBossMax[1])
+										//PrintToChat(client, "%.2f | %.2f",vecScaledBossMin[2],vecScaledBossMax[2])
+
+										vecScaledBossMin[0] -= 10.0;
+										vecScaledBossMax[0] += 10.0;
+										vecScaledBossMin[1] -= 10.0;
+										vecScaledBossMax[1] += 10.0;
+										vecScaledBossMin[2] -= 20.0;
+										vecScaledBossMax[2] += 20.0;
+										
+										
+										SetEntPropVector(iEntity, Prop_Send, "m_vecMins", vecScaledBossMin);
+										SetEntPropVector(iEntity, Prop_Send, "m_vecMaxs", vecScaledBossMax);
+										
+										float particleOffset[3];
+										CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
+										particleOffset[2] -= 20.0;
+										CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
+										particleOffset[2] += 40.0;
+										CreateParticle(iEntity, "utaunt_auroraglow_purple_parent", true, _, 5.0, particleOffset);
+									}
+								}
+							}
+						}
+					}
+					case 9.0: //Corpse Piler
+					{
+						if(weaponArtParticle[client] <= currentGameTime)
+						{
+							weaponArtParticle[client] = currentGameTime+14.0;
+							CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, -1, _, 13.0);
+							SetEntityRenderColor(CWeapon, 255,0,0,200);
+						}
+
+						if(weaponArtCooldown[client] > currentGameTime)
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Corpse Piler: READY (MOUSE2)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK2)
+							{
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
+								{
+									weaponArtCooldown[client] = currentGameTime+30.0;
+									fl_GlobalCoolDown[client] = currentGameTime+0.2;
+									
+									buttons |= IN_ATTACK;
+									SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
+									RequestFrame(disableWeapon,client);
+									
+									for(int i=0;i<20;++i)
+									{
+										Handle hPack = CreateDataPack();
+										WritePackCell(hPack, EntIndexToEntRef(CWeapon));
+										WritePackCell(hPack, EntIndexToEntRef(client));
+										CreateTimer(0.06*i, CreateBloodTracer, hPack);
+									}
+								}
+							}
+						}
+					}
+					case 10.0: //Homing Flares
+					{
+						if(weaponArtParticle[client] <= currentGameTime)
+						{
+							weaponArtParticle[client] = currentGameTime+3.0;
+							CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 4.0);
+							
+							SetEntityRenderColor(CWeapon, 255, 162, 0,200);
+							TF2Attrib_SetByName(CWeapon,"SPELL: Halloween green flames", 1.0);
+							TF2Attrib_SetByName(client,"SPELL: Halloween green flames", 1.0);
+							TF2Attrib_ClearCache(client);
+							TF2Attrib_ClearCache(CWeapon);
+						}
+						if(weaponArtCooldown[client] > currentGameTime)
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Homing Flares: READY (MOUSE2)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK2)
+							{
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
+								{
+									weaponArtCooldown[client] = currentGameTime+3.0;
+									fl_GlobalCoolDown[client] = currentGameTime+0.2;
+									int iTeam = GetClientTeam(client);
+									float fAngles[3],fOrigin[3],vBuffer[3],vRight[3],fVelocity[3],fwd[3]
+									for(int i=0;i<3;++i)
+									{
+										int iEntity = CreateEntityByName("tf_projectile_flare");
+										if (IsValidEdict(iEntity)) 
+										{
+											SetEntityRenderColor(iEntity, 255, 255, 255, 0);
+											SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", client);
+
+											SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
+											SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
+											SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
+											SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+											SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008 + 0x0004);
+											SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
+											SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 2);
+														
+											GetClientEyePosition(client, fOrigin);
+											GetClientEyeAngles(client,fAngles);
+											
+											GetAngleVectors(fAngles, vBuffer, vRight, NULL_VECTOR);
+											GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
+											ScaleVector(fwd, 60.0);
+											ScaleVector(vRight, 30.0*(i-1))
+											AddVectors(fOrigin, vRight, fOrigin);
+											AddVectors(fOrigin, fwd, fOrigin);
+											
+											float Speed = 1200.0;
+											fVelocity[0] = vBuffer[0]*Speed;
+											fVelocity[1] = vBuffer[1]*Speed;
+											fVelocity[2] = vBuffer[2]*Speed;
+											SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+											TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+											DispatchSpawn(iEntity);
+											SetEntityGravity(iEntity,0.01);
+											
+											SDKHook(iEntity, SDKHook_Touch, OnCollisionPhotoViscerator);
+											CreateTimer(0.01, HomingFlareThink, EntIndexToEntRef(iEntity), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+											CreateParticle(iEntity, "utaunt_auroraglow_green_parent", true, _, 5.0);
+											CreateTimer(5.0, SelfDestruct, EntIndexToEntRef(iEntity));
 										}
 									}
 								}
 							}
 						}
-						case 11.0:
+					}
+					case 11.0:
+					{
+						if(weaponArtParticle[client] <= currentGameTime)
 						{
-							if(weaponArtParticle[client] <= currentGameTime)
-							{
-								weaponArtParticle[client] = currentGameTime+4.0;
-								SetEntityRenderColor(CWeapon, 255, 255, 255, 1);
-							}
+							weaponArtParticle[client] = currentGameTime+4.0;
+							SetEntityRenderColor(CWeapon, 255, 255, 255, 1);
 						}
-						case 12.0: //Strong Dash
+					}
+					case 12.0: //Strong Dash
+					{
+						if(weaponArtCooldown[client] > currentGameTime)
 						{
-							if(weaponArtCooldown[client] > currentGameTime)
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: READY (MOUSE3)"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK3)
 							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: %.1fs", weaponArtCooldown[client]-currentGameTime); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Silent Dash: READY (MOUSE3)"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-								if(buttons & IN_ATTACK3)
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
 								{
-									if(fl_GlobalCoolDown[client] <= currentGameTime)
-									{
-										weaponArtCooldown[client] = currentGameTime+1.0;
-										fl_GlobalCoolDown[client] = currentGameTime+0.2;
-										
-										float flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
-										float flVel[3],flAng[3],vBuffer[3]
-										GetClientEyeAngles(client,flAng)
-										GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR)
-										flVel[0] = flSpeed * vBuffer[0] * 1.5;
-										flVel[1] = flSpeed * vBuffer[1] * 1.5;
-										flVel[2] = 100.0 + (flSpeed * vBuffer[2]);
-										
-										if(flVel[2] < -100.0)
-											flVel[2] *= 2.5;
+									weaponArtCooldown[client] = currentGameTime+1.0;
+									fl_GlobalCoolDown[client] = currentGameTime+0.2;
+									
+									float flSpeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 2.0
+									float flVel[3],flAng[3],vBuffer[3]
+									GetClientEyeAngles(client,flAng)
+									GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR)
+									flVel[0] = flSpeed * vBuffer[0] * 1.5;
+									flVel[1] = flSpeed * vBuffer[1] * 1.5;
+									flVel[2] = 100.0 + (flSpeed * vBuffer[2]);
+									
+									if(flVel[2] < -100.0)
+										flVel[2] *= 2.5;
 
-										if(flags & FL_ONGROUND)
-											flVel[2] += 200;
+									if(flags & FL_ONGROUND)
+										flVel[2] += 200;
 
-										TeleportEntity(client, NULL_VECTOR,NULL_VECTOR, flVel)
-									}
+									TeleportEntity(client, NULL_VECTOR,NULL_VECTOR, flVel)
 								}
 							}
 						}
-						case 13.0:
+					}
+					case 13.0:
+					{
+						if(weaponArtParticle[client] <= currentGameTime)
 						{
-							if(weaponArtParticle[client] <= currentGameTime)
+							weaponArtParticle[client] = currentGameTime+3.0;
+							CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 3.0);
+						}
+					}
+					case 14.0:
+					{
+						if(!immolationActive[client])
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Immolation: INACTIVE"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Immolation: ACTIVE"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						if(buttons & IN_ATTACK3)
+						{
+							if(fl_GlobalCoolDown[client] <= currentGameTime)
 							{
-								weaponArtParticle[client] = currentGameTime+3.0;
-								CreateParticleEx(CWeapon, "critgun_weaponmodel_red", 1, _, _, 3.0);
+								fl_GlobalCoolDown[client] = currentGameTime+0.5;
+								immolationActive[client] = !immolationActive[client];
 							}
 						}
-						case 14.0:
+					}
+					case 15.0:{
+						if(sunstarDuration[client] < currentGameTime)
 						{
-							if(!immolationActive[client])
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Immolation: INACTIVE"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, red, blue, green, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
-							else
-							{
-								char CooldownTime[32]
-								Format(CooldownTime, sizeof(CooldownTime), "Immolation: ACTIVE"); 
-								SetHudTextParams(x, y, TICKINTERVAL*10, Readyred, Readyblue, Readygreen, alpha, 0, 0.0, 0.0, 0.0);
-								ShowSyncHudText(client, hudAbility, CooldownTime);
-							}
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Sunstar: INACTIVE"); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+
 							if(buttons & IN_ATTACK3)
 							{
 								if(fl_GlobalCoolDown[client] <= currentGameTime)
 								{
 									fl_GlobalCoolDown[client] = currentGameTime+0.5;
-									immolationActive[client] = !immolationActive[client];
+									int metal = GetEntProp(client, Prop_Data, "m_iAmmo", 4, 3);
+									if(metal > 500){
+										sunstarDuration[client] = currentGameTime + 0.002*metal;
+										SetEntProp(client, Prop_Data, "m_iAmmo", 1, 4, 3);
+									}else{
+										PrintToChat(client, "Sunstar requires >500 metal.");
+										float fOrigin[3];
+										GetClientEyePosition(client, fOrigin);
+										EmitSoundToAll(SOUND_ARCANESHOOTREADY, 0, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,fOrigin);
+									}
 								}
 							}
 						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Sunstar: ACTIVE | %.1fs", sunstarDuration[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
 					}
+				}
+				float chainLightningAttribute = GetAttribute(CWeapon, "chain lightning meter on hit", 0.0);
+				if(chainLightningAttribute){
+					char CooldownTime[32]
+					Format(CooldownTime, sizeof(CooldownTime), "Chain Lightning: %.0f%", chainLightningAbilityCharge[client]); 
+					SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+					ShowSyncHudText(client, hudAbility, CooldownTime);
 				}
 			}
 		}
@@ -2795,6 +2880,7 @@ public OnGameFrame()
 
 					if(flag)
 					{
+						
 						float SecondaryROF = 1.0;
 
 						Address Firerate1 = TF2Attrib_GetByName(CWeapon, "fire rate penalty");
@@ -2810,14 +2896,10 @@ public OnGameFrame()
 							SecondaryROF =  SecondaryROF/TF2Attrib_GetValue(Firerate3);
 						if(Firerate4 != Address_Null)
 							SecondaryROF =  SecondaryROF/TF2Attrib_GetValue(Firerate4);
-						
-						if(SecondaryROF < 1.0)
-							SecondaryROF = 1.0;
 
 						if(SecondaryROF != 1.0){
-							SecondaryROF = Pow(SecondaryROF, 0.4);
 							float m_flNextSecondaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextSecondaryAttack");
-							float SeTime = (m_flNextSecondaryAttack - currentGameTime) - ((SecondaryROF - 1.0) * currentGameTime);
+							float SeTime = (m_flNextSecondaryAttack - currentGameTime) - ((SecondaryROF - 1.0) * TICKINTERVAL);
 							float FinalS = SeTime+currentGameTime;
 
 							if(FinalS < currentGameTime)
@@ -2845,7 +2927,7 @@ public OnGameFrame()
 								PrimaryROF *= TF2Attrib_GetValue(ReloadRate2);
 							}
 							float m_flNextPrimaryAttack = GetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack");
-							float Time = (m_flNextPrimaryAttack - currentGameTime) - ((PrimaryROF - 1.0) / (1/GetTickInterval()));
+							float Time = (m_flNextPrimaryAttack - currentGameTime) - ((PrimaryROF - 1.0) * TICKINTERVAL);
 							float FinalROF = Time+currentGameTime;
 							SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", FinalROF);
 							//PrintToChat(client, "%.1f NextPrimaryAttack", FinalROF);
@@ -3718,6 +3800,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		pylonCharge[client] = 0.0;
 		tagTeamTarget[client] = -1;
 		immolationActive[client] = false;
+		sunstarDuration[client] = 0.0;
 		for(int i=1;i<=MaxClients;++i)
 		{
 			corrosiveDOT[client][i][0] = 0.0;

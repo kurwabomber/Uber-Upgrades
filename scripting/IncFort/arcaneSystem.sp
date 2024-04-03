@@ -1358,7 +1358,7 @@ public Action:ArcaneHunter(Handle timer, client)
 	int iPart2 = CreateEntityByName("info_particle_system");
 
 	if (IsValidEdict(iParti) && IsValidEdict(iPart2))
-	{ 
+	{
 		char szCtrlParti[32];
 		Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
 		DispatchKeyValue(iPart2, "targetname", szCtrlParti);

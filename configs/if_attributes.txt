@@ -4813,6 +4813,16 @@
 			"init"		"0"
 			"max"		"14"
 		}
+		"1530.1"
+		{
+			"name"		"apply look velocity on damage"
+			"ref"		"Ability : Sunstar"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"15"
+			"init"		"0"
+			"max"		"15"
+		}
 		"1534"
 		{
 			"name"		"crit from behind"

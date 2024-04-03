@@ -151,6 +151,92 @@ public Action:Timer_FixedVariables(Handle timer)
 					SDKHooks_TakeDamage(client, client, client, TF2Util_GetEntityMaxHealth(client)*immolationRatio*0.1, DMG_PREVENT_PHYSICS_FORCE + DMG_BURN);
 				}
 			}
+			if(sunstarDuration[client] >= currentGameTime){
+				float sunstarActive = GetAttribute(CWeapon, "apply look velocity on damage", 0.0);
+				if(sunstarActive == 15.0){
+					float clientpos[3], soundPos[3], clientAng[3], fwd[3];
+					TracePlayerAim(client, clientpos);
+
+					for(int i=1;i<=MaxClients;++i)
+					{
+						if(!IsValidClient3(i))
+							continue;
+						
+						if(!IsOnDifferentTeams(client,i))
+							continue;
+						
+						if(!IsTargetInSightRange(client, i, 10.0, 6000.0, true, false))
+							continue;
+
+						if(!IsAbleToSee(client,i, false))
+							continue;
+							
+						GetClientEyePosition(i,clientpos);
+						clientpos[2] -= 10.0;
+						break;
+					}
+					
+					GetClientEyePosition(client, soundPos);
+					GetClientEyeAngles(client, clientAng);
+					EmitSoundToAll(SOUND_ARCANESHOOT, 0, _, _, _, 0.5, _,_,soundPos);
+					
+					float particleOffset[3] = {0.0,0.0,75.0};
+					char particleName[32];
+					particleName = GetClientTeam(client) == 2 ? "muzzle_raygun_red" : "muzzle_raygun_blue";
+					
+					GetAngleVectors(clientAng,fwd, NULL_VECTOR, NULL_VECTOR);
+					ScaleVector(fwd, 30.0);
+					AddVectors(particleOffset, fwd, particleOffset);
+					
+					CreateParticle(client, particleName, false, "", 0.5, particleOffset);
+					
+					int iParti = CreateEntityByName("info_particle_system");
+					int iPart2 = CreateEntityByName("info_particle_system");
+
+					if (IsValidEdict(iParti) && IsValidEdict(iPart2))
+					{
+						char szCtrlParti[32];
+						Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
+						DispatchKeyValue(iPart2, "targetname", szCtrlParti);
+						DispatchKeyValue(iParti, "effect_name", "merasmus_zap");
+						DispatchKeyValue(iParti, "cpoint1", szCtrlParti);
+						DispatchSpawn(iParti);
+						TeleportEntity(iParti, soundPos, clientAng, NULL_VECTOR);
+						TeleportEntity(iPart2, clientpos, NULL_VECTOR, NULL_VECTOR);
+						ActivateEntity(iParti);
+						AcceptEntityInput(iParti, "Start");
+						
+						Handle pack;
+						CreateDataTimer(1.0, Timer_KillParticle, pack);
+						WritePackCell(pack, EntIndexToEntRef(iParti));
+						Handle pack2;
+						CreateDataTimer(1.0, Timer_KillParticle, pack2);
+						WritePackCell(pack2, EntRefToEntIndex(iPart2));
+					}
+
+					float LightningDamage = 10*TF2_GetDPSModifiers(client, CWeapon);
+					int i = -1;
+					while ((i = FindEntityByClassname(i, "*")) != -1)
+					{
+						if(!IsValidForDamage(i))
+							continue;
+						if(!IsOnDifferentTeams(client,i))
+							continue;
+
+						float VictimPos[3];
+						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+						VictimPos[2] += 30.0;
+
+						if(GetVectorDistance(clientpos,VictimPos,true) > 40000.0)
+							continue;
+
+						if(!IsPointVisible(clientpos,VictimPos))
+							continue;
+
+						SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
+					}
+				}
+			}
 		}
 		if(hasBuffIndex(client, Buff_ImmolationBurn)){
 			Buff info;

@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"Ability : Sunstar"
+	{
+		"en"		"Ability : Sunstar"
+	}
 	"Sunstar"
 	{
 		"en"		"Sunstar"

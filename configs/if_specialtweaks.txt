@@ -409,12 +409,17 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"chain lightning meter on hit"	"10"
+			"additive piercing damage"		"15"
+			"Radiation Buildup"				"3"
 		}
 		"Sunstar"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"sunstar beam"					"20"
+			"Ability : Sunstar"				"1"
+			"maxammo metal increased"		"2"
+			"afterburn dmg increased"		"5"
+			"Afterburn Tick Rate"			"4.0"
 		}
 		"Starstorm"
 		{
