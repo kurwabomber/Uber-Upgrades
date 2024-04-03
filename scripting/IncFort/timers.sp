@@ -206,8 +206,8 @@ public Action:Timer_FixedVariables(Handle timer)
 						ActivateEntity(iParti);
 						AcceptEntityInput(iParti, "Start");
 						
-						CreateTimer(0.5, Timer_KillParticle, iParti);
-						CreateTimer(0.5, Timer_KillParticle, iPart2);
+						CreateTimer(0.5, Timer_KillParticle, EntIndexToEntRef(iParti));
+						CreateTimer(0.5, Timer_KillParticle, EntIndexToEntRef(iPart2));
 					}
 
 					float LightningDamage = 10*TF2_GetDPSModifiers(client, CWeapon);

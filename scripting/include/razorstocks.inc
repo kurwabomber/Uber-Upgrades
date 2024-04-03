@@ -492,7 +492,6 @@ stock CreateSmoke(float location[3],float time,int red,int green, int blue,char[
 		CreateTimer(timeTaken, Timer_KillSmoke, SmokeEnt);
 		
 		//Start timer to remove smoke
-		float longerdelay = 5.0 + timeTaken;
 		CreateTimer(timeTaken+5.0, Timer_StopSmoke, SmokeEnt)
 	}
 }

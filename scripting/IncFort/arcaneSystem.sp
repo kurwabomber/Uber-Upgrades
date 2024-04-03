@@ -1370,8 +1370,8 @@ public Action:ArcaneHunter(Handle timer, client)
 		ActivateEntity(iParti);
 		AcceptEntityInput(iParti, "Start");
 		
-		CreateTimer(0.5, Timer_KillParticle, iParti);
-		CreateTimer(0.5, Timer_KillParticle, iPart2);
+		CreateTimer(0.5, Timer_KillParticle, EntIndexToEntRef(iParti));
+		CreateTimer(0.5, Timer_KillParticle, EntIndexToEntRef(iPart2));
 	}
 
 	float LightningDamage = (200.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 80.0));
