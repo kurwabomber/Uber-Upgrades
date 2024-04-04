@@ -774,6 +774,16 @@ public MRESReturn OnThermalThrusterLaunch(int weapon){
 	if(IsValidWeapon(weapon)){
 		int owner = getOwner(weapon);
 		lastKBSource[owner] = weapon;
+		
+		float jetpackLunge = GetAttribute(weapon, "jetpack charge damage", 0.0)
+		if(jetpackLunge){
+			CreateParticle(owner, "utaunt_auroraglow_orange_parent", true, _, 3.5);
+
+			Buff infernalLunge;
+			infernalLunge.init("Infernal Lunge", "Deals Contact Damage", Buff_InfernalLunge, 1, owner, 4.0);
+			infernalLunge.severity = jetpackLunge;
+			insertBuff(owner, infernalLunge);
+		}
 	}
 	return MRES_Ignored;
 }

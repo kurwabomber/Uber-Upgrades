@@ -1750,8 +1750,6 @@ CastLightning(client, attuneSlot)
 
 			currentDamageType[client].second |= DMG_ARCANE;
 			SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
-
-			CreateParticleEx(i, "utaunt_auroraglow_orange_parent", 1, _, _, 3.5);
 			
 			if(IsValidClient3(i))
 				TF2_IgnitePlayer(i, client, 3.0);

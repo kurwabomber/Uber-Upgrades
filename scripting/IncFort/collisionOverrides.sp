@@ -15,38 +15,52 @@ public Action:OnStartTouchStomp(client, other)
 	float victimHeight = VictimVecMaxs[2];
 	float HeightDiff = ClientPos[2] - VictimPos[2];
 
-	if(HeightDiff <= victimHeight)
-		return Plugin_Continue;
+	if(HeightDiff > victimHeight){
+		GetEntPropVector(client, Prop_Data, "m_vecAbsVelocity", vec);
+		if(vec[2] < -300.0){
+			float stompDamage = TF2_GetDamageModifiers(client, CWeapon, true, true, false) * 200.0;
+			stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 300.0)/1000.0)
 
-	GetEntPropVector(client, Prop_Data, "m_vecAbsVelocity", vec);
+			if(GetAttribute(client, "agility powerup", 0.0) == 2.0){
+				stompDamage *= 2.0;
 
-	if(vec[2] > -300.0)
-		return Plugin_Continue;
+				int splash = 0;
+				for(int i = 1;i <= MaxClients; ++i){
+					if(!IsValidClient3(i)) continue;
+					if(IsOnDifferentTeams(other, i)) continue;
+					if(!IsPlayerAlive(i)) continue;
+					if(i == other) continue;
+					if(splash == 2) break;
 
-	float stompDamage = TF2_GetDamageModifiers(client, CWeapon, true, true, false) * 200.0;
-	stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 300.0)/1000.0)
+					float splashOrigin[3];
+					GetClientAbsOrigin(i, splashOrigin);
+					if(GetVectorDistance(splashOrigin, ClientPos, true) > 250000.0) continue;
 
-	if(GetAttribute(client, "agility powerup", 0.0) == 2.0){
-		stompDamage *= 2.0;
-
-		int splash = 0;
-		for(int i = 1;i <= MaxClients; ++i){
-			if(!IsValidClient3(i)) continue;
-			if(IsOnDifferentTeams(other, i)) continue;
-			if(!IsPlayerAlive(i)) continue;
-			if(i == other) continue;
-			if(splash == 2) break;
-
-			float splashOrigin[3];
-			GetClientAbsOrigin(i, splashOrigin);
-			if(GetVectorDistance(splashOrigin, ClientPos, true) > 250000.0) continue;
-
-			SDKHooks_TakeDamage(i,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
-			++splash;
+					SDKHooks_TakeDamage(i,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
+					++splash;
+				}
+			}
+			
+			SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
 		}
 	}
-	
-	SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
+	if(hasBuffIndex(client, Buff_InfernalLunge)){
+		CreateParticleEx(client, "heavy_ring_of_fire", 0, 0, ClientPos);
+		CreateParticleEx(client, "bombinomicon_burningdebris");
+
+		float strongestDPS = 0.0;
+		for(int e = 0;e<3;++e){
+			int tempWeapon = GetWeapon(client, e);
+			if(!IsValidWeapon(tempWeapon))
+				continue;
+
+			float currentDPS = TF2_GetWeaponclassDPS(client, tempWeapon) * TF2_GetDPSModifiers(client, tempWeapon);
+			if(currentDPS > strongestDPS)
+				strongestDPS = currentDPS;
+		}
+		EntityExplosion(client, playerBuffs[client][getBuffInArray(client, Buff_InfernalLunge)].severity*strongestDPS, 500.0, ClientPos, 0,_,_,_,DMG_BLAST+DMG_BURN,CWeapon,0.25, _,_,_,_,_,_,300.0);
+		playerBuffs[client][getBuffInArray(client, Buff_InfernalLunge)].clear();
+	}
 }
 
 public Action:AddArrowCollisionFunction(entity, client)

@@ -163,6 +163,7 @@ enum {
 	Buff_LunchboxChange=24,
 	Buff_Plunder=25,
 	Buff_ImmolationBurn=26,
+	Buff_InfernalLunge=27,
 	BuffAmt
 };
 bool isBonus[BuffAmt] = {
@@ -192,6 +193,7 @@ bool isBonus[BuffAmt] = {
 	true,
 	true,
 	false,
+	true,
 	false,
 }
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];

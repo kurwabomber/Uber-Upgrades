@@ -451,7 +451,7 @@ public float ParseShorthand(char[] input, int size){
 
 	return num;
 }
-stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0, char[] particle = "ExplosionCore_MidAir")
+stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0, char[] particle = "ExplosionCore_MidAir", float knockback = 0.0)
 {
 	if(entity == -1 || !IsValidEdict(entity))
 		entity = owner;
@@ -493,6 +493,8 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 					if(IsValidEdict(weapon) && IsValidClient3(i))
 					{
 						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
+						if(knockback > 0.0)
+							PushEntity(i, owner, knockback, 200.0);
 						if(ignition)
 							TF2Util_IgnitePlayer(i, owner, 7.0, weapon);
 					}

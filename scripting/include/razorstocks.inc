@@ -2354,10 +2354,9 @@ stock Action Timer_KillParticle(Handle timer, any data)
 	}
 	return Plugin_Stop;
 }
-stock Action Timer_KillTEParticle(Handle timer, Handle pack)
-{
-	ResetPack(pack);	
-	int entity = EntRefToEntIndex(ReadPackCell(pack));
+stock Action Timer_KillTEParticle(Handle timer, any entity)
+{	
+	entity = EntRefToEntIndex(entity);
 	
 	if (IsValidEdict(entity))
 	{
