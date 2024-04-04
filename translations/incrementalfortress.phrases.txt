@@ -1,5 +1,21 @@
 "Phrases"
 {
+	"Ability : Airstrike"
+	{
+		"en"		"Ability : Airstrike"
+	}
+	"Starstorm"
+	{
+		"en"		"Starstorm"
+	}
+	"Deep Learning Sentry"
+	{
+		"en"		"Deep Learning Sentry"
+	}
+	"Exhaust"
+	{
+		"en"		"Exhaust"
+	}
 	"Ability : Sunstar"
 	{
 		"en"		"Ability : Sunstar"

@@ -1311,12 +1311,17 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				if(!IsValidWeapon(healingWeapon))
 					continue;
 				
-				medicDMGBonus += GetAttribute(healingWeapon, "hidden secondary max ammo penalty", 0.0);
+				if(IsOnDifferentTeams(attacker, healer)){
+					medicDMGBonus -= (GetAttribute(healingWeapon, "medigun blast resist passive", 0.0)+GetAttribute(healingWeapon, "medigun bullet resist passive", 0.0)+GetAttribute(healingWeapon, "medigun fire resist passive", 0.0))/6.0;
+				}
+				else{
+					medicDMGBonus += GetAttribute(healingWeapon, "hidden secondary max ammo penalty", 0.0);
 
-				if(TF2_IsPlayerInCondition(attacker, TFCond_Kritzkrieged))
-					medicDMGBonus += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
+					if(TF2_IsPlayerInCondition(attacker, TFCond_Kritzkrieged))
+						medicDMGBonus += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
 
-				medicDMGBonus *= GetAttribute(healingWeapon, "healing patient power", 1.0);
+					medicDMGBonus *= GetAttribute(healingWeapon, "healing patient power", 1.0);
+				}
 			}
 		}
 		damage *= medicDMGBonus;
@@ -1336,14 +1341,16 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					int healingWeapon = GetWeapon(healer, 1);
 					if(!IsValidWeapon(healingWeapon))
 						continue;
+					
+					if(!IsOnDifferentTeams(healer, victim)){
+						if(GetClientHealth(victim) > TF2Util_GetEntityMaxHealth(victim))
+							medicRESBonus += GetAttribute(healingWeapon, "patient overheal to damage mult", 0.0);
 
-					if(GetClientHealth(victim) > TF2Util_GetEntityMaxHealth(victim))
-						medicRESBonus += GetAttribute(healingWeapon, "patient overheal to damage mult", 0.0);
+						if(TF2_IsPlayerInCondition(healer, TFCond_UberFireResist) || TF2_IsPlayerInCondition(healer, TFCond_UberBulletResist) || TF2_IsPlayerInCondition(healer, TFCond_UberBlastResist))
+							medicRESBonus += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
 
-					if(TF2_IsPlayerInCondition(healer, TFCond_UberFireResist) || TF2_IsPlayerInCondition(healer, TFCond_UberBulletResist) || TF2_IsPlayerInCondition(healer, TFCond_UberBlastResist))
-						medicRESBonus += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
-
-					medicRESBonus *= GetAttribute(healingWeapon, "healing patient power", 1.0);
+						medicRESBonus *= GetAttribute(healingWeapon, "healing patient power", 1.0);
+					}
 				}
 			}
 		}
@@ -1634,32 +1641,28 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 }
 public float genericSentryDamageModification(victim, attacker, inflictor, float damage, weapon, damagetype, damagecustom)
 {
-	char classname[128]; 
-	GetEdictClassname(inflictor, classname, sizeof(classname)); 
+	char classname[64];
+	GetEdictClassname(inflictor, classname, sizeof(classname));
+	if(!strcmp("tf_projectile_sentryrocket", classname)){
+		inflictor = getOwner(inflictor);
+		GetEdictClassname(inflictor, classname, sizeof(classname));
+	}
+	
 	int weaponIdx = (IsValidWeapon(weapon) ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
-
 	bool isVictimPlayer = IsValidClient3(victim);
 
 	if (isVictimPlayer && StrEqual(classname, "obj_attachment_sapper"))
-	{
 		TF2_AddCondition(victim, TFCond_Sapped, 2.0);
-	}
+	
 	//PrintToChatAll("classname %s",classname);
-	if ((!strcmp("obj_sentrygun", classname) || !strcmp("tf_projectile_sentryrocket", classname)) || weaponIdx == 140)
+	if ((!strcmp("obj_sentrygun", classname)) || weaponIdx == 140)
 	{
 		int owner; 
-		if(!strcmp("tf_projectile_sentryrocket", classname))
-		{
-			owner = attacker;
-		}
-		else
-		{
-			owner = GetEntPropEnt(inflictor, Prop_Send, "m_hBuilder");
-		}
+		owner = GetEntPropEnt(inflictor, Prop_Send, "m_hBuilder");
 
 		if(IsValidForDamage(owner))
 		{
-			char Ownerclassname[128]; 
+			char Ownerclassname[64]; 
 			GetEdictClassname(owner, Ownerclassname, sizeof(Ownerclassname)); 
 			if(StrEqual(Ownerclassname, "tank_boss"))
 			{
@@ -1936,6 +1939,10 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 				{
 					damage *= Pow(1.05,TF2Attrib_GetValue(damageActive));
 				}
+			}
+			int secondary = GetWeapon(owner, 1);
+			if(IsValidWeapon(secondary)){
+				damage *= 1+GetEntProp(inflictor, Prop_Send, "m_iKills")*GetAttribute(secondary, "sentry dmg bonus per kill", 0.0);
 			}
 			if((!strcmp("obj_sentrygun", classname) && GetEntProp(inflictor, Prop_Send, "m_bMiniBuilding") == 1))
 			{//Minisentries deal 4 damage base.

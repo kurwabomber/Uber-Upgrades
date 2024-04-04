@@ -35,10 +35,11 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"melee cleave attack"			"1"
-			"Dragon Bullets Radius"			"400.0"
+			"Dragon Bullets Radius"			"600.0"
 			"Afterburn Tick Rate"			"4.0"
-			"damage bonus HIDDEN(b)"		"3.0"
+			"damage bonus HIDDEN(b)"		"5.0"
 			"weapon fire rate(tweak)"		"2.0"
+			"Afterburn Damage Multiplier"	"10.0"
 		}
 		"Stat Boost Ubercharge"
 		{
@@ -425,7 +426,7 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"override projectile type"		"44.0"
+			"Ability : Airstrike"			"1"
 		}
 		"Deep Learning Sentry"
 		{

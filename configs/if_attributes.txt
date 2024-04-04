@@ -4789,7 +4789,7 @@
 			"ref"		"Ability : Silent Dash"
 			"cost"		"0"
 			"increase_ratio"	"0"
-			"value"		"11"
+			"value"		"12"
 			"init"		"0"
 			"max"		"12"
 		}	
@@ -4799,7 +4799,7 @@
 			"ref"		"Ability : Charged Strike"
 			"cost"		"0"
 			"increase_ratio"	"0"
-			"value"		"12"
+			"value"		"13"
 			"init"		"0"
 			"max"		"13"
 		}
@@ -4822,6 +4822,16 @@
 			"value"		"15"
 			"init"		"0"
 			"max"		"15"
+		}
+		"1530.2"
+		{
+			"name"		"apply look velocity on damage"
+			"ref"		"Ability : Airstrike"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"16"
+			"init"		"0"
+			"max"		"16"
 		}
 		"1534"
 		{
@@ -5747,7 +5757,7 @@
 			"ref"		"medigun attack enemy"
 			"cost"		"0"
 			"increase_ratio"	"0"
-			"value"		"0"
+			"value"		"1"
 			"init"		"0"
 			"max"		"0"
 		}
@@ -5757,7 +5767,7 @@
 			"ref"		"medigun self drain"
 			"cost"		"0"
 			"increase_ratio"	"0"
-			"value"		"0"
+			"value"		"1"
 			"init"		"0"
 			"max"		"0"
 		}
@@ -5767,7 +5777,7 @@
 			"ref"		"medigun attack enemy heal mult"
 			"cost"		"0"
 			"increase_ratio"	"0"
-			"value"		"0"
+			"value"		"1"
 			"init"		"0"
 			"max"		"0"
 		}

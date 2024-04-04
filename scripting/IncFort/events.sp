@@ -666,7 +666,7 @@ public MRESReturn OnKnockbackApply(int client, Handle hParams) {
 
 		if(IsValidWeapon(lastKBSource[client])){
 			ScaleVector(initKB,GetAttribute(lastKBSource[client], "weapon self dmg push force increased", 1.0));
-			ScaleVector(initKB,GetAttribute(lastKBSource[client], "weapon self dmg push force increased", 1.0));
+			ScaleVector(initKB,GetAttribute(lastKBSource[client], "weapon push force multiplier", 1.0));
 		}
 
 		float KBMult = GetAttributeAccumulateMultiplicative(client, "knockback resistance", 1.0);
@@ -2738,6 +2738,58 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							ShowSyncHudText(client, hudAbility, CooldownTime);
 						}
 					}
+					case 16.0:{
+						if(weaponArtCooldown[client] > currentGameTime)
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Airstrike: %.1fs", weaponArtCooldown[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+						}
+						else
+						{
+							char CooldownTime[32]
+							Format(CooldownTime, sizeof(CooldownTime), "Airstrike: READY", sunstarDuration[client]-currentGameTime); 
+							SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+							ShowSyncHudText(client, hudAbility, CooldownTime);
+							if(buttons & IN_ATTACK3)
+							{
+								if(fl_GlobalCoolDown[client] <= currentGameTime)
+								{
+									fl_GlobalCoolDown[client] = currentGameTime+0.5;
+									weaponArtCooldown[client] = currentGameTime+25.0;
+
+									float rocketDamage = 25.0;
+									int melee = GetWeapon(client, 2);
+
+									if(IsValidWeapon(melee))
+										rocketDamage *= TF2_GetSentryDPSModifiers(client, melee);
+									
+									DataPack pack = new DataPack();
+									pack.Reset();
+									pack.WriteCell(client);
+									pack.WriteCell(GetClientTeam(client));
+									pack.WriteFloat(rocketDamage);
+									float ClientPos[3];
+									TracePlayerAim(client, ClientPos);
+									pack.WriteFloat(ClientPos[0]);
+									pack.WriteFloat(ClientPos[1]);
+									pack.WriteFloat(ClientPos[2]);
+									float ClientOrigin[3];
+									GetClientEyePosition(client, ClientOrigin);
+									pack.WriteFloat(ClientOrigin[0]);
+									pack.WriteFloat(ClientOrigin[1]);
+									pack.WriteFloat(ClientOrigin[2]);
+
+									const int times = 200;
+									for(int i=0;i<times;++i){
+										CreateTimer(0.4+(i*0.01), orbitalStrike, pack);
+									}
+									CreateTimer(0.5+(times*0.01), deletePack, pack);
+								}
+							}
+						}
+					}
 				}
 				float chainLightningAttribute = GetAttribute(CWeapon, "chain lightning meter on hit", 0.0);
 				if(chainLightningAttribute){
@@ -3495,37 +3547,6 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 						setProjGravity(iEntity, 0.4);
 						CreateTimer(10.0,SelfDestruct,EntIndexToEntRef(iEntity));
 					}
-				}
-				case 44.0:
-				{
-					float rocketDamage = 20.0;
-					int melee = GetWeapon(client, 2);
-
-					if(IsValidWeapon(melee))
-						rocketDamage *= TF2_GetSentryDPSModifiers(client, melee);
-					
-					DataPack pack = new DataPack();
-					pack.Reset();
-					pack.WriteCell(client);
-					pack.WriteCell(GetClientTeam(client));
-					pack.WriteFloat(rocketDamage);
-					float ClientPos[3];
-					TracePlayerAim(client, ClientPos);
-					pack.WriteFloat(ClientPos[0]);
-					pack.WriteFloat(ClientPos[1]);
-					pack.WriteFloat(ClientPos[2]);
-					float ClientOrigin[3];
-					GetClientEyePosition(client, ClientOrigin);
-					pack.WriteFloat(ClientOrigin[0]);
-					pack.WriteFloat(ClientOrigin[1]);
-					pack.WriteFloat(ClientOrigin[2]);
-
-					int times = 100;
-
-					for(int i=0;i<times;++i){
-						CreateTimer(0.5+(i*0.02), orbitalStrike, pack);
-					}
-					CreateTimer(0.6+(times*0.02), deletePack, pack);
 				}
 				case 45.0:
 				{
