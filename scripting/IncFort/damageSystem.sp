@@ -139,7 +139,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					{
 						damage = GetClientHealth(victim) - (TF2_GetMaxHealth(victim) - (TF2_GetMaxHealth(victim)*(0.125*(bossPhase[victim]+1))));
 						TF2_AddCondition(victim, TFCond_MegaHeal, 1.5);
-						TF2_AddCondition(victim, TFCond_UberchargedHidden, 1.5);
+						TF2_AddCondition(victim, TFCond_UberchargedHidden, 0.5);
 						TF2_AddCondition(victim, TFCond_RuneHaste, 5.0);
 						TF2_AddCondition(victim, TFCond_KingAura, 5.0);
 						
@@ -152,16 +152,16 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					{
 						damage = GetClientHealth(victim) - (TF2_GetMaxHealth(victim) - (TF2_GetMaxHealth(victim)*(0.2*(bossPhase[victim]+1))));
 						TF2_AddCondition(victim, TFCond_MegaHeal, 5.0);
-						TF2_AddCondition(victim, TFCond_UberchargedHidden, 1.5);
+						TF2_AddCondition(victim, TFCond_UberchargedHidden, 0.5);
 						TF2_AddCondition(victim, TFCond_RuneAgility, 5.0);
 						
-						
+						//eventually add the vortex tp back thing
 						bossPhase[victim]++;
 					}
 				}
 				case 7.0:
 				{
-					if (!TF2_IsPlayerInCondition(victim,TFCond_UberchargedHidden) && GetClientHealth(victim) - damage < TF2_GetMaxHealth(victim) - (TF2_GetMaxHealth(victim)*(0.25*(bossPhase[victim]+1))))//boss phases
+					if (!TF2_IsPlayerInCondition(victim,TFCond_UberchargedHidden) && GetClientHealth(victim) - damage < TF2_GetMaxHealth(victim) - (TF2_GetMaxHealth(victim)*(0.5*(bossPhase[victim]+1))))//boss phases
 					{
 						damage = GetClientHealth(victim) - (TF2_GetMaxHealth(victim) - (TF2_GetMaxHealth(victim)*(0.25*(bossPhase[victim]+1))));
 						TF2_AddCondition(victim, TFCond_MegaHeal, 5.0);

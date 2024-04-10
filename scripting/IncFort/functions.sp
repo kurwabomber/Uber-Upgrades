@@ -647,9 +647,6 @@ public bool GiveNewWeapon(client, slot)
 }
 public GiveNewUpgradedWeapon_(client, slot)
 {
-	if(IsValidClient(client))
-		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.001);
-		
 	int iNumAttributes;
 	int iEnt;
 	iNumAttributes = currentupgrades_number[client][slot]
@@ -691,6 +688,7 @@ public GiveNewUpgradedWeapon_(client, slot)
 
 		refreshUpgrades(client, slot);
 	}
+	TF2Util_UpdatePlayerSpeed(client);
 }
 stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 {
@@ -3298,8 +3296,8 @@ TF2_Override_ChargeSpeed(client)
 	{
 		float velocity = GetAttribute(secondary, "Charging Velocity", 750.0);
 		velocity *= GetAttribute(client, "agility powerup") != 0.0 ? 1.8 : 1.0;
-		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.01);
 		SetEntPropFloat(client, Prop_Data, "m_flMaxspeed", velocity);
+		TF2Util_UpdatePlayerSpeed(client);
 	}
 }
 CheckGrenadeMines(ref)

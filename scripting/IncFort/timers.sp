@@ -975,7 +975,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 								CreateParticle(-1, "cinefx_goldrush_flames", _, _, _, flamePos);
 								
 								
-								float DMGDealt = 3.0 * TF2_GetDPSModifiers(client,CWeapon);
+								float DMGDealt = 7.5 * TF2_GetDPSModifiers(client,CWeapon);
 								int i = -1;
 								while ((i = FindEntityByClassname(i, "*")) != -1)
 								{
@@ -987,8 +987,8 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 											GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 											if(GetVectorDistance(ClientPos,VictimPos,true) <= 640000.0)
 											{
-												CreateParticleEx(i, "dragons_fury_effect_parent", 1, _, _, 2.0);
-												CreateParticleEx(i, "utaunt_glowyplayer_orange_glow", 1);
+												CreateParticle(i, "dragons_fury_effect_parent", true, _, 2.0);
+												CreateParticle(i, "utaunt_glowyplayer_orange_glow", true, _, 2.0);
 												DOTStock(i,client,DMGDealt,-1,DMG_BURN,20,1.0,0.12,true);
 											}
 										}

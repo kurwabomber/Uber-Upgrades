@@ -948,7 +948,7 @@ public Event_BuffDeployed( Handle event, const char[] name, bool:broadcast )
 }
 public void TF2_OnConditionAdded(client, TFCond cond)
 {
-	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.01);
+	TF2Util_UpdatePlayerSpeed(client);
 	switch(cond){
 		case TFCond_Sapped:{
 			buffChange[client] = true;
@@ -973,9 +973,6 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 {
 	switch(cond)
 	{
-		case TFCond_TeleportedGlow:{
-			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.0);
-		}
 		case TFCond_OnFire:{
 			fl_HighestFireDamage[client] = 0.0;
 		}
@@ -1003,7 +1000,7 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 			buffChange[client] = true;
 		}
 	}
-	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.001);
+	TF2Util_UpdatePlayerSpeed(client);
 }
 public OnEntityCreated(entity, const char[] classname)
 {

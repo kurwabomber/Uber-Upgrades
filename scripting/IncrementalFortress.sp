@@ -39,8 +39,10 @@
 #define Max_Attunement_Slots 10
 #define MAX_STAGES 5
 
-#define TICKINTERVAL 0.015
-#define TICKRATE 66.67
+//Change to tickrate of how your server operates
+#define TICKINTERVAL 0.0075
+#define TICKRATE 133.33
+
 #define MAXBUFFS 12
 
 #define MAXMONEY 50000000.0
