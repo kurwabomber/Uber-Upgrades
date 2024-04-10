@@ -948,7 +948,6 @@ public Event_BuffDeployed( Handle event, const char[] name, bool:broadcast )
 }
 public void TF2_OnConditionAdded(client, TFCond cond)
 {
-	TF2Util_UpdatePlayerSpeed(client);
 	switch(cond){
 		case TFCond_Sapped:{
 			buffChange[client] = true;
@@ -1000,7 +999,6 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 			buffChange[client] = true;
 		}
 	}
-	TF2Util_UpdatePlayerSpeed(client);
 }
 public OnEntityCreated(entity, const char[] classname)
 {

@@ -40,8 +40,8 @@
 #define MAX_STAGES 5
 
 //Change to tickrate of how your server operates
-#define TICKINTERVAL 0.0075
-#define TICKRATE 133.33
+#define TICKINTERVAL 0.015
+#define TICKRATE 66.67
 
 #define MAXBUFFS 12
 

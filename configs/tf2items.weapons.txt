@@ -328,7 +328,7 @@
 		"1180" //Gas Passer
 		{
 			"preserve_attributes"	"1"
-			"1"				"801 ; 15.0"
+			"1"				"801 ; 5.0"
 		}
 		"752" //Hitman's Heatmaker
 		{
@@ -457,15 +457,6 @@
 		{
 			"preserve_attributes"	"1"
 			"1"				"372 ; 4.0"
-		}
-		"424" //Tomislav
-		{
-			"preserve_attributes"	"1"
-			"1"				"236 ; 1.0"
-			"2"				"348 ; 3.0"
-			"3"				"6012 ; 3.0"
-			"4"				"4725 ; 1.0"
-			"5"				"4551 ; 3.0"
 		}
 		"37,1003" //Ubersaw
 		{

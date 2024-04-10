@@ -573,7 +573,7 @@ FinishCastInfernalEnchantment(int client, int spellLevel)
 {
 	client = EntRefToEntIndex(client)
 	if(IsValidClient3(client) && IsPlayerAlive(client)){
-		InfernalEnchantment[client] = (3000.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 100.0));
+		InfernalEnchantment[client] = (300.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 100.0));
 		InfernalEnchantmentLevel[client] = spellLevel;
 		InfernalEnchantmentDuration[client] = currentGameTime + 30.0*ArcanePower[client];
 		CreateParticleEx(client, "utaunt_auroraglow_orange_parent", _, _, _, 30.0*ArcanePower[client]);
@@ -1318,7 +1318,10 @@ public Action:ArcaneHunter(Handle timer, client)
 	{
 		if(!IsValidClient3(i))
 			continue;
-		
+			
+		if(!IsPlayerAlive(i))
+			continue;
+
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 		

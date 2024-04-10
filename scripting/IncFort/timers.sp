@@ -162,6 +162,9 @@ public Action:Timer_FixedVariables(Handle timer)
 						if(!IsValidClient3(i))
 							continue;
 						
+						if(!IsPlayerAlive(i))
+							continue;
+
 						if(!IsOnDifferentTeams(client,i))
 							continue;
 						
@@ -576,9 +579,9 @@ public Action:Timer_Every100MS(Handle timer)
 
 				if(corrosiveDOT[client][i][0] != 0.0 && corrosiveDOT[client][i][1] >= 0.0)
 				{
-					corrosiveDOT[client][i][1] -= TICKINTERVAL;
+					corrosiveDOT[client][i][1] -= TICKINTERVAL*10.0;
 					if(IsValidClient3(i))
-						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],DMG_BLAST,-1, NULL_VECTOR, NULL_VECTOR);
+						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0]);
 				}
 				if(IsOnDifferentTeams(client,i) && plagueActive && !TF2_IsPlayerInCondition(i, TFCond_Plague))
 				{

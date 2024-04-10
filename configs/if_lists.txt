@@ -98,15 +98,6 @@
 				"Attr0"		"Agility Powerup"
 			}
 		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
-		}
 	}
 	"body_sniper"
 	{
@@ -168,11 +159,15 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr4"		"Arcane - Karmic Justice"
+				"Attr5"		"Arcane - Snowstorm"
 			}
 			"!Tier 3 Arcane Spells"
 			{
-				"Attr7"		"Arcane - A Call Beyond"
-				"Attr8"		"Arcane - Arcane Hunter"
+				"Attr0"		"Arcane - A Call Beyond"
+				"Attr1"		"Arcane - Infernal Enchantment"
+				"Attr2"		"Arcane - Splitting Thunder"
+				"Attr3"		"Arcane - Arcane Hunter"
 			}
 		}
 		"Powerup Upgrades"
@@ -201,15 +196,6 @@
 			{
 				"Attr0"		"Agility Powerup"
 			}
-		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_soldier"
@@ -272,11 +258,15 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr4"		"Arcane - Karmic Justice"
+				"Attr5"		"Arcane - Snowstorm"
+				"Attr6"		"Arcane - Aerial Strike"
 			}
 			"!Tier 3 Arcane Spells"
 			{
-				"Attr7"		"Arcane - A Call Beyond"
-				"Attr8"		"Arcane - Aerial Strike"
+				"Attr0"		"Arcane - A Call Beyond"
+				"Attr1"		"Arcane - Infernal Enchantment"
+				"Attr2"		"Arcane - Splitting Thunder"
 			}
 		}
 		"Powerup Upgrades"
@@ -305,15 +295,6 @@
 			{
 				"Attr0"		"Agility Powerup"
 			}
-		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_pyro"
@@ -375,11 +356,15 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
-				"Attr5"		"Arcane - Inferno"
+				"Attr4"		"Arcane - Karmic Justice"
+				"Attr5"		"Arcane - Snowstorm"
+				"Attr6"		"Arcane - Inferno"
 			}
 			"!Tier 3 Arcane Spells"
 			{
-				"Attr7"		"Arcane - A Call Beyond"
+				"Attr0"		"Arcane - A Call Beyond"
+				"Attr1"		"Arcane - Infernal Enchantment"
+				"Attr2"		"Arcane - Splitting Thunder"
 			}
 		}
 		"Powerup Upgrades"
@@ -408,15 +393,6 @@
 			{
 				"Attr0"		"Agility Powerup"
 			}
-		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_heavy"
@@ -472,6 +448,7 @@
 				"Attr3"		"Arcane - Lightning Strike"
 				"Attr4"		"Arcane - Healing Aura"
 				"Attr5"		"Arcane - Darkmoon Blade"
+				"Attr6"		"Arcane - Shockwave"
 			}
 			"!Tier 2 Arcane Spells"
 			{
@@ -479,10 +456,14 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr4"		"Arcane - Karmic Justice"
+				"Attr5"		"Arcane - Snowstorm"
 			}
 			"!Tier 3 Arcane Spells"
 			{
-				"Attr7"		"Arcane - A Call Beyond"
+				"Attr0"		"Arcane - A Call Beyond"
+				"Attr1"		"Arcane - Infernal Enchantment"
+				"Attr2"		"Arcane - Splitting Thunder"
 			}
 		}
 		"Powerup Upgrades"
@@ -511,15 +492,6 @@
 			{
 				"Attr0"		"Agility Powerup"
 			}
-		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_demoman"
@@ -582,11 +554,15 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
-				"Attr5"		"Arcane - Mine Field"
+				"Attr4"		"Arcane - Karmic Justice"
+				"Attr5"		"Arcane - Snowstorm"
+				"Attr6"		"Arcane - Mine Field"
 			}
 			"!Tier 3 Arcane Spells"
 			{
-				"Attr7"		"Arcane - A Call Beyond"
+				"Attr0"		"Arcane - A Call Beyond"
+				"Attr1"		"Arcane - Infernal Enchantment"
+				"Attr2"		"Arcane - Splitting Thunder"
 			}
 		}
 		"Powerup Upgrades"
@@ -615,15 +591,6 @@
 			{
 				"Attr0"		"Agility Powerup"
 			}
-		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_medic"
@@ -685,11 +652,15 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr4"		"Arcane - Karmic Justice"
+				"Attr5"		"Arcane - Snowstorm"
 			}
 			"!Tier 3 Arcane Spells"
 			{
-				"Attr7"		"Arcane - A Call Beyond"
-				"Attr8"		"Arcane - Soothing Sunlight"
+				"Attr0"		"Arcane - A Call Beyond"
+				"Attr1"		"Arcane - Infernal Enchantment"
+				"Attr2"		"Arcane - Splitting Thunder"
+				"Attr3"		"Arcane - Soothing Sunlight"
 			}
 		}
 		"Powerup Upgrades"
@@ -718,15 +689,6 @@
 			{
 				"Attr0"		"Agility Powerup"
 			}
-		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_spy"
@@ -792,10 +754,14 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
+				"Attr4"		"Arcane - Karmic Justice"
+				"Attr5"		"Arcane - Snowstorm"
 			}
 			"!Tier 3 Arcane Spells"
 			{
-				"Attr7"		"Arcane - A Call Beyond"
+				"Attr0"		"Arcane - A Call Beyond"
+				"Attr1"		"Arcane - Infernal Enchantment"
+				"Attr2"		"Arcane - Splitting Thunder"
 			}
 		}
 		"Powerup Upgrades"
@@ -824,15 +790,6 @@
 			{
 				"Attr0"		"Agility Powerup"
 			}
-		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
 		}
 	}
 	"body_engie"
@@ -898,11 +855,15 @@
 				"Attr2"		"Arcane - Lightning Enchantment"
 				"Attr3"		"Arcane - Snap Freeze"
 				"Attr4"		"Arcane - Arcane Prison"
-				"Attr5"		"Arcane - Auto-Sentry"
+				"Attr4"		"Arcane - Karmic Justice"
+				"Attr5"		"Arcane - Snowstorm"
+				"Attr6"		"Arcane - Auto-Sentry"
 			}
 			"!Tier 3 Arcane Spells"
 			{
-				"Attr7"		"Arcane - A Call Beyond"
+				"Attr0"		"Arcane - A Call Beyond"
+				"Attr1"		"Arcane - Infernal Enchantment"
+				"Attr2"		"Arcane - Splitting Thunder"
 			}
 		}
 		"Powerup Upgrades"
@@ -931,15 +892,6 @@
 			{
 				"Attr0"		"Agility Powerup"
 			}
-		}
-		"Tiered Upgrades"
-		{
-			"Attr0"			"Endurance"
-			"Attr2"			"physical damage affinity"
-			"Attr3"			"explosive damage affinity"
-			"Attr4"			"fire damage affinity"
-			"Attr5"			"electric damage affinity"
-			"Attr6"			"crit damage affinity"
 		}
 	}
 	"cow_m"
@@ -2119,7 +2071,6 @@
 			"Attr1"		"Jar Fragment Count"
 			"Attr2"		"Fragment Explosion Base Damage"
 			"Attr1"		"Bleed Per Hit(E)"
-			"Attr2"		"Corrosive Damage Over Time"
 			"Attr3"		"Mad Milk On Hit Duration (MadMilk)"
 		}
 		"Support Upgrades"

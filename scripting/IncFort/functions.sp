@@ -19,7 +19,7 @@ float GetResistance(int client, bool includeReduction = false, float increaseBas
 		TotalResistance -= playerBuffs[client][getBuffInArray(client,Buff_BrokenArmor)].priority;
 	}
 	
-	TotalResistance = Pow(TotalResistance, 2.35);
+	TotalResistance *= TotalResistance;
 	if(includeReduction)
 	{
 		Address dmgReduction = TF2Attrib_GetByName(client, "sniper zoom penalty");
@@ -688,7 +688,6 @@ public GiveNewUpgradedWeapon_(client, slot)
 
 		refreshUpgrades(client, slot);
 	}
-	TF2Util_UpdatePlayerSpeed(client);
 }
 stock is_client_got_req(client, upgrade_choice, slot, inum, float rate = 1.0)
 {
@@ -1185,10 +1184,6 @@ DisplayItemChange(client,itemidx)
 		{
 			ChangeString = "The Huo-Long Heater | Shoots flares. Converts fire rate into damage. Press mouse3 (middle click) to detonate the flares. Massively increased blast radius.";
 		}
-		case 424:
-		{
-			ChangeString = "Tomislav | 3x damage and fire rate delay. Blocks medigun healing while in use but gives full mobility while spun up.";
-		}
 		//Heavy Secondaries
 		case 311:
 		{
@@ -1202,6 +1197,10 @@ DisplayItemChange(client,itemidx)
 		case 43:
 		{
 			ChangeString = "The Killing Gloves of Boxing | Gives 2 seconds of minicrits on kill instead.";
+		}
+		case 426:
+		{
+			ChangeString = "The Eviction Notice | 0.5x damage, 0.5x fire rate, and converts firerate into damage."
 		}
 		//Engineer Primary
 		case 588:
@@ -2189,7 +2188,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 		TF2Attrib_SetByName(client,"increased air control", 3.0);
 		TF2Attrib_SetByName(melee,"melee range multiplier", 50.0);
 		TF2Attrib_SetByName(melee,"fire rate penalty HIDDEN", 0.75);
-		TF2Attrib_SetByName(client,"move speed bonus", 10.0);
+		TF2Attrib_SetByName(client,"move speed bonus", 1.5);
 
 		switch(current_class[client])
 		{
@@ -3297,7 +3296,7 @@ TF2_Override_ChargeSpeed(client)
 		float velocity = GetAttribute(secondary, "Charging Velocity", 750.0);
 		velocity *= GetAttribute(client, "agility powerup") != 0.0 ? 1.8 : 1.0;
 		SetEntPropFloat(client, Prop_Data, "m_flMaxspeed", velocity);
-		TF2Util_UpdatePlayerSpeed(client);
+		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 3.0);
 	}
 }
 CheckGrenadeMines(ref)
@@ -3649,8 +3648,8 @@ projGravity(entity)
 							if(projspeed != Address_Null)
 								velocity *= TF2Attrib_GetValue(projspeed);
 
-							GetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
 							flAng[0] -= 10.0;
+							GetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
 							GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR);
 							fVelocity[0] = vBuffer[0]*velocity;
 							fVelocity[1] = vBuffer[1]*velocity;

@@ -482,7 +482,7 @@ public Action:OnCollisionMoonveil(entity, client)
 				{
 					float mult = 1.0/GetAttribute(CWeapon, "fire rate bonus", 1.0);
 					currentDamageType[owner].second |= DMG_ARCANE;
-					SDKHooks_TakeDamage(client,owner,owner,mult*25.0,DMG_GENERIC,CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+					SDKHooks_TakeDamage(client,owner,owner,mult*40.0,DMG_GENERIC,CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
 				}
 				RemoveEntity(entity);
 			}
@@ -718,7 +718,7 @@ public Action:OnTouchExplodeJar(entity, other)
 			
 			EmitSoundToAll(SOUND_THUNDER, entity, _, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientvec);
 			
-			float LightningDamage = 120.0 * damageBoost * entityMaelstromChargeCount[entity];
+			float LightningDamage = 200.0 * damageBoost * entityMaelstromChargeCount[entity];
 			
 			int i = -1;
 			while ((i = FindEntityByClassname(i, "*")) != -1)
@@ -728,7 +728,7 @@ public Action:OnTouchExplodeJar(entity, other)
 					float VictimPos[3];
 					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 					VictimPos[2] += 30.0;
-					if(GetVectorDistance(clientvec,VictimPos,true) <= Radius*Radius*(1+0.01*entityMaelstromChargeCount[entity]))
+					if(GetVectorDistance(clientvec,VictimPos,true) <= Radius*Radius*(1+0.01*entityMaelstromChargeCount[entity])*(1+0.01*entityMaelstromChargeCount[entity]))
 						if(IsPointVisible(clientvec,VictimPos))
 							SDKHooks_TakeDamage(i,owner,owner, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
 				}

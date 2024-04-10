@@ -414,7 +414,7 @@
 	}
 	"melee cleave attack"
 	{
-		"en"		"Melee Hits All Enemies in Range"
+		"en"		"Melee Cleaves Enemies"
 	}
 	"Scorchiest Shot"
 	{
@@ -2378,7 +2378,7 @@
 	}
 	"percent of hp healed on kill"
 	{
-		"en"		"Percentage Health Restored on Kill"
+		"en"		"%% Health Restored on Kill"
 	}
 	"mod see enemy health"
 	{
