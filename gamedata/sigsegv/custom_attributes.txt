@@ -5066,8 +5066,8 @@
     }
     "6355"
     {
-        "name"  "damage taken divided"
-        "attribute_class"   "damage_taken_divided"
+        "name"  "dmg taken divided"
+        "attribute_class"   "dmg taken divided"
         "description_string"	""
         "description_format"	"value_is_percentage"
         "hidden"	"1"

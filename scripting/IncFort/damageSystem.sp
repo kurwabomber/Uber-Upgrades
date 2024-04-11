@@ -306,7 +306,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		if(dmgReduction != 1.0)
 			damage *= dmgReduction
 
-		float linearReduction = GetAttribute(victim, "damage taken divided");
+		float linearReduction = GetAttribute(victim, "dmg taken divided");
 		if(linearReduction != 1.0)
 			damage /= linearReduction;
 
