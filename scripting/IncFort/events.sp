@@ -498,6 +498,9 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					DHookSetParam(hParams, 2, duration * TF2Attrib_GetValue(slowResistance));
 					return MRES_ChangedHandled;
 				}
+				if(GetAttribute(client, "jarate description", 0.0)){
+					return MRES_Supercede;
+				}
 			}
 			case TFCond_Taunting:
 			{
