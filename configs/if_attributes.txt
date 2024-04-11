@@ -5476,8 +5476,8 @@
 		{
 			"name"		"slow resistance"
 			"ref"		"Slow Resistance"
-			"cost"		"600"
-			"increase_ratio"	"0.1"
+			"cost"		"300"
+			"increase_ratio"	"0.2"
 			"value"		"-0.1"
 			"init"		"1.0"
 			"description"	"Decreases the duration of slow effects."
