@@ -396,11 +396,11 @@
 	{
 		"en"		"Minimal Explosion Particle"
 	}
-	"Burst Fire Count"
+	"burst fire count"
 	{
 		"en"		"Burst Fire Count"
 	}
-	"Burst Fire Delay"
+	"burst fire rate mult"
 	{
 		"en"		"Burst Fire Delay"
 	}

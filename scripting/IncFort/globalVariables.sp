@@ -409,6 +409,7 @@ bool failLock;
 bool strongholdEnabled[MAXPLAYERS+1];
 bool immolationActive[MAXPLAYERS+1];
 bool isDeathTick[MAXPLAYERS+1];
+bool replenishStatus;
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]

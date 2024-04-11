@@ -1341,13 +1341,34 @@ public Action:Timer_KillLaser(Handle timer, int entity)
 	TE_SendToAll();
 	return Plugin_Stop;
 }
-public Action Timer_DelayedRespawn(Handle timer, int client){
-	client = EntRefToEntIndex(client);
-	if(IsValidClient3(client))
-		TF2_RegeneratePlayer(client);
-
+public Action ResetClientsTimer(Handle timer){
+	replenishStatus = false;
+	for (int client = 1; client <= MaxClients; client++)
+	{
+		if (IsValidClient(client))
+		{
+			PrintToServer("Resetting Client %N", client);
+			current_class[client] = TF2_GetPlayerClass(client)
+			CancelClientMenu(client);
+			Menu_BuyUpgrade(client, 0);
+			TF2_RegeneratePlayer(client);
+		}
+		CurrencySaved[client] = 0.0;
+		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
+		for(int j = 0; j < Max_Attunement_Slots;j++){
+			SpellCooldowns[client][j] = 0.0;
+		}
+	}
 	return Plugin_Stop;
 }
+/*public Action Timer_DelayedRespawn(Handle timer, int client){
+	client = EntRefToEntIndex(client);
+	if(IsValidClient3(client)){
+		TF2_RegeneratePlayer(client);
+	}
+
+	return Plugin_Stop;
+}*/
 public Action MissionLoaded(Handle timer){
 	for(int i = 1;i<=MaxClients;++i){
 		client_respawn_checkpoint[i] = false;

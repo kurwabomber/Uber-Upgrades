@@ -4517,7 +4517,7 @@
 			"increase_ratio"	"1.0"
 			"value"		"1"
 			"init"		"1"
-			"description"	"Divides total damage taken.\nFormula is damage/(DR*DRMult)^2.35.\nCheck stats page to see effectiveness."
+			"description"	"Divides total damage taken.\nFormula is damage/(DR*DRMult)^2.\nCheck stats page to see effectiveness."
 			"display_style"	"2"
 			"max"		"1000"
 		}
@@ -5724,7 +5724,7 @@
 		"1623"
 		{
 			"name"		"burst fire count"
-			"ref"		"Burst Fire Count"
+			"ref"		"burst fire count"
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"0"
@@ -5734,7 +5734,7 @@
 		"1624"
 		{
 			"name"		"burst fire rate mult"
-			"ref"		"Burst Fire Delay"
+			"ref"		"burst fire rate mult"
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"0"

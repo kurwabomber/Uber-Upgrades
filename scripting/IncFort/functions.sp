@@ -838,7 +838,7 @@ public ResetClientUpgrade_slot(client, slot)
 		upgrades_efficiency_list[client][slot][i] = 0;
 	}
 	
-	if (slot != 4 && currentitem_idx[client][slot])
+	if (slot != 4 && currentitem_idx[client][slot] && !replenishStatus)
 	{
 		currentitem_idx[client][slot] = 20000
 		GiveNewUpgradedWeapon_(client, slot)
@@ -3648,8 +3648,8 @@ projGravity(entity)
 							if(projspeed != Address_Null)
 								velocity *= TF2Attrib_GetValue(projspeed);
 
-							flAng[0] -= 10.0;
 							GetEntPropVector(entity, Prop_Data, "m_angRotation", flAng);
+							flAng[0] -= 10.0;
 							GetAngleVectors(flAng, vBuffer, NULL_VECTOR, NULL_VECTOR);
 							fVelocity[0] = vBuffer[0]*velocity;
 							fVelocity[1] = vBuffer[1]*velocity;

@@ -1300,42 +1300,21 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 	additionalstartmoney = 0.0;
 	StartMoneySaved = 0.0;
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
-	for (int client = 1; client <= MaxClients; client++)
-	{
-		if (IsValidClient(client))
-		{
-			int primary = (GetWeapon(client,0));
-			if(IsValidEdict(primary))
-				TF2Attrib_RemoveAll(primary);
-		
-			int secondary = (GetWeapon(client,1));
-			if(IsValidEdict(secondary))
-				TF2Attrib_RemoveAll(secondary);
-			
-			int melee = (GetWeapon(client,2));
-			if(IsValidEdict(melee))
-				TF2Attrib_RemoveAll(melee);
-			
-			ResetClientUpgrades(client)
-			TF2Attrib_RemoveAll(client);
-			current_class[client] = TF2_GetPlayerClass(client)
-			CancelClientMenu(client);
-			Menu_BuyUpgrade(client, 0);
-			CreateTimer(0.25, Timer_DelayedRespawn, EntIndexToEntRef(client));
-		}
-		CurrencySaved[client] = 0.0;
-		CurrencyOwned[client] = (StartMoney + additionalstartmoney);
-		for(int j = 0; j < Max_Attunement_Slots;j++)
-		{
-			SpellCooldowns[client][j] = 0.0;
-		}
+	replenishStatus = true;
+	for(int i = 1; i<=MaxClients;++i){
+		if(!IsValidClient(i))
+			continue;
+
+		ResetClientUpgrades(i);
+		TF2_RemoveAllWeapons(i)
 	}
+	CreateTimer(0.4, ResetClientsTimer);
 	DeleteSavedPlayerData();
 	failLock = false;
 }
 public Event_mvm_wave_failed(Handle event, const char[] name, bool:dontBroadcast)
 {
-	char oldMission[512];
+	char oldMission[256];
 	strcopy(oldMission, sizeof(oldMission), missionName);
 
 	int ObjectiveEntity = FindEntityByClassname(-1, "tf_objective_resource");
@@ -1347,7 +1326,7 @@ public Event_mvm_wave_failed(Handle event, const char[] name, bool:dontBroadcast
 		CreateTimer(0.2, WaveFailed);
 	}else{
 		PrintToServer("Mission Loaded");
-		CreateTimer(0.4, MissionLoaded);
+		CreateTimer(1.0, MissionLoaded);
 	}
 }
 public Event_mvm_wave_begin(Handle event, const char[] name, bool:dontBroadcast)
@@ -3781,13 +3760,14 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 	RespawnEffect(client);
 	currentDamageType[client].clear();
 	if(IsValidClient3(client)){
-
 		if(!IsFakeClient(client)){
 			CancelClientMenu(client);
 			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 			client_respawn_handled[client] = 1;
-			CreateTimer(0.4, WeaponReGiveUpgrades, GetClientUserId(client));
-			CancelClientMenu(client);
+
+			if(!replenishStatus)
+				CreateTimer(0.3, WeaponReGiveUpgrades, GetClientUserId(client));
+	
 			if(AreClientCookiesCached(client)){
 				char menuEnabled[64];
 				GetClientCookie(client, respawnMenu, menuEnabled, sizeof(menuEnabled));
