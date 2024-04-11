@@ -1736,14 +1736,6 @@ stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_
 			{
 				dpsMult *= Pow(1.05,TF2Attrib_GetValue(damageActive));
 			}
-			Address supernovaPowerup = TF2Attrib_GetByName(client, "spawn with physics toy");
-			if(supernovaPowerup != Address_Null)
-			{
-				float supernovaPowerupValue = TF2Attrib_GetValue(supernovaPowerup);
-				if(supernovaPowerupValue > 1.0){
-					dpsMult *= Pow(supernovaPowerupValue,3.0)
-				}
-			}
 			//Buffs
 			if(status)
 			{

@@ -580,8 +580,9 @@ public Action:Timer_Every100MS(Handle timer)
 				if(corrosiveDOT[client][i][0] != 0.0 && corrosiveDOT[client][i][1] >= 0.0)
 				{
 					corrosiveDOT[client][i][1] -= TICKINTERVAL*10.0;
+					
 					if(IsValidClient3(i))
-						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0]);
+						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],_,i);
 				}
 				if(IsOnDifferentTeams(client,i) && plagueActive && !TF2_IsPlayerInCondition(i, TFCond_Plague))
 				{

@@ -100,7 +100,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			}
 		}
 		Address supernovaPowerupVictim = TF2Attrib_GetByName(client, "supernova powerup");
-		if(supernovaPowerupVictim != Address_Null && TF2Attrib_GetValue(supernovaPowerupVictim) > 0.0)
+		if(supernovaPowerupVictim != Address_Null && TF2Attrib_GetValue(supernovaPowerupVictim) == 1.0)
 		{
 			SupernovaBuildup[client] += (damage/float(TF2_GetMaxHealth(client)));
 			if(SupernovaBuildup[client] > 1.0)
@@ -1326,7 +1326,7 @@ public Event_mvm_wave_failed(Handle event, const char[] name, bool:dontBroadcast
 		CreateTimer(0.2, WaveFailed);
 	}else{
 		PrintToServer("Mission Loaded");
-		CreateTimer(1.0, MissionLoaded);
+		CreateTimer(0.5, MissionLoaded);
 	}
 }
 public Event_mvm_wave_begin(Handle event, const char[] name, bool:dontBroadcast)

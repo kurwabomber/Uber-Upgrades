@@ -62,19 +62,18 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			{
 				if(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE)
 				{
-					damage = 0.0;
-					float burndmgMult = 1.0;
-					burndmgMult *= GetAttribute(weapon, "shot penetrate all players");
-					burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
-					burndmgMult *= GetAttribute(weapon, "weapon burn dmg reduced");
-					burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
-					burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
-					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-						burndmgMult *= 5;
-					damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
-					if(GetAttribute(victim, "inverter powerup", 0.0) == 1.0){
-						AddPlayerHealth(victim, RoundToFloor(damage/GetResistance(victim, true)), 2.0, true, 0);
+					if(GetAttribute(victim, "inverter powerup", 0.0) == 1.0)
 						damage *= 0.0;
+					else{
+						float burndmgMult = 1.0;
+						burndmgMult *= GetAttribute(weapon, "shot penetrate all players");
+						burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
+						burndmgMult *= GetAttribute(weapon, "weapon burn dmg reduced");
+						burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
+						burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
+						if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+							burndmgMult *= 5;
+						damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
 					}
 				}
 				if(InfernalEnchantmentDuration[attacker] >= currentGameTime){
@@ -306,6 +305,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
 		if(dmgReduction != 1.0)
 			damage *= dmgReduction
+
+		float linearReduction = GetAttribute(victim, "damage taken divided");
+		if(linearReduction != 1.0)
+			damage /= linearReduction;
 
 		if(IsValidClient(victim)){
 			if(fl_ArmorCap[victim] < 1.0)
@@ -719,9 +722,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			{
 				int guardianWeapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
 				if(IsValidWeapon(guardianWeapon)){
-					Address RedirectActive = TF2Attrib_GetByName(guardianWeapon, "mult cloak meter regen rate");
-					if(RedirectActive != Address_Null){
-						float redirect = TF2Attrib_GetValue(RedirectActive);
+					float redirect = GetAttribute(guardianWeapon, "mult cloak meter regen rate", 0.0) + GetAttribute(i, "mult cloak meter regen rate", 0.0);
+					if(redirect > 0.0){
 						SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
 						damage *= (1-redirect);
 					}
@@ -1572,7 +1574,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				}
 			}
 		}
-		if(GetAttribute(attacker, "supernova powerup",0.0) != 0.0)
+		if(GetAttribute(attacker, "supernova powerup", 0.0) == 1.0)
 		{
 			if(StrContains(getDamageCategory(currentDamageType[attacker], attacker),"blast",false) != -1)
 			{
@@ -2054,7 +2056,6 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 		Address dmgMasteryAddr = TF2Attrib_GetByName(attacker, "explosive damage affinity");
 		if(dmgMasteryAddr != Address_Null)
 			damage *= TF2Attrib_GetValue(dmgMasteryAddr)*TF2Attrib_GetValue(dmgMasteryAddr);
-		
 	}
 	else if(StrContains(damageCategory, "electric") != -1)
 	{

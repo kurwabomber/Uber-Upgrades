@@ -4517,7 +4517,7 @@
 			"increase_ratio"	"1.0"
 			"value"		"1"
 			"init"		"1"
-			"description"	"Divides total damage taken.\nFormula is damage/(DR*DRMult)^2.\nCheck stats page to see effectiveness."
+			"description"	"Divides total damage taken.\nFormula is damage/(DR*DRMult)^2.5\nCheck stats page to see effectiveness."
 			"display_style"	"2"
 			"max"		"1000"
 		}

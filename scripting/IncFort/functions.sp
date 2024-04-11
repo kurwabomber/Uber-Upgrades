@@ -19,7 +19,7 @@ float GetResistance(int client, bool includeReduction = false, float increaseBas
 		TotalResistance -= playerBuffs[client][getBuffInArray(client,Buff_BrokenArmor)].priority;
 	}
 	
-	TotalResistance *= TotalResistance;
+	TotalResistance = Pow(TotalResistance, 2.5);
 	if(includeReduction)
 	{
 		Address dmgReduction = TF2Attrib_GetByName(client, "sniper zoom penalty");
