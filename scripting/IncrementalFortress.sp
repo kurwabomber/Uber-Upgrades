@@ -41,7 +41,7 @@
 
 //Change to tickrate of how your server operates
 #define TICKINTERVAL 0.015
-#define TICKRATE 66.667
+#define TICKRATE 66.67
 
 #define MAXBUFFS 12
 
