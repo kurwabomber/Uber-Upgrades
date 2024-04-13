@@ -379,7 +379,7 @@ char missionName[512];
 char SpellList[][] = {"Zap","Lightning Strike","Projected Healing","A Call Beyond","Blacksky Eye","Sunlight Spear",
 "Lightning Enchantment","Snap Freeze","Arcane Prison","Darkmoon Blade","Speed Aura","Aerial Strike","Inferno",
 "Mine Field","Shockwave","Auto-Sentry","Soothing Sunlight","Arcane Hunter","Sabotage","Infernal Enchantment",
-"Splitting Thunder", "Antiseptic Blast", "Karmic Justice", "Snowstorm"}
+"Splitting Thunder", "Antiseptic Blast", "Karmic Justice", "Snowstorm"};
 
 //Bools
 bool inScore[MAXPLAYERS+1];
