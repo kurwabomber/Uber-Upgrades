@@ -132,7 +132,7 @@ public Action:Timer_FixedVariables(Handle timer)
 					float explosionRadius[] = {0.0, 300.0, 600.0, 1500.0};
 					float pos[3];
 					GetEntPropVector(client, Prop_Data, "m_vecOrigin", pos);
-					EntityExplosion(client, damageDealt, explosionRadius[spellLevel], pos, -1, false, client, _, _, _, _, _, _, _, DMG_FROST & DMG_ARCANE);
+					EntityExplosion(client, damageDealt, explosionRadius[spellLevel], pos, -1, false, client, _, _, _, _, _, _, _, DMG_FROST);
 					fl_CurrentFocus[client] -= fl_MaxFocus[client]*0.005/ArcanePower[client];
 				}else{
 					int particleEffect = EntRefToEntIndex(snowstormParticle[client]);
@@ -148,7 +148,7 @@ public Action:Timer_FixedVariables(Handle timer)
 				float immolationRatio = GetAttribute(CWeapon, "immolation ratio", 0.0);
 				if(immolationRatio > 0.0){
 					currentDamageType[client].second |= DMG_PIERCING
-					SDKHooks_TakeDamage(client, client, client, TF2Util_GetEntityMaxHealth(client)*immolationRatio*0.1, DMG_PREVENT_PHYSICS_FORCE + DMG_BURN);
+					SDKHooks_TakeDamage(client, client, client, TF2Util_GetEntityMaxHealth(client)*immolationRatio*0.1, DMG_PREVENT_PHYSICS_FORCE);
 				}
 			}
 			if(sunstarDuration[client] >= currentGameTime){
@@ -243,7 +243,7 @@ public Action:Timer_FixedVariables(Handle timer)
 			if(IsValidClient3(info.inflictor)){
 				if(info.severity > 0.0){
 					currentDamageType[info.inflictor].second |= DMG_PIERCING
-					SDKHooks_TakeDamage(client, info.inflictor, info.inflictor, TF2Util_GetEntityMaxHealth(info.inflictor)*info.severity*0.1, DMG_PREVENT_PHYSICS_FORCE + DMG_BURN);
+					SDKHooks_TakeDamage(client, info.inflictor, info.inflictor, TF2Util_GetEntityMaxHealth(info.inflictor)*info.severity*0.1, DMG_PREVENT_PHYSICS_FORCE);
 				}
 			}
 		}
@@ -620,7 +620,6 @@ public Action:Timer_Every100MS(Handle timer)
 			if(hasBuffIndex(client, Buff_InfernalDOT)){
 				Buff infernalDOT; infernalDOT = playerBuffs[client][getBuffInArray(client, Buff_InfernalDOT)];
 				if(client != infernalDOT.inflictor && IsValidClient3(infernalDOT.inflictor)){
-					currentDamageType[client].second |= DMG_ARCANE;
 					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, InfernalEnchantment[infernalDOT.inflictor]*0.07);
 					CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1, _, _, 0.6);
 				}
@@ -629,7 +628,7 @@ public Action:Timer_Every100MS(Handle timer)
 				Buff lifelink; lifelink = playerBuffs[client][getBuffInArray(client, Buff_LifeLink)];
 				if(IsValidClient3(lifelink.inflictor)){
 					currentDamageType[lifelink.inflictor].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025);
+					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025, DMG_PREVENT_PHYSICS_FORCE);
 				}
 			}
 
@@ -638,7 +637,7 @@ public Action:Timer_Every100MS(Handle timer)
 			{
 				//Deal 3 piercing damage to plagued opponents.
 				currentDamageType[inflictor].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(client, inflictor, inflictor, 3.0);
+				SDKHooks_TakeDamage(client, inflictor, inflictor, 3.0, DMG_PREVENT_PHYSICS_FORCE);
 			}
 			if(IsValidEdict(CWeapon))
 			{

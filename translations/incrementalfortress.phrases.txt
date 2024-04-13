@@ -1,5 +1,89 @@
 "Phrases"
 {
+	"damage mult 2"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 3"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 4"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 5"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 6"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 7"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 8"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 9"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 10"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 11"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 12"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 13"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 14"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage mult 15"
+	{
+		"en"		"★ Damage Multiplier ★"
+	}
+	"damage taken mult 1"
+	{
+		"en"		"Damage Resistance"
+	}
+	"damage taken mult 2"
+	{
+		"en"		"Damage Resistance"
+	}
+	"damage taken mult 3"
+	{
+		"en"		"Damage Resistance"
+	}
+	"damage taken mult 4"
+	{
+		"en"		"Damage Resistance"
+	}
+	"explosive bullets"
+	{
+		"en"		"Explosive Bullets"
+	}
+	"conference call damage"
+	{
+		"en"		"Crossfire Damage %%"
+	}
+	"firerate player buff"
+	{
+		"en"		"Firerate Multiplier"
+	}
 	"Ability : Airstrike"
 	{
 		"en"		"Ability : Airstrike"
@@ -2896,7 +2980,7 @@
 	{
 		"en"		"Projectiles Bounce Count"
 	}
-	"armor piercing damage"
+	"damage mult 1"
 	{
 		"en"		"★ Damage Multiplier ★"
 	}

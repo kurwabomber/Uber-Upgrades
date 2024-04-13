@@ -151,7 +151,7 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"additive piercing damage"		"300"
+			"additive piercing damage"		"100"
 			"damage causes freeze"			"150"
 			"Crit Damage Bonus"				"10.0"
 		}
@@ -176,7 +176,7 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"additive piercing damage"		"30"
+			"additive piercing damage"		"10"
 			"damage causes freeze"			"200"
 			"Crit Damage Bonus"				"5.0"
 			"bleeding duration"				"5"
@@ -206,7 +206,7 @@
 			"Afterburn Tick Rate"			"5.0"
 			"minicrit vs burning player"	"1.0"
 			"sticky recursive explosion chance"		"2.5"
-			"additive piercing damage"		"40.0"
+			"additive piercing damage"		"12.0"
 		}
 		"Rockets' Red Glare"
 		{
@@ -265,7 +265,7 @@
 			"restriction"					"1"
 			"Fully Charged Shots Ricochet"	"3"
 			"mult sniper charge after headshot"	"75"
-			"additive piercing damage"		"70"
+			"additive piercing damage"		"20"
 		}
 		"Weapon Inheritance"
 		{
@@ -287,7 +287,7 @@
 			"lifesteal to team"				"6"
 			"lifesteal effectiveness"		"3"
 			"Mad Milk On Hit Duration"		"5"
-			"additive piercing damage"		"40"
+			"additive piercing damage"		"10"
 		}
 		"Maelstrom Charge"
 		{
@@ -304,7 +304,7 @@
 			"restriction"					"1"
 			"jar applies armor decay"		"10"
 			"jar gives armor penetration"	"3"
-			"additive piercing damage"		"70"
+			"additive piercing damage"		"30"
 		}
 		"Human Stronghold"
 		{
@@ -343,7 +343,7 @@
 			"immolation ratio"				"2"
 			"Afterburn Tick Rate"			"3"
 			"dmg per pct hp missing"		"0.1"
-			"additive piercing damage"		"40"
+			"additive piercing damage"		"10"
 		}
 		"Fireworks"
 		{
@@ -410,7 +410,7 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"chain lightning meter on hit"	"10"
-			"additive piercing damage"		"15"
+			"additive piercing damage"		"8"
 			"Radiation Buildup"				"3"
 		}
 		"Sunstar"

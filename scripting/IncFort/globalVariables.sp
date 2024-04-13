@@ -333,7 +333,7 @@ float weaponArtCooldown[MAXPLAYERS+1];
 float weaponArtParticle[MAXPLAYERS+1];
 float powerupParticle[MAXPLAYERS+1];
 float hitParticle[MAXPLAYERS+1];
-float spellScaling[] = {0.0,2.45,2.55,2.65};
+float spellScaling[] = {0.0,2.25,2.35,2.45};
 float BotTimer[MAXPLAYERS+1];
 float LastCharge[MAXPLAYERS+1];
 float lastDamageTaken[MAXPLAYERS+1];

@@ -486,7 +486,6 @@ CastAntisepticBlast(client, attuneSlot)
 		if(!IsPointVisible(clientpos,VictimPos))
 			continue;
 
-		currentDamageType[client].second |= DMG_ARCANE;
 		SDKHooks_TakeDamage(i,client,client,LightningDamage * (1.0 + 0.5*GetAmountOfDebuffs(i)),_,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 	}
 }
@@ -690,7 +689,6 @@ CastSnapFreeze(client, attuneSlot)
 			continue;
 
 		currentDamageType[client].second |= DMG_FROST;
-		currentDamageType[client].second |= DMG_ARCANE;
 		SDKHooks_TakeDamage(i,client,client,damage,DMG_BULLET,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 		if(IsValidClient3(i))
 		{
@@ -1396,7 +1394,6 @@ public Action:ArcaneHunter(Handle timer, client)
 		if(!IsPointVisible(clientpos,VictimPos))
 			continue;
 
-		currentDamageType[client].second |= DMG_ARCANE;
 		SDKHooks_TakeDamage(i,client,client,LightningDamage,1073741824,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 	}
 }
@@ -1751,7 +1748,6 @@ CastLightning(client, attuneSlot)
 			if(!IsPointVisible(clientpos,VictimPos))
 				continue;
 
-			currentDamageType[client].second |= DMG_ARCANE;
 			SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
 			
 			if(IsValidClient3(i))

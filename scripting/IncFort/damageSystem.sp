@@ -300,7 +300,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		}
 	}
 
-	if(!(currentDamageType[attacker].second & DMG_PIERCING))
+	if(!(damagetype == DMG_PREVENT_PHYSICS_FORCE && currentDamageType[attacker].second & DMG_PIERCING))
 	{
 		float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
 		if(dmgReduction != 1.0)
@@ -539,7 +539,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 				if(damage >= TF2Util_GetEntityMaxHealth(victim) * 0.4){
 					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim))
+					SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE)
 
 					currentDamageType[victim].second |= DMG_PIERCING;
 					SDKHooks_TakeDamage(attacker, victim, victim, 0.05*TF2Util_GetEntityMaxHealth(attacker), DMG_PREVENT_PHYSICS_FORCE);
@@ -548,7 +548,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					critStatus[victim] = true;
 					damage = bruisedDamage;
 					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(victim, attacker, attacker, 0.25*TF2Util_GetEntityMaxHealth(victim))
+					SDKHooks_TakeDamage(victim, attacker, attacker, 0.25*TF2Util_GetEntityMaxHealth(victim), DMG_PREVENT_PHYSICS_FORCE)
 				}
 			}
 		}
@@ -603,7 +603,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		}
 
 		Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
-		if(bleedBuild != Address_Null)
+		if(bleedBuild != Address_Null && !(damagetype & DMG_PREVENT_PHYSICS_FORCE))
 		{
 			float bleedAdd = TF2Attrib_GetValue(bleedBuild);
 			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
@@ -653,41 +653,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			StunShotStun[attacker] = false;
 			TF2_StunPlayer(victim, 1.5, 1.0, TF_STUNFLAGS_NORMALBONK, attacker);
 		}
-		if(!(damagetype & DMG_ENERGYBEAM))
-		{
-			float clientpos[3], targetpos[3];
-			GetClientAbsOrigin(attacker, clientpos);
-			GetClientAbsOrigin(victim, targetpos);
-			float distance = GetVectorDistance(clientpos, targetpos);
-			if(distance > 512.0)
-			{
-				Address FalloffIncrease = TF2Attrib_GetByName(weapon, "dmg falloff increased");
-				if(FalloffIncrease != Address_Null)
-				{
-					if(TF2Attrib_GetValue(FalloffIncrease) != 1.0)
-					{
-						float Max = 1024.0; //the maximum units that the player and target is at (assuming you've already gotten the vectors)
-						if(distance > Max)
-						{
-							distance = Max;
-						}
-						float MinFallOffDist = 512.0 / (TF2Attrib_GetValue(FalloffIncrease) - 0.48); //the minimum units that the player and target is at (assuming you've already gotten the vectors) 
-						float base = damage; //base becomes the initial damage
-						float multiplier = (MinFallOffDist / Max); //divides the minimal distance with the maximum you've set
-						float falloff = (multiplier * base);  //this is to get how much the damage will be at maximum distance
-						float Sinusoidal = ((falloff-base) / (Max-MinFallOffDist));  //does slope formula to get a sinusoidal fall off
-						float intercept = (base - (Sinusoidal*MinFallOffDist));  //this calculation gets the 'y-intercept' to determine damage ramp up
-						damage = ((Sinusoidal*distance)+intercept); //gets final damage by taking the slope formula, multiplying it by your vectors, and adds the damage ramp up Y intercept. 
-					}
-					//Debug.
-					//PrintToChat(attacker, "%.2f multiplier", multiplier);
-					//PrintToChat(attacker, "%.2f falloff", falloff);
-					//PrintToChat(attacker, "%.2f Sinusoidal", Sinusoidal);
-					//PrintToChat(attacker, "%.2f intercept", intercept);
-					//PrintToChat(attacker, "%.2f damage", damage);
-				}
-			}
-		}
 
 		Address ReflectActive = TF2Attrib_GetByName(victim, "extinguish restores health");
 		if(ReflectActive != Address_Null)
@@ -704,43 +669,44 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 		float victimPos[3];
 		GetClientEyePosition(victim,victimPos);
-		
-		for(int i = 1; i <= MaxClients; ++i)
-		{
-			if(!IsValidClient3(i))
-				continue;
-			if(!IsPlayerAlive(i))
-				continue;
-			if(GetClientTeam(i) != GetClientTeam(victim))
-				continue;
-			if(i == victim)
-				continue;
 
-			float guardianPos[3];
-			GetClientEyePosition(i,guardianPos);
-			if(GetVectorDistance(victimPos,guardianPos, true) < 1960000)
+		//Prevent piercing damage from being guardian'd
+		if(!(damagetype == DMG_PREVENT_PHYSICS_FORCE && currentDamageType[attacker].second & DMG_PIERCING)){
+			for(int i = 1; i <= MaxClients; ++i)
 			{
-				int guardianWeapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
-				if(IsValidWeapon(guardianWeapon)){
-					float redirect = GetAttribute(guardianWeapon, "mult cloak meter regen rate", 0.0) + GetAttribute(i, "mult cloak meter regen rate", 0.0);
-					if(redirect > 0.0){
-						SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
-						damage *= (1-redirect);
-					}
-				}
-				if(damage > GetClientHealth(victim) && GetAttribute(i, "king powerup", 0.0) == 3.0){
-					SDKHooks_TakeDamage(i, attacker, attacker, damage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
+				if(!IsValidClient3(i))
+					continue;
+				if(!IsPlayerAlive(i))
+					continue;
+				if(GetClientTeam(i) != GetClientTeam(victim))
+					continue;
+				if(i == victim)
+					continue;
 
-					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(i, attacker, attacker, GetClientHealth(i) * 0.15, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
-					damage *= 0.0;
-					TF2_AddCondition(victim, TFCond_UberchargedCanteen, 0.5, i);
-					TF2_AddCondition(i, TFCond_UberchargedCanteen, 0.1, i);
-					break;
+				float guardianPos[3];
+				GetClientEyePosition(i,guardianPos);
+				if(GetVectorDistance(victimPos,guardianPos, true) < 1960000)
+				{
+					int guardianWeapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
+					if(IsValidWeapon(guardianWeapon)){
+						float redirect = GetAttribute(guardianWeapon, "mult cloak meter regen rate", 0.0) + GetAttribute(i, "mult cloak meter regen rate", 0.0);
+						if(redirect > 0.0){
+							SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect,DMG_PREVENT_PHYSICS_FORCE, -1, NULL_VECTOR, NULL_VECTOR);
+							damage *= (1-redirect);
+						}
+					}
+					if(damage > GetClientHealth(victim) && GetAttribute(i, "king powerup", 0.0) == 3.0){
+						SDKHooks_TakeDamage(i, attacker, attacker, damage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM), -1, NULL_VECTOR, NULL_VECTOR);
+						currentDamageType[attacker].second |= DMG_PIERCING;
+						SDKHooks_TakeDamage(i, attacker, attacker, GetClientHealth(i) * 0.15, DMG_PREVENT_PHYSICS_FORCE, -1, NULL_VECTOR, NULL_VECTOR);
+						damage *= 0.0;
+						TF2_AddCondition(victim, TFCond_UberchargedCanteen, 0.5, i);
+						TF2_AddCondition(i, TFCond_UberchargedCanteen, 0.1, i);
+						break;
+					}
 				}
 			}
 		}
-		
 		if(HasEntProp(VictimCWeapon, Prop_Send, "m_hHealingTarget") && miniCritStatusVictim[victim] < currentGameTime){
 			if(GetAttribute(VictimCWeapon, "escape plan healing", 0.0)){
 				int healingTarget = GetEntPropEnt(VictimCWeapon, Prop_Send, "m_hHealingTarget");
@@ -769,7 +735,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
 		if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat()){
 			currentDamageType[attacker].second |= DMG_PIERCING;
-			SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim));
+			SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE);
 			EmitSoundToAll(DetonatorExplosionSound, victim);
 		}
 	}
@@ -1376,7 +1342,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			float additivePiercingDamage = GetAttribute(weapon, "additive piercing damage", 0.0);
 			if(additivePiercingDamage != 0){
 				currentDamageType[attacker].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(victim, inflictor, attacker, additivePiercingDamage);
+				SDKHooks_TakeDamage(victim, inflictor, attacker, additivePiercingDamage, DMG_PREVENT_PHYSICS_FORCE);
 			}
 		}
 
@@ -2011,7 +1977,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			{
 				//Deal 3 piercing damage.
 				currentDamageType[attacker].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(victim, attacker, attacker, 3.0, DMG_GENERIC, weapon);
+				SDKHooks_TakeDamage(victim, attacker, attacker, 3.0, DMG_PREVENT_PHYSICS_FORCE, weapon);
 			}
 		}
 	}
@@ -2047,7 +2013,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 					continue;
 				
 				currentDamageType[attacker].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(victim, attacker, attacker, piercingDamage, DMG_GENERIC, weapon);
+				SDKHooks_TakeDamage(victim, attacker, attacker, piercingDamage, DMG_PREVENT_PHYSICS_FORCE, weapon);
 			}
 		}
 	}

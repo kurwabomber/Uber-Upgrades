@@ -364,7 +364,7 @@
 		"3"
 		{
 			"name"		"damage mult 1"
-			"ref"		"armor piercing damage"
+			"ref"		"damage mult 1"
 			"increase_ratio" "0.07"
 			"cost"		"0"
 			"value"		"0.30"
@@ -4517,7 +4517,7 @@
 			"increase_ratio"	"1.0"
 			"value"		"1"
 			"init"		"1"
-			"description"	"Divides total damage taken.\nFormula is damage/(DR*DRMult)^2.5\nCheck stats page to see effectiveness."
+			"description"	"Divides total damage taken.\nFormula is damage/(DR*DRMult)^2\nCheck stats page to see effectiveness."
 			"display_style"	"2"
 			"max"		"1000"
 		}
@@ -5751,6 +5751,16 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1625.5"
+		{
+			"name"	"explosive bullets"
+			"ref"	"explosive bullets"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"0"
+			"init"		"0"
+			"max"		"0"
+		}
 		"1626"
 		{
 			"name"		"medigun attack enemy"
@@ -6272,6 +6282,241 @@
 		{
 			"name"		"dmg per pct hp missing"
 			"ref"		"dmg per pct hp missing"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1680"
+		{
+			"name"		"firerate player buff"
+			"ref"		"firerate player buff"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1681"
+		{
+			"name"		"conference call damage"
+			"ref"		"conference call damage"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		//Filler
+		"1900.0"
+		{
+			"name"		"damage mult 2"
+			"ref"		"damage mult 2"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.1"
+		{
+			"name"		"damage mult 3"
+			"ref"		"damage mult 3"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 4"
+			"ref"		"damage mult 4"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 5"
+			"ref"		"damage mult 5"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 6"
+			"ref"		"damage mult 6"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 7"
+			"ref"		"damage mult 7"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 8"
+			"ref"		"damage mult 8"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 9"
+			"ref"		"damage mult 9"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 10"
+			"ref"		"damage mult 10"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 11"
+			"ref"		"damage mult 11"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 12"
+			"ref"		"damage mult 12"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 13"
+			"ref"		"damage mult 13"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 14"
+			"ref"		"damage mult 14"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage mult 15"
+			"ref"		"damage mult 15"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage taken mult 1"
+			"ref"		"damage taken mult 1"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage taken mult 2"
+			"ref"		"damage taken mult 2"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage taken mult 3"
+			"ref"		"damage taken mult 3"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"damage taken mult 4"
+			"ref"		"damage taken mult 4"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"movespeed player buff"
+			"ref"		"movespeed player buff"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"sentry amount"
+			"ref"		"sentry amount"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"sentry amount"
+			"ref"		"sentry amount"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"sentry amount"
+			"ref"		"sentry amount"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"sentry amount"
+			"ref"		"sentry amount"
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1900.2"
+		{
+			"name"		"sentry amount"
+			"ref"		"sentry amount"
 			"cost"		"0"
 			"value"		"0.1"
 			"init"		"0.00"

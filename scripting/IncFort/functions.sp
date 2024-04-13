@@ -19,7 +19,7 @@ float GetResistance(int client, bool includeReduction = false, float increaseBas
 		TotalResistance -= playerBuffs[client][getBuffInArray(client,Buff_BrokenArmor)].priority;
 	}
 	
-	TotalResistance = Pow(TotalResistance, 2.5);
+	TotalResistance *= TotalResistance;
 	if(includeReduction)
 	{
 		Address dmgReduction = TF2Attrib_GetByName(client, "sniper zoom penalty");
@@ -1391,9 +1391,10 @@ RespawnEffect(client)
 		DarkmoonBladeDuration[client] = 0.0;
 		TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
 		TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
+		TF2Attrib_SetByName(client,"airblast_destroy_projectile", 1.0);
 		TF2Attrib_SetByName(client,"ignores other projectiles", 1.0);
 		TF2Attrib_SetByName(client,"penetrate teammates", 1.0);
-		TF2Attrib_SetByName(client, "no damage view flinch", 1.0);
+		TF2Attrib_SetByName(client,"no damage view flinch", 1.0);
 		CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
 		CreateTimer(0.2,GiveMaxAmmo,GetClientUserId(client));
 	}
