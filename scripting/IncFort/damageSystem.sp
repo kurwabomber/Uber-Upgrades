@@ -707,31 +707,31 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		if(HasEntProp(VictimCWeapon, Prop_Send, "m_hHealingTarget") && miniCritStatusVictim[victim] < currentGameTime){
-			if(GetAttribute(VictimCWeapon, "escape plan healing", 0.0)){
-				int healingTarget = GetEntPropEnt(VictimCWeapon, Prop_Send, "m_hHealingTarget");
-				if(IsValidClient3(healingTarget)){
-					int medicHealth = GetClientHealth(victim);
-					int patientHealth = GetClientHealth(victim);
-					if(patientHealth > medicHealth && medicHealth - damage <= 10.0){
-						SetEntityHealth(victim, patientHealth);
-						SetEntityHealth(healingTarget, medicHealth);
-						miniCritStatusVictim[victim] = currentGameTime + 10.0;
-						damage *= 0.25;
+		if(IsValidWeapon(VictimCWeapon)){
+			if(HasEntProp(VictimCWeapon, Prop_Send, "m_hHealingTarget") && miniCritStatusVictim[victim] < currentGameTime){
+				if(GetAttribute(VictimCWeapon, "escape plan healing", 0.0)){
+					int healingTarget = GetEntPropEnt(VictimCWeapon, Prop_Send, "m_hHealingTarget");
+					if(IsValidClient3(healingTarget)){
+						int medicHealth = GetClientHealth(victim);
+						int patientHealth = GetClientHealth(victim);
+						if(patientHealth > medicHealth && medicHealth - damage <= 10.0){
+							SetEntityHealth(victim, patientHealth);
+							SetEntityHealth(healingTarget, medicHealth);
+							miniCritStatusVictim[victim] = currentGameTime + 10.0;
+							damage *= 0.25;
+						}
 					}
 				}
 			}
+			float teamTacticsRatio = GetAttribute(VictimCWeapon, "savior sacrifice attribute", 0.0);
+			if(teamTacticsRatio > 0.0)
+				TeamTacticsBuildup[victim] += teamTacticsRatio * damage / TF2Util_GetEntityMaxHealth(victim);
+			}
 		}
-		
 		if(damagecustom == TF_CUSTOM_HEADSHOT){
 			if(GetAttribute(weapon, "mult sniper charge after headshot", 0.0))
 				savedCharge[attacker] = GetAttribute(weapon, "mult sniper charge after headshot", 0.0);
-		}
-		float teamTacticsRatio = GetAttribute(VictimCWeapon, "savior sacrifice attribute", 0.0);
-		if(teamTacticsRatio > 0.0)
-			TeamTacticsBuildup[victim] += teamTacticsRatio * damage / TF2Util_GetEntityMaxHealth(victim);
 
-		
 		float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
 		if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat()){
 			currentDamageType[attacker].second |= DMG_PIERCING;
