@@ -1030,7 +1030,7 @@ public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 				{
 					CPrintToChat(client, " ");
 					CPrintToChat(client, "{valve}Wiki {white}| Upgrades in Incremental Fortress have a base cost, increase ratio, value, initial value & max.\n You can buy these upgrades with the console command 'menuselect' or 'qbuy'.");
-					CPrintToChat(client, "{valve}Wiki {white}| Using menuselect means to choose whatever selection by console. qbuy is to bulk buy an upgrade or tweak. It follows the same style as menuselect, for example : qbuy 1 1 1 100 would buy health 100 times.");
+					CPrintToChat(client, "{valve}Wiki {white}| Using menuselect means to choose whatever selection by console. Using crouch multiplies purchases by 10x, reload multiplies by 100x, and jump key inverts to negative to refund.");
 					CPrintToChat(client, "{valve}Wiki {white}| ★ Damage Multiplier ★ upgrades do not increase in cost. ");
 					CPrintToChat(client, " ");
 				}
@@ -1038,7 +1038,6 @@ public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 				{
 					CPrintToChat(client, " ");
 					CPrintToChat(client, "{valve}Wiki {white}| Damage upgrades are all multiplicative with each other.");
-					CPrintToChat(client, "{valve}Wiki {white}| 'Exponential damage boost' is their effect to the power of 5. ie : +70%% exponential damage boost would be equal to 14.2 times damage.");
 					CPrintToChat(client, "{valve}Wiki {white}| 'Life Steal Ability' takes the post-damage dealt of an attack, then divides it by 10, then multiplies is by the attribute's value, and returns it as healing.");
 					CPrintToChat(client, "{valve}Wiki {white}| Many attributes are meant to scale universally regardless of weapon changes. For example, bullets per shot increases damage of rocket weapons as well.");
 					CPrintToChat(client, " ");
@@ -1047,16 +1046,16 @@ public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 				{
 					CPrintToChat(client, " ");
 					CPrintToChat(client, "{valve}Wiki {white}| The armor calculation is an exponential divisor to damage taken.");
-					CPrintToChat(client, "{valve}Wiki {white}| The divisor formula without armor percentage taken into account is | damage = damage/(DamageReduction*DamageReductionMultiplier)^2.35");
-					CPrintToChat(client, "{valve}Wiki {white}| This effect however, is modified to scale with how much armor supply you have VS your maximum armor supply. This effect is capped to a 99%% reduction.");
+					CPrintToChat(client, "{valve}Wiki {white}| The divisor formula is | damage = damage/(DamageReduction*DamageReductionMultiplier)^2");
+					CPrintToChat(client, "{valve}Wiki {white}| Subtractions/additions to armor via statuses affect the DamageReduction*DamageReductionMultiplier part of the formula.");
 					CPrintToChat(client, " ");
 				}
 				case 3:
 				{
 					CPrintToChat(client, " ");
-					CPrintToChat(client, "{valve}Wiki {white}| Special Tweaks are sidegrades to weapons. Some of them have removable downgrades such as 'Fast Shot', but mostly they cannot be removed due to their extremely strong effects.");
+					CPrintToChat(client, "{valve}Wiki {white}| Special Tweaks are stage locked upgrades that are incompatible with each other, and have a great increase to the overall power of a weapon.");
 					CPrintToChat(client, "{valve}Wiki {white}| By going to the 'Upgrade Manager' on the front page of the menu, you can remove the downgrades or remove any upgrades you need to refund.");
-					CPrintToChat(client, "{valve}Wiki {white}| Special Tweaks can have requirements and costs. If the tweak has a requirement, you cannot refund your weapon below that spent cost. Generally those are buffs as well.");
+					CPrintToChat(client, "{valve}Wiki {white}| Special Tweaks can have requirements and costs. If the tweak has a requirement, you cannot refund your weapon below that spent cost.");
 					CPrintToChat(client, " ");
 				}
 				case 4:
@@ -1074,55 +1073,18 @@ public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 					CPrintToChat(client, " ");
 					CPrintToChat(client, "{valve}Wiki {white}| Dragon's Breath is the ability for the Dragon's Fury. Shoots 5 high gravity bouncing fireballs that deal 35 base DPS.");
 					CPrintToChat(client, "{valve}Wiki {white}| Dash is the ability for The Winger, it re-directs your movement up to 3x of it's base max. Vertical velocity is decreased by -25%%.");
+					CPrintToChat(client, "{valve}Wiki {white}| Sunstar is the ability for short circuit tweak, it deals 10 base DPS per beam every 0.1s and automatically aims. For every 500 metal consumed, you gain +1s of duration.");
+					CPrintToChat(client, "{valve}Wiki {white}| Immolation is the ability for gas passer tweak, dealing 20% maxHP/s (of your maxhp) to you and targets lit by gas passer.");
 					CPrintToChat(client, " ");
 				}
 				case 6:
 				{
 					CPrintToChat(client, " ");
 					CPrintToChat(client, "{valve}Wiki {white}| Arcane are spells that are triggered through the 'Use Arcane Spells' category. They have exponential scaling which allows them to compete with weapons and armor upgrades. ");
-					CPrintToChat(client, "{valve}Wiki {white}| ie : Zap has a formula of '(20.0 + ((ArcaneDamage * (ArcanePower^4.0))^2.45) * 3.0))'. Zap can also chain-trigger the effect with a 30%% chance.");
-					CPrintToChat(client, "{valve}Wiki {white}| All arcanes follow the formula to this, except the base damage and scaling change, which is the '20.0' and the '3.0' in the zap formula respectively.");
+					CPrintToChat(client, "{valve}Wiki {white}| ie : Zap has a formula of '(20.0 + ((ArcaneDamage * (ArcanePower^4.0))^2.25) * 3.0))'. Zap can also chain-trigger the effect with a 30%% chance.");
+					CPrintToChat(client, "{valve}Wiki {white}| All arcanes follow the formula [baseDMG + (ArcaneDMG * ArcanePower^4)^(2.15+0.1*Spelllvl) * scaling]");
 					CPrintToChat(client, "{valve}Wiki {white}| Arcane Power exponentially increases your Arcane Damage total, increases regeneration, max focus, decreases cooldowns, and buff durations.");
 					CPrintToChat(client, "{valve}Wiki {white}| You can add key bindings for arcane usage by using 'sm_arcane #'. ie: 'sm_arcane 2' will use your second arcane spell attuned.");
-					CPrintToChat(client, " ");
-				}
-				case 7:
-				{
-					CPrintToChat(client, " ");
-					CPrintToChat(client, "{valve}Wiki {white}| Zap has a formula of 20 base, 3 scaling. Zap can also chain-trigger the effect with a 30%% chance. CD is 0.1s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Lightning Strike has a formula of 200 base, 80 scaling. It will apply a DOT that deals 2%% of it's main damage, but 20 times over 2 seconds. CD is 11s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Projected Healing heals for 20%% of the caster's max HP with overheal. 135%% of that healing is also turned into healing armor. It applies an additional boost to armor recharge for 3 seconds. CD is 15s.");
-					CPrintToChat(client, "{valve}Wiki {white}| A Call Beyond shoots 25 explosive homing bolts that deal 90 base, 120 scaling damage each. Cast time is 1.5s. CD is 50s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Blacksky Eye shoots an explosive homing bolt that deals 10 base, 7.5 scaling damage each. CD is 0.3s.");
-					CPrintToChat(client, " ");
-				}
-				case 8:
-				{
-					CPrintToChat(client, " ");
-					CPrintToChat(client, "{valve}Wiki {white}| Sunlight spear is a fast arrow-style projectile that deals 100 base and 40 scaling. CD is 0.4s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Lightning Enchantment deals 10 base, 4 scaling. However, this is multiplied by 20 and then divided by the fire rate of the weapon proportional to dps boost. (always same DPS). CD is 30s, lasts 20s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Darkmoon Blade deals 10 base, 3.5 scaling. This is applied to only melee attacks. CD is 25s, lasts 20s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Snap Freeze deals 100 base, 60 scaling within a 500HU radius of you. Stuns targets for 0.4s. Also massively increases your dodge chance for 0.4s. CD is 9s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Arcane Prison binds targets together and deals 10 base, 5 scaling each tick of damage. Also increases the radiation meter on targets. CD is 20s.");
-					CPrintToChat(client, " ");
-				}
-				case 9:
-				{
-					CPrintToChat(client, " ");
-					CPrintToChat(client, "{valve}Wiki {white}| Scout | Speed Aura | Gives a speed bonus and the agility rune effects for 8s. Also gives massively increased dodge chance for 1.5s. CD is 35s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Soldier | Aerial Strike | Summons 30 rockets in an array that deal 90 base and 25 scaling. CD is 60s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Pyro | Inferno | Applies a DOT that deals 20 base and 12.5 scaling 20 times every 0.12s. Radius is 800 HU. CD is 60s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Demoman | Mine Field | Summons 20 grenades that explode when enemies are within 300HU. Deals 90 base, 6.5 scaling. For every second, the grenades increase in damage by +35%% with a max of 20s. CD is 50s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Heavy | Shockwave | Deals 100 base and 60 scaling within a 500HU radius. Stuns for 2.25s and pushes them away 900HU. CD is 20s.");
-					CPrintToChat(client, " ");
-				}
-				case 10:
-				{
-					CPrintToChat(client, " ");
-					CPrintToChat(client, "{valve}Wiki {white}| Engineer | Auto Sentry | Connects a sentry to your head that deals the same damage as a LVL 3 sentry. CD is 120s and lasts 10s regardless of arcane power.");
-					CPrintToChat(client, "{valve}Wiki {white}| Medic | Soothing Sunlight | Cast time is 4s. Within a 1350HU radius, heal everyone for 4x your health and give 3x your healing as armor. Gives an additional +100%% armor buff to your teammates. Boosts armor regen by 2x for 6.5s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Sniper | Arcane Hunter | Deals 200 base 80 scaling 5x over 2 seconds. Has a splash radius and also autoaims in a 10 degree radius. CD is 30s.");
-					CPrintToChat(client, "{valve}Wiki {white}| Spy | Sabotage | Applies sapped effect to enemies around cursor in a 900HU radius. -50%% speed and jump height, lasts 10s. If the target is a building, it'll be disabled for 5s. CD is 25s.");
 					CPrintToChat(client, " ");
 				}
 				default:
@@ -1132,7 +1094,6 @@ public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 			}
 		}
 		Menu_ShowWiki(client, GetMenuSelectionPosition());
-		CloseHandle(menu);
 	}
 	if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
 	{

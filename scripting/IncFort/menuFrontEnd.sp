@@ -736,17 +736,13 @@ Menu_ShowWiki(client, int item = 0)
 		
 		SetMenuExitBackButton(menu, true);
 		SetMenuTitle(menu, "★ Incremental Fortress Wiki ★");
-		AddMenuItem(menu, "UpgradeInfo", "Upgrades Walkthrough");
-		AddMenuItem(menu, "DamageInfo", "Damage Math Walkthrough");
-		AddMenuItem(menu, "ArmorInfo", "Armor Math Walkthrough");
-		AddMenuItem(menu, "SpecialTweaksInfo", "Special Tweaks Walkthrough");
+		AddMenuItem(menu, "UpgradeInfo", "Upgrades Explanation");
+		AddMenuItem(menu, "DamageInfo", "Damage Math Explanation");
+		AddMenuItem(menu, "ArmorInfo", "Armor Math Explanation");
+		AddMenuItem(menu, "SpecialTweaksInfo", "Special Tweaks Explanation");
 		AddMenuItem(menu, "SpecialAbilitiesInfo", "Special Abilities Explanation #1");
 		AddMenuItem(menu, "SpecialAbilitiesInfo2", "Special Abilities Explanation #2");
-		AddMenuItem(menu, "ArcaneInfo", "Arcane Walkthrough");
-		AddMenuItem(menu, "ArcaneInfo2", "Arcane Spells #1");
-		AddMenuItem(menu, "ArcaneInfo2", "Arcane Spells #2");
-		AddMenuItem(menu, "ArcaneInfo3", "Class Specific Arcanes #1");
-		AddMenuItem(menu, "ArcaneInfo4", "Class Specific Arcanes #2");
+		AddMenuItem(menu, "ArcaneInfo", "Arcane Explanation");
 		if (IsValidClient(client) && IsPlayerAlive(client))
 		{
 			DisplayMenuAtItem(menu, client, item, MENU_TIME_FOREVER);

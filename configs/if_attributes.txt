@@ -310,7 +310,7 @@
 			"value"		"1"
 			"init"		"0"
 			"staged_max"		"1,2,3"
-			"description"	"Gives 30s of Infernal Enchantment, which:\nGives +5% damage per second the victim has been on fire.\nMakes all attacks apply DOT for 100 arcane base DPS.\nDOT always deals 1% HP in damage."
+			"description"	"Gives 30s of Infernal Enchantment, which:\nMakes all attacks apply DOT for 100 arcane base DPS."
 			"max"		"1"
 		}
 		"1543.2"
