@@ -430,13 +430,13 @@ public Action:OnCollisionPhotoViscerator(entity, client)
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEdict(CWeapon))
 				{
-					float damage = TF2_GetDPSModifiers(owner,CWeapon)*10.0;
+					float damage = TF2_GetDPSModifiers(owner,CWeapon)*25.0;
 					Address lameMult = TF2Attrib_GetByName(CWeapon, "dmg penalty vs players");
 					if(lameMult != Address_Null)//lame. AP applies twice.
 					{
 						damage /= TF2Attrib_GetValue(lameMult);
 					}
-					DOTStock(client,owner,1.0,CWeapon,DMG_BURN + DMG_PREVENT_PHYSICS_FORCE,20,0.5,0.2,true);
+					DOTStock(client,owner,2.5,CWeapon,DMG_BURN + DMG_PREVENT_PHYSICS_FORCE,20,0.5,0.2,true);
 					SDKHooks_TakeDamage(client,owner,owner,damage,DMG_BURN,CWeapon, NULL_VECTOR, NULL_VECTOR);
 				}
 				float pos[3]
@@ -573,7 +573,7 @@ public Action:OnCollisionPiercingRocket(entity, client)
 				int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 				if(IsValidEdict(CWeapon))
 				{
-					float damageDealt = 150.0 * TF2_GetDamageModifiers(owner, CWeapon);
+					float damageDealt = 70.0 * TF2_GetDamageModifiers(owner, CWeapon);
 					
 					float clientpos[3], targetpos[3];
 					GetEntPropVector(owner, Prop_Data, "m_vecAbsOrigin", clientpos);
@@ -581,18 +581,9 @@ public Action:OnCollisionPiercingRocket(entity, client)
 					float distance = GetVectorDistance(clientpos, targetpos);
 					if(distance > 512.0)
 					{
-						float Max = 1024.0; //the maximum units that the player and target is at (assuming you've already gotten the vectors)
-						if(distance > Max)
-						{
-							distance = Max;
-						}
-						float MinFallOffDist = 512.0 / (2.0 - 0.48); //the minimum units that the player and target is at (assuming you've already gotten the vectors) 
-						float base = damageDealt; //base becomes the initial damage
-						float multiplier = (MinFallOffDist / Max); //divides the minimal distance with the maximum you've set
-						float falloff = (multiplier * base);  //this is to get how much the damage will be at maximum distance
-						float Sinusoidal = ((falloff-base) / (Max-MinFallOffDist));  //does slope formula to get a sinusoidal fall off
-						float intercept = (base - (Sinusoidal*MinFallOffDist));  //this calculation gets the 'y-intercept' to determine damage ramp up
-						damageDealt = ((Sinusoidal*distance)+intercept); //gets final damage by taking the slope formula, multiplying it by your vectors, and adds the damage ramp up Y intercept. 
+						if(distance > 1024.0)
+							distance = 1024.0;
+						damageDealt *= (512.0/distance);
 					}
 					EntityExplosion(owner, damageDealt, 144.0, origin, 0, true, entity, _, _,_,0.5)
 				}

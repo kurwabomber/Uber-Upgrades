@@ -1071,7 +1071,7 @@ public MenuHandler_Wiki(Handle menu, MenuAction:action, client, param2)
 				case 5:
 				{
 					CPrintToChat(client, " ");
-					CPrintToChat(client, "{valve}Wiki {white}| Dragon's Breath is the ability for the Dragon's Fury. Shoots 5 high gravity bouncing fireballs that deal 35 base DPS.");
+					CPrintToChat(client, "{valve}Wiki {white}| Dragon's Breath is the ability for the Dragon's Fury. Shoots 5 bouncing fireballs that deal 35 base DPS.");
 					CPrintToChat(client, "{valve}Wiki {white}| Dash is the ability for The Winger, it re-directs your movement up to 3x of it's base max. Vertical velocity is decreased by -25%%.");
 					CPrintToChat(client, "{valve}Wiki {white}| Sunstar is the ability for short circuit tweak, it deals 10 base DPS per beam every 0.1s and automatically aims. For every 500 metal consumed, you gain +1s of duration.");
 					CPrintToChat(client, "{valve}Wiki {white}| Immolation is the ability for gas passer tweak, dealing 20% maxHP/s (of your maxhp) to you and targets lit by gas passer.");

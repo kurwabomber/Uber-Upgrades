@@ -865,6 +865,23 @@ public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
 		AddPlayerHealth(i, healAmount, overhealPCT, true, 0);
 	}
 
+	bool success = true;
+	while(success){
+		success = false;
+		if(gameStage == 0 && (StartMoney + additionalstartmoney) >= STAGEONE){
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 1st stage! New upgrades & tweaks unlocked.");
+			gameStage = 1; UpdateMaxValuesStage(gameStage); success = true;
+		}
+		else if(gameStage == 1 && (StartMoney + additionalstartmoney) >= STAGETWO){
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 2nd stage! New upgrades & tweaks unlocked.");
+			gameStage = 2; UpdateMaxValuesStage(gameStage); success = true;
+		}
+		else if(gameStage == 2 && (StartMoney + additionalstartmoney) >= STAGETHREE){
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 3rd stage! New upgrades & tweaks unlocked.");
+			gameStage = 3; UpdateMaxValuesStage(gameStage); success = true;
+		}
+	}
+
 	RemoveEntity(entity);
 
 	return MRES_Ignored;
@@ -1302,6 +1319,7 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 	PrintToServer("MvM reset stats????");
 	additionalstartmoney = 0.0;
 	StartMoneySaved = 0.0;
+	gameStage = 0;
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	replenishStatus = true;
 	for(int i = 1; i<=MaxClients;++i){
@@ -3494,7 +3512,7 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 						SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchPiercingRocket);
 						SetEntityModel(iEntity, "models/weapons/w_models/w_rocket_airstrike/w_rocket_airstrike.mdl");
 						CreateTimer(3.0, SelfDestruct, EntIndexToEntRef(iEntity));
-						SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, 70.0 * TF2_GetDamageModifiers(client,CWeapon), true);  
+						SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, 25.0 * TF2_GetDamageModifiers(client,CWeapon), true);  
 					}
 				}
 				case 43.0:

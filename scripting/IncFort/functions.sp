@@ -27,6 +27,16 @@ float GetResistance(int client, bool includeReduction = false, float increaseBas
 		{
 			TotalResistance /= TF2Attrib_GetValue(dmgReduction);
 		}
+		for(int i=0;i<=NB_SLOTS_UED;++i){
+			int id = GetWeapon(client, i);
+			if(!IsValidWeapon(id))
+				continue;
+			
+			dmgReduction = TF2Attrib_GetByName(id, "dmg taken increased");
+			if(dmgReduction != Address_Null)
+				TotalResistance /= TF2Attrib_GetValue(dmgReduction);
+		}
+		TotalResistance /= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", client);
 	}
 	return TotalResistance;
 }

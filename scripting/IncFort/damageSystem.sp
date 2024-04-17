@@ -672,6 +672,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 		//Prevent piercing damage from being guardian'd
 		if(!(damagetype == DMG_PREVENT_PHYSICS_FORCE && currentDamageType[attacker].second & DMG_PIERCING)){
+			int guardian = -1;
+			float guardianPercentage;
 			for(int i = 1; i <= MaxClients; ++i)
 			{
 				if(!IsValidClient3(i))
@@ -691,8 +693,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					if(IsValidWeapon(guardianWeapon)){
 						float redirect = GetAttribute(guardianWeapon, "mult cloak meter regen rate", 0.0) + GetAttribute(i, "mult cloak meter regen rate", 0.0);
 						if(redirect > 0.0){
-							SDKHooks_TakeDamage(i, attacker, attacker, damage*redirect,DMG_PREVENT_PHYSICS_FORCE, -1, NULL_VECTOR, NULL_VECTOR);
-							damage *= (1-redirect);
+							if(redirect > guardianPercentage){
+								guardian = i;
+								guardianPercentage = redirect;
+							}
 						}
 					}
 					if(damage > GetClientHealth(victim) && GetAttribute(i, "king powerup", 0.0) == 3.0){
@@ -705,6 +709,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 						break;
 					}
 				}
+			}
+			if(IsValidClient3(guardian)){
+				SDKHooks_TakeDamage(guardian, attacker, attacker, damage*guardianPercentage,DMG_PREVENT_PHYSICS_FORCE, -1, NULL_VECTOR, NULL_VECTOR);
+				damage *= (1-guardianPercentage);
 			}
 		}
 		if(IsValidWeapon(VictimCWeapon)){
@@ -1935,7 +1943,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 						}
 						else if(sentryOverride == 33.0)
 						{
-							damage = 80.0;
+							damage = 140.0;
 							damagetype |= DMG_PREVENT_PHYSICS_FORCE;
 						}
 					}

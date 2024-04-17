@@ -7,9 +7,9 @@
 		{
 			"name"		"arcane focus max"
 			"ref"		"Max Focus"
-			"cost"		"200"
-			"increase_ratio"	"0.125"
-			"value"		"50"
+			"cost"		"300"
+			"increase_ratio"	"0.05"
+			"value"		"100"
 			"init"		"0"
 			"description"	"Increases maximum capacity for focus.\nFocus regeneration is based off of maximum."
 			"max"		"100000"
@@ -18,8 +18,8 @@
 		{
 			"name"		"arcane focus regeneration"
 			"ref"		"Focus Regeneration"
-			"cost"		"1000"
-			"increase_ratio"	"0.4"
+			"cost"		"750"
+			"increase_ratio"	"0.3"
 			"value"		"0.25"
 			"init"		"1"
 			"description"	"Multiplies focus gained per second."
@@ -30,7 +30,7 @@
 			"name"		"arcane power"
 			"ref"		"Arcane Power"
 			"cost"		"350"
-			"increase_ratio"	"1.2"
+			"increase_ratio"	"1.0"
 			"value"		"0.01"
 			"init"		"1"
 			"staged_max"		"1.9,2.1,2.3"
@@ -42,7 +42,7 @@
 		{
 			"name"		"arcane attunement slots"
 			"ref"		"Attunement Slots"
-			"cost"		"5000"
+			"cost"		"2000"
 			"increase_ratio"	"0.0"
 			"value"		"1"
 			"init"		"0"
@@ -66,7 +66,7 @@
 		{
 			"name"		"arcane cooldown rate"
 			"ref"		"Arcane Cooldown Reduction"
-			"cost"		"7500"
+			"cost"		"3000"
 			"requirement"		"1000000.0"
 			"increase_ratio"	"0.4"
 			"value"		"-0.1"
@@ -78,7 +78,7 @@
 		{
 			"name"		"arcane zap"
 			"ref"		"Arcane - Zap"
-			"cost"		"1500"
+			"cost"		"500"
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
@@ -90,7 +90,7 @@
 		{
 			"name"		"arcane lightning strike"
 			"ref"		"Arcane - Lightning Strike"
-			"cost"		"5000"
+			"cost"		"2000"
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
@@ -102,7 +102,7 @@
 		{
 			"name"		"arcane projected healing"
 			"ref"		"Arcane - Healing Aura"
-			"cost"		"7000"
+			"cost"		"3000"
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
@@ -114,7 +114,7 @@
 		{
 			"name"		"arcane a call beyond"
 			"ref"		"Arcane - A Call Beyond"
-			"cost"		"50000"
+			"cost"		"40000"
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
@@ -126,7 +126,7 @@
 		{
 			"name"		"arcane blacksky eye"
 			"ref"		"Arcane - Blacksky Eye"
-			"cost"		"3000"
+			"cost"		"2000"
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
@@ -138,7 +138,7 @@
 		{
 			"name"		"arcane sunlight spear"
 			"ref"		"Arcane - Sunlight Spear"
-			"cost"		"5000"
+			"cost"		"3000"
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
@@ -150,7 +150,7 @@
 		{
 			"name"		"arcane lightning enchantment"
 			"ref"		"Arcane - Lightning Enchantment"
-			"cost"		"5000"
+			"cost"		"3000"
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
@@ -186,7 +186,7 @@
 		{
 			"name"		"arcane darkmoon blade"
 			"ref"		"Arcane - Darkmoon Blade"
-			"cost"		"10000"
+			"cost"		"5000"
 			"increase_ratio"	"20"
 			"value"		"1"
 			"init"		"0"
@@ -2182,7 +2182,7 @@
 		{
 			"name"		"engy sentry damage bonus"
 			"ref"		"engy sentry damage bonus"
-			"cost"		"350"
+			"cost"		"300"
 			"increase_ratio" 	"0.1"
 			"value"		"0.35"
 			"init"		"1.00"
@@ -2334,8 +2334,8 @@
 		{
 			"name"		"engy sentry fire rate increased"
 			"ref"		"engy sentry fire rate increased"
-			"cost"		"1500"
-			"increase_ratio" 	"0.8"
+			"cost"		"700"
+			"increase_ratio" 	"0.2"
 			"value"		"-0.1"
 			"init"		"1.00"
 			"max"		"0.35"
@@ -4593,13 +4593,13 @@
 		{
 			"name"		"throwable detonation time"
 			"ref"		"Sentry Armor Piercing Damage"
-			"cost"		"750"
-			"increase_ratio"	"0.125"
+			"cost"		"550"
+			"increase_ratio"	"0.1"
 			"value"		"0.25"
 			"init"		"1"
 			"display_style" "1"
 			"description"	"1:1 pure damage multiplier.\nIncreases in cost by +$94 per purchase."
-			"max"		"12"
+			"max"		"18"
 		}
 		"1514"
 		{
@@ -4901,10 +4901,10 @@
 		{
 			"name"		"override projectile type"
 			"ref"		"Firestorm Rounds"
-			"cost"		"20000"
+			"cost"		"10000"
 			"increase_ratio"	"0"
-			"value"		"2"
-			"init"		"31"
+			"value"		"33"
+			"init"		"0"
 			"restriction_category"	"2"
 			"description"	"Replaces sentry bullets with extreme speed fireballs.\nShoots 4x slower, but fireballs deal 80 base damage and splash."
 			"max"		"33"
@@ -4913,7 +4913,7 @@
 		{
 			"name"		"dmg penalty vs nonstunned"
 			"ref"		"Double Sentry Rocket Shot"
-			"cost"		"3500"
+			"cost"		"2500"
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
@@ -5371,7 +5371,7 @@
 		{
 			"name"		"mult firerocket rate"
 			"ref"		"Sentry Rocket Fire Rate"
-			"cost"		"1500"
+			"cost"		"900"
 			"increase_ratio"	"0.3"
 			"value"		"-0.1"
 			"init"		"1.0"
@@ -6576,7 +6576,7 @@
 			"name"		"throwable fire speed"
 			"ref"		"ap (sentrycal)"
 			"increase_ratio" "0.0"
-			"cost"		"2250"
+			"cost"		"1550"
 			"value"		"0.77"
 			"init"		"1.00"
 			"display_style" "1"
