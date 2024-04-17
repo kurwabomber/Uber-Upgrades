@@ -1,5 +1,9 @@
 "Phrases"
 {
+	"fire rate bonus HIDDEN "
+	{
+		"en"		"Fire Rate Bonus"
+	}
 	"damage mult 2"
 	{
 		"en"		"★ Damage Multiplier ★"

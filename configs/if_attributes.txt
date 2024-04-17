@@ -6305,6 +6305,15 @@
 			"init"		"0.00"
 			"max"		"0.00"
 		}
+		"1682"
+		{
+			"name"		"fire rate bonus HIDDEN "
+			"ref"		"fire rate bonus HIDDEN "
+			"cost"		"0"
+			"value"		"0.1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
 		//Filler
 		"1900.0"
 		{
@@ -6477,51 +6486,6 @@
 			"init"		"0.00"
 			"max"		"0.00"
 		}
-		"1900.2"
-		{
-			"name"		"sentry amount"
-			"ref"		"sentry amount"
-			"cost"		"0"
-			"value"		"0.1"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1900.2"
-		{
-			"name"		"sentry amount"
-			"ref"		"sentry amount"
-			"cost"		"0"
-			"value"		"0.1"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1900.2"
-		{
-			"name"		"sentry amount"
-			"ref"		"sentry amount"
-			"cost"		"0"
-			"value"		"0.1"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1900.2"
-		{
-			"name"		"sentry amount"
-			"ref"		"sentry amount"
-			"cost"		"0"
-			"value"		"0.1"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
-		"1900.2"
-		{
-			"name"		"sentry amount"
-			"ref"		"sentry amount"
-			"cost"		"0"
-			"value"		"0.1"
-			"init"		"0.00"
-			"max"		"0.00"
-		}
 		//2000 series are tweaks -> attributes.
 		"2000.0"
 		{
@@ -6540,7 +6504,7 @@
 			"name"		"damage mult 12"
 			"ref"		"ap (electricmotor)"
 			"increase_ratio" "0.0"
-			"cost"		"3000"
+			"cost"		"5000"
 			"value"		"1.33"
 			"init"		"1.00"
 			"display_style" "1"

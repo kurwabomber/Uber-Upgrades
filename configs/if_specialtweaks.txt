@@ -45,19 +45,18 @@
 		{
 			"restriction"					"1"
 			"requirement"					"50k"
-
 			"ubercharge rate penalty"		"3.3334"
 			"Additional Uber Effects"		"8.0"
 		}
 		"High-Velocity Bullets"
 		{
-			"requirement"					"50k"
+			"cost"							"5k"
 			"restriction"					"1"
 			"override projectile type (B)"	"1"
 		}
 		"Needlestorm"
 		{
-			"requirement"					"50k"
+			"cost"							"5k"
 			"restriction"					"1"
 			"Homing Projectiles"			"200"
 			"Bleed Per Hit"					"3"
