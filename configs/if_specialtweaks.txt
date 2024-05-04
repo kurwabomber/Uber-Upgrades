@@ -213,7 +213,7 @@
 			"restriction"					"1"
 			"projectile acceleration"		"1400.0"
 			"Projectile speed decreased"	"9.0"
-			"mult dmg direct hit"			"5.0"
+			"mult dmg direct hit"			"10.0"
 			"damage bonus HIDDEN(b)"		"1.0"
 		}
 		"Focused Lens"
@@ -339,7 +339,7 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"Ability : Immolation"			"1"
-			"immolation ratio"				"2"
+			"immolation ratio"				"1"
 			"Afterburn Tick Rate"			"3"
 			"dmg per pct hp missing"		"0.1"
 			"additive piercing damage"		"10"
