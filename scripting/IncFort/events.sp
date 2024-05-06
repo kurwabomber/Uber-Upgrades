@@ -865,23 +865,8 @@ public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
 		AddPlayerHealth(i, healAmount, overhealPCT, true, 0);
 	}
 
-	bool success = true;
-	while(success){
-		success = false;
-		if(gameStage == 0 && (StartMoney + additionalstartmoney) >= STAGEONE){
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 1st stage! New upgrades & tweaks unlocked.");
-			gameStage = 1; UpdateMaxValuesStage(gameStage); success = true;
-		}
-		else if(gameStage == 1 && (StartMoney + additionalstartmoney) >= STAGETWO){
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 2nd stage! New upgrades & tweaks unlocked.");
-			gameStage = 2; UpdateMaxValuesStage(gameStage); success = true;
-		}
-		else if(gameStage == 2 && (StartMoney + additionalstartmoney) >= STAGETHREE){
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 3rd stage! New upgrades & tweaks unlocked.");
-			gameStage = 3; UpdateMaxValuesStage(gameStage); success = true;
-		}
-	}
-
+	CheckForGamestage();
+	
 	RemoveEntity(entity);
 
 	return MRES_Ignored;
@@ -1573,22 +1558,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 			additionalstartmoney += PlayerMoneyKill;
 		}
 	
-		bool success = true;
-		while(success){
-			success = false;
-			if(gameStage == 0 && (StartMoney + additionalstartmoney) >= STAGEONE){
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 1st stage! New upgrades & tweaks unlocked.");
-				gameStage = 1; UpdateMaxValuesStage(gameStage); success = true;
-			}
-			else if(gameStage == 1 && (StartMoney + additionalstartmoney) >= STAGETWO){
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 2nd stage! New upgrades & tweaks unlocked.");
-				gameStage = 2; UpdateMaxValuesStage(gameStage); success = true;
-			}
-			else if(gameStage == 2 && (StartMoney + additionalstartmoney) >= STAGETHREE){
-				CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 3rd stage! New upgrades & tweaks unlocked.");
-				gameStage = 3; UpdateMaxValuesStage(gameStage); success = true;
-			}
-		}
+		CheckForGamestage();
 	}
 	else if(hardcapWarning == false)
 	{

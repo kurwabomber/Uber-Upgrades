@@ -3939,6 +3939,7 @@ stock fixPiercingVelocity(entity)
 	}
 }
 ResetVariables(){
+	gameStage = 0;
 	for(int client = 1;client<=MaxClients;client++){
 		buffChange[client] = false;
 		playerUpgradeMenus[client] = 0;
@@ -3995,6 +3996,24 @@ ResetVariables(){
 	}
 	for(int entity = 0; entity<MAXENTITIES; entity++){
 		currentDamageType[entity].clear();
+	}
+}
+public void CheckForGamestage(){
+	bool success = true;
+	while(success){
+		success = false;
+		if(gameStage == 0 && (StartMoney + additionalstartmoney) >= STAGEONE){
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 1st stage! New upgrades & tweaks unlocked.");
+			gameStage = 1; UpdateMaxValuesStage(gameStage); success = true;
+		}
+		else if(gameStage == 1 && (StartMoney + additionalstartmoney) >= STAGETWO){
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 2nd stage! New upgrades & tweaks unlocked.");
+			gameStage = 2; UpdateMaxValuesStage(gameStage); success = true;
+		}
+		else if(gameStage == 2 && (StartMoney + additionalstartmoney) >= STAGETHREE){
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 3rd stage! New upgrades & tweaks unlocked.");
+			gameStage = 3; UpdateMaxValuesStage(gameStage); success = true;
+		}
 	}
 }
 stock void ZeroVector(float vec[3])
