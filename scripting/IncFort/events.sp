@@ -1333,15 +1333,6 @@ public Event_mvm_wave_begin(Handle event, const char[] name, bool:dontBroadcast)
 	}
 	StartMoneySaved = StartMoney + additionalstartmoney;
 }
-public Action:Event_PlayerCollectMoney(Handle event, const char[] name, bool:dontBroadcast)
-{
-	int money = GetEventInt(event, "currency");
-	additionalstartmoney += float(money);
-	for (int i = 0; i <= MaxClients; ++i) 
-	{
-		CurrencyOwned[i] += money;
-	}
-}
 public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadcast)
 {
 	//prevent death triggering multiple times

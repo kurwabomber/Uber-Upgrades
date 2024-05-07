@@ -149,7 +149,6 @@ public UberShopinitMenusHandlers()
 	HookEvent("player_spawn", Event_PlayerRespawn)
 	HookEvent("player_teleported", Event_Teleported)
 	HookEvent("deploy_buff_banner",	Event_BuffDeployed);
-	HookEvent("mvm_pickup_currency", Event_PlayerCollectMoney);
 	HookEvent("mvm_reset_stats", Event_ResetStats);
 	HookEvent("mvm_begin_wave",Event_mvm_wave_begin);
 	HookEvent("mvm_wave_failed",Event_mvm_wave_failed);
