@@ -1166,15 +1166,15 @@ DisplayItemChange(client,itemidx)
 		//Demo Secondaries
 		case 131,1144:
 		{
-			ChangeString = "The Chargin' Targe | Gives +35 base health. When the charge ends, it deals an explosion that has 70 base DPS which scales on current weapon.";
+			ChangeString = "The Chargin' Targe | Gives +50 base health. When the charge ends, it deals an explosion that has 70 base DPS which scales on current weapon.";
 		}
 		case 406:
 		{
-			ChangeString = "The Splendid Screen | Charge deals 70% more damage. When the charge ends, it deals an explosion that has 70 base DPS which scales on current weapon.";
+			ChangeString = "The Splendid Screen | When the charge ends, it deals an explosion that has 120 base DPS which scales on current weapon.";
 		}
 		case 1099:
 		{
-			ChangeString = "The Tide Turner | When the charge ends, it deals an explosion that has 70 base DPS which scales on current weapon.";
+			ChangeString = "The Tide Turner | 1.5x incoming damage. 1.35x move speed. When the charge ends, it deals an explosion that has 120 base DPS which scales on current weapon.";
 		}
 		case 130:
 		{
