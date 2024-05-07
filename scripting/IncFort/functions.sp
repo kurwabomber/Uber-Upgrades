@@ -1393,7 +1393,7 @@ public Action:RemoveDamage(Handle timer, any:data)
 }
 RespawnEffect(client)
 {
-	if(IsValidClient3(client) && !IsClientObserver(client) && IsPlayerAlive(client))
+	if(IsValidClient3(client))
 	{
 		current_class[client] = TF2_GetPlayerClass(client)
 		fl_CurrentFocus[client] = fl_MaxFocus[client];

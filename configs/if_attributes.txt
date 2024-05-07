@@ -5200,17 +5200,6 @@
 			"description"	"Upon splashing your teammates: +X seconds of minor haste (+50% fire rate)."
 			"max"		"0.5"
 		}
-		"1574"
-		{
-			"name"		"fists have radial buff"
-			"ref"		"Death Denial Buff Duration"
-			"cost"		"600"
-			"increase_ratio"	"0.6"
-			"value"		"0.05"
-			"init"		"0"
-			"description"	"Upon splashing your teammates: +X seconds of prevent death to teammates.\nTeammates that are already on 1HP die regardless."
-			"max"		"0.5"
-		}
 		"1575"
 		{
 			"name"		"set cloak is feign death"

@@ -419,7 +419,6 @@ public Action:Timer_Every100MS(Handle timer)
 					TF2_AddCondition(client, TFCond_CritCanteen, 1.0);
 					TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 					TF2_AddCondition(client, TFCond_DefenseBuffMmmph, 1.0);
-					TF2_AddCondition(client, TFCond_PreventDeath, 1.0);
 					TF2_AddCondition(client, TFCond_KingAura, 1.0);
 				}
 			}
@@ -431,7 +430,6 @@ public Action:Timer_Every100MS(Handle timer)
 				TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 				if(RageBuildup[client] > 0.3){
 					TF2_AddCondition(client, TFCond_DefenseBuffMmmph, 1.0);
-					TF2_AddCondition(client, TFCond_PreventDeath, 1.0);
 					TF2_AddCondition(client, TFCond_KingAura, 1.0);
 				}
 				if(RageBuildup[client] > 0.65){

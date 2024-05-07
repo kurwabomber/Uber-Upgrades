@@ -2001,7 +2001,6 @@
 		{
 			"Attr1"		"Afterburn Immunity Duration"
 			"Attr2"		"Increases Haste Buff Duration"
-			"Attr3"		"Death Denial Buff Duration"
 			"Attr4"		"Batallion's Buff Duration"
 		}
 		"Special Tweaks"
@@ -2041,7 +2040,6 @@
 		{
 			"Attr1"		"Afterburn Immunity Duration"
 			"Attr2"		"Increases Haste Buff Duration"
-			"Attr3"		"Death Denial Buff Duration"
 			"Attr4"		"Batallion's Buff Duration"
 		}
 		"Special Tweaks"

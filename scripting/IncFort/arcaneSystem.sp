@@ -173,7 +173,7 @@ public Action:Command_UseArcane(client, args)
 	Address slotActive = TF2Attrib_GetByName(client, "arcane attunement slots");
 	int attuneSlots = 1 + (slotActive == Address_Null ? 0 : RoundToNearest(TF2Attrib_GetValue(slotActive)));
 
-	if(param2 < 0 && param2 > attuneSlots) 
+	if(param2 < 0 || param2 > attuneSlots) 
 		return Plugin_Handled;
 
 	if(AttunedSpells[client][param2] == 0.0)

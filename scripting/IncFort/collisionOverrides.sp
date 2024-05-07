@@ -797,9 +797,6 @@ public Action:OnTouchExplodeJar(entity, other)
 								hasteBuff.additiveAttackSpeedMult = 0.5;
 								insertBuff(i, hasteBuff);
 							}
-							Address jarPreventDeath = TF2Attrib_GetByName(CWeapon, "fists have radial buff");
-							if(jarPreventDeath != Address_Null)
-								TF2_AddCondition(i,TFCond_PreventDeath,TF2Attrib_GetValue(jarPreventDeath));
 
 							Address jarDefensiveBuff = TF2Attrib_GetByName(CWeapon, "set cloak is feign death");
 							if(jarDefensiveBuff != Address_Null)
