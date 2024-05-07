@@ -5272,8 +5272,8 @@
 		}
 		"1582"
 		{
-			"name"		"mod medic killed marked for death"
-			"ref"		"Crit Damage Bonus"
+			"name"		"mult crit dmg"
+			"ref"		"mult crit dmg"
 			"cost"		"0"
 			"value"		"0.1"
 			"init"		"1"

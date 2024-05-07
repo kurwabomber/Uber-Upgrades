@@ -63,6 +63,24 @@ public Action:OnStartTouchStomp(client, other)
 	}
 }
 
+public Action FixProjectileCollision(entity, client)
+{
+	char strName[32];
+	GetEntityClassname(client, strName, 32)
+
+	if(StrContains(strName,"tf_projectile") != -1)
+	{
+		float origin[3];
+		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
+		origin[0] += GetRandomFloat(-1.0,1.0)
+		origin[1] += GetRandomFloat(-1.0,1.0)
+		TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
+		return Plugin_Stop;
+	}
+
+	return Plugin_Continue;
+}
+
 public Action:AddArrowCollisionFunction(entity, client)
 {
 	char strName[32];

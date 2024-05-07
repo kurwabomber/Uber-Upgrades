@@ -4,7 +4,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 	int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 	
 	float damage = GetEventFloat(event, "damageamount");	
-	lastDamageTaken[client] = 0.0;
+	//lastDamageTaken[client] = 0.0;
 
 	if(critStatus[client])
 	{
@@ -475,7 +475,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					GetEdictClassname(CWeapon, classname, sizeof(classname)); 
 					float damageReduction = GetAttribute(CWeapon, "energy buff dmg taken multiplier", 1.0);
 					if(damageReduction != 1.0)
-						TF2Attrib_AddCustomPlayerAttribute(client, "damage taken mult 3", damageReduction, 16.0);
+						TF2Attrib_AddCustomPlayerAttribute(client, "damage taken mult 3", damageReduction, 12.0);
 					
 					Buff lunchboxChange;
 					lunchboxChange.init("Eating Buffs", "", Buff_LunchboxChange, 1, client, 12.0);
@@ -503,10 +503,6 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			{
 				isBuffActive[client] = true;
 			}
-			case TFCond_Buffed:
-			{
-				return MRES_Supercede;
-			}
 			case TFCond_DefenseBuffed:
 			{
 				return MRES_Supercede;
@@ -517,17 +513,17 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			}
 			case TFCond_Jarated, TFCond_MarkedForDeath, TFCond_MarkedForDeathSilent:
 			{
-				if(GetAttribute(client, "inverter powerup", 0.0) == 1)
+				if(GetAttribute(client, "inverter powerup", 0.0) == 1){
 					giveDefenseBuff(client, duration);
+					return MRES_Supercede;
+				}
 				else if(GetAttribute(client, "inverter powerup", 0.0) == 2){
 					Buff critligma;
 					critligma.init("Marked for Crits", "All hits taken are critical", Buff_CritMarkedForDeath, 1, client, duration);
 					insertBuff(client, critligma);
+					return MRES_Supercede;
 				}
-				else if(GetAttribute(client, "inverter powerup", 0.0) != 3){
-					miniCritStatusVictim[client] = currentGameTime+duration;
-				}
-				return MRES_Supercede;
+				return MRES_Handled;
 			}
 			case TFCond_MiniCritOnKill:
 			{
@@ -715,7 +711,7 @@ public MRESReturn OnAirblast(int weapon, Handle hParams){
 								TF2Attrib_SetByName(i,"major increased jump height", Pow(1.2/SlowForce,0.3));
 							}
 
-							if(GetAttribute(weapon, "airblast flings enemy")){
+							if(GetAttribute(weapon, "airblast flings enemy", 0.0)){
 								float flingVelocity[3];
 								flingVelocity[2] = GetAttribute(weapon, "airblast flings enemy");
 								TeleportEntity(i, NULL_VECTOR, NULL_VECTOR, flingVelocity);
@@ -830,10 +826,12 @@ public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
 	}
 
 	CheckForGamestage();
+
+	DHookSetParam(hParams, 1, 0);
 	
 	RemoveEntity(entity);
 
-	return MRES_Ignored;
+	return MRES_ChangedHandled;
 }
 public MRESReturn OnFireRateCall(int entity, Handle hReturn, Handle hParams)  {
 	if(IsValidWeapon(entity))
@@ -1015,6 +1013,7 @@ public OnEntityCreated(entity, const char[] classname)
 		g_nBounces[entity] = 0;
 		RequestFrame(getProjOrigin, reference);
 
+		SDKHook(entity, SDKHook_Touch, FixProjectileCollision);
 		if(StrEqual(classname, "tf_projectile_energy_ball") || StrEqual(classname, "tf_projectile_energy_ring")
 		|| StrEqual(classname, "tf_projectile_balloffire"))
 		{
@@ -1975,6 +1974,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 						for(int i=1;i<=MaxClients;++i)
 						{
 							if(!IsValidClient3(i))
+								continue;
+							
+							if(!IsPlayerAlive(i))
 								continue;
 							
 							if(IsOnDifferentTeams(client,i))
@@ -3742,7 +3744,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		CurrentSlowTimer[client] = 0.0;
 		canShootAgain[client] = true;
 		meleeLimiter[client] = 0;
-		lastDamageTaken[client] = 0.0;
+		//lastDamageTaken[client] = 0.0;
 		critStatus[client] = false;
 		bloodAcolyteBloodPool[client] = 0.0;
 		duplicationCooldown[client] = 0.0;

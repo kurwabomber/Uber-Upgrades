@@ -170,6 +170,9 @@ public Action:Timer_FixedVariables(Handle timer)
 
 						if(!IsOnDifferentTeams(client,i))
 							continue;
+
+						if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged) || TF2_IsPlayerInCondition(i, TFCond_UberchargedHidden))
+							continue;
 						
 						if(!IsTargetInSightRange(client, i, 10.0, 6000.0, true, false))
 							continue;

@@ -10,7 +10,7 @@
 			"increased air control"			"6.0"
 			"slow enemy on hit major"		"1"
 			"Afterburn Tick Rate"			"8.0"
-			"Crit Damage Bonus"				"3.0"
+			"mult crit dmg"					"3.0"
 		}
 		"Temperature rise"
 		{
@@ -19,7 +19,7 @@
 			"flame ammopersec increased (tweak)"	"100.0"
 			"minicrit vs burning player"			"1.0"
 			"Afterburn Damage Multiplier"		"30.0"
-			"Crit Damage Bonus"				"10.0"
+			"mult crit dmg"				"10.0"
 		}
 		"Honor!"
 		{
@@ -67,7 +67,7 @@
 			"cost"							"15k"
 			"restriction"					"1"
 			"fire rate bonus HIDDEN"		"5.0"
-			"Crit Damage Bonus"				"4.0"
+			"mult crit dmg"				"4.0"
 			"Crit on Kill Duration"			"4.0"
 		}
 		"Fan of Knives"
@@ -85,14 +85,14 @@
 			"mult projectile count"			"10"
 			"projectile spread angle penalty"		"2"
 			"fire rate penalty(unremoveable)"		"60.0"
-			"Crit Damage Bonus"				"20.0"
+			"mult crit dmg"				"20.0"
 		}
 		"Homing Flares"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
 			"Homing Projectiles"			"200.0"
-			"Crit Damage Bonus"				"3.0"
+			"mult crit dmg"				"3.0"
 			"Ability : Homing Flares"		"1"
 		}
 		"Explosive Bullets(P)"
@@ -129,7 +129,7 @@
 			"restriction"					"1"
 			"bleeding duration"				"4"
 			"Bleed Per Hit"					"3"
-			"Crit Damage Bonus"				"6.0"
+			"mult crit dmg"				"6.0"
 		}
 		"Scorchiest Shot"
 		{
@@ -137,7 +137,7 @@
 			"restriction"					"1"
 			"Afterburn Tick Rate"			"8.0"
 			"minicrits become crits"		"1.0"
-			"Crit Damage Bonus"				"3.0"
+			"mult crit dmg"				"3.0"
 		}
 		"Focal Point"
 		{
@@ -152,7 +152,7 @@
 			"restriction"					"1"
 			"additive piercing damage"		"100"
 			"damage causes freeze"			"150"
-			"Crit Damage Bonus"				"10.0"
+			"mult crit dmg"				"10.0"
 		}
 		"Fireball Volley"
 		{
@@ -177,13 +177,12 @@
 			"restriction"					"1"
 			"additive piercing damage"		"10"
 			"damage causes freeze"			"200"
-			"Crit Damage Bonus"				"5.0"
+			"mult crit dmg"				"5.0"
 			"bleeding duration"				"5"
 			"projectile penetration"		"1"
 		}
 		"Toxic Infusion"
 		{
-			"gamestage"						"1"
 			"restriction"					"1"
 			"Radiation Buildup"				"150"
 			"projectile penetration"		"1"
@@ -192,7 +191,6 @@
 		}
 		"Explosive Arrows"
 		{
-			"gamestage"						"1"
 			"restriction"					"1"
 			"Ability : Explosive Arrow"		"1"
 			"arrow ignite"					"1"
@@ -295,7 +293,7 @@
 			"Maelstrom Charge"				"1"
 			"weapon fire rate(tweak)"		"1"
 			"damage bonus HIDDEN(b)"		"7"
-			"Crit Damage Bonus"				"3"
+			"mult crit dmg"				"3"
 		}
 		"Alchemist's Concoction"
 		{
@@ -349,7 +347,7 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"fireworks chance"				"2.5"
-			"Crit Damage Bonus"				"7"
+			"mult crit dmg"				"7"
 			"damage bonus HIDDEN(b)"		"2"
 		}
 		"Splintering Wasps"
@@ -358,7 +356,7 @@
 			"restriction"					"1"
 			"explosion wasps"				"4"
 			"mult dmg direct hit"			"5"
-			"Crit Damage Bonus"				"2"
+			"mult crit dmg"				"2"
 			"Bleed Per Hit"					"3"
 		}
 		"Cluster Bomb"

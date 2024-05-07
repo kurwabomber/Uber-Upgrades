@@ -1224,6 +1224,9 @@ public Action:ArcaneHunter(Handle timer, client)
 		if(!IsOnDifferentTeams(client,i))
 			continue;
 		
+		if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged) || TF2_IsPlayerInCondition(i, TFCond_UberchargedHidden))
+			continue;
+
 		if(!IsTargetInSightRange(client, i, aimAssist[spellLevel], 6000.0, true, false))
 			continue;
 

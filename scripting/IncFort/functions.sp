@@ -41,6 +41,10 @@ float GetResistance(int client, bool includeReduction = false, float increaseBas
 				TotalResistance /= TF2Attrib_GetValue(dmgReduction);
 		}
 		TotalResistance /= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", client);
+
+		Address DodgeBody = TF2Attrib_GetByName(client, "SET BONUS: chance of hunger decrease");
+		if(DodgeBody != Address_Null)
+			TotalResistance /= TF2Attrib_GetValue(DodgeBody);
 	}
 	return TotalResistance;
 }
@@ -346,10 +350,14 @@ public void ManagePlayerBuffs(int i){
 		Format(details, sizeof(details), "%s\nKarmic Justice | %.2f Scaling", details, karmicJusticeScaling[i]);
 	}
 
-	if(miniCritStatusVictim[i]-currentGameTime > 0.0)
+	if(miniCritStatusVictim[i]-currentGameTime > 0.0){
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
-	if(miniCritStatusAttacker[i]-currentGameTime > 0.0)
+		TF2_AddCondition(i, TFCond_MarkedForDeath, 0.2);
+	}
+	if(miniCritStatusAttacker[i]-currentGameTime > 0.0){
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Minicrits", miniCritStatusAttacker[i]-currentGameTime);
+		TF2_AddCondition(i, TFCond_Buffed, 0.2);
+	}
 	if(TF2_IsPlayerInCondition(i, TFCond_AfterburnImmune))
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Afterburn Immunity", TF2Util_GetPlayerConditionDuration(i, TFCond_AfterburnImmune));
 
@@ -3984,7 +3992,7 @@ ResetVariables(){
 		powerupParticle[client] = 0.0;
 		BotTimer[client] = 0.0;
 		LastCharge[client] = 0.0;
-		lastDamageTaken[client] = 0.0;
+		//lastDamageTaken[client] = 0.0;
 		flNextSecondaryAttack[client] = 0.0;
 		CurrentSlowTimer[client] = 0.0;
 		fl_HighestFireDamage[client] = 0.0;

@@ -752,7 +752,7 @@
 	{
 		"en"		"Fan of Knives"
 	}
-	"Crit Damage Bonus"
+	"mult crit dmg"
 	{
 		"en"		"Crit Damage Bonus"
 	}

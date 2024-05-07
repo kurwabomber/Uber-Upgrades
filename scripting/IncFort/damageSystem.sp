@@ -14,6 +14,7 @@ public MRESReturn OnDamageTypeCalc(int weapon, Handle hReturn) {
 
 public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom)
 {
+	//PrintToServer("triggered ontakedamagealive");
 	if(currentDamageType[attacker].first == 0)
 		currentDamageType[attacker].first = damagetype;
 	
@@ -598,23 +599,25 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				Buff finisherDebuff; finisherDebuff.init("Bruised", "Marked-for-Finisher", Buff_Bruised, 1, attacker, 8.0);
 				insertBuff(victim, finisherDebuff);
 
-				float bruisedDamage = damage;
-				if(!critStatus[victim]){
-					bruisedDamage *= 2.25;
-				}
+				if(currentDamageType[attacker].second & DMG_PIERCING){
+					float bruisedDamage = damage;
+					if(!critStatus[victim]){
+						bruisedDamage *= 2.25;
+					}
 
-				if(damage >= TF2Util_GetEntityMaxHealth(victim) * 0.4){
-					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE)
+					if(damage >= TF2Util_GetEntityMaxHealth(victim) * 0.4){
+						currentDamageType[attacker].second |= DMG_PIERCING;
+						SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE)
 
-					currentDamageType[victim].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(attacker, victim, victim, 0.05*TF2Util_GetEntityMaxHealth(attacker), DMG_PREVENT_PHYSICS_FORCE);
-				}
-				else if((GetClientHealth(victim) - bruisedDamage)/TF2Util_GetEntityMaxHealth(victim) <= 0.25){
-					critStatus[victim] = true;
-					damage = bruisedDamage;
-					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(victim, attacker, attacker, 0.25*TF2Util_GetEntityMaxHealth(victim), DMG_PREVENT_PHYSICS_FORCE)
+						currentDamageType[victim].second |= DMG_PIERCING;
+						SDKHooks_TakeDamage(attacker, victim, victim, 0.05*TF2Util_GetEntityMaxHealth(attacker), DMG_PREVENT_PHYSICS_FORCE);
+					}
+					else if((GetClientHealth(victim) - bruisedDamage)/TF2Util_GetEntityMaxHealth(victim) <= 0.25){
+						critStatus[victim] = true;
+						damage = bruisedDamage;
+						currentDamageType[attacker].second |= DMG_PIERCING;
+						SDKHooks_TakeDamage(victim, attacker, attacker, 0.25*TF2Util_GetEntityMaxHealth(victim), DMG_PREVENT_PHYSICS_FORCE)
+					}
 				}
 			}
 		}
@@ -799,37 +802,27 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		damage = 0.0;
 	return Plugin_Changed;
 }
+
 public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3],int damagecustom, CritType &critType)
 {
 	if(!IsValidClient3(attacker))
 		attacker = EntRefToEntIndex(attacker);
 
-	if(critType == CritType_Crit || (!critStatus[victim] && hasBuffIndex(victim, Buff_CritMarkedForDeath)))
-	{
-		critStatus[victim] = true
-		damagetype &= ~DMG_CRIT;
-		damage *= 2.25;
+	if(currentDamageType[attacker].second & DMG_PIERCING){
 		critType = CritType_None;
-		currentDamageType[attacker].second |= DMG_ACTUALCRIT;
-		return Plugin_Changed;
-	}else if(IsValidClient3(victim) && miniCritStatus[victim] == false && IsValidClient3(attacker) && 
-	(critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > currentGameTime || miniCritStatusVictim[victim] > currentGameTime))
-	{
-		if(debugMode)
-			PrintToChat(attacker, "minicrit override 1");
-		miniCritStatus[victim] = true;
-		damage *= 1.4;
-		critType = CritType_None;
-		if(damagetype & DMG_CRIT)
-			damagetype &= ~DMG_CRIT;
-
-		currentDamageType[attacker].second |= DMG_MINICRIT;
 		return Plugin_Changed;
 	}
-	lastDamageTaken[victim] = damage;
-	//PrintToServer("triggered customOnTakeDamage");
+
+
+	if(hasBuffIndex(victim, Buff_CritMarkedForDeath))
+	{
+		critType = CritType_Crit;
+		currentDamageType[attacker].second |= DMG_ACTUALCRIT;
+		return Plugin_Changed;
+	}
 	return Plugin_Continue;
 }
+/*
 public Action:TF2_OnTakeDamageModifyRules(int victim, int &attacker, int &inflictor, float &damage,
 int &damagetype, int &weapon, float damageForce[3], float damagePosition[3],
 int damagecustom, CritType &critType)
@@ -876,20 +869,16 @@ int damagecustom, CritType &critType)
 		lastDamageTaken[victim] = 0.0;
 		return Plugin_Changed;
 	}
-	//PrintToServer("triggered ModifyRules");
+	PrintToServer("triggered ModifyRules");
 	return Plugin_Continue;
 }
+*/
 public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom)
 {
+	//PrintToServer("triggered ontakedamage");
 	if(0 < attacker <= MaxClients)
 		baseDamage[attacker] = damage;
 
-	if(damagetype & DMG_CRIT || (!critStatus[victim] && hasBuffIndex(victim, Buff_CritMarkedForDeath)))
-	{
-		critStatus[victim] = true
-		damagetype &= ~DMG_CRIT;
-		damage *= 2.25
-	}
 	if(damagetype & DMG_USEDISTANCEMOD)
 		damagetype ^= DMG_USEDISTANCEMOD;
 
@@ -920,7 +909,7 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 			}
 		}
 	}
-	lastDamageTaken[victim] = damage;
+	//lastDamageTaken[victim] = damage;
 	if(damage < 0.0)
 	{
 		damage = 0.0;
@@ -1285,10 +1274,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					}
 				}
 				float precisionPowerup = GetAttribute(attacker, "precision powerup", 0.0);
-				if(precisionPowerup != 0.0)
+				if(precisionPowerup == 1)
 				{
 					miniCritStatus[victim] = true;
-					damage *= precisionPowerup * 1.35;
+					damage *= 1.35;
 					damagecustom = 1;
 				}
 			}
@@ -1973,30 +1962,30 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 				damage *= 0.5
 			}
 		}
-		if(IsValidClient3(attacker) && TF2_GetPlayerClass(attacker) == TFClass_Engineer)
+	}
+	if(IsValidClient3(attacker) && TF2_GetPlayerClass(attacker) == TFClass_Engineer)
+	{
+		if(!strcmp("tf_projectile_spellfireball", classname))
 		{
-			if(!strcmp("tf_projectile_spellfireball", classname))
+			int melee = GetWeapon(attacker,2)
+			if(IsValidWeapon(melee))
 			{
-				int melee = GetPlayerWeaponSlot(attacker,2)
-				if(IsValidEdict(melee))
+				Address sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
+				if(sentryOverrideActive != Address_Null)
 				{
-					Address sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
-					if(sentryOverrideActive != Address_Null)
+					float sentryOverride = TF2Attrib_GetValue(sentryOverrideActive);
+					if(sentryOverride == 32.0)
 					{
-						float sentryOverride = TF2Attrib_GetValue(sentryOverrideActive);
-						if(sentryOverride == 32.0)
-						{
-							damage = 20.0;
-							damagetype |= DMG_PREVENT_PHYSICS_FORCE;
-						}
-						else if(sentryOverride == 33.0)
-						{
-							damage = 140.0;
-							damagetype |= DMG_PREVENT_PHYSICS_FORCE;
-						}
+						damage = 20.0;
+						damagetype |= DMG_PREVENT_PHYSICS_FORCE;
 					}
-					damage *= TF2_GetSentryDPSModifiers(attacker, melee);
+					else if(sentryOverride == 33.0)
+					{
+						damage = 80.0;
+						damagetype |= DMG_PREVENT_PHYSICS_FORCE;
+					}
 				}
+				damage *= TF2_GetSentryDPSModifiers(attacker, melee);
 			}
 		}
 	}

@@ -338,7 +338,7 @@ float hitParticle[MAXPLAYERS+1];
 float spellScaling[] = {0.0,2.25,2.35,2.45};
 float BotTimer[MAXPLAYERS+1];
 float LastCharge[MAXPLAYERS+1];
-float lastDamageTaken[MAXPLAYERS+1];
+//float lastDamageTaken[MAXPLAYERS+1];
 float flNextSecondaryAttack[MAXPLAYERS+1];
 float CurrentSlowTimer[MAXPLAYERS+1];
 float fl_HighestFireDamage[MAXPLAYERS+1];

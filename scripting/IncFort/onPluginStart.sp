@@ -342,7 +342,7 @@ public void OnPluginStart()
 	if(!IsValidHandle(g_DHookAddCurrency))
 		PrintToServer("CustomAttrs | Currency Hook error");
 	else
-		DHookEnableDetour(g_DHookAddCurrency, true, OnCurrencySpawn);
+		DHookEnableDetour(g_DHookAddCurrency, false, OnCurrencySpawn);
 
 	//Modify Rage
 	Handle g_DHookOnModifyRage = DHookCreateFromConf(hConf, "CTFPlayerShared::ModifyRage()");
