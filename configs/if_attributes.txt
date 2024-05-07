@@ -1136,7 +1136,7 @@
 		}
 		"49.7"
 		{
-			"name"		"dmg taken increased"
+			"name"		"damage taken mult 1"
 			"ref"		"dmg from all reduced(wearable)"
 			"increase_ratio" 	"0.4"
 			"cost"		"850"

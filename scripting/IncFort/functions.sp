@@ -3743,7 +3743,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("knockout powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Tainted Blade Powerup {default}| {lightcyan}Melee damage is multiplied by 0.5x, and incoming damage by 0.66x. Melee buildup debuffs are multiplied by 3x and DOTs deal 5x dmg. Secondary ailment effects are 3x effective.");
+			CPrintToChat(client, "{community}Tainted Blade Powerup {default}| {lightcyan}Incoming damage is multiplied by 0.66x. Melee buildup debuffs are multiplied by 3x and DOTs deal 5x dmg. Secondary ailment effects are 3x effective.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Assassin Powerup {default}| {lightcyan}Melee damage is multiplied by 4x and 100%% crits when victim has not taken damage from you previously.");
 		}else{

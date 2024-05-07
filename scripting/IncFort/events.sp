@@ -170,24 +170,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 					bloodAcolyteBloodPool[attacker] -= heal;
 				}
 			}
-			if(GetAttribute(attacker, "vampire powerup", 0.0) == 3.0 && !(currentDamageType[attacker].second & DMG_PIERCING)){
-				float tempDmg = damage;
-				if(GetClientHealth(attacker) - tempDmg < TF2Util_GetEntityMaxHealth(attacker)*0.2)
-					tempDmg = GetClientHealth(attacker) - TF2Util_GetEntityMaxHealth(attacker)*0.2;
-
-				if(tempDmg > 0){
-					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(attacker, attacker, attacker, tempDmg, DMG_PREVENT_PHYSICS_FORCE);
-					bloodboundDamage[attacker] += tempDmg;
-				}
-
-				if(bloodboundDamage[attacker] > 0){
-					currentDamageType[attacker].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, attacker, attacker, bloodboundDamage[attacker], DMG_PREVENT_PHYSICS_FORCE);
-					bloodboundHealing[attacker] += bloodboundDamage[attacker];
-					bloodboundDamage[attacker] = 0.0
-				}
-			}
 
 			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
@@ -347,7 +329,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			}
 		}
 	}
-	currentDamageType[attacker].clear();
 }
 public Event_UberDeployed(Event event, const char[] name, bool dontBroadcast){
 	int medic = GetClientOfUserId(GetEventInt(event, "userid"));

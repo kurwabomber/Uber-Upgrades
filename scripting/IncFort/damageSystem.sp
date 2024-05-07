@@ -354,63 +354,143 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			damage /= TF2Attrib_GetValue(rootedDamage)*TF2Attrib_GetValue(rootedDamage);
 		}
 	}
-	if(IsValidClient3(attacker) && IsValidClient3(victim) && IsValidWeapon(weapon))
+	if(IsValidClient3(attacker) && IsValidClient3(victim))
 	{
 		char damageCategory[64];
 		damageCategory = getDamageCategory(currentDamageType[attacker], attacker);
 
 		applyDamageAffinities(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom, damageCategory);
 
-		char weaponClassName[128]; 
-		GetEntityClassname(weapon, weaponClassName, sizeof(weaponClassName));
-		if(StrContains(weaponClassName, "tf_weapon") != -1)
-		{
-			if(attacker != victim)
+		if(IsValidWeapon(weapon)){
+			char weaponClassName[64]; 
+			GetEntityClassname(weapon, weaponClassName, sizeof(weaponClassName));
+			if(StrContains(weaponClassName, "tf_weapon") != -1)
 			{
-				int itemIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
-				if(StrEqual(weaponClassName,"tf_weapon_jar",false))
+				if(attacker != victim)
 				{
-					TF2_AddCondition(victim, TFCond_Jarated, 0.01);
+					int itemIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
+					if(StrEqual(weaponClassName,"tf_weapon_jar",false))
+					{
+						TF2_AddCondition(victim, TFCond_Jarated, 0.01);
+					}
+					if(itemIndex == 230)
+					{
+						TF2_AddCondition(victim, TFCond_Jarated, 0.01);
+					}
+					if(StrEqual(weaponClassName,"tf_weapon_jar_milk",false))
+					{
+						if(GetAttribute(victim, "inverter powerup", 0.0) == 1.0){
+							MadmilkDuration[attacker] = currentGameTime+6.0;
+							MadmilkInflictor[attacker] = victim;
+						}
+						else if(GetAttribute(victim, "inverter powerup", 0.0) == 2.0){
+							MadmilkDuration[victim] = currentGameTime+12.0;
+							MadmilkInflictor[victim] = victim;
+						}
+						else if(MadmilkDuration[victim] < currentGameTime+6.0)
+						{
+							MadmilkDuration[victim] = currentGameTime+6.0;
+							MadmilkInflictor[victim] = attacker;
+						}
+					}
 				}
-				if(itemIndex == 230)
+				Address MadMilkOnhit = TF2Attrib_GetByName(weapon, "armor piercing");
+				if(MadMilkOnhit != Address_Null)
 				{
-					TF2_AddCondition(victim, TFCond_Jarated, 0.01);
-				}
-				if(StrEqual(weaponClassName,"tf_weapon_jar_milk",false))
-				{
-					if(GetAttribute(victim, "inverter powerup", 0.0) == 1.0){
-						MadmilkDuration[attacker] = currentGameTime+6.0;
+					float value = TF2Attrib_GetValue(MadMilkOnhit);
+
+					if(GetAttribute(victim, "inverter powerup", 0.0) == 1){
+						MadmilkDuration[attacker] = currentGameTime+value;
 						MadmilkInflictor[attacker] = victim;
 					}
 					else if(GetAttribute(victim, "inverter powerup", 0.0) == 2.0){
-						MadmilkDuration[victim] = currentGameTime+12.0;
+						MadmilkDuration[victim] = currentGameTime+2*value;
 						MadmilkInflictor[victim] = victim;
 					}
-					else if(MadmilkDuration[victim] < currentGameTime+6.0)
+					else if(MadmilkDuration[victim] < currentGameTime+value)
 					{
-						MadmilkDuration[victim] = currentGameTime+6.0;
+						MadmilkDuration[victim] = currentGameTime+value
 						MadmilkInflictor[victim] = attacker;
 					}
 				}
 			}
-			Address MadMilkOnhit = TF2Attrib_GetByName(weapon, "armor piercing");
-			if(MadMilkOnhit != Address_Null)
-			{
-				float value = TF2Attrib_GetValue(MadMilkOnhit);
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
+				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+					damage *= 1.75
+			else if(GetAttribute(attacker, "knockout powerup", 0.0) == 2)
+				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+					damage *= 0.5;
+			else if(GetAttribute(attacker, "knockout powerup", 0.0) == 3 && !isTagged[attacker][victim])
+				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2){
+					damage *= 4.0;
+					if(!critStatus[victim]){
+						critStatus[victim] = true;
+						damage *= 2.25;
+					}
+				}
 
-				if(GetAttribute(victim, "inverter powerup", 0.0) == 1){
-					MadmilkDuration[attacker] = currentGameTime+value;
-					MadmilkInflictor[attacker] = victim;
+			if(GetAttribute(attacker, "inverter powerup", 0.0) == 2){
+				if(hasBuffIndex(attacker, Buff_CritMarkedForDeath)){
+					Buff critligma;
+					critligma.init("Marked for Crits", "All hits taken are critical", Buff_CritMarkedForDeath, 1, victim, 8.0);
+					insertBuff(victim, critligma);
 				}
-				else if(GetAttribute(victim, "inverter powerup", 0.0) == 2.0){
-					MadmilkDuration[victim] = currentGameTime+2*value;
-					MadmilkInflictor[victim] = victim;
+				if(TF2_IsPlayerInCondition(attacker, TFCond_Bleeding)){
+					TF2Util_MakePlayerBleed(victim, attacker, 8.0, weapon, RoundToCeil(TF2_GetDamageModifiers(attacker, weapon)*2));
 				}
-				else if(MadmilkDuration[victim] < currentGameTime+value)
+				if(TF2_IsPlayerInCondition(attacker, TFCond_OnFire)){
+					TF2Util_IgnitePlayer(victim, attacker, 10.0, weapon);
+				}
+				if(TF2_IsPlayerInCondition(attacker, TFCond_Dazed) || TF2_IsPlayerInCondition(attacker, TFCond_FreezeInput)){
+					TF2_StunPlayer(victim, 0.5, _, TF_STUNFLAGS_BIGBONK);
+				}
+			}
+
+			Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
+			if(bleedBuild != Address_Null && !(damagetype & DMG_PREVENT_PHYSICS_FORCE))
+			{
+				float bleedAdd = TF2Attrib_GetValue(bleedBuild);
+				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+					bleedAdd *= 3;
+
+				if(hasBuffIndex(attacker, Buff_Plunder)){
+					Buff plunderBuff;
+					plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+					bleedAdd *= plunderBuff.severity;
+				}
+
+				BleedBuildup[victim] += bleedAdd;
+
+				while(BleedBuildup[victim] >= BleedMaximum[victim])
 				{
-					MadmilkDuration[victim] = currentGameTime+value
-					MadmilkInflictor[victim] = attacker;
+					BleedBuildup[victim] -= BleedMaximum[victim];
+					
+					float bleedBonus = 1.0;
+					Address vampirePowerupAttacker = TF2Attrib_GetByName(attacker, "unlimited quantity");
+					if(vampirePowerupAttacker != Address_Null && TF2Attrib_GetValue(vampirePowerupAttacker) > 0.0)
+					{
+						bleedBonus += 0.25;
+					}
+					
+					SDKHooks_TakeDamage(victim, attacker, attacker, TF2_GetDamageModifiers(attacker, weapon)*100.0*bleedBonus,DMG_PREVENT_PHYSICS_FORCE, -1, NULL_VECTOR, NULL_VECTOR);
+					CreateParticleEx(victim, "env_sawblood", 1, 0, damagePosition, 2.0);
 				}
+			}
+			Address radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");
+			if(radiationBuild != Address_Null)
+			{
+				float radiationAdd = TF2Attrib_GetValue(radiationBuild);
+				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+					radiationAdd *= 3;
+
+				if(hasBuffIndex(attacker, Buff_Plunder)){
+					Buff plunderBuff;
+					plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+					radiationAdd *= plunderBuff.severity;
+				}
+
+				RadiationBuildup[victim] += radiationAdd;
+				checkRadiation(victim,attacker);
 			}
 		}
 		if(IsValidEdict(inflictor))
@@ -426,23 +506,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 			RadiationBuildup[victim] += damage;
 			checkRadiation(victim,attacker);
-		}
-
-		if(GetAttribute(attacker, "inverter powerup", 0.0) == 2){
-			if(hasBuffIndex(attacker, Buff_CritMarkedForDeath)){
-				Buff critligma;
-				critligma.init("Marked for Crits", "All hits taken are critical", Buff_CritMarkedForDeath, 1, victim, 8.0);
-				insertBuff(victim, critligma);
-			}
-			if(TF2_IsPlayerInCondition(attacker, TFCond_Bleeding)){
-				TF2Util_MakePlayerBleed(victim, attacker, 8.0, weapon, RoundToCeil(TF2_GetDamageModifiers(attacker, weapon)*2));
-			}
-			if(TF2_IsPlayerInCondition(attacker, TFCond_OnFire)){
-				TF2Util_IgnitePlayer(victim, attacker, 10.0, weapon);
-			}
-			if(TF2_IsPlayerInCondition(attacker, TFCond_Dazed) || TF2_IsPlayerInCondition(attacker, TFCond_FreezeInput)){
-				TF2_StunPlayer(victim, 0.5, _, TF_STUNFLAGS_BIGBONK);
-			}
 		}
 
 		if(GetAttribute(attacker, "inverter powerup", 0.0) == 3){
@@ -522,7 +585,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				damagetype |= DMG_NOCLOSEDISTANCEMOD;
 				damage *= 2.0;
 			}
-			else if(strengthPowerupValue == 2.0){
+			else if(strengthPowerupValue == 2.0 && IsValidWeapon(weapon)){
 				if(weaponFireRate[weapon] < TICKRATE)
 					damage *= 1+2*(weaponFireRate[weapon]/TICKRATE);
 				else
@@ -579,21 +642,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 		}
-		
-		if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
-			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-				damage *= 1.75
-		else if(GetAttribute(attacker, "knockout powerup", 0.0) == 2)
-			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-				damage *= 0.5;
-		else if(GetAttribute(attacker, "knockout powerup", 0.0) == 3 && !isTagged[attacker][victim])
-			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2){
-				damage *= 4.0;
-				if(!critStatus[victim]){
-					critStatus[victim] = true;
-					damage *= 2.25;
-				}
-			}
 
 		if(IsValidClient3(tagTeamTarget[attacker])){
 			if(isTagged[tagTeamTarget[attacker]][victim]){
@@ -602,52 +650,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 
-		Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
-		if(bleedBuild != Address_Null && !(damagetype & DMG_PREVENT_PHYSICS_FORCE))
-		{
-			float bleedAdd = TF2Attrib_GetValue(bleedBuild);
-			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-				bleedAdd *= 3;
-
-			if(hasBuffIndex(attacker, Buff_Plunder)){
-				Buff plunderBuff;
-				plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
-				bleedAdd *= plunderBuff.severity;
-			}
-
-			BleedBuildup[victim] += bleedAdd;
-
-			while(BleedBuildup[victim] >= BleedMaximum[victim])
-			{
-				BleedBuildup[victim] -= BleedMaximum[victim];
-				
-				float bleedBonus = 1.0;
-				Address vampirePowerupAttacker = TF2Attrib_GetByName(attacker, "unlimited quantity");
-				if(vampirePowerupAttacker != Address_Null && TF2Attrib_GetValue(vampirePowerupAttacker) > 0.0)
-				{
-					bleedBonus += 0.25;
-				}
-				
-				SDKHooks_TakeDamage(victim, attacker, attacker, TF2_GetDamageModifiers(attacker, weapon)*100.0*bleedBonus,DMG_PREVENT_PHYSICS_FORCE, -1, NULL_VECTOR, NULL_VECTOR);
-				CreateParticleEx(victim, "env_sawblood", 1, 0, damagePosition, 2.0);
-			}
-		}
-		Address radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");
-		if(radiationBuild != Address_Null)
-		{
-			float radiationAdd = TF2Attrib_GetValue(radiationBuild);
-			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-				radiationAdd *= 3;
-
-			if(hasBuffIndex(attacker, Buff_Plunder)){
-				Buff plunderBuff;
-				plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
-				radiationAdd *= plunderBuff.severity;
-			}
-
-			RadiationBuildup[victim] += radiationAdd;
-			checkRadiation(victim,attacker);
-		}
 		if(StunShotStun[attacker])
 		{
 			StunShotStun[attacker] = false;
@@ -736,17 +738,43 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				TeamTacticsBuildup[victim] += teamTacticsRatio * damage / TF2Util_GetEntityMaxHealth(victim);
 			}
 		}
-		if(damagecustom == TF_CUSTOM_HEADSHOT){
-			if(GetAttribute(weapon, "mult sniper charge after headshot", 0.0))
-				savedCharge[attacker] = GetAttribute(weapon, "mult sniper charge after headshot", 0.0);
 
-		float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
-		if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat()){
-			currentDamageType[attacker].second |= DMG_PIERCING;
-			SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE);
-			EmitSoundToAll(DetonatorExplosionSound, victim);
+		if(IsValidWeapon(weapon)){
+			if(damagecustom == TF_CUSTOM_HEADSHOT){
+				if(GetAttribute(weapon, "mult sniper charge after headshot", 0.0))
+					savedCharge[attacker] = GetAttribute(weapon, "mult sniper charge after headshot", 0.0);
+
+			float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
+			if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat()){
+				currentDamageType[attacker].second |= DMG_PIERCING;
+				SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE);
+				EmitSoundToAll(DetonatorExplosionSound, victim);
+			}
+
+			if(GetAttribute(attacker, "vampire powerup", 0.0) == 3.0 && !(currentDamageType[attacker].second & DMG_PIERCING)){
+				float tempDmg = damage;
+				if(GetClientHealth(attacker) - tempDmg < TF2Util_GetEntityMaxHealth(attacker)*0.2)
+					tempDmg = GetClientHealth(attacker) - TF2Util_GetEntityMaxHealth(attacker)*0.2;
+
+				if(tempDmg > 0){
+					currentDamageType[attacker].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(attacker, attacker, attacker, tempDmg, DMG_PREVENT_PHYSICS_FORCE);
+					bloodboundDamage[attacker] += tempDmg;
+				}
+
+				if(bloodboundDamage[attacker] > 0){
+					currentDamageType[attacker].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(victim, attacker, attacker, bloodboundDamage[attacker], DMG_PREVENT_PHYSICS_FORCE);
+					bloodboundHealing[attacker] += bloodboundDamage[attacker];
+					bloodboundDamage[attacker] = 0.0
+				}
+			}
 		}
 	}
+	
+	if(IsValidClient3(attacker))
+		currentDamageType[attacker].clear();
+
 	if(damage < 0.0)
 		damage = 0.0;
 	return Plugin_Changed;

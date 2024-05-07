@@ -22,9 +22,8 @@
 		{
 			"preserve_attributes"	"1"//makes it so the vanilla stats stay.
 			
-			"1"				"412 ; 0.75"
-			"2"				"377 ; 0"
-			"3"				"376 ; 1"
+			"1"				"377 ; 0"
+			"2"				"376 ; 1"
 		}
 		"140,30668"//The Wrangler
 		{
