@@ -922,6 +922,7 @@ public Action:CollisionFrozenFrag(entity, client)
 			{
 				if(IsOnDifferentTeams(owner,client))
 				{
+					currentDamageType[owner].second |= DMG_FROST;
 					currentDamageType[owner].second |= DMG_PIERCING;
 					float damageDealt = 0.5*TF2Util_GetEntityMaxHealth(jarateWeapon[entity]);
 					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_PREVENT_PHYSICS_FORCE, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));

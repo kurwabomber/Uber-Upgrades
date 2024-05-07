@@ -228,23 +228,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 						}
 					}
 				}
-				//Freeze
-				if(!(currentDamageType[attacker].second & DMG_FROST)){
-					float freezeRatio = GetAttribute(CWeapon, "damage causes freeze", 0.0);
-					if(freezeRatio > 0){
-						float frostIncrease = 100.0*freezeRatio*damage/TF2Util_GetEntityMaxHealth(client);
-						if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-							frostIncrease *= 2.0;
-						if(hasBuffIndex(attacker, Buff_Plunder)){
-							Buff plunderBuff;
-							plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
-							frostIncrease *= plunderBuff.severity;
-						}
-
-						FreezeBuildup[client] += frostIncrease;
-						checkFreeze(client, attacker);
-					}
-				}
 
 				//Lifesteal
 				float lifestealFactor = 1.0;
@@ -1281,7 +1264,7 @@ public Event_PlayerChangeTeam(Handle event, const char[] name, bool:dontBroadcas
 	}
 }
 public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
-{	
+{
 	PrintToServer("MvM reset stats????");
 	additionalstartmoney = 0.0;
 	StartMoneySaved = 0.0;
@@ -1298,6 +1281,7 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 	CreateTimer(0.4, ResetClientsTimer);
 	DeleteSavedPlayerData();
 	failLock = false;
+	disableMvMCash = false;
 }
 public Event_mvm_wave_failed(Handle event, const char[] name, bool:dontBroadcast)
 {

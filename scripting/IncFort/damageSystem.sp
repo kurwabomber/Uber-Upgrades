@@ -32,16 +32,21 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(victim == attacker)
 			{
 				damage = 1.0;
+				currentDamageType[attacker].clear();
 				return Plugin_Changed;
 			}
 			else
 			{
 				if(IsValidClient3(attacker) && TF2_IsPlayerInCondition(attacker, TFCond_CritOnWin))
 				{
+					damage *= 2.0;
+				}
+				else
+				{
+					damage = 0.001;
+					currentDamageType[attacker].clear();
 					return Plugin_Changed;
 				}
-				damage = 0.001;
-				return Plugin_Changed;
 			}
 		}
 		if(IsValidClient3(attacker) && victim != attacker)
@@ -54,8 +59,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					damage = projectileDamage[inflictor];
 				}
 				isSentry = !strcmp("obj_sentrygun", classname) || !strcmp("tf_projectile_sentryrocket", classname);
-
-				
 			}
 
 			if(IsValidWeapon(weapon) && !isSentry)
@@ -648,7 +651,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				if(GetAttribute(victim, "king powerup", 0.0) == 2)
 					damage *= 1.75
 			}
-		}
+		}	
 
 		if(StunShotStun[attacker])
 		{
@@ -736,13 +739,13 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			float teamTacticsRatio = GetAttribute(VictimCWeapon, "savior sacrifice attribute", 0.0);
 			if(teamTacticsRatio > 0.0)
 				TeamTacticsBuildup[victim] += teamTacticsRatio * damage / TF2Util_GetEntityMaxHealth(victim);
-			}
 		}
 
 		if(IsValidWeapon(weapon)){
 			if(damagecustom == TF_CUSTOM_HEADSHOT){
 				if(GetAttribute(weapon, "mult sniper charge after headshot", 0.0))
 					savedCharge[attacker] = GetAttribute(weapon, "mult sniper charge after headshot", 0.0);
+			}
 
 			float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
 			if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat()){
@@ -769,9 +772,26 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					bloodboundDamage[attacker] = 0.0
 				}
 			}
+
+			if(!(currentDamageType[attacker].second & DMG_FROST) && !(currentDamageType[attacker].second & DMG_PIERCING)){ //Make sure it isn't piercing or frost damage...
+				float freezeRatio = GetAttribute(weapon, "damage causes freeze", 0.0);
+				if(freezeRatio > 0){
+					float frostIncrease = freezeRatio*damage/TF2Util_GetEntityMaxHealth(victim);
+					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+						frostIncrease *= 2.0;
+					if(hasBuffIndex(attacker, Buff_Plunder)){
+						Buff plunderBuff;
+						plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+						frostIncrease *= plunderBuff.severity;
+					}
+					
+					FreezeBuildup[victim] += frostIncrease;
+					checkFreeze(victim, attacker);
+				}
+			}
 		}
 	}
-	
+
 	if(IsValidClient3(attacker))
 		currentDamageType[attacker].clear();
 
@@ -2030,7 +2050,9 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 			damage *= 1.7;
 
 			int team = GetClientTeam(attacker);
-			float piercingDamage = 100.0/weaponFireRate[weapon];
+
+			Buff infernalDOTBuff;
+			infernalDOTBuff.init("Piercing Flames", "", Buff_PowerupBurning, 1, attacker, 5.0);
 
 			float victimOrigin[3];
 			GetClientAbsOrigin(victim, victimOrigin);
@@ -2048,8 +2070,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 				if(GetVectorDistance(victimOrigin, splashOrigin, true) > 250000)
 					continue;
 				
-				currentDamageType[attacker].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(victim, attacker, attacker, piercingDamage, DMG_PREVENT_PHYSICS_FORCE, weapon);
+				insertBuff(i, infernalDOTBuff);
 			}
 		}
 	}

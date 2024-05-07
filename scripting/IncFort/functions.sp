@@ -32,6 +32,10 @@ float GetResistance(int client, bool includeReduction = false, float increaseBas
 			if(!IsValidWeapon(id))
 				continue;
 			
+			if(GetAttribute(id, "provide on active", 0.0))
+				if(GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon") != id)
+					continue;
+
 			dmgReduction = TF2Attrib_GetByName(id, "dmg taken increased");
 			if(dmgReduction != Address_Null)
 				TotalResistance /= TF2Attrib_GetValue(dmgReduction);
@@ -3761,7 +3765,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("plague powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Decay Powerup {default}| {lightcyan}Deals 120%% of your DPS & inflicts radiation to nearby enemies. ALL healing is nullified in this area. 0.75x damage taken.");
+			CPrintToChat(client, "{community}Decay Powerup {default}| {lightcyan}Deals 50%% of your DPS & inflicts radiation to nearby enemies. ALL healing is nullified in this area. 0.75x damage taken.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Life Link Powerup {default}| {lightcyan}Hitting an enemy will proc life link: Instantly deals 10%% currentHP%% to you, but drains 25%% currentHP%% of enemy over time. At end of duration, your team is healed by damage dealt to yourself.");
 		}else{
@@ -3940,6 +3944,7 @@ stock fixPiercingVelocity(entity)
 }
 ResetVariables(){
 	gameStage = 0;
+	disableMvMCash = false;
 	for(int client = 1;client<=MaxClients;client++){
 		buffChange[client] = false;
 		playerUpgradeMenus[client] = 0;

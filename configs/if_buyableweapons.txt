@@ -188,25 +188,6 @@
 		"paintkit_proto_def_index"	"403"
 		"set_item_texture_wear"		"0.0"
 	}
-	"Carpet Bomber"
-	{
-		"index"			"207"
-		"weapon_class"	"tf_weapon_pipebomblauncher"
-		"weapon_menu"	"tf_weapon_pipebomblauncher"
-		"class"			"demo"
-		"description"	"Shoots 5 cannonballs with -60% damage reduction.\n10x fire rate and converts fire rate into damage."
-		"cost"			"50000.0"
-		"Converts Firerate to Damage"	"1"
-		"weapon fire rate"		"0.1"
-		"weapon damage mult"	"0.4"
-		"projectile spread angle penalty"	"3"
-		"Projectile speed increased"	"3"
-		"mult projectile count"		"5"
-		"Iron Bomber Attribute"		"1"
-		"override projectile type"	"17"
-		"paintkit_proto_def_index"	"104"
-		"set_item_texture_wear"		"0.0"
-	}
 	"Momentum"
 	{
 		"index"			"425"

@@ -154,7 +154,6 @@ public UberShopinitMenusHandlers()
 	HookEvent("mvm_begin_wave",Event_mvm_wave_begin);
 	HookEvent("mvm_wave_failed",Event_mvm_wave_failed);
 	HookEvent("player_builtobject", Event_ObjectBuilt);
-	HookEvent("mvm_mission_update",Event_ResetStats);
 	
 	AddCommandListener(jointeam_callback, "jointeam");
 	AddCommandListener(eurekaAttempt, "eureka_teleport");

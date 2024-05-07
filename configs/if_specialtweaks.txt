@@ -143,7 +143,7 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"revolver use hit locations"	"2.0"
+			"revolver use hit locations"	"3.0"
 			"weapon spread bonus"			"9.5"
 		}
 		"Siphon"

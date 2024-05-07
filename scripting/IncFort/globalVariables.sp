@@ -164,6 +164,7 @@ enum {
 	Buff_Plunder=25,
 	Buff_ImmolationBurn=26,
 	Buff_InfernalLunge=27,
+	Buff_PowerupBurning=28, 
 	BuffAmt
 };
 bool isBonus[BuffAmt] = {
@@ -194,6 +195,7 @@ bool isBonus[BuffAmt] = {
 	true,
 	false,
 	true,
+	false,
 	false,
 }
 Buff playerBuffs[MAXPLAYERS+1][MAXBUFFS+1];
@@ -410,6 +412,7 @@ bool strongholdEnabled[MAXPLAYERS+1];
 bool immolationActive[MAXPLAYERS+1];
 bool isDeathTick[MAXPLAYERS+1];
 bool replenishStatus;
+bool disableMvMCash;
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]

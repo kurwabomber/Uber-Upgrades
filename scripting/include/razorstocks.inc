@@ -176,7 +176,7 @@ stock float GetAttributeAccumulateMultiplicative(int client, const char[] attrNa
 }
 stock bool IsValidWeapon(int entity)
 {
-	return (entity > 0 && IsValidEdict(entity) && HasEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"));
+	return IsValidEntity(entity) && HasEntProp(entity, Prop_Send, "m_iItemDefinitionIndex");
 }
 stock int getOwner(int entity)
 {

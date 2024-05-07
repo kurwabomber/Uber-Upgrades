@@ -106,6 +106,9 @@ public Action:Timer_FixedVariables(Handle timer)
 		if (!IsValidClient3(client) || !IsPlayerAlive(client))
 			continue;
 
+		if(disableMvMCash){
+			SetEntProp(client, Prop_Send, "m_nCurrency", 0);
+		}
 		if(infiniteMoney){
 			CurrencyOwned[client] = 9999999999999999.0;
 		}
@@ -601,17 +604,17 @@ public Action:Timer_Every100MS(Handle timer)
 					if(GetAttribute(client, "plague powerup", 0.0) == 2.0){
 						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-						if(GetVectorDistance(clientPos,VictimPos, true) <= 640000.0)
+						if(GetVectorDistance(clientPos,VictimPos, true) <= 160000.0)
 							insertBuff(i, decayDebuff);
 					}
 				}
 			}
 			if(hasBuffIndex(client, Buff_Decay)){
 				Buff decay; decay = playerBuffs[client][getBuffInArray(client, Buff_Decay)];
-				if(client != decay.inflictor && IsValidClient3(decay.inflictor)){
+				if(client != decay.inflictor && IsValidClient3(decay.inflictor) && IsOnDifferentTeams(client,decay.inflictor)){
 					int inflictorWeapon = GetEntPropEnt(decay.inflictor, Prop_Send, "m_hActiveWeapon");
 					if(IsValidWeapon(inflictorWeapon)){
-						SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, TF2_GetDPSModifiers(client, inflictorWeapon)*TF2_GetWeaponclassDPS(client, inflictorWeapon)*0.1);
+						SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, TF2_GetDPSModifiers(client, inflictorWeapon)*TF2_GetWeaponclassDPS(client, inflictorWeapon)*0.05);
 					}
 				}
 			}
@@ -627,6 +630,14 @@ public Action:Timer_Every100MS(Handle timer)
 				if(IsValidClient3(lifelink.inflictor)){
 					currentDamageType[lifelink.inflictor].second |= DMG_PIERCING;
 					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025, DMG_PREVENT_PHYSICS_FORCE);
+				}
+			}
+			if(hasBuffIndex(client, Buff_PowerupBurning)){
+				Buff infernalDOT; infernalDOT = playerBuffs[client][getBuffInArray(client, Buff_PowerupBurning)];
+				if(client != infernalDOT.inflictor && IsValidClient3(infernalDOT.inflictor)){
+					currentDamageType[infernalDOT.inflictor].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, 10.0);
+					CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1, _, _, 0.6);
 				}
 			}
 
@@ -1375,6 +1386,7 @@ public Action MissionLoaded(Handle timer){
 			CurrencyOwned[i] = (StartMoney + additionalstartmoney);
 		}
 	}
+	disableMvMCash = true;
 	PrintToServer("%.2f Startmoney", StartMoney);
 
 	if(StrContains(missionName, "IF", false) != -1)
