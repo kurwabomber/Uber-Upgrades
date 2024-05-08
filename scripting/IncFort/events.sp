@@ -4116,3 +4116,12 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 		}
 	}
 }
+
+public Action EurekaTeleportHook(UserMsg msg_id, BfRead msg, const int[] players, int playersNum, bool reliable, bool init)
+{
+	int client = msg.ReadByte();
+	if(IsValidClient3(client))
+		CreateTimer(0.6,eurekaDelayed,EntIndexToEntRef(client));
+	
+	return Plugin_Continue;
+}

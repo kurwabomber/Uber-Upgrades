@@ -394,7 +394,6 @@ bool isBuffActive[MAXPLAYERS+1];
 bool gravChanges[MAXENTITIES];
 bool debugMode = false;
 bool infiniteMoney = false;
-bool eurekaActive[MAXPLAYERS+1];
 bool StunShotBPS[MAXPLAYERS+1];
 bool StunShotStun[MAXPLAYERS+1];
 bool shouldAttack[MAXPLAYERS+1];

@@ -155,8 +155,9 @@ public UberShopinitMenusHandlers()
 	HookEvent("player_builtobject", Event_ObjectBuilt);
 	
 	AddCommandListener(jointeam_callback, "jointeam");
-	AddCommandListener(eurekaAttempt, "eureka_teleport");
 	AddCommandListener(removeAllBuildings, "destroy");
+
+	HookUserMessage(view_as<UserMsg>(54), EurekaTeleportHook);
 }
 public OnMapStart()
 {

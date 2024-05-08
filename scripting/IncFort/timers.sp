@@ -1682,20 +1682,6 @@ public Action:GiveMaxAmmo(Handle timer, any:userid)
 		}
 	}
 }
-public Action:eurekaAttempt(client, const char[] command, argc) 
-{
-	if(IsValidClient3(client) && eurekaActive[client] == false && weaponArtCooldown[client] <= currentGameTime)
-	{
-		eurekaActive[client] = true;
-		float tauntDelay = 2.3;
-		Address TauntSpeedActive = TF2Attrib_GetByName(client, "gesture speed increase");
-		if(TauntSpeedActive != Address_Null)
-		{
-			tauntDelay /= TF2Attrib_GetValue(TauntSpeedActive);
-		}
-		CreateTimer(tauntDelay,eurekaDelayed,EntIndexToEntRef(client));
-	}
-}
 
 public Action:thunderClapPart2(Handle timer, any:data) 
 {  
@@ -1717,7 +1703,6 @@ public Action:thunderClapPart2(Handle timer, any:data)
 public Action:eurekaDelayed(Handle timer, int client) 
 {
 	client = EntRefToEntIndex(client);
-	eurekaActive[client] = false;
 	if(IsValidClient3(client))
 	{
 		int melee = (GetPlayerWeaponSlot(client,2));
