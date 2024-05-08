@@ -592,18 +592,7 @@ public Action:OnCollisionPiercingRocket(entity, client)
 				if(IsValidEdict(CWeapon))
 				{
 					float damageDealt = 70.0 * TF2_GetDamageModifiers(owner, CWeapon);
-					
-					float clientpos[3], targetpos[3];
-					GetEntPropVector(owner, Prop_Data, "m_vecAbsOrigin", clientpos);
-					GetEntPropVector(client, Prop_Data, "m_vecAbsOrigin", targetpos);
-					float distance = GetVectorDistance(clientpos, targetpos);
-					if(distance > 512.0)
-					{
-						if(distance > 1024.0)
-							distance = 1024.0;
-						damageDealt *= (512.0/distance);
-					}
-					EntityExplosion(owner, damageDealt, 144.0, origin, 0, true, entity, _, _,_,0.5)
+					EntityExplosion(owner, damageDealt, 144.0, origin, 0, true, entity, _, _,_,0.5,_,_,_,_,_,_,_,true);
 				}
 				if(IsValidClient3(client))
 					ShouldNotHome[entity][client] = true;

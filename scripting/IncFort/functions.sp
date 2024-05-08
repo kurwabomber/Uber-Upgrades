@@ -473,17 +473,14 @@ public float ParseShorthand(char[] input, int size){
 
 	return num;
 }
-stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0, char[] particle = "ExplosionCore_MidAir", float knockback = 0.0)
+stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, int firstBits = 0, int secondBits = 0, int thirdBits = 0, char[] particle = "ExplosionCore_MidAir", float knockback = 0.0, bool noMultihit = false)
 {
 	if(entity == -1 || !IsValidEdict(entity))
 		entity = owner;
 	int i = -1;
 	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
-		if(ShouldNotHit[entity][entity])
-			continue;
-
-		if(IsValidForDamage(i) && IsOnDifferentTeams(owner,i) && i != entity)
+		if(IsValidForDamage(i) && !ShouldNotHit[entity][i] && IsOnDifferentTeams(owner,i) && i != entity)
 		{
 			float targetvec[3];
 			float distance;
@@ -524,6 +521,8 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 					{
 						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,-1,NULL_VECTOR,NULL_VECTOR, false);
 					}
+					if(noMultihit)
+						ShouldNotHit[entity][i] = true;
 				}
 			}
 		}
@@ -1200,7 +1199,7 @@ DisplayItemChange(client,itemidx)
 		//Heavy Primaries
 		case 312:
 		{
-			ChangeString = "The Brass Beast | Shoots rockets that have 70 base damage and 144HU blast radius and can penetrate enemies. Cannot hit enemies multiple times. 3x slower fire rate. Has distance falloff.";
+			ChangeString = "The Brass Beast | Shoots rockets that have 70 base damage and 144HU blast radius and can penetrate enemies. Cannot hit enemies multiple times. 3x slower fire rate.";
 		}
 		case 811,832:
 		{
@@ -2660,7 +2659,7 @@ meteorCollisionCheck(int entity){
 }
 public BoomerangThink(entity) 
 { 
-	if(IsValidEdict(entity) && currentGameTime - entitySpawnTime[entity] > 0.4)
+	if(IsValidEntity(entity) && currentGameTime - entitySpawnTime[entity] > 0.4)
 	{
 		float ProjAngle[3],ProjVelocity[3],vBuffer[3],impulse[3],speed;
 		GetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", ProjVelocity);
@@ -3919,15 +3918,16 @@ stock delayedResetVelocity(entity, float vel[3]){
 stock resetVelocity(DataPack pack){
 	pack.Reset();
 	int entity = EntRefToEntIndex(pack.ReadCell());
-	float vel[3];
-	vel[0] = pack.ReadFloat();
-	vel[1] = pack.ReadFloat();
-	vel[2] = pack.ReadFloat();
+	if(IsValidEntity(entity)){
+		float vel[3];
+		vel[0] = pack.ReadFloat();
+		vel[1] = pack.ReadFloat();
+		vel[2] = pack.ReadFloat();
 
-	float impulse[3];
-	GetCleaverAngularImpulse(impulse);
-	Phys_SetVelocity(entity, vel, impulse, true);
-
+		float impulse[3];
+		GetCleaverAngularImpulse(impulse);
+		Phys_SetVelocity(entity, vel, impulse, true);
+	}
 	delete pack;
 }
 stock fixPiercingVelocity(entity)

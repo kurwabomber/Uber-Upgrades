@@ -304,60 +304,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		}
 	}
 
-	if(!(damagetype == DMG_PREVENT_PHYSICS_FORCE && currentDamageType[attacker].second & DMG_PIERCING))
-	{
-		float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
-		if(dmgReduction != 1.0)
-			damage *= dmgReduction
-
-		float linearReduction = GetAttribute(victim, "dmg taken divided");
-		if(linearReduction != 1.0)
-			damage /= linearReduction;
-
-		if(IsValidClient(victim)){
-			if(fl_ArmorCap[victim] < 1.0)
-			{
-				fl_ArmorCap[victim] = 1.0;
-			}
-			damage /= fl_ArmorCap[victim];
-		}
-		if(IsValidEdict(VictimCWeapon))
-		{
-			Address ResistanceWhileHeld = TF2Attrib_GetByName(VictimCWeapon, "SET BONUS: mystery solving time decrease");
-			if(ResistanceWhileHeld != Address_Null)
-			{
-				float dmgDivisor = TF2Attrib_GetValue(ResistanceWhileHeld);
-				damage = (damage / dmgDivisor);
-			}	
-			Address DodgeWhileHeld = TF2Attrib_GetByName(VictimCWeapon, "SET BONUS: chance of hunger decrease");
-			if(DodgeWhileHeld != Address_Null)
-			{
-				float dodgeChance = TF2Attrib_GetValue(DodgeWhileHeld);
-				if(dodgeChance >= GetRandomFloat(0.0, 1.0))
-				{
-					damage *= 0.0;
-					//PrintToConsole(victim, "Attack Dodged!");
-					return Plugin_Changed;
-				}
-			}	
-		}
-		Address DodgeBody = TF2Attrib_GetByName(victim, "SET BONUS: chance of hunger decrease");
-		if(DodgeBody != Address_Null)
-		{
-			float dodgeChance = TF2Attrib_GetValue(DodgeBody);
-			if(dodgeChance >= GetRandomFloat(0.0, 1.0))
-			{
-				damage *= 0.0;
-				//PrintToConsole(victim, "Attack Dodged!");
-				return Plugin_Changed;
-			}
-		}
-		Address rootedDamage = TF2Attrib_GetByName(victim, "endurance bonus");
-		if(rootedDamage != Address_Null && TF2Attrib_GetValue(rootedDamage) > 1.0)
-		{
-			damage /= TF2Attrib_GetValue(rootedDamage)*TF2Attrib_GetValue(rootedDamage);
-		}
-	}
 	if(IsValidClient3(attacker) && IsValidClient3(victim))
 	{
 		char damageCategory[64];
@@ -810,17 +756,45 @@ public Action:TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 
 	if(currentDamageType[attacker].second & DMG_PIERCING){
 		critType = CritType_None;
-		return Plugin_Changed;
 	}
-
 
 	if(hasBuffIndex(victim, Buff_CritMarkedForDeath))
 	{
 		critType = CritType_Crit;
 		currentDamageType[attacker].second |= DMG_ACTUALCRIT;
-		return Plugin_Changed;
 	}
-	return Plugin_Continue;
+
+	if(IsValidClient3(victim)){
+		if(!(currentDamageType[attacker].second & DMG_PIERCING)){
+			float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
+			if(dmgReduction != 1.0)
+				damage *= dmgReduction
+
+			float linearReduction = GetAttribute(victim, "dmg taken divided");
+			if(linearReduction != 1.0)
+				damage /= linearReduction;
+
+			if(!IsFakeClient(victim)){
+				if(fl_ArmorCap[victim] < 1.0)
+					fl_ArmorCap[victim] = 1.0;
+				
+				damage /= fl_ArmorCap[victim];
+			}
+
+			Address DodgeBody = TF2Attrib_GetByName(victim, "SET BONUS: chance of hunger decrease");
+			if(DodgeBody != Address_Null){
+				float dodgeChance = TF2Attrib_GetValue(DodgeBody);
+				if(dodgeChance >= GetRandomFloat(0.0, 1.0)){
+					damage *= 0.0;
+					return Plugin_Changed;
+				}
+			}
+			Address rootedDamage = TF2Attrib_GetByName(victim, "endurance bonus");
+			if(rootedDamage != Address_Null && TF2Attrib_GetValue(rootedDamage) > 1.0)
+				damage /= TF2Attrib_GetValue(rootedDamage)*TF2Attrib_GetValue(rootedDamage);
+		}
+	}
+	return Plugin_Changed;
 }
 /*
 public Action:TF2_OnTakeDamageModifyRules(int victim, int &attacker, int &inflictor, float &damage,
@@ -831,45 +805,7 @@ int damagecustom, CritType &critType)
 		return Plugin_Continue;
 
 	attacker = EntRefToEntIndex(attacker);
-	if(critType == CritType_Crit || (!critStatus[victim] && hasBuffIndex(victim, Buff_CritMarkedForDeath)))
-	{
-		critStatus[victim] = true;
-		damagetype &= ~DMG_CRIT;
-		damage = lastDamageTaken[victim] * 1.25;
-		if(IsValidWeapon(weapon))
-		{
-			Address critDamageMult = TF2Attrib_GetByName(weapon, "mod medic killed marked for death");
-			if(critDamageMult != Address_Null)
-				damage *= TF2Attrib_GetValue(critDamageMult);
-		}
-		damage += lastDamageTaken[victim];
-		critType = CritType_None
-		lastDamageTaken[victim] = 0.0;
-		return Plugin_Changed;
-	}
-	else if(lastDamageTaken[victim] != 0.0 && miniCritStatus[victim] == false && IsValidClient3(attacker) 
-	&& (critType == CritType_MiniCrit || miniCritStatusAttacker[attacker] > currentGameTime || miniCritStatusVictim[victim] > currentGameTime)
-	&& !(currentDamageType[attacker].second & DMG_ACTUALCRIT) )
-	{
-		if(debugMode)
-			PrintToChat(attacker, "minicrit override failsafe");
-		miniCritStatus[victim] = true;
-		damage = lastDamageTaken[victim] * 0.35;
-		if(IsValidWeapon(weapon))
-		{
-			Address critDamageMult = TF2Attrib_GetByName(weapon, "mod medic killed marked for death");
-			if(critDamageMult != Address_Null)
-				damage *= TF2Attrib_GetValue(critDamageMult);
-		}
-		damage += lastDamageTaken[victim];
-		critType = CritType_None
-		if(damagetype & DMG_CRIT)
-			damagetype &= ~DMG_CRIT;
-		
-		lastDamageTaken[victim] = 0.0;
-		return Plugin_Changed;
-	}
-	PrintToServer("triggered ModifyRules");
+
 	return Plugin_Continue;
 }
 */
@@ -1290,10 +1226,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		GetEdictClassname(weapon, classname, sizeof(classname)); 
 		if(StrEqual(classname, "tf_weapon_syringegun_medic"))
 			damage *= 1.8
-		else if(StrEqual(classname, "tf_weapon_medigun")){
-			currentDamageType[attacker].second |= DMG_PIERCING;
-			damage *= 0.5;
-		}
 		else if(StrEqual(classname, "tf_weapon_scattergun") ||
 		StrEqual(classname, "tf_weapon_handgun_scout_primary") ||
 		StrEqual(classname, "tf_weapon_soda_popper") ||
