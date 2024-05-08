@@ -3409,9 +3409,9 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 						GetClientEyeAngles(client, fAngles);
 						GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 						GetAngleVectors(fAngles,fwd, NULL_VECTOR, NULL_VECTOR);
-						ScaleVector(fwd, 75.0);
+						ScaleVector(fwd, 20.0);
 						AddVectors(fOrigin, fwd, fOrigin);
-						float velocity = 3000.0;
+						float velocity = 2000.0;
 						Address projspeed = TF2Attrib_GetByName(CWeapon, "Projectile speed increased");
 						Address projspeed1 = TF2Attrib_GetByName(CWeapon, "Projectile speed decreased");
 						if(projspeed != Address_Null){
@@ -3435,7 +3435,6 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
 						}
 						SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
-						SetEntPropFloat(iEntity, Prop_Send, "m_flModelScale", 1.3);
 						SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchPiercingRocket);
 						SetEntityModel(iEntity, "models/weapons/w_models/w_rocket_airstrike/w_rocket_airstrike.mdl");
 						CreateTimer(3.0, SelfDestruct, EntIndexToEntRef(iEntity));
