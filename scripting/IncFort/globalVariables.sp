@@ -412,6 +412,7 @@ bool immolationActive[MAXPLAYERS+1];
 bool isDeathTick[MAXPLAYERS+1];
 bool replenishStatus;
 bool disableMvMCash;
+bool DOTStacked[MAXENTITIES][MAXENTITIES];
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]

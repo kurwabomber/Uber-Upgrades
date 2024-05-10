@@ -75,7 +75,8 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				insertBuff(client, lifelinkDebuff);
 
 				currentDamageType[attacker].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.5, DMG_PREVENT_PHYSICS_FORCE);
+				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.5, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 			}
 		}
 	}
@@ -223,7 +224,8 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 								CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
 								CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 							}
-							SDKHooks_TakeDamage(target,attacker,attacker,100.0*TF2_GetDPSModifiers(attacker, CWeapon),DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR)
+							currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+							SDKHooks_TakeDamage(target,attacker,attacker,100.0*TF2_GetDPSModifiers(attacker, CWeapon),DMG_SHOCK,_,_,_,false)
 							++i
 						}
 					}
@@ -694,7 +696,8 @@ public MRESReturn OnAirblast(int weapon, Handle hParams){
 						if(GetClientTeam(i) != GetClientTeam(owner))//Enemies debuffed
 						{
 							CurrentSlowTimer[i] = currentGameTime+Duration;
-							SDKHooks_TakeDamage(i,owner,owner,AirblastDamage,DMG_BLAST,weapon, NULL_VECTOR, NULL_VECTOR);
+							currentDamageType[owner].second |= DMG_IGNOREHOOK;
+							SDKHooks_TakeDamage(i,owner,owner,AirblastDamage,DMG_BLAST,weapon,_,_,false);
 							
 							bool immune = false;
 							
@@ -3040,8 +3043,10 @@ public MRESReturn OnBlastExplosion(int entity, Handle hReturn){
 			if(!IsValidClient3(target))
 				continue;
 
-			SDKHooks_TakeDamage(target, owner, owner, damage);
-			SDKHooks_TakeDamage(target, owner, owner, 3.0, DMG_RADIATION+DMG_DISSOLVE);
+			currentDamageType[owner].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(target, owner, owner, damage,_,_,_,_,false);
+			currentDamageType[owner].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(target, owner, owner, 3.0, DMG_RADIATION+DMG_DISSOLVE,_,_,_,false);
 
 			if(hitParticle[target]+0.2 <= currentGameTime){
 				GetEntPropVector(target, Prop_Data, "m_vecOrigin", victimPosition);
@@ -3890,7 +3895,8 @@ public Event_Teleported(Handle event, const char[] name, bool:dontBroadcast)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
 							{
-								SDKHooks_TakeDamage(i, client, client, LightningDamage, DMG_GENERIC, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+								currentDamageType[client].second |= DMG_IGNOREHOOK;
+								SDKHooks_TakeDamage(i, client, client, LightningDamage, DMG_GENERIC, _,_,_,false);
 								if(IsValidClient3(i))
 								{
 									float velocity[3];

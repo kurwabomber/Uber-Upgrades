@@ -1725,7 +1725,6 @@
 		{
 			"Attr0"		"melee attack rate bonus(spy)"
 			"Attr3"		"melee range multiplier"
-			"Attr4"		"backstab tanks capability"
 			"Attr12"	"increase player capture value"
 		}
 		"Special Tweaks"

@@ -26,6 +26,7 @@ Yeah.
 #define DMG_MINICRIT 1 << 3
 #define DMG_ACTUALCRIT 1 << 4
 #define DMG_FROST 1 << 5
+#define DMG_IGNOREHOOK 1 << 6
 
 //Uber Stuff
 #define UBER_INVULN 1 << 0
@@ -37,7 +38,6 @@ Yeah.
 
 #define GetWeapon TF2Util_GetPlayerLoadoutEntity
 
-bool DOTStacked[MAXENTITIES][MAXENTITIES];
 bool ShouldNotHome[MAXENTITIES][MAXPLAYERS+1];
 bool ShouldNotHit[MAXENTITIES][MAXENTITIES];
 
@@ -1276,7 +1276,7 @@ stock float TF2_GetWeaponclassDPS(client, weapon)
 			}
 			else if(StrEqual(Classname,"tf_weapon_raygun",false) || StrEqual(Classname,"tf_weapon_drg_pomson",false))
 			{
-				dps = 160.0;
+				dps = 120.0;
 			}
 			else if(StrEqual(Classname,"tf_weapon_shovel",false) || StrEqual(Classname,"saxxy",false) || StrEqual(Classname,"tf_weapon_fireaxe",false) || StrEqual(Classname,"tf_weapon_slap",false) || StrEqual(Classname,"tf_weapon_sword",false) ||
 			StrEqual(Classname,"tf_weapon_bottle",false) || StrEqual(Classname,"tf_weapon_stickbomb",false) || StrEqual(Classname,"tf_weapon_katana",false) || StrEqual(Classname,"tf_weapon_fists",false) || StrEqual(Classname,"tf_weapon_wrench",false) ||
@@ -2224,79 +2224,6 @@ public void SetFlags(int entity)
 	{ 
 		SetEdictFlags(entity, (GetEdictFlags(entity) ^ FL_EDICT_ALWAYS)); 
 	} 
-}
-stock void DOTStock(int victim,int attacker,float damage,int weapon = -1,int damagetype = 0,int repeats = 1,float initialDelay = 0.0,float tickspeed = 1.0, bool stackable = false)
-{
-	if(IsValidForDamage(victim) && IsValidClient3(attacker))
-	{
-		if(DOTStacked[victim][attacker] == false || stackable == true)
-		{
-			Handle hPack = CreateDataPack();
-			WritePackCell(hPack, EntIndexToEntRef(victim));
-			WritePackCell(hPack, EntIndexToEntRef(attacker));
-			WritePackFloat(hPack, damage);
-			if(IsValidEdict(weapon))
-			{
-				WritePackCell(hPack, EntIndexToEntRef(weapon));
-			}
-			else
-			{
-				WritePackCell(hPack, weapon);
-			}
-			WritePackCell(hPack, damagetype);
-			WritePackCell(hPack, repeats);
-			WritePackCell(hPack, stackable);
-			WritePackFloat(hPack, tickspeed);
-			CreateTimer(initialDelay,DOTDamage,hPack);
-			if(!stackable)
-			{
-				DOTStacked[victim][attacker] = true;
-			}
-		}
-	}
-}
-stock Action DOTDamage(Handle timer,any:data)
-{
-	ResetPack(data);
-	int victim = EntRefToEntIndex(ReadPackCell(data));
-	int attacker = EntRefToEntIndex(ReadPackCell(data));
-	float damage = ReadPackFloat(data);
-	int weapon = EntRefToEntIndex(ReadPackCell(data));
-	int damagetype = ReadPackCell(data);
-	int repeats = ReadPackCell(data);
-	bool stackable = view_as<bool>(ReadPackCell(data));
-	float tickspeed = ReadPackFloat(data);
-	if(repeats >= 1)
-	{
-		if(IsValidForDamage(victim) && IsValidClient3(attacker))
-		{
-			SDKHooks_TakeDamage(victim,attacker,attacker,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR,!IsValidClient3(victim));
-			repeats--;
-			Handle hPack = CreateDataPack();
-			WritePackCell(hPack, EntIndexToEntRef(victim));
-			WritePackCell(hPack, EntIndexToEntRef(attacker));
-			WritePackFloat(hPack, damage);
-			if(IsValidEdict(weapon))
-			{
-				WritePackCell(hPack, EntIndexToEntRef(weapon));
-			}
-			else
-			{
-				WritePackCell(hPack, weapon);
-			}
-			WritePackCell(hPack, damagetype);
-			WritePackCell(hPack, repeats);
-			WritePackCell(hPack, stackable);
-			WritePackFloat(hPack, tickspeed);
-			CreateTimer(tickspeed,DOTDamage,hPack);
-		}
-	}
-	else if(!stackable)
-	{
-		DOTStacked[victim][attacker] = false;
-	}
-	CloseHandle(data);
-	return Plugin_Continue;
 }
 stock Action ReEnableBuilding(Handle timer, int entity)
 {

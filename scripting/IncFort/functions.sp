@@ -48,6 +48,80 @@ float GetResistance(int client, bool includeReduction = false, float increaseBas
 	}
 	return TotalResistance;
 }
+stock void DOTStock(int victim,int attacker,float damage,int weapon = -1,int damagetype = 0,int repeats = 1,float initialDelay = 0.0,float tickspeed = 1.0, bool stackable = false)
+{
+	if(IsValidForDamage(victim) && IsValidClient3(attacker))
+	{
+		if(DOTStacked[victim][attacker] == false || stackable == true)
+		{
+			Handle hPack = CreateDataPack();
+			WritePackCell(hPack, EntIndexToEntRef(victim));
+			WritePackCell(hPack, EntIndexToEntRef(attacker));
+			WritePackFloat(hPack, damage);
+			if(IsValidEdict(weapon))
+			{
+				WritePackCell(hPack, EntIndexToEntRef(weapon));
+			}
+			else
+			{
+				WritePackCell(hPack, weapon);
+			}
+			WritePackCell(hPack, damagetype);
+			WritePackCell(hPack, repeats);
+			WritePackCell(hPack, stackable);
+			WritePackFloat(hPack, tickspeed);
+			CreateTimer(initialDelay,DOTDamage,hPack);
+			if(!stackable)
+			{
+				DOTStacked[victim][attacker] = true;
+			}
+		}
+	}
+}
+stock Action DOTDamage(Handle timer,any:data)
+{
+	ResetPack(data);
+	int victim = EntRefToEntIndex(ReadPackCell(data));
+	int attacker = EntRefToEntIndex(ReadPackCell(data));
+	float damage = ReadPackFloat(data);
+	int weapon = EntRefToEntIndex(ReadPackCell(data));
+	int damagetype = ReadPackCell(data);
+	int repeats = ReadPackCell(data);
+	bool stackable = view_as<bool>(ReadPackCell(data));
+	float tickspeed = ReadPackFloat(data);
+	if(repeats >= 1)
+	{
+		if(IsValidForDamage(victim) && IsValidClient3(attacker))
+		{
+			currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(victim,attacker,attacker,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR,false);
+			repeats--;
+			Handle hPack = CreateDataPack();
+			WritePackCell(hPack, EntIndexToEntRef(victim));
+			WritePackCell(hPack, EntIndexToEntRef(attacker));
+			WritePackFloat(hPack, damage);
+			if(IsValidEdict(weapon))
+			{
+				WritePackCell(hPack, EntIndexToEntRef(weapon));
+			}
+			else
+			{
+				WritePackCell(hPack, weapon);
+			}
+			WritePackCell(hPack, damagetype);
+			WritePackCell(hPack, repeats);
+			WritePackCell(hPack, stackable);
+			WritePackFloat(hPack, tickspeed);
+			CreateTimer(tickspeed,DOTDamage,hPack);
+		}
+	}
+	else if(!stackable)
+	{
+		DOTStacked[victim][attacker] = false;
+	}
+	CloseHandle(data);
+	return Plugin_Continue;
+}
 stock int CreateParticle(iEntity, char[] strParticle, bool bAttach = false, char[] strAttachmentPoint="", float time = 2.0,float fOffset[3]={0.0, 0.0, 0.0}, bool parentAngle = false, attachType = 0, bool terminate = false)
 {
 	if(attachType == 0)
@@ -511,7 +585,8 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 
 					if(IsValidEdict(weapon) && IsValidClient3(i))
 					{
-						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,NULL_VECTOR,NULL_VECTOR)
+						currentDamageType[owner].second |= DMG_IGNOREHOOK;
+						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,weapon,_,_,false)
 						if(knockback > 0.0)
 							PushEntity(i, owner, knockback, 200.0);
 						if(ignition)
@@ -519,7 +594,8 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 					}
 					else
 					{
-						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,-1,NULL_VECTOR,NULL_VECTOR, false);
+						currentDamageType[owner].second |= DMG_IGNOREHOOK;
+						SDKHooks_TakeDamage(i,owner,owner,damage, damagetype,_,_,_, false);
 					}
 					if(noMultihit)
 						ShouldNotHit[entity][i] = true;
@@ -2686,7 +2762,8 @@ checkRadiation(victim,attacker)
 		RadiationBuildup[victim] = 0.0;
 
 		currentDamageType[attacker].second |= DMG_PIERCING;
-		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.35, DMG_PREVENT_PHYSICS_FORCE);
+		currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.35, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 
 		Buff radiation;
 		radiation.init("Radiation", "", Buff_Radiation, 1, attacker, 8.0);
@@ -2715,7 +2792,8 @@ checkFreeze(int victim,int attacker)
 		TF2_AddCondition(victim, TFCond_FreezeInput, 6.0, attacker);
 		currentDamageType[attacker].second |= DMG_PIERCING;
 		currentDamageType[attacker].second |= DMG_FROST;
-		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.2, DMG_PREVENT_PHYSICS_FORCE);
+		currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.2, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 		SetEntityRenderColor(victim, 0, 128, 255, 80);
 		SetEntityMoveType(victim, MOVETYPE_NONE);
 	}
@@ -3772,7 +3850,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("plague powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Decay Powerup {default}| {lightcyan}Deals 50%% of your DPS & inflicts radiation to nearby enemies. ALL healing is nullified in this area. 0.75x damage taken.");
+			CPrintToChat(client, "{community}Decay Powerup {default}| {lightcyan}Deals 20 Weapon DPS & inflicts radiation to nearby enemies. ALL healing is nullified in this area. 0.75x damage taken.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Life Link Powerup {default}| {lightcyan}Hitting an enemy will proc life link: Instantly deals 10%% currentHP%% to you, but drains 25%% currentHP%% of enemy over time. At end of duration, your team is healed by damage dealt to yourself.");
 		}else{
@@ -4056,7 +4134,8 @@ public bool TraceEntityWarp(int entity, int contentsMask, any data) {
     if (0 < entity <= MaxClients){
 		if(IsValidClient3(entity) && IsPlayerAlive(entity) && IsOnDifferentTeams(entity, data)){
 			float damageBoost = TF2_GetDamageModifiers(data, GetEntPropEnt(data, Prop_Send, "m_hActiveWeapon"), true, true, false);
-			SDKHooks_TakeDamage(entity,data,data,damageBoost*1200.0,DMG_CLUB|DMG_CRUSH,GetEntPropEnt(data, Prop_Send, "m_hActiveWeapon"));
+			currentDamageType[data].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(entity,data,data,damageBoost*1200.0,DMG_CLUB|DMG_CRUSH,GetEntPropEnt(data, Prop_Send, "m_hActiveWeapon"),_,_,false);
 
 			Buff jarateDebuff; jarateDebuff.init("Jarated", "", Buff_Jarated, 4*RoundToNearest(damageBoost), data, 8.0);
 			insertBuff(entity, jarateDebuff);

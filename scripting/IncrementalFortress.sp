@@ -21,8 +21,6 @@
 #include <tf2utils>
 #include <takehealth_proxy>
 #include <classdefs/CTakeDamageInfo.sp>
-#include <sendproxy>
-
 #pragma tabsize 0
 
 #define SecondaryCostReduction 1.0

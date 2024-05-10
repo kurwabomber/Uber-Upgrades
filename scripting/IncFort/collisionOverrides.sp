@@ -36,12 +36,14 @@ public Action:OnStartTouchStomp(client, other)
 					GetClientAbsOrigin(i, splashOrigin);
 					if(GetVectorDistance(splashOrigin, ClientPos, true) > 250000.0) continue;
 
-					SDKHooks_TakeDamage(i,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
+					currentDamageType[client].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(i,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon,_,_,false);
 					++splash;
 				}
 			}
 			
-			SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon, NULL_VECTOR, NULL_VECTOR);
+			currentDamageType[client].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(other,client,client,stompDamage,DMG_CLUB|DMG_CRUSH,CWeapon,_,_,false);
 		}
 	}
 	if(hasBuffIndex(client, Buff_InfernalLunge)){
@@ -147,7 +149,8 @@ public Action:OnSunlightSpearCollision(entity, client)
 
 				float scaling[] = {0.0, 35.0, 70.0, 140.0};
 				float ProjectileDamage = 140.0 + (Pow(ArcaneDamage[owner]*Pow(ArcanePower[owner], 4.0),spellScaling[spellLevel]) * scaling[spellLevel]);
-				SDKHooks_TakeDamage(client, owner, owner, ProjectileDamage, DMG_SHOCK, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+				currentDamageType[owner].second |= DMG_IGNOREHOOK;
+				SDKHooks_TakeDamage(client, owner, owner, ProjectileDamage, DMG_SHOCK,_,_,_,false);
 				RemoveEntity(entity);
 				CreateParticleEx(client, "dragons_fury_effect_parent", 1);
 			}
@@ -366,7 +369,8 @@ public Action:OnCollisionWarriorArrow(entity, client)
 			{
 				damageDealt *= TF2Attrib_GetValue(multiHitActive) + 1.0;
 			}
-			SDKHooks_TakeDamage(client, owner, owner, damageDealt*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+			currentDamageType[owner].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(client, owner, owner, damageDealt*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, _,_,false);
 		}
 		RemoveEntity(entity);
 	}
@@ -391,7 +395,8 @@ public Action:OnCollisionBossArrow(entity, client)
 				if(IsValidEdict(CWeapon))
 				{
 					float damageDealt = 240.0*TF2_GetDamageModifiers(owner, CWeapon, false);
-					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+					currentDamageType[owner].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, _,_,false);
 					if(IsValidClient3(client))
 					{
 						RadiationBuildup[client] += 100.0;
@@ -418,7 +423,8 @@ public Action:OnCollisionArrow(entity, client)
 			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
-				SDKHooks_TakeDamage(client, owner, owner, 50.0*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+				currentDamageType[owner].second |= DMG_IGNOREHOOK;
+				SDKHooks_TakeDamage(client, owner, owner, 50.0*TF2_GetDamageModifiers(owner, CWeapon, false), DMG_BULLET, CWeapon, _,_,false);
 			}
 			RemoveEntity(entity);
 		}
@@ -454,8 +460,9 @@ public Action:OnCollisionPhotoViscerator(entity, client)
 					{
 						damage /= TF2Attrib_GetValue(lameMult);
 					}
-					DOTStock(client,owner,2.5,CWeapon,DMG_BURN + DMG_PREVENT_PHYSICS_FORCE,20,0.5,0.2,true);
-					SDKHooks_TakeDamage(client,owner,owner,damage,DMG_BURN,CWeapon, NULL_VECTOR, NULL_VECTOR);
+					DOTStock(client,owner,damage*0.1,CWeapon,DMG_BURN + DMG_PREVENT_PHYSICS_FORCE,20,0.5,0.2,true);
+					currentDamageType[owner].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client,owner,owner,damage,DMG_BURN,CWeapon,_,_,false);
 				}
 				float pos[3]
 				GetEntPropVector(entity, Prop_Data, "m_vecOrigin", pos);
@@ -499,7 +506,8 @@ public Action:OnCollisionMoonveil(entity, client)
 				{
 					float mult = 1.0/GetAttribute(CWeapon, "fire rate bonus", 1.0);
 					currentDamageType[owner].second |= DMG_ARCANE;
-					SDKHooks_TakeDamage(client,owner,owner,mult*40.0,DMG_GENERIC,CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+					currentDamageType[owner].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client,owner,owner,mult*40.0,DMG_GENERIC,CWeapon, _,_,false);
 				}
 				RemoveEntity(entity);
 			}
@@ -532,7 +540,8 @@ public Action:OnCollisionBoomerang(entity, client)
 			{
 				float damageDealt = 120.0 * TF2_GetDamageModifiers(owner, CWeapon);
 				currentDamageType[owner].second |= DMG_ACTUALCRIT;
-				SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_SLASH | DMG_CRIT, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+				currentDamageType[owner].second |= DMG_IGNOREHOOK;
+				SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_SLASH | DMG_CRIT, CWeapon,_,_,false);
 			}
 		}
 		float origin[3],ProjAngle[3], vBuffer[3], ProjVelocity[3];
@@ -726,8 +735,10 @@ public Action:OnTouchExplodeJar(entity, other)
 					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 					VictimPos[2] += 30.0;
 					if(GetVectorDistance(clientvec,VictimPos,true) <= Radius*Radius*(1+0.01*entityMaelstromChargeCount[entity])*(1+0.01*entityMaelstromChargeCount[entity]))
-						if(IsPointVisible(clientvec,VictimPos))
-							SDKHooks_TakeDamage(i,owner,owner, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+						if(IsPointVisible(clientvec,VictimPos)){
+							currentDamageType[owner].second |= DMG_IGNOREHOOK;
+							SDKHooks_TakeDamage(i,owner,owner, LightningDamage, 1073741824, _,_,_,false);
+						}
 				}
 			}
 
@@ -754,7 +765,8 @@ public Action:OnTouchExplodeJar(entity, other)
 							{
 								case 0:
 								{
-									SDKHooks_TakeDamage(i,owner,owner,30.0*damageBoost,DMG_BULLET,CWeapon,NULL_VECTOR,NULL_VECTOR, isPlayer);
+									currentDamageType[owner].second |= DMG_IGNOREHOOK;
+									SDKHooks_TakeDamage(i,owner,owner,30.0*damageBoost,DMG_BULLET,CWeapon,_,_,false);
 									if(isPlayer){
 										miniCritStatusVictim[i] = currentGameTime+8.0;
 										Buff jarateDebuff;
@@ -766,8 +778,9 @@ public Action:OnTouchExplodeJar(entity, other)
 								{
 									if(isPlayer)
 										TF2_AddCondition(i,TFCond_Milked,0.01);
-
-									SDKHooks_TakeDamage(i,owner,owner,30.0*damageBoost,DMG_BULLET,CWeapon,NULL_VECTOR,NULL_VECTOR, isPlayer);
+										
+									currentDamageType[owner].second |= DMG_IGNOREHOOK;
+									SDKHooks_TakeDamage(i,owner,owner,30.0*damageBoost,DMG_BULLET,CWeapon,_,_,false);
 								}
 							}//corrosiveDOT
 							if(isPlayer)
@@ -894,7 +907,8 @@ public Action:OnCollisionJarateFrag(entity, client)
 				if(IsOnDifferentTeams(owner,client))
 				{
 					float damageDealt = 15.0*TF2_GetDamageModifiers(owner, CWeapon, false);
-					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+					currentDamageType[owner].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_BULLET, CWeapon, _,_,false);
 				}
 			}
 			Address fragmentExplosion = TF2Attrib_GetByName(CWeapon, "overheal decay bonus");
@@ -931,8 +945,9 @@ public Action:CollisionFrozenFrag(entity, client)
 				{
 					currentDamageType[owner].second |= DMG_FROST;
 					currentDamageType[owner].second |= DMG_PIERCING;
+					currentDamageType[owner].second |= DMG_IGNOREHOOK;
 					float damageDealt = 0.5*TF2Util_GetEntityMaxHealth(jarateWeapon[entity]);
-					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_PREVENT_PHYSICS_FORCE, CWeapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(client));
+					SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_PREVENT_PHYSICS_FORCE, CWeapon, _,_,false);
 					RemoveEntity(entity);
 				}
 			}

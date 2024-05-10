@@ -151,7 +151,8 @@ public Action:Timer_FixedVariables(Handle timer)
 				float immolationRatio = GetAttribute(CWeapon, "immolation ratio", 0.0);
 				if(immolationRatio > 0.0){
 					currentDamageType[client].second |= DMG_PIERCING
-					SDKHooks_TakeDamage(client, client, client, TF2Util_GetEntityMaxHealth(client)*immolationRatio*0.1, DMG_PREVENT_PHYSICS_FORCE);
+					currentDamageType[client].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client, client, client, TF2Util_GetEntityMaxHealth(client)*immolationRatio*0.1, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 				}
 			}
 			if(sunstarDuration[client] >= currentGameTime){
@@ -219,7 +220,7 @@ public Action:Timer_FixedVariables(Handle timer)
 						CreateTimer(0.5, Timer_KillParticle, EntIndexToEntRef(iPart2));
 					}
 
-					float LightningDamage = 10*TF2_GetDPSModifiers(client, CWeapon);
+					float LightningDamage = 5.0*TF2_GetDPSModifiers(client, CWeapon);
 					int i = -1;
 					while ((i = FindEntityByClassname(i, "*")) != -1)
 					{
@@ -238,7 +239,8 @@ public Action:Timer_FixedVariables(Handle timer)
 						if(!IsPointVisible(clientpos,VictimPos))
 							continue;
 
-						SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,-1,NULL_VECTOR,NULL_VECTOR, IsValidClient3(i));
+						currentDamageType[client].second |= DMG_IGNOREHOOK;
+						SDKHooks_TakeDamage(i,client,client,LightningDamage,DMG_SHOCK,CWeapon,_,_,false);
 					}
 				}
 			}
@@ -249,7 +251,8 @@ public Action:Timer_FixedVariables(Handle timer)
 			if(IsValidClient3(info.inflictor)){
 				if(info.severity > 0.0){
 					currentDamageType[info.inflictor].second |= DMG_PIERCING
-					SDKHooks_TakeDamage(client, info.inflictor, info.inflictor, TF2Util_GetEntityMaxHealth(info.inflictor)*info.severity*0.1, DMG_PREVENT_PHYSICS_FORCE);
+					currentDamageType[info.inflictor].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client, info.inflictor, info.inflictor, TF2Util_GetEntityMaxHealth(info.inflictor)*info.severity*0.1, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 				}
 			}
 		}
@@ -585,8 +588,10 @@ public Action:Timer_Every100MS(Handle timer)
 				{
 					corrosiveDOT[client][i][1] -= TICKINTERVAL*10.0;
 					
-					if(IsValidClient3(i))
-						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],_,i);
+					if(IsValidClient3(i)){
+						currentDamageType[client].second |= DMG_IGNOREHOOK;
+						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],_,i,_,_,false);
+					}
 				}
 				if(IsOnDifferentTeams(client,i) && plagueActive && !TF2_IsPlayerInCondition(i, TFCond_Plague))
 				{
@@ -617,14 +622,18 @@ public Action:Timer_Every100MS(Handle timer)
 				if(client != decay.inflictor && IsValidClient3(decay.inflictor) && IsOnDifferentTeams(client,decay.inflictor)){
 					int inflictorWeapon = GetEntPropEnt(decay.inflictor, Prop_Send, "m_hActiveWeapon");
 					if(IsValidWeapon(inflictorWeapon)){
-						SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, TF2_GetDPSModifiers(client, inflictorWeapon)*TF2_GetWeaponclassDPS(client, inflictorWeapon)*0.05);
+						currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
+						SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, TF2_GetDPSModifiers(client, inflictorWeapon)*2.0,_,_,_,_,false);
+						currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
+						SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 5.0,DMG_RADIATION+DMG_DISSOLVE,_,_,_,false);
 					}
 				}
 			}
 			if(hasBuffIndex(client, Buff_InfernalDOT)){
 				Buff infernalDOT; infernalDOT = playerBuffs[client][getBuffInArray(client, Buff_InfernalDOT)];
 				if(client != infernalDOT.inflictor && IsValidClient3(infernalDOT.inflictor)){
-					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, InfernalEnchantment[infernalDOT.inflictor]*0.07);
+					currentDamageType[infernalDOT.inflictor].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, InfernalEnchantment[infernalDOT.inflictor]*0.07,_,_,_,_,false);
 					CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1, _, _, 0.6);
 				}
 			}
@@ -632,15 +641,17 @@ public Action:Timer_Every100MS(Handle timer)
 				Buff lifelink; lifelink = playerBuffs[client][getBuffInArray(client, Buff_LifeLink)];
 				if(IsValidClient3(lifelink.inflictor)){
 					currentDamageType[lifelink.inflictor].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025, DMG_PREVENT_PHYSICS_FORCE);
+					currentDamageType[lifelink.inflictor].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 				}
 			}
 			if(hasBuffIndex(client, Buff_PowerupBurning)){
 				Buff infernalDOT; infernalDOT = playerBuffs[client][getBuffInArray(client, Buff_PowerupBurning)];
 				if(client != infernalDOT.inflictor && IsValidClient3(infernalDOT.inflictor)){
 					currentDamageType[infernalDOT.inflictor].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, 10.0);
-					CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1, _, _, 0.6);
+					currentDamageType[infernalDOT.inflictor].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, 10.0,_,_,_,_,false);
+					CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1);
 				}
 			}
 
@@ -649,7 +660,8 @@ public Action:Timer_Every100MS(Handle timer)
 			{
 				//Deal 3 piercing damage to plagued opponents.
 				currentDamageType[inflictor].second |= DMG_PIERCING;
-				SDKHooks_TakeDamage(client, inflictor, inflictor, 3.0, DMG_PREVENT_PHYSICS_FORCE);
+				currentDamageType[inflictor].second |= DMG_IGNOREHOOK;
+				SDKHooks_TakeDamage(client, inflictor, inflictor, 3.0, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 			}
 			if(IsValidEdict(CWeapon))
 			{
@@ -860,8 +872,10 @@ public Action:Timer_Every100MS(Handle timer)
 										GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
 										VictimPos[2] += 30.0;
 										if(GetVectorDistance(clientpos,VictimPos,true) <= range*range*0.3)
-											if(IsPointVisible(clientpos,VictimPos))
-												SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, secondary, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+											if(IsPointVisible(clientpos,VictimPos)){
+												currentDamageType[client].second |= DMG_IGNOREHOOK;
+												SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, secondary, _,_,false);
+											}
 									}
 								}
 							}
@@ -1155,7 +1169,8 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 									{
 										if(IsPointVisible(clientpos,VictimPos))
 										{
-											SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+											currentDamageType[client].second |= DMG_IGNOREHOOK;
+											SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, _,_,_,false);
 											if(IsValidClient3(i))
 											{
 												float velocity[3];
@@ -1759,7 +1774,8 @@ public Action:eurekaDelayed(Handle timer, int client)
 						{
 							if(IsPointVisible(clientpos,VictimPos))
 							{
-								SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, -1, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+								currentDamageType[client].second |= DMG_IGNOREHOOK;
+								SDKHooks_TakeDamage(i,client,client, LightningDamage, 1073741824, _,_,_,false);
 								if(IsValidClient3(i))
 								{
 									float velocity[3];
@@ -1831,7 +1847,8 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 					if(IsPointVisible(PlayerOrigin,VictimPos))
 					{
 						CreateParticleEx(i, "env_sawblood");
-						SDKHooks_TakeDamage(i,client,client, mult, DMG_SLASH, weapon, NULL_VECTOR, NULL_VECTOR, IsValidClient3(i));
+						currentDamageType[client].second |= DMG_IGNOREHOOK;
+						SDKHooks_TakeDamage(i,client,client, mult, DMG_SLASH, weapon, _,_,false);
 					}
 				}
 			}
@@ -2205,7 +2222,8 @@ public Action ElectricBallThink(Handle timer, any ref){
 			if(GetVectorDistance(position, victimPosition, true) > radius*radius)
 				continue;
 			
-			SDKHooks_TakeDamage(i, entity, client, damage, DMG_BURN, weapon);
+			currentDamageType[client].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(i, entity, client, damage, DMG_BURN, weapon,_,_,false);
 		}
 		return Plugin_Continue;
     }

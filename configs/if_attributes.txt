@@ -2487,7 +2487,7 @@
 		}
 		"200"
 		{
-			"name"		"set item tint RGB"
+			"name"		"cannot be backstabbed"
 			"ref"		"cannot be backstabbed"
 			"cost"		"3750"
 			"value"		"1.00"
