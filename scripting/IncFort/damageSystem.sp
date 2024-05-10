@@ -415,7 +415,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 
 			Address bleedBuild = TF2Attrib_GetByName(weapon, "sapper damage bonus");
-			if(bleedBuild != Address_Null && !(damagetype & DMG_PREVENT_PHYSICS_FORCE))
+			if(bleedBuild != Address_Null && !(damagetype & DMG_PREVENT_PHYSICS_FORCE && damagetype & DMG_BURN))//Specifically doesn't apply on afterburn, but works on bleeding DOT.
 			{
 				float bleedAdd = TF2Attrib_GetValue(bleedBuild);
 				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
@@ -446,7 +446,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 			Address radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");
-			if(radiationBuild != Address_Null)
+			if(!(damagetype & DMG_PREVENT_PHYSICS_FORCE) && radiationBuild != Address_Null)
 			{
 				float radiationAdd = TF2Attrib_GetValue(radiationBuild);
 				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
@@ -751,7 +751,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 
-			if(!(currentDamageType[attacker].second & DMG_FROST) && !(currentDamageType[attacker].second & DMG_PIERCING)){ //Make sure it isn't piercing or frost damage...
+			if(!(currentDamageType[attacker].second & DMG_FROST) && !(currentDamageType[attacker].second & DMG_PIERCING) && !(damagetype & DMG_PREVENT_PHYSICS_FORCE)){ //Make sure it isn't piercing or frost damage...
 				float freezeRatio = GetAttribute(weapon, "damage causes freeze", 0.0);
 				if(freezeRatio > 0){
 					float frostIncrease = freezeRatio*damage/TF2Util_GetEntityMaxHealth(victim);
@@ -798,6 +798,9 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 	}
 
 	if(IsValidClient3(victim)){
+		if(damagetype & DMG_SLASH)
+			damagetype |= DMG_PREVENT_PHYSICS_FORCE
+		
 		if (damagecustom == TF_CUSTOM_BACKSTAB)
 		{
 			damage = 450.0;
@@ -880,7 +883,6 @@ public Action OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 			if (!IsValidClient3(inflictor) && IsValidEdict(inflictor))
 				damage = genericSentryDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		}
-		PrintToServer("%.2f ontakedamage damage?", damage);
 		
 		if(!(currentDamageType[attacker].second & DMG_PIERCING) && attacker != victim){
 			float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
@@ -897,7 +899,6 @@ public Action OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 				
 				damage /= fl_ArmorCap[victim];
 			}
-			PrintToServer("%.2f damage?", damage);
 		}
 	}
 	return Plugin_Changed;
