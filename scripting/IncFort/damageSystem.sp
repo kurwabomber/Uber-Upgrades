@@ -791,10 +791,9 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 		critType = CritType_None;
 	}
 
-	if(hasBuffIndex(victim, Buff_CritMarkedForDeath))
+	if(hasBuffIndex(victim, Buff_CritMarkedForDeath) || currentDamageType[attacker].second & DMG_ACTUALCRIT)
 	{
 		critType = CritType_Crit;
-		currentDamageType[attacker].second |= DMG_ACTUALCRIT;
 	}
 
 	if(IsValidClient3(victim)){
