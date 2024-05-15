@@ -58,75 +58,18 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(IsValidEdict(inflictor)){
 				char classname[32]; 
 				GetEdictClassname(inflictor, classname, sizeof(classname));
-				if(projectileDamage[inflictor] > 0.0){
-					damage = projectileDamage[inflictor];
-				}
 				isSentry = !strcmp("obj_sentrygun", classname) || !strcmp("tf_projectile_sentryrocket", classname);
 			}
 
 			if(IsValidWeapon(weapon) && !isSentry)
 			{
-				if(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE)
-				{
-					if(GetAttribute(victim, "inverter powerup", 0.0) == 1.0)
-						damage *= 0.0;
-					else{
-						float burndmgMult = 1.0;
-						burndmgMult *= GetAttribute(weapon, "shot penetrate all players");
-						burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
-						burndmgMult *= GetAttribute(weapon, "weapon burn dmg reduced");
-						burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
-						burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
-						if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-							burndmgMult *= 5;
-						damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
-					}
-				}
 				if(InfernalEnchantmentDuration[attacker] >= currentGameTime){
 					Buff infernalDOT; infernalDOT.init("Infernal Flames", "", Buff_InfernalDOT, 1, attacker, 8.0);
 					insertBuff(victim, infernalDOT);
 				}
-				if(damagetype & DMG_SLASH)
-					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				if(damagetype & DMG_SLASH){
+					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2){
 						damage *= 5;
-
-				if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
-				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
-					damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
-				else if(DarkmoonBladeDuration[attacker] > currentGameTime)
-				{
-					int melee = GetWeapon(attacker,2);
-					if(melee == weapon)
-						damage += DarkmoonBlade[attacker];
-				}
-				
-				float arcaneWeaponScaling = GetAttribute(weapon,"arcane weapon scaling",0.0);
-				if(arcaneWeaponScaling != 0.0)
-					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.25) * arcaneWeaponScaling));
-				
-				if(weaponFireRate[weapon] > 0.0){
-					int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
-					if(i <= 6 && i >= 0)
-					{
-						if(i == 0) i = 1;
-						damage *= i*weaponFireRate[weapon]/TICKRATE;
-					}
-					int secondary = GetWeapon(attacker, 1);
-					if(IsValidWeapon(secondary)){
-						float inheritanceRatio = GetAttribute(secondary, "dps inheritance ratio", 0.0);
-						if(inheritanceRatio){
-							float strongestDPS = 0.0;
-							for(int e = 0;e<3;++e){
-								int tempWeapon = GetWeapon(attacker, e);
-								if(!IsValidWeapon(tempWeapon) || tempWeapon == weapon)
-									continue;
-								float currentDPS = TF2_GetWeaponclassDPS(attacker, tempWeapon) * TF2_GetDPSModifiers(attacker, tempWeapon);
-								if(currentDPS > strongestDPS)
-									strongestDPS = currentDPS;
-							}
-
-							damage += inheritanceRatio*strongestDPS/weaponFireRate[weapon];
-						}
 					}
 				}
 			}
@@ -917,22 +860,6 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 		{
 			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2 && GetAttribute(attacker, "knockout powerup", 0.0) == 1)
 				damage *= 1.35;
-			
-			if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
-			{
-				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
-				damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
-			}
-			else if(DarkmoonBladeDuration[attacker] > currentGameTime)
-			{
-				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-					damage += DarkmoonBlade[attacker];
-			}
-			if(currentDamageType[attacker].second & DMG_ARCANE)
-				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
-			Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
-			if(arcaneWeaponScaling != Address_Null)
-				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
 
 			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
 			if(i <= 6)
@@ -1027,23 +954,6 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2 && GetAttribute(attacker, "knockout powerup", 0.0) == 1)
 				damage *= 1.35;
 			
-			if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE))
-			{
-				//Normalize all damage to become the same theoretical DPS you'd get with 20 attacks per second.
-				damage += (LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6)) * 20.0;
-			}
-			else if(DarkmoonBladeDuration[attacker] > currentGameTime)
-			{
-				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-					damage += DarkmoonBlade[attacker];
-			}
-			//PrintToServer("%i damagebit", damagetype);
-			if(currentDamageType[attacker].second & DMG_ARCANE)
-				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * damage));
-			Address arcaneWeaponScaling = TF2Attrib_GetByName(weapon,"arcane weapon scaling");
-			if(arcaneWeaponScaling != Address_Null)
-				damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * TF2Attrib_GetValue(arcaneWeaponScaling)));
-			
 			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
 			if(i <= 6)
 			{
@@ -1122,7 +1032,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 		if(hasBuffIndex(victim, Buff_DragonDance)){
 			int temp = getBuffInArray(victim, Buff_DragonDance);
 			if(playerBuffs[victim][temp].priority != weapon){
-				damage += TF2_GetWeaponclassDPS(attacker, playerBuffs[victim][temp].priority) * TF2_GetDPSModifiers(attacker, playerBuffs[victim][temp].priority) * 2.5;
+				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+				SDKHooks_TakeDamage(victim,attacker,playerBuffs[victim][temp].inflictor,TF2_GetWeaponclassDPS(attacker, playerBuffs[victim][temp].priority) * TF2_GetDPSModifiers(attacker, playerBuffs[victim][temp].priority) * 2.5,DMG_DISSOLVE,_,_,_,false);
 				playerBuffs[victim][temp].clear();
 				buffChange[victim]=true;
 			}
@@ -1140,10 +1051,8 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			if(CloakResistance != 1.0)
 				damage *= CloakResistance;
 		}
-		if(TF2_IsPlayerInCondition(victim, TFCond_CompetitiveLoser)){
-			damage *= 0.35;
-		}
 	}
+	
 	if(IsValidWeapon(weapon))
 	{
 		int weaponIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
@@ -1564,6 +1473,66 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK, weapon,_,_,false);
 			}
 		}
+
+		if(LightningEnchantmentDuration[attacker] > currentGameTime && !(damagetype & DMG_VEHICLE)){
+			currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(victim,attacker,attacker,LightningEnchantment[attacker] / TF2_GetFireRate(attacker,weapon,0.6) * 20.0,_,_,_,_,false);
+		}
+		else if(DarkmoonBladeDuration[attacker] > currentGameTime){
+			int melee = GetWeapon(attacker,2);
+			if(melee == weapon){
+				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+				SDKHooks_TakeDamage(victim,attacker,attacker,DarkmoonBlade[attacker],_,_,_,_,false);
+			}
+		}
+		
+		float arcaneWeaponScaling = GetAttribute(weapon,"arcane weapon scaling",0.0);
+		if(arcaneWeaponScaling != 0.0){
+			currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+			SDKHooks_TakeDamage(victim,attacker,attacker,10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), spellScaling[2]) * arcaneWeaponScaling),_,_,_,_,false);
+		}
+		
+		if(weaponFireRate[weapon] > 0.0){
+			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
+			if(i <= 6 && i >= 0)
+			{
+				if(i == 0) i = 1;
+				damage *= i*weaponFireRate[weapon]/TICKRATE;
+			}
+			int secondary = GetWeapon(attacker, 1);
+			if(IsValidWeapon(secondary)){
+				float inheritanceRatio = GetAttribute(secondary, "dps inheritance ratio", 0.0);
+				if(inheritanceRatio){
+					float strongestDPS = 0.0;
+					for(int e = 0;e<3;++e){
+						int tempWeapon = GetWeapon(attacker, e);
+						if(!IsValidWeapon(tempWeapon) || tempWeapon == weapon)
+							continue;
+						float currentDPS = TF2_GetWeaponclassDPS(attacker, tempWeapon) * TF2_GetDPSModifiers(attacker, tempWeapon);
+						if(currentDPS > strongestDPS)
+							strongestDPS = currentDPS;
+					}
+					currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(victim,attacker,attacker,inheritanceRatio*strongestDPS/weaponFireRate[weapon],_,_,_,_,false);
+				}
+			}
+		}
+		if(damagetype & DMG_BURN && damagetype & DMG_PREVENT_PHYSICS_FORCE)
+		{
+			if(GetAttribute(victim, "inverter powerup", 0.0) == 1.0)
+				damage *= 0.0;
+			else{
+				float burndmgMult = 1.0;
+				burndmgMult *= GetAttribute(weapon, "shot penetrate all players");
+				burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
+				burndmgMult *= GetAttribute(weapon, "weapon burn dmg reduced");
+				burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
+				burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
+				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+					burndmgMult *= 5;
+				damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
+			}
+		}
 	}
 	return damage;
 }
@@ -1583,6 +1552,7 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 		TF2_AddCondition(victim, TFCond_Sapped, 2.0);
 	
 	//PrintToChatAll("classname %s",classname);
+
 	if ((!strcmp("obj_sentrygun", classname)) || weaponIdx == 140)
 	{
 		int owner; 
@@ -1730,32 +1700,15 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 											
 											AddVectors(fOrigin, fwd, fOrigin);
 											GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
-											float Speed[3];
-											bool movementType = false;
-											if(HasEntProp(iEntity, Prop_Data, "m_vecAbsVelocity"))
-											{
-												GetEntPropVector(iEntity, Prop_Data, "m_vecAbsVelocity", Speed);
-												fVelocity[0] = vBuffer[0]*GetVectorLength(Speed);
-												fVelocity[1] = vBuffer[1]*GetVectorLength(Speed);
-												fVelocity[2] = vBuffer[2]*GetVectorLength(Speed);
-												if(GetVectorLength(Speed) > 5.0)
-												{
-													movementType = true;
-												}
-											}
-											if(movementType == false)
-											{
-												float velocity = 11000.0;
-												float vecAngImpulse[3];
-												GetCleaverAngularImpulse(vecAngImpulse);
-												fVelocity[0] = vBuffer[0]*velocity;
-												fVelocity[1] = vBuffer[1]*velocity;
-												fVelocity[2] = vBuffer[2]*velocity;
-												
-												TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
-												DispatchSpawn(iEntity);
-												//SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vecAngImpulse, owner, 0, 5.0);
-											}
+											float velocity = 11000.0;
+											fVelocity[0] = vBuffer[0]*velocity;
+											fVelocity[1] = vBuffer[1]*velocity;
+											fVelocity[2] = vBuffer[2]*velocity;
+											
+											TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
+											DispatchSpawn(iEntity);
+											//why does it hit twice???
+											projectileDamage[iEntity] = 40.0*TF2_GetSentryDamageModifiers(attacker, melee);
 										}
 										firestormCounter[owner] = 0;
 									}
@@ -1878,31 +1831,8 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 			}
 		}
 	}
-	if(IsValidClient3(attacker) && TF2_GetPlayerClass(attacker) == TFClass_Engineer)
-	{
-		if(!strcmp("tf_projectile_spellfireball", classname))
-		{
-			int melee = GetWeapon(attacker,2)
-			if(IsValidWeapon(melee))
-			{
-				Address sentryOverrideActive = TF2Attrib_GetByName(melee, "override projectile type");
-				if(sentryOverrideActive != Address_Null)
-				{
-					float sentryOverride = TF2Attrib_GetValue(sentryOverrideActive);
-					if(sentryOverride == 32.0)
-					{
-						damage = 20.0;
-						damagetype |= DMG_PREVENT_PHYSICS_FORCE;
-					}
-					else if(sentryOverride == 33.0)
-					{
-						damage = 80.0;
-						damagetype |= DMG_PREVENT_PHYSICS_FORCE;
-					}
-				}
-				damage *= TF2_GetSentryDPSModifiers(attacker, melee);
-			}
-		}
+	if(projectileDamage[inflictor] > 0.0){
+		damage = projectileDamage[inflictor];
 	}
 	return damage;
 }

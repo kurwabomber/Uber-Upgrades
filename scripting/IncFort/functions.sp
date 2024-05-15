@@ -4279,6 +4279,11 @@ stock float TF2_GetWeaponclassDPS(client, weapon)
 			{
 				weaponDPS = 0.0;
 			}
+			switch(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")){
+				case 232:{
+					weaponDPS = 448.0;
+				}
+			}
 			return weaponDPS;
 		}
 	}
@@ -4401,7 +4406,7 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 	}
 	return 1.0;
 }
-stock float TF2_GetSentryDPSModifiers(client, melee){
+stock float TF2_GetSentryDamageModifiers(client, melee){
 	float dmgBonus = 1.0;
 	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	if(IsValidWeapon(CWeapon))
@@ -4428,6 +4433,10 @@ stock float TF2_GetSentryDPSModifiers(client, melee){
 	if(damageActive2 != Address_Null)
 		dmgBonus *= TF2Attrib_GetValue(damageActive2);
 	
+	return dmgBonus;
+}
+stock float TF2_GetSentryDPSModifiers(client, melee){
+	float dmgBonus = TF2_GetSentryDamageModifiers(client,melee);
 	Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
 	if(fireRateActive != Address_Null)
 		dmgBonus /= TF2Attrib_GetValue(fireRateActive);
