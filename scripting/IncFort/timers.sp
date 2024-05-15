@@ -267,12 +267,6 @@ public Action:Timer_FixedVariables(Handle timer)
 
 		if(IsFakeClient(client))
 			continue;
-
-		if(CurrencyOwned[client] >= 300000000000.0)
-			CurrencyOwned[client] = 300000000000.0;
-		
-		if(CurrencyOwned[client] < 0.0)
-			CurrencyOwned[client] = 0.0;
 		
 		if(inScore[client] == false)
 		{
@@ -663,7 +657,7 @@ public Action:Timer_Every100MS(Handle timer)
 				currentDamageType[inflictor].second |= DMG_IGNOREHOOK;
 				SDKHooks_TakeDamage(client, inflictor, inflictor, 3.0, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 			}
-			if(IsValidEdict(CWeapon))
+			if(IsValidWeapon(CWeapon))
 			{
 				Address infAmmo = TF2Attrib_GetByName(CWeapon, "vision opt in flags")
 				if(infAmmo != Address_Null)
@@ -673,6 +667,8 @@ public Action:Timer_Every100MS(Handle timer)
 				int conditionOnActive = RoundToNearest(GetAttribute(CWeapon, "set throwable type", 0.0));
 				if(conditionOnActive)
 					TF2_AddCondition(client, view_as<TFCond>(conditionOnActive), 0.15, client);
+
+				weaponFireRate[CWeapon] = TF2_GetFireRate(client, CWeapon);
 			}
 			if(IsValidEdict(primary))
 			{

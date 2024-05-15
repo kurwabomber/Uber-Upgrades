@@ -70,7 +70,6 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 		int upgrade_choice = given_upgrd_list[w_id][cat_id][subcat_id][param2]
 		int inum = upgrades_ref_to_idx[client][slot][upgrade_choice]
 		int rate = getUpgradeRate(client);
-
 		if(canBypassRestriction[client] == false && upgrades[upgrade_choice].requirement > (StartMoney + additionalstartmoney))
 		{
 			char fstr2[100]
@@ -101,8 +100,8 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 			if (is_client_got_req(client, upgrade_choice, slot, inum))
 			{
 				singularBuysPerMinute[client]++;
-				UpgradeItem(client, upgrade_choice, inum, 1.0, slot)
-				GiveNewUpgradedWeapon_(client, slot)
+				UpgradeItem(client, upgrade_choice, inum, 1.0, slot);
+				GiveNewUpgradedWeapon_(client, slot);
 
 				if(singularBuysPerMinute[client] >= 50)
 				{

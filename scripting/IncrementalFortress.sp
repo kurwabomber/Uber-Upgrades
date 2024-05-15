@@ -6,6 +6,7 @@
  * SM-TFUtils https://github.com/nosoop/SM-TFUtils
  * SM-TFTakeHealthProxy https://github.com/nosoop/SM-TFTakeHealthProxy
 */
+
 #include <tf2>
 #include <tf2_stocks>
 #include <tf2items>

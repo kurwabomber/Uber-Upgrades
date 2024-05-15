@@ -1,17 +1,3 @@
-public MRESReturn OnDamageTypeCalc(int weapon, Handle hReturn) {
-	if(!IsValidWeapon(weapon))
-		return MRES_Ignored;
-
-	int damagetype = DHookGetReturn(hReturn);
-	int client = getOwner(weapon);
-	if(!IsValidClient3(client))
-		return MRES_Ignored;
-
-	currentDamageType[client].first = damagetype;
-	
-	return MRES_Ignored;
-}
-
 public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &damagetype, &weapon, float damageForce[3], float damagePosition[3], damagecustom)
 {
 	//PrintToServer("triggered ontakedamagealive");
@@ -116,16 +102,15 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				
 				float arcaneWeaponScaling = GetAttribute(weapon,"arcane weapon scaling",0.0);
 				if(arcaneWeaponScaling != 0.0)
-					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.45) * arcaneWeaponScaling));
+					damage += (10.0 + (Pow(ArcaneDamage[attacker] * Pow(ArcanePower[attacker], 4.0), 2.25) * arcaneWeaponScaling));
 				
-				if(weaponFireRate[weapon] != 0.0){
+				if(weaponFireRate[weapon] > 0.0){
 					int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
-					if(i <= 6)
+					if(i <= 6 && i >= 0)
 					{
 						if(i == 0) i = 1;
 						damage *= i*weaponFireRate[weapon]/TICKRATE;
 					}
-
 					int secondary = GetWeapon(attacker, 1);
 					if(IsValidWeapon(secondary)){
 						float inheritanceRatio = GetAttribute(secondary, "dps inheritance ratio", 0.0);
@@ -321,7 +306,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 		}
 	}
-
 	if(IsValidClient3(attacker) && IsValidClient3(victim))
 	{
 		char damageCategory[64];
@@ -483,29 +467,8 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			insertBuff(victim, nullification);
 		}
 
-		if(GetAttribute(victim, "resistance powerup", 0.0) == 1)
-		{
-			if(critStatus[victim] == true){
-				critStatus[victim] = false;
-				damage /= 2.25;
-			}else if(miniCritStatus[victim] == true){
-				miniCritStatus[victim] = false;
-				damage /= 1.4;
-			}
+		if(GetAttribute(victim, "resistance powerup", 0.0) == 1 || GetAttribute(victim, "resistance powerup", 0.0) == 3)
 			damage *= 0.5;
-		}
-		else if(GetAttribute(victim, "resistance powerup", 0.0) == 3)
-			damage *= 0.5;
-		
-		if(hasBuffIndex(victim, Buff_Stronghold)){
-			if(critStatus[victim] == true){
-				critStatus[victim] = false;
-				damage /= 2.25;
-			}else if(miniCritStatus[victim] == true){
-				miniCritStatus[victim] = false;
-				damage /= 1.4;
-			}
-		}
 
 		//Just in case in the future I ever want multiple powerups...
 		if(GetAttribute(victim, "revenge powerup", 0.0) == 1)
@@ -772,8 +735,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 	if(IsValidClient3(attacker))
 		currentDamageType[attacker].clear();
-	if(IsValidClient3(victim))
-		TF2Attrib_SetByName(victim, "dmg taken increased", 1.0);
 
 	if(damage < 0.0)
 		damage = 0.0;
@@ -787,14 +748,15 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 	if(!IsValidClient3(attacker))
 		attacker = EntRefToEntIndex(attacker);
 
-	if(currentDamageType[attacker].second & DMG_PIERCING){
-		critType = CritType_None;
-	}
-
 	if(hasBuffIndex(victim, Buff_CritMarkedForDeath) || currentDamageType[attacker].second & DMG_ACTUALCRIT)
 	{
 		critType = CritType_Crit;
 	}
+
+	if(currentDamageType[attacker].second & DMG_PIERCING){
+		critType = CritType_None;
+	}
+	currentDamageType[attacker].first = damagetype;
 
 	if(IsValidClient3(victim)){
 		if(damagetype & DMG_SLASH)
@@ -802,7 +764,8 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 		
 		if (damagecustom == TF_CUSTOM_BACKSTAB)
 		{
-			damage = 450.0;
+			damage = 150.0;
+			critType = CritType_Crit;
 			float backstabRadiation = GetAttribute(weapon, "no double jump");
 			if(backstabRadiation != 1.0)
 			{
@@ -841,6 +804,10 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 			damage *= GetAttribute(weapon, "damage bonus HIDDEN");
 			damage *= GetAttribute(weapon, "damage penalty");
 		}
+	}
+
+	if(hasBuffIndex(victim, Buff_Stronghold) || GetAttribute(victim, "resistance powerup", 0.0) == 1){
+		critType = CritType_None;
 	}
 	return Plugin_Changed;
 }

@@ -59,7 +59,7 @@ SavePlayerData(client)
 	}
 
 	pack.WriteCell(current_class[client]);
-	if(IsMvM)
+	if(IsMvM())
 		pack.WriteCell(client_new_weapon_ent_id_mvm_chkp[client]);
 	else
 		pack.WriteCell(client_new_weapon_ent_id[client]);

@@ -328,14 +328,6 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | bot locomotion jump function error");
 	else
 		DHookEnableDetour(g_DHookPlayerLocomotionJump, false, OnBotJumpLogic);
-	
-	//fire rate?
-	Handle g_DHookFireRateCall = DHookCreateFromConf(hConf, "CTFWeaponBase::ApplyFireDelay(float)");
-	
-	if(!IsValidHandle(g_DHookFireRateCall))
-		PrintToServer("CustomAttrs | Fire rate error");
-	else
-		DHookEnableDetour(g_DHookFireRateCall, true, OnFireRateCall);
 
 	//Currency
 	Handle g_DHookAddCurrency = DHookCreateFromConf(hConf, "CCurrencyPack::SetAmount()");
@@ -407,14 +399,6 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | g_DHookChargeMove fucked up.");
 	else
 		DHookEnableDetour(g_DHookChargeMove, false, OnShieldChargeMove);
-
-	//Damagetypes lul
-	Handle g_DHookDamagetypes = DHookCreateFromConf(hConf, "CTFWeaponBase::GetDamageType()");
-	
-	if(!IsValidHandle(g_DHookDamagetypes))
-		PrintToServer("CustomAttrs | g_DHookDamagetypes fucked up.");
-	else
-		DHookEnableDetour(g_DHookDamagetypes, true, OnDamageTypeCalc);
 
 	//Thermal Thruster Velocity Boost
 	Handle g_DHookThrusterLaunch = DHookCreateFromConf(hConf, "CTFRocketPack::Launch()");

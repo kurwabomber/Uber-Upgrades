@@ -93,14 +93,14 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 			tmp_ref_idx = upgrades_ref_to_idx[client][slot][tmp_up_idx];
 			if (tmp_ref_idx != 20000)
 			{
-				val = currentupgrades_val[client][slot][tmp_ref_idx]
+				val = currentupgrades_val[client][slot][tmp_ref_idx];
 				tmp_val = currentupgrades_val[client][slot][tmp_ref_idx] - upgrades[tmp_up_idx].i_val;
 				if(currentupgrades_i[client][slot][tmp_ref_idx] != 0.0)
-					tmp_val = currentupgrades_val[client][slot][tmp_ref_idx] - currentupgrades_i[client][slot][tmp_ref_idx]
+					tmp_val = currentupgrades_val[client][slot][tmp_ref_idx] - currentupgrades_i[client][slot][tmp_ref_idx];
 			}
 			else
 			{
-				tmp_val = 0.0
+				tmp_val = 0.0;
 				val = upgrades[tmp_up_idx].i_val;
 			}
 			tmp_ratio = upgrades[tmp_up_idx].ratio

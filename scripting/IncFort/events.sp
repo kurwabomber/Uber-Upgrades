@@ -178,7 +178,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				float chainLightningAttribute = GetAttribute(CWeapon, "chain lightning meter on hit", 0.0)
 				if(chainLightningAttribute){
 					chainLightningAbilityCharge[attacker] += chainLightningAttribute;
-					PrintToServer("%.2f", chainLightningAbilityCharge[attacker]);
 					if(chainLightningAbilityCharge[attacker] >= 100.0){
 						chainLightningAbilityCharge[attacker] -= 100.0;
 						bool isBounced[MAXPLAYERS+1];
@@ -835,41 +834,6 @@ public MRESReturn OnCurrencySpawn(int entity, Handle hParams)  {
 	RemoveEntity(entity);
 
 	return MRES_ChangedHandled;
-}
-public MRESReturn OnFireRateCall(int entity, Handle hReturn, Handle hParams)  {
-	if(IsValidWeapon(entity))
-	{
-		float rate = DHookGetReturn(hReturn);
-
-		//If their weapon doesn't have a clip, reload rate also affects fire rate.
-		if(HasEntProp(entity, Prop_Data, "m_iClip1") && GetEntProp(entity,Prop_Data,"m_iClip1")  == -1)
-		{
-			Address ModClip = TF2Attrib_GetByName(entity, "mod max primary clip override");
-			if(ModClip == Address_Null)
-			{
-				Address apsMult12 = TF2Attrib_GetByName(entity, "faster reload rate");
-				Address apsMult13 = TF2Attrib_GetByName(entity, "Reload time increased");
-				Address apsMult14 = TF2Attrib_GetByName(entity, "Reload time decreased");
-				Address apsMult15 = TF2Attrib_GetByName(entity, "reload time increased hidden");
-				
-				if(apsMult12 != Address_Null) {
-				rate *= TF2Attrib_GetValue(apsMult12);
-				}
-				if(apsMult13 != Address_Null) {
-				rate *= TF2Attrib_GetValue(apsMult13);
-				}
-				if(apsMult14 != Address_Null) {
-				rate *= TF2Attrib_GetValue(apsMult14);
-				}
-				if(apsMult15 != Address_Null) {
-				rate *= TF2Attrib_GetValue(apsMult15);
-				}
-			}
-		}
-
-		weaponFireRate[entity] = 1.0/rate;
-	}
-	return MRES_Ignored;
 }
 public MRESReturn OnBotJumpLogic(int entity, Handle hReturn, Handle hParams)  {
 	return MRES_Supercede;
@@ -3076,6 +3040,7 @@ public MRESReturn OnFinishReload(int weapon)
 	}
 	return MRES_Ignored;
 }
+
 public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname, bool& result)
 {
 	if(!IsValidClient3(client) || !IsValidEdict(client))

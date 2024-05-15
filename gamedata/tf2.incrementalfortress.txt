@@ -60,20 +60,6 @@
 					}
 				}
 			}
-			"CTFWeaponBase::ApplyFireDelay(float)"
-			{
-				"signature"		"CTFWeaponBase::ApplyFireDelay(float)"
-				"callconv"		"thiscall"
-				"return"		"float"
-				"this"			"entity"
-				"arguments"
-				{
-					"delay"
-					{
-						"type"	"float"
-					}
-				}
-			}
 			"PlayerLocomotion::Jump()"
 			{
 				"signature"		"PlayerLocomotion::Jump()"
@@ -158,13 +144,6 @@
 						"type"	"vectorptr"
 					}
 				}
-			}
-			"CTFWeaponBase::GetDamageType()"
-			{
-				"signature"		"CTFWeaponBase::GetDamageType()"
-				"callconv"		"thiscall"
-				"return"		"int"
-				"this"			"entity"
 			}
 			"CTFWeaponBase::FinishReload()"
 			{
@@ -278,11 +257,6 @@
 				"linux"		"@_ZN14CBaseAnimating15GetBonePositionEiR6VectorR6QAngle"
 				"windows"	"\x55\x8B\xEC\x83\xEC\x30\x56\x8B\xF1\x80\xBE\x41\x03\x00\x00\x00"
 			}
-			"CTFWeaponBase::ApplyFireDelay(float)"
-			{
-				"library"	"server"
-				"linux"		"@_ZNK13CTFWeaponBase14ApplyFireDelayEf"
-			}
 			"CTFWeaponBaseMelee::Smack()"
 			{
 				"library"	"server"
@@ -342,11 +316,6 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN11CTFBat_Wood10LaunchBallEv"
-			}
-			"CTFWeaponBase::GetDamageType()"
-			{
-				"library"	"server"
-				"linux"		"@_ZNK13CTFWeaponBase13GetDamageTypeEv"
 			}
 			"CTFWeaponBase::FinishReload()"
 			{
