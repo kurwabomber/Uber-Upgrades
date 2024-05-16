@@ -456,7 +456,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				Buff finisherDebuff; finisherDebuff.init("Bruised", "Marked-for-Finisher", Buff_Bruised, 1, attacker, 8.0);
 				insertBuff(victim, finisherDebuff);
 
-				if(currentDamageType[attacker].second & DMG_PIERCING){
+				if(!(currentDamageType[attacker].second & DMG_PIERCING)){
 					float bruisedDamage = damage;
 					if(!(damagetype & DMG_CRIT)){
 						bruisedDamage *= 2.25;
