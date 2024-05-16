@@ -68,7 +68,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					insertBuff(victim, infernalDOT);
 				}
 				if(damagetype & DMG_SLASH){
-					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2){
+					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee){
 						damage *= 5;
 					}
 				}
@@ -331,7 +331,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(bleedBuild != Address_Null && !(damagetype & DMG_PREVENT_PHYSICS_FORCE && damagetype & DMG_BURN))//Specifically doesn't apply on afterburn, but works on bleeding DOT.
 			{
 				float bleedAdd = TF2Attrib_GetValue(bleedBuild);
-				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee)
 					bleedAdd *= 3;
 
 				if(hasBuffIndex(attacker, Buff_Plunder)){
@@ -362,7 +362,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(!(damagetype & DMG_PREVENT_PHYSICS_FORCE) && radiationBuild != Address_Null)
 			{
 				float radiationAdd = TF2Attrib_GetValue(radiationBuild);
-				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee)
 					radiationAdd *= 3;
 
 				if(hasBuffIndex(attacker, Buff_Plunder)){
@@ -647,7 +647,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				float freezeRatio = GetAttribute(weapon, "damage causes freeze", 0.0);
 				if(freezeRatio > 0){
 					float frostIncrease = freezeRatio*damage/TF2Util_GetEntityMaxHealth(victim);
-					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+					if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee)
 						frostIncrease *= 2.0;
 					if(hasBuffIndex(attacker, Buff_Plunder)){
 						Buff plunderBuff;
@@ -844,7 +844,7 @@ public Action:OnTakeDamagePre_Tank(victim, &attacker, &inflictor, float &damage,
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		if(IsValidWeapon(weapon))
 		{
-			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2 && GetAttribute(attacker, "knockout powerup", 0.0) == 1)
+			if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee && GetAttribute(attacker, "knockout powerup", 0.0) == 1)
 				damage *= 1.35;
 
 			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
@@ -937,7 +937,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 		damage = genericPlayerDamageModification(victim, attacker, inflictor, damage, weapon, damagetype, damagecustom);
 		if(IsValidWeapon(weapon))
 		{
-			if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2 && GetAttribute(attacker, "knockout powerup", 0.0) == 1)
+			if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee && GetAttribute(attacker, "knockout powerup", 0.0) == 1)
 				damage *= 1.35;
 			
 			int i = RoundToCeil(TICKRATE/weaponFireRate[weapon]);
@@ -1205,7 +1205,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			burndmgMult *= GetAttribute(weapon, "weapon burn dmg increased");
 			burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 
-			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee)
 				burndmgMult *= 3;
 
 			if(damagetype & DMG_ACTUALIGNITE || (GetClientTeam(attacker) != GetClientTeam(victim) && (GetAttribute(weapon, "flame_ignore_player_velocity", 0.0) || GetAttribute(attacker, "supernova powerup", 0.0) == 2) &&
@@ -1522,7 +1522,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				burndmgMult *= GetAttribute(weapon, "weapon burn dmg reduced");
 				burndmgMult *= GetAttribute(attacker, "weapon burn dmg increased");
 				burndmgMult /= GetAttribute(weapon, "dmg penalty vs players");
-				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+				if(GetAttribute(attacker, "knockout powerup", 0.0) == 2 && TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee)
 					burndmgMult *= 5;
 				damage = (0.33*TF2_GetDPSModifiers(attacker, weapon, false, false)*burndmgMult);
 			}

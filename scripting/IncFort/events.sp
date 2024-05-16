@@ -42,7 +42,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			if(knockoutPowerupValue == 1){
 				if (IsValidEdict(CWeapon))
 				{
-					if(TF2Econ_GetItemLoadoutSlot(GetEntProp(CWeapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+					if(TF2Util_GetWeaponSlot(CWeapon) == TFWeaponSlot_Melee)
 					{
 						float buildupIncrease = (damage/TF2_GetMaxHealth(client))*175.0;
 						
@@ -605,7 +605,7 @@ public MRESReturn OnBulletTrace(int victim, Handle hParams){
 	if(!IsValidWeapon(weapon))
 		return MRES_Ignored;
 
-	if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
+	if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee)
 		return MRES_Ignored;
 
 	if(IsValidClient3(attacker) && IsValidWeapon(weapon)){
