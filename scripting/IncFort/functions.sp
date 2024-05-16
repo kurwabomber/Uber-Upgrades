@@ -4433,6 +4433,10 @@ stock float TF2_GetSentryDamageModifiers(client, melee){
 	Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
 	if(damageActive2 != Address_Null)
 		dmgBonus *= TF2Attrib_GetValue(damageActive2);
+
+	Address damageActive3 = TF2Attrib_GetByName(melee, "sentry bullets per shot");
+	if(damageActive3 != Address_Null)
+		dmgBonus *= TF2Attrib_GetValue(damageActive3);
 	
 	return dmgBonus;
 }
