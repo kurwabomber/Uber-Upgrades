@@ -4095,3 +4095,43 @@ public Action EurekaTeleportHook(UserMsg msg_id, BfRead msg, const int[] players
 	
 	return Plugin_Continue;
 }
+
+public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float src[3], const float dirShooting[3], float spread[3], float &distance, int &tracerFreq, float &damage, int &playerDamage, int &flags, float &damageForceScale, int &attacker, int &ignoreEnt){
+	if(IsValidClient3(builder)){
+		int melee = GetWeapon(builder, 2);
+		if(IsValidWeapon(melee)){
+			float override = GetAttribute(melee, "override projectile type", 0.0);
+			switch (override){
+				case 33.0:{
+					if(firestormCounter[builder] == 4)
+					{
+						int iEntity = CreateEntityByName("tf_projectile_spellfireball");
+						if (IsValidEdict(iEntity)) 
+						{
+							int iTeam = GetClientTeam(builder);
+							float fVelocity[3], fAngles[3];
+							float fwd[3]; fwd[0] = dirShooting[0]*30.0; fwd[1] = dirShooting[1]*30.0; fwd[2] = dirShooting[2]*30.0;
+							SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", builder);
+							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+							AddVectors(src, fwd, src);
+							GetVectorAngles(dirShooting, fAngles);
+							fVelocity[0] = dirShooting[0]*11000.0;
+							fVelocity[1] = dirShooting[1]*11000.0;
+							fVelocity[2] = dirShooting[2]*11000.0;
+							
+							TeleportEntity(iEntity, src, fAngles, fVelocity);
+							DispatchSpawn(iEntity);
+							//why does it hit twice???
+							projectileDamage[iEntity] = 40.0*TF2_GetSentryDamageModifiers(attacker, melee);
+						}
+						firestormCounter[builder] = 0;
+					}
+					firestormCounter[builder]++
+					return Plugin_Stop;
+				}
+			}
+		}
+	}
+
+	return Plugin_Continue;
+}
