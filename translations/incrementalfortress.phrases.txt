@@ -1,4268 +1,3208 @@
 "Phrases"
 {
-	"fire rate bonus HIDDEN "
-	{
+	"Sentry Specializations"{
+		"en"		"Sentry Specializations"
+	}
+	"sentry bullets per shot"{
+		"en"		"Sentry Bullets Per Shot Bonus"
+	}
+	"fire rate bonus HIDDEN "{
 		"en"		"Fire Rate Bonus"
 	}
-	"damage mult 2"
-	{
+	"damage mult 2"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 3"
-	{
+	"damage mult 3"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 4"
-	{
+	"damage mult 4"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 5"
-	{
+	"damage mult 5"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 6"
-	{
+	"damage mult 6"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 7"
-	{
+	"damage mult 7"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 8"
-	{
+	"damage mult 8"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 9"
-	{
+	"damage mult 9"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 10"
-	{
+	"damage mult 10"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 11"
-	{
+	"damage mult 11"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 12"
-	{
+	"damage mult 12"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 13"
-	{
+	"damage mult 13"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 14"
-	{
+	"damage mult 14"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage mult 15"
-	{
+	"damage mult 15"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"damage taken mult 1"
-	{
+	"damage taken mult 1"{
 		"en"		"Damage Resistance"
 	}
-	"damage taken mult 2"
-	{
+	"damage taken mult 2"{
 		"en"		"Damage Resistance"
 	}
-	"damage taken mult 3"
-	{
+	"damage taken mult 3"{
 		"en"		"Damage Resistance"
 	}
-	"damage taken mult 4"
-	{
+	"damage taken mult 4"{
 		"en"		"Damage Resistance"
 	}
-	"explosive bullets"
-	{
+	"explosive bullets"{
 		"en"		"Explosive Bullets"
 	}
-	"conference call damage"
-	{
+	"conference call damage"{
 		"en"		"Crossfire Damage %%"
 	}
-	"firerate player buff"
-	{
+	"firerate player buff"{
 		"en"		"Firerate Multiplier"
 	}
-	"Ability : Airstrike"
-	{
+	"Ability : Airstrike"{
 		"en"		"Ability : Airstrike"
 	}
-	"Starstorm"
-	{
+	"Starstorm"{
 		"en"		"Starstorm"
 	}
-	"Deep Learning Sentry"
-	{
+	"Deep Learning Sentry"{
 		"en"		"Deep Learning Sentry"
 	}
-	"Exhaust"
-	{
+	"Exhaust"{
 		"en"		"Exhaust"
 	}
-	"Ability : Sunstar"
-	{
+	"Ability : Sunstar"{
 		"en"		"Ability : Sunstar"
 	}
-	"Sunstar"
-	{
+	"Sunstar"{
 		"en"		"Sunstar"
 	}
-	"Ability : Immolation"
-	{
+	"Ability : Immolation"{
 		"en"		"Ability : Immolation"
 	}
-	"dmg per pct hp missing"
-	{
+	"dmg per pct hp missing"{
 		"en"		"Damage per %% HP Missing"
 	}
-	"Specialty Upgrades"
-	{
+	"Specialty Upgrades"{
 		"en"		"Specialty Upgrades"
 	}
-	"Lightning Affinity"
-	{
+	"Lightning Affinity"{
 		"en"		"Lightning Affinity"
 	}
-	"Sanity Depletion"
-	{
+	"Sanity Depletion"{
 		"en"		"Sanity Depletion"
 	}
-	"Divine Bloodline"
-	{
+	"Divine Bloodline"{
 		"en"		"Divine Bloodline"
 	}
-	"Team Tactics"
-	{
+	"Team Tactics"{
 		"en"		"Team Tactics"
 	}
-	"Pain Train"
-	{
+	"Pain Train"{
 		"en"		"Pain Train"
 	}
-	"Chain Reaction"
-	{
+	"Chain Reaction"{
 		"en"		"Chain Reaction"
 	}
-	"Cluster Bomb"
-	{
+	"Cluster Bomb"{
 		"en"		"Cluster Bomb"
 	}
-	"Splintering Wasps"
-	{
+	"Splintering Wasps"{
 		"en"		"Splintering Wasps"
 	}
-	"Fireworks"
-	{
+	"Fireworks"{
 		"en"		"Fireworks"
 	}
-	"Infernal Lunge"
-	{
+	"Infernal Lunge"{
 		"en"		"Infernal Lunge"
 	}
-	"Immolation"
-	{
+	"Immolation"{
 		"en"		"Immolation"
 	}
-	"weapon push force multiplier"
-	{
+	"weapon push force multiplier"{
 		"en"		"Weapon Push Force Multiplier"
 	}
-	"Barrage"
-	{
+	"Barrage"{
 		"en"		"Barrage"
 	}
-	"Plunder"
-	{
+	"Plunder"{
 		"en"		"Plunder"
 	}
-	"Human Stronghold"
-	{
+	"Human Stronghold"{
 		"en"		"Human Stronghold"
 	}
-	"vaccinator exhaust attribute"
-	{
+	"vaccinator exhaust attribute"{
 		"en"		"Beam Drains Enemy Damage"
 	}
-	"sentry dmg bonus per kill"
-	{
+	"sentry dmg bonus per kill"{
 		"en"		"Sentry Damage Bonus per Kill"
 	}
-	"sunstar beam"
-	{
+	"sunstar beam"{
 		"en"		"Sacrifice Metal for Beam Damage"
 	}
-	"chain lightning meter on hit"
-	{
+	"chain lightning meter on hit"{
 		"en"		"Chain Lightning Meter On Hit"
 	}
-	"enraged meter filled when eaten"
-	{
+	"enraged meter filled when eaten"{
 		"en"		"Enrage Meter Filled When Eaten"
 	}
-	"damage reduction to additive damage"
-	{
+	"damage reduction to additive damage"{
 		"en"		"Damage Reduction -> Base Damage Ratio"
 	}
-	"savior sacrifice attribute"
-	{
+	"savior sacrifice attribute"{
 		"en"		"Saviors Sacrifice Damage Boost"
 	}
-	"chain charge on kill"
-	{
+	"chain charge on kill"{
 		"en"		"Charges Again After Charge Kill"
 	}
-	"sticky recursive explosion chance"
-	{
+	"sticky recursive explosion chance"{
 		"en"		"Additional Explosions Chance"
 	}
-	"dmg per sticky detonated"
-	{
+	"dmg per sticky detonated"{
 		"en"		"Damage Multiplier per Sticky Detonated"
 	}
-	"explosion wasps"
-	{
+	"explosion wasps"{
 		"en"		"Explosions Sting Count"
 	}
-	"fireworks chance"
-	{
+	"fireworks chance"{
 		"en"		"Chance to Firework Enemies"
 	}
-	"immolation ratio"
-	{
+	"immolation ratio"{
 		"en"		"Immolation Damage %%/s"
 	}
-	"jetpack charge damage"
-	{
+	"jetpack charge damage"{
 		"en"		"Charging Damage Percentage"
 	}
-	"buff barrage"
-	{
+	"buff barrage"{
 		"en"		"Fires Rocket Barrages While Buffed"
 	}
-	"buff plunder multiplier"
-	{
+	"buff plunder multiplier"{
 		"en"		"Buff On Hit/Kill Effect Bonus"
 	}
-	"buff fire rate"
-	{
+	"buff fire rate"{
 		"en"		"Buff Fire Rate"
 	}
-	"buff damage taken"
-	{
+	"buff damage taken"{
 		"en"		"Buff Damage Taken"
 	}
-	"buff movement speed"
-	{
+	"buff movement speed"{
 		"en"		"Buff Movement Speed"
 	}
-	"jar gives armor penetration"
-	{
+	"jar gives armor penetration"{
 		"en"		"Applies Armor Penetration to Teammates"
 	}
-	"jar applies armor decay"
-	{
+	"jar applies armor decay"{
 		"en"		"Decays Armor Over Time"
 	}
-	"Alchemist's Concoction"
-	{
+	"Alchemist's Concoction"{
 		"en"		"Alchemist's Concoction"
 	}
-	"Maelstrom Charge"
-	{
+	"Maelstrom Charge"{
 		"en"		"Maelstrom Charge"
 	}
-	"lifesteal effectiveness"
-	{
+	"lifesteal effectiveness"{
 		"en"		"Lifesteal Effectiveness"
 	}
-	"Blood Siphon"
-	{
+	"Blood Siphon"{
 		"en"		"Blood Siphon"
 	}
-	"fires milk bolt"
-	{
+	"fires milk bolt"{
 		"en"		"Alt-Fire: Mad Milk Bolt"
 	}
-	"lifesteal to team"
-	{
+	"lifesteal to team"{
 		"en"		"%% Lifesteal Heals Team"
 	}
-	"dps inheritance ratio"
-	{
+	"dps inheritance ratio"{
 		"en"		"Weapons Inherit DPS From Strongest Weapon"
 	}
-	"Agile Latticing"
-	{
+	"Agile Latticing"{
 		"en"		"Agile Latticing"
 	}
-	"Weapon Inheritance"
-	{
+	"Weapon Inheritance"{
 		"en"		"Weapon Inheritance"
 	}
-	"Explosive Rounds"
-	{
+	"Explosive Rounds"{
 		"en"		"Explosive Rounds"
 	}
-	"Sniper Mastery"
-	{
+	"Sniper Mastery"{
 		"en"		"Sniper Mastery"
 	}
-	"explosive sniper shot"
-	{
+	"explosive sniper shot"{
 		"en"		"Explosive Headshots"
 	}
-	"Fully Charged Shots Ricochet"
-	{
+	"Fully Charged Shots Ricochet"{
 		"en"		"Fully Charged Shots Ricochet"
 	}
-	"Magnification Pylon"
-	{
+	"Magnification Pylon"{
 		"en"		"Magnification Pylon"
 	}
-	"Blossom of Life"
-	{
+	"Blossom of Life"{
 		"en"		"Blossom of Life"
 	}
-	"patient damage taken to self heal"
-	{
+	"patient damage taken to self heal"{
 		"en"		"Patient Damage Taken Heals"
 	}
-	"patient damage taken to uber"
-	{
+	"patient damage taken to uber"{
 		"en"		"Patient Damage Taken to Uber"
 	}
-	"healing aoe radius"
-	{
+	"healing aoe radius"{
 		"en"		"Healing AOE Radius"
 	}
-	"escape plan healing"
-	{
+	"escape plan healing"{
 		"en"		"Swap Health when Fatal"
 	}
-	"patient overheal to damage mult"
-	{
+	"patient overheal to damage mult"{
 		"en"		"Overheal Reduces Damage Taken"
 	}
-	"healing patient power"
-	{
+	"healing patient power"{
 		"en"		"Healing Patient Power"
 	}
-	"ubercharge effectiveness"
-	{
+	"ubercharge effectiveness"{
 		"en"		"Ubercharge Effectiveness"
 	}
-	"magnify patient damage"
-	{
+	"magnify patient damage"{
 		"en"		"Magnify Patient Damage"
 	}
-	"Healing Upgrades"
-	{
+	"Healing Upgrades"{
 		"en"		"Healing Upgrades"
 	}
-	"override projectile type (EP)"
-	{
+	"override projectile type (EP)"{
 		"en"		"Weapon Shoots Electric Orbs"
 	}
-	"alt-fire disabled"
-	{
+	"alt-fire disabled"{
 		"en"		"Alt-Fire Disabled"
 	}
-	"Focused Lens"
-	{
+	"Focused Lens"{
 		"en"		"Focused Lens"
 	}
-	"Wave Dispersement"
-	{
+	"Wave Dispersement"{
 		"en"		"Wave Dispersement"
 	}
-	"mult dmg direct hit"
-	{
+	"mult dmg direct hit"{
 		"en"		"Direct Hit Damage Multiplier"
 	}
-	"projectile acceleration"
-	{
+	"projectile acceleration"{
 		"en"		"Projectile Acceleration"
 	}
-	"mult crit when health is below percent"
-	{
+	"mult crit when health is below percent"{
 		"en"		"100%% Crits when Below %%HP"
 	}
-	"Rockets' Red Glare"
-	{
+	"Rockets' Red Glare"{
 		"en"		"Rockets' Red Glare"
 	}
-	"Scorching Napalm"
-	{
+	"Scorching Napalm"{
 		"en"		"Scorching Napalm"
 	}
-	"arrow ignite"
-	{
+	"arrow ignite"{
 		"en"		"Arrows are Always Lit"
 	}
-	"Toxic Infusion"
-	{
+	"Toxic Infusion"{
 		"en"		"Toxic Infusion"
 	}
-	"Explosive Arrows"
-	{
+	"Explosive Arrows"{
 		"en"		"Explosive Arrows"
 	}
-	"strong homing projectile radius"
-	{
+	"strong homing projectile radius"{
 		"en"		"Homing Projectile Radius"
 	}
-	"Frost Infusion"
-	{
+	"Frost Infusion"{
 		"en"		"Frost Infusion"
 	}
-	"Fire Infusion"
-	{
+	"Fire Infusion"{
 		"en"		"Fire Infusion"
 	}
-	"Fireball Volley"
-	{
+	"Fireball Volley"{
 		"en"		"Fireball Volley"
 	}
-	"Charge Rate Multiplier"
-	{
+	"Charge Rate Multiplier"{
 		"en"		"Charge Rate Multiplier"
 	}
-	"Focal Point"
-	{
+	"Focal Point"{
 		"en"		"Focal Point"
 	}
-	"Siphon"
-	{
+	"Siphon"{
 		"en"		"Siphon"
 	}
-	"damage causes freeze"
-	{
+	"damage causes freeze"{
 		"en"		"Damage Causes Freeze Buildup"
 	}
-	"attach particle effect"
-	{
+	"attach particle effect"{
 		"en"		"Unusual Effect Applied"
 	}
-	"airblast flings enemy"
-	{
+	"airblast flings enemy"{
 		"en"		"Airblast Flings Enemy"
 	}
-	"additive piercing damage"
-	{
+	"additive piercing damage"{
 		"en"		"Additive Piercing Damage"
 	}
-	"add cond on hit"
-	{
+	"add cond on hit"{
 		"en"		"Add Condition on Hit"
 	}
-	"add cond on hit duration"
-	{
+	"add cond on hit duration"{
 		"en"		"Add Condition on Hit Duration"
 	}
-	"damage bonus bullet vs sentry target"
-	{
+	"damage bonus bullet vs sentry target"{
 		"en"		"Damage Bonus VS Sentry Target"
 	}
-	"medigun attack enemy heal mult"
-	{
+	"medigun attack enemy heal mult"{
 		"en"		"Medigun Life Drain Percent"
 	}
-	"medigun attack enemy"
-	{
+	"medigun attack enemy"{
 		"en"		"Medigun Can Attack Enemies"
 	}
-	"medigun self drain"
-	{
+	"medigun self drain"{
 		"en"		"Medigun Healing Damages Healer"
 	}
-	"Minimal Explosion Particle"
-	{
+	"Minimal Explosion Particle"{
 		"en"		"Minimal Explosion Particle"
 	}
-	"burst fire count"
-	{
+	"burst fire count"{
 		"en"		"Burst Fire Count"
 	}
-	"burst fire rate mult"
-	{
+	"burst fire rate mult"{
 		"en"		"Burst Fire Delay"
 	}
-	"Endurance"
-	{
+	"Endurance"{
 		"en"		"Endurance"
 	}
-	"Infernal Impulse"
-	{
+	"Infernal Impulse"{
 		"en"		"Infernal Impulse"
 	}
-	"melee cleave attack"
-	{
+	"melee cleave attack"{
 		"en"		"Melee Cleaves Enemies"
 	}
-	"Scorchiest Shot"
-	{
+	"Scorchiest Shot"{
 		"en"		"Scorchiest Shot"
 	}
-	"backstab tanks capability"
-	{
+	"backstab tanks capability"{
 		"en"		"Knife Can Backstab Tanks"
 	}
-	"sapper pulls enemies"
-	{
+	"sapper pulls enemies"{
 		"en"		"Sapper Pulls Nearby Enemies"
 	}
-	"effect bar recharge rate increased(sapper)"
-	{
+	"effect bar recharge rate increased(sapper)"{
 		"en"		"Recharge Rate Increased"
 	}
-	"Sniper Rifle Charge Rate Penalty"
-	{
+	"Sniper Rifle Charge Rate Penalty"{
 		"en"		"Sniper Rifle Charge Rate Penalty"
 	}
-	"Dragon Bullets Radius"
-	{
+	"Dragon Bullets Radius"{
 		"en"		"Firestorm Bullets"
 	}
-	"bullets per shot mult 2"
-	{
+	"bullets per shot mult 2"{
 		"en"		"Bullets Per Shot Multiplier"
 	}
-	"add cond when active"
-	{
+	"add cond when active"{
 		"en"		"Add Condition When Active"
 	}
-	"set_item_texture_wear"
-	{
+	"set_item_texture_wear"{
 		"en"		"Paint Wear Level"
 	}
-	"paintkit_proto_def_index"
-	{
+	"paintkit_proto_def_index"{
 		"en"		"Paint Index"
 	}
-	"weapon damage mult"
-	{
+	"weapon damage mult"{
 		"en"		"Weapon Damage Bonus"
 	}
-	"weapon fire rate"
-	{
+	"weapon fire rate"{
 		"en"		"Weapon Fire Rate Bonus"
 	}
-	"weapon fire rate(tweak)"
-	{
+	"weapon fire rate(tweak)"{
 		"en"		"Weapon Fire Rate Penalty"
 	}
-	"Arcane - Infernal Enchantment"
-	{
+	"Arcane - Infernal Enchantment"{
 		"en"		"Arcane - Infernal Enchantment"
 	}
-	"Arcane - Splitting Thunder"
-	{
+	"Arcane - Splitting Thunder"{
 		"en"		"Arcane - Splitting Thunder"
 	}
-	"Arcane - Antiseptic Blast"
-	{
+	"Arcane - Antiseptic Blast"{
 		"en"		"Arcane - Antiseptic Blast"
 	}
-	"Arcane - Karmic Justice"
-	{
+	"Arcane - Karmic Justice"{
 		"en"		"Arcane - Karmic Justice"
 	}
-	"Arcane - Snowstorm"
-	{
+	"Arcane - Snowstorm"{
 		"en"		"Arcane - Snowstorm"
 	}
-	"weapon self dmg push force increased"
-	{
+	"weapon self dmg push force increased"{
 		"en"		"Self Push Force Increased"
 	}
-	"Explosive Bullets Radius (tweak)"
-	{
+	"Explosive Bullets Radius (tweak)"{
 		"en"		"Explosive Bullets Radius"
 	}
-	"bullets per shot mult"
-	{
+	"bullets per shot mult"{
 		"en"		"Bullets per Shot Multiplier"
 	}
-	"Afterburn Tick Rate"
-	{
+	"Afterburn Tick Rate"{
 		"en"		"Afterburn Tick Rate"
 	}
-	"flame ammopersec increased (tweak)"
-	{
+	"flame ammopersec increased (tweak)"{
 		"en"		"Flamethrower Ammo Consumption Increased"
 	}
-	"Needlestorm"
-	{
+	"Needlestorm"{
 		"en"		"Needlestorm"
 	}
-	"Additional Uber Effects"
-	{
+	"Additional Uber Effects"{
 		"en"		"Additional Uber Effects"
 	}
-	"mult projectile count"
-	{
+	"mult projectile count"{
 		"en"		"Projectiles Per Shot Increased"
 	}
-	"Multishot Flares"
-	{
+	"Multishot Flares"{
 		"en"		"Multishot Flares"
 	}
-	"Homing Flares"
-	{
+	"Homing Flares"{
 		"en"		"Homing Flares"
 	}
-	"Infernal Powerup"
-	{
+	"Infernal Powerup"{
 		"en"		"Infernal Powerup"
 	}
-	"Thunderstorm Powerup"
-	{
+	"Thunderstorm Powerup"{
 		"en"		"Thunderstorm Powerup"
 	}
-	"Martyr Powerup"
-	{
+	"Martyr Powerup"{
 		"en"		"Martyr Powerup"
 	}
-	"Inverter Powerup"
-	{
+	"Inverter Powerup"{
 		"en"		"Inverter Powerup"
 	}
-	"Relentless Powerup"
-	{
+	"Relentless Powerup"{
 		"en"		"Relentless Powerup"
 	}
-	"physical damage affinity"
-	{
+	"physical damage affinity"{
 		"en"		"Physical Affinity"
 	}
-	"fire damage affinity"
-	{
+	"fire damage affinity"{
 		"en"		"Fire Affinity"
 	}
-	"explosive damage affinity"
-	{
+	"explosive damage affinity"{
 		"en"		"Explosive Affinity"
 	}
-	"electric damage affinity"
-	{
+	"electric damage affinity"{
 		"en"		"Electric Affinity"
 	}
-	"crit damage affinity"
-	{
+	"crit damage affinity"{
 		"en"		"Crit Affinity"
 	}
-	"weapon advancement"
-	{
+	"weapon advancement"{
 		"en"		"Weapon Prestige Rank"
 	}
-	"knockback resistance"
-	{
+	"knockback resistance"{
 		"en"		"Knockback Resistance"
 	}
-	"Increased Overall Damage(T)"
-	{
+	"Increased Overall Damage(T)"{
 		"en"		"Compensated Damage Bonus"
 	}
-	"Slow Resistance"
-	{
+	"Slow Resistance"{
 		"en"		"Slow Resistance"
 	}
-	"Rooted damage taken"
-	{
+	"Rooted damage taken"{
 		"en"		"Rooted damage taken"
 	}
-	"Arcane Cooldown Reduction"
-	{
+	"Arcane Cooldown Reduction"{
 		"en"		"Arcane Cooldown Reduction"
 	}
-	"Tiered Upgrades"
-	{
+	"Tiered Upgrades"{
 		"en"		"Tiered Upgrades"
 	}
-	"Direct Damage Taken Reduced"
-	{
+	"Direct Damage Taken Reduced"{
 		"en"		"Direct Damage Taken Reduced"
 	}
-	"Arcane Damage Taken Reduced"
-	{
+	"Arcane Damage Taken Reduced"{
 		"en"		"Arcane Damage Taken Reduced"
 	}
-	"Additive Bullet Spread"
-	{
+	"Additive Bullet Spread"{
 		"en"		"Additive Bullet Spread"
 	}
-	"Increased Shock Range"
-	{
+	"Increased Shock Range"{
 		"en"		"Increased Shock Range"
 	}
-	"Teleporter Recharge Rate"
-	{
+	"Teleporter Recharge Rate"{
 		"en"		"Teleporter Recharge Rate"
 	}
-	"Increased Projectile Count"
-	{
+	"Increased Projectile Count"{
 		"en"		"Increased Projectile Count"
 	}
-	"Explosive Bullets(P)"
-	{
+	"Explosive Bullets(P)"{
 		"en"		"Explosive Bullets"
 	}
-	"Healing for Buildings"
-	{
+	"Healing for Buildings"{
 		"en"		"Healing for Buildings"
 	}
-	"Dispenser Regeneration Rate"
-	{
+	"Dispenser Regeneration Rate"{
 		"en"		"Dispenser Regeneration Rate"
 	}
-	"Sentry Maximum Ammo"
-	{
+	"Sentry Maximum Ammo"{
 		"en"		"Sentry Maximum Ammo"
 	}
-	"Explosive Bullets Radius"
-	{
+	"Explosive Bullets Radius"{
 		"en"		"Explosive Bullets Radius"
 	}
-	"Sentry Rocket Fire Rate"
-	{
+	"Sentry Rocket Fire Rate"{
 		"en"		"Sentry Rocket Fire Rate"
 	}
-	"Medigun Heal Range Bonus"
-	{
+	"Medigun Heal Range Bonus"{
 		"en"		"Medigun Heal Range Bonus"
 	}
-	"Arrow Mastery"
-	{
+	"Arrow Mastery"{
 		"en"		"Arrow Mastery"
 	}
-	"Crit on Kill Duration"
-	{
+	"Crit on Kill Duration"{
 		"en"		"Crit on Kill Duration"
 	}
-	"Blade Stream"
-	{
+	"Blade Stream"{
 		"en"		"Blade Stream"
 	}
-	"Fan of Knives"
-	{
+	"Fan of Knives"{
 		"en"		"Fan of Knives"
 	}
-	"mult crit dmg"
-	{
+	"mult crit dmg"{
 		"en"		"Crit Damage Bonus"
 	}
-	"!Offensive Powerups"
-	{
+	"!Offensive Powerups"{
 		"en"		"Offensive Powerups"
 	}
-	"!Defensive Powerups"
-	{
+	"!Defensive Powerups"{
 		"en"		"Defensive Powerups"
 	}
-	"!Support Powerups"
-	{
+	"!Support Powerups"{
 		"en"		"Support Powerups"
 	}
-	"!Misc. Powerups"
-	{
+	"!Misc. Powerups"{
 		"en"		"Misc. Powerups"
 	}
-	"!Arcane Stats"
-	{
+	"!Arcane Stats"{
 		"en"		"Arcane Stats"
 	}
-	"!Tier 1 Arcane Spells"
-	{
+	"!Tier 1 Arcane Spells"{
 		"en"		"Tier 1 Arcane Spells"
 	}
-	"!Tier 2 Arcane Spells"
-	{
+	"!Tier 2 Arcane Spells"{
 		"en"		"Tier 2 Arcane Spells"
 	}
-	"!Tier 3 Arcane Spells"
-	{
+	"!Tier 3 Arcane Spells"{
 		"en"		"Tier 3 Arcane Spells"
 	}
-	"No gravity projectile"
-	{
+	"No gravity projectile"{
 		"en"		"No Gravity Projectile"
 	}
-	"Homing Projectiles (cleaver)"
-	{
+	"Homing Projectiles (cleaver)"{
 		"en"		"Homing Projectiles"
 	}
-	"Projectile speed decreased(t)"
-	{
+	"Projectile speed decreased(t)"{
 		"en"		"Projectile Speed Increased"
 	}
-	"Status Effect Upgrades"
-	{
+	"Status Effect Upgrades"{
 		"en"		"Status Effect Upgrades"
 	}
-	"Powerup Upgrades"
-	{
+	"Powerup Upgrades"{
 		"en"		"Powerup Upgrades"
 	}
-	"Strength Powerup"
-	{
+	"Strength Powerup"{
 		"en"		"Strength Powerup"
 	}
-	"Resistance Powerup"
-	{
+	"Resistance Powerup"{
 		"en"		"Resistance Powerup"
 	}
-	"Vampire Powerup"
-	{
+	"Vampire Powerup"{
 		"en"		"Vampire Powerup"
 	}
-	"Haste Powerup"
-	{
+	"Haste Powerup"{
 		"en"		"Haste Powerup"
 	}
-	"Revenge Powerup"
-	{
+	"Revenge Powerup"{
 		"en"		"Revenge Powerup"
 	}
-	"Regeneration Powerup"
-	{
+	"Regeneration Powerup"{
 		"en"		"Regeneration Powerup"
 	}
-	"Precision Powerup"
-	{
+	"Precision Powerup"{
 		"en"		"Precision Powerup"
 	}
-	"Agility Powerup"
-	{
+	"Agility Powerup"{
 		"en"		"Agility Powerup"
 	}
-	"Knockout Powerup"
-	{
+	"Knockout Powerup"{
 		"en"		"Knockout Powerup"
 	}
-	"King Powerup"
-	{
+	"King Powerup"{
 		"en"		"King Powerup"
 	}
-	"Plague Powerup"
-	{
+	"Plague Powerup"{
 		"en"		"Plague Powerup"
 	}
-	"Supernova Powerup"
-	{
+	"Supernova Powerup"{
 		"en"		"Supernova Powerup"
 	}
-	"fire rate bonus(fortified)"
-	{
+	"fire rate bonus(fortified)"{
 		"en"		"Fire Rate Bonus"
 	}
-	"Weighdown Ability"
-	{
+	"Weighdown Ability"{
 		"en"		"Weighdown Ability"
 	}
-	"Corrosive Damage Over Time"
-	{
+	"Corrosive Damage Over Time"{
 		"en"		"Corrosive Damage Over Time"
 	}
-	"Unique Upgrades"
-	{
+	"Unique Upgrades"{
 		"en"		"Unique Upgrades"
 	}
-	"Arrow Ignition Chance"
-	{
+	"Arrow Ignition Chance"{
 		"en"		"Arrow Ignition Chance"
 	}
-	"Ignited Arrows Explode"
-	{
+	"Ignited Arrows Explode"{
 		"en"		"Ignited Arrows Explode"
 	}
-	"Ignited Arrows Explosion Radius"
-	{
+	"Ignited Arrows Explosion Radius"{
 		"en"		"Ignited Arrows Explosion Radius"
 	}
-	"Bleed Per Hit(E)"
-	{
+	"Bleed Per Hit(E)"{
 		"en"		"Bleed Per Hit"
 	}
-	"Debuff Upgrades"
-	{
+	"Debuff Upgrades"{
 		"en"		"Debuff Upgrades"
 	}
-	"Support Upgrades"
-	{
+	"Support Upgrades"{
 		"en"		"Support Upgrades"
 	}
-	"Afterburn Immunity Duration"
-	{
+	"Afterburn Immunity Duration"{
 		"en"		"Afterburn Immunity Duration"
 	}
-	"Death Denial Buff Duration"
-	{
+	"Death Denial Buff Duration"{
 		"en"		"Death Denial Buff Duration"
 	}
-	"Batallion's Buff Duration"
-	{
+	"Batallion's Buff Duration"{
 		"en"		"Batallion's Buff Duration"
 	}
-	"Increases Haste Buff Duration"
-	{
+	"Increases Haste Buff Duration"{
 		"en"		"Increases Haste Buff Duration"
 	}
-	"Fragmentation Upgrades"
-	{
+	"Fragmentation Upgrades"{
 		"en"		"Fragmentation Upgrades"
 	}
-	"Jar Fragment Count"
-	{
+	"Jar Fragment Count"{
 		"en"		"Jar Fragment Count"
 	}
-	"Fragment Explosion Base Damage"
-	{
+	"Fragment Explosion Base Damage"{
 		"en"		"Fragment Explosion Base Damage"
 	}
-	"Stealth On Backstab"
-	{
+	"Stealth On Backstab"{
 		"en"		"Stealth On Backstab"
 	}
-	"Radiation Buildup On Backstab"
-	{
+	"Radiation Buildup On Backstab"{
 		"en"		"Radiation Buildup On Backstab"
 	}
-	"Ability : Silent Dash"
-	{
+	"Ability : Silent Dash"{
 		"en"		"Ability : Silent Dash"
 	}
-	"Radiation Buildup"
-	{
+	"Radiation Buildup"{
 		"en"		"Radiation Buildup"
 	}
-	"Ability : Regal Roar"
-	{
+	"Ability : Regal Roar"{
 		"en"		"Ability : Regal Roar"
 	}
-	"Ability : Chaos Bed Vestiges"
-	{
+	"Ability : Chaos Bed Vestiges"{
 		"en"		"Ability : Chaos Bed Vestiges"
 	}
-	"Infinite Ammo Count"
-	{
+	"Infinite Ammo Count"{
 		"en"		"Infinite Ammo Count"
 	}
-	"Ability : Homing Flares"
-	{
+	"Ability : Homing Flares"{
 		"en"		"Ability : Homing Flares"
 	}
-	"Weapon Attacks Multiple Times"
-	{
+	"Weapon Attacks Multiple Times"{
 		"en"		"Weapon Attacks Multiple Times"
 	}
-	"Increased Overall Damage(F)"
-	{
+	"Increased Overall Damage(F)"{
 		"en"		"Increased Overall Damage"
 	}
-	"override projectile type (AR)"
-	{
+	"override projectile type (AR)"{
 		"en"		"Weapon Shoots Arrows"
 	}
-	"Converts Firerate to Damage"
-	{
+	"Converts Firerate to Damage"{
 		"en"		"Converts Firerate to Damage"
 	}
-	"Ability : Transient Moonlight"
-	{
+	"Ability : Transient Moonlight"{
 		"en"		"Ability : Transient Moonlight"
 	}
-	"Ability : Corpse Piler"
-	{
+	"Ability : Corpse Piler"{
 		"en"		"Ability : Corpse Piler"
 	}
-	"Arcane Weapon Scaling"
-	{
+	"Arcane Weapon Scaling"{
 		"en"		"Arcane Weapon Scaling"
 	}
-	"Increased Overall Damage"
-	{
+	"Increased Overall Damage"{
 		"en"		"Increased Overall Damage"
 	}
-	"Reload Time Decrease"
-	{
+	"Reload Time Decrease"{
 		"en"		"Reload Time Decrease"
 	}
-	"Armor Recharge Rate When Eaten"
-	{
+	"Armor Recharge Rate When Eaten"{
 		"en"		"Armor Recharge Rate When Eaten"
 	}
-	"Armor Refilled When Eaten"
-	{
+	"Armor Refilled When Eaten"{
 		"en"		"Armor Refilled When Eaten"
 	}
-	"Ball Additive Damage Bonus"
-	{
+	"Ball Additive Damage Bonus"{
 		"en"		"Ball Additive Damage Bonus"
 	}
-	"increase buff radius"
-	{
+	"increase buff radius"{
 		"en"		"Buff Radius Increased"
 	}
-	"Gas Passer Explosion Damage"
-	{
+	"Gas Passer Explosion Damage"{
 		"en"		"Gas Passer Explosion Damage"
 	}
-	"Fires More Projectiles(Ball)"
-	{
+	"Fires More Projectiles(Ball)"{
 		"en"		"Fires More Projectiles"
 	}
-	"blast radius increased(G)"
-	{
+	"blast radius increased(G)"{
 		"en"		"Blast Radius Increased"
 	}
-	"Sharpshooter(secondary)"
-	{
+	"Sharpshooter(secondary)"{
 		"en"		"Sharpshooter"
 	}
-	"Accuracy Scales DMG Replacement"
-	{
+	"Accuracy Scales DMG Replacement"{
 		"en"		"Accuracy Scales Damage"
 	}
-	"Banner Summons Lightning"
-	{
+	"Banner Summons Lightning"{
 		"en"		"Banner Summons Lightning"
 	}
-	"Lightning Banner"
-	{
+	"Lightning Banner"{
 		"en"		"Lightning Banner"
 	}
-	"Lacerating Rounds"
-	{
+	"Lacerating Rounds"{
 		"en"		"Lacerating Rounds"
 	}
-	"Pistol Caliber Carbine"
-	{
+	"Pistol Caliber Carbine"{
 		"en"		"Pistol Caliber Carbine"
 	}
-	"clip size bonus HIDDEN"
-	{
+	"clip size bonus HIDDEN"{
 		"en"		"Clip Size Multiplier"
 	}
-	"ap (armyofnotmany)"
-	{
+	"ap (armyofnotmany)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (electricmotor)"
-	{
+	"ap (electricmotor)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (assault)"
-	{
+	"ap (assault)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (biggercali)"
-	{
+	"ap (biggercali)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (sentrycal)"
-	{
+	"ap (sentrycal)"{
 		"en"		"★ Sentry Damage Multiplier ★"
 	}
-	"ap (concentrated)"
-	{
+	"ap (concentrated)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (temprise)"
-	{
+	"ap (temprise)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (slowswing)"
-	{
+	"ap (slowswing)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (compressedfire)"
-	{
+	"ap (compressedfire)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (condensedlaser)"
-	{
+	"ap (condensedlaser)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"Homing Projectiles (crossbow)"
-	{
+	"Homing Projectiles (crossbow)"{
 		"en"		"Homing Projectiles"
 	}
-	"damage bonus HIDDEN(b)"
-	{
+	"damage bonus HIDDEN(b)"{
 		"en"		"Damage Bonus Hidden"
 	}
-	"ap (heavycleaver)"
-	{
+	"ap (heavycleaver)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"ap (highervoltage)"
-	{
+	"ap (highervoltage)"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"Vulnerability When Sapped"
-	{
+	"Vulnerability When Sapped"{
 		"en"		"Vulnerability When Sapped"
 	}
-	"Mad Milk On Hit Duration"
-	{
+	"Mad Milk On Hit Duration"{
 		"en"		"Mad Milk On Hit Duration"
 	}
-	"Mad Milk On Hit Duration (MadMilk)"
-	{
+	"Mad Milk On Hit Duration (MadMilk)"{
 		"en"		"Mad Milk On Hit Duration"
 	}
-	"Ability : Charge"
-	{
+	"Ability : Charge"{
 		"en"		"Ability : Class Specific"
 	}
-	"Ability : Stun Shot"
-	{
+	"Ability : Stun Shot"{
 		"en"		"Ability : Stun Shot"
 	}
-	"Ability : Damage Stagger"
-	{
+	"Ability : Damage Stagger"{
 		"en"		"Ability : Juggernaut"
 	}
-	"Ability : Fireball Volley"
-	{
+	"Ability : Fireball Volley"{
 		"en"		"Ability : Fireball Volley"
 	}
-	"Charging Velocity"
-	{
+	"Charging Velocity"{
 		"en"		"Charging Velocity"
 	}
-	"Is Parachute Re-Openable"
-	{
+	"Is Parachute Re-Openable"{
 		"en"		"Is Parachute Re-Openable"
 	}
-	"Projectile Distance Increased"
-	{
+	"Projectile Distance Increased"{
 		"en"		"Fireball Distance Increased"
 	}
-	"Maximum Caber Charges"
-	{
+	"Maximum Caber Charges"{
 		"en"		"Maximum Caber Charges"
 	}
-	"Bought Weapon"
-	{
+	"Bought Weapon"{
 		"en"		"Bought Weapon"
 	}
-	"Explosive Specialist"
-	{
+	"Explosive Specialist"{
 		"en"		"Explosive Specialist"
 	}
-	"Fireball Recharge Rate"
-	{
+	"Fireball Recharge Rate"{
 		"en"		"Fireball Recharge Rate"
 	}
-	"Blast radius increased (Unremovable)"
-	{
+	"Blast radius increased (Unremovable)"{
 		"en"		"Blast radius increased"
 	}
-	"Slower Reload Rate (Unremovable)"
-	{
+	"Slower Reload Rate (Unremovable)"{
 		"en"		"Slower Reload Rate"
 	}
-	"Bleed Per Hit"
-	{
+	"Bleed Per Hit"{
 		"en"		"Bleed Per Hit"
 	}
-	"Bleed Resistance"
-	{
+	"Bleed Resistance"{
 		"en"		"Bleed Resistance"
 	}
-	"Overdrive"
-	{
+	"Overdrive"{
 		"en"		"Overdrive"
 	}
-	"Precision"
-	{
+	"Precision"{
 		"en"		"Precision"
 	}
-	"Teammate Damage Redirection"
-	{
+	"Teammate Damage Redirection"{
 		"en"		"Teammate Damage Redirection"
 	}
-	"Sharpshooter"
-	{
+	"Sharpshooter"{
 		"en"		"Sharpshooter"
 	}
-	"Damage Reduced"
-	{
+	"Damage Reduced"{
 		"en"		"Damage Penalty"
 	}
-	"Guardian"
-	{
+	"Guardian"{
 		"en"		"Guardian"
 	}
-	"Damage Bonus Increased"
-	{
+	"Damage Bonus Increased"{
 		"en"		"Damage Bonus Increased"
 	}
-	"Damage Taken Increased"
-	{
+	"Damage Taken Increased"{
 		"en"		"Damage Taken Increased"
 	}
-	"Move Speed Multiplier"
-	{
+	"Move Speed Multiplier"{
 		"en"		"Move Speed Multiplier"
 	}
-	"Double Sentry Rocket Shot"
-	{
+	"Double Sentry Rocket Shot"{
 		"en"		"Multi-Sentry Rocket Shot"
 	}
-	"Teleporter Gives Buffs"
-	{
+	"Teleporter Gives Buffs"{
 		"en"		"Teleporter Gives Buffs"
 	}
-	"fire rate bonus(fixed)"
-	{
+	"fire rate bonus(fixed)"{
 		"en"		"Fire Rate Bonus"
 	}
-	"melee attack rate bonus(spy)"
-	{
+	"melee attack rate bonus(spy)"{
 		"en"		"Melee Attack Speed Bonus"
 	}
-	"Arcane - Speed Aura"
-	{
+	"Arcane - Speed Aura"{
 		"en"		"Arcane - Speed Aura"
 	}
-	"Arcane - Aerial Strike"
-	{
+	"Arcane - Aerial Strike"{
 		"en"		"Arcane - Aerial Strike"
 	}
-	"Arcane - Inferno"
-	{
+	"Arcane - Inferno"{
 		"en"		"Arcane - Inferno"
 	}
-	"Arcane - Mine Field"
-	{
+	"Arcane - Mine Field"{
 		"en"		"Arcane - Mine Field"
 	}
-	"Arcane - Shockwave"
-	{
+	"Arcane - Shockwave"{
 		"en"		"Arcane - Shockwave"
 	}
-	"Arcane - Auto-Sentry"
-	{
+	"Arcane - Auto-Sentry"{
 		"en"		"Arcane - Auto-Sentry"
 	}
-	"Arcane - Soothing Sunlight"
-	{
+	"Arcane - Soothing Sunlight"{
 		"en"		"Arcane - Soothing Sunlight"
 	}
-	"Arcane - Arcane Hunter"
-	{
+	"Arcane - Arcane Hunter"{
 		"en"		"Arcane - Arcane Hunter"
 	}
-	"Arcane - Mark-For-Death"
-	{
+	"Arcane - Mark-For-Death"{
 		"en"		"Arcane - Sabotage"
 	}
-	"Arcane - Darkmoon Blade"
-	{
+	"Arcane - Darkmoon Blade"{
 		"en"		"Arcane - Darkmoon Blade"
 	}
-	"Arcane - Snap Freeze"
-	{
+	"Arcane - Snap Freeze"{
 		"en"		"Arcane - Snap Freeze"
 	}
-	"Arcane - Arcane Prison"
-	{
+	"Arcane - Arcane Prison"{
 		"en"		"Arcane - Arcane Prison"
 	}
-	"Arcane - Lightning Enchantment"
-	{
+	"Arcane - Lightning Enchantment"{
 		"en"		"Arcane - Lightning Enchantment"
 	}
-	"Arcane - Sunlight Spear"
-	{
+	"Arcane - Sunlight Spear"{
 		"en"		"Arcane - Sunlight Spear"
 	}
-	"Arcane - Zap"
-	{
+	"Arcane - Zap"{
 		"en"		"Arcane - Zap"
 	}
-	"Arcane - Lightning Strike"
-	{
+	"Arcane - Lightning Strike"{
 		"en"		"Arcane - Lightning Strike"
 	}
-	"Arcane - Healing Aura"
-	{
+	"Arcane - Healing Aura"{
 		"en"		"Arcane - Projected Healing"
 	}
-	"Arcane - A Call Beyond"
-	{
+	"Arcane - A Call Beyond"{
 		"en"		"Arcane - A Call Beyond"
 	}
-	"Arcane - Blacksky Eye"
-	{
+	"Arcane - Blacksky Eye"{
 		"en"		"Arcane - Blacksky Eye"
 	}
-	"Arcane Damage"
-	{
+	"Arcane Damage"{
 		"en"		"Arcane Damage"
 	}
-	"Attunement Slots"
-	{
+	"Attunement Slots"{
 		"en"		"Attunement Slots"
 	}
-	"Arcane Upgrades"
-	{
+	"Arcane Upgrades"{
 		"en"		"Arcane Upgrades"
 	}
-	"Max Focus"
-	{
+	"Max Focus"{
 		"en"		"Max Focus"
 	}
-	"Focus Regeneration"
-	{
+	"Focus Regeneration"{
 		"en"		"Focus Regeneration"
 	}
-	"Arcane Power"
-	{
+	"Arcane Power"{
 		"en"		"★ Arcane Power ★"
 	}
-	"Firestorm Rounds"
-	{
+	"Firestorm Rounds"{
 		"en"		"Firestorm Rounds"
 	}
-	"Building Specializations"
-	{
+	"Building Specializations"{
 		"en"		"Building Specializations"
 	}
-	"Overall Damage Penalty"
-	{
+	"Overall Damage Penalty"{
 		"en"		"Overall Damage Penalty"
 	}
-	"High-Velocity Bullets"
-	{
+	"High-Velocity Bullets"{
 		"en"		"High-Velocity Bullets"
 	}
-	"Extra Damage Bonus(fireball)"
-	{
+	"Extra Damage Bonus(fireball)"{
 		"en"		"Extra Damage Bonus"
 	}
-	"fire rate penalty(crossbow)"
-	{
+	"fire rate penalty(crossbow)"{
 		"en"		"Fire Rate Penalty"
 	}
-	"Assault Weapon (shotgun)"
-	{
+	"Assault Weapon (shotgun)"{
 		"en"		"Assault Weapon"
 	}
-	"gesture speed increase (lunchbox)"
-	{
+	"gesture speed increase (lunchbox)"{
 		"en"		"Taunt Speed Increased"
 	}
-	"gesture speed increase (phlog)"
-	{
+	"gesture speed increase (phlog)"{
 		"en"		"Taunt Speed Increased"
 	}
-	"Defense"
-	{
+	"Defense"{
 		"en"		"★ Damage Reduction Multiplier ★"
 	}
-	"Ammo & Cloak upgrades"
-	{
+	"Ammo & Cloak upgrades"{
 		"en"		"Ammo & Cloak Upgrades"
 	}
-	"Projectile Hitbox Bonus"
-	{
+	"Projectile Hitbox Bonus"{
 		"en"		"Projectile Hitbox Bonus"
 	}
-	"weapon spread bonus(H)"
-	{
+	"weapon spread bonus(H)"{
 		"en"		"Weapon Spread Bonus"
 	}
-	"damage bonus (clea)"
-	{
+	"damage bonus (clea)"{
 		"en"		"Damage+++"
 	}
-	"extra fire rate HIDDEN(tweak)"
-	{
+	"extra fire rate HIDDEN(tweak)"{
 		"en"		"Extra Fire Rate Hidden"
 	}
-	"Bee Swarm"
-	{
+	"Bee Swarm"{
 		"en"		"Bee Swarm"
 	}
-	"Homing Projectiles"
-	{
+	"Homing Projectiles"{
 		"en"		"Homing Projectiles"
 	}
-	"Fires More Projectiles"
-	{
+	"Fires More Projectiles"{
 		"en"		"Fires More Projectiles"
 	}
-	"Stat Boost Ubercharge"
-	{
+	"Stat Boost Ubercharge"{
 		"en"		"Stat Boost Ubercharge"
 	}
-	"Damage boost hidden"
-	{
+	"Damage boost hidden"{
 		"en"		"Damage Boost Hidden"
 	}
-	"Health Bonus (Heavy)"
-	{
+	"Health Bonus (Heavy)"{
 		"en"		"Health Bonus"
 	}
-	"Remove bleed chance"
-	{
+	"Remove bleed chance"{
 		"en"		"Chance to Clear Bleed Effect"
 	}
-	"Remove fire chance"
-	{
+	"Remove fire chance"{
 		"en"		"Chance to Clear Afterburn Effect"
 	}
-	"airblast radius multiplier"
-	{
+	"airblast radius multiplier"{
 		"en"		"Airblast Radius Multiplier"
 	}
-	"slow time multiplier"
-	{
+	"slow time multiplier"{
 		"en"		"Slow Time Multiplier"
 	}
-	"airblast pushback scale"
-	{
+	"airblast pushback scale"{
 		"en"		"Airblast Damage Multiplier"
 	}
-	"airblast vertical pushback scale"
-	{
+	"airblast vertical pushback scale"{
 		"en"		"Slow Effect Multiplier"
 	}
-	"Phasing Arrows"
-	{
+	"Phasing Arrows"{
 		"en"		"Phasing Arrows"
 	}
-	"Arrow Damage Penalty"
-	{
+	"Arrow Damage Penalty"{
 		"en"		"Arrow Damage Penalty"
 	}
-	"Phasing Arrows Attribute"
-	{
+	"Phasing Arrows Attribute"{
 		"en"		"Phasing Arrows Attribute"
 	}
-	"Ability : Explosive Arrow"
-	{
+	"Ability : Explosive Arrow"{
 		"en"		"Ability : Explosive Arrow"
 	}
-	"Ability : Gouge"
-	{
+	"Ability : Gouge"{
 		"en"		"Ability : Gouge"
 	}
-	"Special Abilities"
-	{
+	"Special Abilities"{
 		"en"		"Special Abilities"
 	}
-	"Resistance While Held"
-	{
+	"Resistance While Held"{
 		"en"		"Resistance While Held"
 	}
-	"Dodge Chance While Held"
-	{
+	"Dodge Chance While Held"{
 		"en"		"Dodge Chance While Held"
 	}
-	"Dragons Fury Range"
-	{
+	"Dragons Fury Range"{
 		"en"		"Dragons Fury Range"
 	}
-	"ubercharge rate multiplier"
-	{
+	"ubercharge rate multiplier"{
 		"en"		"Ubercharge Rate Multiplier"
 	}
-	"Damage Multiplier for healed player"
-	{
+	"Damage Multiplier for healed player"{
 		"en"		"Damage Multiplier for Patient"
 	}
-	"Heavy Melee"
-	{
+	"Heavy Melee"{
 		"en"		"Heavy Melee"
 	}
-	"Tierstack"
-	{
+	"Tierstack"{
 		"en"		"Tierstack"
 	}
-	"Max TierStacks"
-	{
+	"Max TierStacks"{
 		"en"		"Max TierStacks"
 	}
-	"Max Heavy Melee"
-	{
+	"Max Heavy Melee"{
 		"en"		"Max Heavy Melee"
 	}
-	"damage dealt multiplier"
-	{
+	"damage dealt multiplier"{
 		"en"		"damage dealt multiplier"
 	}
-	"attackspeed multiplier"
-	{
+	"attackspeed multiplier"{
 		"en"		"attackspeed multiplier"
 	}
-	"blast radius increased(E)"
-	{
+	"blast radius increased(E)"{
 		"en"		"Blast Radius Increased"
 	}
-	"Projectile speed increased(ARROW)"
-	{
+	"Projectile speed increased(ARROW)"{
 		"en"		"Projectile Speed Increased"
 	}
-	"Life Steal Ability"
-	{
+	"Life Steal Ability"{
 		"en"		"Life Steal Ability"
 	}
-	"Blast radius increased (Throwable)"
-	{
+	"Blast radius increased (Throwable)"{
 		"en"		"Blast radius increased"
 	}
-	"Extra Damage Bonus"
-	{
+	"Extra Damage Bonus"{
 		"en"		"Extra Damage Bonus"
 	}
-	"Armor Recharge Rate Multiplier"
-	{
+	"Armor Recharge Rate Multiplier"{
 		"en"		"Armor Recharge Rate Multiplier"
 	}
-	"Armor Recharge Delay Multiplier"
-	{
+	"Armor Recharge Delay Multiplier"{
 		"en"		"Armor Recharge Delay Multiplier"
 	}
-	"Ubercharge gives bonus damage"
-	{
+	"Ubercharge gives bonus damage"{
 		"en"		"Ubercharge gives bonus damage"
 	}
-	"Ubercharge gives extra armor stats"
-	{
+	"Ubercharge gives extra armor stats"{
 		"en"		"Ubercharge gives extra armor stats"
 	}
-	"Reflect Damage Ability"
-	{
+	"Reflect Damage Ability"{
 		"en"		"Reflect Damage Ability"
 	}
-	"Reflect Damage Multiplier"
-	{
+	"Reflect Damage Multiplier"{
 		"en"		"Reflect Damage Multiplier"
 	}
-	"Iron Bomber Attribute"
-	{
+	"Iron Bomber Attribute"{
 		"en"		"Grenades Roll Less"
 	}
-	"exponential damage bonus"
-	{
+	"exponential damage bonus"{
 		"en"		"Power To 5 Damage Bonus"
 	}
-	"Sentry Damage While Active"
-	{
+	"Sentry Damage While Active"{
 		"en"		"Sentry Damage While Active"
 	}
-	"Sentry Armor Piercing Damage"
-	{
+	"Sentry Armor Piercing Damage"{
 		"en"		"Sentry Damage Boost"
 	}
-	"Melee Spawns Rocket"
-	{
+	"Melee Spawns Rocket"{
 		"en"		"Melee Spawns Rocket"
 	}
-	"Shoots extra projectile"
-	{
+	"Shoots extra projectile"{
 		"en"		"Shoots extra projectile"
 	}
-	"Qbuying as much as possible..."
-	{
+	"Qbuying as much as possible..."{
 		"en"		"Qbuying as much as possible..."
 	}
-	"Direct Flame Damage Multiplier"
-	{
+	"Direct Flame Damage Multiplier"{
 		"en"		"Direct Flame Damage Multiplier"
 	}
-	"Max Armor Capacity"
-	{
+	"Max Armor Capacity"{
 		"en"		"Max Armor Supply"
 	}
-	"Armor Capability"
-	{
+	"Armor Capability"{
 		"en"		"★ Damage Reduction ★"
 	}
-	"Armor Resistance"
-	{
+	"Armor Resistance"{
 		"en"		"Armor Damage Reduction"
 	}
-	"Health Bonus"
-	{
+	"Health Bonus"{
 		"en"		"Health Bonus"
 	}
-	"Weapons Deals No Knockback"
-	{
+	"Weapons Deals No Knockback"{
 		"en"		"Weapon Deals No Knockback"
 	}
-	"crit damage multiplier"
-	{
+	"crit damage multiplier"{
 		"en"		"Crit Damage Multiplier"
 	}
-	"Afterburn Damage Multiplier"
-	{
+	"Afterburn Damage Multiplier"{
 		"en"		"Afterburn Damage Multiplier"
 	}
-	"Overall Damage"
-	{
+	"Overall Damage"{
 		"en"		"Overall Damage Multiplier"
 	}
-	"fire rate penalty(bow)"
-	{
+	"fire rate penalty(bow)"{
 		"en"		"Fire Rate Penalty"
 	}
-	"sentry rocket damage"
-	{
+	"sentry rocket damage"{
 		"en"		"sentry Rocket Damage"
 	}
-	"Increased Charge percent"
-	{
+	"Increased Charge percent"{
 		"en"		"Increased Charge percent"
 	}
-	"Projectile has no Gravity"
-	{
+	"Projectile has no Gravity"{
 		"en"		"Projectile has no Gravity"
 	}
-	"Building Resistance"
-	{
+	"Building Resistance"{
 		"en"		"Building Resistance"
 	}
-	"dmg bonus vs sappers"
-	{
+	"dmg bonus vs sappers"{
 		"en"		"dmg bonus vs sappers"
 	}
-	"Reload Time Decreased Hidden"
-	{
+	"Reload Time Decreased Hidden"{
 		"en"		"Reload Time Decreased Hidden"
 	}
-	"Damage is Multiplied by Bullets/shot"
-	{
+	"Damage is Multiplied by Bullets/shot"{
 		"en"		"Damage is Multiplied by Bullets/shot"
 	}
-	"Switch Speed Increased"
-	{
+	"Switch Speed Increased"{
 		"en"		"Switch Speed Increased"
 	}
-	"Explosive Bullets(S)"
-	{
+	"Explosive Bullets(S)"{
 		"en"		"Explosive Bullets"
 	}
-	"pct rage from being hit"
-	{
+	"pct rage from being hit"{
 		"en"		"pct rage from being hit"
 	}
-	"Shrapnel Explosions"
-	{
+	"Shrapnel Explosions"{
 		"en"		"Shrapnel Explosions"
 	}
-	"Radius upgrades"
-	{
+	"Radius upgrades"{
 		"en"		"Radius upgrades"
 	}
-	"Extra Protection Upgrades"
-	{
+	"Extra Protection Upgrades"{
 		"en"		"Extra Protection Upgrades"
 	}
-	"Healing Disabled"
-	{
+	"Healing Disabled"{
 		"en"		"Healing Disabled"
 	}
-	"health from medics reduced"
-	{
+	"health from medics reduced"{
 		"en"		"Health From Medics Reduced"
 	}
-	"health from healers multiplier"
-	{
+	"health from healers multiplier"{
 		"en"		"Health From Healers Multiplier"
 	}
-	"Dispencer Heal rate"
-	{
+	"Dispencer Heal rate"{
 		"en"		"Dispencer Heal rate"
 	}
-	"Overall Damage Bonus"
-	{
+	"Overall Damage Bonus"{
 		"en"		"Exponential Damage Bonus"
 	}
-	"provide on active"
-	{
+	"provide on active"{
 		"en"		"Provide While Active"
 	}
-	"air control when blast jumping"
-	{
+	"air control when blast jumping"{
 		"en"		"Air Control When Blast Jumping"
 	}
-	"Bigger Caliber(widowmaker)"
-	{
+	"Bigger Caliber(widowmaker)"{
 		"en"		"Bigger Caliber"
 	}
-	"dmg from all reduced(wearable)"
-	{
+	"dmg from all reduced(wearable)"{
 		"en"		"Damage Taken Reduced"
 	}
-	"Headshot Damage Reduced"
-	{
+	"Headshot Damage Reduced"{
 		"en"		"Headshot Damage Reduced"
 	}
-	"Fire Rate (throw)"
-	{
+	"Fire Rate (throw)"{
 		"en"		"Fire Rate"
 	}
-	"Class Specific Upgrades"
-	{
+	"Class Specific Upgrades"{
 		"en"		"Damage Upgrades"
 	}
-	"Buff Banner Effect"
-	{
+	"Buff Banner Effect"{
 		"en"		"Buff Banner Effect"
 	}
-	"minicritboost on kill"
-	{
+	"minicritboost on kill"{
 		"en"		"Minicrit boost on kill"
 	}
-	"sniper no headshot without full charge"
-	{
+	"sniper no headshot without full charge"{
 		"en"		"Cannot Headshot Without Full Charge"
 	}
-	"Laser Weapon Autorecharge"
-	{
+	"Laser Weapon Autorecharge"{
 		"en"		"Laser Weapon Auto-recharge"
 	}
-	"Damage bonus multiplier"
-	{
+	"Damage bonus multiplier"{
 		"en"		"Damage Bonus Multiplier"
 	}
-	"dmg taken from fire reduced(wearable)"
-	{
+	"dmg taken from fire reduced(wearable)"{
 		"en"		"Fire Damage Taken Reduced"
 	}
-	"dmg taken from crit reduced(wearable)"
-	{
+	"dmg taken from crit reduced(wearable)"{
 		"en"		"Crit Damage Taken Reduced"
 	}
-	"dmg taken from blast reduced(wearable)"
-	{
+	"dmg taken from blast reduced(wearable)"{
 		"en"		"Blast Damage Taken Reduced"
 	}
-	"dmg taken from bullets reduced(wearable)"
-	{
+	"dmg taken from bullets reduced(wearable)"{
 		"en"		"Bullet Damage Taken Reduced"
 	}
-	"dmg from melee reduced(wearable)"
-	{
+	"dmg from melee reduced(wearable)"{
 		"en"		"Melee Damage Taken Reduced"
 	}
-	"attack_minicrits_and_consumes_burning"
-	{
+	"attack_minicrits_and_consumes_burning"{
 		"en"		"Consume Afterburn For Damage"
 	}
-	"max health additive bonus (H) x100"
-	{
+	"max health additive bonus (H) x100"{
 		"en"		"max health additive bonus (H)"
 	}
-	"Drink Upgrade"
-	{
+	"Drink Upgrade"{
 		"en"		"Drink Upgrade"
 	}
-	"dmg from sentry reduced(wearable)"
-	{
+	"dmg from sentry reduced(wearable)"{
 		"en"		"Sentry Damage Taken Reduced"
 	}
-	"blast radius increased(F)"
-	{
+	"blast radius increased(F)"{
 		"en"		"Blast Radius Increased"
 	}
-	"Debuff Immunity"
-	{
+	"Debuff Immunity"{
 		"en"		"Debuff Immunity"
 	}
-	"Slow immunity"
-	{
+	"Slow immunity"{
 		"en"		"Slow immunity"
 	}
-	"add onhit addammo"
-	{
+	"add onhit addammo"{
 		"en"		"Add Ammo On Hit"
 	}
-	"crit dmg mult"
-	{
+	"crit dmg mult"{
 		"en"		"Crit Damage Multiplier"
 	}
-	"Autofire Bow specific upgrades"
-	{
+	"Autofire Bow specific upgrades"{
 		"en"		"Bow Specific Upgrades"
 	}
-	"speedboost when hurt"
-	{
+	"speedboost when hurt"{
 		"en"		"Speed-Boost When Hurt"
 	}
-	"Damage bonus vs player(real)"
-	{
+	"Damage bonus vs player(real)"{
 		"en"		"Damage bonus vs player"
 	}
-	"health from healers reduced"
-	{
+	"health from healers reduced"{
 		"en"		"Health From Healers Reduced"
 	}
-	"lose hype on take damage"
-	{
+	"lose hype on take damage"{
 		"en"		"Lose Hype When Damaged"
 	}
-	"sticky air burst mode"
-	{
+	"sticky air burst mode"{
 		"en"		"Sticky Air Burst Mode"
 	}
-	"ragdolls become ash"
-	{
+	"ragdolls become ash"{
 		"en"		"Ragdolls Become Ash"
 	}
-	"move speed(aesc)"
-	{
+	"move speed(aesc)"{
 		"en"		"Move Speed Increased"
 	}
-	"Projectile speed increased(DH)"
-	{
+	"Projectile speed increased(DH)"{
 		"en"		"Projectile Speed Increased"
 	}
-	"crit chance(M)"
-	{
+	"crit chance(M)"{
 		"en"		"Crit Chance(M)"
 	}
-	"Crit-a-Cola Debuff"
-	{
+	"Crit-a-Cola Debuff"{
 		"en"		"Crit-a-Cola Debuff"
 	}
-	"Thermal Thruster recharge"
-	{
+	"Thermal Thruster recharge"{
 		"en"		"Thermal Thruster recharge"
 	}
-	"Reverse Knockback"
-	{
+	"Reverse Knockback"{
 		"en"		"Reverse Knockback"
 	}
-	"Max Health drain"
-	{
+	"Max Health drain"{
 		"en"		"Max Health drain"
 	}
-	"damage bonus done against players"
-	{
+	"damage bonus done against players"{
 		"en"		"Damage V.S Players Bonus"
 	}
-	"gas passer recharge"
-	{
+	"gas passer recharge"{
 		"en"		"Gas Passer Recharge Rate"
 	}
-	"damage penalty on bodyshot"
-	{
+	"damage penalty on bodyshot"{
 		"en"		"Damage Penalty On Bodyshot"
 	}
-	"You don't have enough money or you already a weapon in slot 3."
-	{
+	"You don't have enough money or you already a weapon in slot 3."{
 		"en"		"You don't have enough money or you already a weapon in slot 3."
 	}
-	"fire rate penalty(cleaver)"
-	{
+	"fire rate penalty(cleaver)"{
 		"en"		"Fire Rate Penalty"
 	}
-	"crits_become_minicrits"
-	{
+	"crits_become_minicrits"{
 		"en"		"Crits Become Minicrits"
 	}
-	"energy weapon no hurt building"
-	{
+	"energy weapon no hurt building"{
 		"en"		"Major Damage Penalty VS Buildings"
 	}
-	"override projectile type (S)"
-	{
+	"override projectile type (S)"{
 		"en"		"Weapon Shoots Syringes"
 	}
-	"Some Beggar Tweak(b)"
-	{
+	"Some Beggar Tweak(b)"{
 		"en"		"Some Beggar Tweak"
 	}
-	"extra fire rate HIDDEN"
-	{
+	"extra fire rate HIDDEN"{
 		"en"		"Extra Fire Rate Hidden"
 	}
-	"fire rate penalty HIDDEN"
-	{
+	"fire rate penalty HIDDEN"{
 		"en"		"Fire Rate Penalty Hidden"
 	}
-	"Body Upgrades"
-	{
+	"Body Upgrades"{
 		"en"		"Body Upgrades"
 	}
-	"mod max primary clip override"
-	{
+	"mod max primary clip override"{
 		"en"		"Override Clip Size"
 	}
-	"No Reload Necessary"
-	{
+	"No Reload Necessary"{
 		"en"		"No Reload Necessary"
 	}
-	"Heal When Hit"
-	{
+	"Heal When Hit"{
 		"en"		"Heal When Hit"
 	}
-	"Multifire"
-	{
+	"Multifire"{
 		"en"		"Multifire"
 	}
-	"Triple Shot"
-	{
+	"Triple Shot"{
 		"en"		"Triple Shot"
 	}
-	"Upgrade my primary weapon"
-	{
+	"Upgrade my primary weapon"{
 		"en"		"Upgrade Primary Weapon"
 	}
-	"Upgrade my secondary weapon"
-	{
+	"Upgrade my secondary weapon"{
 		"en"		"Upgrade Secondary Weapon"
 	}
-	"Upgrade my melee weapon"
-	{
+	"Upgrade my melee weapon"{
 		"en"		"Upgrade Melee Weapon"
 	}
-	"applies snare effect"
-	{
+	"applies snare effect"{
 		"en"		"Applies Slowdown"
 	}
-	"parachute is visible"
-	{
+	"parachute is visible"{
 		"en"		"Visible Parachute"
 	}
-	"Display Upgrades/Remove disabilities"
-	{
+	"Display Upgrades/Remove disabilities"{
 		"en"		"Display Upgrades/Remove disabilities"
 	}
-	"Buy a neeew weapon!!"
-	{
+	"Buy a neeew weapon!!"{
 		"en"		"Get Advanced Body Upgrades"
 	}
-	"Upgrade my neeew weapon!!"
-	{
+	"Upgrade my neeew weapon!!"{
 		"en"		"Advanced Body Upgrades"
 	}
-	"patient overheal bonus(S)"
-	{
+	"patient overheal bonus(S)"{
 		"en"		"Patient Overheal Bonus"
 	}
-	"speed"
-	{
+	"speed"{
 		"en"		"Speed"
 	}
-	"Healthy"
-	{
+	"Healthy"{
 		"en"		"Health"
 	}
-	"health from healers decreased"
-	{
+	"health from healers decreased"{
 		"en"		"Health From Healers Decreased"
 	}
-	"sniper no charge"
-	{
+	"sniper no charge"{
 		"en"		"--"
 	}
-	"Rocket Damage"
-	{
+	"Rocket Damage"{
 		"en"		"Rocket Damage"
 	}
-	"damage bonus HIDDEN"
-	{
+	"damage bonus HIDDEN"{
 		"en"		"Damage Bonus Hidden"
 	}
-	"dmg taken from bullets reduced(T)"
-	{
+	"dmg taken from bullets reduced(T)"{
 		"en"		"Bullet Damage Taken Reduced"
 	}
-	"flame life bonus++"
-	{
+	"flame life bonus++"{
 		"en"		"Flame Life Bonus"
 	}
-	"Light Flames"
-	{
+	"Light Flames"{
 		"en"		"Light Flames"
 	}
-	"dmg taken from blast reduced(T)"
-	{
+	"dmg taken from blast reduced(T)"{
 		"en"		"Blast Damage Taken Reduced"
 	}
-	"dmg taken from crit reduced(T)"
-	{
+	"dmg taken from crit reduced(T)"{
 		"en"		"Crit Damage Taken Reduced"
 	}
-	"dmg taken from fire reduced(T)"
-	{
+	"dmg taken from fire reduced(T)"{
 		"en"		"Fire Damage Taken Reduced"
 	}
-	"dmg taken reduced(T)"
-	{
+	"dmg taken reduced(T)"{
 		"en"		"All Damage Taken Reduced"
 	}
-	"dmg from ranged reduced(T)"
-	{
+	"dmg from ranged reduced(T)"{
 		"en"		"Ranged Damage Taken Reduced"
 	}
-	"dmg from sentry reduced(T)"
-	{
+	"dmg from sentry reduced(T)"{
 		"en"		"Sentry Damage Taken Reduced"
 	}
-	"dmg from melee reduced(T)"
-	{
+	"dmg from melee reduced(T)"{
 		"en"		"Melee Damage Taken Reduced"
 	}
-	"Display Upgrades/Remove downgrades - Primary Weapon"
-	{
+	"Display Upgrades/Remove downgrades - Primary Weapon"{
 		"en"		"Display Upgrades/Remove Downgrades - Primary"
 	}
-	"Display Upgrades/Remove downgrades - Secondary Weapon"
-	{
+	"Display Upgrades/Remove downgrades - Secondary Weapon"{
 		"en"		"Display Upgrades/Remove Downgrades - Secondary"
 	}
-	"Display Upgrades/Remove downgrades - Melee Weapon"
-	{
+	"Display Upgrades/Remove downgrades - Melee Weapon"{
 		"en"		"Display Upgrades/Remove Downgrades - Melee Weapon"
 	}
-	"Display Upgrades/Remove downgrades - Body"
-	{
+	"Display Upgrades/Remove downgrades - Body"{
 		"en"		"Display Upgrades/Remove Downgrades - Body"
 	}
-	"Display Upgrades/Remove downgrades - Special Weapon"
-	{
+	"Display Upgrades/Remove downgrades - Special Weapon"{
 		"en"		"Display Upgrades/Remove Downgrades - Special weapon"
 	}
-	"dmg pierces resists absorbs"
-	{
+	"dmg pierces resists absorbs"{
 		"en"		"Damage Pierces Resistances"
 	}
-	"upgrade rate increase"
-	{
+	"upgrade rate increase"{
 		"en"		"Upgrade Metal Increased"
 	}
-	"Mine Launcher specific upgrades"
-	{
+	"Mine Launcher specific upgrades"{
 		"en"		"Mine Launcher Specific upgrades"
 	}
-	"Primary Weapon"
-	{
+	"Primary Weapon"{
 		"en"		"Primary"
 	}
-	"Secondary Weapon"
-	{
+	"Secondary Weapon"{
 		"en"		"Secondary Weapon"
 	}
-	"Melee Weapon"
-	{
+	"Melee Weapon"{
 		"en"		"Melee Weapon"
 	}
-	"Special Weapon"
-	{
+	"Special Weapon"{
 		"en"		"Special Weapon"
 	}
-	"Body"
-	{
+	"Body"{
 		"en"		"Body"
 	}
-	"You have not enough money!!"
-	{
+	"You have not enough money!!"{
 		"en"		"Not Enough Money."
 	}
-	"Attribute removed"
-	{
+	"Attribute removed"{
 		"en"		"Attribute removed!"
 	}
-	"Vaccinator Upgrades"
-	{
+	"Vaccinator Upgrades"{
 		"en"		"Vaccinator Upgrades"
 	}
-	"stickybomb charge rate"
-	{
+	"stickybomb charge rate"{
 		"en"		"Launcher Charge Rate"
 	}
-	"stickybomb_charge_damage_increase"
-	{
+	"stickybomb_charge_damage_increase"{
 		"en"		"Charge Damage Bonus"
 	}
-	"rocketjump attackrate bonus"
-	{
+	"rocketjump attackrate bonus"{
 		"en"		"Fire Rate While Airborne"
 	}
-	"spunup_damage_resistance"
-	{
+	"spunup_damage_resistance"{
 		"en"		"Damage Resistance While Spun-Up"
 	}
-	"parachute attribute"
-	{
+	"parachute attribute"{
 		"en"		"Parachute"
 	}
-	"Army of not Many(MM)"
-	{
+	"Army of not Many(MM)"{
 		"en"		"Army Of Not Many"
 	}
-	"Assault Weapon(MM)"
-	{
+	"Assault Weapon(MM)"{
 		"en"		"Assault Weapon"
 	}
-	"building instant upgrade"
-	{
+	"building instant upgrade"{
 		"en"		"Building Instant Upgrade"
 	}
-	"Anti Knockback"
-	{
+	"Anti Knockback"{
 		"en"		"Anti-Knockback"
 	}
-	"boost on damage"
-	{
+	"boost on damage"{
 		"en"		"Boost When Damaged"
 	}
-	"Protection upgrades"
-	{
+	"Protection upgrades"{
 		"en"		"Protection Upgrades"
 	}
-	"Physical upgrades"
-	{
+	"Physical upgrades"{
 		"en"		"Physical Upgrades"
 	}
-	"Ammo upgrades"
-	{
+	"Ammo upgrades"{
 		"en"		"Ammo Upgrades"
 	}
-	"Spy upgrades"
-	{
+	"Spy upgrades"{
 		"en"		"Spy Upgrades"
 	}
-	"Ammo & metal upgrades"
-	{
+	"Ammo & metal upgrades"{
 		"en"		"Ammo & Metal Upgrades"
 	}
-	"Damage upgrades"
-	{
+	"Damage upgrades"{
 		"en"		"Damage Upgrades"
 	}
-	"Cannon specific upgrades"
-	{
+	"Cannon specific upgrades"{
 		"en"		"Cannon Specific Upgrades"
 	}
-	"Special Tweaks"
-	{
+	"Special Tweaks"{
 		"en"		"Special Tweaks"
 	}
-	"dmg bonus vs buildings"
-	{
+	"dmg bonus vs buildings"{
 		"en"		"Damage Bonus VS Buildings"
 	}
-	"move speed(SP)"
-	{
+	"move speed(SP)"{
 		"en"		"Move Speed Increased"
 	}
-	"move speed(SN)"
-	{
+	"move speed(SN)"{
 		"en"		"Move Speed Increased"
 	}
-	"move speed(ME)"
-	{
+	"move speed(ME)"{
 		"en"		"Move Speed Increased"
 	}
-	"move speed(EN)"
-	{
+	"move speed(EN)"{
 		"en"		"Move Speed Increased"
 	}
-	"move speed bonus"
-	{
+	"move speed bonus"{
 		"en"		"Move Speed Increased"
 	}
-	"increased air control(S)"
-	{
+	"increased air control(S)"{
 		"en"		"Air Control Increased"
 	}
-	"bullets per shot bonus (shrtcrt)"
-	{
+	"bullets per shot bonus (shrtcrt)"{
 		"en"		"Bullets Per Shot Bonus"
 	}
-	"headshot damage increase(secondary)"
-	{
+	"headshot damage increase(secondary)"{
 		"en"		"Headshot Damage Increased"
 	}
-	"fire rate penalty(unremoveable)"
-	{
+	"fire rate penalty(unremoveable)"{
 		"en"		"Unremovable Fire Rate Penalty"
 	}
-	"Fiery Bullets"
-	{
+	"Fiery Bullets"{
 		"en"		"Fiery Bullets"
 	}
-	"Primary Fire damage bonus"
-	{
+	"Primary Fire damage bonus"{
 		"en"		"Damage Increased"
 	}
-	"Attacking wont cancel shield charge"
-	{
+	"Attacking wont cancel shield charge"{
 		"en"		"Attacking wont cancel shield charge"
 	}
-	"Projectile speed increased(SHRTCRT)"
-	{
+	"Projectile speed increased(SHRTCRT)"{
 		"en"		"Bullet Speed Projectile"
 	}
-	"move speed(DE)"
-	{
+	"move speed(DE)"{
 		"en"		"Move Speed Increased"
 	}
-	"move speed(PY)"
-	{
+	"move speed(PY)"{
 		"en"		"Move Speed Increased"
 	}
-	"move speed(SO)"
-	{
+	"move speed(SO)"{
 		"en"		"Move Speed Increased"
 	}
-	"move speed(SC)"
-	{
+	"move speed(SC)"{
 		"en"		"Move Speed Increased"
 	}
-	"Extra features*"
-	{
+	"Extra features*"{
 		"en"		"Extra Features"
 	}
-	"Pipebomb launcher specific upgrades"
-	{
+	"Pipebomb launcher specific upgrades"{
 		"en"		"Pipebomb Launcher Specific Upgrades"
 	}
-	"Launcher specific upgrades"
-	{
+	"Launcher specific upgrades"{
 		"en"		"Launcher Specific Upgrades"
 	}
-	"Melee specific upgrades"
-	{
+	"Melee specific upgrades"{
 		"en"		"Melee Specific Upgrades"
 	}
-	"Charge upgrades"
-	{
+	"Charge upgrades"{
 		"en"		"Shield Charge Upgrades"
 	}
-	"Weapon Specific upgrades"
-	{
+	"Weapon Specific upgrades"{
 		"en"		"Weapon Specific upgrades"
 	}
-	"Gun specific upgrades"
-	{
+	"Gun specific upgrades"{
 		"en"		"Gun Specific Upgrades"
 	}
-	"Laser weapon specific upgrades"
-	{
+	"Laser weapon specific upgrades"{
 		"en"		"Laser Weapon Specific Upgrades"
 	}
-	"Short circuit specific upgrades"
-	{
+	"Short circuit specific upgrades"{
 		"en"		"Short circuit specific upgrades"
 	}
-	"Building tech upgrades"
-	{
+	"Building tech upgrades"{
 		"en"		"Building Upgrades"
 	}
-	"Minigun specific upgrades"
-	{
+	"Minigun specific upgrades"{
 		"en"		"Minigun Specific Upgrades"
 	}
-	"Lunchbox specific upgrades"
-	{
+	"Lunchbox specific upgrades"{
 		"en"		"Lunchbox Specific Upgrades"
 	}
-	"Syringegun specific upgrades"
-	{
+	"Syringegun specific upgrades"{
 		"en"		"Syringe Gun Specific Upgrades"
 	}
-	"Medigun Specific upgrades"
-	{
+	"Medigun Specific upgrades"{
 		"en"		"Medigun Specific Upgrades"
 	}
-	"Flamethrower specific upgrades"
-	{
+	"Flamethrower specific upgrades"{
 		"en"		"Flamethrower Specific Upgrades"
 	}
-	"Flaregun specific upgrades"
-	{
+	"Flaregun specific upgrades"{
 		"en"		"Flaregun Specific Upgrades"
 	}
-	"Shotgun specific upgrades"
-	{
+	"Shotgun specific upgrades"{
 		"en"		"Shotgun Specific Upgrades"
 	}
-	"Scattergun specific upgrades"
-	{
+	"Scattergun specific upgrades"{
 		"en"		"Scattergun Specific Upgrades"
 	}
-	"Handgun specific upgrades"
-	{
+	"Handgun specific upgrades"{
 		"en"		"Handgun Specific Upgrades"
 	}
-	"Cleaver specific upgrades"
-	{
+	"Cleaver specific upgrades"{
 		"en"		"Cleaver Specific Upgrades"
 	}
-	"Jarate specific upgrades"
-	{
+	"Jarate specific upgrades"{
 		"en"		"Jarate Specific Upgrades"
 	}
-	"Sniper specific upgrades"
-	{
+	"Sniper specific upgrades"{
 		"en"		"Sniper Specific Upgrades"
 	}
-	"Smg Specific upgrades"
-	{
+	"Smg Specific upgrades"{
 		"en"		"Smg Specific upgrades"
 	}
-	"damage bonus HIDDEN(a)"
-	{
+	"damage bonus HIDDEN(a)"{
 		"en"		"Damage Bonus Hidden"
 	}
-	"Mangler specific upgrades"
-	{
+	"Mangler specific upgrades"{
 		"en"		"Cow Mangler Specific Upgrades"
 	}
-	"centerfire projectile"
-	{
+	"centerfire projectile"{
 		"en"		"Shoots Projectile From Center"
 	}
-	"Flame Bonus"
-	{
+	"Flame Bonus"{
 		"en"		"Bigger Flames"
 	}
-	"recoil reduction"
-	{
+	"recoil reduction"{
 		"en"		"Recoil Reduction"
 	}
-	"Higher voltage"
-	{
+	"Higher voltage"{
 		"en"		"Higher Voltage"
 	}
-	"quickfix ability"
-	{
+	"quickfix ability"{
 		"en"		"Self-Heal Uber"
 	}
-	"instant switch speed"
-	{
+	"instant switch speed"{
 		"en"		"Instant Switch Speed"
 	}
-	"overheal penalty"
-	{
+	"overheal penalty"{
 		"en"		"Overheal Penalty"
 	}
-	"Laser specific upgrades"
-	{
+	"Laser specific upgrades"{
 		"en"		"Laser Specific Upgrades"
 	}
-	"Specific upgrades"
-	{
+	"Specific upgrades"{
 		"en"		"Specific Upgrades"
 	}
-	"Sapper upgrades"
-	{
+	"Sapper upgrades"{
 		"en"		"Sapper Upgrades"
 	}
-	"Buff banner specific upgrades"
-	{
+	"Buff banner specific upgrades"{
 		"en"		"Buff Banner Specific Upgrades"
 	}
-	"Parachute Upgrades"
-	{
+	"Parachute Upgrades"{
 		"en"		"Parachute Upgrades"
 	}
-	"Wrangler upgrades"
-	{
+	"Wrangler upgrades"{
 		"en"		"Wrangler Upgrades"
 	}
-	"Grenade Launcher specific upgrades"
-	{
+	"Grenade Launcher specific upgrades"{
 		"en"		"Grenade Launcher Specific Upgrades"
 	}
-	"grenade"
-	{
+	"grenade"{
 		"en"		"grenade"
 	}
-	"medigun charge is heals"
-	{
+	"medigun charge is heals"{
 		"en"		"Medigun Uber - QuickFix"
 	}
-	"stun midair (on ground)"
-	{
+	"stun midair (on ground)"{
 		"en"		"Stun Enemies Above You"
 	}
-	"engineer rage on dmg"
-	{
+	"engineer rage on dmg"{
 		"en"		"Rage On Damage"
 	}
-	"Snare effect on hit"
-	{
+	"Snare effect on hit"{
 		"en"		"Slow On Hit"
 	}
-	"sentry build rate"
-	{
+	"sentry build rate"{
 		"en"		"Sentry Build Rate"
 	}
-	"rj air bombardment"
-	{
+	"rj air bombardment"{
 		"en"		"Airstrike Barrage"
 	}
-	"CARD: damage bonus"
-	{
+	"CARD: damage bonus"{
 		"en"		"Damage Bonus"
 	}
-	"dmg taken increased"
-	{
+	"dmg taken increased"{
 		"en"		"All Damage Taken Increased"
 	}
-	"dmg taken from bullets increased"
-	{
+	"dmg taken from bullets increased"{
 		"en"		"Bullet Damage Taken Increased"
 	}
-	"dmg taken from blast increased"
-	{
+	"dmg taken from blast increased"{
 		"en"		"Blast Damage Taken Increased"
 	}
-	"dmg taken from crit increased"
-	{
+	"dmg taken from crit increased"{
 		"en"		"Crit Damage Taken Increased"
 	}
-	"dmg taken from fire increased"
-	{
+	"dmg taken from fire increased"{
 		"en"		"Fire Damage Taken Increased"
 	}
-	"Switch buff type"
-	{
+	"Switch buff type"{
 		"en"		"Switch Buff Type"
 	}
-	"override projectile type (B)"
-	{
+	"override projectile type (B)"{
 		"en"		"Weapon Shoots Bullets"
 	}
-	"override projectile type (F)"
-	{
+	"override projectile type (F)"{
 		"en"		"Weapon Shoots Flares"
 	}
-	"override projectile type (R)"
-	{
+	"override projectile type (R)"{
 		"en"		"Weapon Shoots Rockets"
 	}
-	"override projectile type (CA)"
-	{
+	"override projectile type (CA)"{
 		"en"		"Weapon Shoots Crossbow Bolts"
 	}
-	"mod crit while airborne"
-	{
+	"mod crit while airborne"{
 		"en"		"Crit While Airborne"
 	}
-	"blast dmg to self decreased"
-	{
+	"blast dmg to self decreased"{
 		"en"		"Self Damage Decreased"
 	}
-	"hp scales move speed"
-	{
+	"hp scales move speed"{
 		"en"		"Health Scales Speed"
 	}
-	"percent of hp healed on kill"
-	{
+	"percent of hp healed on kill"{
 		"en"		"%% Health Restored on Kill"
 	}
-	"mod see enemy health"
-	{
+	"mod see enemy health"{
 		"en"		"See Enemy Health"
 	}
-	"override projectile type (MA)"
-	{
+	"override projectile type (MA)"{
 		"en"		"Weapon Shoots Cow Mangler Waves"
 	}
-	"jarate backstabber"
-	{
+	"jarate backstabber"{
 		"en"		"Backstabber Is Jarated"
 	}
-	"increased control in air"
-	{
+	"increased control in air"{
 		"en"		"Air Control Increased"
 	}
-	"immunity to afterburn"
-	{
+	"immunity to afterburn"{
 		"en"		"Afterburn Immunity"
 	}
-	"clip size bonus (G)"
-	{
+	"clip size bonus (G)"{
 		"en"		"Clip Size Bonus"
 	}
-	"heal on hit (Ω)"
-	{
+	"heal on hit (Ω)"{
 		"en"		"Heal On Hit"
 	}
-	"Grapple Upgrades"
-	{
+	"Grapple Upgrades"{
 		"en"		"Grapple Upgrades"
 	}
-	"bottle"
-	{
+	"bottle"{
 		"en"		"Bottle"
 	}
-	"Canteen Upgrades"
-	{
+	"Canteen Upgrades"{
 		"en"		"Canteen Upgrades"
 	}
-	"ubercharge"
-	{
+	"ubercharge"{
 		"en"		"ubercharge"
 	}
-	"powerup duration"
-	{
+	"powerup duration"{
 		"en"		"powerup duration"
 	}
-	"KS idle effect"
-	{
+	"KS idle effect"{
 		"en"		"KS idle effect"
 	}
-	"pro KS"
-	{
+	"pro KS"{
 		"en"		"Professional Killstreak"
 	}
-	"crit_dmg_falloff"
-	{
+	"crit_dmg_falloff"{
 		"en"		"Crtical Damage Has Fall-off"
 	}
-	"unusual effect"
-	{
+	"unusual effect"{
 		"en"		"Unusual Effect ID"
 	}
-	"turn to gold"
-	{
+	"turn to gold"{
 		"en"		"Victim Is Turned Into Gold"
 	}
-	"a color similar to slate"
-	{
+	"a color similar to slate"{
 		"en"		"Paint : Slate"
 	}
-	"rocket launch impulse"
-	{
+	"rocket launch impulse"{
 		"en"		"whatever this is"
 	}
-	"Halloween pumpkin explosions"
-	{
+	"Halloween pumpkin explosions"{
 		"en"		"Pumpkin Explosions"
 	}
-	"Halloween green flames"
-	{
+	"Halloween green flames"{
 		"en"		"Green Flames"
 	}
-	"Resistance when eaten"
-	{
+	"Resistance when eaten"{
 		"en"		"Resistance While Eating"
 	}
-	"Bigger Impact"
-	{
+	"Bigger Impact"{
 		"en"		"Bigger Impact"
 	}
-	"rocket jump damage increased"
-	{
+	"rocket jump damage increased"{
 		"en"		"Self Damage Increased"
 	}
-	"Bouncing flames"
-	{
+	"Bouncing flames"{
 		"en"		"Bouncing Flames"
 	}
-	"flame_speed"
-	{
+	"flame_speed"{
 		"en"		"Flame Speed"
 	}
-	"mod_maxhealth_drain_rate"
-	{
+	"mod_maxhealth_drain_rate"{
 		"en"		"Max Health Drained Per Second"
 	}
-	"fixed_shot_pattern"
-	{
+	"fixed_shot_pattern"{
 		"en"		"Fixed Bullet Pattern"
 	}
-	"item_meter_charge_rate"
-	{
+	"item_meter_charge_rate"{
 		"en"		"Base Cooldown"
 	}
-	"item_meter_charge_rate(nonstatic)"
-	{
+	"item_meter_charge_rate(nonstatic)"{
 		"en"		"Cooldown Decreased"
 	}
-	"thermal_thruster_air_launch"
-	{
+	"thermal_thruster_air_launch"{
 		"en"		"Can Be Used Midair"
 	}
-	"falling_impact_radius_pushback"
-	{
+	"falling_impact_radius_pushback"{
 		"en"		"Impact Pushback Scale"
 	}
-	"falling_impact_radius_stun"
-	{
+	"falling_impact_radius_stun"{
 		"en"		"Impact Stun Duration"
 	}
-	"Compressed fire"
-	{
+	"Compressed fire"{
 		"en"		"Compressed fire"
 	}
-	"Turtle"
-	{
+	"Turtle"{
 		"en"		"Turtle"
 	}
-	"move speed penalty(Unremovable)"
-	{
+	"move speed penalty(Unremovable)"{
 		"en"		"Move Speed Decreased"
 	}
-	"Maxhealth Regen"
-	{
+	"Maxhealth Regen"{
 		"en"		"Max Health Regen"
 	}
-	"mult_item_meter_charge_rate"
-	{
+	"mult_item_meter_charge_rate"{
 		"en"		"Charge Rate Multiplier"
 	}
-	"engy sentry fire rate decreased"
-	{
+	"engy sentry fire rate decreased"{
 		"en"		"Sentry Fire Rate Decreased"
 	}
-	"hand scale"
-	{
+	"hand scale"{
 		"en"		"Hand Size Multiplier"
 	}
-	"Flame Gravity"
-	{
+	"Flame Gravity"{
 		"en"		"Flame Gravity"
 	}
-	"bleeding duration(L)"
-	{
+	"bleeding duration(L)"{
 		"en"		"Bleeding Duration"
 	}
-	"afterburn dmg increased (H)"
-	{
+	"afterburn dmg increased (H)"{
 		"en"		"Afterburn Damage Increased"
 	}
-	"explode_on_ignite"
-	{
+	"explode_on_ignite"{
 		"en"		"Ignition Causes Explosion"
 	}
-	"airblast_destroy_projectile"
-	{
+	"airblast_destroy_projectile"{
 		"en"		"Airblast Destroys Projectiles"
 	}
-	"flame speed bonus"
-	{
+	"flame speed bonus"{
 		"en"		"Increase Flame Speed"
 	}
-	"minicrit_boost_charge_rate"
-	{
+	"minicrit_boost_charge_rate"{
 		"en"		"Crikey Meter Charge Rate Bonus"
 	}
-	"minicrit_boost_when_charged"
-	{
+	"minicrit_boost_when_charged"{
 		"en"		"Crikey Meter Duration Bonus"
 	}
-	"Cleaners Carbine"
-	{
+	"Cleaners Carbine"{
 		"en"		"Cleaner's Carbine"
 	}
-	"grenade no spin"
-	{
+	"grenade no spin"{
 		"en"		"Grenade Doesn't Spin"
 	}
-	"medigun fire resist deployed"
-	{
+	"medigun fire resist deployed"{
 		"en"		"Fire Damage Resistance (Uber)"
 	}
-	"medigun bullet resist deployed"
-	{
+	"medigun bullet resist deployed"{
 		"en"		"Bullet Damage Resistance (Uber)"
 	}
-	"medigun blast resist deployed"
-	{
+	"medigun blast resist deployed"{
 		"en"		"Blast Damage Resistance (Uber)"
 	}
-	"Afterburn Damage Increased Multiplier"
-	{
+	"Afterburn Damage Increased Multiplier"{
 		"en"		"Afterburn Damage Multiplier"
 	}
-	"Explosive Bullets(Shortstop)"
-	{
+	"Explosive Bullets(Shortstop)"{
 		"en"		"Explosive Bullets"
 	}
-	"Jumper"
-	{
+	"Jumper"{
 		"en"		"Jumper"
 	}
-	"mod bat launches balls"
-	{
+	"mod bat launches balls"{
 		"en"		"Bat Launches Balls"
 	}
-	"Siege Charge"
-	{
+	"Siege Charge"{
 		"en"		"Slightly Modified Beggar's Tweak"
 	}
-	"fuse bonus"
-	{
+	"fuse bonus"{
 		"en"		"Fuse Time Bonus"
 	}
-	"patient overheal bonus"
-	{
+	"patient overheal bonus"{
 		"en"		"Patient Overheal Bonus"
 	}
-	"full charge turn control"
-	{
+	"full charge turn control"{
 		"en"		"Full Charge Control"
 	}
-	"Airblast Upgrades"
-	{
+	"Airblast Upgrades"{
 		"en"		"Airblast Upgrades"
 	}
-	"aoe_deflection"
-	{
+	"aoe_deflection"{
 		"en"		"360° Radius Airblast"
 	}
-	"mod_mark_attacker_for_death"
-	{
+	"mod_mark_attacker_for_death"{
 		"en"		"Mark Attacker For Death"
 	}
-	"blast radius increased"
-	{
+	"blast radius increased"{
 		"en"		"Blast Radius Increased"
 	}
-	"Flame Size"
-	{
+	"Flame Size"{
 		"en"		"Increased Flame Size"
 	}
-	"lunchbox healing decreased"
-	{
+	"lunchbox healing decreased"{
 		"en"		"Heal Rate Bonus"
 	}
-	"Special Effects"
-	{
+	"Special Effects"{
 		"en"		"Special Effects"
 	}
-	"Bigger Flames (not hitbox)"
-	{
+	"Bigger Flames (not hitbox)"{
 		"en"		"Bigger Flames"
 	}
-	"Headshots"
-	{
+	"Headshots"{
 		"en"		"Headshots"
 	}
-	"mod rage damage boost(L)"
-	{
+	"mod rage damage boost(L)"{
 		"en"		"Rage Meter Damage Boost"
 	}
-	"generate rage on damage"
-	{
+	"generate rage on damage"{
 		"en"		"Gain Rage On Hit"
 	}
-	"Projectile Upgrades"
-	{
+	"Projectile Upgrades"{
 		"en"		"Projectile Upgrades"
 	}
-	"Projectile Specific Upgrades"
-	{
+	"Projectile Specific Upgrades"{
 		"en"		"Projectile Specific Upgrades"
 	}
-	"a manns mint"
-	{
+	"a manns mint"{
 		"en"		"Paint : Mint"
 	}
-	"a distinctive lack of hue"
-	{
+	"a distinctive lack of hue"{
 		"en"		"Paint : White"
 	}
-	"a deep commitment to purp"
-	{
+	"a deep commitment to purp"{
 		"en"		"Paint : Purple"
 	}
-	"auto fires full clip all at once"
-	{
+	"auto fires full clip all at once"{
 		"en"		"Shoots Whole Clip At Once"
 	}
-	"afterburn immunity"
-	{
+	"afterburn immunity"{
 		"en"		"Afterburn Immunity"
 	}
-	"extra dmg taken from bullets reduced"
-	{
+	"extra dmg taken from bullets reduced"{
 		"en"		"Bullet Damage Taken Reduced"
 	}
-	"increased air control"
-	{
+	"increased air control"{
 		"en"		"Air Control Increased"
 	}
-	"Rocket Upgrades"
-	{
+	"Rocket Upgrades"{
 		"en"		"Rocket Upgrades"
 	}
-	"cannot disguise"
-	{
+	"cannot disguise"{
 		"en"		"Disguise Disabled"
 	}
-	"switch buff banner"
-	{
+	"switch buff banner"{
 		"en"		"switch buff banner"
 	}
-	"damage bonus(L)"
-	{
+	"damage bonus(L)"{
 		"en"		"Damage Bonus ★"
 	}
-	"damage bonus(H)"
-	{
+	"damage bonus(H)"{
 		"en"		"Damage Bonus ★★★"
 	}
-	"damage bonus(IS)"
-	{
+	"damage bonus(IS)"{
 		"en"		"Damage Bonus ★★★★"
 	}
-	"item style override"
-	{
+	"item style override"{
 		"en"		"item style override"
 	}
-	"is australium item"
-	{
+	"is australium item"{
 		"en"		"is australium item"
 	}
-	"Austrailium"
-	{
+	"Austrailium"{
 		"en"		"Australium"
 	}
-	"grenades shatter"
-	{
+	"grenades shatter"{
 		"en"		"Grenades Shatter On World Contact"
 	}
-	"energy weapon penetration"
-	{
+	"energy weapon penetration"{
 		"en"		"Righteous Bison Lasers"
 	}
-	"self mark for death"
-	{
+	"self mark for death"{
 		"en"		"Self Mark For Death"
 	}
-	"spunup_push_force_immunity"
-	{
+	"spunup_push_force_immunity"{
 		"en"		"Knockback Immunity When Spun-Up"
 	}
-	"Unremovable reload penalty"
-	{
+	"Unremovable reload penalty"{
 		"en"		"Reload Rate Penalty"
 	}
-	"sniper only fire zoomed"
-	{
+	"sniper only fire zoomed"{
 		"en"		"Cannot Shoot Without Scope"
 	}
-	"Blitz Uber"
-	{
+	"Blitz Uber"{
 		"en"		"Blitz Uber"
 	}
-	"blast radius increased (F)"
-	{
+	"blast radius increased (F)"{
 		"en"		"Blast Radius Increased"
 	}
-	"dmg bonus while half alive"
-	{
+	"dmg bonus while half alive"{
 		"en"		"Damage Boost While Half Alive"
 	}
-	"fish damage override"
-	{
+	"fish damage override"{
 		"en"		"Hits Displayed On Killfeed"
 	}
-	"Set Weapon Mode"
-	{
+	"Set Weapon Mode"{
 		"en"		"Set Weapon Mode"
 	}
-	"distortion_trail"
-	{
+	"distortion_trail"{
 		"en"		"Classic Bullet Trail"
 	}
-	"sniper fires tracer"
-	{
+	"sniper fires tracer"{
 		"en"		"Gun Shoots Tracers"
 	}
-	"mod bat launches ornaments"
-	{
+	"mod bat launches ornaments"{
 		"en"		"Bat Launches Ornaments"
 	}
-	"Ball Upgrades"
-	{
+	"Ball Upgrades"{
 		"en"		"Ball Upgrades"
 	}
-	"medigun boost"
-	{
+	"medigun boost"{
 		"en"		"Medigun Boost Uber"
 	}
-	"medigun outline uber"
-	{
+	"medigun outline uber"{
 		"en"		"Medigun Outline Uber"
 	}
-	"Army of not Many(en)"
-	{
+	"Army of not Many(en)"{
 		"en"		"Army Of Not Many"
 	}
-	"dmg bonus vs nonburning"
-	{
+	"dmg bonus vs nonburning"{
 		"en"		"Damage Bonus VS Non-Burning"
 	}
-	"Monkey Panic"
-	{
+	"Monkey Panic"{
 		"en"		"Monkey Panic"
 	}
-	"killstreak tier"
-	{
+	"killstreak tier"{
 		"en"		"Killstreak Tier"
 	}
-	"killstreak idleeffect"
-	{
+	"killstreak idleeffect"{
 		"en"		"Killstreak Idle Effect"
 	}
-	"killstreak effect"
-	{
+	"killstreak effect"{
 		"en"		"Killstreak Effect"
 	}
-	"is_festive"
-	{
+	"is_festive"{
 		"en"		"Festivizer"
 	}
-	"Extra damage bonus"
-	{
+	"Extra damage bonus"{
 		"en"		"Damage Increased"
 	}
-	"single wep holster time increased"
-	{
+	"single wep holster time increased"{
 		"en"		"Holster Time Increased"
 	}
-	"single wep deploy time increased"
-	{
+	"single wep deploy time increased"{
 		"en"		"Deploy Time Increased"
 	}
-	"damage taken multiplier"
-	{
+	"damage taken multiplier"{
 		"en"		"All Damage Taken Increased"
 	}
-	"tmp bonus dmg"
-	{
+	"tmp bonus dmg"{
 		"en"		"bruh???"
 	}
-	"blast radius increased (C)"
-	{
+	"blast radius increased (C)"{
 		"en"		"Blast Radius Increased"
 	}
-	"Grenade Launcher"
-	{
+	"Grenade Launcher"{
 		"en"		"Grenade Launcher"
 	}
-	"health from healers reduced(nonremovable)"
-	{
+	"health from healers reduced(nonremovable)"{
 		"en"		"Health From Healers Reduced"
 	}
-	"clip size penalty (G)"
-	{
+	"clip size penalty (G)"{
 		"en"		"Clip Size Penalty"
 	}
-	"Damage bonus vs player"
-	{
+	"Damage bonus vs player"{
 		"en"		"Damage VS Players Increased ★★"
 	}
-	"Damage bonus vs player (C)"
-	{
+	"Damage bonus vs player (C)"{
 		"en"		"Damage VS Players Increased ★★★"
 	}
-	"allowed in medieval mode"
-	{
+	"allowed in medieval mode"{
 		"en"		"Allowed In Medieval Mode"
 	}
-	"extra heal on hit"
-	{
+	"extra heal on hit"{
 		"en"		"Heal On Hit"
 	}
-	"shoots multirockets"
-	{
+	"shoots multirockets"{
 		"en"		"Shoots Multiple Rockets"
 	}
-	"bouncing proj"
-	{
+	"bouncing proj"{
 		"en"		"Projectiles Bounce Count"
 	}
-	"damage mult 1"
-	{
+	"damage mult 1"{
 		"en"		"★ Damage Multiplier ★"
 	}
-	"dmg from melee reduced(E)"
-	{
+	"dmg from melee reduced(E)"{
 		"en"		"Melee Damage Taken Reduced"
 	}
-	"dmg taken from fire reduced(S)"
-	{
+	"dmg taken from fire reduced(S)"{
 		"en"		"Fire Damage Taken Reduced"
 	}
-	"dmg taken from crit reduced(S)"
-	{
+	"dmg taken from crit reduced(S)"{
 		"en"		"Crit Damage Taken Reduced"
 	}
-	"dmg taken from blast reduced(S)"
-	{
+	"dmg taken from blast reduced(S)"{
 		"en"		"Blast Damage Taken Reduced"
 	}
-	"dmg taken from bullets reduced(S)"
-	{
+	"dmg taken from bullets reduced(S)"{
 		"en"		"Bullet Damage Taken Reduced"
 	}
-	"dmg from melee reduced(S)"
-	{
+	"dmg from melee reduced(S)"{
 		"en"		"Melee Damage Taken Reduced"
 	}
-	"dmg from sentry reduced(S)"
-	{
+	"dmg from sentry reduced(S)"{
 		"en"		"Sentry Damage Taken Reduced"
 	}
-	"dmg from ranged reduced(S)"
-	{
+	"dmg from ranged reduced(S)"{
 		"en"		"Ranged Damage Taken Reduced"
 	}
-	"dmg taken reduced(S)"
-	{
+	"dmg taken reduced(S)"{
 		"en"		"All Damage Taken Reduced"
 	}
-	"damage bonus SPECIAL"
-	{
+	"damage bonus SPECIAL"{
 		"en"		"Damage Bonus ★★"
 	}
-	"damage bonus"
-	{
+	"damage bonus"{
 		"en"		"Damage Bonus ★★"
 	}
-	"clip size penalty"
-	{
+	"clip size penalty"{
 		"en"		"Clip Size Penalty"
 	}
-	"move speed penalty(s)"
-	{
+	"move speed penalty(s)"{
 		"en"		"Move Speed Penalty"
 	}
-	"clip size bonus"
-	{
+	"clip size bonus"{
 		"en"		"Clip Size Bonus"
 	}
-	"clip size bonus (E)"
-	{
+	"clip size bonus (E)"{
 		"en"		"Clip Size Bonus"
 	}
-	"weapon burn dmg reduced"
-	{
+	"weapon burn dmg reduced"{
 		"en"		"Afterburn Damage Increased"
 	}
-	"Assault Weapon(CB)"
-	{
+	"Assault Weapon(CB)"{
 		"en"		"Assault Weapon"
 	}
-	"Convert Bullet damage to Melee damage"
-	{
+	"Convert Bullet damage to Melee damage"{
 		"en"		"Convert Bullet Damage To Melee"
 	}
-	"charge impact damage multiplier"
-	{
+	"charge impact damage multiplier"{
 		"en"		"charge impact damage multiplier"
 	}
-	"revolver is secondary"
-	{
+	"revolver is secondary"{
 		"en"		"Revolver Is Secondary"
 	}
-	"0"
-	{
+	"0"{
 		"en"		"Revolver Is Secondary"
 	}
-	"Rocket Sentry"
-	{
+	"Rocket Sentry"{
 		"en"		"Rocket Sentry"
 	}
-	"flame_spread_degree"
-	{
+	"flame_spread_degree"{
 		"en"		"Flame Spread"
 	}
-	"weapon burn time reduced"
-	{
+	"weapon burn time reduced"{
 		"en"		"Afterburn Duration Increased"
 	}
-	"ubercharge rate penalty"
-	{
+	"ubercharge rate penalty"{
 		"en"		"Ubercharge Rate Penalty"
 	}
-	"Damage bonus vs player x"
-	{
+	"Damage bonus vs player x"{
 		"en"		"Damage VS Players Bonus ★★★"
 	}
-	"Uber -> Heal Rate"
-	{
+	"Uber -> Heal Rate"{
 		"en"		"Ubercharge Rate -> Heal Rate"
 	}
-	"sniper charge per sec(S)"
-	{
+	"sniper charge per sec(S)"{
 		"en"		"Sniper Rifle Charge Rate"
 	}
-	"clip size bonus (B)"
-	{
+	"clip size bonus (B)"{
 		"en"		"Clip Size Bonus"
 	}
-	"fire rate penalty"
-	{
+	"fire rate penalty"{
 		"en"		"Fire Rate Penalty"
 	}
-	"fire rate bonus(multshit)"
-	{
+	"fire rate bonus(multshit)"{
 		"en"		"Fire Rate Bonus"
 	}
-	"fire rate bonus(old)"
-	{
+	"fire rate bonus(old)"{
 		"en"		"Fire Rate Bonus"
 	}
-	"heal rate bonus"
-	{
+	"heal rate bonus"{
 		"en"		"Heal Rate Bonus"
 	}
-	"ubercharge rate bonus"
-	{
+	"ubercharge rate bonus"{
 		"en"		"Ubercharge Rate Bonus"
 	}
-	"overheal bonus"
-	{
+	"overheal bonus"{
 		"en"		"Overheal Bonus"
 	}
-	"overheal decay bonus"
-	{
+	"overheal decay bonus"{
 		"en"		"Overheal Decay Bonus"
 	}
-	"crit mod disabled"
-	{
+	"crit mod disabled"{
 		"en"		"Random Crits Disabled"
 	}
-	"heal on hit for rapidfire"
-	{
+	"heal on hit for rapidfire"{
 		"en"		"Heal On Hit"
 	}
-	"heal on hit (slowfire)"
-	{
+	"heal on hit (slowfire)"{
 		"en"		"Heal On Hit"
 	}
-	"add uber charge on hit"
-	{
+	"add uber charge on hit"{
 		"en"		"Add Ubercharge On Hit"
 	}
-	"crit vs burning players"
-	{
+	"crit vs burning players"{
 		"en"		"Crit VS Burning Players"
 	}
-	"mod flamethrower back crit"
-	{
+	"mod flamethrower back crit"{
 		"en"		"Crit VS Victims Back"
 	}
-	"max health additive bonus"
-	{
+	"max health additive bonus"{
 		"en"		"Health Bonus"
 	}
-	"max health additive bonus (H)"
-	{
+	"max health additive bonus (H)"{
 		"en"		"Health Bonus"
 	}
-	"critboost on kill"
-	{
+	"critboost on kill"{
 		"en"		"Crits On Kill"
 	}
-	"charge time decreased"
-	{
+	"charge time decreased"{
 		"en"		"Charge Time Decreased"
 	}
-	"set cloak is feign death"
-	{
+	"set cloak is feign death"{
 		"en"		"set cloak is feign death"
 	}
-	"cloak consume rate"
-	{
+	"cloak consume rate"{
 		"en"		"Cloak Consumption Rate"
 	}
-	"mult cloak meter regen rate"
-	{
+	"mult cloak meter regen rate"{
 		"en"		"Cloak Regen Rate"
 	}
-	"fire rate bonus(shrtcrt)"
-	{
+	"fire rate bonus(shrtcrt)"{
 		"en"		"Fire Rate Bonus"
 	}
-	"Building Health Regeneration"
-	{
+	"Building Health Regeneration"{
 		"en"		"Building Health Regeneration"
 	}
-	"Sentry Ammo Regeneration"
-	{
+	"Sentry Ammo Regeneration"{
 		"en"		"Sentry Ammo Regeneration"
 	}
-	"cloak rate"
-	{
+	"cloak rate"{
 		"en"		"Cloaking Rate"
 	}
-	"decloak rate"
-	{
+	"decloak rate"{
 		"en"		"Decloaking Rate"
 	}
-	"spread penalty"
-	{
+	"spread penalty"{
 		"en"		"Spread Penalty"
 	}
-	"zoom speed mod disabled"
-	{
+	"zoom speed mod disabled"{
 		"en"		"zoom speed mod disabled"
 	}
-	"sniper charge per sec"
-	{
+	"sniper charge per sec"{
 		"en"		"Sniper Rifle Charge Rate"
 	}
-	"reload clip all at once"
-	{
+	"reload clip all at once"{
 		"en"		"Reload Whole Clip At Once"
 	}
-	"Bigger Caliber(widow)"
-	{
+	"Bigger Caliber(widow)"{
 		"en"		"Bigger Caliber"
 	}
-	"scattergun has knockback"
-	{
+	"scattergun has knockback"{
 		"en"		"Scattergun Push Force"
 	}
-	"bullets per shot bonus"
-	{
+	"bullets per shot bonus"{
 		"en"		"Bullets Per Shot Bonus"
 	}
-	"bullets per shot bonus (single)"
-	{
+	"bullets per shot bonus (single)"{
 		"en"		"Bullets per Shot Increased"
 	}
-	"absorb damage while cloaked"
-	{
+	"absorb damage while cloaked"{
 		"en"		"Broken Attribute"
 	}
-	"revolver use hit locations"
-	{
+	"revolver use hit locations"{
 		"en"		"Weapon Is Capable Of Headshots"
 	}
-	"backstab shield"
-	{
+	"backstab shield"{
 		"en"		"Backstab Shield"
 	}
-	"fire retardant"
-	{
+	"fire retardant"{
 		"en"		"Afterburn Immunity"
 	}
-	"move speed"
-	{
+	"move speed"{
 		"en"		"Move Speed Increased"
 	}
-	"health regen"
-	{
+	"health regen"{
 		"en"		"Health Regen"
 	}
-	"self dmg push force increased"
-	{
+	"self dmg push force increased"{
 		"en"		"Self Push Force Increased"
 	}
-	"dmg taken from fire reduced"
-	{
+	"dmg taken from fire reduced"{
 		"en"		"Fire Damage Taken Reduced"
 	}
-	"dmg taken from crit reduced"
-	{
+	"dmg taken from crit reduced"{
 		"en"		"Crit Damage Taken Reduced"
 	}
-	"dmg taken from blast reduced"
-	{
+	"dmg taken from blast reduced"{
 		"en"		"Blast Damage Taken Reduced"
 	}
-	"dmg taken from bullets reduced"
-	{
+	"dmg taken from bullets reduced"{
 		"en"		"Bullet Damage Taken Reduced"
 	}
-	"dmg from ranged reduced"
-	{
+	"dmg from ranged reduced"{
 		"en"		"Ranged Damage Taken Reduced"
 	}
-	"dmg from sentry reduced"
-	{
+	"dmg from sentry reduced"{
 		"en"		"Sentry Damage Taken Reduced"
 	}
-	"dmg from melee reduced"
-	{
+	"dmg from melee reduced"{
 		"en"		"Melee Damage Taken Reduced"
 	}
-	"dmg taken reduced"
-	{
+	"dmg taken reduced"{
 		"en"		"All Damage Taken Reduced"
 	}
-	"health from healers increased"
-	{
+	"health from healers increased"{
 		"en"		"Health From Healers Increased"
 	}
-	"afterburn dmg increased"
-	{
+	"afterburn dmg increased"{
 		"en"		"Afterburn Damage Increased"
 	}
-	"afterburn dmg increased (E)"
-	{
+	"afterburn dmg increased (E)"{
 		"en"		"Afterburn Damage Increased"
 	}
-	"afterburn time increased"
-	{
+	"afterburn time increased"{
 		"en"		"Afterburn Duration Increased"
 	}
-	"generate shield on heal"
-	{
+	"generate shield on heal"{
 		"en"		"Medigun Shield"
 	}
-	"Damage bonus vs player (S)"
-	{
+	"Damage bonus vs player (S)"{
 		"en"		"Damage VS Players Bonus"
 	}
-	"Cow Mangler Projectile"
-	{
+	"Cow Mangler Projectile"{
 		"en"		"Cow Mangler Projectile"
 	}
-	"increased control in air (S)"
-	{
+	"increased control in air (S)"{
 		"en"		"Air Control Increased"
 	}
-	"sniper no headshots"
-	{
+	"sniper no headshots"{
 		"en"		"Cannot Headshot"
 	}
-	"max ammo"
-	{
+	"max ammo"{
 		"en"		"Maximum Secondary Ammo"
 	}
-	"maxammo primary increased"
-	{
+	"maxammo primary increased"{
 		"en"		"Primary Ammo Increased"
 	}
-	"maxammo primary increased (S)"
-	{
+	"maxammo primary increased (S)"{
 		"en"		"Primary Ammo Increased"
 	}
-	"maxammo primary reduced"
-	{
+	"maxammo primary reduced"{
 		"en"		"Primary Ammo Decreased"
 	}
-	"maxammo secondary increased"
-	{
+	"maxammo secondary increased"{
 		"en"		"Secondary Ammo Increased"
 	}
-	"maxammo secondary increased (S)"
-	{
+	"maxammo secondary increased (S)"{
 		"en"		"Secondary Ammo Increased"
 	}
-	"maxammo secondary reduced"
-	{
+	"maxammo secondary reduced"{
 		"en"		"Secondary Ammo Decreased"
 	}
-	"maxammo metal increased"
-	{
+	"maxammo metal increased"{
 		"en"		"Metal Storage Increased"
 	}
-	"maxammo metal reduced"
-	{
+	"maxammo metal reduced"{
 		"en"		"Metal Storage Decreased"
 	}
-	"Condensed Laser"
-	{
+	"Condensed Laser"{
 		"en"		"Condensed Laser"
 	}
-	"Clip Size Bonus++"
-	{
+	"Clip Size Bonus++"{
 		"en"		"Clip Size Bonus"
 	}
-	"melee range++"
-	{
+	"melee range++"{
 		"en"		"melee range++"
 	}
-	"damage bonus vs burning"
-	{
+	"damage bonus vs burning"{
 		"en"		"Damage Bonus VS Burning"
 	}
-	"minigun spinup time increased"
-	{
+	"minigun spinup time increased"{
 		"en"		"Minigun Spin-Up Time Increased"
 	}
-	"minigun spinup time decreased"
-	{
+	"minigun spinup time decreased"{
 		"en"		"Minigun Spin-Up Time Decreased"
 	}
-	"max pipebombs increased"
-	{
+	"max pipebombs increased"{
 		"en"		"Max Stickybombs Increased"
 	}
-	"Construction rate increased"
-	{
+	"Construction rate increased"{
 		"en"		"Building Construction Speed Increased"
 	}
-	"Build rate bonus"
-	{
+	"Build rate bonus"{
 		"en"		"Building Build Rate Increased"
 	}
-	"Repair rate increased"
-	{
+	"Repair rate increased"{
 		"en"		"Building Repair Rate Increased"
 	}
-	"Reload time increased"
-	{
+	"Reload time increased"{
 		"en"		"Reload Time Increased"
 	}
-	"selfdmg on hit for rapidfire"
-	{
+	"selfdmg on hit for rapidfire"{
 		"en"		"Self-Damage On Hit"
 	}
-	"Blast radius increased"
-	{
+	"Blast radius increased"{
 		"en"		"Blast Radius Increased"
 	}
-	"Blast radius increased (J)"
-	{
+	"Blast radius increased (J)"{
 		"en"		"Blast Radius Increased"
 	}
-	"Heavy Cleaver"
-	{
+	"Heavy Cleaver"{
 		"en"		"Heavy Cleaver"
 	}
-	"Buy Action Slot for 1000$:"
-	{
+	"Buy Action Slot for 1000$:"{
 		"en"		"Buy Action Slot for 1000$:"
 	}
-	"armor piercing damage(SB)"
-	{
+	"armor piercing damage(SB)"{
 		"en"		"Damage Multiplier ★★★★★"
 	}
-	"deploy time decreased(SB)"
-	{
+	"deploy time decreased(SB)"{
 		"en"		"Deploy Time Multiplier ★★★★★"
 	}
-	"Upgrade Action Slot"
-	{
+	"Upgrade Action Slot"{
 		"en"		"Upgrade Action Slot"
 	}
-	"Buy Action Slot"
-	{
+	"Buy Action Slot"{
 		"en"		"Buy Action Slot"
 	}
-	"Blast radius decreased"
-	{
+	"Blast radius decreased"{
 		"en"		"Blast radius decreased"
 	}
-	"Projectile speed increased"
-	{
+	"Projectile speed increased"{
 		"en"		"Projectile Speed Increased"
 	}
-	"Projectile force increased"
-	{
+	"Projectile force increased"{
 		"en"		"Projectile Range Increased"
 	}
-	"Projectile speed decreased"
-	{
+	"Projectile speed decreased"{
 		"en"		"Projectile Speed Decreased"
 	}
-	"weapon spread bonus"
-	{
+	"weapon spread bonus"{
 		"en"		"Weapon Spread Decreased"
 	}
-	"health from packs increased"
-	{
+	"health from packs increased"{
 		"en"		"Health From Packs increased"
 	}
-	"heal on hit for slowfire"
-	{
+	"heal on hit for slowfire"{
 		"en"		"Heal On Hit"
 	}
-	"ammo regen"
-	{
+	"ammo regen"{
 		"en"		"Ammo Regen Percentage"
 	}
-	"metal regen"
-	{
+	"metal regen"{
 		"en"		"Metal Regen Per 5 Seconds"
 	}
-	"mod mini-crit airborne"
-	{
+	"mod mini-crit airborne"{
 		"en"		"Minicrit Airborne Enemies"
 	}
-	"mod shovel damage boost"
-	{
+	"mod shovel damage boost"{
 		"en"		"Health Scales Damage Dealt"
 	}
-	"dmg falloff decreased"
-	{
+	"dmg falloff decreased"{
 		"en"		"Splash Damage Fall-Off Decreased"
 	}
-	"sticky detonate mode"
-	{
+	"sticky detonate mode"{
 		"en"		"Scottish Resistance Detonation Type"
 	}
-	"stickies detonate stickies"
-	{
+	"stickies detonate stickies"{
 		"en"		"Stickies Destroy Other Stickies"
 	}
-	"mod wrench builds minisentry"
-	{
+	"mod wrench builds minisentry"{
 		"en"		"Builds Minisentry"
 	}
-	"max health additive penalty"
-	{
+	"max health additive penalty"{
 		"en"		"Max Health Penalty"
 	}
-	"sticky arm time bonus"
-	{
+	"sticky arm time bonus"{
 		"en"		"Sticky Arming Time Bonus"
 	}
-	"rocket jump damage reduction"
-	{
+	"rocket jump damage reduction"{
 		"en"		"Self-Damage Reduction"
 	}
-	"mod sentry killed revenge"
-	{
+	"mod sentry killed revenge"{
 		"en"		"Sentry Revenge Crits"
 	}
-	"building cost reduction"
-	{
+	"building cost reduction"{
 		"en"		"Building Cost Reduction"
 	}
-	"bleeding duration"
-	{
+	"bleeding duration"{
 		"en"		"Bleeding Duration"
 	}
-	"disguise on backstab"
-	{
+	"disguise on backstab"{
 		"en"		"Disguise On Backstab"
 	}
-	"silent killer"
-	{
+	"silent killer"{
 		"en"		"Kills Dont Show In Killfeed"
 	}
-	"disguise speed"
-	{
+	"disguise speed"{
 		"en"		"Disguising Speed"
 	}
-	"disguise damage reduction"
-	{
+	"disguise damage reduction"{
 		"en"		"Damage Taken Reduced While Disguised"
 	}
-	"add cloak on kill"
-	{
+	"add cloak on kill"{
 		"en"		"Add Cloak On Kill"
 	}
-	"quiet unstealth"
-	{
+	"quiet unstealth"{
 		"en"		"Quiet Decloaking"
 	}
-	"flame size bonus"
-	{
+	"flame size bonus"{
 		"en"		"Flame Size Bonus"
 	}
-	"flame life bonus"
-	{
+	"flame life bonus"{
 		"en"		"Increased Flame Lifetime"
 	}
-	"charged airblast"
-	{
+	"charged airblast"{
 		"en"		"Charged Airblast"
 	}
-	"flame_drag"
-	{
+	"flame_drag"{
 		"en"		"Flame Drag"
 	}
-	"add cloak on hit"
-	{
+	"add cloak on hit"{
 		"en"		"Add Cloak On Hit"
 	}
-	"disguise no burn"
-	{
+	"disguise no burn"{
 		"en"		"Afterburn Immunity While Disguised"
 	}
-	"airblast cost decreased"
-	{
+	"airblast cost decreased"{
 		"en"		"Airblast Cost Decreased"
 	}
-	"flame ammopersec increased"
-	{
+	"flame ammopersec increased"{
 		"en"		"Flamethrower Ammo Consumption Increased"
 	}
-	"flame ammopersec decreased"
-	{
+	"flame ammopersec decreased"{
 		"en"		"Flamethrower Ammo Consumption Decreased"
 	}
-	"no death from headshots"
-	{
+	"no death from headshots"{
 		"en"		"Cannot Die From Headshots"
 	}
-	"deploy time decreased"
-	{
+	"deploy time decreased"{
 		"en"		"Deploy Time Decreased"
 	}
-	"minicrits become crits"
-	{
+	"minicrits become crits"{
 		"en"		"Minicrits Become Crits"
 	}
-	"heal on kill"
-	{
+	"heal on kill"{
 		"en"		"Heal On Kill"
 	}
-	"no self blast dmg"
-	{
+	"no self blast dmg"{
 		"en"		"No Self-Damage"
 	}
-	"slow enemy on hit major"
-	{
+	"slow enemy on hit major"{
 		"en"		"Slow Enemy On Hit"
 	}
-	"aiming movespeed increased"
-	{
+	"aiming movespeed increased"{
 		"en"		"Move Speed Bonus While Aiming"
 	}
-	"aiming movespeed decreased"
-	{
+	"aiming movespeed decreased"{
 		"en"		"Move Speed Penalty While Aiming"
 	}
-	"charge movespeed increased"
-	{
+	"charge movespeed increased"{
 		"en"		"Charging Move Speed Increased"
 	}
-	"preserve ubercharge"
-	{
+	"preserve ubercharge"{
 		"en"		"Preserve Ubercharge Percent"
 	}
-	"fires healing bolts"
-	{
+	"fires healing bolts"{
 		"en"		"Fires Repairing Bolts"
 	}
-	"enables aoe heal"
-	{
+	"enables aoe heal"{
 		"en"		"Taunt : AOE Heal"
 	}
-	"gesture speed increase"
-	{
+	"gesture speed increase"{
 		"en"		"Gesture Speed Increased"
 	}
-	"charge time increased"
-	{
+	"charge time increased"{
 		"en"		"Charge Time Increased"
 	}
-	"Set DamageType Ignite"
-	{
+	"Set DamageType Ignite"{
 		"en"		"Set Damage Type Ignite"
 	}
-	"minicrit vs burning player"
-	{
+	"minicrit vs burning player"{
 		"en"		"Minicrit VS Burning Players"
 	}
-	"kill eater"
-	{
+	"kill eater"{
 		"en"		"kill eater"
 	}
-	"apply z velocity on damage"
-	{
+	"apply z velocity on damage"{
 		"en"		"Apply Upward Velocity On Damage"
 	}
-	"apply look velocity on damage"
-	{
+	"apply look velocity on damage"{
 		"en"		"Apply Velocity On Damage"
 	}
-	"sanguisuge"
-	{
+	"sanguisuge"{
 		"en"		"Lifesteal On Backstab"
 	}
-	"mark for death"
-	{
+	"mark for death"{
 		"en"		"Mark For Death"
 	}
-	"dmg bonus while half dead"
-	{
+	"dmg bonus while half dead"{
 		"en"		"PCT HP Lost Damage Bonus"
 	}
-	"multihit melee"
-	{
+	"multihit melee"{
 		"en"		"Additional Attacks"
 	}
-	"mod medic killed revenge"
-	{
+	"mod medic killed revenge"{
 		"en"		"Medic Killed Gives Revenge Crits"
 	}
-	"mult sniper charge after headshot"
-	{
+	"mult sniper charge after headshot"{
 		"en"		"Additional Charge After Headshot"
 	}
-	"minigun no spin sounds"
-	{
+	"minigun no spin sounds"{
 		"en"		"Minigun Has No Spin-Up Sound"
 	}
-	"ubercharge rate bonus for healer"
-	{
+	"ubercharge rate bonus for healer"{
 		"en"		"Ubercharge Rate Bonus For Healer"
 	}
-	"mod rage on hit bonus"
-	{
+	"mod rage on hit bonus"{
 		"en"		"Damage Multiplier Scaled With Rage Meter"
 	}
-	"Rage damage boost"
-	{
+	"Rage damage boost"{
 		"en"		"Damage Multiplier Scaled With Rage Meter"
 	}
-	"accuracy scales damage"
-	{
+	"accuracy scales damage"{
 		"en"		"Accuracy Scales Damage"
 	}
-	"mult charge turn control"
-	{
+	"mult charge turn control"{
 		"en"		"Charge Turning Control Multiplier"
 	}
-	"no charge impact range"
-	{
+	"no charge impact range"{
 		"en"		"No Charge Ramp-Off"
 	}
-	"charge impact damage increased"
-	{
+	"charge impact damage increased"{
 		"en"		"Shield Charge Damage Boost"
 	}
-	"charge recharge rate increased"
-	{
+	"charge recharge rate increased"{
 		"en"		"Shield Charge Recharge Rate Increased"
 	}
-	"air dash count"
-	{
+	"air dash count"{
 		"en"		"Jump While Airborne Count"
 	}
-	"damage force reduction"
-	{
+	"damage force reduction"{
 		"en"		"Damage Knockback Reduction"
 	}
-	"mult airblast refire time"
-	{
+	"mult airblast refire time"{
 		"en"		"Airblast Firerate Increased"
 	}
-	"deflection size multiplier"
-	{
+	"deflection size multiplier"{
 		"en"		"Airblast Range Increased"
 	}
-	"melee bounds multiplier"
-	{
+	"melee bounds multiplier"{
 		"en"		"Melee Radius Multiplier"
 	}
-	"melee range multiplier"
-	{
+	"melee range multiplier"{
 		"en"		"Melee Range Multiplier"
 	}
-	"see enemy health"
-	{
+	"see enemy health"{
 		"en"		"See Enemy Health"
 	}
-	"bidirectional teleport"
-	{
+	"bidirectional teleport"{
 		"en"		"Bidirectional Teleporter"
 	}
-	"effect bar recharge rate increased"
-	{
+	"effect bar recharge rate increased"{
 		"en"		"Recharge Rate Increased"
 	}
-	"effect bar recharge rate increased(L)"
-	{
+	"effect bar recharge rate increased(L)"{
 		"en"		"Recharge Rate Increased"
 	}
-	"override projectile type"
-	{
+	"override projectile type"{
 		"en"		"Weapon Shoots Different Projectile"
 	}
-	"engy building health bonus"
-	{
+	"engy building health bonus"{
 		"en"		"Building Health Bonus"
 	}
-	"overheal fill rate bonus"
-	{
+	"overheal fill rate bonus"{
 		"en"		"Heal Rate Bonus When Overhealing"
 	}
-	"heal rate bonus(A)"
-	{
+	"heal rate bonus(A)"{
 		"en"		"Heal Rate Multiplier"
 	}
-	"healing mastery"
-	{
+	"healing mastery"{
 		"en"		"Healing Mastery"
 	}
-	"20% fire immunity"
-	{
+	"20% fire immunity"{
 		"en"		"20pct Chance To Remove Fire"
 	}
-	"Shield Specific upgrades"
-	{
+	"Shield Specific upgrades"{
 		"en"		"Shield Specific upgrades"
 	}
-	"rocket specialist"
-	{
+	"rocket specialist"{
 		"en"		"Rocket Specialist"
 	}
-	"engy sentry damage bonus"
-	{
+	"engy sentry damage bonus"{
 		"en"		"Sentry Damage Bonus"
 	}
-	"sentry extra damage bonus"
-	{
+	"sentry extra damage bonus"{
 		"en"		"Sentry Damage Multiplier"
 	}
-	"no crit boost"
-	{
+	"no crit boost"{
 		"en"		"Cannot Be Crit Boosted"
 	}
-	"sapper kills collect crits"
-	{
+	"sapper kills collect crits"{
 		"en"		"Weapon Gains Crits On Backstab/Sapper Kill"
 	}
-	"mod ammo per shot"
-	{
+	"mod ammo per shot"{
 		"en"		"Ammo Per Shot Consumed"
 	}
-	"sniper full charge damage bonus"
-	{
+	"sniper full charge damage bonus"{
 		"en"		"Fully Charged Shot Damage Bonus"
 	}
-	"sniper penetrate players when charged"
-	{
+	"sniper penetrate players when charged"{
 		"en"		"Fully Charged Shots Penetrate Players"
 	}
-	"uber duration bonus"
-	{
+	"uber duration bonus"{
 		"en"		"Ubercharge Duration Bonus"
 	}
-	"Faster reload rate SPECIAL"
-	{
+	"Faster reload rate SPECIAL"{
 		"en"		"Faster Reload Rate"
 	}
-	"faster reload rate"
-	{
+	"faster reload rate"{
 		"en"		"Faster Reload Rate"
 	}
-	"faster reload rate (U)"
-	{
+	"faster reload rate (U)"{
 		"en"		"Faster Reload Rate"
 	}
-	"robo sapper"
-	{
+	"robo sapper"{
 		"en"		"Can Sap Robots"
 	}
-	"attack projectiles"
-	{
+	"attack projectiles"{
 		"en"		"Attack Projectiles"
 	}
-	"jump height"
-	{
+	"jump height"{
 		"en"		"Jump Height Increased"
 	}
-	"reveal cloaked victim on hit"
-	{
+	"reveal cloaked victim on hit"{
 		"en"		"Reveal Cloaked Spies On hit"
 	}
-	"reveal disguised victim on hit"
-	{
+	"reveal disguised victim on hit"{
 		"en"		"Reveal Disguised Spies On hit"
 	}
-	"engy sentry fire rate increased"
-	{
+	"engy sentry fire rate increased"{
 		"en"		"Sentry Fire Rate Bonus"
 	}
-	"engy sentry radius increased"
-	{
+	"engy sentry radius increased"{
 		"en"		"Sentry Radius Increased"
 	}
-	"engy dispenser radius increased"
-	{
+	"engy dispenser radius increased"{
 		"en"		"Dispenser Radius Increased"
 	}
-	"engy disposable sentries"
-	{
+	"engy disposable sentries"{
 		"en"		"Disposable Sentries"
 	}
-	"Cannot Airblast"
-	{
+	"Cannot Airblast"{
 		"en"		"Cannot Airblast"
 	}
-	"flame_lifetime"
-	{
+	"flame_lifetime"{
 		"en"		"Flame Lifespan"
 	}
-	"damage all connected"
-	{
+	"damage all connected"{
 		"en"		"Damage Applies To Healer"
 	}
-	"crit from behind"
-	{
+	"crit from behind"{
 		"en"		"Crits From Behind"
 	}
-	"extinguish earns revenge crits"
-	{
+	"extinguish earns revenge crits"{
 		"en"		"Extinguishing Earns Revenge Crits"
 	}
-	"burn damage earns rage"
-	{
+	"burn damage earns rage"{
 		"en"		"Phlogistinator Rage Meter"
 	}
 
-	"rage on kill"
-	{
+	"rage on kill"{
 		"en"		"Add Rage On Kill"
 	}
-	"headshot damage increase"
-	{
+	"headshot damage increase"{
 		"en"		"Headshot Damage Increased"
 	}
-	"fire rate bonus HIDDEN"
-	{
+	"fire rate bonus HIDDEN"{
 		"en"		"Fire Rate Bonus"
 	}
-	"fire rate bonus (C)"
-	{
+	"fire rate bonus (C)"{
 		"en"		"Fire Rate Bonus"
 	}
-	"afterburn time increased(N)"
-	{
+	"afterburn time increased(N)"{
 		"en"		"Afterburn Duration Increased"
 	}
-	"lose demo charge on damage when charging"
-	{
+	"lose demo charge on damage when charging"{
 		"en"		"Lose Shield Charge When Damaged"
 	}
-	"explosionfall"
-	{
+	"explosionfall"{
 		"en"		"Explosive Fall Damage"
 	}
-	"melee attack rate bonus (slow)"
-	{
+	"melee attack rate bonus (slow)"{
 		"en"		"Melee Attack Speed Bonus"
 	}
-	"melee attack rate bonus"
-	{
+	"melee attack rate bonus"{
 		"en"		"Melee Attack Speed Bonus"
 	}
-	"melee attack rate penalty"
-	{
+	"melee attack rate penalty"{
 		"en"		"Melee Attack Speed Penalty"
 	}
-	"projectile penetration heavy"
-	{
+	"projectile penetration heavy"{
 		"en"		"Bullets Penetrate Enemies"
 	}
-	"projectile penetration"
-	{
+	"projectile penetration"{
 		"en"		"Projectile Penetrate Enemies"
 	}
-	"armor piercing"
-	{
+	"armor piercing"{
 		"en"		"Backstabs Deal Extra Damage To Giants"
 	}
-	"Hard Strings"
-	{
+	"Hard Strings"{
 		"en"		"Hard Strings"
 	}
-	"damage penalty"
-	{
+	"damage penalty"{
 		"en"		"Damage Penalty"
 	}
-	"Thick Building Armor"
-	{
+	"Thick Building Armor"{
 		"en"		"Thick Building Armor"
 	}
-	"cannot be backstabbed"
-	{
+	"cannot be backstabbed"{
 		"en"		"No Extra Damage Taken From Backstabs"
 	}
-	"share consumable with patient"
-	{
+	"share consumable with patient"{
 		"en"		"Share Canteens With Patient"
 	}
-	"crit vs disguised players"
-	{
+	"crit vs disguised players"{
 		"en"		"Crit VS Disguised Players"
 	}
-	"projectile spread angle penalty"
-	{
+	"projectile spread angle penalty"{
 		"en"		"Projectile Spread Penalty"
 	}
-	"auto fires full clip"
-	{
+	"auto fires full clip"{
 		"en"		"Hold Fire Until Released"
 	}
-	"can overload"
-	{
+	"can overload"{
 		"en"		"Can Overload"
 	}
-	"hype resets on jump"
-	{
+	"hype resets on jump"{
 		"en"		"Hype Resets On Jump"
 	}
-	"clip size penalty HIDDEN"
-	{
+	"clip size penalty HIDDEN"{
 		"en"		"Clip Size Penalty Hidden"
 	}
-	"ring of fire while aiming"
-	{
+	"ring of fire while aiming"{
 		"en"		"Ring Of Fire While Spun-Up"
 	}
-	"uses ammo while aiming"
-	{
+	"uses ammo while aiming"{
 		"en"		"Ammo Per Seconded Consumed While Spun-Up"
 	}
-	"medigun charge is crit boost"
-	{
+	"medigun charge is crit boost"{
 		"en"		"Medigun Ubercharge Is Crit Boost"
 	}
-	"move speed (heavy)"
-	{
+	"move speed (heavy)"{
 		"en"		"Move Speed Increased"
 	}
-	"move speed penalty"
-	{
+	"move speed penalty"{
 		"en"		"Move Speed Decreased"
 	}
-	"melee attack rate bonus (spy)"
-	{
+	"melee attack rate bonus (spy)"{
 		"en"		"Melee Attack Speed Bonus"
 	}
-	"additionnal disposable sentries (mvm)"
-	{
+	"additionnal disposable sentries (mvm)"{
 		"en"		"Disposable Sentries"
 	}
-	"bullets per shot bonus (heavy)"
-	{
+	"bullets per shot bonus (heavy)"{
 		"en"		"Bullets Per Shot Bonus"
 	}
-	"increase buff duration"
-	{
+	"increase buff duration"{
 		"en"		"Increase Buff Duration"
 	}
-	"cancel falling damage"
-	{
+	"cancel falling damage"{
 		"en"		"Cancel Fall Damage"
 	}
-	"weapon burn dmg increased (E)"
-	{
+	"weapon burn dmg increased (E)"{
 		"en"		"Afterburn Damage Increased"
 	}
-	"energy buff dmg taken multiplier"
-	{
+	"energy buff dmg taken multiplier"{
 		"en"		"Damage Taken Multiplier When Eaten"
 	}
-	"lunchbox adds maxhealth bonus"
-	{
+	"lunchbox adds maxhealth bonus"{
 		"en"		"Lunchbox Bonus Is Max Health"
 	}
-	"overheal decay disabled"
-	{
+	"overheal decay disabled"{
 		"en"		"Overheal Decay Disabled"
 	}
-	"honor bound"
-	{
+	"honor bound"{
 		"en"		"Honorbound"
 	}
-	"jarate duration"
-	{
+	"jarate duration"{
 		"en"		"Jarate Duration"
 	}
-	"damage causes airblast"
-	{
+	"damage causes airblast"{
 		"en"		"Damage Causes Knockback"
 	}
-	"use large smoke explosion"
-	{
+	"use large smoke explosion"{
 		"en"		"Large Smoke Explosions"
 	}
-	"scattergun knockback mult"
-	{
+	"scattergun knockback mult"{
 		"en"		"Scattergun Knockback Multiplier"
 	}
-	"engineer building teleporting pickup"
-	{
+	"engineer building teleporting pickup"{
 		"en"		"Rescue Ranger Teleport Cost"
 	}
-	"damage applies to sappers"
-	{
+	"damage applies to sappers"{
 		"en"		"Damage Applies To Sappers"
 	}
-	"sapper damage bonus"
-	{
+	"sapper damage bonus"{
 		"en"		"Sapper Damage Bonus"
 	}
-	"sapper health bonus"
-	{
+	"sapper health bonus"{
 		"en"		"Sapper Health Bonus"
 	}
-	"sapper damage leaches health"
-	{
+	"sapper damage leaches health"{
 		"en"		"Sapper Damage Leaches Health"
 	}
-	"energy weapon no ammo"
-	{
+	"energy weapon no ammo"{
 		"en"		"Weapon Doesnt Use Ammo"
 	}
-	"crit vs stunned players"
-	{
+	"crit vs stunned players"{
 		"en"		"Crit VS Stunned Players"
 	}
-	"Honor!"
-	{
+	"Honor!"{
 		"en"		"Honorbound"
 	}
-	"honorbound"
-	{
+	"honorbound"{
 		"en"		"Honorbound"
 	}
-	"aiming no flinch when hurt"
-	{
+	"aiming no flinch when hurt"{
 		"en"		"No Flinch When Fully Charged"
 	}
-	"increase player capture value"
-	{
+	"increase player capture value"{
 		"en"		"Increased Capture Rate"
 	}
-	"airblast vulnerability multiplier"
-	{
+	"airblast vulnerability multiplier"{
 		"en"		"Airblast Vulnerability Multiplier"
 	}
-	"drop health pack on kill"
-	{
+	"drop health pack on kill"{
 		"en"		"drop health pack on kill"
 	}
-	"speed boost on hit"
-	{
+	"speed boost on hit"{
 		"en"		"Speed Boost On Hit"
 	}
-	"grenade dmg bonus when on ground"
-	{
+	"grenade dmg bonus when on ground"{
 		"en"		"Grenade Damage Bonus On World Contact"
 	}
-	"projectile no deflect"
-	{
+	"projectile no deflect"{
 		"en"		"Projectile Cannot Be Deflected"
 	}
-	"invisible uber"
-	{
+	"invisible uber"{
 		"en"		"Ubercharge Gives Invisibility"
 	}
-	"medigun blast resist passive"
-	{
+	"medigun blast resist passive"{
 		"en"		"Blast Damage Resistance (Healing)"
 	}
-	"medigun bullet resist passive"
-	{
+	"medigun bullet resist passive"{
 		"en"		"Bullet Damage Resistance (Healing)"
 	}
-	"medigun fire resist passive"
-	{
+	"medigun fire resist passive"{
 		"en"		"Fire Damage Resistance (Healing)"
 	}
-	"medigun charge is boost"
-	{
+	"medigun charge is boost"{
 		"en"		"Ubercharge Gives Speed Boost"
 	}
-	"Shield Duration"
-	{
+	"Shield Duration"{
 		"en"		"Shield Duration Increased"
 	}
-	"Tankyness"
-	{
+	"Tankyness"{
 		"en"		"Tankyness"
 	}
-	"Higher caliber Bullets"
-	{
+	"Higher caliber Bullets"{
 		"en"		"Higher Caliber Bullets"
 	}
-	"Armor Piercing Explosive"
-	{
+	"Armor Piercing Explosive"{
 		"en"		"Armor Piercing Explosive"
 	}
-	"Army of not Many"
-	{
+	"Army of not Many"{
 		"en"		"Army Of Not Many"
 	}
-	"Some Beggar Tweak"
-	{
+	"Some Beggar Tweak"{
 		"en"		"Some Beggar Tweak"
 	}
-	"Some Other Beggar Tweak"
-	{
+	"Some Other Beggar Tweak"{
 		"en"		"Some Other Beggar Tweak"
 	}
-	"Medic Beggar Tweak"
-	{
+	"Medic Beggar Tweak"{
 		"en"		"Some Other Other Beggar Tweak"
 	}
-	"Projectile force decreased"
-	{
+	"Projectile force decreased"{
 		"en"		"Projectile Range Decreased"
 	}
-	"Larger Arrows"
-	{
+	"Larger Arrows"{
 		"en"		"Larger Arrows"
 	}
-	"Heavy Heavy Heavy Weapon"
-	{
+	"Heavy Heavy Heavy Weapon"{
 		"en"		"Very Heavy Weapon"
 	}
-	"Heavy Electric Motor"
-	{
+	"Heavy Electric Motor"{
 		"en"		"Heavy Electric Motor"
 	}
-	"Assault Weapon"
-	{
+	"Assault Weapon"{
 		"en"		"Assault Weapon"
 	}
-	"Bigger Caliber"
-	{
+	"Bigger Caliber"{
 		"en"		"Bigger Caliber"
 	}
-	"Bigger Little Caliber."
-	{
+	"Bigger Little Caliber."{
 		"en"		"Bigger Little Caliber"
 	}
-	"Sentry Heavy Motor"
-	{
+	"Sentry Heavy Motor"{
 		"en"		"Sentry Heavy Motor"
 	}
-	"Sentry Bigger Caliber"
-	{
+	"Sentry Bigger Caliber"{
 		"en"		"Sentry Bigger Caliber"
 	}
-	"Concentrated Fire"
-	{
+	"Concentrated Fire"{
 		"en"		"Concentrated Fire"
 	}
-	"Hot Pursuit"
-	{
+	"Hot Pursuit"{
 		"en"		"Hot Pursuit"
 	}
-	"Temperature rise"
-	{
+	"Temperature rise"{
 		"en"		"Temperature rise"
 	}
-	"Kamikaze strike"
-	{
+	"Kamikaze strike"{
 		"en"		"Kamikaze strike"
 	}
-	"Fast Shot"
-	{
+	"Fast Shot"{
 		"en"		"Fast Shot"
 	}
-	"Fast Laser Shot"
-	{
+	"Fast Laser Shot"{
 		"en"		"Fast Laser Shot"
 	}
-	"Heavy Laser Shot"
-	{
+	"Heavy Laser Shot"{
 		"en"		"Heavy Laser Shot"
 	}
-	"Slow swing"
-	{
+	"Slow swing"{
 		"en"		"Slow Swing"
 	}
-	"Short charge"
-	{
+	"Short charge"{
 		"en"		"Short Charge"
 	}
 }

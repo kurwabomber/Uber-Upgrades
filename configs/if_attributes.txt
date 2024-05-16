@@ -4921,7 +4921,19 @@
 			"description"	"Adds +1 rocket per rocket attack."
 			"max"		"4"
 		}
-		"1538.1"
+		"1538.2"
+		{
+			"name"		"sentry bullets per shot"
+			"ref"		"sentry bullets per shot"
+			"cost"		"7000"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"1"
+			"restriction_category"	"2"
+			"description"	"Additional bullets per shot for sentry bullet firing."
+			"max"		"4"
+		}
+		"1539"
 		{
 			"name"		"zoom speed mod disabled"
 			"ref"		"Teleporter Gives Buffs"

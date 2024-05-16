@@ -5073,4 +5073,13 @@
         "hidden"	"1"
         "effect_type"	"positive"
     }
+    "6356"
+    {
+        "name"  "sentry bullets per shot"
+        "attribute_class"   "sentry_bullets_per_shot"
+        "description_string"	""
+        "description_format"	"value_is_percentage"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
 }

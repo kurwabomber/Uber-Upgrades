@@ -4130,9 +4130,18 @@ public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float sr
 					firestormCounter[builder]++
 					return Plugin_Stop;
 				}
+				case 34.0:{
+					
+					return Plugin_Stop;
+				}
+			}
+			
+			shots = RoundToCeil(GetAttribute(melee, "sentry bullets per shot", 1.0) * shots);
+			if(shots > 1){
+				ScaleVector(spread, float(shots));
 			}
 		}
 	}
 
-	return Plugin_Continue;
+	return Plugin_Changed;
 }
