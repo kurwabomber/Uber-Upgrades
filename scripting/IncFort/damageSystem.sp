@@ -458,7 +458,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 				if(currentDamageType[attacker].second & DMG_PIERCING){
 					float bruisedDamage = damage;
-					if(!critStatus[victim]){
+					if(!(damagetype & DMG_CRIT)){
 						bruisedDamage *= 2.25;
 					}
 
@@ -732,6 +732,17 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 			damage *= GetAttribute(weapon, "damage bonus");
 			damage *= GetAttribute(weapon, "damage bonus HIDDEN");
 			damage *= GetAttribute(weapon, "damage penalty");
+		}
+	}
+
+	if(IsValidWeapon(weapon)){
+		if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee){
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
+				damage *= 1.75
+			else if(GetAttribute(attacker, "knockout powerup", 0.0) == 3 && !isTagged[attacker][victim]){
+				damage *= 4.0;
+				critType = CritType_Crit;
+			}
 		}
 	}
 
@@ -1392,14 +1403,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						isPenetrated[i] = false;
 					}
 				}
-			}
-		}
-		if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee){
-			if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
-				damage *= 1.75
-			else if(GetAttribute(attacker, "knockout powerup", 0.0) == 3 && !isTagged[attacker][victim]){
-				damage *= 4.0;
-				damagetype |= DMG_CRIT;
 			}
 		}
 		if(GetAttribute(attacker, "supernova powerup", 0.0) == 1.0)
