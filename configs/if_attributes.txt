@@ -6614,7 +6614,7 @@
 			"ref"		"ap (highervoltage)"
 			"increase_ratio" "0.0"
 			"cost"		"1200"
-			"value"		"0.25"
+			"value"		"0.35"
 			"init"		"1.00"
 			"display_style" "1"
 			"description"	"1:1 pure damage multiplier.\nNever increases in cost."

@@ -1113,7 +1113,6 @@
 			"Attr0"		"damage bonus(IS)"
 			"Attr7"		"ap (highervoltage)"
 			"Attr6"		"Accuracy Scales DMG Replacement"
-			"Attr1"		"Primary Fire damage bonus"
 			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr21"	"afterburn time increased(N)"
