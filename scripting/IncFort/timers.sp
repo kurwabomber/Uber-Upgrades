@@ -587,13 +587,6 @@ public Action:Timer_Every100MS(Handle timer)
 						SDKHooks_TakeDamage(client,i,i,corrosiveDOT[client][i][0],_,i,_,_,false);
 					}
 				}
-				if(IsOnDifferentTeams(client,i) && plagueActive && !TF2_IsPlayerInCondition(i, TFCond_Plague))
-				{
-					float VictimPos[3];
-					GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-					if(GetVectorDistance(clientPos,VictimPos, true) <= 10000.0)
-						TF2_AddCondition(i, TFCond_Plague, TFCondDuration_Infinite, client);
-				}
 				if(!hasBuffIndex(i, Buff_Leech)){
 					if(GetAttribute(i, "vampire powerup", 0.0) != 2.0 && GetAttribute(client, "vampire powerup", 0.0) == 2.0){
 						float VictimPos[3];
@@ -602,25 +595,31 @@ public Action:Timer_Every100MS(Handle timer)
 							insertBuff(i, leechDebuff);
 					}
 				}
-				if(!hasBuffIndex(i, Buff_Decay)){
-					if(GetAttribute(client, "plague powerup", 0.0) == 2.0){
+				if(IsOnDifferentTeams(client,i)){
+					if(!hasBuffIndex(i, Buff_Decay)){
+						if(GetAttribute(client, "plague powerup", 0.0) == 2.0){
+							float VictimPos[3];
+							GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
+							if(GetVectorDistance(clientPos,VictimPos, true) <= 160000.0)
+								insertBuff(i, decayDebuff);
+						}
+					}
+					if(plagueActive && !TF2_IsPlayerInCondition(i, TFCond_Plague)){
 						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-						if(GetVectorDistance(clientPos,VictimPos, true) <= 160000.0)
-							insertBuff(i, decayDebuff);
+						if(GetVectorDistance(clientPos,VictimPos, true) <= 10000.0)
+							TF2_AddCondition(i, TFCond_Plague, TFCondDuration_Infinite, client);
 					}
 				}
 			}
 			if(hasBuffIndex(client, Buff_Decay)){
 				Buff decay; decay = playerBuffs[client][getBuffInArray(client, Buff_Decay)];
 				if(client != decay.inflictor && IsValidClient3(decay.inflictor) && IsOnDifferentTeams(client,decay.inflictor)){
-					int inflictorWeapon = GetEntPropEnt(decay.inflictor, Prop_Send, "m_hActiveWeapon");
-					if(IsValidWeapon(inflictorWeapon)){
-						currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
-						SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, TF2_GetDPSModifiers(client, inflictorWeapon)*2.0,_,_,_,_,false);
-						currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
-						SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 5.0,DMG_RADIATION+DMG_DISSOLVE,_,_,_,false);
-					}
+					currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
+					currentDamageType[decay.inflictor].second |= DMG_PIERCING;
+					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 10.0 + GetClientHealth(client)*0.002,_,_,_,_,false);
+					currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
+					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 5.0,DMG_RADIATION+DMG_DISSOLVE,_,_,_,false);
 				}
 			}
 			if(hasBuffIndex(client, Buff_InfernalDOT)){

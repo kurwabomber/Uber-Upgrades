@@ -61,7 +61,7 @@ float GetPlayerHealingMultiplier(client){
 	if(hasBuffIndex(client, Buff_Leech))
 		multiplier *= 0.5;
 	if(hasBuffIndex(client, Buff_Decay))
-		multiplier *= 0.0;
+		multiplier *= 0.25;
 	if(GetAttribute(client, "revenge powerup", 0.0) == 2.0)
 		multiplier *= 1.0 + RageBuildup[client]*0.5;
 	
