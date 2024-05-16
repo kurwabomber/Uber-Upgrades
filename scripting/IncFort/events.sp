@@ -4137,8 +4137,12 @@ public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float sr
 			}
 			
 			shots = RoundToCeil(GetAttribute(melee, "sentry bullets per shot", 1.0) * shots);
-			if(shots > 1){
-				ScaleVector(spread, float(shots));
+			if(shots > 1){//Each bullets per shot increases spread by +50%.
+				ScaleVector(spread, 1+float(shots-1)/2.0);
+			}
+
+			if(GetAttribute(builder, "precision powerup", 0.0) == 1){//Precision removes sentry spread.
+				ScaleVector(spread, 0.0);
 			}
 		}
 	}

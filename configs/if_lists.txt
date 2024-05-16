@@ -1173,7 +1173,8 @@
 		{
 			"Attr0"		"Firestorm Rounds"
 			"Attr1"		"Double Sentry Rocket Shot"
-			"Attr3"		"Sentry Rocket Fire Rate"
+			"Attr2"		"Sentry Rocket Fire Rate"
+			"Attr3"		"sentry bullets per shot"
 		}
 		"Building Specializations"
 		{

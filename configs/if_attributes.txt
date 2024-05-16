@@ -4925,13 +4925,13 @@
 		{
 			"name"		"sentry bullets per shot"
 			"ref"		"sentry bullets per shot"
-			"cost"		"7000"
+			"cost"		"3000"
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"1"
 			"restriction_category"	"2"
-			"description"	"Additional bullets per shot for sentry bullet firing."
-			"max"		"4"
+			"description"	"Additional bullets per shot for sentry bullet firing.\nMakes sentry bullets +50% more inaccurate per pellet."
+			"max"		"3"
 		}
 		"1539"
 		{
