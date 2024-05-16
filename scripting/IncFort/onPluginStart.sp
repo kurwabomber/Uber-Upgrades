@@ -237,7 +237,8 @@ public void OnPluginStart()
 		delete DB;
 	}
 	gameStage = 0;
-	
+	UpdateMaxValuesStage(gameStage);
+
 	hudSync = CreateHudSynchronizer();
 	hudSpells = CreateHudSynchronizer();
 	hudStatus = CreateHudSynchronizer();

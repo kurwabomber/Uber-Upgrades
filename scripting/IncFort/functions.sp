@@ -4030,6 +4030,7 @@ stock fixPiercingVelocity(entity)
 }
 ResetVariables(){
 	gameStage = 0;
+	UpdateMaxValuesStage(gameStage);
 	disableMvMCash = false;
 	for(int client = 1;client<=MaxClients;client++){
 		buffChange[client] = false;

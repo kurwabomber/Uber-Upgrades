@@ -4917,6 +4917,7 @@
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
+			"restriction_category"	"2"
 			"description"	"Adds +1 rocket per rocket attack."
 			"max"		"4"
 		}

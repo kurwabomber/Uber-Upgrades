@@ -1169,11 +1169,14 @@
 			"Sp0"		"Honor!"
 			"Sp1"		"Infernal Impulse"
 		}
-		"Building Specializations"
+		"Sentry Specializations"
 		{
 			"Attr0"		"Firestorm Rounds"
 			"Attr1"		"Double Sentry Rocket Shot"
 			"Attr3"		"Sentry Rocket Fire Rate"
+		}
+		"Building Specializations"
+		{
 			"Attr6"		"Dispenser Regeneration Rate"
 			"Attr7"		"engy dispenser radius increased"
 			"Attr2"		"Teleporter Gives Buffs"
