@@ -171,6 +171,11 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 					bloodAcolyteBloodPool[attacker] -= heal;
 				}
 			}
+			if(GetAttribute(attacker, "vampire powerup", 0.0) == 2.0){
+				Buff leechDebuff;
+				leechDebuff.init("Leeched", "", Buff_Leech, 1, client, 4.0);
+				insertBuff(client, leechDebuff)
+			}
 
 			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
@@ -256,8 +261,11 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 					healthHealed += RoundToCeil(0.1 * damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
 				
 				Address vampirePowerup = TF2Attrib_GetByName(attacker, "vampire powerup");//Vampire Powerup
-				if(vampirePowerup != Address_Null && TF2Attrib_GetValue(vampirePowerup) == 1)
-					healthHealed += RoundToCeil(0.8 * damage * lifestealFactor);
+				if(vampirePowerup != Address_Null)
+					if(TF2Attrib_GetValue(vampirePowerup) == 1)
+						healthHealed += RoundToCeil(0.8 * damage * lifestealFactor);
+					else if(TF2Attrib_GetValue(vampirePowerup) == 2)
+						healthHealed += RoundToCeil(0.3 * damage * lifestealFactor);
 				
 				if(TF2_IsPlayerInCondition(attacker, TFCond_MedigunDebuff))// Conch
 					healthHealed += RoundToCeil(damage * 0.15 * lifestealFactor);

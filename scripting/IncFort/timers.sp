@@ -598,7 +598,7 @@ public Action:Timer_Every100MS(Handle timer)
 					if(GetAttribute(i, "vampire powerup", 0.0) != 2.0 && GetAttribute(client, "vampire powerup", 0.0) == 2.0){
 						float VictimPos[3];
 						GetEntPropVector(i, Prop_Data, "m_vecOrigin", VictimPos);
-						if(GetVectorDistance(clientPos,VictimPos, true) <= 640000.0)
+						if(GetVectorDistance(clientPos,VictimPos, true) <= 360000.0)
 							insertBuff(i, leechDebuff);
 					}
 				}

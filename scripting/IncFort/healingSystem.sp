@@ -59,7 +59,7 @@ float GetPlayerHealingMultiplier(client){
 	if(hasBuffIndex(client, Buff_Stronghold))
 		multiplier *= 1.33;
 	if(hasBuffIndex(client, Buff_Leech))
-		multiplier *= 0.667;
+		multiplier *= 0.5;
 	if(hasBuffIndex(client, Buff_Decay))
 		multiplier *= 0.0;
 	if(GetAttribute(client, "revenge powerup", 0.0) == 2.0)
@@ -69,6 +69,10 @@ float GetPlayerHealingMultiplier(client){
 }
 void AddPlayerHealth(client, iAdd, float flOverheal = 1.5, bool bEvent = false, healer = -1)
 {
+	if(hasBuffIndex(client, Buff_Leech)){
+		Buff leechInfo; leechInfo = playerBuffs[client][getBuffInArray(client, Buff_Leech)];
+		AddPlayerHealth(leechInfo.inflictor, RoundToCeil(iAdd*0.5));
+	}
 	iAdd = RoundToCeil(iAdd * GetPlayerHealingMultiplier(client));
     int iHealth = GetClientHealth(client);
     int iNewHealth = iHealth + iAdd;
@@ -85,8 +89,4 @@ void AddPlayerHealth(client, iAdd, float flOverheal = 1.5, bool bEvent = false, 
         }
         SetEntityHealth(client, iNewHealth);
     }
-
-	if(hasBuffIndex(client, Buff_Leech)){
-		AddPlayerHealth(client, RoundToCeil(iAdd*0.5));
-	}
 }

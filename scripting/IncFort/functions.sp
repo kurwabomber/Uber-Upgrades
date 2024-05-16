@@ -3787,7 +3787,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("vampire powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Leech Powerup {default}| {lightcyan}25%% lifesteal, drains healing of everyone (including teammates!) by 33%% if nearby.");
+			CPrintToChat(client, "{community}Leech Powerup {default}| {lightcyan}30%% lifesteal, drains healing of everyone (including teammates!) by 50%% if nearby. Also applies on hitting an enemy.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Bloodbound Powerup {default}| {lightcyan}-100%% lifesteal, 75%% damage taken -> piercing damage dealt. No fatal damage from self. If fatal damage, refill HP with bonus damage dealt.");
 		}else{
