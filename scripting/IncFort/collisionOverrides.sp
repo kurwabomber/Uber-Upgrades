@@ -22,8 +22,6 @@ public Action:OnStartTouchStomp(client, other)
 			stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 300.0)/1000.0)
 
 			if(GetAttribute(client, "agility powerup", 0.0) == 2.0){
-				stompDamage *= 2.0;
-
 				int splash = 0;
 				for(int i = 1;i <= MaxClients; ++i){
 					if(!IsValidClient3(i)) continue;
