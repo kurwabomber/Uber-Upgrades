@@ -4122,8 +4122,8 @@ public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float sr
 							
 							TeleportEntity(iEntity, src, fAngles, fVelocity);
 							DispatchSpawn(iEntity);
-							//why does it hit twice???
-							projectileDamage[iEntity] = 40.0*TF2_GetSentryDamageModifiers(attacker, melee);
+							//why does it hit twice??? also, minisentries deal 25% dmg.
+							projectileDamage[iEntity] = 40.0*TF2_GetSentryDamageModifiers(attacker, melee) * (1+(-0.75*GetEntProp(sentry, Prop_Send, "m_bMiniBuilding")));
 						}
 						firestormCounter[builder] = 0;
 					}

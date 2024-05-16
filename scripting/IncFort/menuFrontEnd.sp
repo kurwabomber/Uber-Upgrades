@@ -1030,57 +1030,31 @@ public Menu_ShowStatsSlot(client, param2)
 			
 			if(current_class[client] == TFClass_Engineer)
 			{
-				float SentryDPS = 160.0;
+				float SentryDPS = 180.0;
 				
 				Address miniSentryActive = TF2Attrib_GetByName(melee, "mod wrench builds minisentry");
 				if(miniSentryActive != Address_Null && TF2Attrib_GetValue(miniSentryActive) > 0.0)
 				{
-					SentryDPS = 120.0;
+					SentryDPS = 32.0;
 				}
 				else
 				{
 					Address sentryRocketMult = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");
 					if(sentryRocketMult != Address_Null)
 					{
-						SentryDPS += 30.0*TF2Attrib_GetValue(sentryRocketMult);
+						SentryDPS += 40.0*TF2Attrib_GetValue(sentryRocketMult);
+					}
+				}
+				float override = GetAttribute(melee, "override projectile type", 0.0);
+				switch(override){
+					case 33.0:{
+						SentryDPS *= 1.25;
 					}
 				}
 				
-				if(IsValidEdict(CWeapon))
-				{
-					Address SentryDmgActive = TF2Attrib_GetByName(CWeapon, "ring of fire while aiming");
-					if(SentryDmgActive != Address_Null)
-					{
-						SentryDPS *= TF2Attrib_GetValue(SentryDmgActive);
-					}
-				}
-				Address SentryDmgActive1 = TF2Attrib_GetByName(melee, "throwable detonation time");
-				if(SentryDmgActive1 != Address_Null)
-				{
-					SentryDPS *= TF2Attrib_GetValue(SentryDmgActive1);
-				}
-				Address SentryDmgActive2 = TF2Attrib_GetByName(melee, "throwable fire speed");
-				if(SentryDmgActive2 != Address_Null)
-				{
-					SentryDPS *= TF2Attrib_GetValue(SentryDmgActive2);
-				}
-				Address damageActive = TF2Attrib_GetByName(melee, "ubercharge");
-				if(damageActive != Address_Null)
-				{
-					SentryDPS *= Pow(1.05,TF2Attrib_GetValue(damageActive));
-				}
-				Address damageActive2 = TF2Attrib_GetByName(melee, "engy sentry damage bonus");
-				if(damageActive2 != Address_Null)
-				{
-					SentryDPS *= TF2Attrib_GetValue(damageActive2);
-				}
-				Address fireRateActive = TF2Attrib_GetByName(melee, "engy sentry fire rate increased");
-				if(fireRateActive != Address_Null)
-				{
-					SentryDPS /= TF2Attrib_GetValue(fireRateActive);
-				}
+				SentryDPS *= TF2_GetSentryDPSModifiers(client, melee);
 				
-				Format(Description, sizeof(Description), "%s\nSentry DPS = %s", Description, GetAlphabetForm(SentryDPS));
+				Format(Description, sizeof(Description), "%s\nSentry DPS = %s/each", Description, GetAlphabetForm(SentryDPS));
 			}
 			if(weaponFireRate[melee] != -1.0)
 			{

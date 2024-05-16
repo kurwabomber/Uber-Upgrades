@@ -4448,6 +4448,33 @@ stock float TF2_GetSentryDPSModifiers(client, melee){
 	
 	return dmgBonus;
 }
+stock float TF2_GetSentryDPS(client, melee){
+	float SentryDPS = 180.0;
+	
+	Address miniSentryActive = TF2Attrib_GetByName(melee, "mod wrench builds minisentry");
+	if(miniSentryActive != Address_Null && TF2Attrib_GetValue(miniSentryActive) > 0.0)
+	{
+		SentryDPS = 32.0;
+	}
+	else
+	{
+		Address sentryRocketMult = TF2Attrib_GetByName(melee, "dmg penalty vs nonstunned");
+		if(sentryRocketMult != Address_Null)
+		{
+			SentryDPS += 40.0*TF2Attrib_GetValue(sentryRocketMult);
+		}
+	}
+	float override = GetAttribute(melee, "override projectile type", 0.0);
+	switch(override){
+		case 33.0:{
+			SentryDPS *= 1.25;
+		}
+	}
+	
+	SentryDPS *= TF2_GetSentryDPSModifiers(client, melee);
+
+	return SentryDPS;
+}
 stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true, bool critMod = true, bool onlyModifiers = false)
 {
 	if(IsValidClient3(client))
