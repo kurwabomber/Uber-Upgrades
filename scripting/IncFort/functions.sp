@@ -1977,6 +1977,31 @@ refreshUpgrades(client, slot)
 					TF2Attrib_SetByName(client,"engy building health bonus", TF2Attrib_GetValue(healthActive));
 			}
 			
+			TF2Attrib_RemoveByName(client,"ubercharge rate bonus");
+			TF2Attrib_RemoveByName(client,"heal rate bonus");
+			TF2Attrib_RemoveByName(client, "health from healers reduced");
+			TF2Attrib_RemoveByName(client,"weapon spread bonus");
+			TF2Attrib_RemoveByName(client,"Projectile speed increased");
+			TF2Attrib_RemoveByName(client,"Projectile range increased");
+			TF2Attrib_RemoveByName(client,"sniper charge per sec");
+			TF2Attrib_RemoveByName(client,"blast dmg to self increased");
+			TF2Attrib_RemoveByName(client,"damage mult 1");
+			TF2Attrib_RemoveByName(client,"fire rate penalty");
+			TF2Attrib_RemoveByName(client,"major move speed bonus");
+			TF2Attrib_RemoveByName(client,"self dmg push force increased");
+			TF2Attrib_RemoveByName(client,"SET BONUS: chance of hunger decrease");
+			TF2Attrib_RemoveByName(client,"has pipboy build interface");
+			TF2Attrib_RemoveByName(client,"mult afterburn delay");
+
+			if(current_class[client] == TFClass_DemoMan)
+			{
+				int secondary = GetWeapon(client,1);
+				if(IsValidEdict(secondary))
+				{
+					TF2Attrib_RemoveByName(secondary,"sticky arm time penalty");
+				}
+			}
+
 			//Powerups
 			Address kingPowerup = TF2Attrib_GetByName(client, "king powerup");
 			if(kingPowerup != Address_Null)
@@ -1986,13 +2011,12 @@ refreshUpgrades(client, slot)
 					TF2Attrib_SetByName(client,"ubercharge rate bonus", 1.5);
 					TF2Attrib_SetByName(client,"heal rate bonus", 1.5);
 				}
-				else{
-					TF2Attrib_RemoveByName(client,"ubercharge rate bonus");
-					TF2Attrib_RemoveByName(client,"heal rate bonus");
-				}
-
-				if(TF2Attrib_GetValue(kingPowerup) == 3)
+				if(kingPowerupValue == 3)
 					TF2Attrib_SetByName(client, "health from healers reduced", 0.2);
+			}
+
+			if(GetAttribute(client, "resistance powerup", 0.0) == 2.0){
+				TF2Attrib_SetByName(client, "major move speed bonus", 1.2);
 			}
 			
 			Address precisionPowerup = TF2Attrib_GetByName(client, "precision powerup");
@@ -2013,29 +2037,11 @@ refreshUpgrades(client, slot)
 							TF2Attrib_SetByName(secondary,"sticky arm time penalty", -2.0);
 						}
 					}
-				}else{
-					TF2Attrib_RemoveByName(client,"weapon spread bonus");
-					TF2Attrib_RemoveByName(client,"Projectile speed increased");
-					TF2Attrib_RemoveByName(client,"Projectile range increased");
-					TF2Attrib_RemoveByName(client,"sniper charge per sec");
-					TF2Attrib_RemoveByName(client,"blast dmg to self increased");
-					if(current_class[client] == TFClass_DemoMan)
-					{
-						int secondary = GetWeapon(client,1);
-						if(IsValidEdict(secondary))
-						{
-							TF2Attrib_SetByName(secondary,"sticky arm time penalty", -2.0);
-						}
-					}
 				}
 
 				if(precisionPowerupValue == 3){
 					TF2Attrib_SetByName(client,"damage mult 1", 4.0);
 					TF2Attrib_SetByName(client,"fire rate penalty", 4.0);
-				}
-				else{
-					TF2Attrib_RemoveByName(client,"damage mult 1");
-					TF2Attrib_RemoveByName(client,"fire rate penalty");
 				}
 			}
 			
@@ -2049,13 +2055,6 @@ refreshUpgrades(client, slot)
 					TF2Attrib_SetByName(client,"SET BONUS: chance of hunger decrease", 0.35);
 					TF2Attrib_SetByName(client,"has pipboy build interface", 72.0);
 				}
-				else
-				{
-					TF2Attrib_RemoveByName(client,"major move speed bonus");
-					TF2Attrib_RemoveByName(client,"self dmg push force increased");
-					TF2Attrib_RemoveByName(client,"SET BONUS: chance of hunger decrease");
-					TF2Attrib_RemoveByName(client,"has pipboy build interface");
-				}
 
 				TF2Attrib_SetByName(client,"major increased jump height", TF2Attrib_GetValue(agilityPowerup) == 1 ? 1.3 : (TF2Attrib_GetValue(agilityPowerup) == 2 ? 2.0 : 1.0));
 			}
@@ -2065,8 +2064,6 @@ refreshUpgrades(client, slot)
 			{
 				if(TF2Attrib_GetValue(supernovaPowerup) == 2)
 					TF2Attrib_SetByName(client,"mult afterburn delay", 1.55);
-				else
-					TF2Attrib_RemoveByName(client,"mult afterburn delay");
 			}
 
 		}
@@ -3778,7 +3775,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("resistance powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Fray Powerup {default}| {lightcyan}Every 3s, avoid one hit taken. Refreshed on kill.");
+			CPrintToChat(client, "{community}Fray Powerup {default}| {lightcyan}Every 3s, avoid one hit taken. Refreshed on kill. +20% movement speed.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Stronghold Powerup {default}| {lightcyan}1/2x damage taken, middle click to enter stronghold, completely immobilizing you but giving crit and status immunities with 1.33x healing. Nearby teammates get stronghold bonus.");
 		}else{
@@ -3823,7 +3820,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("agility powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Quaker Powerup {default}| {lightcyan}Weighdown is automatically activated after jumping. Stomp damage is spread to 2 other targets and deals 2x dmg. 2x jump height.");
+			CPrintToChat(client, "{community}Quaker Powerup {default}| {lightcyan}Weighdown is automatically activated after jumping. Stomp damage is spread to 2 other targets and deals 2x dmg. 2x jump height. Damage is increased by +0.1%% times downward velocity.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces shift middle click with teleport to crosshair. Deals 1200 base damage to all enemies through path of teleport. Each use consumes 10%% focus. Applies +4 additive dmg taken on teleport hit.");
 		}else{

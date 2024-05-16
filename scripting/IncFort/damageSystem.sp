@@ -514,7 +514,15 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				if(GetAttribute(victim, "king powerup", 0.0) == 2)
 					damage *= 1.75
 			}
-		}	
+		}
+
+		if(GetAttribute(attacker, "agility powerup", 0.0) == 2){
+			float velocity[3];
+			GetEntPropVector(attacker, Prop_Data, "m_vecAbsVelocity", velocity);
+
+			if(velocity[2] < -400.0)
+				damage *= 1.0 + (-velocity[2]-400.0)*0.001;
+		}
 
 		if(StunShotStun[attacker])
 		{
