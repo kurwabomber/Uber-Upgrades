@@ -309,20 +309,6 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					}
 				}
 			}
-			if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
-				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-					damage *= 1.75
-			else if(GetAttribute(attacker, "knockout powerup", 0.0) == 2)
-				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2)
-					damage *= 0.5;
-			else if(GetAttribute(attacker, "knockout powerup", 0.0) == 3 && !isTagged[attacker][victim])
-				if(TF2Econ_GetItemLoadoutSlot(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"),TF2_GetPlayerClass(attacker)) == 2){
-					damage *= 4.0;
-					if(!critStatus[victim]){
-						critStatus[victim] = true;
-						damage *= 2.25;
-					}
-				}
 
 			if(GetAttribute(attacker, "inverter powerup", 0.0) == 2){
 				if(hasBuffIndex(attacker, Buff_CritMarkedForDeath)){
@@ -1406,6 +1392,14 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						isPenetrated[i] = false;
 					}
 				}
+			}
+		}
+		if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee){
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
+				damage *= 1.75
+			else if(GetAttribute(attacker, "knockout powerup", 0.0) == 3 && !isTagged[attacker][victim]){
+				damage *= 4.0;
+				damagetype |= DMG_CRIT;
 			}
 		}
 		if(GetAttribute(attacker, "supernova powerup", 0.0) == 1.0)
