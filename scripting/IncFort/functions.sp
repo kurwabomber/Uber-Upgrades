@@ -3775,7 +3775,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("resistance powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Fray Powerup {default}| {lightcyan}Every 3s, avoid one hit taken. Refreshed on kill. +20% movement speed.");
+			CPrintToChat(client, "{community}Fray Powerup {default}| {lightcyan}Every 3s, avoid one hit taken. Refreshed on kill. +20%% movement speed.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Stronghold Powerup {default}| {lightcyan}1/2x damage taken, middle click to enter stronghold, completely immobilizing you but giving crit and status immunities with 1.33x healing. Nearby teammates get stronghold bonus.");
 		}else{
