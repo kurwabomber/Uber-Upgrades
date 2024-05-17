@@ -1800,10 +1800,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 		{
 			if(currentitem_level[client][3] == 242 && client_new_weapon_ent_id[client] != 0 && IsValidEdict(client_new_weapon_ent_id[client]))
 			{
-				SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",-1);
-				EquipPlayerWeapon(client, client_new_weapon_ent_id[client]);
-
-				SetEntPropFloat(client_new_weapon_ent_id[client], Prop_Send, "m_flNextPrimaryAttack", 0.3+currentGameTime+(1/weaponFireRate[client_new_weapon_ent_id[client]]));
+				TF2Util_SetPlayerActiveWeapon(client, client_new_weapon_ent_id[client]);
+				//SetEntPropFloat(client_new_weapon_ent_id[client], Prop_Send, "m_flNextPrimaryAttack", 0.3+currentGameTime+(1/weaponFireRate[client_new_weapon_ent_id[client]]));
 			}
 			ImpulseTimer[client] = currentGameTime+0.3;
 		}
