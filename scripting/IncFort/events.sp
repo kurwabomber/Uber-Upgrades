@@ -988,12 +988,12 @@ public OnEntityCreated(entity, const char[] classname)
 		g_nBounces[entity] = 0;
 		RequestFrame(getProjOrigin, reference);
 
-		SDKHook(entity, SDKHook_Touch, FixProjectileCollision);
 		if(StrEqual(classname, "tf_projectile_energy_ball") || StrEqual(classname, "tf_projectile_energy_ring")
 		|| StrEqual(classname, "tf_projectile_balloffire"))
 		{
 			RequestFrame(ProjSpeedDelay, reference);
 			RequestFrame(PrecisionHoming, reference);
+			SDKHook(entity, SDKHook_Touch, FixProjectileCollision);
 		}
 		else if(StrEqual(classname, "tf_projectile_arrow") || StrEqual(classname, "tf_projectile_healing_bolt"))
 		{
@@ -1006,16 +1006,17 @@ public OnEntityCreated(entity, const char[] classname)
 			CreateTimer(6.0, SelfDestruct, reference);
 			CreateTimer(0.1, ArrowThink, reference, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 			RequestFrame(ApplyFullHoming, reference);
+			SDKHook(entity, SDKHook_Touch, FixProjectileCollision);
 		}
 		if(StrEqual(classname, "tf_projectile_syringe") || StrEqual(classname, "tf_projectile_rocket")
-		|| StrEqual(classname, "tf_projectile_flare")|| StrEqual(classname, "tf_projectile_pipe")
-		|| StrEqual(classname, "tf_projectile_pipe_remote"))
+		|| StrEqual(classname, "tf_projectile_flare"))
 		{
 			RequestFrame(MultiShot, reference);
 			SDKHook(entity, SDKHook_StartTouch, OnStartTouch);
 			RequestFrame(projGravity, reference);
 			RequestFrame(PrecisionHoming, reference);
 			RequestFrame(ApplyFullHoming, reference);
+			SDKHook(entity, SDKHook_Touch, FixProjectileCollision);
 		}
 		if(StrEqual(classname, "tf_projectile_rocket") || StrEqual(classname, "tf_projectile_flare") || StrEqual(classname, "tf_projectile_sentryrocket"))
 		{
@@ -1023,6 +1024,7 @@ public OnEntityCreated(entity, const char[] classname)
 			RequestFrame(monoculusBonus, reference);
 			RequestFrame(PrecisionHoming, reference);
 			RequestFrame(meteorCollisionCheck, reference);
+			SDKHook(entity, SDKHook_Touch, FixProjectileCollision);
 		}
 		if(StrEqual(classname, "tf_projectile_stun_ball") || StrEqual(classname, "tf_projectile_ball_ornament") || StrEqual(classname, "tf_projectile_cleaver"))
 		{
@@ -1042,6 +1044,11 @@ public OnEntityCreated(entity, const char[] classname)
 		}
 		if(StrEqual(classname, "tf_projectile_pipe") || StrEqual(classname, "tf_projectile_pipe_remote"))
 		{
+			RequestFrame(MultiShot, reference);
+			SDKHook(entity, SDKHook_StartTouch, OnStartTouch);
+			RequestFrame(projGravity, reference);
+			RequestFrame(PrecisionHoming, reference);
+			RequestFrame(ApplyFullHoming, reference);
 			RequestFrame(CheckGrenadeMines, reference);
 			RequestFrame(ChangeProjModel, reference);
 		}
