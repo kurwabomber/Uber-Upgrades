@@ -44,7 +44,20 @@ float GetResistance(int client, bool includeReduction = false, float increaseBas
 
 		Address DodgeBody = TF2Attrib_GetByName(client, "SET BONUS: chance of hunger decrease");
 		if(DodgeBody != Address_Null)
-			TotalResistance /= TF2Attrib_GetValue(DodgeBody);
+			TotalResistance /= 1-TF2Attrib_GetValue(DodgeBody);
+
+		float resPowerup = GetAttribute(client, "resistance powerup", 0.0);
+		if(resPowerup == 1 || resPowerup == 3 || GetAttribute(client, "inverter powerup", 0.0) == 2)
+			TotalResistance *= 2.0;
+		
+		if(GetAttribute(client, "revenge powerup", 0.0) == 1 || GetAttribute(client, "knockout powerup", 0.0) == 1 || GetAttribute(client, "king powerup", 0.0) == 1 || GetAttribute(client, "supernova powerup", 0.0) == 1 || GetAttribute(client, "inverter powerup", 0.0) == 1)
+			TotalResistance *= 1.25;
+		
+		if(GetAttribute(client, "regeneration powerup", 0.0) == 1 || GetAttribute(client, "vampire powerup", 0.0) == 1 || 1 <= GetAttribute(client, "plague powerup", 0.0) <= 2)
+			TotalResistance *= 1.333;
+		
+		if(GetAttribute(client, "knockout powerup", 0.0) == 2)
+			TotalResistance *= 1.5;
 	}
 	return TotalResistance;
 }
