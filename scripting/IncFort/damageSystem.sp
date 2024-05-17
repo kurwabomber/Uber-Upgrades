@@ -651,7 +651,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 
-			if(!(currentDamageType[attacker].second & DMG_FROST) && !(currentDamageType[attacker].second & DMG_PIERCING) && !(damagetype & DMG_PREVENT_PHYSICS_FORCE)){ //Make sure it isn't piercing or frost damage...
+			if(!(currentDamageType[attacker].second & DMG_FROST) && !(currentDamageType[attacker].second & DMG_PIERCING) && !(damagetype == DMG_BURN + DMG_PREVENT_PHYSICS_FORCE)){ //Make sure it isn't piercing, frost or afterburn damage...
 				float freezeRatio = GetAttribute(weapon, "damage causes freeze", 0.0);
 				if(freezeRatio > 0){
 					float frostIncrease = freezeRatio*damage/TF2Util_GetEntityMaxHealth(victim);
