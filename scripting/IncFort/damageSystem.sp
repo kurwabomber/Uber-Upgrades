@@ -46,10 +46,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				damage /= linearReduction;
 
 			if(!IsFakeClient(victim)){
-				if(fl_ArmorCap[victim] < 1.0)
-					fl_ArmorCap[victim] = 1.0;
-				
-				damage /= fl_ArmorCap[victim];
+				damage /= GetResistance(victim);
 			}
 		}
 		if(IsValidClient3(attacker) && victim != attacker)
@@ -799,6 +796,8 @@ public Action OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 		}
 		
 		if(!(currentDamageType[attacker].second & DMG_PIERCING) && attacker != victim){
+			float armorPenetration = TF2Attrib_HookValueFloat(0.0, "armor penetration buff", attacker);
+
 			float dmgReduction = TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", victim);
 			if(dmgReduction != 1.0)
 				damage *= dmgReduction
@@ -808,10 +807,10 @@ public Action OnTakeDamage(victim, &attacker, &inflictor, float &damage, &damage
 				damage /= linearReduction;
 
 			if(!IsFakeClient(victim)){
-				if(fl_ArmorCap[victim] < 1.0)
-					fl_ArmorCap[victim] = 1.0;
-				
-				damage /= fl_ArmorCap[victim];
+				damage /= GetResistance(victim, _, _,_, -armorPenetration);
+			}else{
+				//Armor penetration just gives +10% damage on bots.
+				damage *= 1.0 + armorPenetration*0.1;
 			}
 		}
 	}
@@ -1001,7 +1000,7 @@ public Action:OnTakeDamagePre_Sentry(victim, &attacker, &inflictor, float &damag
 	{
 		if(!IsFakeClient(owner))
 		{
-			float armorAmt = fl_ArmorCap[owner] * 2.0;
+			float armorAmt = GetResistance(owner);
 			damage /= armorAmt;
 		}
 		damage *= TF2Attrib_HookValueFloat(1.0, "dmg_incoming_mult", owner);

@@ -5082,4 +5082,13 @@
         "hidden"	"1"
         "effect_type"	"positive"
     }
+    "6357"
+    {
+        "name"  "armor penetration buff"
+        "attribute_class"   "armor_penetration_buff"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
 }

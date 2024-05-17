@@ -1,20 +1,8 @@
-float GetResistance(int client, bool includeReduction = false, float increaseBase = 0.0, float increaseMult = 0.0)
+float GetResistance(int client, bool includeReduction = false, float increaseBase = 0.0, float increaseMult = 0.0, float increaseTotal = 0.0)
 {
-	Address capActive = TF2Attrib_GetByName(client, "tool escrow until date")
-	Address Defense = TF2Attrib_GetByName(client, "is throwable chargeable");
 	float TotalResistance = 1.0;
-	float DefenseMult = 1.0;
-	float ArmorMult = 1.0;
-	
-	if(capActive != Address_Null)
-		ArmorMult = TF2Attrib_GetValue(capActive);
-	if(Defense != Address_Null)
-		DefenseMult = TF2Attrib_GetValue(Defense);
-	
-	ArmorMult += increaseBase;
-	DefenseMult += increaseMult;
 
-	TotalResistance = ArmorMult*DefenseMult;
+	TotalResistance = increaseTotal+(increaseBase+GetAttribute(client, "tool escrow until date"))*(increaseMult+GetAttribute(client, "is throwable chargeable"));
 	if(hasBuffIndex(client, Buff_BrokenArmor)){
 		TotalResistance -= playerBuffs[client][getBuffInArray(client,Buff_BrokenArmor)].priority;
 	}
@@ -316,14 +304,7 @@ public int GetAmountOfDebuffs(int i){
 	return amount;
 }
 public void ManagePlayerBuffs(int i){
-	float additiveDamageRawBuff;
-	float additiveDamageMultBuff = 1.0;
-	float multiplicativeDamageBuff = 1.0;
-	float additiveAttackSpeedMultBuff = 1.0;
-	float multiplicativeAttackSpeedMultBuff = 1.0;
-	float additiveMoveSpeedMultBuff = 1.0;
-	float additiveDamageTakenBuff = 1.0;
-	float multiplicativeDamageTakenBuff = 1.0;
+	float additiveDamageRawBuff,additiveDamageMultBuff = 1.0,multiplicativeDamageBuff = 1.0,additiveAttackSpeedMultBuff = 1.0,multiplicativeAttackSpeedMultBuff = 1.0,additiveMoveSpeedMultBuff = 1.0,additiveDamageTakenBuff = 1.0,multiplicativeDamageTakenBuff = 1.0, additiveArmorPenetration = 0.0;
 
 	char details[255] = "Statuses Active:"
 
@@ -363,6 +344,7 @@ public void ManagePlayerBuffs(int i){
 		additiveMoveSpeedMultBuff += playerBuffs[i][buff].additiveMoveSpeedMult;
 		additiveDamageTakenBuff += playerBuffs[i][buff].additiveDamageTaken;
 		multiplicativeDamageTakenBuff *= playerBuffs[i][buff].multiplicativeDamageTaken;
+		additiveArmorPenetration += playerBuffs[i][buff].additiveArmorPenetration;
 
 		if(playerBuffs[i][buff].description[0] != '\0')
 			Format(details, sizeof(details), "%s\n%s: - %.1fs\n  %s", details, playerBuffs[i][buff].name, playerBuffs[i][buff].duration - currentGameTime, playerBuffs[i][buff].description);
@@ -420,6 +402,7 @@ public void ManagePlayerBuffs(int i){
 	TF2Attrib_SetByName(i, "Reload time decreased", 1.0/(additiveAttackSpeedMultBuff*multiplicativeAttackSpeedMultBuff));
 	TF2Attrib_SetByName(i, "movespeed player buff", additiveMoveSpeedMultBuff);
 	TF2Attrib_SetByName(i, "damage taken mult 4", additiveDamageTakenBuff*multiplicativeDamageTakenBuff);
+	TF2Attrib_SetByName(i, "armor penetration buff", additiveArmorPenetration);
 
 	if(IsFakeClient(i) || disableIFMiniHud[i] > currentGameTime)
 		return;

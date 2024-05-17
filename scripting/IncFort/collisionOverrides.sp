@@ -783,7 +783,7 @@ public Action:OnTouchExplodeJar(entity, other)
 							}//corrosiveDOT
 							if(isPlayer)
 							{
-								Address jarArmorBrokenBuff = TF2Attrib_GetByName(CWeapon, "jar gives armor penetration");
+								Address jarArmorBrokenBuff = TF2Attrib_GetByName(CWeapon, "jar applies armor decay");
 								if(jarArmorBrokenBuff != Address_Null)
 								{
 									Buff pierceBuff;
@@ -824,7 +824,8 @@ public Action:OnTouchExplodeJar(entity, other)
 							if(jarArmorPierceBuff != Address_Null)
 							{
 								Buff pierceBuff;
-								pierceBuff.init("Armor Piercing Boost", "", Buff_PiercingBuff, RoundFloat(TF2Attrib_GetValue(jarArmorPierceBuff)), owner, 6.0);
+								pierceBuff.init("Armor Piercing Boost", "", Buff_PiercingBuff, 1, owner, 6.0);
+								pierceBuff.severity = TF2Attrib_GetValue(jarArmorPierceBuff);
 								insertBuff(i, pierceBuff);
 							}
 							

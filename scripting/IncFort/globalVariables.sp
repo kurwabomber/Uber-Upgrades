@@ -91,6 +91,7 @@ enum struct Buff{
 	float additiveDamageTaken;
 	float multiplicativeDamageTaken;
 	float severity;
+	float additiveArmorPenetration;
 
 	void clear(){
 		switch(this.id){
@@ -123,6 +124,7 @@ enum struct Buff{
 		this.additiveDamageTaken = 0.0;
 		this.multiplicativeDamageTaken = 1.0;
 		this.severity = 0.0;
+		this.additiveArmorPenetration = 0.0;
 	}
 	void init(const char sName[32], const char sDescription[64], int iID, int iPriority, int iInflictor, float fDuration)
 	{
@@ -307,7 +309,6 @@ float StartMoneySaved;
 float blankArray2[MAXPLAYERS+1][16][MAX_ATTRIBUTES_ITEM]
 float MenuTimer[MAXPLAYERS +1];
 float ImpulseTimer[MAXPLAYERS +1];
-float fl_ArmorCap[MAXPLAYERS+1];
 float g_flLastAttackTime[MAXPLAYERS+1];
 float MadmilkDuration[MAXPLAYERS+1];
 float fl_MaxFocus[MAXPLAYERS+1];

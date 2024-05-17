@@ -307,8 +307,8 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"buff movement speed"			"-9"
-			"buff damage taken"				"-8"
+			"buff movement speed"			"-6"
+			"buff damage taken"				"-5"
 			"buff fire rate"				"3"
 		}
 		"Plunder"
@@ -385,7 +385,7 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"Teammate Damage Redirection"	"6.5"
-			"savior sacrifice attribute"	"1.0"
+			"savior sacrifice attribute"	"1.5"
 		}
 		"Divine Bloodline"
 		{
@@ -399,8 +399,8 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"buff damage taken"				"5.0"
-			"buff fire rate"				"1.5"
-			"enraged meter filled when eaten"	"10"
+			"buff fire rate"				"3.5"
+			"enraged meter filled when eaten"	"15"
 		}
 		"Lightning Affinity"
 		{

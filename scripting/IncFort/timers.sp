@@ -40,8 +40,6 @@ public Action:Timer_Second(Handle timer)
 				}
 			}
 			
-
-			fl_ArmorCap[client] = GetResistance(client);
 			if(IsValidClient(client)){
 				GetClientCookie(client, hArmorXPos, ArmorXPos[client], sizeof(ArmorXPos));
 				GetClientCookie(client, hArmorYPos, ArmorYPos[client], sizeof(ArmorYPos));
