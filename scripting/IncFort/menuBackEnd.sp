@@ -116,7 +116,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 					Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 					upgrades[upgrade_choice].name,upgrades[upgrade_choice].description);
 					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
-					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "pct");
+					ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "％");
 					SendItemInfo(client, upgradeDescription);
 				}
 				if(upgrades[upgrade_choice].display_style == 8){
@@ -228,7 +228,7 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 						Format(upgradeDescription, sizeof(upgradeDescription), "%t:\n%s\n", 
 						upgrades[upgrade_choice].name,upgrades[upgrade_choice].description);
 						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "\\n", "\n");
-						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "pct");
+						ReplaceString(upgradeDescription, sizeof(upgradeDescription), "%", "％");
 						SendItemInfo(client, upgradeDescription);
 					}
 				}

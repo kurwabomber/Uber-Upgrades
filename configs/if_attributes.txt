@@ -4647,10 +4647,10 @@
 			"ref"		"Life Steal Ability"
 			"cost"		"1500"
 			"increase_ratio"	"0.1"
-			"value"		"0.1"
+			"value"		"0.01"
 			"init"		"0.0"
-			"description"	"Increases lifesteal from damage.\n0.1x of the damage then multiplied\nby this attribute, then\ngiven as health.\n0.2x is converted into armor.\nLifesteal on bots is 0.3x effective."
-			"max"		"4.0"
+			"description"	"Increases lifesteal from damage.\nLifesteal on bots is 0.3x effective."
+			"max"		"0.4"
 		}
 		"1521"
 		{

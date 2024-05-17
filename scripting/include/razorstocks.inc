@@ -1622,9 +1622,12 @@ stock GetLoadedAmmo( client, slot )
 }
 stock void SendItemInfo(int client, const char[] text)
 {
+	char itemText[256];
+	Format(itemText, sizeof(itemText), text);
+
 	Handle hBuffer = StartMessageOne("KeyHintText", client);
 	BfWriteByte(hBuffer, 1);
-	BfWriteString(hBuffer, text);
+	BfWriteString(hBuffer, itemText);
 	EndMessage();
 }
 stock int GetClientBaseHP(client){

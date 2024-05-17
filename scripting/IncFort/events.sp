@@ -258,7 +258,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				
 				Address LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");//Lifesteal attribute
 				if(LifestealActive != Address_Null)
-					healthHealed += RoundToCeil(0.1 * damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
+					healthHealed += RoundToCeil(damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
 				
 				Address vampirePowerup = TF2Attrib_GetByName(attacker, "vampire powerup");//Vampire Powerup
 				if(vampirePowerup != Address_Null)
