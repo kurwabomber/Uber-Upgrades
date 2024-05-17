@@ -2994,7 +2994,7 @@ public MRESReturn OnBlastExplosion(int entity, Handle hReturn){
 		int targetsList[MAXPLAYERS+1];
 		float victimPosition[3];
 		int index;
-		float damage = 90.0 * TF2_GetDamageModifiers(owner, CWeapon);
+		float damage = 40.0 * TF2_GetDamageModifiers(owner, CWeapon);
 		for(int i=1;i<=MaxClients;++i){
 			if(!IsValidClient3(i))
 				continue;
