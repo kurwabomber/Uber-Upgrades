@@ -775,7 +775,7 @@
 		"en"		"Sharpshooter"
 	}
 	"Accuracy Scales DMG Replacement"{
-		"en"		"Accuracy Scales Damage"
+		"en"		"Bullet Weapon Damage Bonus"
 	}
 	"Banner Summons Lightning"{
 		"en"		"Banner Summons Lightning"

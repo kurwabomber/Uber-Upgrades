@@ -1615,7 +1615,9 @@ public float genericSentryDamageModification(victim, attacker, inflictor, float 
 	}
 	if(projectileDamage[inflictor] > 0.0){
 		damage = projectileDamage[inflictor];
-	}
+	}else if(ShouldNotHit[inflictor][victim])
+		return 0.0;
+		
 	return damage;
 }
 public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage, &weapon, &damagetype, &damagecustom, char[] damageCategory)

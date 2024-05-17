@@ -1275,7 +1275,7 @@ DisplayItemChange(client,itemidx)
 		//Heavy Primaries
 		case 312:
 		{
-			ChangeString = "The Brass Beast | Shoots rockets that have 70 base damage and 144HU blast radius and can penetrate enemies. Cannot hit enemies multiple times. 3x slower fire rate.";
+			ChangeString = "The Brass Beast | Shoots rockets that have 90 base damage and 200HU blast radius and can penetrate enemies. Cannot hit enemies multiple times. 3x slower fire rate.";
 		}
 		case 811,832:
 		{
@@ -4280,6 +4280,9 @@ stock float TF2_GetWeaponclassDPS(client, weapon)
 			switch(GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")){
 				case 232:{
 					weaponDPS = 448.0;
+				}
+				case 312:{
+					weaponDPS = 700.0;
 				}
 			}
 			return weaponDPS;
