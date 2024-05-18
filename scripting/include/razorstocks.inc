@@ -757,6 +757,24 @@ stock Action HeavyFriendlyHoming(Handle timer, any:ref)
 	}
 	return Plugin_Continue;
 }
+stock bool TraceDirAim(const float origin[3], const float dir[3], float vec[3]) {
+    float vecangles[3], vecorigin[3], fwd[3];
+    GetVectorAngles(dir, vecangles);
+	GetAngleVectors(vecangles,fwd, NULL_VECTOR, NULL_VECTOR);
+	ScaleVector(fwd, 30.0);
+	
+	AddVectors(origin, fwd, vecorigin);
+
+    Handle traceray = TR_TraceRayEx(vecorigin, vecangles, MASK_SHOT_HULL, RayType_Infinite);
+    if (TR_DidHit(traceray)) {
+        TR_GetEndPosition(vec, traceray);
+        delete traceray;
+
+        return true;
+    }
+    delete traceray;
+    return false;
+}
 stock bool TracePlayerAim(int client, float vec[3]) {
     if (!IsClientInGame(client))
         return false;

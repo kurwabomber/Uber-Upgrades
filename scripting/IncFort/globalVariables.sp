@@ -363,6 +363,7 @@ float pylonCharge[MAXPLAYERS+1];
 float savedCharge[MAXPLAYERS+1];
 float chainLightningAbilityCharge[MAXPLAYERS+1];
 float sunstarDuration[MAXPLAYERS+1];
+float lastSentryFiring[MAXENTITIES];
 
 //String
 char given_upgrd_classnames[LISTS][LISTS_CATEGORIES][128]

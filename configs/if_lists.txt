@@ -904,7 +904,6 @@
 			"Attr1"		"blast radius increased"
 			"Attr9"		"dmg falloff decreased"
 			"Attr13"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr13"	"reveal cloaked victim on hit"
 			"Attr14"	"reveal disguised victim on hit"
@@ -919,6 +918,7 @@
 			"Attr3"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
 			"Attr5"		"charge movespeed increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -936,7 +936,6 @@
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
-			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
@@ -951,6 +950,7 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -966,8 +966,6 @@
 			"Attr0"			"damage bonus"
 			"Attr17"		"ap (slowswing)"
 			"Attr16"		"Extra Damage Bonus"
-			"Attr8"			"Weapons Deals No Knockback"
-			
 			"Attr13"		"Life Steal Ability"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
@@ -979,6 +977,7 @@
 			"Attr0"		"melee attack rate bonus"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -994,7 +993,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr7"		"reveal cloaked victim on hit"
 			"Attr8"		"reveal disguised victim on hit"
@@ -1007,6 +1005,7 @@
 			"Attr3"		"bullets per shot bonus"
 			"Attr4"		"weapon spread bonus(H)"
 			"Attr5"		"projectile penetration heavy"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1022,8 +1021,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr22"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1038,6 +1035,7 @@
 			"Attr3"		"bullets per shot bonus"
 			"Attr4"		"weapon spread bonus(H)"
 			"Attr5"		"projectile penetration heavy"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1053,8 +1051,6 @@
 			"Attr0"		"damage bonus(L)"
 			"Attr22"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1069,7 +1065,7 @@
 			"Attr3"		"bullets per shot bonus (single)"
 			"Attr4"		"weapon spread bonus"
 			"Attr5"		"projectile penetration heavy"
-
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1085,7 +1081,6 @@
 			"Attr0"		"damage bonus"
 			"Attr24"	"ap (condensedlaser)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1097,6 +1092,7 @@
 			"Attr0"		"fire rate bonus(multshit)"
 			"Attr1"		"faster reload rate"
 			"Attr2"		"clip size bonus (E)"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1113,7 +1109,6 @@
 			"Attr0"		"damage bonus(IS)"
 			"Attr7"		"ap (highervoltage)"
 			"Attr6"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr21"	"afterburn time increased(N)"
 			"Attr10"	"reveal cloaked victim on hit"
@@ -1123,6 +1118,7 @@
 		{
 			"Attr0"		"fire rate bonus(shrtcrt)"
 			"Attr1"		"Increased Shock Range"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1138,8 +1134,6 @@
 			"Attr0"		"damage bonus"
 			"Attr17"	"ap (slowswing)"
 			"Attr16"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr6"		"reveal cloaked victim on hit"
 			"Attr7"		"reveal disguised victim on hit"
@@ -1149,6 +1143,7 @@
 			"Attr0"		"melee attack rate bonus"
 			"Attr3"		"melee range multiplier"
 			"Attr11"	"increase player capture value"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Building tech upgrades"
 		{
@@ -1175,6 +1170,7 @@
 			"Attr1"		"Double Sentry Rocket Shot"
 			"Attr2"		"Sentry Rocket Fire Rate"
 			"Attr3"		"sentry bullets per shot"
+			"Attr4"		"Rocket Barrage Sentry"
 		}
 		"Building Specializations"
 		{
@@ -1192,8 +1188,6 @@
 			"Attr0"		"damage bonus"
 			"Attr11"	"ap (electricmotor)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr21"	"afterburn time increased(N)"
 			"Attr9"		"reveal cloaked victim on hit"
@@ -1211,6 +1205,7 @@
 			"Attr15"	"spunup_damage_resistance"
 			"Attr16"	"spunup_push_force_immunity"
 			"Attr13"	"generate rage on damage"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1226,8 +1221,6 @@
 			"Attr0"		"damage bonus"
 			"Attr11"	"ap (electricmotor)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr21"	"afterburn time increased(N)"
 			"Attr9"		"reveal cloaked victim on hit"
@@ -1242,6 +1235,7 @@
 			"Attr15"	"spunup_damage_resistance"
 			"Attr16"	"spunup_push_force_immunity"
 			"Attr13"	"generate rage on damage"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1257,8 +1251,6 @@
 			"Attr0"		"damage bonus"
 			"Attr24"	"ap (biggercali)"
 			"Attr11"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr5"		"projectile penetration"
 			"Attr8"		"reveal cloaked victim on hit"
@@ -1270,6 +1262,7 @@
 			"Attr5"		"clip size bonus"
 			"Attr7"		"faster reload rate"
 			"Attr8"		"Mad Milk On Hit Duration"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1285,7 +1278,6 @@
 			"Attr0"		"damage bonus"
 			"Attr15"	"ap (biggercali)"
 			"Attr11"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1298,6 +1290,7 @@
 			"Attr3"		"clip size bonus (B)"
 			"Attr4"		"faster reload rate (U)"
 			"Attr6"		"Homing Projectiles (crossbow)"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1313,7 +1306,6 @@
 			"Attr0"		"damage bonus"
 			"Attr15"	"ap (biggercali)"
 			"Attr11"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1325,6 +1317,7 @@
 			"Attr2"		"fire rate bonus(multshit)"
 			"Attr3"		"clip size bonus (B)"
 			"Attr6"		"Homing Projectiles (crossbow)"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1342,8 +1335,6 @@
 			"Attr13"	"Direct Flame Damage Multiplier"
 			"Attr14"	"Increased Overall Damage(F)"
 			"Attr15"	"afterburn dmg increased"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr21"	"Shoots extra projectile"
 			"Attr10"	"afterburn time increased"
@@ -1353,7 +1344,9 @@
 		"Flamethrower specific upgrades"
 		{
 			"Attr17"	"flame_speed"
+			"Attr2"		"flame life bonus"
 			"Attr14"	"Flame Size"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1371,7 +1364,6 @@
 			"Attr12"	"Direct Flame Damage Multiplier"
 			"Attr15"	"Increased Overall Damage(F)"
 			"Attr15"	"afterburn dmg increased"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr21"	"Shoots extra projectile"
 			"Attr10"	"afterburn time increased"
@@ -1381,9 +1373,10 @@
 		"Flamethrower specific upgrades"
 		{
 			"Attr3"		"increase buff duration"
-			"Attr2"		"flame life bonus"
 			"Attr17"	"flame_speed"
+			"Attr2"		"flame life bonus"
 			"Attr14"	"Flame Size"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1399,8 +1392,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr16"	"ap (temprise)"
 			"Attr13"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr14"	"afterburn time increased"
 			"Attr10"	"reveal cloaked victim on hit"
@@ -1410,6 +1401,7 @@
 		{
 			"Attr1"		"fire rate bonus(fortified)"
 			"Attr2"		"Projectile speed increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1425,8 +1417,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr16"	"ap (temprise)"
 			"Attr13"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr14"	"afterburn time increased"
 			"Attr10"	"reveal cloaked victim on hit"
@@ -1437,6 +1427,7 @@
 			"Attr1"		"fire rate bonus(fortified)"
 			"Attr2"		"blast radius increased"
 			"Attr3"		"dmg falloff decreased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1452,8 +1443,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr15"	"ap (temprise)"
 			"Attr2"		"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr21"	"afterburn time increased(N)"
 			"Attr6"		"reveal cloaked victim on hit"
@@ -1463,6 +1452,7 @@
 		{
 			"Attr1"		"fire rate bonus(fortified)"
 			"Attr2"		"Projectile speed increased(DH)"
+			"Attr8"		"Weapons Deals No Knockback"
 		}		
 		"Special Tweaks"
 		{
@@ -1478,7 +1468,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr11"	"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1493,6 +1482,7 @@
 			"Attr8"		"bullets per shot bonus"
 			"Attr9"		"weapon spread bonus(H)"
 			"Attr10"		"projectile penetration heavy"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1508,7 +1498,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr11"	"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1523,6 +1512,7 @@
 			"Attr8"		"bullets per shot bonus"
 			"Attr9"		"weapon spread bonus(H)"
 			"Attr10"		"projectile penetration heavy"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1539,8 +1529,6 @@
 			"Attr24"	"ap (biggercali)"
 			"Attr2"		"sniper full charge damage bonus"
 			"Attr4"		"Increased Overall Damage"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr5"		"projectile penetration heavy"
 			"Attr12"	"reveal cloaked victim on hit"
@@ -1553,6 +1541,7 @@
 			"Attr2"		"bullets per shot bonus (single)"
 			"Attr8"		"Increased Charge percent"
 			"Attr5"		"aiming movespeed increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1569,8 +1558,6 @@
 			"Attr24"	"ap (biggercali)"
 			"Attr2"		"sniper full charge damage bonus"
 			"Attr4"		"Increased Overall Damage"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1584,6 +1571,7 @@
 			"Attr1"		"faster reload rate"
 			"Attr7"		"Increased Charge percent"
 			"Attr5"		"aiming movespeed increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 	}
 	"snipe"
@@ -1595,8 +1583,6 @@
 			"Attr24"	"ap (biggercali)"
 			"Attr2"		"sniper full charge damage bonus"
 			"Attr4"		"Increased Overall Damage"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr5"		"projectile penetration heavy"
 			"Attr12"	"reveal cloaked victim on hit"
@@ -1609,6 +1595,7 @@
 			"Attr2"		"bullets per shot bonus (single)"
 			"Attr7"		"Increased Charge percent"
 			"Attr5"		"aiming movespeed increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1624,7 +1611,6 @@
 			"Attr1"		"damage bonus"
 			"Attr24"	"ap (biggercali)"
 			"Attr4"		"Increased Overall Damage"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr5"		"projectile penetration heavy"
 			"Attr12"	"reveal cloaked victim on hit"
@@ -1635,6 +1621,7 @@
 			"Attr0"		"fire rate bonus(old)"
 			"Attr1"		"faster reload rate"
 			"Attr5"		"aiming movespeed increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1650,7 +1637,6 @@
 			"Attr2"		"damage bonus SPECIAL"
 			"Attr4"		"damage bonus HIDDEN(b)"
 			"Attr1"		"Extra damage bonus"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Att22"		"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1661,6 +1647,7 @@
 		{
 			"Attr0"		"fire rate bonus(fortified)"
 			"Attr6"		"Projectile speed increased(ARROW)"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1676,8 +1663,6 @@
 			"Attr0"		"damage bonus"
 			"Attr22"	"ap (biggercali)"
 			"Attr10"	"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr2"		"add cloak on hit"
 			"Attr4"		"sapper kills collect crits"
@@ -1692,6 +1677,7 @@
 			"Attr3"		"bullets per shot bonus (single)"
 			"Attr4"		"weapon spread bonus"
 			"Attr5"		"projectile penetration heavy"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1718,8 +1704,7 @@
 		{
 			"Attr0"		"damage bonus"
 			"Attr17"	"ap (slowswing)"
-			"Attr16"	"Extra Damage Bonus"	
-			"Attr8"		"Weapons Deals No Knockback"
+			"Attr16"	"Extra Damage Bonus"
 			"Attr13"	"Life Steal Ability"
 			"Attr6"		"reveal cloaked victim on hit"
 			"Attr7"		"reveal disguised victim on hit"
@@ -1729,6 +1714,7 @@
 			"Attr0"		"melee attack rate bonus(spy)"
 			"Attr3"		"melee range multiplier"
 			"Attr12"	"increase player capture value"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1791,8 +1777,6 @@
 			"Attr0"		"damage bonus"
 			"Attr20"	"ap (armyofnotmany)"
 			"Attr18"	"Increased Overall Damage"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr5"		"blast radius increased"
 			"Attr12"	"reveal cloaked victim on hit"
@@ -1810,6 +1794,7 @@
 			"Attr6"		"rocket jump damage reduction"
 			"Attr11"	"self dmg push force increased"
 			"Attr13"	"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1825,7 +1810,6 @@
 			"Attr0"		"damage bonus"
 			"Attr20"	"ap (armyofnotmany)"
 			"Attr18"	"Increased Overall Damage"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr5"		"blast radius increased"
 			"Attr12"	"reveal cloaked victim on hit"
@@ -1842,6 +1826,7 @@
 			"Attr6"		"rocket jump damage reduction"
 			"Attr11"	"self dmg push force increased"
 			"Attr13"	"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1857,8 +1842,6 @@
 			"Attr0"		"damage bonus"
 			"Attr17"	"ap (slowswing)"
 			"Attr16"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1870,6 +1853,7 @@
 			"Attr0"		"melee attack rate bonus"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1885,8 +1869,6 @@
 			"Attr0"		"damage bonus"
 			"Attr17"	"ap (slowswing)"
 			"Attr16"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -1898,6 +1880,7 @@
 			"Attr0"		"melee attack rate bonus"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1915,7 +1898,6 @@
 			"Attr11"	"Overall Damage"
 			"Attr13"	"bleeding duration"
 			"Attr12"	"Bleed Per Hit"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr8"		"reveal cloaked victim on hit"
 			"Attr9"		"reveal disguised victim on hit"
@@ -1926,6 +1908,7 @@
 			"Attr5"		"effect bar recharge rate increased"
 			"Attr2"		"Homing Projectiles (cleaver)"
 			"Attr4"		"No gravity projectile"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2058,8 +2041,6 @@
 			"Attr0"		"damage bonus"
 			"Attr17"	"ap (slowswing)"
 			"Attr16"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -2071,6 +2052,7 @@
 			"Attr5"		"melee attack rate bonus"
 			"Attr1"		"melee range multiplier"
 			"Attr2"		"self dmg push force increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2102,7 +2084,6 @@
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
 			"Attr16"		"Extra Damage Bonus"
-			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
@@ -2121,6 +2102,7 @@
 			"Attr8"		"fuse bonus"
 			"Attr10"	"Iron Bomber Attribute"
 			"Attr9"		"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2135,7 +2117,6 @@
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
 			"Attr16"		"Extra Damage Bonus"
-			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
 			"Attr1"			"blast radius increased"
 			"Attr23"		"Set DamageType Ignite"
@@ -2153,6 +2134,7 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr9"		"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2169,7 +2151,6 @@
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
 			"Attr16"		"Extra Damage Bonus"
-			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
@@ -2186,6 +2167,7 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr9"		"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 	}
 	"chute"
@@ -2227,8 +2209,6 @@
 			"Attr0"		"damage bonus"
 			"Attr17"	"ap (slowswing)"
 			"Attr16"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
-			
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -2240,6 +2220,7 @@
 			"Attr0"		"melee attack rate bonus"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2255,7 +2236,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr7"		"reveal cloaked victim on hit"
 			"Attr8"		"reveal disguised victim on hit"
@@ -2267,6 +2247,7 @@
 			"Attr2"		"faster reload rate"
 			"Attr5"		"projectile penetration"
 			"Attr0"		"Projectile speed increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2281,7 +2262,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr9"		"ap (compressedfire)"
 			"Attr1"		"Extra Damage Bonus(fireball)"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr6"		"afterburn time increased"
 		}
@@ -2289,6 +2269,7 @@
 		{
 			"Attr0"		"Fireball Recharge Rate"
 			"Attr1"		"Projectile Distance Increased"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2321,7 +2302,6 @@
 			"Attr0"		"damage bonus(H)"
 			"Attr24"	"ap (biggercali)"
 			"Attr1"		"Accuracy Scales DMG Replacement"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr23"	"Set DamageType Ignite"
 			"Attr21"	"afterburn time increased(N)"
@@ -2334,6 +2314,7 @@
 			"Attr3"		"bullets per shot bonus"
 			"Attr4"		"weapon spread bonus(H)"
 			"Attr5"		"projectile penetration heavy"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2349,7 +2330,6 @@
 			"Attr0"		"damage bonus"
 			"Attr17"	"ap (slowswing)"
 			"Attr16"	"Extra Damage Bonus"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
@@ -2361,6 +2341,7 @@
 			"Attr0"		"fire rate bonus(multshit)"
 			"Attr3"		"melee range multiplier"
 			"Attr13"	"increase player capture value"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Ball Upgrades"
 		{
@@ -2450,7 +2431,6 @@
 			"Attr14"	"Gas Passer Explosion Damage"
 			"Attr2"		"damage bonus done against players"
 			"Attr6"		"Overall Damage"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr5"		"afterburn time increased"
 		}
@@ -2459,6 +2439,7 @@
 			"Attr0"		"explode_on_ignite"
 			"Attr1"		"gas passer recharge"
 			"Attr7"		"blast radius increased(G)"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2475,7 +2456,6 @@
 			"Attr20"		"ap (armyofnotmany)"
 			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
-			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
@@ -2492,6 +2472,7 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2509,7 +2490,6 @@
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
-			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
@@ -2524,6 +2504,7 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2541,7 +2522,6 @@
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
-			"Attr8"			"Weapons Deals No Knockback"
 			"Attr13"		"Life Steal Ability"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
@@ -2555,6 +2535,7 @@
 			"Attr4"		"self dmg push force increased"
 			"Attr5"		"rocket jump damage reduction"
 			"Attr6"		"air control when blast jumping"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 	}
 	"autofirebow"
@@ -2566,7 +2547,6 @@
 			"Attr15"	"ap (slowswing)"
 			"Attr1"		"Extra Damage Bonus"
 			"Attr16"	"Increased Overall Damage(F)"
-			"Attr8"		"Weapons Deals No Knockback"
 			"Attr13"	"Life Steal Ability"
 			"Attr14"	"afterburn dmg increased (E)"
 			"Attr8"		"reveal cloaked victim on hit"
@@ -2577,6 +2557,7 @@
 			"Attr2"		"fire rate bonus(multshit)"
 			"Attr3"		"clip size bonus (B)"
 			"Attr4"		"faster reload rate (U)"
+			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{

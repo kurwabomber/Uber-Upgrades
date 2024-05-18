@@ -3693,6 +3693,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 	RespawnEffect(client);
 	currentDamageType[client].clear();
 	if(IsValidClient3(client)){
+
 		if(!IsFakeClient(client)){
 			CancelClientMenu(client);
 			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
@@ -4111,6 +4112,8 @@ public Action EurekaTeleportHook(UserMsg msg_id, BfRead msg, const int[] players
 }
 
 public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float src[3], const float dirShooting[3], float spread[3], float &distance, int &tracerFreq, float &damage, int &playerDamage, int &flags, float &damageForceScale, int &attacker, int &ignoreEnt){
+	lastSentryFiring[sentry] = currentGameTime;
+
 	if(IsValidClient3(builder)){
 		int melee = GetWeapon(builder, 2);
 		if(IsValidWeapon(melee)){
@@ -4144,7 +4147,25 @@ public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float sr
 					return Plugin_Stop;
 				}
 				case 34.0:{
+					float rocketDamage = 25.0 * TF2_GetSentryDamageModifiers(builder, melee);
 					
+					DataPack pack = new DataPack();
+					pack.Reset();
+					pack.WriteCell(builder);
+					pack.WriteCell(GetClientTeam(builder));
+					pack.WriteFloat(rocketDamage);
+					
+					float target[3];
+					TraceDirAim(src, dirShooting, target);
+					pack.WriteFloat(target[0]);
+					pack.WriteFloat(target[1]);
+					pack.WriteFloat(target[2]);
+					pack.WriteFloat(src[0]);
+					pack.WriteFloat(src[1]);
+					pack.WriteFloat(src[2]);
+
+					CreateTimer(0.1, orbitalStrike, pack);
+					CreateTimer(0.2, deletePack, pack);
 					return Plugin_Stop;
 				}
 			}

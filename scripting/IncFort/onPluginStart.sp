@@ -499,6 +499,10 @@ public void OnPluginStart()
 	for (int i = 1; i <= MaxClients; ++i)
 		if(IsValidClient3(i))
 			OnClientPutInServer(i);
+	int i = -1;
+	while ((i = FindEntityByClassname(i, "obj_sentrygun")) != -1){
+		isEntitySentry[i] = true;
+	}
 }
 public OnPluginEnd()
 {

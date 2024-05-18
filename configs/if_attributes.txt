@@ -4933,6 +4933,18 @@
 			"description"	"Additional bullets per shot for sentry bullet firing.\nMakes sentry bullets +50% more inaccurate per pellet."
 			"max"		"3"
 		}
+		"1538.3"
+		{
+			"name"		"override projectile type"
+			"ref"		"Rocket Barrage Sentry"
+			"cost"		"4000"
+			"increase_ratio"	"0"
+			"value"		"34"
+			"init"		"0"
+			"restriction_category"	"2"
+			"description"	"Sentry sends a barrage of rockets at target that deal 25 base damage."
+			"max"		"34"
+		}
 		"1539"
 		{
 			"name"		"zoom speed mod disabled"

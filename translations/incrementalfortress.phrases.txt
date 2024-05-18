@@ -1,5 +1,8 @@
 "Phrases"
 {
+	"Rocket Barrage Sentry"{
+		"en"		"Rocket Barrage Sentry"
+	}
 	"Sentry Specializations"{
 		"en"		"Sentry Specializations"
 	}
