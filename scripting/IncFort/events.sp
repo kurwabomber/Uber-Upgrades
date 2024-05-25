@@ -2913,7 +2913,8 @@ public OnGameFrame()
 						CreateParticle(CWeapon, "utaunt_auroraglow_orange_parent", true, "", 5.0,_,_,1);
 						int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
 						TE_Send(clients,numClients)
-						CreateParticle(client, "utaunt_arcane_yellow_parent", true, "", 5.0);
+						CreateParticle(client, "utaunt_arcane_yellow_parent", true, "", 5.0,_,_, 1);
+						TE_Send(clients,numClients)
 						
 						weaponTrailTimer[client] = currentGameTime+5.1;
 					}
@@ -2930,7 +2931,8 @@ public OnGameFrame()
 						CreateParticle(CWeapon, "utaunt_auroraglow_purple_parent", true, "", 5.0,_,_,1);
 						int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
 						TE_Send(clients,numClients)
-						CreateParticle(client, "utaunt_arcane_purple_parent", true, "", 5.0);
+						CreateParticle(client, "utaunt_arcane_purple_parent", true, "", 5.0,_,_,1);
+						TE_Send(clients,numClients)
 						weaponTrailTimer[client] = currentGameTime+5.1;
 					}
 				}
