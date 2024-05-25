@@ -176,7 +176,7 @@ stock float GetAttributeAccumulateMultiplicative(int client, const char[] attrNa
 }
 stock bool IsValidWeapon(int entity)
 {
-	return IsValidEntity(entity) && HasEntProp(entity, Prop_Send, "m_iItemDefinitionIndex");
+	return IsValidEntity(entity) && TF2Util_IsEntityWeapon(entity);
 }
 stock int getOwner(int entity)
 {

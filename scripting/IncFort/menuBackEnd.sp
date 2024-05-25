@@ -186,19 +186,22 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 						break;
 					}
 				}
+				if(canBypassRestriction[client] == false && upgrades[upgrade_choice].restriction_category != 0)
+				{
+					for(int i = 1;i<5;++i)
+					{
+						if(currentupgrades_restriction[client][slot][i] == upgrades[upgrade_choice].restriction_category)
+						{
+							PrintToChat(client, "You already have something that fits this restriction category.");
+							EmitSoundToClient(client, SOUND_FAIL);
+							times = 0;
+							break;
+						}
+					}
+				}
 				if(times > 0)
 				{
-					if(canBypassRestriction[client] == false && upgrades[upgrade_choice].restriction_category != 0)
-					{
-						for(int i = 1;i<5;++i)
-						{
-							if(currentupgrades_restriction[client][slot][i] == upgrades[upgrade_choice].restriction_category)
-							{
-								PrintToChat(client, "You already have something that fits this restriction category.");
-								EmitSoundToClient(client, SOUND_FAIL);
-								break;
-							}
-						}
+					if(canBypassRestriction[client] == false && upgrades[upgrade_choice].restriction_category != 0){
 						currentupgrades_restriction[client][slot][upgrades[upgrade_choice].restriction_category] = upgrades[upgrade_choice].restriction_category;
 					}
 					if(notEnough == true)
