@@ -376,6 +376,30 @@ public Action:OnCollisionWarriorArrow(entity, client)
 	SDKUnhook(entity, SDKHook_Touch, OnCollisionWarriorArrow);
 	return Plugin_Stop;
 }
+public Action:OnStartTouchSentryBolt(entity, other)
+{
+	if(!other)
+		return Plugin_Stop;
+
+	if(!IsValidForDamage(other))
+		return Plugin_Stop;
+
+	SDKHook(entity, SDKHook_Touch, OnCollisionSentryBolt);
+	return Plugin_Handled;
+}
+public Action:OnCollisionSentryBolt(entity, client)
+{
+	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
+	if(IsOnDifferentTeams(owner,client))
+	{
+		currentDamageType[owner].second |= DMG_IGNOREHOOK;
+		SDKHooks_TakeDamage(client, owner, owner, projectileDamage[entity], DMG_BULLET, _, _,_,false);
+		RemoveEntity(entity);
+	}
+
+	SDKUnhook(entity, SDKHook_Touch, OnCollisionSentryBolt);
+	return Plugin_Stop;
+}
 public Action:OnCollisionBossArrow(entity, client)
 {
 	char strName[32];

@@ -1,5 +1,8 @@
 "Phrases"
 {
+	"Bolt Ballista Sentry"{
+		"en"		"Bolt Ballista Sentry"
+	}
 	"Rocket Barrage Sentry"{
 		"en"		"Rocket Barrage Sentry"
 	}

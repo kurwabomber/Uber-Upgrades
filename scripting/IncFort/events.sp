@@ -4139,7 +4139,9 @@ public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float sr
 							TeleportEntity(iEntity, src, fAngles, fVelocity);
 							DispatchSpawn(iEntity);
 							//why does it hit twice??? also, minisentries deal 25% dmg.
-							projectileDamage[iEntity] = 40.0*TF2_GetSentryDamageModifiers(attacker, melee) * (1+(-0.75*GetEntProp(sentry, Prop_Send, "m_bMiniBuilding")));
+							projectileDamage[iEntity] = 40.0*TF2_GetSentryDamageModifiers(attacker, melee);
+							if(GetEntProp(sentry, Prop_Send, "m_bMiniBuilding"))
+								projectileDamage[iEntity] *= 0.25;
 						}
 						firestormCounter[builder] = 0;
 					}
@@ -4147,25 +4149,35 @@ public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float sr
 					return Plugin_Stop;
 				}
 				case 34.0:{
-					float rocketDamage = 25.0 * TF2_GetSentryDamageModifiers(builder, melee);
-					
-					DataPack pack = new DataPack();
-					pack.Reset();
-					pack.WriteCell(builder);
-					pack.WriteCell(GetClientTeam(builder));
-					pack.WriteFloat(rocketDamage);
-					
-					float target[3];
-					TraceDirAim(src, dirShooting, target);
-					pack.WriteFloat(target[0]);
-					pack.WriteFloat(target[1]);
-					pack.WriteFloat(target[2]);
-					pack.WriteFloat(src[0]);
-					pack.WriteFloat(src[1]);
-					pack.WriteFloat(src[2]);
+					char projName[32] = "tf_projectile_arrow";
+					int iEntity = CreateEntityByName(projName);
+					if (IsValidEdict(iEntity)) 
+					{
+						projectileDamage[iEntity] = 35.0 * TF2_GetSentryDamageModifiers(builder, melee);
+						if(GetEntProp(sentry, Prop_Send, "m_bMiniBuilding"))
+							projectileDamage[iEntity] *= 0.25;
 
-					CreateTimer(0.1, orbitalStrike, pack);
-					CreateTimer(0.2, deletePack, pack);
+						int iTeam = GetClientTeam(builder);
+						float fwd[3], fAngles[3], fVelocity[3];
+						GetVectorAngles(dirShooting, fAngles);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", builder);
+
+						fVelocity = dirShooting; fwd = dirShooting;
+						ScaleVector(fVelocity, 4000.0);
+						SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam);
+						SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", builder);
+						ScaleVector(fwd, 50.0);
+						AddVectors(fwd, src, src);
+						
+						TeleportEntity(iEntity, src, fAngles, fVelocity);
+						DispatchSpawn(iEntity);
+						SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
+						SetEntProp(iEntity, Prop_Send, "m_usSolidFlags", 0x0008);
+						SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
+						SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
+						SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchSentryBolt);
+						CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", iTeam == 2 ? "materials/effects/arrowtrail_red.vmt":"materials/effects/arrowtrail_blu.vmt", "255 255 255");
+					}
 					return Plugin_Stop;
 				}
 			}

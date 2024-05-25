@@ -4936,13 +4936,13 @@
 		"1538.3"
 		{
 			"name"		"override projectile type"
-			"ref"		"Rocket Barrage Sentry"
+			"ref"		"Bolt Ballista Sentry"
 			"cost"		"4000"
 			"increase_ratio"	"0"
 			"value"		"34"
 			"init"		"0"
 			"restriction_category"	"2"
-			"description"	"Sentry sends a barrage of rockets at target that deal 25 base damage."
+			"description"	"Sentry shoots out projectile bolts that deal 35 base damage."
 			"max"		"34"
 		}
 		"1539"

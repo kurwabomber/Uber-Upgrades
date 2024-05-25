@@ -1170,7 +1170,7 @@
 			"Attr1"		"Double Sentry Rocket Shot"
 			"Attr2"		"Sentry Rocket Fire Rate"
 			"Attr3"		"sentry bullets per shot"
-			"Attr4"		"Rocket Barrage Sentry"
+			"Attr4"		"Bolt Ballista Sentry"
 		}
 		"Building Specializations"
 		{
