@@ -2106,7 +2106,8 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp0"		"Splintering Wasps"
+			"Sp0"		"Scorching Napalm"
+			"Sp1"		"Splintering Wasps"
 		}
 	}
 	"ironbomber"
@@ -2138,12 +2139,13 @@
 		}
 		"Special Tweaks"
 		{
-			"Sp0"		"Splintering Wasps"
+			"Sp0"		"Scorching Napalm"
+			"Sp1"		"Splintering Wasps"
 		}
 	}
 	"cannon"
 	{
-		"special_tweaks_listid"		"-1"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"			"damage bonus"
@@ -2168,6 +2170,11 @@
 			"Attr5"		"rocket jump damage reduction"
 			"Attr9"		"air control when blast jumping"
 			"Attr8"		"Weapons Deals No Knockback"
+		}
+		"Special Tweaks"
+		{
+			"Sp0"		"Scorching Napalm"
+			"Sp1"		"Splintering Wasps"
 		}
 	}
 	"chute"

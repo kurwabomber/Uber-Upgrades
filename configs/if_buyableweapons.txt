@@ -224,7 +224,7 @@
 		"weapon_menu"	"tf_weapon_revolver"
 		"class"			"spy"
 		"description"	"Deals +300 piercing damage. Adds sapped condition on hit for 6s.\n2x slower fire rate, and converts firerate into damage."
-		"cost"			"40000.0"
+		"cost"			"20000.0"
 		"additive piercing damage"		"300"
 		"weapon fire rate"		"2.0"
 		"add cond on hit"		"50"
