@@ -3789,7 +3789,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("precision powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Aimless Powerup {default}| {lightcyan}Projectiles randomly sway and deal up to +300%% damage based on distance of landing.");
+			CPrintToChat(client, "{community}Aimless Powerup {default}| {lightcyan}Projectiles randomly sway and deal up to +300%% damage based on distance of landing. Note that only projectiles that sway deal extra damage.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Railgun Powerup {default}| {lightcyan}All weapons have 4x slower fire rate, but 4x damage.");
 		}else{

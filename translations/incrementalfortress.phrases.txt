@@ -1,5 +1,8 @@
 "Phrases"
 {
+	"mod flamethrower spinup time"{
+		"en"		"Flamethrower Wind-Up Time"
+	}
 	"Bolt Ballista Sentry"{
 		"en"		"Bolt Ballista Sentry"
 	}
@@ -457,7 +460,7 @@
 		"en"		"Afterburn Tick Rate"
 	}
 	"flame ammopersec increased (tweak)"{
-		"en"		"Flamethrower Ammo Consumption Increased"
+		"en"		"Ammo Per Shot"
 	}
 	"Needlestorm"{
 		"en"		"Needlestorm"
@@ -3187,8 +3190,8 @@
 	"Concentrated Fire"{
 		"en"		"Concentrated Fire"
 	}
-	"Hot Pursuit"{
-		"en"		"Hot Pursuit"
+	"Pressure Increase"{
+		"en"		"Pressure Increase"
 	}
 	"Temperature rise"{
 		"en"		"Temperature rise"

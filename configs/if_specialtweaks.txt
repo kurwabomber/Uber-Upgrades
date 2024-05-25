@@ -2,21 +2,22 @@
 {
 	"Special_tweaks"
 	{
-		"Hot Pursuit"
+		"Pressure Increase"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"flame ammopersec increased (tweak)"	"30.0"
-			"increased air control"			"6.0"
+			"flame ammopersec increased (tweak)"	"50.0"
+			"airblast pushback scale"		"3"
+			"airblast radius multiplier"	"2"
 			"slow enemy on hit major"		"1"
-			"Afterburn Tick Rate"			"8.0"
+			"Afterburn Tick Rate"			"4.0"
 			"mult crit dmg"					"3.0"
 		}
 		"Temperature rise"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"flame ammopersec increased (tweak)"	"100.0"
+			"flame ammopersec increased (tweak)"	"30.0"
 			"minicrit vs burning player"			"1.0"
 			"Afterburn Damage Multiplier"		"30.0"
 			"mult crit dmg"				"10.0"

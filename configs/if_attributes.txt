@@ -6321,10 +6321,10 @@
 		}
 		"1682"
 		{
-			"name"		"fire rate bonus HIDDEN "
-			"ref"		"fire rate bonus HIDDEN "
+			"name"		"mod flamethrower spinup time"
+			"ref"		"mod flamethrower spinup time"
 			"cost"		"0"
-			"value"		"0.1"
+			"value"		"1"
 			"init"		"0.00"
 			"max"		"0.00"
 		}
