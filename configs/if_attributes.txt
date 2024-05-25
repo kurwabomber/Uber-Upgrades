@@ -4906,7 +4906,7 @@
 			"value"		"33"
 			"init"		"0"
 			"restriction_category"	"2"
-			"description"	"Replaces sentry bullets with extreme speed fireballs.\nShoots 4x slower, but fireballs deal 80 base damage and splash."
+			"description"	"Replaces sentry bullets with extreme speed fireballs.\nShoots 4x slower, but fireballs deal 120 base damage and splash."
 			"max"		"33"
 		}
 		"1538.1"
