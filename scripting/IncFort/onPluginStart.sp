@@ -220,6 +220,7 @@ public OnMapStart()
 		if(IsValidEntity(entity))
 			RemoveEntity(entity);
 	}
+	//DeleteSavedPlayerData();
 	ResetVariables();
 }
 
@@ -228,6 +229,7 @@ public void OnPluginStart()
 	UberShopinitMenusHandlers()
 	UberShopDefineUpgradeTabs()
 	
+	/*
 	DB = SQL_Connect("incremental_fortress", true, Error, sizeof(Error));
 	
 	if(DB)
@@ -236,6 +238,7 @@ public void OnPluginStart()
 		PrintToServer("IF : Cannot connect to SQL server. : %s", Error);
 		delete DB;
 	}
+	*/
 	gameStage = 0;
 	UpdateMaxValuesStage(gameStage);
 
@@ -345,6 +348,15 @@ public void OnPluginStart()
 		PrintToServer("CustomAttrs | Rage Modifier fucked up.");
 	else
 		DHookEnableDetour(g_DHookOnModifyRage, false, OnModifyRagePre);
+
+	//Handle Stuns/Slows
+	Handle g_DHookOnStun = DHookCreateFromConf(hConf, "CTFPlayerShared::StunPlayer()");
+	
+	if(!IsValidHandle(g_DHookOnStun))
+		PrintToServer("CustomAttrs | Stun hook fucked up.");
+	else
+		DHookEnableDetour(g_DHookOnStun, false, OnPlayerStunned);
+
 	//Bot speed
 	Handle g_DHookBotSpeed = DHookCreateFromConf(hConf, "CTFBotLocomotion::GetRunSpeed()");
 	
@@ -469,6 +481,7 @@ public void OnPluginStart()
 	SetConVarFloat(FindConVar("tf_feign_death_activate_damage_scale"), 0.05, true, false);
 	SetConVarInt(FindConVar("sv_unlag_fixstuck"), 1, true, false);
 	//Database
+	/*
 	char queryString[512];
 	Format(queryString, sizeof(queryString), "CREATE TABLE 'PlayerList' ('steamid' VARCHAR(64), 'datapack' INT)");
 	Handle queryH = SQL_Query(DB, queryString);
@@ -479,6 +492,7 @@ public void OnPluginStart()
 		SQL_GetError(DB, Error, sizeof(Error));
 		PrintToServer("IF : Was unable to create a table. | SQLERROR : %s.", Error);
 	}
+	*/
 	//Refresh
 	for (int client = 1; client <= MaxClients; ++client)
 	{
@@ -523,5 +537,5 @@ public OnPluginEnd()
 		if(IsValidClient3(i))
 			OnClientDisconnect(i);
 
-	DeleteDatabase();
+	//DeleteDatabase();
 }

@@ -269,7 +269,7 @@
 		"36" //Blutsauger
 		{
 			"preserve_attributes"	"1"
-			"1"				"545 ; 1.0"
+			"1"				"6358 ; 0.1"
 		}
 		"312" //Brass Beast
 		{

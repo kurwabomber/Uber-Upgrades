@@ -420,6 +420,9 @@ public void ManagePlayerBuffs(int i){
 		Format(details, sizeof(details), "%s\nKarmic Justice | %.2f Scaling", details, karmicJusticeScaling[i]);
 	}
 
+	if(MadmilkDuration[i]-currentGameTime > 0.0){
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Milked", MadmilkDuration[i]-currentGameTime);
+	}
 	if(miniCritStatusVictim[i]-currentGameTime > 0.0){
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
 		TF2_AddCondition(i, TFCond_MarkedForDeath, 0.2);
@@ -934,9 +937,6 @@ public ResetClientUpgrade_slot(client, slot)
 	if (slot != 4 && currentitem_idx[client][slot] && !replenishStatus)
 	{
 		currentitem_idx[client][slot] = 20000
-		GiveNewUpgradedWeapon_(client, slot)
-		if(IsValidWeapon(currentitem_ent_idx[client][slot]))
-			DefineAttributesTab(client, GetEntProp(currentitem_ent_idx[client][slot], Prop_Send, "m_iItemDefinitionIndex"), slot, currentitem_ent_idx[client][slot]);
 	}
 	
 
@@ -944,10 +944,10 @@ public ResetClientUpgrade_slot(client, slot)
 	{
 		currentitem_idx[client][slot] = 20000
 		currentitem_ent_idx[client][slot] = -1
+		upgrades_weapon_current[client] = -1;
 		GiveNewUpgradedWeapon_(client, slot)
 		client_new_weapon_ent_id[client] = 0;
 		client_new_weapon_ent_id_mvm_chkp[client] = 0;
-		upgrades_weapon_current[client] = -1;
 	}
 	if (slot == 4)
 	{
@@ -972,133 +972,71 @@ public ResetClientUpgrades(client)
 }
 public DefineAttributesTab(client, itemidx, slot, entity)
 {
-	if (currentitem_idx[client][slot] == 20000)
+	if (itemidx >= 0 && itemidx != currentitem_idx[client][slot])
 	{
-		int a, a2, i, a_i
-		currentitem_idx[client][slot] = itemidx
 		if(currentitem_level[client][slot] != 242)
+			ResetClientUpgrade_slot(client, slot);
+
+		int a, a2, i, a_i
+	
+		currentitem_idx[client][slot] = itemidx
+		int attributeIndexes[21];
+		int attributeCount = TF2Attrib_ListDefIndices(entity, attributeIndexes);
+		Address attr;
+		for( a = 0, a2 = 0; a < attributeCount && a < 21; a++ )
 		{
-			int attributeIndexes[21];
-			int attributeCount = TF2Attrib_ListDefIndices(entity, attributeIndexes);
-			Address attr;
-			for( a = 0, a2 = 0; a < attributeCount && a < 21; a++ )
-			{
-				attr = TF2Attrib_GetByDefIndex(entity, attributeIndexes[a]);
-				if(attr == Address_Null)
-					continue;
+			attr = TF2Attrib_GetByDefIndex(entity, attributeIndexes[a]);
+			if(attr == Address_Null)
+				continue;
 
-				char Buf[64]
-				a_i = attributeIndexes[a];
-				TF2Econ_GetAttributeName( a_i, Buf, 64);
-				if (GetTrieValue(_upg_names, Buf, i))
-				{	
-					currentupgrades_idx[client][slot][a2] = i
-					upgrades_ref_to_idx[client][slot][i] = a2;
-					currentupgrades_val[client][slot][a2] = TF2Attrib_GetValue(attr);
-					currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
-					a2++
-				}
+			char Buf[64]
+			a_i = attributeIndexes[a];
+			TF2Econ_GetAttributeName( a_i, Buf, 64);
+			if (GetTrieValue(_upg_names, Buf, i))
+			{	
+				currentupgrades_idx[client][slot][a2] = i
+				upgrades_ref_to_idx[client][slot][i] = a2;
+				currentupgrades_val[client][slot][a2] = TF2Attrib_GetValue(attr);
+				currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
+				a2++
 			}
-
-
-			ArrayList inumAttr = TF2Econ_GetItemStaticAttributes(itemidx);
-			if(inumAttr != null){
-				for( a=0; a < inumAttr.Length && a < 21; a++ )
-				{
-					bool cancel = false;
-					a_i = inumAttr.Get(a,0);
-					for(int e = 0;e<sizeof(attributeIndexes);e++){
-						if(attributeIndexes[e] == a_i){cancel = true;break;}
-					}
-					if(cancel){continue;}
-
-					char Buf[64]
-					TF2Econ_GetAttributeName( a_i, Buf, 64);
-					if (GetTrieValue(_upg_names, Buf, i))
-					{
-						currentupgrades_idx[client][slot][a2] = i
-						upgrades_ref_to_idx[client][slot][i] = a2;
-						currentupgrades_val[client][slot][a2] = inumAttr.Get(a,1);
-						currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
-						a2++
-					}
-				}
-			}
-			delete inumAttr;
-			currentupgrades_number[client][slot] = a2
 		}
-		else
+
+		ArrayList inumAttr = TF2Econ_GetItemStaticAttributes(itemidx);
+		for(a = 0; a < inumAttr.Length && a < 21; a++ )
 		{
-			for( a = 0, a2 = 0; a < upgrades_weapon_nb_att[upgrades_weapon_current[client]] && a < 42; a++ )
+			bool cancel = false;
+			a_i = inumAttr.Get(a,0);
+			for(int e = 0;e<sizeof(attributeIndexes);e++){
+				if(attributeIndexes[e] == a_i){cancel = true;break;}
+			}
+			if(cancel){continue;}
+			char Buf[64]
+			TF2Econ_GetAttributeName( a_i, Buf, 64);
+			if (GetTrieValue(_upg_names, Buf, i))
+			{
+				currentupgrades_idx[client][slot][a2] = i
+				upgrades_ref_to_idx[client][slot][i] = a2;
+				currentupgrades_val[client][slot][a2] = inumAttr.Get(a,1);
+				currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
+				a2++
+			}
+		}
+		delete inumAttr;
+
+		if(currentitem_level[client][slot] == 242){
+			for( a = 0; a < upgrades_weapon_nb_att[upgrades_weapon_current[client]] && a < 42; a++ )
 			{
 				currentupgrades_idx[client][slot][a2] = upgrades_weapon_att_idx[upgrades_weapon_current[client]][a]
-				upgrades_ref_to_idx[client][slot][i] = a2;
+				upgrades_ref_to_idx[client][slot][currentupgrades_idx[client][slot][a2]] = a2;
 				currentupgrades_val[client][slot][a2] = upgrades_weapon_att_amt[upgrades_weapon_current[client]][a];
 				currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2]
 				a2++
 			}
-			currentupgrades_number[client][slot] = a2
 		}
-	}
-	else
-	{
-		if (itemidx >= 0 && itemidx != currentitem_idx[client][slot] && currentitem_idx[client][slot] != 20000)
-		{
-			ResetClientUpgrade_slot(client, slot)
-			//PrintToServer("Gave %N upgrade lists and reset their upgrades.", client);
-			int a, a2, i, a_i
-		
-			currentitem_idx[client][slot] = itemidx
-			if(currentitem_level[client][slot] != 242)
-			{
-				int attributeIndexes[21];
-				int attributeCount = TF2Attrib_ListDefIndices(entity, attributeIndexes);
-				Address attr;
-				for( a = 0, a2 = 0; a < attributeCount && a < 21; a++ )
-				{
-					attr = TF2Attrib_GetByDefIndex(entity, attributeIndexes[a]);
-					if(attr == Address_Null)
-						continue;
+		currentupgrades_number[client][slot] = a2
 
-					char Buf[64]
-					a_i = attributeIndexes[a];
-					TF2Econ_GetAttributeName( a_i, Buf, 64);
-					if (GetTrieValue(_upg_names, Buf, i))
-					{	
-						currentupgrades_idx[client][slot][a2] = i
-						upgrades_ref_to_idx[client][slot][i] = a2;
-						currentupgrades_val[client][slot][a2] = TF2Attrib_GetValue(attr);
-						currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
-						a2++
-					}
-				}
-
-
-				ArrayList inumAttr = TF2Econ_GetItemStaticAttributes(itemidx);
-				for(a = 0; a < inumAttr.Length && a < 21; a++ )
-				{
-					bool cancel = false;
-					a_i = inumAttr.Get(a,0);
-					for(int e = 0;e<sizeof(attributeIndexes);e++){
-						if(attributeIndexes[e] == a_i){cancel = true;break;}
-					}
-					if(cancel){continue;}
-					char Buf[64]
-					TF2Econ_GetAttributeName( a_i, Buf, 64);
-					if (GetTrieValue(_upg_names, Buf, i))
-					{
-						currentupgrades_idx[client][slot][a2] = i
-						upgrades_ref_to_idx[client][slot][i] = a2;
-						currentupgrades_val[client][slot][a2] = inumAttr.Get(a,1);
-						currentupgrades_i[client][slot][a2] = currentupgrades_val[client][slot][a2];
-						a2++
-					}
-				}
-				delete inumAttr;
-				currentupgrades_number[client][slot] = a2
-				DisplayItemChange(client,itemidx);
-			}
-		}
+		DisplayItemChange(client,itemidx);
 	}
 }
 applyArcaneCooldownReduction(client, attuneSlot)
@@ -1113,7 +1051,7 @@ applyArcaneCooldownReduction(client, attuneSlot)
 }
 DisplayItemChange(client,itemidx)
 {
-	char ChangeString[256];
+	char ChangeString[189];
 	switch(itemidx)
 	{
 		//scout primaries
@@ -1321,6 +1259,11 @@ DisplayItemChange(client,itemidx)
 		case 142:
 		{
 			ChangeString = "The Gunslinger | Throw out instant-built minisentries. Up to 5 sentries placed in total, and upon destroying, deal 70 base DPS.";
+		}
+		//Medic Primaries
+		case 36:
+		{
+			ChangeString = "The Blutsauger | +10% life steal ability.";
 		}
 		//Medic Secondaries
 		case 411:
@@ -3807,7 +3750,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("revenge powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Berserk Powerup {default}| {lightcyan}Revenge instead becomes passive that drains by -7%%/s. Up to 1.5x lifesteal effectiveness when meter is at 100%%. Effects are scaled to %%.");
+			CPrintToChat(client, "{community}Berserk Powerup {default}| {lightcyan}Revenge instead becomes passive that drains by -7%%/s. Up to 1.5x healing effectiveness when meter is at 100%%. Effects are scaled to %%.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Enraged Powerup {default}| {lightcyan}Every kill gives +6%% pctHP healing. Every 80 kills, you can turn enraged, which gives:\n+100%% fire rate, full crits, and 0.4x damage taken.");
 		}else{
@@ -3820,7 +3763,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces shift middle click with teleport to crosshair. Deals 1200 base damage to all enemies through path of teleport. Each use consumes 10%% focus. Applies +4 additive dmg taken on teleport hit.");
 		}else{
-			CPrintToChat(client, "{community}Agility Powerup {default}| {lightcyan}1.33x reload & fire rate. infinite jumps, speed boost, 1.4x speed, 1.3x jump height, 1.75x self push force, and 35%% dodge chance.");
+			CPrintToChat(client, "{community}Agility Powerup {default}| {lightcyan}1.33x reload & fire rate. infinite jumps, speed boost, 1.4x speed, 1.3x jump height, 1.75x self push force, immunity to crowd control effects, and 35%% dodge chance.");
 		}
 	}
 	else if(StrEqual("knockout powerup", name)){
@@ -3847,7 +3790,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Life Link Powerup {default}| {lightcyan}Hitting an enemy will proc life link: Instantly deals 10%% currentHP%% to you, but drains 25%% currentHP%% of enemy over time. At end of duration, your team is healed by damage dealt to yourself.");
 		}else{
-			CPrintToChat(client, "{community}Plague Powerup {default}| {lightcyan}Steals all healthpacks nearby, giving 25%% max health heal. Enemies nearby will be plagued for 12s, multiplying damage dealt by them by 0.5x. 0.75x incoming damage taken.");
+			CPrintToChat(client, "{community}Plague Powerup {default}| {lightcyan}Steals all healthpacks nearby, giving 25%% max health heal. Enemies nearby will be plagued for 12s, weakening damage dealt by them by 0.5x. 0.75x incoming damage taken.");
 		}
 	}
 	else if(StrEqual("supernova powerup", name)){
@@ -4088,15 +4031,15 @@ public void CheckForGamestage(){
 	while(success){
 		success = false;
 		if(gameStage == 0 && (StartMoney + additionalstartmoney) >= STAGEONE){
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 1st stage! New upgrades & tweaks unlocked.");
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 1st stage! New powerups, upgrades, and tweaks unlocked.");
 			gameStage = 1; UpdateMaxValuesStage(gameStage); success = true;
 		}
 		else if(gameStage == 1 && (StartMoney + additionalstartmoney) >= STAGETWO){
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 2nd stage! New upgrades & tweaks unlocked.");
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 2nd stage! New upgrades unlocked.");
 			gameStage = 2; UpdateMaxValuesStage(gameStage); success = true;
 		}
 		else if(gameStage == 2 && (StartMoney + additionalstartmoney) >= STAGETHREE){
-			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 3rd stage! New upgrades & tweaks unlocked.");
+			CPrintToChatAll("{valve}Incremental Fortress {white}| You have reached the 3rd stage! Nothing added (so far)");
 			gameStage = 3; UpdateMaxValuesStage(gameStage); success = true;
 		}
 	}

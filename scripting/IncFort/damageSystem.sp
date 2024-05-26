@@ -545,7 +545,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		GetClientEyePosition(victim,victimPos);
 
 		//Prevent piercing damage from being guardian'd
-		if(!(damagetype == DMG_PREVENT_PHYSICS_FORCE && currentDamageType[attacker].second & DMG_PIERCING)){
+		if(!(currentDamageType[attacker].second & DMG_PIERCING)){
 			int guardian = -1;
 			float guardianPercentage;
 			for(int i = 1; i <= MaxClients; ++i)
@@ -586,7 +586,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					}
 				}
 			}
-			if(IsValidClient3(guardian)){
+			if(IsValidClient3(guardian) && !(currentDamageType[attacker].second & DMG_IGNOREHOOK)){
 				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
 				SDKHooks_TakeDamage(guardian, attacker, attacker, damage*guardianPercentage,DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 				damage *= (1-guardianPercentage);
@@ -681,6 +681,10 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 {
 	if(!IsValidClient3(attacker))
 		attacker = EntRefToEntIndex(attacker);
+
+	//We don't really have anything to change if the attacker isn't a player anyway.
+	if(!IsValidClient3(attacker))
+		return Plugin_Continue;
 
 	if(hasBuffIndex(victim, Buff_CritMarkedForDeath) || currentDamageType[attacker].second & DMG_ACTUALCRIT)
 	{

@@ -4643,8 +4643,8 @@
 		}
 		"1520"
 		{
-			"name"		"bot medic uber health threshold"
-			"ref"		"Life Steal Ability"
+			"name"		"lifesteal ability"
+			"ref"		"lifesteal ability"
 			"cost"		"1500"
 			"increase_ratio"	"0.1"
 			"value"		"0.01"
@@ -6324,6 +6324,15 @@
 			"name"		"mod flamethrower spinup time"
 			"ref"		"mod flamethrower spinup time"
 			"cost"		"0"
+			"value"		"1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
+		"1683"
+		{
+			"name"		"mod_maxhealth_drain_rate"
+			"ref"		"mod_maxhealth_drain_rate"
+			"cost"		"-700"
 			"value"		"1"
 			"init"		"0.00"
 			"max"		"0.00"

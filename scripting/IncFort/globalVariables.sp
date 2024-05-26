@@ -12,7 +12,7 @@ Handle _upg_names;
 Handle _weaponlist_names
 Handle _spetweaks_names
 Handle cvar_BotMultiplier
-Handle DB = null;
+//Handle DB = null;
 Handle hArmorXPos;
 Handle hArmorYPos;
 Handle disableOptimizer;
@@ -371,7 +371,7 @@ char given_upgrd_subclassnames[LISTS][LISTS_CATEGORIES][LISTS_CATEGORIES][128]
 char wcnamelist[WCNAMELISTSIZE][128]
 char current_slot_name[NB_SLOTS_UED+1][MAXPLAYERS+1]
 char currentitem_classname[MAXPLAYERS+1][NB_SLOTS_UED+1][128]
-char Error[255];
+//char Error[255];
 char upgrades_weapon_class[NB_WEAPONS][128]
 char upgrades_weapon_class_menu[NB_WEAPONS][128]
 char upgrades_weapon_class_restrictions[NB_WEAPONS][128]

@@ -1149,7 +1149,7 @@
 	"Projectile speed increased(ARROW)"{
 		"en"		"Projectile Speed Increased"
 	}
-	"Life Steal Ability"{
+	"lifesteal ability"{
 		"en"		"Life Steal Ability"
 	}
 	"Blast radius increased (Throwable)"{

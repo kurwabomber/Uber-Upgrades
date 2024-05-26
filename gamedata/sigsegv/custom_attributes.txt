@@ -5091,4 +5091,13 @@
         "hidden"	"1"
         "effect_type"	"positive"
     }
+    "6358"
+    {
+        "name"  "lifesteal ability"
+        "attribute_class"   "lifesteal_ability"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"1"
+        "effect_type"	"positive"
+    }
 }

@@ -1,3 +1,4 @@
+/*
 SavePlayerData(client)
 {
 	if (!IsValidClient(client))
@@ -14,6 +15,7 @@ SavePlayerData(client)
 	{
 		for(int s = 0; s < NB_SLOTS_UED; s++)
 		{
+			pack.WriteCell(currentupgrades_number[client][s]);
 			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
 			{
 				pack.WriteCell(currentupgrades_idx[client][s][i]);
@@ -21,7 +23,6 @@ SavePlayerData(client)
 				pack.WriteFloat(currentupgrades_i[client][s][i]);
 				pack.WriteCell(upgrades_ref_to_idx[client][s][currentupgrades_idx[client][s][i]]);
 			}
-			pack.WriteCell(currentupgrades_number[client][s]);
 			pack.WriteFloat(client_spent_money[client][s]);
 			pack.WriteFloat(client_tweak_highest_requirement[client][s]);
 			pack.WriteCell(currentitem_idx[client][s]);
@@ -38,6 +39,7 @@ SavePlayerData(client)
 	{
 		for(int s = 0; s < NB_SLOTS_UED; s++)
 		{
+			pack.WriteCell(currentupgrades_number_mvm_chkp[client][s]);
 			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
 			{
 				pack.WriteCell(currentupgrades_idx_mvm_chkp[client][s][i]);
@@ -45,7 +47,6 @@ SavePlayerData(client)
 				pack.WriteFloat(currentupgrades_i[client][s][i]);
 				pack.WriteCell(upgrades_ref_to_idx_mvm_chkp[client][s][currentupgrades_idx_mvm_chkp[client][s][i]]);
 			}
-			pack.WriteCell(currentupgrades_number_mvm_chkp[client][s]);
 			pack.WriteFloat(client_spent_money_mvm_chkp[client][s]);
 			pack.WriteFloat(client_tweak_highest_requirement[client][s]);
 			pack.WriteCell(currentitem_idx[client][s]);
@@ -106,28 +107,58 @@ GivePlayerData(client)
 		pack.Reset();
 		PrintToServer("IF : Successfully gave player upgrades to %N.", client);
 		float spentMoney = 0.0;
+
 		for(int s = 0; s < NB_SLOTS_UED; s++)
 		{
+			int numUpgrades = pack.ReadCell();
+			int temp_currentupgrades_idx[MAX_ATTRIBUTES_ITEM], temp_upgrades_ref_to_idx[MAX_ATTRIBUTES_ITEM];
+			float temp_currentupgrades_val[MAX_ATTRIBUTES_ITEM], temp_currentupgrades_i[MAX_ATTRIBUTES_ITEM];
+			float temp_client_spent_money, temp_client_tweak_highest_requirement;
+			int temp_currentitem_idx, temp_currentitem_level, temp_currentupgrades_restriction[5];
+			char temp_currentitem_classname[128];
+
 			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
 			{
-				currentupgrades_idx[client][s][i] = pack.ReadCell();
-				currentupgrades_val[client][s][i] = pack.ReadFloat();
-				currentupgrades_i[client][s][i] = pack.ReadFloat();
+				temp_currentupgrades_idx[i] = pack.ReadCell();
+				temp_currentupgrades_val[i] = pack.ReadFloat();
+				temp_currentupgrades_i[i] = pack.ReadFloat();
+				temp_upgrades_ref_to_idx[temp_currentupgrades_idx[i]] = pack.ReadCell();
+			}
+
+			temp_client_spent_money = pack.ReadFloat();
+			temp_client_tweak_highest_requirement = pack.ReadFloat();
+			temp_currentitem_idx = pack.ReadCell();
+			temp_currentitem_level = pack.ReadCell();
+
+			pack.ReadString(temp_currentitem_classname, 128);
+
+			for(int y = 0; y<5; y++){
+				temp_currentupgrades_restriction[y] = pack.ReadCell();
+			}
+
+			//Invalid amount of attributes, don't bother applying.
+			if(numUpgrades <= 0 || numUpgrades > MAX_ATTRIBUTES_ITEM)
+				continue;
+
+			for(int i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
+			{
+				currentupgrades_idx[client][s][i] = temp_currentupgrades_idx[i];
+				currentupgrades_val[client][s][i] = temp_currentupgrades_val[i];
+				currentupgrades_i[client][s][i] = temp_currentupgrades_i[i];
 				currentupgrades_idx_mvm_chkp[client][s][i] = currentupgrades_idx[client][s][i];
 				currentupgrades_val_mvm_chkp[client][s][i] = currentupgrades_val[client][s][i];
-				upgrades_ref_to_idx[client][s][currentupgrades_idx[client][s][i]] = pack.ReadCell();
+				upgrades_ref_to_idx[client][s][currentupgrades_idx[client][s][i]] = temp_upgrades_ref_to_idx[temp_currentupgrades_idx[i]];
 				upgrades_ref_to_idx_mvm_chkp[client][s][currentupgrades_idx_mvm_chkp[client][s][i]] = upgrades_ref_to_idx[client][s][currentupgrades_idx[client][s][i]]
 			}
-			currentupgrades_number[client][s] = pack.ReadCell();
-			client_spent_money[client][s] = pack.ReadFloat();
-			client_tweak_highest_requirement[client][s] = pack.ReadFloat();
-			currentitem_idx[client][s] = pack.ReadCell();
-			currentitem_level[client][s] = pack.ReadCell();
-			pack.ReadString(currentitem_classname[client][s], 128);
+			client_spent_money[client][s] = temp_client_spent_money
+			client_tweak_highest_requirement[client][s] = temp_client_tweak_highest_requirement
+			currentitem_idx[client][s] = temp_currentitem_idx
+			currentitem_level[client][s] = temp_currentitem_level
+			strcopy(currentitem_classname[client][s], 128, temp_currentitem_classname);
 			
 			for(int y = 0; y<5; y++)
 			{
-				currentupgrades_restriction[client][s][y] = pack.ReadCell();
+				currentupgrades_restriction[client][s][y] = temp_currentupgrades_restriction[y];
 				currentupgrades_restriction_mvm_chkp[client][s][y] = currentupgrades_restriction[client][s][y];
 			}
 			
@@ -191,3 +222,4 @@ DeleteDatabase()
 		PrintToServer("IF : Couldn't delete database. | SQLERROR : %s.", Error);
 	}
 }
+*/

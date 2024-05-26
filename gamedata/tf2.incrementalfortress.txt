@@ -32,6 +32,28 @@
 					}
 				}
 			}
+			"CTFPlayerShared::StunPlayer()"
+			{
+				"signature"		"CTFPlayerShared::StunPlayer()"
+				"callconv"		"thiscall"
+				"return" 		"void"
+				"this"			"address"
+				"arguments"
+				{
+					"duration"
+					{
+						"type"	"float"
+					}
+					"reduction"
+					{
+						"type"	"float"
+					}
+					"flags"
+					{
+						"type"	"int"
+					}
+				}
+			}
 			"CTFBotLocomotion::GetRunSpeed()"
 			{
 				"signature"		"CTFBotLocomotion::GetRunSpeed()"
@@ -351,6 +373,11 @@
 			{
 				"library"	"server"
 				"linux"		"@_ZN24CTFWeaponBaseGrenadeProj15GetDamageRadiusEv"
+			}
+			"CTFPlayerShared::StunPlayer()"
+			{
+				"library"	"server"
+				"linux"		"@_ZN15CTFPlayerShared10StunPlayerEffiP9CTFPlayer"
 			}
 		}
 	}

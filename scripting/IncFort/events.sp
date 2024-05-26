@@ -256,7 +256,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 					lifestealFactor *= plunderBuff.severity;
 				}
 				
-				Address LifestealActive = TF2Attrib_GetByName(CWeapon, "bot medic uber health threshold");//Lifesteal attribute
+				Address LifestealActive = TF2Attrib_GetByName(CWeapon, "lifesteal ability");//Lifesteal attribute
 				if(LifestealActive != Address_Null)
 					healthHealed += RoundToCeil(damage * TF2Attrib_GetValue(LifestealActive) * lifestealFactor);
 				
@@ -274,7 +274,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				{
 					Address BackstabLifestealActive = TF2Attrib_GetByName(CWeapon, "sanguisuge"); //Kunai
 					if(BackstabLifestealActive != Address_Null && TF2Attrib_GetValue(BackstabLifestealActive) > 0.0)
-						healthHealed += RoundToCeil(damage * 0.5 * TF2Attrib_GetValue(BackstabLifestealActive));
+						healthHealed += RoundToCeil(lifestealFactor * damage * 0.5 * TF2Attrib_GetValue(BackstabLifestealActive));
 				}
 				if(MadmilkDuration[client] > currentGameTime)
 					healthHealed += RoundToCeil(lifestealFactor * damage * (MadmilkDuration[client]-currentGameTime) * 1.66 / 100.0);
@@ -335,6 +335,28 @@ public Event_UberDeployed(Event event, const char[] name, bool dontBroadcast){
 	ApplyUberBuffs(medic, target, medigun);
 
 	CreateTimer(0.1, Timer_UberCheck, EntIndexToEntRef(medigun), TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+}
+public MRESReturn OnPlayerStunned(Address pPlayerShared, Handle hParams){
+	int client = GetEntityFromAddress((DereferencePointer(pPlayerShared + g_offset_CTFPlayerShared_pOuter)));
+	float duration = DHookGetParam(hParams, 1);
+	if(!IsValidClient(client))
+		return MRES_Ignored;
+
+	if(GetAttribute(client, "agility powerup", 0.0) == 1){
+		return MRES_Supercede;
+	}
+
+	Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
+	if(slowResistance != Address_Null)
+	{
+		DHookSetParam(hParams, 2, duration * TF2Attrib_GetValue(slowResistance));
+		return MRES_ChangedHandled;
+	}
+	if(GetAttribute(client, "jarate description", 0.0)){
+		return MRES_Supercede;
+	}
+
+	return MRES_Ignored;
 }
 public MRESReturn OnModifyRagePre(Address pPlayerShared, Handle hParams) {
 	int client = GetEntityFromAddress((DereferencePointer(pPlayerShared + g_offset_CTFPlayerShared_pOuter)));
@@ -399,7 +421,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 		if(agilityPowerup != Address_Null)
 		{
 			float agilityPowerupValue = TF2Attrib_GetValue(agilityPowerup);
-			if(agilityPowerupValue > 0.0)
+			if(agilityPowerupValue == 1.0)
 			{
 				switch(cond)
 				{
@@ -463,7 +485,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					}
 				}
 			}
-			case TFCond_Slowed, TFCond_Dazed:
+			case TFCond_Slowed, TFCond_Dazed://doesn't work for stuns lol
 			{
 				Address slowResistance = TF2Attrib_GetByName(client, "slow resistance");
 				if(slowResistance != Address_Null)
@@ -1258,10 +1280,16 @@ public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 			continue;
 
 		ResetClientUpgrades(i);
+		
+		for(int slot=0;slot<NB_SLOTS_UED;++slot){
+			currentitem_idx[i][slot] = 20000;
+		}
+
 		TF2_RemoveAllWeapons(i)
 	}
-	CreateTimer(0.4, ResetClientsTimer);
-	DeleteSavedPlayerData();
+	ResetVariables();
+	CreateTimer(0.3, ResetClientsTimer);
+	//DeleteSavedPlayerData();
 	failLock = false;
 	disableMvMCash = false;
 }
@@ -3590,8 +3618,8 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 }
 public OnClientDisconnect(client)
 {
-	if(!IsFakeClient(client))
-		SavePlayerData(client);
+	/*if(!IsFakeClient(client))
+		SavePlayerData(client);*/
 	
 	DamageDealt[client] = 0.0;
 	Kills[client] = 0;
@@ -3674,7 +3702,7 @@ public OnClientPostAdminCheck(client)
 		{
 			CreateTimer(0.0, ClChangeClassTimer, GetClientUserId(client));
 		}
-		GivePlayerData(client);
+		//GivePlayerData(client);
 
 		if(AreClientCookiesCached(client))
 		{
