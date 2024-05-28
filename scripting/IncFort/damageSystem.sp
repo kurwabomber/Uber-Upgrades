@@ -162,6 +162,9 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(GetAttribute(healingWeapon, "magnify patient damage", 0.0))
 				pylonCharge[healer] += damage;
 
+			if(currentDamageType[healer].second & DMG_IGNOREHOOK)
+				continue;
+
 			float pylonCap = 10.0*TF2Util_GetEntityMaxHealth(healer)*GetResistance(healer, true);
 			if(pylonCharge[healer] >= pylonCap){
 				bool isBounced[MAXPLAYERS+1];
@@ -453,7 +456,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				Buff finisherDebuff; finisherDebuff.init("Bruised", "Marked-for-Finisher", Buff_Bruised, 1, attacker, 8.0);
 				insertBuff(victim, finisherDebuff);
 
-				if(!(currentDamageType[attacker].second & DMG_PIERCING)){
+				if(!(currentDamageType[attacker].second & DMG_PIERCING) && !(currentDamageType[attacker].second & DMG_IGNOREHOOK)){
 					float bruisedDamage = damage;
 					if(!(damagetype & DMG_CRIT)){
 						bruisedDamage *= 2.25;
@@ -528,7 +531,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		}
 
 		Address ReflectActive = TF2Attrib_GetByName(victim, "extinguish restores health");
-		if(ReflectActive != Address_Null)
+		if(ReflectActive != Address_Null && !(currentDamageType[attacker].second & DMG_IGNOREHOOK))
 		{
 			float ReflectDamage = damage;
 			Address ReflectDamageMultiplier = TF2Attrib_GetByName(victim, "set cloak is movement based");
@@ -620,7 +623,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			}
 
 			float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
-			if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat()){
+			if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat() && !(currentDamageType[attacker].second & DMG_IGNOREHOOK)){
 				currentDamageType[attacker].second |= DMG_PIERCING;
 				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
 				SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
@@ -648,7 +651,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 
-			if(!(currentDamageType[attacker].second & DMG_FROST) && !(currentDamageType[attacker].second & DMG_PIERCING) && !(damagetype == DMG_BURN + DMG_PREVENT_PHYSICS_FORCE)){ //Make sure it isn't piercing, frost or afterburn damage...
+			if(!(currentDamageType[attacker].second & DMG_IGNOREHOOK) && !(currentDamageType[attacker].second & DMG_FROST) && !(currentDamageType[attacker].second & DMG_PIERCING) && !(damagetype == DMG_BURN + DMG_PREVENT_PHYSICS_FORCE)){ //Make sure it isn't piercing, frost or afterburn damage...
 				float freezeRatio = GetAttribute(weapon, "damage causes freeze", 0.0);
 				if(freezeRatio > 0){
 					float frostIncrease = freezeRatio*damage/TF2Util_GetEntityMaxHealth(victim);
