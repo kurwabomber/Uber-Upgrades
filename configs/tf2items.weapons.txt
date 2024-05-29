@@ -277,12 +277,6 @@
 			"1"				"280 ; 42.0"
 			"2"				"6034 ; 3.0"
 		}
-		"232" //Bushwacka
-		{
-			"preserve_attributes"	"1"
-			"1"				"280 ; 41.0"
-			"2"				"348 ; 4.0"
-		}
 		"1098" //The Classic
 		{
 			"preserve_attributes"	"1"

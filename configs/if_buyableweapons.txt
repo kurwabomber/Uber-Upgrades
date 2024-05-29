@@ -169,7 +169,7 @@
 	{
 		"index"			"415"
 		"weapon_class"	"tf_weapon_shotgun_pyro"
-		"weapon_menu"	"tf_weapon_flaregun"
+		"weapon_menu"	"sacred_slayer"
 		"class"			"pyro"
 		"description"	"Shoots a burst of 4 rockets with a large interval in between.\nConverts fire rate into damage and shoots 4 rockets per shot with small spread.\nIgnites targets and deals heavy afterburn damage."
 		"cost"			"50000.0"

@@ -29,6 +29,7 @@
 		"tf_weapon_flaregun"					"pyroflareg"	//flaregun
 		"detonator"								"pyroflaregd"	//detonator
 		"tf_weapon_flaregun_revenge"			"pyroflareg2"	//mannmelter
+		"sacred_slayer"							"sacred_slayer"	//mannmelter
 		"tf_weapon_shotgun_pyro"				"sprweap2"		//shotgun(pyro)
 		"tf_weapon_fireaxe"						"demomel"		//melee
 		"tf_weapon_shovel"						"demomel"		//melee

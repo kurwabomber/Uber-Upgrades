@@ -1310,10 +1310,12 @@ DisplayItemChange(client,itemidx)
 			ChangeString = "Jarate | Jarate effect now applies +10 damage (based on your scaling) to every hit taken.";
 		}
 		//Sniper Melees
+		/*
 		case 232:
 		{
 			ChangeString = "The Bushwacka | Launches projectile dealing 120 base damage and returns after 0.7s. Projectile pierces all targets forever and can hit multiple times. Fires 4x slower.";
 		}
+		*/
 		//Spy Primaries
 		case 61,1006:
 		{

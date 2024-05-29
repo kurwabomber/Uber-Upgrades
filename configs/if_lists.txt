@@ -1460,6 +1460,26 @@
 			"Sp2"		"Scorchiest Shot"
 		}
 	}
+	"sacred_slayer"
+	{
+		"special_tweaks_listid"		"-1"
+		"Damage upgrades"
+		{
+			"Attr0"		"damage bonus(H)"
+			"Attr16"	"ap (temprise)"
+			"Attr13"	"Extra Damage Bonus"
+			"Attr13"	"lifesteal ability"
+			"Attr14"	"afterburn time increased"
+			"Attr10"	"reveal cloaked victim on hit"
+			"Attr11"	"reveal disguised victim on hit"
+		}
+		"Flaregun specific upgrades"
+		{
+			"Attr1"		"fire rate bonus(fortified)"
+			"Attr2"		"Projectile speed increased"
+			"Attr8"		"Weapons Deals No Knockback"
+		}
+	}
 	"scoweap"
 	{
 		"special_tweaks_listid"		"2"
