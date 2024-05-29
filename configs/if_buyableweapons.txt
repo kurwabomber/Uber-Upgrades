@@ -144,7 +144,7 @@
 		"cost"			"70000.0"
 		"Converts Firerate to Damage"	"1"
 		"Increased Projectile Count"	"5"
-		"weapon damage mult"			"2"
+		"weapon fire rate"		"2"
 		"projectile spread angle penalty" "3"
 		"paintkit_proto_def_index"	"413"
 		"set_item_texture_wear"		"0.0"
