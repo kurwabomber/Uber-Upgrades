@@ -689,19 +689,25 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 	if(!IsValidClient3(attacker))
 		return Plugin_Continue;
 
+	Action changed = Plugin_Continue;
+
 	if(hasBuffIndex(victim, Buff_CritMarkedForDeath) || currentDamageType[attacker].second & DMG_ACTUALCRIT)
 	{
 		critType = CritType_Crit;
+		changed = Plugin_Changed;
 	}
 
 	if(currentDamageType[attacker].second & DMG_PIERCING){
 		critType = CritType_None;
+		changed = Plugin_Changed;
 	}
 	currentDamageType[attacker].first = damagetype;
 
 	if(IsValidClient3(victim)){
-		if(damagetype & DMG_SLASH)
+		if(damagetype & DMG_SLASH){
 			damagetype |= DMG_PREVENT_PHYSICS_FORCE
+			changed = Plugin_Changed;
+		}
 		
 		if (damagecustom == TF_CUSTOM_BACKSTAB)
 		{
@@ -728,6 +734,7 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 				TF2_AddCondition(attacker, TFCond_StealthedUserBuffFade, stealthedBackstab);
 				TF2_RemoveCondition(attacker, TFCond_Stealthed)
 			}
+			changed = Plugin_Changed;
 		}
 		if (damagecustom == 46 && damagetype & DMG_SHOCK)//Short Circuit Balls
 		{
@@ -736,6 +743,7 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 			damage *= GetAttribute(weapon, "bullets per shot bonus");
 			damage *= GetAttribute(weapon, "damage bonus HIDDEN");
 			damage *= GetAttribute(weapon, "damage penalty");
+			changed = Plugin_Changed;
 		}
 		if(damagecustom == TF_CUSTOM_BASEBALL)//Sandman Balls & Wrap Assassin Ornaments
 		{
@@ -744,24 +752,28 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 			damage *= GetAttribute(weapon, "damage bonus");
 			damage *= GetAttribute(weapon, "damage bonus HIDDEN");
 			damage *= GetAttribute(weapon, "damage penalty");
+			changed = Plugin_Changed;
 		}
 	}
 
 	if(IsValidWeapon(weapon)){
 		if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee){
-			if(GetAttribute(attacker, "knockout powerup", 0.0) == 1)
+			if(GetAttribute(attacker, "knockout powerup", 0.0) == 1){
 				damage *= 1.75
+			}
 			else if(GetAttribute(attacker, "knockout powerup", 0.0) == 3 && !isTagged[attacker][victim]){
 				damage *= 4.0;
 				critType = CritType_Crit;
+				changed = Plugin_Changed;
 			}
 		}
 	}
 
 	if(hasBuffIndex(victim, Buff_Stronghold) || GetAttribute(victim, "resistance powerup", 0.0) == 1){
 		critType = CritType_None;
+		changed = Plugin_Changed;
 	}
-	return Plugin_Changed;
+	return changed;
 }
 /*
 public Action:TF2_OnTakeDamageModifyRules(int victim, int &attacker, int &inflictor, float &damage,

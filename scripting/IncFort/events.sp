@@ -3770,6 +3770,7 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 		tagTeamTarget[client] = -1;
 		immolationActive[client] = false;
 		sunstarDuration[client] = 0.0;
+		MadmilkDuration[client] = 0.0;
 		for(int i=1;i<=MaxClients;++i)
 		{
 			corrosiveDOT[client][i][0] = 0.0;
