@@ -1419,22 +1419,18 @@ public Action:RemoveDamage(Handle timer, any:data)
 }
 RespawnEffect(client)
 {
-	if(IsValidClient3(client))
-	{
-		current_class[client] = TF2_GetPlayerClass(client)
-		fl_CurrentFocus[client] = fl_MaxFocus[client];
-		LightningEnchantmentDuration[client] = 0.0;
-		DarkmoonBladeDuration[client] = 0.0;
-		TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
-		TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
-		TF2Attrib_SetByName(client,"airblast_destroy_projectile", 1.0);
-		TF2Attrib_SetByName(client,"ignores other projectiles", 1.0);
-		TF2Attrib_SetByName(client,"penetrate teammates", 1.0);
-		TF2Attrib_SetByName(client,"no damage view flinch", 1.0);
-		CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
-		CreateTimer(0.2,GiveMaxAmmo,GetClientUserId(client));
-	}
-
+	current_class[client] = TF2_GetPlayerClass(client)
+	fl_CurrentFocus[client] = fl_MaxFocus[client];
+	LightningEnchantmentDuration[client] = 0.0;
+	DarkmoonBladeDuration[client] = 0.0;
+	TF2Attrib_SetByName(client,"deploy time decreased", 0.0);
+	TF2Attrib_SetByName(client,"airblast_pushback_no_stun", 1.0);
+	TF2Attrib_SetByName(client,"airblast_destroy_projectile", 1.0);
+	TF2Attrib_SetByName(client,"ignores other projectiles", 1.0);
+	TF2Attrib_SetByName(client,"penetrate teammates", 1.0);
+	TF2Attrib_SetByName(client,"no damage view flinch", 1.0);
+	CreateTimer(0.2,GiveMaxHealth,GetClientUserId(client));
+	CreateTimer(0.2,GiveMaxAmmo,GetClientUserId(client));
 }
 UpdateMaxValuesStage(int stage)
 {

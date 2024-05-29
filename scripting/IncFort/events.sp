@@ -3722,8 +3722,8 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 	bossPhase[client] = 0;
 	currentDamageType[client].clear();
 	if(IsValidClient3(client)){
+		RespawnEffect(client);
 		if(!IsFakeClient(client)){
-			RespawnEffect(client);
 			CancelClientMenu(client);
 			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 			client_respawn_handled[client] = 1;
