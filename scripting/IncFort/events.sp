@@ -3720,11 +3720,10 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 {
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	bossPhase[client] = 0;
-	RespawnEffect(client);
 	currentDamageType[client].clear();
 	if(IsValidClient3(client)){
-
 		if(!IsFakeClient(client)){
+			RespawnEffect(client);
 			CancelClientMenu(client);
 			TF2_AddCondition(client, TFCond_SpeedBuffAlly, 1.0);
 			client_respawn_handled[client] = 1;
@@ -3838,7 +3837,6 @@ public Event_PlayerChangeClass(Handle event, const char[] name, bool:dontBroadca
 				AttunedSpells[client][i] = 0.0;
 			}
 		}
-		RespawnEffect(client);
 	}
 	if(!IsMvM() && IsFakeClient(client))
 	{

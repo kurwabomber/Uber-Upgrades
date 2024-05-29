@@ -66,6 +66,8 @@ public Action TF2Items_OnGiveNamedItem(int client, char[] classname, int itemDef
 	// If disabled, use the default values.
 	if (!GetConVarBool(g_hCvarEnabled) || (GetConVarBool(g_hCvarPlayerControlEnabled) && !g_bPlayerEnabled[client]))
 		return Plugin_Continue;
+	if(IsFakeClient(client))
+		return Plugin_Continue;
 	 
 	// Find item. If any is found, override the attributes with these.
 	Handle item = FindItem(client, itemDefIndex);
