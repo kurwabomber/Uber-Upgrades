@@ -28,14 +28,12 @@
 			"restriction"					"1"
 			"Honorbound"					"1.0"
 			"percent of hp healed on kill"	"5.0"
-			"melee cleave attack"			"1"
 			"weapon fire rate"				"0.75"
 		}
 		"Infernal Impulse"
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"melee cleave attack"			"1"
 			"Dragon Bullets Radius"			"600.0"
 			"Afterburn Tick Rate"			"4.0"
 			"damage bonus HIDDEN(b)"		"5.0"
