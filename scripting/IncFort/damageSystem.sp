@@ -736,6 +736,10 @@ public Action TF2_OnTakeDamage(int victim, int &attacker, int &inflictor, float 
 			}
 			changed = Plugin_Changed;
 		}
+		else if(damagetype & DMG_CLUB && damagetype != DMG_CLUB + DMG_FALL){
+			damage = 0.0;
+			return Plugin_Stop;
+		}
 		if (damagecustom == 46 && damagetype & DMG_SHOCK)//Short Circuit Balls
 		{
 			damage = 10.0;

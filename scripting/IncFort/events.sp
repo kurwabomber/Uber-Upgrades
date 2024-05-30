@@ -3095,9 +3095,11 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 	int CWeapon = weapon;
 	if(IsValidWeapon(CWeapon))
 	{
+		float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3];
 		meleeLimiter[client]++;
 		if(getWeaponSlot(client,CWeapon) == 2)
 		{
+			CreateTimer(0.2, SmackTimer, EntIndexToEntRef(CWeapon));
 			bool flag = true;
 			float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
 			if(ballCheck == 0.0)
@@ -3142,7 +3144,6 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 				}
 			}
 		}
-		float fAngles[3], fVelocity[3], fOrigin[3], vBuffer[3];
 		Address bossType = TF2Attrib_GetByName(client, "damage force increase text");
 		if(bossType != Address_Null && TF2Attrib_GetValue(bossType) > 0.0)
 		{

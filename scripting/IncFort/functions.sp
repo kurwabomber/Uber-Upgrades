@@ -1310,12 +1310,10 @@ DisplayItemChange(client,itemidx)
 			ChangeString = "Jarate | Jarate effect now applies +10 damage (based on your scaling) to every hit taken.";
 		}
 		//Sniper Melees
-		/*
 		case 232:
 		{
 			ChangeString = "The Bushwacka | Launches projectile dealing 120 base damage and returns after 0.7s. Projectile pierces all targets forever and can hit multiple times. Fires 4x slower.";
 		}
-		*/
 		//Spy Primaries
 		case 61,1006:
 		{
@@ -2096,9 +2094,6 @@ refreshUpgrades(client, slot)
 			else if(firerateActive != Address_Null)
 			{
 				TF2Attrib_SetByName(slotItem,"fire rate bonus", 1.0/TF2Attrib_GetValue(firerateActive));
-				if(getWeaponSlot(client,slotItem) == 2)
-					TF2Attrib_SetByName(slotItem,"mult smack time", 1.0/TF2Attrib_GetValue(firerateActive));
-				
 			}
 			TF2Attrib_ClearCache(slotItem);
 		}
@@ -4624,4 +4619,33 @@ stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_
 		}
     }
 	return 1.0;
+}
+
+public void theBoxness(int client, int melee, const float pos[3], const float angle[3]){
+	float fwd[3], endVec[3], mins[3], maxs[3];
+	GetAngleVectors(angle, fwd, NULL_VECTOR, NULL_VECTOR);
+	ScaleVector(fwd, TF2Attrib_HookValueFloat(80.0, "melee_range_multiplier", melee));
+	AddVectors(pos, fwd, endVec);
+
+	mins = {-6.0,-6.0,-6.0};
+	maxs = {6.0, 6.0, 6.0};
+
+	ScaleVector(mins, TF2Attrib_HookValueFloat(1.0, "melee_bounds_multiplier", melee));
+	ScaleVector(maxs, TF2Attrib_HookValueFloat(1.0, "melee_bounds_multiplier", melee));
+	Handle trace = TR_TraceHullFilterEx(pos, endVec, mins, maxs, MASK_SHOT, TraceEntityFilterMelee, client);
+	delete trace;
+
+	for(int i = 1;i<MAXENTITIES;++i){
+		if(isHitForMelee[client][i]){
+
+			SDKHooks_TakeDamage(i, client, client, 65.0, DMG_CLUB + DMG_FALL, melee, _, _, false);
+			isHitForMelee[client][i] = false;
+		}
+	}
+}
+public bool TraceEntityFilterMelee(int entity, int contentsMask, int client) {
+    if (IsValidForDamage(entity) && IsOnDifferentTeams(client, entity)){
+		isHitForMelee[client][entity] = true;
+	}
+    return false;
 }
