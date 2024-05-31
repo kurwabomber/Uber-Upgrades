@@ -624,7 +624,7 @@ public Action:Timer_Every100MS(Handle timer)
 				Buff infernalDOT; infernalDOT = playerBuffs[client][getBuffInArray(client, Buff_InfernalDOT)];
 				if(client != infernalDOT.inflictor && IsValidClient3(infernalDOT.inflictor)){
 					currentDamageType[infernalDOT.inflictor].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, InfernalEnchantment[infernalDOT.inflictor]*0.07,_,_,_,_,false);
+					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, InfernalEnchantment[infernalDOT.inflictor]*0.1,_,_,_,_,false);
 					if(hitParticle[client]+0.4 <= currentGameTime){
 						CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1);
 						hitParticle[client] = currentGameTime
