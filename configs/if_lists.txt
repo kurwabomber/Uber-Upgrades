@@ -1968,7 +1968,6 @@
 		"Lunchbox specific upgrades"
 		{
 			"Attr0"		"mult_item_meter_charge_rate"
-			"Attr1"		"Resistance when eaten"
 			"Attr4"		"lunchbox healing decreased"
 		}
 		"Special Tweaks"
@@ -2599,11 +2598,9 @@
 		{
 			"Attr2"		"dmg from all reduced(wearable)"
 			"Attr0"		"effect bar recharge rate increased"
-			"Attr4"		"Resistance when eaten"
 		}
 		"Special Tweaks"
 		{
-			"Sp0"		"Human Stronghold"
 			"Sp1"		"Weapon Inheritance"
 		}
 	}	
