@@ -1194,7 +1194,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 		}
 	}
 }
-public Action SmackTimer(Handle timer, int ref){
+/*public Action SmackTimer(Handle timer, int ref){
 	int weapon = EntRefToEntIndex(ref)
 	if(!IsValidEntity(weapon) || !TF2Util_IsEntityWeapon(weapon))
 		return Plugin_Stop;
@@ -1211,7 +1211,7 @@ public Action SmackTimer(Handle timer, int ref){
 	GetClientEyePosition(client, fOrigin);
 	theBoxness(client, weapon, fOrigin, fAngles);
 	return Plugin_Stop;
-}
+}*/
 public Action:BuildingRegeneration(Handle timer, any:entity) 
 {
 	entity = EntRefToEntIndex(entity)

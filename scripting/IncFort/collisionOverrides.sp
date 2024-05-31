@@ -560,10 +560,9 @@ public Action:OnCollisionBoomerang(entity, client)
 			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
-				float damageDealt = 120.0 * TF2_GetDamageModifiers(owner, CWeapon);
-				currentDamageType[owner].second |= DMG_ACTUALCRIT;
+				float damageDealt = 180.0 * TF2_GetDamageModifiers(owner, CWeapon);
 				currentDamageType[owner].second |= DMG_IGNOREHOOK;
-				SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_SLASH | DMG_CRIT, CWeapon,_,_,false);
+				SDKHooks_TakeDamage(client, owner, owner, damageDealt, DMG_SLASH, CWeapon,_,_,false);
 			}
 		}
 		float origin[3],ProjAngle[3], vBuffer[3], ProjVelocity[3];

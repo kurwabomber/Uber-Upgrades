@@ -3099,7 +3099,7 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 		meleeLimiter[client]++;
 		if(getWeaponSlot(client,CWeapon) == 2)
 		{
-			CreateTimer(0.2, SmackTimer, EntIndexToEntRef(CWeapon));
+			//CreateTimer(0.2, SmackTimer, EntIndexToEntRef(CWeapon));
 			bool flag = true;
 			float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
 			if(ballCheck == 0.0)
