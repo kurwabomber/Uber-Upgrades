@@ -1032,6 +1032,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 {
 	bool isVictimPlayer = IsValidClient3(victim);
 
+	if(!IsOnDifferentTeams(victim, attacker))
+		return damage;
+
 	damage += GetAttribute(attacker, "additive damage bonus", 0.0);
 	if(IsValidWeapon(weapon)){
 		if(GetAttribute(weapon, "damage reduction to additive damage", 0.0) > 0.0)
@@ -1042,10 +1045,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 	{
 		if(IsFakeClient(attacker) && IsPlayerInSpawn(attacker)){
 			return 0.0;
-		}
-		if(TF2_GetPlayerClass(victim) == TFClass_Scout && weapon == GetPlayerWeaponSlot(victim,2)){
-			damagetype |= DMG_PREVENT_PHYSICS_FORCE;
-			return 1.0;
 		}
 		int jaratedIndex = getBuffInArray(victim, Buff_Jarated);
 		if(jaratedIndex != -1){
