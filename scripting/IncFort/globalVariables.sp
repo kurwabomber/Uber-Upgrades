@@ -415,11 +415,12 @@ bool isDeathTick[MAXPLAYERS+1];
 bool replenishStatus;
 bool disableMvMCash;
 bool DOTStacked[MAXENTITIES][MAXENTITIES];
+bool isBotScrambled[MAXPLAYERS+1];
 //bool isHitForMelee[MAXPLAYERS+1][MAXENTITIES];
 //Other Datatypes
 TFClassType current_class[MAXPLAYERS+1]
 TFClassType previous_class[MAXPLAYERS+1]
-
+TFClassType allowedBotClasses[] = {TFClass_Scout,TFClass_Soldier,TFClass_Pyro,TFClass_DemoMan,TFClass_Heavy,TFClass_Sniper,TFClass_Spy};
 //MvM
 int currentupgrades_idx_mvm_chkp[MAXPLAYERS+1][NB_SLOTS_UED+1][MAX_ATTRIBUTES_ITEM]
 int currentupgrades_number_mvm_chkp[MAXPLAYERS+1][NB_SLOTS_UED+1]

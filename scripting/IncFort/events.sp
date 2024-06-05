@@ -1360,6 +1360,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 	if(!IsValidClient3(client))
 		return;
 
+	isBotScrambled[client] = false;
 	isTagged[attack][client] = false;
 		
 	fanOfKnivesCount[client] = 0;
@@ -3788,24 +3789,30 @@ public Event_PlayerRespawn(Handle event, const char[] name, bool:dontBroadcast)
 			}
 			snowstormActive[client] = false;
 		}
-
-	}
-	if(IsFakeClient(client)){
-		if(IsMvM()){
-			BotTimer[client] = 45.0;
-			if(IsValidForDamage(TankTeleporter) && !GetEntProp(TankTeleporter, Prop_Send, "m_bDisabled")){
-				char classname[128]; 
-				GetEdictClassname(TankTeleporter, classname, sizeof(classname)); 
-				if(!strcmp("tank_boss", classname)){
-					float telePos[3];
-					GetEntPropVector(TankTeleporter,Prop_Send, "m_vecOrigin",telePos);
-					telePos[2]+= 220.0;
-					TeleportEntity(client, telePos, NULL_VECTOR, NULL_VECTOR);
+		if(IsFakeClient(client)){
+			if(IsMvM()){
+				BotTimer[client] = 45.0;
+				if(IsValidForDamage(TankTeleporter) && !GetEntProp(TankTeleporter, Prop_Send, "m_bDisabled")){
+					char classname[128]; 
+					GetEdictClassname(TankTeleporter, classname, sizeof(classname)); 
+					if(!strcmp("tank_boss", classname)){
+						float telePos[3];
+						GetEntPropVector(TankTeleporter,Prop_Send, "m_vecOrigin",telePos);
+						telePos[2]+= 220.0;
+						TeleportEntity(client, telePos, NULL_VECTOR, NULL_VECTOR);
+					}
 				}
 			}
-		}
-		else{
-			CreateTimer(0.4, GiveBotUpgrades, GetClientUserId(client));
+			else{
+				if(!isBotScrambled[client]){
+					TF2_SetPlayerClass(client, allowedBotClasses[GetRandomInt(0,sizeof(allowedBotClasses)-1)]);
+					RequestFrame(RespawnPlayer,EntIndexToEntRef(client));
+					isBotScrambled[client] = true;
+				}
+				else{
+					CreateTimer(0.4, GiveBotUpgrades, GetClientUserId(client));
+				}
+			}
 		}
 	}
 }

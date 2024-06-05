@@ -2090,7 +2090,6 @@
 		"Special Tweaks"
 		{
 			"Sp0"		"Starstorm"
-			"Sp1"		"Deep Learning Sentry"
 		}
 	}
 	"grenade"

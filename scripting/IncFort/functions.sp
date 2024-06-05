@@ -2134,6 +2134,7 @@ public void getUpgradeMenuTitle(int client, int w_id, int cat_id, int slot, char
 			fstr)
 	}
 }
+
 public Action:GiveBotUpgrades(Handle timer, any:userid) 
 {
 	int client = GetClientOfUserId(userid);
@@ -4621,6 +4622,12 @@ stock float TF2_GetDamageModifiers(client,weapon,bool status=true, bool bullets_
 		}
     }
 	return 1.0;
+}
+
+public void RespawnPlayer(int ref){
+	int client = EntRefToEntIndex(ref);
+	if(IsValidClient3(client))
+		TF2_RespawnPlayer(client);
 }
 
 /*public void theBoxness(int client, int melee, const float pos[3], const float angle[3]){
