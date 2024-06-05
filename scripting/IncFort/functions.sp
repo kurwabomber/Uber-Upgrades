@@ -403,6 +403,7 @@ public void ManagePlayerBuffs(int i){
 	TF2Attrib_SetByName(i, "movespeed player buff", additiveMoveSpeedMultBuff);
 	TF2Attrib_SetByName(i, "damage taken mult 4", additiveDamageTakenBuff*multiplicativeDamageTakenBuff);
 	TF2Attrib_SetByName(i, "armor penetration buff", additiveArmorPenetration);
+	TF2Attrib_ClearCache(i);
 
 	if(miniCritStatusVictim[i]-currentGameTime > 0.0){
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
@@ -412,7 +413,7 @@ public void ManagePlayerBuffs(int i){
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Minicrits", miniCritStatusAttacker[i]-currentGameTime);
 		TF2_AddCondition(i, TFCond_Buffed, 0.2);
 	}
-	
+
 	if(IsFakeClient(i) || disableIFMiniHud[i] > currentGameTime)
 		return;
 

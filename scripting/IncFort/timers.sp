@@ -80,17 +80,14 @@ public Action:Timer_Second(Handle timer)
 		{
 			if(IsValidClient3(i))
 			{
-				if(IsFakeClient(i) && !IsClientObserver(i) && IsPlayerAlive(i))
+				if(IsFakeClient(i) && !IsClientObserver(i) && IsPlayerAlive(i) && TF2_IsPlayerInCondition(i, TFCond_UberchargedHidden))
 				{
 					BotTimer[i] -= 1.0;
 					if(BotTimer[i] <= 0.0)
 					{
 						BotTimer[i] = 45.0;
-						if(TF2_IsPlayerInCondition(i, TFCond_UberchargedHidden) || IsPlayerInSpawn(i))
-						{
-							PrintToServer("Slaying %N due to staying ubered for too long.", i);
-							ForcePlayerSuicide(i);
-						}
+						PrintToServer("Slaying %N due to staying ubered for too long.", i);
+						ForcePlayerSuicide(i);
 					}
 				}
 			}
