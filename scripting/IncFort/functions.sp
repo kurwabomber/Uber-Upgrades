@@ -404,6 +404,15 @@ public void ManagePlayerBuffs(int i){
 	TF2Attrib_SetByName(i, "damage taken mult 4", additiveDamageTakenBuff*multiplicativeDamageTakenBuff);
 	TF2Attrib_SetByName(i, "armor penetration buff", additiveArmorPenetration);
 
+	if(miniCritStatusVictim[i]-currentGameTime > 0.0){
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
+		TF2_AddCondition(i, TFCond_MarkedForDeath, 0.2);
+	}
+	if(miniCritStatusAttacker[i]-currentGameTime > 0.0){
+		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Minicrits", miniCritStatusAttacker[i]-currentGameTime);
+		TF2_AddCondition(i, TFCond_Buffed, 0.2);
+	}
+	
 	if(IsFakeClient(i) || disableIFMiniHud[i] > currentGameTime)
 		return;
 
@@ -423,14 +432,7 @@ public void ManagePlayerBuffs(int i){
 	if(MadmilkDuration[i]-currentGameTime > 0.0){
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Milked", MadmilkDuration[i]-currentGameTime);
 	}
-	if(miniCritStatusVictim[i]-currentGameTime > 0.0){
-		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
-		TF2_AddCondition(i, TFCond_MarkedForDeath, 0.2);
-	}
-	if(miniCritStatusAttacker[i]-currentGameTime > 0.0){
-		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Minicrits", miniCritStatusAttacker[i]-currentGameTime);
-		TF2_AddCondition(i, TFCond_Buffed, 0.2);
-	}
+
 	if(TF2_IsPlayerInCondition(i, TFCond_AfterburnImmune))
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Afterburn Immunity", TF2Util_GetPlayerConditionDuration(i, TFCond_AfterburnImmune));
 

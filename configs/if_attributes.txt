@@ -6337,6 +6337,15 @@
 			"init"		"0.00"
 			"max"		"0.00"
 		}
+		"1684"
+		{
+			"name"		"cloak_consume_on_feign_death_activate"
+			"ref"		"cloak_consume_on_feign_death_activate"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
 		//Filler
 		"1900.0"
 		{
