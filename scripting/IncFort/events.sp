@@ -1269,10 +1269,6 @@ public Event_PlayerChangeTeam(Handle event, const char[] name, bool:dontBroadcas
 public Event_ResetStats(Handle event, const char[] name, bool:dontBroadcast)
 {
 	PrintToServer("MvM reset stats????");
-	additionalstartmoney = 0.0;
-	StartMoneySaved = 0.0;
-	gameStage = 0;
-	UpdateMaxValuesStage(gameStage)
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	replenishStatus = true;
 	for(int i = 1; i<=MaxClients;++i){

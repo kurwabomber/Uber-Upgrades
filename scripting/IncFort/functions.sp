@@ -3964,8 +3964,10 @@ stock fixPiercingVelocity(entity)
 	}
 }
 ResetVariables(){
+	additionalstartmoney = 0.0;
+	StartMoneySaved = 0.0;
 	gameStage = 0;
-	UpdateMaxValuesStage(gameStage);
+	UpdateMaxValuesStage(gameStage)
 	disableMvMCash = false;
 	for(int client = 1;client<=MaxClients;client++){
 		buffChange[client] = false;
