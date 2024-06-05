@@ -705,7 +705,7 @@ public MRESReturn OnAirblast(int weapon, Handle hParams){
 		int owner = getOwner(weapon);
 
 		float SlowForce = 2.0 * GetAttribute(weapon, "airblast vertical pushback scale")
-		float AirblastDamage = 80.0 * GetAttribute(weapon, "airblast pushback scale")
+		float AirblastDamage = 15.0 * GetAttribute(weapon, "airblast pushback scale")
 		float TotalRange = 600.0 * GetAttribute(weapon, "deflection size multiplier")
 		float Duration = 1.25 * GetAttribute(weapon, "melee range multiplier")
 		float ConeRadius = 40.0 * GetAttribute(weapon, "melee bounds multiplier");
