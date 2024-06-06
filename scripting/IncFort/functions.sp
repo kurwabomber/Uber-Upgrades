@@ -2453,11 +2453,7 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 			{
 				TF2Attrib_SetByName(client,"max health additive bonus",((additionalstartmoney+StartMoney)/348.0)*OverAllMultiplier);
 				TF2Attrib_SetByName(client,"disguise on backstab",((additionalstartmoney+StartMoney)/6000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(client,"mult decloak rate",(20000.0/(additionalstartmoney+StartMoney)) /OverAllMultiplier);
-				TF2Attrib_SetByName(client,"mult cloak rate",((20000.0/(additionalstartmoney+StartMoney))-1) /OverAllMultiplier);
 				TF2Attrib_SetByName(client,"clip size bonus",((additionalstartmoney+StartMoney)/11000.0)*OverAllMultiplier);
-				TF2Attrib_RemoveByName(client,"damage penalty");
-				TF2Attrib_RemoveByName(client,"dmg penalty vs players");		
 				if((additionalstartmoney+StartMoney) <= 480000/OverAllMultiplier)
 				{
 					TF2Attrib_SetByName(client,"damage bonus",1+(((additionalstartmoney+StartMoney)/160000.0)*OverAllMultiplier));
@@ -2465,19 +2461,6 @@ public Action:GiveBotUpgrades(Handle timer, any:userid)
 				else
 				{
 					TF2Attrib_SetByName(client,"damage bonus", 4.0);
-				}
-				if((additionalstartmoney+StartMoney) >= 1000000){
-				TF2Attrib_SetByName(primary,"damage penalty",((additionalstartmoney+StartMoney)/17000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(primary,"damage mult 1",((additionalstartmoney+StartMoney)/22000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(melee,"damage penalty",((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
-				TF2Attrib_SetByName(melee,"damage mult 1",((additionalstartmoney+StartMoney)/20000.0)*OverAllMultiplier);
-				}
-				else
-				{
-					TF2Attrib_SetByName(primary,"damage penalty",((additionalstartmoney+StartMoney)/15000.0)*OverAllMultiplier);
-					TF2Attrib_SetByName(primary,"damage mult 1",((additionalstartmoney+StartMoney)/18000.0)*OverAllMultiplier);
-					TF2Attrib_SetByName(melee,"damage penalty",((additionalstartmoney+StartMoney)/14000.0)*OverAllMultiplier);
-					TF2Attrib_SetByName(melee,"damage mult 1",((additionalstartmoney+StartMoney)/16000.0)*OverAllMultiplier);
 				}
 				if((additionalstartmoney+StartMoney) >= 60000/OverAllMultiplier)
 				{
