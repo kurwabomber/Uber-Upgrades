@@ -4180,6 +4180,7 @@ public Action TF2_SentryFireBullet(int sentry, int builder, int &shots, float sr
 						SetEntProp(iEntity, Prop_Data, "m_nSolidType", 6);
 						SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 13); 
 						SDKHook(iEntity, SDKHook_StartTouch, OnStartTouchSentryBolt);
+						SDKHook(iEntity, SDKHook_Touch, AddArrowCollisionFunction);
 						CreateSpriteTrail(iEntity, "0.33", "5.0", "1.0", iTeam == 2 ? "materials/effects/arrowtrail_red.vmt":"materials/effects/arrowtrail_blu.vmt", "255 255 255");
 					}
 					return Plugin_Stop;

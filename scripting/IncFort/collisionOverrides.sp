@@ -378,25 +378,49 @@ public Action:OnCollisionWarriorArrow(entity, client)
 }
 public Action:OnStartTouchSentryBolt(entity, other)
 {
-	if(!other)
-		return Plugin_Stop;
-
-	if(!IsValidForDamage(other))
-		return Plugin_Stop;
-
 	SDKHook(entity, SDKHook_Touch, OnCollisionSentryBolt);
-	return Plugin_Handled;
+	return Plugin_Continue;
 }
 public Action:OnCollisionSentryBolt(entity, client)
 {
 	int owner = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")
-	if(IsOnDifferentTeams(owner,client))
-	{
-		currentDamageType[owner].second |= DMG_IGNOREHOOK;
-		SDKHooks_TakeDamage(client, owner, owner, projectileDamage[entity], DMG_BULLET, _, _,_,false);
-		RemoveEntity(entity);
-	}
 
+	char strName[32];
+	GetEntityClassname(client, strName, 32)
+	char strName1[32];
+	GetEntityClassname(entity, strName1, 32)
+
+	if(IsValidForDamage(client) && IsOnDifferentTeams(owner,client))
+	{
+		if(!StrEqual(strName, strName1))
+		{
+			int CWeapon = GetEntPropEnt(owner, Prop_Send, "m_hActiveWeapon");
+			if(IsValidEdict(CWeapon))
+			{
+				currentDamageType[owner].second |= DMG_IGNOREHOOK;
+				SDKHooks_TakeDamage(client, owner, owner, projectileDamage[entity], DMG_BULLET, _, _,_,false);
+			}
+			if(IsValidClient3(client)){
+				ShouldNotHome[entity][client] = true;
+				BleedBuildup[client] += 4.0;
+				checkBleed(client, owner, _, projectileDamage[entity]*3.0);
+			}
+		}
+
+		float origin[3];
+		float ProjAngle[3];
+		float vBuffer[3];
+		GetEntPropVector(entity, Prop_Data, "m_vecOrigin", origin);
+		GetEntPropVector(entity, Prop_Data, "m_angRotation", ProjAngle);
+		GetAngleVectors(ProjAngle, vBuffer, NULL_VECTOR, NULL_VECTOR);
+		ScaleVector(vBuffer, 90.0);
+		AddVectors(origin, vBuffer, origin);
+		TeleportEntity(entity, origin,NULL_VECTOR,NULL_VECTOR);
+		RequestFrame(fixPiercingVelocity,EntIndexToEntRef(entity))
+	}
+	if(client == 0)
+		RemoveEntity(entity);
+	
 	SDKUnhook(entity, SDKHook_Touch, OnCollisionSentryBolt);
 	return Plugin_Stop;
 }

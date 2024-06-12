@@ -342,21 +342,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 				BleedBuildup[victim] += bleedAdd;
 
-				while(BleedBuildup[victim] >= BleedMaximum[victim])
-				{
-					BleedBuildup[victim] -= BleedMaximum[victim];
-					
-					float bleedBonus = 1.0;
-					Address vampirePowerupAttacker = TF2Attrib_GetByName(attacker, "unlimited quantity");
-					if(vampirePowerupAttacker != Address_Null && TF2Attrib_GetValue(vampirePowerupAttacker) > 0.0)
-					{
-						bleedBonus += 0.25;
-					}
-					
-					currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(victim, attacker, attacker, TF2_GetDamageModifiers(attacker, weapon)*100.0*bleedBonus,DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
-					CreateParticleEx(victim, "env_sawblood", 1, 0, damagePosition, 2.0);
-				}
+				checkBleed(victim, attacker, weapon);
 			}
 			Address radiationBuild = TF2Attrib_GetByName(weapon, "accepted wedding ring account id 1");
 			if(!(damagetype & DMG_PREVENT_PHYSICS_FORCE) && radiationBuild != Address_Null)

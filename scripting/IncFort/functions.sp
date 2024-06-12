@@ -2716,6 +2716,36 @@ checkFreeze(int victim,int attacker)
 		SetEntityMoveType(victim, MOVETYPE_NONE);
 	}
 }
+checkBleed(int victim,int attacker, int weapon = -1, float overrideDamage = 0.0){
+	float bleedBonus = 1.0;
+	Address vampirePowerupAttacker = TF2Attrib_GetByName(attacker, "unlimited quantity");
+	if(vampirePowerupAttacker != Address_Null && TF2Attrib_GetValue(vampirePowerupAttacker) > 0.0)
+	{
+		bleedBonus += 0.25;
+	}
+
+	float damage = 100.0*bleedBonus;
+	if(overrideDamage != 0.0){
+		damage = overrideDamage;
+	}
+	if(IsValidEntity(weapon) && TF2Util_IsEntityWeapon(weapon)){
+		damage *= TF2_GetDamageModifiers(attacker, weapon);
+	}
+	float damagePosition[3];
+	GetEntPropVector(victim, Prop_Data, "m_vecOrigin", damagePosition);
+	damagePosition[2] += 30.0;
+
+	while(BleedBuildup[victim] >= BleedMaximum[victim])
+	{
+		BleedBuildup[victim] -= BleedMaximum[victim];
+		
+		currentDamageType[attacker].second |= DMG_IGNOREHOOK;
+		SDKHooks_TakeDamage(victim, attacker, attacker, damage, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+
+
+		CreateParticleEx(victim, "env_sawblood", 1, 0, damagePosition, 2.0);
+	}
+}
 monoculusBonus(entity) 
 {
 	entity = EntRefToEntIndex(entity);

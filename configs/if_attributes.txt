@@ -4942,7 +4942,7 @@
 			"value"		"34"
 			"init"		"0"
 			"restriction_category"	"2"
-			"description"	"Sentry shoots out projectile bolts that deal 35 base damage."
+			"description"	"Sentry shoots out projectile bolts that deal 35 base damage.\nApplies +4 bleed buildup on hit and penetrates victims."
 			"max"		"34"
 		}
 		"1539"
