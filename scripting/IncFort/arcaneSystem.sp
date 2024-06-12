@@ -477,7 +477,9 @@ FinishCastInfernalEnchantment(int client, int spellLevel)
 		InfernalEnchantment[client] = (300.0 + (Pow(ArcaneDamage[client] * Pow(ArcanePower[client], 4.0), spellScaling[spellLevel]) * 100.0));
 		InfernalEnchantmentLevel[client] = spellLevel;
 		InfernalEnchantmentDuration[client] = currentGameTime + 30.0*ArcanePower[client];
-		CreateParticleEx(client, "utaunt_auroraglow_orange_parent", _, _, _, 30.0*ArcanePower[client]);
+		CreateParticle(client, "utaunt_auroraglow_orange_parent", true, "", 30.0*ArcanePower[client],_,_,1);
+		int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
+		TE_Send(clients,numClients)
 	}
 }
 
