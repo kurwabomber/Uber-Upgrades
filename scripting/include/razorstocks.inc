@@ -1660,7 +1660,7 @@ stock int GetClientBaseHP(client){
 	
 	for(int i = 0; i<5; ++i){
 		int weap = TF2Util_GetPlayerLoadoutEntity(client, i);
-		if(!IsValidWeapon(weap))
+		if(!IsValidEntity(weap))
 			continue;
 
 		HP += RoundToCeil(GetAttribute(weap, "max health additive bonus", 0.0));

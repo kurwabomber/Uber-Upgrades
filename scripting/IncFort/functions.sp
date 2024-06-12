@@ -1910,7 +1910,7 @@ refreshUpgrades(client, slot)
 			Address healthActive = TF2Attrib_GetByName(client, "max health multiplier");
 			if(healthActive != Address_Null)
 			{
-				TF2Attrib_SetByName(client,"hidden maxhealth non buffed", float(RoundToCeil(GetClientBaseHP(client)*(TF2Attrib_GetValue(healthActive)-1.0))) );
+				TF2Attrib_SetByName(client,"add health bonus", float(RoundToCeil(GetClientBaseHP(client)*(TF2Attrib_GetValue(healthActive)-1.0))) );
 				if(current_class[client] == TFClass_Engineer)
 					TF2Attrib_SetByName(client,"engy building health bonus", TF2Attrib_GetValue(healthActive));
 			}
