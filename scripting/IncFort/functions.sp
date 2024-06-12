@@ -2969,38 +2969,22 @@ ChangeProjModel(entity)
 					case 222:
 					{
 						SetEntityModel(entity, "models/weapons/c_models/c_madmilk/c_madmilk.mdl");
-						SDKHook(entity, SDKHook_StartTouch, OnStartTouchJars);
-						gravChanges[entity] = true;
-						jarateType[entity] = 1;
-						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
-						SetEntityGravity(entity, 1.0);
+						ApplyJarChanges(entity, CWeapon, 1);
 					}
 					case 1121:
 					{
 						SetEntityModel(entity, "models/weapons/c_models/c_breadmonster/c_breadmonster_milk.mdl");
-						SDKHook(entity, SDKHook_StartTouch, OnStartTouchJars);
-						gravChanges[entity] = true;
-						jarateType[entity] = 1;
-						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
-						SetEntityGravity(entity, 1.0);
+						ApplyJarChanges(entity, CWeapon, 1);
 					}
 					case 58,1149:
 					{
 						SetEntityModel(entity, "models/weapons/c_models/urinejar.mdl");
-						SDKHook(entity, SDKHook_StartTouch, OnStartTouchJars);
-						gravChanges[entity] = true;
-						jarateType[entity] = 0;
-						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
-						SetEntityGravity(entity, 1.0);
+						ApplyJarChanges(entity, CWeapon, 0);
 					}
 					case 1105:
 					{
 						SetEntityModel(entity, "models/weapons/c_models/c_breadmonster/c_breadmonster.mdl");
-						SDKHook(entity, SDKHook_StartTouch, OnStartTouchJars);
-						gravChanges[entity] = true;
-						jarateType[entity] = 0;
-						jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
-						SetEntityGravity(entity, 1.0);
+						ApplyJarChanges(entity, CWeapon, 0);
 					}
 					case 812,833:
 					{
@@ -3014,6 +2998,19 @@ ChangeProjModel(entity)
 			}
 		}
 	}
+}
+ApplyJarChanges(entity, CWeapon, type){
+	SDKHook(entity, SDKHook_StartTouch, OnStartTouchJars);
+	gravChanges[entity] = true;
+	jarateType[entity] = type;
+	jarateWeapon[entity] = EntIndexToEntRef(CWeapon);
+	SetEntityGravity(entity, 1.0);
+
+	float vel[3];
+	GetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", vel);
+	vel[2] += 100.0;
+	ScaleVector(vel, 1.3);
+	TeleportEntity(entity, _, _, vel);
 }
 SentryDelay(entity) 
 {
