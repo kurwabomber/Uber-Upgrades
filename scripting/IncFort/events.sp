@@ -3963,12 +3963,15 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 			{
 				if (!strcmp(classname, "tf_weapon_pda_spy"))
 				{
-					current_class[client] = TF2_GetPlayerClass(client)
+					/*current_class[client] = TF2_GetPlayerClass(client)
 					currentitem_classname[client][1] = "tf_weapon_pda_spy"
 					currentitem_ent_idx[client][1] = entityIndex
 					DefineAttributesTab(client, 735, 1, entityIndex)
 					currentitem_catidx[client][1] = GetUpgrade_CatList("tf_weapon_pda_spy")
-					GiveNewUpgradedWeapon_(client, 1)
+					GiveNewUpgradedWeapon_(client, 1);
+					GiveNewUpgradedWeapon_(client, slot);
+					return;*/
+					slot = 1;
 				}
 			}
 			currentitem_catidx[client][4] = _:TF2_GetPlayerClass(client) - 1;
