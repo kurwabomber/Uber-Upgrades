@@ -3525,7 +3525,7 @@
 			"init"		"1"
 			"display_style" "1"
 			"description"	"1:1 pure damage multiplier.\nIncreases in cost by +$480 per purchase."
-			"max"		"6"
+			"max"		"10"
 		}
 		"1331"
 		{

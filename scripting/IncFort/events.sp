@@ -1792,7 +1792,9 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					CreateParticleEx(client, "utaunt_portalswirl_purple_parent", 1, _, _, 5.0);
 					powerupParticle[client] = currentGameTime+5.1;
 				}else if(TF2Attrib_GetValue(inverterPowerup) == 2.0){
-					CreateParticleEx(client, "utaunt_storm_parent_o", 1, _, _, 5.0);
+					CreateParticle(client, "utaunt_storm_parent_o", true, "", 5.0,_,_,1);
+					int clients[MAXPLAYERS+1], numClients = getClientParticleStatus(clients, client);
+					TE_Send(clients,numClients)
 					powerupParticle[client] = currentGameTime+5.1;
 				}else if(TF2Attrib_GetValue(inverterPowerup) == 3.0){
 					CreateParticle(client, "utaunt_cremation_black_parent", true, _, 5.0);
