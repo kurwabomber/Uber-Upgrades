@@ -3008,8 +3008,9 @@ ApplyJarChanges(entity, CWeapon, type){
 
 	float vel[3];
 	GetEntPropVector(entity, Prop_Send, "m_vInitialVelocity", vel);
-	vel[2] += 100.0;
 	ScaleVector(vel, 1.3);
+	ScaleVector(vel, TF2Attrib_HookValueFloat(1.0, "mult_projectile_speed", CWeapon));
+	vel[2] += 100.0;
 	TeleportEntity(entity, _, _, vel);
 }
 SentryDelay(entity) 
@@ -3772,7 +3773,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces shift middle click with teleport to crosshair. Deals 1200 base damage to all enemies through path of teleport. Each use consumes 10%% focus. Applies +4 additive dmg taken on teleport hit.");
 		}else{
-			CPrintToChat(client, "{community}Agility Powerup {default}| {lightcyan}1.33x reload & fire rate. infinite jumps, speed boost, 1.4x speed, 1.3x jump height, 1.75x self push force, immunity to crowd control effects, and 35%% dodge chance.");
+			CPrintToChat(client, "{community}Agility Powerup {default}| {lightcyan}1.5x reload & fire rate. infinite jumps, speed boost, 1.4x speed, 1.3x jump height, 1.75x self push force, immunity to crowd control effects, and 35%% dodge chance.");
 		}
 	}
 	else if(StrEqual("knockout powerup", name)){
