@@ -1,5 +1,8 @@
 "Phrases"
 {
+	"dmg penalty while half alive"{
+		"en"		"Damage Multiplier While >50%% HP"
+	}
 	"cloak_consume_on_feign_death_activate"{
 		"en"		"Projectile Gravity"
 	}
