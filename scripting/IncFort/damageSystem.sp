@@ -380,6 +380,21 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			Buff nullification;
 			nullification.init("Nullification", "No status effects", Buff_Nullification, 1, victim, 2.0);
 			insertBuff(victim, nullification);
+
+			TF2_RemoveCondition(victim, TFCond_Ubercharged);
+			TF2_RemoveCondition(victim, TFCond_Cloaked);
+			TF2_RemoveCondition(victim, TFCond_Disguised);
+			TF2_RemoveCondition(victim, TFCond_MegaHeal);
+			TF2_RemoveCondition(victim, TFCond_DefenseBuffNoCritBlock);
+			TF2_RemoveCondition(victim, TFCond_DefenseBuffMmmph);
+			TF2_RemoveCondition(victim, TFCond_UberchargedHidden);
+			TF2_RemoveCondition(victim, TFCond_UberBulletResist);
+			TF2_RemoveCondition(victim, TFCond_UberBlastResist);
+			TF2_RemoveCondition(victim, TFCond_UberFireResist);
+			TF2_RemoveCondition(victim, TFCond_AfterburnImmune);
+			TF2_RemoveCondition(victim, TFCond_Kritzkrieged);
+			TF2_RemoveCondition(victim, TFCond_CritCanteen);
+			miniCritStatusAttacker[victim] = 0.0;
 		}
 
 		if(GetAttribute(victim, "resistance powerup", 0.0) == 1 || GetAttribute(victim, "resistance powerup", 0.0) == 3)

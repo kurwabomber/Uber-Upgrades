@@ -600,7 +600,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 				}
 			}
 			case TFCond_Ubercharged, TFCond_Cloaked, TFCond_Disguised, TFCond_MegaHeal, TFCond_DefenseBuffNoCritBlock,TFCond_DefenseBuffMmmph,
-			TFCond_UberchargedHidden, TFCond_UberBulletResist, TFCond_UberBlastResist, TFCond_UberFireResist, TFCond_AfterburnImmune:
+			TFCond_UberchargedHidden, TFCond_UberBulletResist, TFCond_UberBlastResist, TFCond_UberFireResist, TFCond_AfterburnImmune, TFCond_Kritzkrieged, TFCond_CritCanteen:
 			{
 				if(TF2_IsPlayerInCondition(client, TFCond_Sapped) || GetAttribute(client, "inverter powerup", 0.0) == 3)
 					return MRES_Supercede;
