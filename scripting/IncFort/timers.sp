@@ -1515,6 +1515,9 @@ public Action WaveFailed(Handle timer)
 					{
 						for(i = 0; i < MAX_ATTRIBUTES_ITEM; ++i)
 						{
+							/*if(currentupgrades_idx[client][slot][i] != currentupgrades_idx_mvm_chkp[client][slot][i]){
+								upgrades_ref_to_idx[client][slot][currentupgrades_idx[client][slot][i]]
+							}*/
 							currentupgrades_idx[client][slot][i] = currentupgrades_idx_mvm_chkp[client][slot][i]
 							currentupgrades_val[client][slot][i] = currentupgrades_val_mvm_chkp[client][slot][i]
 						}
@@ -1624,9 +1627,7 @@ public Action:MvMFailTimer(Handle timer, any:userid)
 		for (int slot = 0; slot < NB_SLOTS_UED; slot++)
 		{
 			int weaponinSlot = GetWeapon(client,slot);
-			if(IsValidEdict(weaponinSlot))
-			{
-				TF2Attrib_RemoveAll(weaponinSlot);
+			if(IsValidEdict(weaponinSlot)){
 				TF2Attrib_ClearCache(weaponinSlot);
 			}
 			GiveNewUpgradedWeapon_(client, slot);
