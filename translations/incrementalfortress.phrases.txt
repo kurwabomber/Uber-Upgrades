@@ -1,5 +1,8 @@
 "Phrases"
 {
+	"Gas Damage Bonus"{
+		"en"		"Gas Damage Bonus"
+	}
 	"dmg penalty while half alive"{
 		"en"		"Damage Multiplier While >50%% HP"
 	}

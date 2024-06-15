@@ -4557,6 +4557,18 @@
 			"description"	"1:1 pure damage multiplier.\nIncreases in cost by +$150 per purchase."
 			"max"		"7"
 		}
+		"1509.2"
+		{
+			"name"		"damage mult 7"
+			"ref"		"Gas Damage Bonus"
+			"cost"		"200"
+			"increase_ratio"	"0.2"
+			"value"		"0.35"
+			"init"		"1"
+			"display_style" "1"
+			"description"	"1:1 pure damage multiplier.\nIncreases in cost by +$40 per purchase."
+			"max"		"100"
+		}
 		"1510"
 		{
 			"name"		"sapper damage penalty hidden"

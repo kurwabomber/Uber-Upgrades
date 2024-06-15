@@ -1348,7 +1348,6 @@
 			"Attr17"	"flame_speed"
 			"Attr2"		"flame life bonus"
 			"Attr14"	"Flame Size"
-			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -1378,7 +1377,6 @@
 			"Attr17"	"flame_speed"
 			"Attr2"		"flame life bonus"
 			"Attr14"	"Flame Size"
-			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2455,7 +2453,7 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr14"	"Gas Passer Explosion Damage"
+			"Attr14"	"Gas Damage Bonus"
 			"Attr2"		"damage bonus done against players"
 			"Attr6"		"Overall Damage"
 			"Attr13"	"lifesteal ability"
@@ -2466,7 +2464,6 @@
 			"Attr0"		"explode_on_ignite"
 			"Attr1"		"gas passer recharge"
 			"Attr7"		"blast radius increased(G)"
-			"Attr8"		"Weapons Deals No Knockback"
 		}
 		"Special Tweaks"
 		{
@@ -2572,10 +2569,8 @@
 		{
 			"Attr0"		"damage bonus(H)"
 			"Attr15"	"ap (slowswing)"
-			"Attr1"		"Extra Damage Bonus"
 			"Attr16"	"Increased Overall Damage(F)"
 			"Attr13"	"lifesteal ability"
-			"Attr14"	"afterburn dmg increased (E)"
 			"Attr8"		"reveal cloaked victim on hit"
 			"Attr9"		"reveal disguised victim on hit"
 		}
