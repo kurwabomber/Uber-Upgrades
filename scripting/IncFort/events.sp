@@ -1981,7 +1981,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					if(GetAttribute(client, "king powerup", 0.0) == 2.0){
 						for(int i=1;i<=MaxClients;++i)
 						{
-							if(!IsValidClient3(i))
+							if(!IsValidClient3(i) || i == client)
 								continue;
 							
 							if(!IsPlayerAlive(i))
