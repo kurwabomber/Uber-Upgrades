@@ -901,9 +901,9 @@
 		{
 			"Attr1"		"damage bonus(H)"
 			"Attr15"	"ap (armyofnotmany)"
+			"Attr13"	"Extra Damage Bonus"
 			"Attr1"		"blast radius increased"
 			"Attr9"		"dmg falloff decreased"
-			"Attr13"	"Extra Damage Bonus"
 			"Attr13"	"lifesteal ability"
 			"Attr13"	"reveal cloaked victim on hit"
 			"Attr14"	"reveal disguised victim on hit"
@@ -933,9 +933,9 @@
 		{
 			"Attr1"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
+			"Attr13"		"Extra Damage Bonus"
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
-			"Attr13"		"Extra Damage Bonus"
 			"Attr13"		"lifesteal ability"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
@@ -1389,7 +1389,7 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus(H)"
+			"Attr0"		"damage bonus"
 			"Attr16"	"ap (temprise)"
 			"Attr13"	"Extra Damage Bonus"
 			"Attr13"	"lifesteal ability"
@@ -1409,7 +1409,7 @@
 			"Sp2"		"Homing Flares"
 		}
 	}
-	"pyroflaregd"//Detonator
+	"pyroflaregd"//Detonator & Scorch Shot
 	{
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
@@ -2478,8 +2478,8 @@
 		{
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
-			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"Extra Damage Bonus"
+			"Attr9"			"dmg falloff decreased"
 			"Attr13"		"lifesteal ability"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
@@ -2511,9 +2511,9 @@
 		{
 			"Attr0"			"damage bonus(H)"
 			"Attr20"		"ap (armyofnotmany)"
+			"Attr13"		"Extra Damage Bonus"
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
-			"Attr13"		"Extra Damage Bonus"
 			"Attr13"		"lifesteal ability"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
@@ -2543,9 +2543,9 @@
 		{
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
+			"Attr13"		"Extra Damage Bonus"
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
-			"Attr13"		"Extra Damage Bonus"
 			"Attr13"		"lifesteal ability"
 			"Attr13"		"reveal cloaked victim on hit"
 			"Attr14"		"reveal disguised victim on hit"
