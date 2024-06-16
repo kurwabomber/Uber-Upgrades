@@ -76,7 +76,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 
 				currentDamageType[attacker].second |= DMG_PIERCING;
 				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.5, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.15, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 			}
 		}
 	}

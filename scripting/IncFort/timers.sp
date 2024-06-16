@@ -147,7 +147,7 @@ public Action:Timer_FixedVariables(Handle timer)
 				if(immolationRatio > 0.0){
 					currentDamageType[client].second |= DMG_PIERCING
 					currentDamageType[client].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client, client, client, TF2Util_GetEntityMaxHealth(client)*immolationRatio*0.1, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+					SDKHooks_TakeDamage(client, client, client, TF2Util_GetEntityMaxHealth(client)*immolationRatio*0.1, DMG_PREVENT_PHYSICS_FORCE);
 				}
 			}
 			if(sunstarDuration[client] >= currentGameTime){
@@ -247,7 +247,7 @@ public Action:Timer_FixedVariables(Handle timer)
 				if(info.severity > 0.0){
 					currentDamageType[info.inflictor].second |= DMG_PIERCING
 					currentDamageType[info.inflictor].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client, info.inflictor, info.inflictor, TF2Util_GetEntityMaxHealth(info.inflictor)*info.severity*0.1, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+					SDKHooks_TakeDamage(client, info.inflictor, info.inflictor, TF2Util_GetEntityMaxHealth(info.inflictor)*info.severity*0.1, DMG_PREVENT_PHYSICS_FORCE);
 				}
 			}
 		}
@@ -612,7 +612,7 @@ public Action:Timer_Every100MS(Handle timer)
 				if(client != decay.inflictor && IsValidClient3(decay.inflictor) && IsOnDifferentTeams(client,decay.inflictor)){
 					currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
 					currentDamageType[decay.inflictor].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 10.0 + GetClientHealth(client)*0.002,_,_,_,_,false);
+					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 10.0 + GetClientHealth(client)*0.002);
 					currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
 					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 5.0,DMG_RADIATION+DMG_DISSOLVE,_,_,_,false);
 				}
@@ -633,7 +633,7 @@ public Action:Timer_Every100MS(Handle timer)
 				if(IsValidClient3(lifelink.inflictor)){
 					currentDamageType[lifelink.inflictor].second |= DMG_PIERCING;
 					currentDamageType[lifelink.inflictor].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025, DMG_PREVENT_PHYSICS_FORCE);
 				}
 			}
 			if(hasBuffIndex(client, Buff_PowerupBurning)){
@@ -641,7 +641,7 @@ public Action:Timer_Every100MS(Handle timer)
 				if(client != infernalDOT.inflictor && IsValidClient3(infernalDOT.inflictor)){
 					currentDamageType[infernalDOT.inflictor].second |= DMG_PIERCING;
 					currentDamageType[infernalDOT.inflictor].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, 10.0,_,_,_,_,false);
+					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, 10.0);
 					if(hitParticle[client]+0.4 <= currentGameTime){
 						CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1);
 						hitParticle[client] = currentGameTime
@@ -655,7 +655,7 @@ public Action:Timer_Every100MS(Handle timer)
 				//Deal 3 piercing damage to plagued opponents.
 				currentDamageType[inflictor].second |= DMG_PIERCING;
 				currentDamageType[inflictor].second |= DMG_IGNOREHOOK;
-				SDKHooks_TakeDamage(client, inflictor, inflictor, 3.0, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+				SDKHooks_TakeDamage(client, inflictor, inflictor, 3.0, DMG_PREVENT_PHYSICS_FORCE);
 			}
 			if(IsValidWeapon(CWeapon))
 			{
@@ -1100,6 +1100,7 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 
 							SetEntProp(iEntity, Prop_Send, "m_iTeamNum", iTeam, 1);
 							SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
+							SetEntProp(iEntity, Prop_Send, "m_CollisionGroup", 1);
 										
 							GetClientEyePosition(client, fOrigin);
 							TeleportEntity(iEntity, fOrigin, NULL_VECTOR, NULL_VECTOR);

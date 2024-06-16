@@ -45,7 +45,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(linearReduction != 1.0)
 				damage /= linearReduction;
 
-			if(!IsFakeClient(victim)){
+			if(!(currentDamageType[attacker].second & DMG_PIERCING) && !IsFakeClient(victim)){
 				damage /= GetResistance(victim);
 			}
 		}
@@ -470,19 +470,15 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 
 					if(damage >= TF2Util_GetEntityMaxHealth(victim) * 0.4){
 						currentDamageType[attacker].second |= DMG_PIERCING;
-						currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-						SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE,_,_,_,false)
-
 						currentDamageType[victim].second |= DMG_PIERCING;
-						currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-						SDKHooks_TakeDamage(attacker, victim, victim, 0.05*TF2Util_GetEntityMaxHealth(attacker), DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+						SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE)
+						SDKHooks_TakeDamage(attacker, victim, victim, 0.05*TF2Util_GetEntityMaxHealth(attacker), DMG_PREVENT_PHYSICS_FORCE);
 					}
 					else if((GetClientHealth(victim) - bruisedDamage)/TF2Util_GetEntityMaxHealth(victim) <= 0.25){
 						critStatus[victim] = true;
 						damage = bruisedDamage;
 						currentDamageType[attacker].second |= DMG_PIERCING;
-						currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-						SDKHooks_TakeDamage(victim, attacker, attacker, 0.25*TF2Util_GetEntityMaxHealth(victim), DMG_PREVENT_PHYSICS_FORCE,_,_,_,false)
+						SDKHooks_TakeDamage(victim, attacker, attacker, 0.25*TF2Util_GetEntityMaxHealth(victim), DMG_PREVENT_PHYSICS_FORCE)
 					}
 				}
 			}
@@ -587,7 +583,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 						SDKHooks_TakeDamage(i, attacker, attacker, damage, (DMG_PREVENT_PHYSICS_FORCE+DMG_ENERGYBEAM),_,_,_,false);
 						currentDamageType[attacker].second |= DMG_PIERCING;
 						currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-						SDKHooks_TakeDamage(i, attacker, attacker, GetClientHealth(i) * 0.15, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+						SDKHooks_TakeDamage(i, attacker, attacker, GetClientHealth(i) * 0.15, DMG_PREVENT_PHYSICS_FORCE);
 						damage *= 0.0;
 						TF2_AddCondition(victim, TFCond_UberchargedCanteen, 0.5, i);
 						TF2_AddCondition(i, TFCond_UberchargedCanteen, 0.1, i);
@@ -632,7 +628,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(fireworksChance*damage/TF2Util_GetEntityMaxHealth(victim) >= GetRandomFloat() && !(currentDamageType[attacker].second & DMG_IGNOREHOOK)){
 				currentDamageType[attacker].second |= DMG_PIERCING;
 				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-				SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+				SDKHooks_TakeDamage(victim, attacker, attacker, 1.0*GetClientHealth(victim), DMG_PREVENT_PHYSICS_FORCE);
 				EmitSoundToAll(DetonatorExplosionSound, victim);
 			}
 
@@ -644,14 +640,14 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				if(tempDmg > 0){
 					currentDamageType[attacker].second |= DMG_PIERCING;
 					currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(attacker, attacker, attacker, tempDmg, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+					SDKHooks_TakeDamage(attacker, attacker, attacker, tempDmg, DMG_PREVENT_PHYSICS_FORCE);
 					bloodboundDamage[attacker] += tempDmg;
 				}
 
 				if(bloodboundDamage[attacker] > 0){
 					currentDamageType[attacker].second |= DMG_PIERCING;
 					currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(victim, attacker, attacker, bloodboundDamage[attacker], DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+					SDKHooks_TakeDamage(victim, attacker, attacker, bloodboundDamage[attacker], DMG_PREVENT_PHYSICS_FORCE);
 					bloodboundHealing[attacker] += bloodboundDamage[attacker];
 					bloodboundDamage[attacker] = 0.0
 				}
@@ -1236,7 +1232,7 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			if(additivePiercingDamage != 0){
 				currentDamageType[attacker].second |= DMG_PIERCING;
 				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-				SDKHooks_TakeDamage(victim, inflictor, attacker, additivePiercingDamage, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+				SDKHooks_TakeDamage(victim, inflictor, attacker, additivePiercingDamage, DMG_PREVENT_PHYSICS_FORCE);
 			}
 		}
 
@@ -1675,7 +1671,7 @@ public void applyDamageAffinities(&victim, &attacker, &inflictor, float &damage,
 				//Deal 3 piercing damage.
 				currentDamageType[attacker].second |= DMG_PIERCING;
 				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-				SDKHooks_TakeDamage(victim, attacker, attacker, 3.0, DMG_PREVENT_PHYSICS_FORCE, weapon,_,_,false);
+				SDKHooks_TakeDamage(victim, attacker, attacker, 3.0, DMG_PREVENT_PHYSICS_FORCE, weapon);
 			}
 		}
 	}

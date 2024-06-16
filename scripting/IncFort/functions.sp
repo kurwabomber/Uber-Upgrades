@@ -2681,7 +2681,7 @@ checkRadiation(victim,attacker)
 
 		currentDamageType[attacker].second |= DMG_PIERCING;
 		currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.35, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.35, DMG_PREVENT_PHYSICS_FORCE);
 
 		Buff radiation;
 		radiation.init("Radiation", "", Buff_Radiation, 1, attacker, 8.0);
@@ -2711,7 +2711,7 @@ checkFreeze(int victim,int attacker)
 		currentDamageType[attacker].second |= DMG_PIERCING;
 		currentDamageType[attacker].second |= DMG_FROST;
 		currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.2, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+		SDKHooks_TakeDamage(victim, attacker, attacker, GetClientHealth(victim)*0.2, DMG_PREVENT_PHYSICS_FORCE);
 		SetEntityRenderColor(victim, 0, 128, 255, 80);
 		SetEntityMoveType(victim, MOVETYPE_NONE);
 	}
