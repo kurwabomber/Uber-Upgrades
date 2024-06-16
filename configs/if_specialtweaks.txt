@@ -28,7 +28,7 @@
 			"restriction"					"1"
 			"Honorbound"					"1.0"
 			"percent of hp healed on kill"	"5.0"
-			"weapon fire rate"				"0.75"
+			"weapon fire rate"				"0.8"
 		}
 		"Infernal Impulse"
 		{
@@ -36,7 +36,7 @@
 			"restriction"					"1"
 			"Dragon Bullets Radius"			"600.0"
 			"Afterburn Tick Rate"			"4.0"
-			"damage bonus HIDDEN(b)"		"5.0"
+			"damage bonus HIDDEN(b)"		"6.0"
 			"weapon fire rate(tweak)"		"2.0"
 			"Afterburn Damage Multiplier"	"10.0"
 		}
