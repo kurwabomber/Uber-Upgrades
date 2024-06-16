@@ -2099,9 +2099,9 @@
 		{
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
+			"Attr13"		"Extra Damage Bonus"
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
-			"Attr16"		"Extra Damage Bonus"
 			"Attr13"		"lifesteal ability"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
@@ -2168,9 +2168,9 @@
 		{
 			"Attr0"			"damage bonus"
 			"Attr20"		"ap (armyofnotmany)"
+			"Attr13"		"Extra Damage Bonus"
 			"Attr1"			"blast radius increased"
 			"Attr9"			"dmg falloff decreased"
-			"Attr16"		"Extra Damage Bonus"
 			"Attr13"		"lifesteal ability"
 			"Attr23"		"Set DamageType Ignite"
 			"Attr21"		"afterburn time increased(N)"
