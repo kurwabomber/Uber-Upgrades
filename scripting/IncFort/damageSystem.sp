@@ -322,7 +322,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					}
 				}
 				if(TF2_IsPlayerInCondition(attacker, TFCond_Bleeding)){
-					TF2Util_MakePlayerBleed(victim, attacker, 8.0, weapon, RoundToCeil(TF2_GetDamageModifiers(attacker, weapon)*2));
+					TF2Util_MakePlayerBleed(victim, attacker, 8.0, weapon, 8);
 				}
 				if(TF2_IsPlayerInCondition(attacker, TFCond_OnFire)){
 					TF2Util_IgnitePlayer(victim, attacker, 10.0, weapon);
@@ -1287,6 +1287,10 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			float multiHitActive = GetAttribute(weapon, "taunt move acceleration time",0.0);
 			if(multiHitActive != 0.0)
 				DOTStock(victim,attacker,damage,weapon,damagetype + DMG_VEHICLE,RoundToNearest(multiHitActive),0.4,0.15,true);
+		}
+
+		if(damagetype & DMG_SLASH){//Bleed receives ^0.5 damage boost from fire rate.
+			damage /= Pow(TF2Attrib_HookValueFloat(1.0, "mult_postfiredelay", weapon),  0.5);
 		}
 
 		float missingHealthDamageBonus = GetAttribute(weapon, "dmg per pct hp missing", 0.0)
