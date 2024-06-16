@@ -618,8 +618,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				float ratio = damage / TF2Util_GetEntityMaxHealth(victim);
 				if(ratio > 1.0)
 					ratio == 1.0;
-					
+
 				TeamTacticsBuildup[victim] += teamTacticsRatio * ratio;
+				if(TeamTacticsBuildup[victim] > 0.5)
+					TeamTacticsBuildup[victim] = 0.5;
 			}
 		}
 
