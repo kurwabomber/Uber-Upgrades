@@ -3334,17 +3334,6 @@ public OnEntityHomingThink(entity)
 	}
 	homingTicks[entity]++;
 }
-TF2_Override_ChargeSpeed(client)
-{
-	int secondary = GetWeapon(client,1);
-	if(IsValidWeapon(secondary))
-	{
-		float velocity = GetAttribute(secondary, "Charging Velocity", 750.0);
-		velocity *= GetAttribute(client, "agility powerup") != 0.0 ? 1.8 : 1.0;
-		SetEntPropFloat(client, Prop_Data, "m_flMaxspeed", velocity);
-		TF2_AddCondition(client, TFCond_SpeedBuffAlly, 3.0);
-	}
-}
 CheckGrenadeMines(ref)
 {
 	int entity = EntRefToEntIndex(ref); 

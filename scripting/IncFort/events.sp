@@ -806,7 +806,6 @@ public MRESReturn OnFireballRangeThink(int entity)  {
 }
 public MRESReturn OnShieldChargeMove(Address address, Handle hReturn){
 	DHookSetReturn(hReturn, false);
-
 	return MRES_Supercede;
 }
 public MRESReturn IsInWorldCheck(int entity, Handle hReturn, Handle hParams)  {
@@ -915,9 +914,6 @@ public void TF2_OnConditionAdded(client, TFCond cond)
 	switch(cond){
 		case TFCond_Sapped:{
 			buffChange[client] = true;
-		}
-		case TFCond_Charging:{
-			TF2_Override_ChargeSpeed(client);
 		}
 		case TFCond_Slowed:{
 			if(GetAttribute(client, "inverter powerup", 0.0) == 1){
@@ -1590,9 +1586,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				//PrintToChatAll("air")
 			}
 		}
-		if(TF2_IsPlayerInCondition(client, TFCond_Charging))
-			TF2_Override_ChargeSpeed(client);
-
 		if(powerupParticle[client] <= currentGameTime && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 		{
 			Address strengthPowerup = TF2Attrib_GetByName(client, "strength powerup");

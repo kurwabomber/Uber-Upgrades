@@ -1762,7 +1762,6 @@
 		{
 			"Attr0"		"charge time increased"
 			"Attr2"		"no charge impact range"
-			"Attr3"		"Charging Velocity"
 			"Attr4"		"charge recharge rate increased"
 		}
 		"Special Tweaks"
