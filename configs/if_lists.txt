@@ -2567,9 +2567,9 @@
 		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
-			"Attr0"		"damage bonus(H)"
+			"Attr0"		"damage bonus"
 			"Attr15"	"ap (slowswing)"
-			"Attr16"	"Increased Overall Damage(F)"
+			"Attr16"	"Extra Damage Bonus"
 			"Attr13"	"lifesteal ability"
 			"Attr8"		"reveal cloaked victim on hit"
 			"Attr9"		"reveal disguised victim on hit"
