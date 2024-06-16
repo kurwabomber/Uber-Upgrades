@@ -310,11 +310,16 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 
-			if(GetAttribute(attacker, "inverter powerup", 0.0) == 2){
+			if(attacker != victim && GetAttribute(attacker, "inverter powerup", 0.0) == 2){
 				if(hasBuffIndex(attacker, Buff_CritMarkedForDeath)){
 					Buff critligma;
 					critligma.init("Marked for Crits", "All hits taken are critical", Buff_CritMarkedForDeath, 1, victim, 8.0);
 					insertBuff(victim, critligma);
+				}
+				if(MadmilkDuration[attacker] > currentGameTime){
+					if(MadmilkDuration[victim] > MadmilkDuration[attacker]){
+						MadmilkDuration[victim] = MadmilkDuration[attacker];
+					}
 				}
 				if(TF2_IsPlayerInCondition(attacker, TFCond_Bleeding)){
 					TF2Util_MakePlayerBleed(victim, attacker, 8.0, weapon, RoundToCeil(TF2_GetDamageModifiers(attacker, weapon)*2));
@@ -323,7 +328,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					TF2Util_IgnitePlayer(victim, attacker, 10.0, weapon);
 				}
 				if(TF2_IsPlayerInCondition(attacker, TFCond_Dazed) || TF2_IsPlayerInCondition(attacker, TFCond_FreezeInput)){
-					TF2_StunPlayer(victim, 0.5, _, TF_STUNFLAGS_BIGBONK);
+					TF2_StunPlayer(victim, 0.35, _, TF_STUNFLAGS_BIGBONK);
 				}
 			}
 
