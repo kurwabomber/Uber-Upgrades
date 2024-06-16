@@ -3780,7 +3780,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Tainted Blade Powerup {default}| {lightcyan}Incoming damage is multiplied by 0.66x. Melee buildup debuffs are multiplied by 3x and DOTs deal 5x dmg. Secondary ailment effects are 3x effective.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Assassin Powerup {default}| {lightcyan}Melee damage is multiplied by 4x and 100%% crits when victim has not taken damage from you previously.");
+			CPrintToChat(client, "{community}Assassin Powerup {default}| {lightcyan}When enemy has not taken damage from you: Melee damage crits and is multiplied by 4x.");
 		}else{
 			CPrintToChat(client, "{community}Knockout Powerup {default}| {lightcyan}Melee damage is multiplied by 1.75x, and incoming damage by 0.8x. Damage causes concussion buildup. Victims with CC immunity take minicrits.");
 		}
@@ -3798,7 +3798,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Decay Powerup {default}| {lightcyan}Deals 100 + 2%% currentHP piercing DPS & slowly inflicts radiation to nearby enemies. Applies 0.25x healing to victims of decay. 0.75x damage taken.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Life Link Powerup {default}| {lightcyan}Hitting an enemy will proc life link: Instantly deals 10%% currentHP%% to you, but drains 25%% currentHP%% of enemy over time. At end of duration, your team is healed by damage dealt to yourself.");
+			CPrintToChat(client, "{community}Life Link Powerup {default}| {lightcyan}Hitting an enemy will proc life link: Instantly deals 30%% currentHP%% to you, but drains 35%% currentHP%% of enemy over time. At end of duration, your team is healed by damage dealt to yourself.");
 		}else{
 			CPrintToChat(client, "{community}Plague Powerup {default}| {lightcyan}Steals all healthpacks nearby, giving 25%% max health heal. Enemies nearby will be plagued for 12s, weakening damage dealt by them by 0.5x. 0.75x incoming damage taken.");
 		}

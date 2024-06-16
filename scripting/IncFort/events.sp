@@ -71,12 +71,12 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		if(GetAttribute(attacker, "plague powerup", 0.0) == 3.0){
 			if(!hasBuffIndex(client, Buff_LifeLink)){
 				Buff lifelinkDebuff;
-				lifelinkDebuff.init("Life Link", "-25% HP drain", Buff_LifeLink, RoundToCeil(GetClientHealth(attacker)*0.5), attacker, 10.0);
+				lifelinkDebuff.init("Life Link", "-35% HP drain/10s", Buff_LifeLink, RoundToCeil(GetClientHealth(attacker)*0.3), attacker, 10.0);
 				insertBuff(client, lifelinkDebuff);
 
 				currentDamageType[attacker].second |= DMG_PIERCING;
 				currentDamageType[attacker].second |= DMG_IGNOREHOOK;
-				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.15, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
+				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.3, DMG_PREVENT_PHYSICS_FORCE,_,_,_,false);
 			}
 		}
 	}

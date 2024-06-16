@@ -633,7 +633,7 @@ public Action:Timer_Every100MS(Handle timer)
 				if(IsValidClient3(lifelink.inflictor)){
 					currentDamageType[lifelink.inflictor].second |= DMG_PIERCING;
 					currentDamageType[lifelink.inflictor].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0025, DMG_PREVENT_PHYSICS_FORCE);
+					SDKHooks_TakeDamage(client, lifelink.inflictor, lifelink.inflictor, GetClientHealth(client)*0.0035, DMG_PREVENT_PHYSICS_FORCE);
 				}
 			}
 			if(hasBuffIndex(client, Buff_PowerupBurning)){
