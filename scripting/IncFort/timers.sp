@@ -612,9 +612,9 @@ public Action:Timer_Every100MS(Handle timer)
 				if(client != decay.inflictor && IsValidClient3(decay.inflictor) && IsOnDifferentTeams(client,decay.inflictor)){
 					currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
 					currentDamageType[decay.inflictor].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 10.0 + GetClientHealth(client)*0.002);
+					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 10.0 + GetClientHealth(client)*0.008);
 					currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 5.0,DMG_RADIATION+DMG_DISSOLVE,_,_,_,false);
+					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 9.0,DMG_RADIATION+DMG_DISSOLVE,_,_,_,false);
 				}
 			}
 			if(hasBuffIndex(client, Buff_InfernalDOT)){

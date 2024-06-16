@@ -3796,7 +3796,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 	}
 	else if(StrEqual("plague powerup", name)){
 		if(amount == 2){
-			CPrintToChat(client, "{community}Decay Powerup {default}| {lightcyan}Deals 100 + 2%% currentHP piercing DPS & slowly inflicts radiation to nearby enemies. Applies 0.25x healing to victims of decay. 0.75x damage taken.");
+			CPrintToChat(client, "{community}Decay Powerup {default}| {lightcyan}Deals 100 + 8%% currentHP piercing DPS & inflicts radiation to nearby enemies. Applies 0.25x healing to victims of decay. 0.75x damage taken.");
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Life Link Powerup {default}| {lightcyan}Hitting an enemy will proc life link: Instantly deals 30%% currentHP%% to you, but drains 35%% currentHP%% of enemy over time. At end of duration, your team is healed by damage dealt to yourself.");
 		}else{
