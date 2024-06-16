@@ -664,6 +664,11 @@ public Action:Timer_Every100MS(Handle timer)
 				{
 					SetAmmo_Weapon(CWeapon,RoundToNearest(TF2Attrib_GetValue(infAmmo)))
 				}
+				char weaponClassname[32];
+				GetEntityClassname(CWeapon, weaponClassname, sizeof(weaponClassname));
+				if(GetAttribute(CWeapon, "mult_item_meter_charge_rate", 1.0) <= 0.1 && StrEqual(weaponClassname, "tf_weapon_jar_gas")){
+					SetAmmo_Weapon(CWeapon,1);
+				}
 				int conditionOnActive = RoundToNearest(GetAttribute(CWeapon, "set throwable type", 0.0));
 				if(conditionOnActive)
 					TF2_AddCondition(client, view_as<TFCond>(conditionOnActive), 0.15, client);
