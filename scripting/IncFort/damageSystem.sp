@@ -614,8 +614,13 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 			float teamTacticsRatio = GetAttribute(VictimCWeapon, "savior sacrifice attribute", 0.0);
-			if(teamTacticsRatio > 0.0)
-				TeamTacticsBuildup[victim] += teamTacticsRatio * damage / TF2Util_GetEntityMaxHealth(victim);
+			if(teamTacticsRatio > 0.0){
+				float ratio = damage / TF2Util_GetEntityMaxHealth(victim);
+				if(ratio > 1.0)
+					ratio == 1.0;
+					
+				TeamTacticsBuildup[victim] += teamTacticsRatio * ratio;
+			}
 		}
 
 		if(IsValidWeapon(weapon)){
