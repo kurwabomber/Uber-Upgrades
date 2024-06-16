@@ -2454,7 +2454,7 @@
 		"Damage upgrades"
 		{
 			"Attr14"	"Gas Damage Bonus"
-			"Attr2"		"damage bonus done against players"
+			"Attr2"		"ap (condensedlaser)"
 			"Attr6"		"Overall Damage"
 			"Attr13"	"lifesteal ability"
 			"Attr5"		"afterburn time increased"
