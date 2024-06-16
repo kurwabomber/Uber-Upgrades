@@ -3753,7 +3753,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		if(amount == 2){
 			CPrintToChat(client, "{community}Duplication Powerup {default}| {lightcyan}Shift middle click to double current HP (2x overheal max, 10s cd). All weapons have infinite clip.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Redistribution Powerup {default}| {lightcyan}-8%% maxHPR, but health drained goes into a health pool, which dealing damage gives back (can overheal & heals nearby teammates). 1.6x all healing.");
+			CPrintToChat(client, "{community}Redistribution Powerup {default}| {lightcyan}-8%% maxHPR, but health drained goes into a health pool, which dealing (20+damage) gives back (can overheal & heals nearby teammates). 1.6x all healing.");
 		}else{
 			CPrintToChat(client, "{community}Regeneration Powerup {default}| {lightcyan}0.75x damage taken, +10%% max HPR. 100%% ammo regeneration.");
 		}

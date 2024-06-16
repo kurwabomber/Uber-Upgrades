@@ -145,7 +145,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			}
 	
 			if(GetAttribute(attacker, "regeneration powerup", 0.0) == 3){
-				float heal = damage;
+				float heal = damage+20.0;
 				if(heal > bloodAcolyteBloodPool[attacker])
 					heal = bloodAcolyteBloodPool[attacker];
 				
