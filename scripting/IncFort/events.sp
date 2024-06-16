@@ -1889,6 +1889,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 
 							SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
 							SetEntPropEnt(iEntity, Prop_Send, "m_hOriginalLauncher", client);
+							SetEntPropVector(iEntity, Prop_Send, "m_vInitialVelocity", fVelocity );
 
 							TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 							DispatchSpawn(iEntity);
