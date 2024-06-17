@@ -165,8 +165,10 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(currentDamageType[healer].second & DMG_IGNOREHOOK)
 				continue;
 
-			float pylonCap = 10.0*TF2Util_GetEntityMaxHealth(healer)*GetResistance(healer, true);
+			float pylonCap = 10.0*TF2Util_GetEntityMaxHealth(healer);
 			if(pylonCharge[healer] >= pylonCap){
+				float pylonDamage = 0.15 * pylonCap * GetResistance(healer);
+
 				bool isBounced[MAXPLAYERS+1];
 				isBounced[victim] = true
 				int lastBouncedTarget = victim;
@@ -202,7 +204,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 					}
 				}
 				currentDamageType[healer].second |= DMG_IGNOREHOOK;
-				SDKHooks_TakeDamage(victim,healer,healer,0.15*pylonCap,DMG_BULLET,_,_,_,false)
+				SDKHooks_TakeDamage(victim,healer,healer,0.15*pylonDamage,DMG_BULLET,_,_,_,false)
 
 				for(int client=1;client<=MaxClients && iterations < maxBounces;client++)
 				{
@@ -238,7 +240,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 						CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 					}
 					currentDamageType[healer].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client,healer,healer,0.15*pylonCap,DMG_BULLET,_,_,_,false)
+					SDKHooks_TakeDamage(client,healer,healer,0.15*pylonDamage,DMG_BULLET,_,_,_,false)
 					++iterations
 				}
 
