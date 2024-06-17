@@ -308,7 +308,7 @@ public Action:Timer_FixedVariables(Handle timer)
 						if(GetVectorDistance(position, patientPosition, true) > range)
 							continue;
 							
-						AddPlayerHealth(i, RoundToCeil(healRate), overheal, true, client);
+						AddPlayerHealth(i, RoundToCeil(healRate * TF2Attrib_HookValueFloat(1.0, "mult_health_fromhealers", i)), overheal, true, client);
 					}
 				}
 			}
