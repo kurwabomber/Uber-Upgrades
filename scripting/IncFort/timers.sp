@@ -797,6 +797,7 @@ public Action:Timer_Every100MS(Handle timer)
 							GetClientEyePosition(client, fOrigin);
 							fAngles = fEyeAngles[client];
 							fAngles[1] -= 15.0 + 15.0/barrageLevel;
+							float ProjectileDamage = TF2_GetDPSModifiers(client, CWeapon)*(20+3*barrageLevel);
 							for(int i=0;i<RoundToCeil(barrageLevel);++i){
 								fAngles[1] += 30.0/barrageLevel;
 								int iEntity = CreateEntityByName("tf_projectile_sentryrocket");
@@ -807,7 +808,7 @@ public Action:Timer_Every100MS(Handle timer)
 								SetEntProp(iEntity, Prop_Send, "m_nSkin", (iTeam-2));
 								
 								SetEntPropEnt(iEntity, Prop_Data, "m_hOwnerEntity", client);
-								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", client);
+								SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", CWeapon);
 								
 								GetAngleVectors(fAngles, vBuffer, NULL_VECTOR, NULL_VECTOR);
 
@@ -816,7 +817,6 @@ public Action:Timer_Every100MS(Handle timer)
 
 								ScaleVector(vBuffer, 30.0);
 								
-								float ProjectileDamage = 40+10*barrageLevel;
 								SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, ProjectileDamage, true);  
 								
 								TeleportEntity(iEntity, fOrigin, fAngles, vBuffer);
