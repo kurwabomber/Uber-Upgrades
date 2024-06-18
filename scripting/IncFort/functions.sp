@@ -2616,11 +2616,7 @@ ExplosiveArrow(entity)
 		SDKHook(entity, SDKHook_StartTouchPost, ExplosiveArrowCollision);
 	}
 }
-disableWeapon(client)
-{
-	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-	SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime + 1.0);
-}
+
 StunShotFunc(client)
 {
 	int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");

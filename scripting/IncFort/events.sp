@@ -2455,9 +2455,8 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 									fl_GlobalCoolDown[client] = currentGameTime+0.2;
 									
 									buttons |= IN_ATTACK;
-									SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
-									RequestFrame(disableWeapon,client);
-									
+									SetEntPropFloat(CWeapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime+1.5);
+
 									for(int i=0;i<20;++i)
 									{
 										Handle hPack = CreateDataPack();

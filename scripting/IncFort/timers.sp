@@ -1121,7 +1121,6 @@ public Action:Timer_EveryTenSeconds(Handle timer)
 						if(IsValidEdict(CWeapon))
 						{
 							CreateParticleEx(CWeapon, "utaunt_auroraglow_orange_parent", 1, _, _, 10.0);
-							TE_SendToAll();
 								
 							float clientpos[3];
 							GetClientAbsOrigin(client,clientpos);
@@ -1898,10 +1897,6 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 		color = {255, 0, 0, 255}
 		TE_SetupBeamPoints(fOrigin,fOriginEnd,Laser,Laser,0,5,2.5,2.0,2.0,3,1.0,color,10);
 		TE_SendToAll();
-		
-		shouldAttack[client] = true;
-		SetEntPropFloat(weapon, Prop_Send, "m_flNextPrimaryAttack", currentGameTime);
-		RequestFrame(disableWeapon,client);
 	}
 	CloseHandle(data);
 }
