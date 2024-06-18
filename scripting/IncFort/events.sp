@@ -3091,8 +3091,6 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 		meleeLimiter[client]++;
 		if(getWeaponSlot(client,CWeapon) == 2)
 		{
-			//CreateTimer(0.2, SmackTimer, EntIndexToEntRef(CWeapon));
-			bool flag = true;
 			float ballCheck = GetAttribute(CWeapon, "mod bat launches balls", 0.0);
 			if(ballCheck == 0.0)
 				ballCheck = GetAttribute(CWeapon, "mod bat launches ornaments", 0.0);
@@ -3102,27 +3100,10 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 			{
 				if(ballCheck == 10.0)
 					SDKCall(g_SDKCallLaunchBall, CWeapon);
-				flag = false;
-			}
-			
-			if(!IsFakeClient(client) && flag)
-			{
-				RPS[client] += 0.5;
-				Handle hPack = CreateDataPack();
-				WritePackCell(hPack, client);
-				WritePackFloat(hPack, 0.5);
-				CreateTimer(1.0, RemoveFire, hPack);
 			}
 		}
 		else
 		{
-			if(!IsFakeClient(client)){
-				RPS[client] += 1.0;
-				Handle hPack = CreateDataPack();
-				WritePackCell(hPack, client);
-				WritePackFloat(hPack, 1.0);
-				CreateTimer(1.0, RemoveFire, hPack);
-			}
 			char classname[32]; 
 			GetEdictClassname(CWeapon, classname, sizeof(classname)); 
 

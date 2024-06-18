@@ -1718,9 +1718,9 @@ public Action:GiveMaxAmmo(Handle timer, any:userid)
 	}
 }
 
-public Action:thunderClapPart2(Handle timer, any:data) 
+public Action:thunderClapPart2(Handle timer, DataPack data) 
 {  
-	ResetPack(data);
+	data.Reset();
 	int victim = EntRefToEntIndex(ReadPackCell(data));
 	int client = EntRefToEntIndex(ReadPackCell(data));
 	if(IsValidClient3(client) && IsValidClient3(victim))
@@ -1733,7 +1733,7 @@ public Action:thunderClapPart2(Handle timer, any:data)
 		RadiationBuildup[victim] += 100.0;
 		checkRadiation(victim,client);
 	}
-	CloseHandle(data);
+	delete data;
 }
 public Action:eurekaDelayed(Handle timer, int client) 
 {
@@ -1823,9 +1823,9 @@ public Action:eurekaDelayed(Handle timer, int client)
 		}
 	}
 }
-public Action:CreateBloodTracer(Handle timer,any:data)
+public Action:CreateBloodTracer(Handle timer,DataPack data)
 {
-	ResetPack(data);
+	data.Reset();
 	int weapon = EntRefToEntIndex(ReadPackCell(data));
 	int client = EntRefToEntIndex(ReadPackCell(data));
 	if(IsValidEdict(client) && IsValidEdict(weapon))
@@ -1898,7 +1898,7 @@ public Action:CreateBloodTracer(Handle timer,any:data)
 		TE_SetupBeamPoints(fOrigin,fOriginEnd,Laser,Laser,0,5,2.5,2.0,2.0,3,1.0,color,10);
 		TE_SendToAll();
 	}
-	CloseHandle(data);
+	delete data;
 }
 public Action:removeBulletsPerShot(Handle timer, int client) 
 {  
@@ -2185,6 +2185,8 @@ public Action RecursiveExplosions(Handle timer, DataPack ref)
 			return Plugin_Continue;
 		}
 	}
+
+	delete ref;
 	return Plugin_Stop;
 }
 public Action:ReEnable(Handle timer, any:ref) 
