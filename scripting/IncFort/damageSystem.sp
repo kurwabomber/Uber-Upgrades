@@ -1178,6 +1178,11 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 
 			damage *= 2+1.75*((400-distance)/400);
 		}
+		if(GetAttribute(attacker, "precision powerup", 0.0) == 3){
+			if(! ( StrEqual(classname, "tf_weapon_flamethrower") || StrEqual(classname, "tf_weapon_rocketlauncher_fireball") ) ){
+				damage *= 4.0;
+			}
+		}
 
 		//Healers of attacker
 		float medicDMGBonus = 1.0;

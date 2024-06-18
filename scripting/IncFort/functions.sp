@@ -1978,7 +1978,6 @@ refreshUpgrades(client, slot)
 				}
 
 				if(precisionPowerupValue == 3){
-					TF2Attrib_SetByName(client,"damage mult 1", 4.0);
 					TF2Attrib_SetByName(client,"fire rate penalty", 4.0);
 				}
 			}
