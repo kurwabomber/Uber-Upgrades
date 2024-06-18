@@ -677,10 +677,7 @@ public Action:Timer_Every100MS(Handle timer)
 			}
 			if(IsValidEdict(primary))
 			{
-				if (GetEntPropFloat(client, Prop_Send, "m_flRageMeter") < 1.0)
-					isBuffActive[client] = false;
-
-				if(isBuffActive[client] == true)
+				if(GetEntProp(client, Prop_Send, "m_bRageDraining"))
 				{
 					/*float range = 800.0;
 					Address rangeMult = TF2Attrib_GetByName(primary, "clip size bonus")
@@ -696,23 +693,18 @@ public Action:Timer_Every100MS(Handle timer)
 						{
 							miniCritStatusAttacker[client] = currentGameTime+0.3
 							TF2_AddCondition(client, TFCond_RuneHaste, 0.3);
-							TF2_RemoveCondition(client, TFCond_FocusBuff);
 						}
 						case 594:
 						{
 							miniCritStatusAttacker[client] = currentGameTime+0.3
 							TF2_AddCondition(client, TFCond_RuneAgility, 0.3);
-							TF2_RemoveCondition(client, TFCond_CritMmmph);
 						}
 					}
 				}
 			}
 			if(IsValidEdict(secondary))
 			{
-				if (GetEntPropFloat(client, Prop_Send, "m_flRageMeter") < 0.1)
-					isBuffActive[client] = false;
-
-				if(isBuffActive[client] == true)
+				if(GetEntProp(client, Prop_Send, "m_bRageDraining"))
 				{
 					float range = 800.0;
 					Address rangeMult = TF2Attrib_GetByName(secondary, "clip size bonus")
@@ -797,7 +789,7 @@ public Action:Timer_Every100MS(Handle timer)
 							GetClientEyePosition(client, fOrigin);
 							fAngles = fEyeAngles[client];
 							fAngles[1] -= 15.0 + 15.0/barrageLevel;
-							float ProjectileDamage = TF2_GetDPSModifiers(client, CWeapon)*(20+3*barrageLevel);
+							float ProjectileDamage = TF2_GetDPSModifiers(client, CWeapon)*15.0;
 							for(int i=0;i<RoundToCeil(barrageLevel);++i){
 								fAngles[1] += 30.0/barrageLevel;
 								int iEntity = CreateEntityByName("tf_projectile_sentryrocket");

@@ -526,19 +526,19 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 			{
 				return MRES_Supercede;
 			}
-			case TFCond_FocusBuff:
-			{
-				isBuffActive[client] = true;
-			}
-			case TFCond_CritMmmph:
-			{
-				isBuffActive[client] = true;
-			}
 			case TFCond_DefenseBuffed:
 			{
 				return MRES_Supercede;
 			}
 			case TFCond_RegenBuffed:
+			{
+				return MRES_Supercede;
+			}
+			case TFCond_CritMmmph:
+			{
+				return MRES_Supercede;
+			}
+			case TFCond_FocusBuff:
 			{
 				return MRES_Supercede;
 			}
@@ -898,16 +898,6 @@ public TF2Spawn_LeaveSpawn(int client, int spawn)
 			TF2Attrib_SetByName(melee,"damage force increase hidden", 1.0);
 		}
 	}
-}
-public Event_BuffDeployed( Handle event, const char[] name, bool:broadcast )
-{
-	int client = GetClientOfUserId( GetEventInt( event, "buff_owner" ) );
-	if (IsValidClient(client) && IsPlayerAlive(client))
-	{
-		isBuffActive[client] = true;
-	}
-
-	return;
 }
 public void TF2_OnConditionAdded(client, TFCond cond)
 {
@@ -3611,7 +3601,6 @@ public OnClientDisconnect(client)
 	ConcussionBuildup[client] = 0.0;
 	FreezeBuildup[client] = 0.0;
 	fl_HighestFireDamage[client] = 0.0;
-	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
 	clearAllBuffs(client);
 	if(snowstormActive[client]){
@@ -3648,7 +3637,6 @@ public OnClientPutInServer(client)
 	BleedMaximum[client] = 100.0;
 	RadiationMaximum[client] = 400.0;
 	fl_HighestFireDamage[client] = 0.0;
-	isBuffActive[client] = false;
 	canBypassRestriction[client] = false;
 	for(int i = 0; i < Max_Attunement_Slots; ++i)
 	{

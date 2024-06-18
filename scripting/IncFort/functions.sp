@@ -1181,7 +1181,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1151:
 		{
-			ChangeString = "The Iron Bomber | Shoots grenades that explode when victims are within 70% of the blast radius. Has no splash fall-off.";
+			ChangeString = "The Iron Bomber | Converts fire rate into damage bonus.";
 		}
 		//Demo Secondaries
 		case 131,1144:
@@ -1244,6 +1244,10 @@ DisplayItemChange(client,itemidx)
 		case 141,1004:
 		{
 			ChangeString = "The Frontier Justice | On crit: target recieves 1.3x damage for 5s.";
+		}
+		case 997:
+		{
+			ChangeString = "The Rescue Ranger | Bolts have no gravity.";
 		}
 		//Engineer Secondary
 		case 528:

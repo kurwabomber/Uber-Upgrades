@@ -92,9 +92,9 @@ public UberShopinitMenusHandlers()
 	HookConVarChange(cvar_DisableBotUpgrade, OnCvarChanged);
 	HookConVarChange(cvar_DisableCooldowns, OnCvarChanged);
 	
-	MoneyBonusKill = GetConVarFloat(cvar_MoneyBonusKill)
-	StartMoney = GetConVarFloat(cvar_StartMoney)
-	ServerMoneyMult = GetConVarFloat(cvar_ServerMoneyMult)
+	MoneyBonusKill = GetConVarFloat(cvar_MoneyBonusKill);
+	StartMoney = GetConVarFloat(cvar_StartMoney);
+	ServerMoneyMult = GetConVarFloat(cvar_ServerMoneyMult);
 	OverAllMultiplier = GetConVarFloat(cvar_BotMultiplier);
 	DisableBotUpgrades = GetConVarInt(cvar_DisableBotUpgrade);
 	DisableCooldowns = GetConVarInt(cvar_DisableCooldowns);
@@ -136,19 +136,18 @@ public UberShopinitMenusHandlers()
 	
 	RegConsoleCmd("sm_stats", ShowMults, "Shows all your multipliers.");
 	RegConsoleCmd("sm_arcane", Command_UseArcane, "Use specified arcane spell.");
-	RegConsoleCmd("sm_showhelp", ShowHelp, "Displays all if help.")
+	RegConsoleCmd("sm_showhelp", ShowHelp, "Displays all if help.");
 	
-	HookEvent("player_hurt", Event_Playerhurt, EventHookMode_Pre)
+	HookEvent("player_hurt", Event_Playerhurt, EventHookMode_Pre);
 	HookEvent("player_chargedeployed", Event_UberDeployed);
-	HookEvent("post_inventory_application", Event_PlayerRespawn)
-	HookEvent("player_death", Event_PlayerDeath, EventHookMode_Pre)
-	HookEvent("player_changeclass", Event_PlayerChangeClass)
-	HookEvent("player_class", Event_PlayerChangeClass)
-	HookEvent("player_team", Event_PlayerChangeTeam)
-	HookEvent("player_healed", Event_PlayerHealed)
-	HookEvent("player_spawn", Event_PlayerRespawn)
-	HookEvent("player_teleported", Event_Teleported)
-	HookEvent("deploy_buff_banner",	Event_BuffDeployed);
+	HookEvent("post_inventory_application", Event_PlayerRespawn);
+	HookEvent("player_death", Event_PlayerDeath, EventHookMode_Pre);
+	HookEvent("player_changeclass", Event_PlayerChangeClass);
+	HookEvent("player_class", Event_PlayerChangeClass);
+	HookEvent("player_team", Event_PlayerChangeTeam);
+	HookEvent("player_healed", Event_PlayerHealed);
+	HookEvent("player_spawn", Event_PlayerRespawn);
+	HookEvent("player_teleported", Event_Teleported);
 	HookEvent("mvm_reset_stats", Event_ResetStats);
 	HookEvent("mvm_begin_wave",Event_mvm_wave_begin);
 	HookEvent("mvm_wave_failed",Event_mvm_wave_failed);

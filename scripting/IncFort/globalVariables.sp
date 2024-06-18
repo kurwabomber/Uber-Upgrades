@@ -392,7 +392,6 @@ bool isEntitySentry[MAXENTITIES+1];
 bool sentryThought[MAXENTITIES+1];
 bool b_Hooked[MAXPLAYERS+1];
 bool canShootAgain[MAXPLAYERS+1] = {true,...};
-bool isBuffActive[MAXPLAYERS+1];
 bool gravChanges[MAXENTITIES];
 bool debugMode = false;
 bool infiniteMoney = false;
