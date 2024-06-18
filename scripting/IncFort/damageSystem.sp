@@ -10,7 +10,23 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 		if(GetAttribute(victim, "resistance powerup", 0.0) == 2.0){
 			if(frayNextTime[victim] <= currentGameTime){
 				damage = 0.0;
-				frayNextTime[victim] = currentGameTime+3.0
+				frayNextTime[victim] = currentGameTime+1.0
+				float position[3], patientPosition[3];
+				GetClientAbsOrigin(victim, position);
+
+				for(int i = 1;i<=MaxClients;++i){
+					if(!IsValidClient3(i))
+						continue;
+					if(IsOnDifferentTeams(victim, i))
+						continue;
+
+					GetClientAbsOrigin(i, patientPosition);
+					if(GetVectorDistance(position, patientPosition, true) > 250000)
+						continue;
+
+					giveDefenseBuff(i, 3.0);
+					TF2_AddCondition(i, TFCond_SpeedBuffAlly, 3.0);
+				}
 				return Plugin_Stop;
 			}
 		}
