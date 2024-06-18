@@ -335,7 +335,7 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"Ability : Immolation"			"1"
-			"immolation ratio"				"1"
+			"immolation ratio"				"1.5"
 			"Afterburn Tick Rate"			"3"
 			"dmg per pct hp missing"		"0.1"
 			"additive piercing damage"		"10"
@@ -344,9 +344,9 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"fireworks chance"				"2.5"
+			"fireworks chance"				"3.5"
 			"mult crit dmg"				"7"
-			"damage bonus HIDDEN(b)"		"2"
+			"damage bonus HIDDEN(b)"		"3"
 		}
 		"Splintering Wasps"
 		{
