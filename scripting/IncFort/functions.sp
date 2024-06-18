@@ -382,8 +382,10 @@ public void ManagePlayerBuffs(int i){
 			}
 		}
 	}
-
-
+	if(TF2_IsPlayerInCondition(i, TFCond_HalloweenSpeedBoost)){
+		additiveAttackSpeedMultBuff += 0.5;
+	}
+	
 	for(int savior = 1;savior<=MaxClients;++savior){
 		if(!IsValidClient3(savior))
 			continue;
@@ -404,6 +406,10 @@ public void ManagePlayerBuffs(int i){
 	TF2Attrib_SetByName(i, "damage taken mult 4", additiveDamageTakenBuff*multiplicativeDamageTakenBuff);
 	TF2Attrib_SetByName(i, "armor penetration buff", additiveArmorPenetration);
 	TF2Attrib_ClearCache(i);
+	int CWeapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
+	if(IsValidWeapon(CWeapon)){
+		TF2Attrib_ClearCache(CWeapon);
+	}
 
 	if(miniCritStatusVictim[i]-currentGameTime > 0.0){
 		Format(details, sizeof(details), "%s\n%s - %.1fs", details, "Marked-For-Death", miniCritStatusVictim[i]-currentGameTime);
@@ -3761,7 +3767,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Warp Powerup {default}| {lightcyan}Replaces shift middle click with teleport to crosshair. Deals 1200 base damage to all enemies through path of teleport. Each use consumes 10%% focus. Applies +4 additive dmg taken on teleport hit.");
 		}else{
-			CPrintToChat(client, "{community}Agility Powerup {default}| {lightcyan}1.5x reload & fire rate. infinite jumps, speed boost, 1.4x speed, 1.3x jump height, 1.75x self push force, immunity to crowd control effects, and 35%% dodge chance.");
+			CPrintToChat(client, "{community}Agility Powerup {default}| {lightcyan}+50%% reload & fire rate. infinite jumps, speed boost, 1.4x speed, 1.3x jump height, 1.75x self push force, immunity to crowd control effects, and 35%% dodge chance.");
 		}
 	}
 	else if(StrEqual("knockout powerup", name)){
@@ -3779,7 +3785,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 		}else if(amount == 3){
 			CPrintToChat(client, "{community}Martyr Powerup {default}| {lightcyan}-66%% healing from all sources. Sacrifice (15%% max health + dmg taken) to absorb fatal teammate damage and give uber for 0.5s.");
 		}else{
-			CPrintToChat(client, "{community}King Powerup {default}| {lightcyan}1.33x reload and fire rate, 1.5x uber and heal rate, and 1.2x dmg for teammates and you. 0.8x damage taken.");
+			CPrintToChat(client, "{community}King Powerup {default}| {lightcyan}+33%% reload and fire rate, 1.5x uber and heal rate, and 1.2x dmg for teammates and you. 0.8x damage taken.");
 		}
 	}
 	else if(StrEqual("plague powerup", name)){
@@ -4332,9 +4338,6 @@ stock float TF2_GetFireRate(client, weapon, float efficiency = 1.0)
 				if(TF2_IsPlayerInCondition(client, TFCond_RuneHaste))
 					aps *= 2.0 * efficiency;
 				
-				if(TF2_IsPlayerInCondition(client, TFCond_HalloweenSpeedBoost))
-					aps *= 1.5 * efficiency;
-				
 				Address apsAdd = TF2Attrib_GetByName(weapon, "auto fires full clip all at once");
 				if(apsAdd != Address_Null)
 					aps = 22.0
@@ -4449,10 +4452,6 @@ stock float TF2_GetDPSModifiers(client,weapon, bool CountReloadModifiers = true,
 			if(TF2_IsPlayerInCondition(client, TFCond_RuneHaste))
 			{
 				dpsMult *= 2.0;
-			}
-			if(TF2_IsPlayerInCondition(client, TFCond_HalloweenSpeedBoost))
-			{
-				dpsMult *= 1.5;
 			}
 			return dpsMult;
 		}

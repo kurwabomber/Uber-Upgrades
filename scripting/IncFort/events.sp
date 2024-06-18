@@ -1704,7 +1704,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 					GetEntPropVector(client, Prop_Data, "m_vecOrigin", clientPos);
 					Buff kingBuff;
 					kingBuff.init("King Aura", "", Buff_KingAura, 1, client, 3.0);
-					kingBuff.multiplicativeAttackSpeedMult = 1.33;
+					kingBuff.additiveAttackSpeedMult = 0.33;
 					kingBuff.additiveDamageMult = 0.2;
 					for(int i = 1;i<=MaxClients;++i)
 					{
@@ -2779,6 +2779,12 @@ public OnGameFrame()
 				stickiesDetonated[client] = 0;
 				isDeathTick[client] = false;
 				float RegenPerTick = 0.0;
+
+				if(TF2_IsPlayerInCondition(client, TFCond_HalloweenSpeedBoost)){
+					TF2Attrib_RemoveByName(client, "halloween reload time decreased");
+					TF2Attrib_RemoveByName(client, "halloween fire rate bonus");
+					TF2Attrib_RemoveByName(client, "halloween increased jump height");
+				}
 
 				Address RegenActive = TF2Attrib_GetByName(client, "disguise on backstab");
 				if(RegenActive != Address_Null)
