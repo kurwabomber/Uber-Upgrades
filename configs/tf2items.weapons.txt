@@ -320,6 +320,7 @@
 		{
 			"preserve_attributes"	"1"
 			"1"				"801 ; 5.0"
+			"2"				"2059 ; 0.0"
 		}
 		"752" //Hitman's Heatmaker
 		{

@@ -335,10 +335,10 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"Ability : Immolation"			"1"
-			"immolation ratio"				"1.5"
-			"Afterburn Tick Rate"			"3"
+			"immolation ratio"				"1.0"
+			"Afterburn Tick Rate"			"4"
 			"dmg per pct hp missing"		"0.1"
-			"additive piercing damage"		"10"
+			"additive piercing damage"		"5"
 		}
 		"Fireworks"
 		{
