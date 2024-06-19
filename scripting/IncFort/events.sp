@@ -1148,6 +1148,12 @@ public OnEntityDestroyed(entity)
 	if(debugMode)
 		PrintToServer("debugLog | %s was deleted.", classname)
 }
+public Action build_command_callback(int client, const char[] command, int argc){
+	if(GetCmdArgInt(1) == 2){
+		function_AllowBuilding(client);
+	}
+	return Plugin_Continue;
+}
 public Action removeAllBuildings(client, const char[] command, argc) 
 {
 	if(GetCmdArgInt(1) == 2){
@@ -2076,7 +2082,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				}
 				
 				GetEntPropVector(client, Prop_Data, "m_vecAbsVelocity", trueVel[client]);
-				float SkillNumber = GetAttribute(CWeapon, "apply look velocity on damage", 0.0);
+				float SkillNumber = GetAttribute(CWeapon, "weapon ability id", 0.0);
 
 				switch(SkillNumber)
 				{
@@ -2703,6 +2709,18 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 									CreateTimer(0.5+(times*0.01), deletePack, pack);
 								}
 							}
+						}
+					}
+					case 17.0:{
+						char CooldownTime[64]
+						Format(CooldownTime, sizeof(CooldownTime), "Build Sentry: M2\nDestroy Sentries: M3"); 
+						SetHudTextParams(0.8,0.9, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+						ShowSyncHudText(client, hudAbility, CooldownTime);
+						if(buttons & IN_ATTACK2){
+							FakeClientCommand(client, "build 2");
+						}
+						else if(buttons & IN_ATTACK3){
+							FakeClientCommand(client, "destroy 2");
 						}
 					}
 				}

@@ -2619,7 +2619,7 @@ ExplosiveArrow(entity)
 		}
 	}
 
-	if(GetAttribute(CWeapon, "apply look velocity on damage", 0.0) == 2)
+	if(GetAttribute(CWeapon, "weapon ability id", 0.0) == 2)
 	{
 		jarateWeapon[entity] = EntIndexToEntRef(CWeapon)
 		SDKHook(entity, SDKHook_StartTouchPost, ExplosiveArrowCollision);

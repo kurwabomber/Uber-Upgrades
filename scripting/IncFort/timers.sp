@@ -151,7 +151,7 @@ public Action:Timer_FixedVariables(Handle timer)
 				}
 			}
 			if(sunstarDuration[client] >= currentGameTime){
-				float sunstarActive = GetAttribute(CWeapon, "apply look velocity on damage", 0.0);
+				float sunstarActive = GetAttribute(CWeapon, "weapon ability id", 0.0);
 				if(sunstarActive == 15.0){
 					float clientpos[3], soundPos[3], clientAng[3], fwd[3];
 					TracePlayerAim(client, clientpos);

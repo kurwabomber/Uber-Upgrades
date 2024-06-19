@@ -5118,4 +5118,13 @@
         "hidden"	"0"
         "effect_type"	"positive"
     }
+    "6361"
+    {
+        "name"	"weapon ability id"
+        "attribute_class"	"weapon_ability_id"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+    }
 }

@@ -155,6 +155,7 @@ public UberShopinitMenusHandlers()
 	
 	AddCommandListener(jointeam_callback, "jointeam");
 	AddCommandListener(removeAllBuildings, "destroy");
+	AddCommandListener(build_command_callback, "build");
 
 	HookUserMessage(view_as<UserMsg>(54), EurekaTeleportHook);
 }

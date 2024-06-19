@@ -4707,7 +4707,7 @@
 		}
 		"1528"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Charge"
 			"cost"		"12500"
 			"increase_ratio"	"0"
@@ -4717,7 +4717,7 @@
 		}
 		"1529"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Explosive Arrow"
 			"cost"		"25000"
 			"increase_ratio"	"0"
@@ -4727,7 +4727,7 @@
 		}
 		"1529.1"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Stun Shot"
 			"cost"		"20000"
 			"increase_ratio"	"0"
@@ -4737,7 +4737,7 @@
 		}
 		"1529.2"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Damage Stagger"
 			"cost"		"30000"
 			"increase_ratio"	"0"
@@ -4747,7 +4747,7 @@
 		}
 		"1529.3"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Fireball Volley"
 			"cost"		"15000"
 			"increase_ratio"	"0"
@@ -4757,7 +4757,7 @@
 		}
 		"1529.4"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Transient Moonlight"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -4767,7 +4767,7 @@
 		}
 		"1529.5"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Corpse Piler"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -4777,7 +4777,7 @@
 		}
 		"1529.6"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Homing Flares"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -4787,7 +4787,7 @@
 		}
 		"1529.7"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Chaos Bed Vestiges"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -4797,7 +4797,7 @@
 		}
 		"1529.8"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Silent Dash"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -4807,7 +4807,7 @@
 		}	
 		"1529.9"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Charged Strike"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -4817,7 +4817,7 @@
 		}
 		"1530.0"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Immolation"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -4827,7 +4827,7 @@
 		}
 		"1530.1"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Sunstar"
 			"cost"		"0"
 			"increase_ratio"	"0"
@@ -4837,13 +4837,23 @@
 		}
 		"1530.2"
 		{
-			"name"		"apply look velocity on damage"
+			"name"		"weapon ability id"
 			"ref"		"Ability : Airstrike"
 			"cost"		"0"
 			"increase_ratio"	"0"
 			"value"		"16"
 			"init"		"0"
 			"max"		"16"
+		}
+		"1531"
+		{
+			"name"		"weapon ability id"
+			"ref"		"weapon ability id"
+			"cost"		"0"
+			"increase_ratio"	"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
 		}
 		"1534"
 		{
