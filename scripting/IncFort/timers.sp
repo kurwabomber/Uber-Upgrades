@@ -503,7 +503,7 @@ public Action:Timer_Every100MS(Handle timer)
 			if(plaguePowerup != Address_Null && TF2Attrib_GetValue(plaguePowerup) == 1)
 			{
 				plagueActive = true;
-				int e = 33;
+				int e = MaxClients+1;
 				while ((e = FindEntityByClassname(e, "item_healthkit_*")) != -1)
 				{
 					if(IsValidEdict(e))
