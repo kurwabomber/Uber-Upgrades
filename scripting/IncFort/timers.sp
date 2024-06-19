@@ -612,7 +612,7 @@ public Action:Timer_Every100MS(Handle timer)
 				if(client != decay.inflictor && IsValidClient3(decay.inflictor) && IsOnDifferentTeams(client,decay.inflictor)){
 					currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
 					currentDamageType[decay.inflictor].second |= DMG_PIERCING;
-					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 10.0 + GetClientHealth(client)*0.008);
+					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 10.0 + GetClientHealth(client)*0.008, DMG_PREVENT_PHYSICS_FORCE);
 					currentDamageType[decay.inflictor].second |= DMG_IGNOREHOOK;
 					SDKHooks_TakeDamage(client, decay.inflictor, decay.inflictor, 9.0,DMG_RADIATION+DMG_DISSOLVE,_,_,_,false);
 				}
@@ -641,7 +641,7 @@ public Action:Timer_Every100MS(Handle timer)
 				if(client != infernalDOT.inflictor && IsValidClient3(infernalDOT.inflictor)){
 					currentDamageType[infernalDOT.inflictor].second |= DMG_PIERCING;
 					currentDamageType[infernalDOT.inflictor].second |= DMG_IGNOREHOOK;
-					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, 10.0);
+					SDKHooks_TakeDamage(client, infernalDOT.inflictor, infernalDOT.inflictor, 10.0, DMG_PREVENT_PHYSICS_FORCE);
 					if(hitParticle[client]+0.4 <= currentGameTime){
 						CreateParticleEx(client, "halloween_burningplayer_flyingbits", 1);
 						hitParticle[client] = currentGameTime
