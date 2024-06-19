@@ -3673,7 +3673,7 @@ public OnClientPostAdminCheck(client)
 			char knockbackToggleEnabled[64];
 			GetClientCookie(client, knockbackToggle, knockbackToggleEnabled, sizeof(knockbackToggleEnabled));
 			if(StrEqual(knockbackToggleEnabled, "\0"))
-				{knockbackFlags[client] = (1<<0)|(1<<1)|(1<<2)|(1<<3)|(1<<4);
+				{knockbackFlags[client] = (1<<1)|(1<<2)|(1<<3)|(1<<4);
 				IntToString(knockbackFlags[client],knockbackToggleEnabled,sizeof(knockbackToggleEnabled));SetClientCookie(client, knockbackToggle,knockbackToggleEnabled);}
 
 			knockbackFlags[client] = StringToInt(knockbackToggleEnabled);
