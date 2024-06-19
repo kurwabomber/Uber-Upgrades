@@ -5109,4 +5109,13 @@
         "hidden"	"0"
         "effect_type"	"positive"
     }
+    "6360"
+    {
+        "name"	"energy weapon no clip"
+        "attribute_class"	"energy_weapon_no_clip"
+        "description_string"	""
+        "description_format"	"value_is_additive"
+        "hidden"	"0"
+        "effect_type"	"positive"
+    }
 }

@@ -217,7 +217,7 @@
 			"gamestage"						"1"
 			"restriction"					"1"
 			"mult dmg direct hit"			"5.0"
-			"reload clip all at once"		"1.0"
+			"energy weapon no clip"			"1.0"
 		}
 		"Wave Dispersement"
 		{

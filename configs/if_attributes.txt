@@ -6358,6 +6358,15 @@
 			"init"		"0.00"
 			"max"		"0.00"
 		}
+		"1685"
+		{
+			"name"		"energy weapon no clip"
+			"ref"		"energy weapon no clip"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0.00"
+			"max"		"0.00"
+		}
 		//Filler
 		"1900.0"
 		{

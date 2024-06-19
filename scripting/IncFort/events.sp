@@ -3066,10 +3066,6 @@ public MRESReturn OnFinishReload(int weapon)
 		return MRES_Ignored;
 
 	relentlessTicks[client] = 0;
-	if(HasEntProp(weapon, Prop_Send, "m_flEnergy")){
-		if(!GetEntProp(weapon, Prop_Data, "m_bReloadsSingly"))
-			SetEntPropFloat(weapon, Prop_Send, "m_flEnergy", 1.0*TF2Util_GetWeaponMaxClip(weapon));
-	}
 	return MRES_Ignored;
 }
 

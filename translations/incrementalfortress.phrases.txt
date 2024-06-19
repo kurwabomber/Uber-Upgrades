@@ -1,5 +1,8 @@
 "Phrases"
 {
+	"energy weapon no clip"{
+		"en"		"Energy Weapon Infinite Ammo"
+	}
 	"Gas Damage Bonus"{
 		"en"		"Gas Damage Bonus"
 	}
