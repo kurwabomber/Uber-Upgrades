@@ -518,6 +518,12 @@ public MenuHandler_BuyUpgrade(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select)
 	{
+		bool isBuildingSlot = false;
+		if(param2 >= 4 && current_class[client] == TFClass_Engineer){
+			param2--;
+			isBuildingSlot = true;
+		}
+
 		switch (param2)
 		{
 			case 0:
@@ -570,12 +576,18 @@ public MenuHandler_BuyUpgrade(Handle menu, MenuAction:action, client, param2)
 			{
 				char fstr[30]
 				char fstr2[128]
-				param2 -= 1
-				current_slot_used[client] = param2
-				Format(fstr, sizeof(fstr), "%T", current_slot_name[param2], client)
-				Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client]
-																  ,fstr)
-				Menu_ChooseCategory(client, fstr2)
+				param2--;
+				if(isBuildingSlot){
+					current_slot_used[client] = 5;
+					Format(fstr, sizeof(fstr), "%T", current_slot_name[5], client)
+					Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client] ,fstr)
+					Menu_ChooseCategory(client, fstr2)
+				}else{
+					current_slot_used[client] = param2
+					Format(fstr, sizeof(fstr), "%T", current_slot_name[param2], client)
+					Format(fstr2, sizeof(fstr2), "$%.0f [ - Upgrade %s - ]", CurrencyOwned[client] ,fstr)
+					Menu_ChooseCategory(client, fstr2)
+				}
 				/*if(AreClientCookiesCached(client))
 				{
 					char TutorialString[32];

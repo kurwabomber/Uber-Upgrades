@@ -1,5 +1,14 @@
 "Phrases"
 {
+	"Sentry Upgrades"{
+		"en"		"Sentry Upgrades"
+	}
+	"Building Upgrades"{
+		"en"		"Building Upgrades"
+	}
+	"Buildings"{
+		"en"		"Buildings"
+	}
 	"weapon ability id"{
 		"en"		"Weapon Ability ID"
 	}

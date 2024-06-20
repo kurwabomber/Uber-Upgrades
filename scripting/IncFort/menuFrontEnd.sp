@@ -12,11 +12,10 @@ public Action Menu_BuyUpgrade(client, args)
 
 		AddMenuItem(menuBuy, "upgrade_primary", "Upgrade Primary Slot");
 		AddMenuItem(menuBuy, "upgrade_secondary", "Upgrade Secondary Slot");
+		AddMenuItem(menuBuy, "upgrade_melee", "Upgrade Melee Slot");
 
-		if(current_class[client] != TFClass_Engineer)
-			AddMenuItem(menuBuy, "upgrade_melee", "Upgrade Melee Slot");
-		else
-			AddMenuItem(menuBuy, "upgrade_melee", "Upgrade Melee Slot / Buildings");
+		if(current_class[client] == TFClass_Engineer)
+			AddMenuItem(menuBuy, "upgrade_buildings", "Upgrade Buildings");
 
 		if (currentitem_level[client][3] != 242)
 			AddMenuItem(menuBuy, "upgrade_buyoneweap", "Buy a Custom Weapon");
@@ -420,6 +419,7 @@ public Action:Menu_ChooseCategory(client, char[] TitleStr)
 	
 	Handle menu = CreateMenu(MenuHandler_Choosecat);
 	int slot = current_slot_used[client];
+
 	if (slot != 4)
 	{
 		w_id = currentitem_catidx[client][slot];

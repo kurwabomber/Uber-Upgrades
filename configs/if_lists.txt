@@ -1128,7 +1128,7 @@
 	}
 	"engmelweap"
 	{
-		"special_tweaks_listid"		"3"
+		"special_tweaks_listid"		"2"
 		"Damage upgrades"
 		{
 			"Attr0"		"damage bonus"
@@ -1144,8 +1144,19 @@
 			"Attr3"		"melee range multiplier"
 			"Attr11"	"increase player capture value"
 			"Attr8"		"Weapons Deals No Knockback"
+			"Attr14"	"upgrade rate increase"
+			"Attr10"	"Construction rate increased"
 		}
-		"Building tech upgrades"
+		"Special Tweaks"
+		{//Revamp later to some building bullshit or something idk
+			"Sp0"		"Honor!"
+			"Sp1"		"Infernal Impulse"
+		}
+	}
+	"pda"
+	{
+		"special_tweaks_listid"		"-1"
+		"Sentry Upgrades"
 		{
 			"Attr16"	"engy sentry fire rate increased"
 			"Attr3"		"engy sentry damage bonus"
@@ -1154,15 +1165,15 @@
 			"Attr16"	"Sentry Maximum Ammo"
 			"Attr4"		"Sentry Ammo Regeneration"
 			"Attr7"		"engy sentry radius increased"
-			"Attr10"	"Construction rate increased"
-			"Attr13"	"Build rate bonus"
-			"Attr14"	"upgrade rate increase"
-			"Attr11"	"bidirectional teleport"
 		}
-		"Special Tweaks"
-		{//Revamp later to some building bullshit or something idk
-			"Sp0"		"Honor!"
-			"Sp1"		"Infernal Impulse"
+		"Building Upgrades"
+		{
+			"Attr13"	"Build rate bonus"
+			"Attr11"	"bidirectional teleport"
+			"Attr6"		"Dispenser Regeneration Rate"
+			"Attr7"		"engy dispenser radius increased"
+			"Attr2"		"Teleporter Gives Buffs"
+			"Attr4"		"Teleporter Recharge Rate"
 		}
 		"Sentry Specializations"
 		{
@@ -1171,13 +1182,6 @@
 			"Attr2"		"Sentry Rocket Fire Rate"
 			"Attr3"		"sentry bullets per shot"
 			"Attr4"		"Bolt Ballista Sentry"
-		}
-		"Building Specializations"
-		{
-			"Attr6"		"Dispenser Regeneration Rate"
-			"Attr7"		"engy dispenser radius increased"
-			"Attr2"		"Teleporter Gives Buffs"
-			"Attr4"		"Teleporter Recharge Rate"
 		}
 	}
 	"minigunweap"

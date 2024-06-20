@@ -66,6 +66,7 @@ public UberShopDefineUpgradeTabs()
 	current_slot_name[2] = "Melee Weapon"
 	current_slot_name[3] = "Bought Weapon"
 	current_slot_name[4] = "Body"
+	current_slot_name[5] = "Buildings"
 	upgrades[0].name = "";
 	CreateTimer(0.3, Timer_WaitForTF2Econ, _);
 }

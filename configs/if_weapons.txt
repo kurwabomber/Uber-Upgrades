@@ -97,5 +97,6 @@
 		"menuKatana"							"menuKatana"	//Rivers of Blood & Moonveil
 		"menuFireball"							"menuFireball"	//Chaos Bed Vestige
 		"chargelessRifle"						"chargelessRifle"	//Dragon Sniper Rifle
+		"tf_weapon_pda_engineer_build"			"pda"
 	}
 }
