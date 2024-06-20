@@ -1536,8 +1536,6 @@ public void ThrowBuilding(any buildref) {
 	SetEntityGravity(phys, 1.5);
 	SetEntityMoveType(phys, MOVETYPE_FLYGRAVITY);
 	CreateParticleEx(phys, "drg_cowmangler_trail_charged", 1, 0, origin, 2.0);
-	CreateParticleEx(phys, "rockettrail_airstrike_line", 1, 0, origin);
-	CreateParticleEx(phys, "rockettrail_fire_airstrike", 1, 0, origin);
 	SetEntityModel(phys, "models/weapons/w_models/w_toolbox.mdl");
 	SetEntProp(building, Prop_Send, "m_usSolidFlags", 0x0004);
 	SetEntityRenderMode(building, RENDER_NONE);
