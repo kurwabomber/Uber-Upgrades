@@ -1,4 +1,4 @@
-# Incremental-Fortress
+# Uber Upgrades
 Sourcemod plugin which is a successor to Uber Upgrades.
 Specifically only applies for TF2.
 ~45 thousand lines of code
