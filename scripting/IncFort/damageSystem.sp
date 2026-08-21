@@ -1169,6 +1169,60 @@ public void preDamageMitigationCalcs(victim, attacker, inflictor, float& damage,
 			if(championIndex != -1 && IsValidClient3(playerBuffs[victim][championIndex].inflictor)){
 				SDKHooks_TakeDamage(victim,playerBuffs[victim][championIndex].inflictor,playerBuffs[victim][championIndex].inflictor,playerBuffs[victim][championIndex].severity / TF2_GetFireRate(attacker,weapon,0.8),DMG_ENERGYBEAM|DMG_DISSOLVE|DMG_IGNOREHOOK,_,_,_,false);
 			}
+
+			float chainLightningAttribute = GetAttribute(weapon, "chain lightning meter on hit", 0.0)
+			if(chainLightningAttribute){
+				chainLightningAbilityCharge[attacker] += chainLightningAttribute;
+				if(chainLightningAbilityCharge[attacker] >= 100.0){
+					chainLightningAbilityCharge[attacker] -= 100.0;
+					bool isBounced[MAXPLAYERS+1];
+					int lastBouncedTarget = attacker;
+					float lastBouncedPosition[3];
+					GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
+					LastCharge[attacker] = 0.0;
+					int i = 0
+					int maxBounces = 6;
+					for(int target=1;target<=MaxClients && i < maxBounces;target++)
+					{
+						if(!IsValidClient3(target)) {continue;}
+						if(!IsPlayerAlive(target)) {continue;}
+						if(!IsOnDifferentTeams(target,attacker)) {continue;}
+						if(isBounced[target]) {continue;}
+
+						float VictimPos[3]; 
+						GetClientEyePosition(target, VictimPos); 
+						if(!IsAbleToSee(lastBouncedTarget, target)) continue;
+
+						isBounced[target] = true;
+						GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
+						lastBouncedTarget = target
+						int iPart1 = CreateEntityByName("info_particle_system");
+						int iPart2 = CreateEntityByName("info_particle_system");
+
+						if (IsValidEdict(iPart1) && IsValidEdict(iPart2))
+						{
+							char szCtrlParti[32];
+							char particleName[32];
+							particleName = GetClientTeam(attacker) == 2 ? "dxhr_sniper_rail_red" : "dxhr_sniper_rail_blue";
+							Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
+							DispatchKeyValue(iPart2, "targetname", szCtrlParti);
+
+							DispatchKeyValue(iPart1, "effect_name", particleName);
+							DispatchKeyValue(iPart1, "cpoint1", szCtrlParti);
+							DispatchSpawn(iPart1);
+							TeleportEntity(iPart1, lastBouncedPosition, NULL_VECTOR, NULL_VECTOR);
+							TeleportEntity(iPart2, VictimPos, NULL_VECTOR, NULL_VECTOR);
+							ActivateEntity(iPart1);
+							AcceptEntityInput(iPart1, "Start");
+							
+							CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
+							CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
+						}
+						SDKHooks_TakeDamage(target,attacker,attacker,100.0*TF2_GetDamageModifiers(attacker, weapon),DMG_ENERGYBEAM|DMG_IGNOREHOOK,_,_,_,false)
+						++i
+					}
+				}
+			}
 		}
 	}
 

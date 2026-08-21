@@ -2414,3 +2414,13 @@ public Action Timer_TauntAttackSpeed(Handle timer, int ref){
 	ApplyTauntAttackSpeed(ref);
 	return Plugin_Stop;
 }
+
+public Action Timer_ProjectileCrit(Handle timer, int ref) 
+{
+    int entity = EntRefToEntIndex(ref);
+	if(!IsValidEdict(entity))
+		return Plugin_Stop;
+
+	SetEntProp(entity, Prop_Send, "m_bCritical", 1);
+	return Plugin_Stop;
+}

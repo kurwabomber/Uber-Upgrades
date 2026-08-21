@@ -243,12 +243,6 @@
 			"mult sniper charge after headshot"	"75"
 			"additive piercing damage"		"20"
 		}
-		"Weapon Inheritance"
-		{
-			"gamestage"						"1"
-			"restriction"					"1"
-			"dps inheritance ratio"			"3"
-		}
 		"Agile Latticing"
 		{
 			"gamestage"						"1"
@@ -340,10 +334,10 @@
 		}
 		"Cluster Bomb"
 		{
-			"gamestage"						"1"
-			"restriction"					"1"
-			"dmg per sticky detonated"		"0.33"
-			"Radiation Buildup"				"5"
+			"gamestage"								"1"
+			"restriction"							"1"
+			"dmg per sticky detonated"				"0.4"
+			"projectile critical after lifetime" 	"3"
 		}
 		"Chain Reaction"
 		{
@@ -424,7 +418,7 @@
 			"restriction"					"1"
 			"electric orb child"			"1"
 			"blast radius increased"		"3"
-			"chain lightning meter on hit"	"35"
+			"chain lightning meter on hit"	"50"
 			"additive piercing damage"		"20"
 		}
 	}

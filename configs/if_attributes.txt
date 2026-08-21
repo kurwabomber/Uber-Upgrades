@@ -7814,6 +7814,28 @@
 			"init"		"1"
 			"max"		"1"
 		}
+		"1762"
+		{
+			"name"		"melee range multiplier 2"
+			"ref"		"melee range multiplier 2"
+			"attr_class"	"melee_range_multiplier"
+			"display"		"%.0f%%"
+			"cost"		"0"
+			"value"		"0.0"
+			"init"		"1.00"
+			"max"		"1.00"
+		}
+		"1763"
+		{
+			"name"		"projectile critical after lifetime"
+			"ref"		"projectile critical after lifetime"
+			"display"	"%.2fs"
+			"attr_class"	"projectile_critical_after_lifetime"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
 		//Filler
 		"1900.0"
 		{

@@ -1,5 +1,11 @@
 "Phrases"
 {
+	"projectile critical after lifetime"{
+		"en"		"Projectiles Critical After x Seconds"
+	}
+	"Stickybomb Damage Bonus"{
+		"en"		"Stickybomb Damage Bonus"
+	}
 	"rocketjump attackrate bonus"{
 		"en"		"Fire Rate while Rocket Jumping"
 	}

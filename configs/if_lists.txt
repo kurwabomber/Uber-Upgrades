@@ -1671,7 +1671,6 @@
 		"Special Tweaks"
 		{
 			"0"		"Pain Train"
-			"1"		"Weapon Inheritance"
 		}
 	}
 	"ali_shoes"
@@ -2019,8 +2018,7 @@
 		}
 		"Special Tweaks"
 		{
-			"0"		"Weapon Inheritance"
-			"1"		"Agile Latticing"
+			"0"		"Agile Latticing"
 		}
 	}
 	"wearable"
@@ -2034,8 +2032,7 @@
 		}
 		"Special Tweaks"
 		{
-			"0"		"Weapon Inheritance"
-			"1"		"Agile Latticing"
+			"0"		"Agile Latticing"
 		}
 	}
 	"medmel"
@@ -2118,7 +2115,6 @@
 		"Special Tweaks"
 		{
 			"0"		"Infernal Lunge"
-			"1"		"Weapon Inheritance"
 		}
 	}
 	"shotgun_primary_"
@@ -2352,7 +2348,6 @@
 		"Special Tweaks"
 		{
 			"0"		"Berserker's Fury"
-			"1"		"Weapon Inheritance"
 		}
 	}
 	"lunchbox"
@@ -2369,7 +2364,6 @@
 		"Special Tweaks"
 		{
 			"0"		"Berserker's Fury"
-			"1"		"Weapon Inheritance"
 		}
 	}
 	"proj_singleshot"
@@ -2420,6 +2414,27 @@
 		{
 			"0"		"Armor Piercing Shells"
 			"1"		"Frostborn Wrath"
+		}
+	}
+	"rangeless_melee"
+	{
+		"special_tweaks_listid"		"2"
+		"Damage upgrades"
+		{
+			"0"		"damage bonus"
+			"1"		"ap (global)"
+			"2"		"Melee Damage Bonus"
+		}
+		"Melee specific upgrades"
+		{
+			"0"		"melee attack rate bonus"
+			"2"		"increase player capture value"
+			"3"		"damage taken multiplier when active"
+		}
+		"Special Tweaks"
+		{
+			"0"		"Honor!"
+			"1"		"Infernal Impulse"
 		}
 	}
 }

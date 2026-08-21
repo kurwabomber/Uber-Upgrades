@@ -113,59 +113,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 			int CWeapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 			if(IsValidEdict(CWeapon))
 			{
-				float chainLightningAttribute = GetAttribute(CWeapon, "chain lightning meter on hit", 0.0)
-				if(chainLightningAttribute){
-					chainLightningAbilityCharge[attacker] += chainLightningAttribute;
-					if(chainLightningAbilityCharge[attacker] >= 100.0){
-						chainLightningAbilityCharge[attacker] -= 100.0;
-						bool isBounced[MAXPLAYERS+1];
-						int lastBouncedTarget = attacker;
-						float lastBouncedPosition[3];
-						GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
-						LastCharge[attacker] = 0.0;
-						int i = 0
-						int maxBounces = 6;
-						for(int target=1;target<=MaxClients && i < maxBounces;target++)
-						{
-							if(!IsValidClient3(target)) {continue;}
-							if(!IsPlayerAlive(target)) {continue;}
-							if(!IsOnDifferentTeams(target,attacker)) {continue;}
-							if(isBounced[target]) {continue;}
-
-							float VictimPos[3]; 
-							GetClientEyePosition(target, VictimPos); 
-							if(!IsAbleToSee(lastBouncedTarget, target)) continue;
-
-							isBounced[target] = true;
-							GetClientEyePosition(lastBouncedTarget, lastBouncedPosition)
-							lastBouncedTarget = target
-							int iPart1 = CreateEntityByName("info_particle_system");
-							int iPart2 = CreateEntityByName("info_particle_system");
-
-							if (IsValidEdict(iPart1) && IsValidEdict(iPart2))
-							{
-								char szCtrlParti[32];
-								char particleName[32];
-								particleName = GetClientTeam(attacker) == 2 ? "dxhr_sniper_rail_red" : "dxhr_sniper_rail_blue";
-								Format(szCtrlParti, sizeof(szCtrlParti), "tf2ctrlpart%i", iPart2);
-								DispatchKeyValue(iPart2, "targetname", szCtrlParti);
-
-								DispatchKeyValue(iPart1, "effect_name", particleName);
-								DispatchKeyValue(iPart1, "cpoint1", szCtrlParti);
-								DispatchSpawn(iPart1);
-								TeleportEntity(iPart1, lastBouncedPosition, NULL_VECTOR, NULL_VECTOR);
-								TeleportEntity(iPart2, VictimPos, NULL_VECTOR, NULL_VECTOR);
-								ActivateEntity(iPart1);
-								AcceptEntityInput(iPart1, "Start");
-								
-								CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
-								CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
-							}
-							SDKHooks_TakeDamage(target,attacker,attacker,100.0*TF2_GetDPSModifiers(attacker, CWeapon),DMG_SHOCK|DMG_IGNOREHOOK,_,_,_,false)
-							++i
-						}
-					}
-				}
 				int arrowNovaCap = RoundToNearest(TF2Attrib_HookValueFloat(0.0, "arrow_nova_altfire_cap", CWeapon));
 				if(arrowNovaCap && arrowExpulsionCooldown[attacker]-GetGameTime() <= 2.5){
 					arrowNovaCount[attacker][client]++;
@@ -1776,39 +1723,30 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 				{
 					case 6.0: //Detonate
 					{
-						if(weaponArtCooldown[client] > GetGameTime())
+						char CooldownTime[32]
+						Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: READY (M3)"); 
+						SetHudTextParams(x, y, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
+						ShowSyncHudText(client, hudAbility, CooldownTime);
+						if(buttons & IN_ATTACK3)
 						{
-							char CooldownTime[32]
-							Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: %.1fs", weaponArtCooldown[client]-GetGameTime()); 
-							SetHudTextParams(x, y, TICKINTERVAL*10, 0, 101, 189, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudAbility, CooldownTime);
-						}
-						else
-						{
-							char CooldownTime[32]
-							Format(CooldownTime, sizeof(CooldownTime), "Detonate Flares: READY (M3)"); 
-							SetHudTextParams(x, y, TICKINTERVAL*10, 0, 220, 15, 255, 0, 0.0, 0.0, 0.0);
-							ShowSyncHudText(client, hudAbility, CooldownTime);
-							if(buttons & IN_ATTACK3)
+							if(fl_GlobalCoolDown[client] <= GetGameTime())
 							{
-								if(fl_GlobalCoolDown[client] <= GetGameTime())
+								fl_GlobalCoolDown[client] = GetGameTime()+0.1;
+								
+								float damageMult = TF2_GetDamageModifiers(client,CWeapon)
+								float m_fOrigin[3];
+								int entity = -1; 
+								while((entity = FindEntityByClassname(entity, "tf_projectile_flare"))!=INVALID_ENT_REFERENCE)
 								{
-									weaponArtCooldown[client] = GetGameTime()+0.2;
-									fl_GlobalCoolDown[client] = GetGameTime()+0.2;
-									
-									float damageMult = TF2_GetDamageModifiers(client,CWeapon)
-									float m_fOrigin[3];
-									int entity = -1; 
-									while((entity = FindEntityByClassname(entity, "tf_projectile_flare"))!=INVALID_ENT_REFERENCE)
+									if(GetGameTime() - entitySpawnTime[entity] <= 0.1) { continue; }
+
+									int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
+									if(!IsValidClient(owner)) continue;
+									if(owner == client)
 									{
-										int owner = GetEntPropEnt(entity, Prop_Data, "m_hOwnerEntity");
-										if(!IsValidClient(owner)) continue;
-										if(owner == client)
-										{
-											GetEntPropVector(entity, Prop_Data, "m_vecOrigin", m_fOrigin);
-											EntityExplosion(client, 22.0*damageMult, 300.0, m_fOrigin, 2, _, entity);
-											RemoveEntity(entity);
-										}
+										GetEntPropVector(entity, Prop_Data, "m_vecOrigin", m_fOrigin);
+										EntityExplosion(client, 28.0*damageMult, 400.0, m_fOrigin, 2, _, entity, _, _, CWeapon, _, _, true);
+										RemoveEntity(entity);
 									}
 								}
 							}

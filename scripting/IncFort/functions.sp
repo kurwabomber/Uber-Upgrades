@@ -1850,7 +1850,7 @@ refreshUpgrades(client, slot)
 
 				if(precisionPowerupValue == 3){
 					TF2Attrib_SetByName(client,"weapon fire rate", 4.0);
-					TF2Attrib_SetByName(client,"damage penetrates reductions", 0.35);
+					TF2Attrib_SetByName(client,"damage penetrates reductions", 0.5);
 				}
 			}
 			
@@ -2993,6 +2993,11 @@ public onProjectileSpawned(entity)
 			GetEntPropVector(entity, Prop_Data, "m_vecVelocity", currentVelocity);
 			CreateTimer(splitDistance/GetVectorLength(currentVelocity), Timer_RocketSplit, EntIndexToEntRef(entity));
 		}
+
+		float crit_after_time = TF2Attrib_HookValueFloat(0.0, "projectile_critical_after_lifetime", launcher);
+		if(crit_after_time > 0.0){
+			CreateTimer(crit_after_time, Timer_ProjectileCrit, EntIndexToEntRef(entity));
+		}
 	}
 }
 
@@ -3330,7 +3335,7 @@ GivePowerupDescription(int client, char[] name, int amount){
 			CPrintToChat(client, "{community}Aimless Powerup {default}| {lightcyan}Projectiles randomly sway and deal up to +300%% damage based on their distance of landing. Only projectiles that sway deal extra damage.");
 			CPrintToChat(client, "{lightcyan}\"Weapon Spread Bonus\" upgrade now instead increases spread, and boosts damage by 300%% of value.");
 		}else if(amount == 3){
-			CPrintToChat(client, "{community}Railgun Powerup {default}| {lightcyan}All weapons have 4x slower fire rate, but 4x outgoing damage. Grants +35%% conditional damage reduction pierce.");
+			CPrintToChat(client, "{community}Railgun Powerup {default}| {lightcyan}All weapons have 4x slower fire rate, but 4x outgoing damage. Grants +50%% conditional damage reduction pierce.");
 		}else{
 			CPrintToChat(client, "{community}Precision Powerup {default}| {lightcyan}+100%% charge rate, and no spread. 1.35x outgoing damage and hitscan can headshot. Certain projectiles will home aggressively.");
 		}

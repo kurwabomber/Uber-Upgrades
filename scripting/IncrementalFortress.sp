@@ -37,7 +37,7 @@
 #define MAX_ATTRIBUTES_ITEM 65
 #define LISTS 200
 #define LISTS_CATEGORIES 9
-#define WCNAMELISTSIZE 100
+#define WCNAMELISTSIZE 150
 #define MAX_TWEAKS 60
 #define NB_WEAPONS 50
 #define Max_Attunement_Slots 7
