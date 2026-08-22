@@ -1234,11 +1234,11 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1104:
 		{
-			ChangeString = "The Air Strike | Rocket jumping gives 30% faster fire rate.";
+			ChangeString = "The Air Strike | Deals 0.33x damage and shoots 0.3x faster while airborne. Conserves ammo for 50% of shots.";
 		}
 		case 730:
 		{
-			ChangeString = "The Beggar's Bazooka | 70% faster fire rate, but you deal 66% less damage.";
+			ChangeString = "The Beggar's Bazooka | 70% faster fire rate, but you deal 75% less damage. Comes with rocket specialist. Converts fire rate into damage bonus.";
 		}
 		//Soldier Secondary
 		case 129,1001:
@@ -1428,7 +1428,7 @@ DisplayItemChange(client,itemidx)
 		//Sniper Primaries
 		case 230:
 		{
-			ChangeString = "The Sydney Sleeper | Applies 2 seconds of jarate on hit.";
+			ChangeString = "The Sydney Sleeper | Shoots a high-velocity dart that splits into 5 jarates. Converts Fire Rate Bonus into Damage Bonus. 1.5x slower fire rate.";
 		}
 		case 526,30665:
 		{

@@ -3618,6 +3618,9 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 					else if(itemDefinitionIndex == 752){
 						currentitem_catidx[client][0] = GetUpgrade_CatList("hitmans")
 					}
+					else if(itemDefinitionIndex == 230){
+						currentitem_catidx[client][0] = GetUpgrade_CatList("sydneySleeper")
+					}
 					else{
 						currentitem_catidx[client][slot] = GetUpgrade_CatList(classname)
 					}

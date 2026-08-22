@@ -2437,4 +2437,25 @@
 			"1"		"Infernal Impulse"
 		}
 	}
+	"sydneySleeper"
+	{
+		"special_tweaks_listid"		"2"
+		"Damage upgrades"
+		{
+			"0"		"damage bonus"
+			"1"		"ap (global)"
+			"2"		"Increased Overall Damage"
+		}
+		"Sniper specific upgrades"
+		{
+			"0"		"fire rate bonus(old)"
+			"1"		"aiming movespeed increased"
+			"2"		"blast radius increased"
+		}
+		"Special Tweaks"
+		{
+			"0"		"Sniper Mastery"
+			"1"		"Lacerating Rounds"
+		}
+	}
 }

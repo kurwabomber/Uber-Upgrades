@@ -104,5 +104,6 @@
 		"proj_singleshot"						"proj_singleshot" //Projectile single shot weapons, eg: smg
 		"explosive_shotgun"						"explosive_shotgun" //Explosive proj shotguns
 		"rangeless_melee"						"rangeless_melee"	// ethereal knives
+		"sydneySleeper"							"sydneySleeper"		// Sydney Sleeper
 	}
 }

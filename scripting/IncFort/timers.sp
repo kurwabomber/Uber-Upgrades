@@ -2421,6 +2421,10 @@ public Action Timer_ProjectileCrit(Handle timer, int ref)
 	if(!IsValidEdict(entity))
 		return Plugin_Stop;
 
+	float fOrigin[3];
+	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", fOrigin);
+	CreateParticleEx(entity, "ExplosionCore_sapperdestroyed", -1, -1, fOrigin);
+
 	SetEntProp(entity, Prop_Send, "m_bCritical", 1);
 	return Plugin_Stop;
 }
