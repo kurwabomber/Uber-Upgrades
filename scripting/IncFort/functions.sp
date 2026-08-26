@@ -4644,7 +4644,9 @@ ApplyTauntAttackSpeed(int ref){
 	float attackRate = TF2Attrib_HookValueFloat(1.0, "mult_gesture_time", CWeapon);
 	if(attackRate != 1.0) {
 		float newTime = (GetEntDataFloat(client, TauntAttackTimeOffset)-GetGameTime())/attackRate;
-		SetEntDataFloat(client, TauntAttackTimeOffset, GetGameTime() + newTime, true);
-		CreateTimer(newTime, Timer_TauntAttackSpeed, ref);
+		if(newTime > TICKINTERVAL){
+			SetEntDataFloat(client, TauntAttackTimeOffset, GetGameTime() + newTime, true);
+			CreateTimer(newTime, Timer_TauntAttackSpeed, ref);
+		}
 	}
 }
