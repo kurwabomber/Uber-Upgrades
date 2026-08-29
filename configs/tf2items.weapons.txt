@@ -132,7 +132,7 @@
 			"7"				"explosive_fragment_damage;5"
 			"8"				"explosive fragment is uniform;1"
 			"9"				"explosive fragment type;1"
-			"10"			"frag velocity mult;0.5"
+			"10"			"frag velocity mult;0.67"
 			"11"			"jar damage mult;3.0"
 			"12"			"jar cannot fragment;1"
 		}
@@ -308,6 +308,8 @@
 			"preserve_attributes"	"1"
 			"1"				"item_meter_charge_rate;5.0"
 			"2"				"item_meter_damage_for_full_charge;0.0"
+			"3"				"afterburn rating;1.0"
+			"4"				"damage mult 13;0.785714285714"
 		}
 		"752" //Hitman's Heatmaker
 		{
@@ -380,9 +382,10 @@
 		{
 			"preserve_attributes"	"1"
 			"1"				"damage bonus;1.0"
-			"2"				"damage mult 13;1.2"
+			"2"				"damage penetrates reductions;0.2"
 			"3"				"cloak_consume_on_feign_death_activate;4.0"
 			"4"				"grenade explode on impact;1"
+			"5"				"Blast radius decreased;0.65"
 		}
 		"996" //Loose Cannon
 		{

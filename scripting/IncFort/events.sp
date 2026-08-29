@@ -1733,7 +1733,6 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 							{
 								fl_GlobalCoolDown[client] = GetGameTime()+0.1;
 								
-								float damageMult = TF2_GetDamageModifiers(client,CWeapon)
 								float m_fOrigin[3];
 								int entity = -1; 
 								while((entity = FindEntityByClassname(entity, "tf_projectile_flare"))!=INVALID_ENT_REFERENCE)
@@ -1745,7 +1744,7 @@ public Action OnPlayerRunCmd(int client, int& buttons, int& impulse, float vel[3
 									if(owner == client)
 									{
 										GetEntPropVector(entity, Prop_Data, "m_vecOrigin", m_fOrigin);
-										EntityExplosion(client, 28.0*damageMult, 400.0, m_fOrigin, 2, _, entity, _, _, CWeapon, _, _, true);
+										EntityExplosion(client, 28.0, 400.0, m_fOrigin, 2, _, entity, _, DMG_BURN|DMG_BLAST, CWeapon, _, _, true, _, _, _, true);
 										RemoveEntity(entity);
 									}
 								}
@@ -2590,7 +2589,7 @@ public MRESReturn OnAmmoPerShot(int weapon, Handle hReturn)
 	if(!IsValidClient3(client))
 		return MRES_Ignored;
 
-	float conservationRate = 1-TF2Attrib_HookValueFloat(1.0, "ammo_conservation", weapon);
+	float conservationRate = 1-TF2Attrib_HookValueFloat(1.0, "ammo_conservation", weapon)*TF2Attrib_HookValueFloat(1.0, "global_ammo_conservation", client);
 	if(conservationRate >= GetRandomFloat()){
 		DHookSetReturn(hReturn, 0);
 		return MRES_Supercede;
@@ -2607,7 +2606,7 @@ public MRESReturn OnEnergyPerShot(int weapon)
 	if(!IsValidClient3(client))
 		return MRES_Ignored;
 
-	float conservationRate = 1-TF2Attrib_HookValueFloat(1.0, "ammo_conservation", weapon);
+	float conservationRate = 1-TF2Attrib_HookValueFloat(1.0, "ammo_conservation", weapon)*TF2Attrib_HookValueFloat(1.0, "global_ammo_conservation", client);
 	if(conservationRate >= GetRandomFloat()){
 		return MRES_Supercede;
 	}
@@ -3527,6 +3526,9 @@ public TF2Items_OnGiveNamedItem_Post(client, char[] classname, itemDefinitionInd
 				{
 					if (StrEqual(classname, "tf_weapon_scattergun")){
 						currentitem_catidx[client][slot] = GetUpgrade_CatList("tf_weapon_scattergun_")
+					}
+					else if (StrEqual(classname, "tf_weapon_pistol") || StrEqual(classname, "tf_weapon_handgun_scout_secondary")){
+						currentitem_catidx[client][slot] = GetUpgrade_CatList("scout_pistols")
 					}
 					else{
 						currentitem_catidx[client][slot] = GetUpgrade_CatList(classname)

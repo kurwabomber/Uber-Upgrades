@@ -116,10 +116,10 @@
 		{
 			"gamestage"						"1"
 			"restriction"					"1"
-			"accuracy scales damage"		"2"
+			"accuracy scales damage"		"3.2"
 			"ammo conservation"				"6.7"
-			"damage causes freeze"			"175"
-			"crit damage mod"					"5.0"
+			"damage causes freeze"			"190"
+			"crit damage mod"				"5.0"
 		}
 		"Scorchiest Shot"
 		{
@@ -411,6 +411,7 @@
 			"restriction"					"1"
 			"vaccinator exhaust attribute"	"1"
 			"medigun attack enemy"			"1"
+			"additive piercing damage"		"10"
 		}
 		"Arc Flash"
 		{
@@ -420,6 +421,23 @@
 			"blast radius increased"		"3"
 			"chain lightning meter on hit"	"50"
 			"additive piercing damage"		"20"
+		}
+		"Hotswap"
+		{
+			"gamestage"						"1"
+			"restriction"					"1"
+			"taunt speed multiplier"				"2"
+			"damage taken multiplier when active"	"-10"
+			"buff damage taken"						"-2"
+		}
+		"Armory Specialist"
+		{
+			"gamestage"								"1"
+			"restriction"							"1"
+			"global ammo conservation"				"3.5"
+			"convert health to damage reduction"	"0.3"
+			"additive damage bonus"					"5"
+			"debuff magnitude bonus"				"20"
 		}
 	}
 }

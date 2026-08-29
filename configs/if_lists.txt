@@ -1671,6 +1671,7 @@
 		"Special Tweaks"
 		{
 			"0"		"Pain Train"
+			"1"		"Armory Specialist"
 		}
 	}
 	"ali_shoes"
@@ -1691,7 +1692,7 @@
 			"0"		"damage bonus"
 			"1"		"ap (global)"
 			"2"		"Increased Overall Damage"
-			"3"		"blast radius increased"
+			"3"		"Blast radius increased (sticky)"
 			"4"		"dmg falloff decreased"
 		}
 		"Pipebomb launcher specific upgrades"
@@ -1718,7 +1719,7 @@
 			"0"		"damage bonus"
 			"1"		"ap (global)"
 			"2"		"Increased Overall Damage"
-			"3"		"blast radius increased"
+			"3"		"Blast radius increased (sticky)"
 			"4"		"dmg falloff decreased"
 		}
 		"Pipebomb launcher specific upgrades"
@@ -2019,6 +2020,7 @@
 		"Special Tweaks"
 		{
 			"0"		"Agile Latticing"
+			"1"		"Armory Specialist"
 		}
 	}
 	"wearable"
@@ -2033,6 +2035,7 @@
 		"Special Tweaks"
 		{
 			"0"		"Agile Latticing"
+			"1"		"Armory Specialist"
 		}
 	}
 	"medmel"
@@ -2210,7 +2213,8 @@
 		}
 		"Special Tweaks"
 		{
-			"0"		"Exhaust"
+			"0"		"Blossom of Life"
+			"1"		"Exhaust"
 		}
 	}
 	"gas"
@@ -2348,6 +2352,7 @@
 		"Special Tweaks"
 		{
 			"0"		"Berserker's Fury"
+			"1"		"Hotswap"
 		}
 	}
 	"lunchbox"
@@ -2364,6 +2369,7 @@
 		"Special Tweaks"
 		{
 			"0"		"Berserker's Fury"
+			"1"		"Hotswap"
 		}
 	}
 	"proj_singleshot"
@@ -2444,17 +2450,44 @@
 		{
 			"0"		"damage bonus"
 			"1"		"ap (global)"
-			"2"		"Increased Overall Damage"
+			"2"		"Explosive Damage Bonus"
+			"3"		"sniper full charge damage bonus (cheap)"
+			"4"		"blast radius increased"
 		}
 		"Sniper specific upgrades"
 		{
 			"0"		"fire rate bonus(old)"
-			"1"		"aiming movespeed increased"
-			"2"		"blast radius increased"
+			"1"		"Increased Charge percent"
+			"2"		"aiming movespeed increased"
 		}
 		"Special Tweaks"
 		{
-			"0"		"Sniper Mastery"
+			"0"		"Lacerating Rounds"
+			"1"		"Frostborn Wrath"
+		}
+	}
+	"scopistol"
+	{
+		"special_tweaks_listid"		"2"
+		"Damage upgrades"
+		{
+			"0"		"damage bonus"
+			"1"		"ap (global)"
+			"2"		"Increased Overall Damage"
+		}
+		"Gun specific upgrades"
+		{
+			"0"		"fire rate bonus(multshit)"
+			"1"		"clip size bonus"
+			"2"		"faster reload rate"
+			"3"		"bullets per shot bonus (single)"
+			"4"		"weapon spread bonus"
+			"5"		"projectile penetration heavy"
+			"6"		"maxammo secondary increased (weapon)"
+		}
+		"Special Tweaks"
+		{
+			"0"		"Explosive Bullets(S)"
 			"1"		"Lacerating Rounds"
 		}
 	}

@@ -1405,7 +1405,31 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 				if(!IsValidWeapon(healingWeapon))
 					continue;
 				
-				if(IsOnDifferentTeams(attacker, healer)){
+				if(!IsOnDifferentTeams(attacker, healer)){
+					float appliedBoost = 1.0 + TF2Attrib_HookValueFloat(0.0, "patient_damage_bonus", healingWeapon);
+
+					if(TF2_IsPlayerInCondition(attacker, TFCond_Kritzkrieged))
+						appliedBoost += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
+
+					appliedBoost *= TF2Attrib_HookValueFloat(1.0, "healing_patient_power", healingWeapon);
+					if(appliedBoost > medicBoost)
+						medicBoost = appliedBoost;
+				}
+			}
+		}
+		int drainers = GetEntProp(victim, Prop_Send, "m_nNumHealers");
+		if(drainers > 0)
+		{
+			for(int i = 0;i<drainers;++i){
+				int drainer = TF2Util_GetPlayerHealer(drainers,i);
+				if(!IsValidClient3(drainer))
+					continue;
+				
+				int healingWeapon = GetEntPropEnt(drainer, Prop_Send, "m_hActiveWeapon");
+				if(!IsValidWeapon(healingWeapon))
+					continue;
+				
+				if(IsOnDifferentTeams(attacker, drainer)){
 					// Using exhaust on vaccinator decreases damage dealt by the average of the resistances.
 					float exhaustCoefficient = TF2Attrib_HookValueFloat(0.0, "vaccinator_exhaust_attribute", healingWeapon);
 					if(exhaustCoefficient > 0.0){
@@ -1416,16 +1440,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 						if(appliedWeakness < medicWeakness)
 							medicWeakness = appliedWeakness;
 					}
-				}
-				else{
-					float appliedBoost = 1.0 + TF2Attrib_HookValueFloat(0.0, "patient_damage_bonus", healingWeapon);
-
-					if(TF2_IsPlayerInCondition(attacker, TFCond_Kritzkrieged))
-						appliedBoost += GetAttribute(healingWeapon, "ubercharge effectiveness", 1.0)-1.0;
-
-					appliedBoost *= TF2Attrib_HookValueFloat(1.0, "healing_patient_power", healingWeapon);
-					if(appliedBoost > medicBoost)
-						medicBoost = appliedBoost;
 				}
 			}
 		}

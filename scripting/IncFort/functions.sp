@@ -748,11 +748,15 @@ public float ParseShorthand(char[] input, int size){
 
 	return num;
 }
-stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, char[] particle = "ExplosionCore_MidAir", float knockback = 0.0, bool noMultihit = false)
+stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType = 0, bool visual = true, entity = -1, float soundLevel = SNDVOL_NORMAL,damagetype = DMG_BLAST, weapon = -1, float falloff = 0.0, soundPriority = SNDLEVEL_NORMAL, bool ignition = false, char[] particle = "ExplosionCore_MidAir", float knockback = 0.0, bool noMultihit = false, bool useWeaponDamage = false)
 {
 	if(entity == -1 || !IsValidEdict(entity))
 		entity = owner;
 	int i = -1;
+
+	if (!useWeaponDamage) {
+		damagetype |= DMG_IGNOREHOOK;
+	}
 
 	while ((i = FindEntityByClassname(i, "*")) != -1)
 	{
@@ -779,7 +783,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 
 					if(IsValidEdict(weapon) && IsValidClient3(i))
 					{
-						SDKHooks_TakeDamage(i,entity,owner,baseExplosionDamage,damagetype|DMG_IGNOREHOOK,weapon,_,_,false)
+						SDKHooks_TakeDamage(i,entity,owner,baseExplosionDamage,damagetype,weapon,_,_,false)
 						if(knockback > 0.0)
 							PushEntity(i, owner, knockback, 200.0);
 						
@@ -788,7 +792,7 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 					}
 					else
 					{
-						SDKHooks_TakeDamage(i,entity,owner,baseExplosionDamage,damagetype|DMG_IGNOREHOOK,_,_,_, false);
+						SDKHooks_TakeDamage(i,entity,owner,baseExplosionDamage,damagetype,_,_,_, false);
 					}
 					if(noMultihit)
 						ShouldNotHit[entity][i] = true;
@@ -1308,7 +1312,7 @@ DisplayItemChange(client,itemidx)
 		//Demo Primary
 		case 308:
 		{
-			ChangeString = "The Loch-n-Load | Deals 20% more damage. Projectiles don't have gravity.";
+			ChangeString = "The Loch-n-Load | Projectiles don't have gravity. +20% conditional defense pierce. -35% blast radius.";
 		}
 		case 996:
 		{
@@ -1436,7 +1440,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1098:
 		{
-			ChangeString = "The Classic | +15% conditional status pierce.";
+			ChangeString = "The Classic | +15% conditional defense pierce.";
 		}
 		case 752:
 		{
@@ -1475,7 +1479,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 460:
 		{
-			ChangeString = "The Enforcer | Rapidly fires a two round burst. +20% conditional status pierce. Converts fire rate into damage.";
+			ChangeString = "The Enforcer | Rapidly fires a two round burst. +20% conditional defense pierce. Converts fire rate into damage.";
 		}
 		case 525:
 		{
@@ -1867,7 +1871,7 @@ refreshUpgrades(client, slot)
 				TF2Attrib_SetByName(client,"major increased jump height", TF2Attrib_GetValue(agilityPowerup) == 1 ? 1.3 : (TF2Attrib_GetValue(agilityPowerup) == 2 ? 2.0 : 1.0));
 			}
 
-			TF2Attrib_SetByName(client, "flame ammopersec decreased", TF2Attrib_HookValueFloat(1.0, "ammo_conservation", client));
+			TF2Attrib_SetByName(client, "flame ammopersec decreased", TF2Attrib_HookValueFloat(1.0, "ammo_conservation", client)*TF2Attrib_HookValueFloat(1.0, "global_ammo_conservation", client));
 		}
 		else if(IsValidEntity(slotItem) && TF2Util_IsEntityWeapon(slotItem))
 		{

@@ -1,5 +1,17 @@
 "Phrases"
 {
+	"additive damage bonus"{
+		"en"		"Additive Damage Bonus"
+	}
+	"Armory Specialist"{
+		"en"		"Armory Specialist"
+	}
+	"Hotswap"{
+		"en"		"Hotswap"
+	}
+	"taunt speed multiplier"{
+		"en"		"Taunt Speed Multiplier"
+	}
 	"projectile critical after lifetime"{
 		"en"		"Projectiles Critical After x Seconds"
 	}
@@ -163,6 +175,9 @@
 		"en"		"Weapon Headshot Damage"
 	}
 	"ammo conservation" {
+		"en"		"Ammo Conservation Rate"
+	}
+	"global ammo conservation" {
 		"en"		"Ammo Conservation Rate"
 	}
 	"explosive impact radius" {
@@ -1062,9 +1077,6 @@
 	"Fires More Projectiles(Ball)"{
 		"en"		"Fires More Projectiles"
 	}
-	"blast radius increased(G)"{
-		"en"		"Blast Radius Increased"
-	}
 	"Sharpshooter(secondary)"{
 		"en"		"Sharpshooter"
 	}
@@ -1425,9 +1437,6 @@
 	"attackspeed multiplier"{
 		"en"		"attackspeed multiplier"
 	}
-	"blast radius increased(E)"{
-		"en"		"Blast Radius Increased"
-	}
 	"Projectile speed increased(ARROW)"{
 		"en"		"Projectile Speed Increased"
 	}
@@ -1619,9 +1628,6 @@
 	}
 	"dmg from sentry reduced(wearable)"{
 		"en"		"Sentry Damage Taken Reduced"
-	}
-	"blast radius increased(F)"{
-		"en"		"Blast Radius Increased"
 	}
 	"Debuff Immunity"{
 		"en"		"Debuff Immunity"
@@ -2802,6 +2808,9 @@
 	"maxammo secondary increased (S)"{
 		"en"		"Secondary Ammo Increased"
 	}
+	"maxammo secondary increased (weapon)"{
+		"en"		"Secondary Ammo Increased"
+	}
 	"maxammo secondary reduced"{
 		"en"		"Secondary Ammo Decreased"
 	}
@@ -2850,7 +2859,7 @@
 	"Blast radius increased"{
 		"en"		"Blast Radius Increased"
 	}
-	"Blast radius increased (J)"{
+	"Blast radius increased (sticky)"{
 		"en"		"Blast Radius Increased"
 	}
 	"Heavy Cleaver"{
@@ -3145,6 +3154,9 @@
 		"en"		"Ammo Per Shot Consumed"
 	}
 	"sniper full charge damage bonus"{
+		"en"		"Fully Charged Shot Damage Bonus"
+	}
+	"sniper full charge damage bonus (cheap)"{
 		"en"		"Fully Charged Shot Damage Bonus"
 	}
 	"sniper penetrate players when charged"{

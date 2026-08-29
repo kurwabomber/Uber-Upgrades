@@ -14,6 +14,7 @@
 		"tf_weapon_sentry_revenge"				"engweap"		//frontier justice
 		"tf_weapon_drg_pomson"					"rayweap"	//pomson
 		"tf_weapon_pistol"						"sprweap1"		//all pistols
+		"scout_pistols"							"scopistol"		//all pistols for scout
 		"tf_weapon_mechanical_arm"				"engiecircuit"	//shortcircut
 		"tf_weapon_wrench"						"engmelweap"	//wrenchs
 		"tf_weapon_robot_arm"					"engmelweap"	//gunslinger
@@ -39,9 +40,7 @@
 		"tf_weapon_pep_brawler_blaster"			"scoweap"		//bfb
 		"tf_weapon_scattergun"					"scoweap"		//stock scattergun	
 		"tf_weapon_scattergun_"					"scoweap"		//other scatterguns
-		"tf_weapon_handgun_scout_secondary"		"sprweap1"		//pistol
 		"tf_weapon_cleaver"						"scoclea"		//cleaver
-		"tf_weapon_pistol_scout"				"sprweap1"		//pistol
 		"tf_weapon_soda_popper"					"scoweap"		//sodapopper
 		"tf_weapon_lunchbox_drink"				"lunchbox_bonk"	//scout lunchbox
 		"tf_weapon_bat"							"scomelweap"	//scout melee

@@ -1392,6 +1392,16 @@
 			"init"		"1.00"
 			"max"		"22.00"
 		}
+		"61"
+		{
+			"name"		"maxammo secondary increased"
+			"ref"		"maxammo secondary increased (weapon)"
+			"display"		"%.0f%%"
+			"cost"		"100.0"
+			"value"		"0.15"
+			"init"		"1.00"
+			"max"		"4.00"
+		}
 		"62"
 		{
 			"name"		"maxammo secondary reduced"
@@ -1539,13 +1549,13 @@
 		"74"
 		{
 			"name"		"Blast radius increased"
-			"ref"		"Blast radius increased (J)"
+			"ref"		"Blast radius increased (sticky)"
 			"display"		"%.0f%%"
-			"cost"		"250"
-			"increase_ratio" "0.45"
-			"value"		"0.10"
+			"cost"		"450"
+			"increase_ratio" "0.3"
+			"value"		"0.2"
 			"init"		"1.00"
-			"max"		"2.00"
+			"max"		"3.0"
 		}
 		"75"
 		{
@@ -2494,9 +2504,20 @@
 			"display"		"%.0f%%"
 			"cost"		"400"
 			"value"		"0.25"
-			"increase_ratio" 	"0.4"
+			"increase_ratio" 	"0.2"
 			"init"		"1.00"
 			"max"		"10.00"
+		}
+		"169.5"
+		{
+			"name"		"sniper full charge damage bonus"
+			"ref"		"sniper full charge damage bonus (cheap)"
+			"display"		"%.0f%%"
+			"cost"		"200"
+			"value"		"0.25"
+			"increase_ratio" 	"0.2"
+			"init"		"1.00"
+			"max"		"7.00"
 		}
 		"170"
 		{
@@ -4304,39 +4325,6 @@
 			"description"	"Multiplies damage dealt by\ngas passer explosions."
 			"max"		"5000.0"
 		}
-		"385"
-		{
-			"name"		"Blast radius increased"
-			"ref"		"blast radius increased(F)"
-			"display"		"%.0f%%"
-			"cost"		"200"
-			"increase_ratio" "0.35"
-			"value"		"0.10"
-			"init"		"1.00"
-			"max"		"2.00"
-		}
-		"385.5"
-		{
-			"name"		"Blast radius increased"
-			"ref"		"blast radius increased(E)"
-			"display"		"%.0f%%"
-			"cost"		"200"
-			"increase_ratio" "0.35"
-			"value"		"0.10"
-			"init"		"1.00"
-			"max"		"2.0"
-		}
-		"385.75"
-		{
-			"name"		"Blast radius increased"
-			"ref"		"blast radius increased(G)"
-			"display"		"%.0f%%"
-			"cost"		"350"
-			"increase_ratio" "0.4"
-			"value"		"0.10"
-			"init"		"1.00"
-			"max"		"2.0"
-		}
 		"386"
 		{
 			"name"		"Projectile speed increased"
@@ -5351,7 +5339,7 @@
 			"ref"		"Firestorm Rounds"
 			"attr_class"	"sentry_override_projectile_type"
 			"display"		"%.0f"
-			"cost"		"10000"
+			"cost"		"3000"
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
@@ -5365,7 +5353,7 @@
 			"ref"		"Double Sentry Rocket Shot"
 			"attr_class"	"sentry_rocket_proj_add"
 			"display"		"%.0f"
-			"cost"		"2500"
+			"cost"		"1500"
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"0"
@@ -5379,7 +5367,7 @@
 			"ref"		"sentry bullets per shot"
 			"attr_class"	"sentry_bullets_per_shot"
 			"display"		"%.0f"
-			"cost"		"3000"
+			"cost"		"1000"
 			"increase_ratio"	"0"
 			"value"		"1"
 			"init"		"1"
@@ -5393,7 +5381,7 @@
 			"ref"		"Bolt Ballista Sentry"
 			"attr_class"	"sentry_override_projectile_type"
 			"display"		"%.0f"
-			"cost"		"4000"
+			"cost"		"3000"
 			"increase_ratio"	"0"
 			"value"		"2"
 			"init"		"0"
@@ -7406,6 +7394,17 @@
 			"description"	"Gives a chance to not consume any ammo."
 			"max"		"0.5"
 		}
+		"1723"
+		{
+			"name"		"global ammo conservation"
+			"ref"		"global ammo conservation"
+			"attr_class"	"global_ammo_conservation"
+			"display"		"%.0f%%"
+			"cost"		"0"
+			"value"		"-0.1"
+			"init"		"1.0"
+			"max"		"1.0"
+		}
 		"1724"
 		{
 			"name"		"urgent healing bonus"
@@ -7802,6 +7801,17 @@
 			"increase_ratio"	"0.2"
 			"init"		"1.00"
 			"max"		"3.0"
+		}
+		"1761"
+		{
+			"name"		"taunt speed multiplier"
+			"ref"		"taunt speed multiplier"
+			"attr_class"	"taunt_time_mult"
+			"display"		"%.0f%%"
+			"cost"		"0"
+			"value"		"1.0"
+			"init"		"1.0"
+			"max"		"1.0"
 		}
 		"1761"
 		{
