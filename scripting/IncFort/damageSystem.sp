@@ -1334,6 +1334,9 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 	
 	if(IsValidWeapon(weapon))
 	{
+		float medicBoost = 1.0;
+		float medicWeakness = 1.0;
+		
 		float multPerStatusEffect = TF2Attrib_HookValueFloat(0.0, "damage_bonus_per_status_effect_on_self", weapon);
 		if(multPerStatusEffect != 0.0){
 			damage *= 1+multPerStatusEffect*GetAmountOfBuffs(attacker)*GetAmountOfDebuffs(attacker);
@@ -1379,6 +1382,33 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			{
 				damage *= 1.3;
 			}
+
+			int drainers = GetEntProp(victim, Prop_Send, "m_nNumHealers");
+			if(drainers > 0)
+			{
+				for(int i = 0;i<drainers;++i){
+					int drainer = TF2Util_GetPlayerHealer(victim,i);
+					if(!IsValidClient3(drainer))
+						continue;
+					
+					int healingWeapon = GetEntPropEnt(drainer, Prop_Send, "m_hActiveWeapon");
+					if(!IsValidWeapon(healingWeapon))
+						continue;
+					
+					if(IsOnDifferentTeams(attacker, drainer)){
+						// Using exhaust on vaccinator decreases damage dealt by the average of the resistances.
+						float exhaustCoefficient = TF2Attrib_HookValueFloat(0.0, "vaccinator_exhaust_attribute", healingWeapon);
+						if(exhaustCoefficient > 0.0){
+							float appliedWeakness = 1.0-((TF2Attrib_HookValueFloat(0.0, "medigun_bullet_resist_deployed", healingWeapon)+
+								TF2Attrib_HookValueFloat(0.0, "medigun_blast_resist_deployed", healingWeapon)+
+								TF2Attrib_HookValueFloat(0.0, "medigun_fire_resist_deployed", healingWeapon))/3.0*exhaustCoefficient);
+
+							if(appliedWeakness < medicWeakness)
+								medicWeakness = appliedWeakness;
+						}
+					}
+				}
+			}
 		}
 		char classname[64]; 
 		GetEdictClassname(weapon, classname, sizeof(classname));
@@ -1390,9 +1420,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 			}
 		}
 
-		//Healers of attacker
-		float medicBoost = 1.0;
-		float medicWeakness = 1.0;
 		int healers = GetEntProp(attacker, Prop_Send, "m_nNumHealers");
 		if(healers > 0)
 		{
@@ -1414,32 +1441,6 @@ public float genericPlayerDamageModification(victim, attacker, inflictor, float 
 					appliedBoost *= TF2Attrib_HookValueFloat(1.0, "healing_patient_power", healingWeapon);
 					if(appliedBoost > medicBoost)
 						medicBoost = appliedBoost;
-				}
-			}
-		}
-		int drainers = GetEntProp(victim, Prop_Send, "m_nNumHealers");
-		if(drainers > 0)
-		{
-			for(int i = 0;i<drainers;++i){
-				int drainer = TF2Util_GetPlayerHealer(drainers,i);
-				if(!IsValidClient3(drainer))
-					continue;
-				
-				int healingWeapon = GetEntPropEnt(drainer, Prop_Send, "m_hActiveWeapon");
-				if(!IsValidWeapon(healingWeapon))
-					continue;
-				
-				if(IsOnDifferentTeams(attacker, drainer)){
-					// Using exhaust on vaccinator decreases damage dealt by the average of the resistances.
-					float exhaustCoefficient = TF2Attrib_HookValueFloat(0.0, "vaccinator_exhaust_attribute", healingWeapon);
-					if(exhaustCoefficient > 0.0){
-						float appliedWeakness = 1.0-((TF2Attrib_HookValueFloat(0.0, "medigun_bullet_resist_deployed", healingWeapon)+
-							TF2Attrib_HookValueFloat(0.0, "medigun_blast_resist_deployed", healingWeapon)+
-							TF2Attrib_HookValueFloat(0.0, "medigun_fire_resist_deployed", healingWeapon))/3.0*exhaustCoefficient);
-
-						if(appliedWeakness < medicWeakness)
-							medicWeakness = appliedWeakness;
-					}
 				}
 			}
 		}
