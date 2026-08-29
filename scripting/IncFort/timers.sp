@@ -2168,7 +2168,12 @@ public Action ElectricBallThink(Handle timer, any ref){
     if(IsValidEntity(entity)) 
     { 
 		int client = getOwner(entity);
+		if(!IsValidClient3(client))
+			return Plugin_Stop;
 		int weapon = GetEntPropEnt(entity, Prop_Send, "m_hLauncher");
+		if(!IsValidWeapon(weapon))
+			return Plugin_Stop;
+			
 		float radius = 250.0*TF2Attrib_HookValueFloat(1.0, "mult_explosion_radius", weapon);
 		float position[3];
 		GetEntPropVector(entity, Prop_Data, "m_vecAbsOrigin", position);

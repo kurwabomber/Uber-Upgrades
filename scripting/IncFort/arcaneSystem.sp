@@ -1008,8 +1008,9 @@ CastAutoSentry(client, attuneSlot)
 }
 public Action:RemoveAutoSentryID(Handle timer, any:ref) 
 {
-	ref = EntRefToEntIndex(ref)
-	autoSentryID[ref] = -1;
+	ref = EntRefToEntIndex(ref);
+	if(IsValidClient3(ref))
+		autoSentryID[ref] = -1;
 }
 CastSoothingSunlight(client, attuneSlot)
 {

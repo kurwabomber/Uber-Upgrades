@@ -1675,6 +1675,8 @@ public void ThrowBuilding(any buildref) {
 	jarateWeapon[phys] = EntIndexToEntRef(building);
 }
 public void function_AllowBuilding(int client){
+	if(!IsValidClient3(client)) return;
+
 	int wrench = TF2Util_GetPlayerLoadoutEntity(client,2);
 	if(!IsValidWeapon(wrench)) return;
 
@@ -2529,7 +2531,7 @@ checkFreeze(int victim,int attacker)
 {
 	float clientpos[3];
 	GetClientAbsOrigin(victim, clientpos);
-	while (FreezeBuildup[victim] >= 100.0)
+	if (FreezeBuildup[victim] >= 100.0)
 	{
 		FreezeBuildup[victim] -= 100.0;
 		EmitSoundToAll(SOUND_FREEZE, _, victim, SNDLEVEL_RAIDSIREN, _, 1.0, _,_,clientpos);

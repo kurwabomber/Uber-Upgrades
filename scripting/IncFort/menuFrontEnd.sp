@@ -222,12 +222,9 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 	}
 }
 //Category Selection
-public Action:Menu_ChooseCategory(client, char[] TitleStr)
+public Action Menu_ChooseCategory(client, char[] TitleStr)
 {
-	int w_id
-	
-	Handle menu = CreateMenu(MenuHandler_Choosecat);
-	int slot = current_slot_used[client];
+	int w_id, slot = current_slot_used[client];
 
 	if (slot != 4)
 	{
@@ -241,59 +238,64 @@ public Action:Menu_ChooseCategory(client, char[] TitleStr)
 			w_id = 0;
 		}
 	}
-	if (w_id >= -1)
-	{
-		current_w_list_id[client] = w_id
-		char buf[128]
-		for (int i = 0; i < given_upgrd_list_nb[w_id] <= 10 ; ++i)
-		{
-			Format(buf, sizeof(buf), "%T", given_upgrd_classnames[w_id][i], client)
-			AddMenuItem(menu, "upgrade", buf);
-		}
+	if(w_id < 0 || w_id >= LISTS){
+		return Plugin_Stop;
+	}
 	
-		bool hasDownside = false;
-		for (int i = 0; i < currentupgrades_number[client][slot]; ++i)
+	Handle menu = CreateMenu(MenuHandler_Choosecat);
+	current_w_list_id[client] = w_id
+	char buf[128]
+	for (int i = 0; i < given_upgrd_list_nb[w_id] <= 10 ; ++i)
+	{
+		Format(buf, sizeof(buf), "%T", given_upgrd_classnames[w_id][i], client)
+		AddMenuItem(menu, "upgrade", buf);
+	}
+
+	bool hasDownside = false;
+	for (int i = 0; i < currentupgrades_number[client][slot]; ++i)
+	{
+		int u = currentupgrades_idx[client][slot][i]
+		if (upgrades[u].cost < -0.1)
 		{
-			int u = currentupgrades_idx[client][slot][i]
-			if (upgrades[u].cost < -0.1)
+			int nb_time_upgraded = RoundToNearest((upgrades[u].i_val - currentupgrades_val[client][slot][i]) / upgrades[u].ratio);
+			float up_cost = float(upgrades[u].cost*nb_time_upgraded);
+			if(up_cost > 200.0)
 			{
-				int nb_time_upgraded = RoundToNearest((upgrades[u].i_val - currentupgrades_val[client][slot][i]) / upgrades[u].ratio);
-				float up_cost = float(upgrades[u].cost*nb_time_upgraded);
-				if(up_cost > 200.0)
-				{
-					hasDownside = true;
-					break;
-				}
+				hasDownside = true;
+				break;
 			}
 		}
-		if(hasDownside)
-			AddMenuItem(menu, "remove_downgrades", "Remove Downsides");
 	}
+	if(hasDownside)
+		AddMenuItem(menu, "remove_downgrades", "Remove Downsides");
+	
 	SetMenuTitle(menu, TitleStr);
 	SetMenuExitBackButton(menu, true);
 	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
 		DisplayMenu(menu, client, 20);
 	}
+	return Plugin_Continue;
 }
 //Subcategory Selection
-public Action:Menu_ChooseSubcat(client, subcat_choice, const char[] TitleStr)
+public Action Menu_ChooseSubcat(client, subcat_choice, const char[] TitleStr)
 {
 	int w_id = current_w_list_id[client];
 	int slot = current_slot_used[client];
 	int cat_id = currentitem_catidx[client][slot]
-	Handle menu = CreateMenu(MenuHandler_ChooseSubcat);
-	if (w_id >= -1)
-	{
-		current_w_sc_list_id[client] = subcat_choice;
-		char buf[128]
+	if(w_id < 0 || w_id >= LISTS){
+		return Plugin_Stop;
+	}  
 
-		for(int j = 0; j < given_upgrd_subcat_nb[w_id][subcat_choice];++j)
-		{
-			//PrintToServer("%s", given_upgrd_subclassnames[w_id][j])
-			Format(buf, sizeof(buf), "%T", given_upgrd_subclassnames[cat_id][subcat_choice][j], client);
-			AddMenuItem(menu, "subcat", buf);
-		}
+	Handle menu = CreateMenu(MenuHandler_ChooseSubcat);
+	current_w_sc_list_id[client] = subcat_choice;
+	char buf[128]
+
+	for(int j = 0; j < given_upgrd_subcat_nb[w_id][subcat_choice];++j)
+	{
+		//PrintToServer("%s", given_upgrd_subclassnames[w_id][j])
+		Format(buf, sizeof(buf), "%T", given_upgrd_subclassnames[cat_id][subcat_choice][j], client);
+		AddMenuItem(menu, "subcat", buf);
 	}
 	SetMenuTitle(menu, TitleStr);
 	SetMenuExitBackButton(menu, true);
@@ -301,12 +303,13 @@ public Action:Menu_ChooseSubcat(client, subcat_choice, const char[] TitleStr)
 	{
 		DisplayMenu(menu, client, 20);
 	}
+	return Plugin_Continue;
 }
 //Tweak menu
-public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, selectidx)
+public Action Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, selectidx)
 {
 	if (cat_choice == -1)
-		return;
+		return Plugin_Stop;
 
 	int i, j
 	Handle menu = CreateMenu(MenuHandler_SpecialUpgradeChoice, MENU_ACTIONS_DEFAULT|MenuAction_DisplayItem);
@@ -314,19 +317,15 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 	SetMenuExitBackButton(menu, true);
 	playerTweakMenus[client] = view_as<int>(menu);
 	
-	char desc_str[512]
-	int w_id = current_w_list_id[client]
-	int tmp_up_idx
-	int tmp_spe_up_idx
-	int tmp_ref_idx
-	float tmp_val
-	float tmp_ratio
-	int slot
-	char plus_sign[4]
-	char buft[256]
-	float rate = (globalButtons[client] & IN_JUMP) ? -1.0 : 1.0;
+	char desc_str[512], buft[256], plus_sign[4];
+	int w_id = current_w_list_id[client], tmp_up_idx, tmp_spe_up_idx, tmp_ref_idx, slot;
+	float tmp_val, tmp_ratio, rate = (globalButtons[client] & IN_JUMP) ? -1.0 : 1.0;
 	current_w_c_list_id[client] = cat_choice
 	slot = current_slot_used[client]
+	if(w_id < 0 || w_id > LISTS){
+		return Plugin_Stop;
+	}
+
 	for (i = 0; i < given_upgrd_classnames_tweak_nb[w_id]; ++i)
 	{
 		bool restricted = false;
@@ -399,9 +398,9 @@ public Action:Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 	SetMenuTitle(menu, TitleStr);
 	DisplayMenuAtItem(menu, client, selectidx, MENU_TIME_FOREVER);
 
-	return; 
+	return Plugin_Continue; 
 }
-public	Menu_TweakUpgrades_slot(client, arg, page)
+public Menu_TweakUpgrades_slot(client, arg, page)
 {
 	if (arg > -1 && arg < 5
 	&& IsValidClient(client) 
@@ -467,7 +466,6 @@ public Menu_TweakUpgrades(client)
 	{
 		DisplayMenu(menu, client, MENU_TIME_FOREVER);
 	}
-	return;
 }
 public Menu_ChangePreferences(client)
 {
