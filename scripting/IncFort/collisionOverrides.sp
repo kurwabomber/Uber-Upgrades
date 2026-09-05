@@ -266,7 +266,7 @@ public Action:IgnitionArrowCollision(entity, client)
 		{
 			Radius *= TF2Attrib_GetValue(ignitionExplosionRadius);
 		}
-		EntityExplosion(owner, damageDealt * TF2_GetDamageModifiers(owner, CWeapon), Radius, projvec, _, _,entity,_,_,CWeapon,_,_,true);
+		EntityExplosion(owner, damageDealt, Radius, projvec, _, _,entity,_,_,CWeapon,_,_,true, _, _, _, true);
 	}
 	return Plugin_Continue;
 }
@@ -284,11 +284,13 @@ public Action:ExplosiveArrowCollision(entity, client)
 		
 	float projvec[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", projvec);
+
 	int CWeapon = EntRefToEntIndex(jarateWeapon[entity]);
-	if(IsValidEdict(CWeapon))
-	{
-		EntityExplosion(owner, TF2_GetDamageModifiers(owner, CWeapon) * 60.0, 400.0, projvec, 1, _,entity,1.0,_,_,0.75);
-	}
+	if(!IsValidWeapon(CWeapon))
+		return Plugin_Continue;
+
+	EntityExplosion(owner, 60.0, 400.0, projvec, 1, _,entity,1.0,_, CWeapon,0.75, _, true, _, _, _, true);
+	
 	return Plugin_Continue;
 }
 public Action:OnStartTouchWarriorArrow(entity, other)
@@ -586,8 +588,7 @@ public Action:OnCollisionPiercingRocket(entity, client)
 				if(IsValidEdict(CWeapon))
 				{
 					int damageType = GetEntProp(entity, Prop_Send, "m_bCritical") ? DMG_BLAST|DMG_CRIT : DMG_BLAST;
-					float damageDealt = 90.0 * TF2_GetDamageModifiers(owner, CWeapon);
-					EntityExplosion(owner, damageDealt, 200.0, origin, 0, true, entity, _, damageType,_,_,_,_,_,_,true);
+					EntityExplosion(owner, 90.0, 200.0, origin, 0, true, entity, _, damageType, CWeapon,_,_,_,_,_, true, true);
 				}
 				if(IsValidClient3(client))
 					ShouldNotHome[entity][client] = true;
@@ -906,7 +907,7 @@ public Action:OnCollisionExplosiveFrag(entity, client)
 			{
 				float Radius = 75.0*TF2Attrib_HookValueFloat(1.0, "mult_explosion_radius", CWeapon)*TF2Attrib_HookValueFloat(1.0, "mult_frag_explosion_radius", CWeapon), clientvec[3];
 				GetEntPropVector(entity, Prop_Send, "m_vecOrigin", clientvec)
-				EntityExplosion(owner, fragExplosionDamage * TF2_GetDamageModifiers(owner, CWeapon), Radius, clientvec, 0, true, entity, 0.25,_,CWeapon,_,75,TF2Attrib_HookValueFloat(0.0, "afterburn_rating", CWeapon)>0,"ExplosionCore_sapperdestroyed")
+				EntityExplosion(owner, fragExplosionDamage, Radius, clientvec, 0, true, entity, 0.25,_,CWeapon,_,75,_ ,"ExplosionCore_sapperdestroyed", _, _, true);
 			}
 		}
 	}
@@ -1020,7 +1021,7 @@ public Action:OnTouchChaos(entity, other)
 			CreateParticleEx(entity, "heavy_ring_of_fire", 0, 0, vOrigin);
 			vOrigin[2]+= 30.0;
 			int damageType = GetEntProp(entity, Prop_Send, "m_bCritical") ? DMG_BURN|DMG_CRIT : DMG_BURN;
-			EntityExplosion(owner, TF2_GetDamageModifiers(owner,CWeapon,false) * 25.0, 500.0, vOrigin, 0,_,entity,1.0,damageType,CWeapon,0.75);
+			EntityExplosion(owner, 25.0, 500.0, vOrigin, 0,_,entity,1.0,damageType,CWeapon,0.75, _, true, _, _, _, true);
 			RemoveEntity(entity);
 		}
 	}

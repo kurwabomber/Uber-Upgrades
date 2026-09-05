@@ -756,6 +756,11 @@ stock EntityExplosion(owner, float damage, float radius, float pos[3], soundType
 
 	if (!useWeaponDamage) {
 		damagetype |= DMG_IGNOREHOOK;
+	} else {
+		if(ignition) {
+			damagetype |= DMG_IGNITE;
+			ignition = false;
+		}
 	}
 
 	while ((i = FindEntityByClassname(i, "*")) != -1)
