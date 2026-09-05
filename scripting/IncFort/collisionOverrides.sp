@@ -934,7 +934,7 @@ public Action:CollisionFrozenFrag(entity, client)
 	}
 	return Plugin_Stop;
 }
-public Action:meteorCollision(entity, client)
+public Action meteorCollision(entity, client)
 {		
 	if(!IsValidEdict(entity))
 		return Plugin_Continue;
@@ -947,13 +947,14 @@ public Action:meteorCollision(entity, client)
 		return Plugin_Continue;
 
 	int CWeapon = jarateWeapon[entity];
-	if(IsValidEdict(CWeapon))
-	{
-		float position[3];
-		GetEntPropVector(entity, Prop_Send, "m_vecOrigin", position);
-		EntityExplosion(owner, TF2_GetDamageModifiers(owner,CWeapon) * 45.0, 250.0, position, 0, _, entity);
+	if(!IsValidWeapon(CWeapon))
 		return Plugin_Continue;
-	}
+
+	float position[3];
+	GetEntPropVector(entity, Prop_Send, "m_vecOrigin", position);
+	int damageType = GetEntProp(entity, Prop_Send, "m_bCritical") ? DMG_BURN|DMG_CRIT : DMG_BURN;
+
+	EntityExplosion(owner, 45.0, 250.0, position, 0, _, entity, _, damageType, CWeapon, _, _, true, _, _, _, true);
 		
 	return Plugin_Continue;
 }
