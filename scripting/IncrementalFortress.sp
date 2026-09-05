@@ -42,7 +42,7 @@
 #define NB_WEAPONS 50
 #define Max_Attunement_Slots 7
 #define MAX_STAGES 5
-#define MAX_AFTERBURN_STACKS 100
+#define MAX_AFTERBURN_STACKS 1000
 #define MAX_ARCANESPELLS 64
 #define MAX_RECOUP_STACKS 300
 

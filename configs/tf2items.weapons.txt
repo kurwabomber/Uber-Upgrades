@@ -531,5 +531,11 @@
 			"preserve_attributes"	"1"
 			"1"				"provide on active;1.0"
 		}
+		"740"//Scorch Shot
+		{
+			"preserve_attributes"	"1"
+			"1"				"damage penalty;1.0"
+			"2"				"damage mult 13;0.65"
+		}
 	}
 }
