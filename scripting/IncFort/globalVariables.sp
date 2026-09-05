@@ -229,9 +229,9 @@ enum struct ArcaneSpell{
 	float cooldown;
 	Function callback;
 
-	void init(const char sName[32], const char sAttribute[32], float fCost, float fDamage, float fCooldown, Function fCall){
-		this.name = sName;
-		this.attribute = sAttribute;
+	void init(const char[] sName, const char[] sAttribute, float fCost, float fDamage, float fCooldown, Function fCall){
+        strcopy(this.name, sizeof(this.name), sName);
+        strcopy(this.attribute, sizeof(this.attribute), sAttribute);
 		this.baseCost = fCost;
 		this.baseDamage = fDamage;
 		this.cooldown = fCooldown;

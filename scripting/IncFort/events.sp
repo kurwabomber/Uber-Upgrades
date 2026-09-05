@@ -399,7 +399,7 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 public MRESReturn OnBulletTrace(int victim, Handle hParams){
 	float direction[3];
 	DHookGetParamVector(hParams, 2, direction);
-	CTakeDamageInfo info = CTakeDamageInfo.FromAddress(DHookGetParam(hParams, 1));
+	CTakeDamageInfo info = CTakeDamageInfo.FromAddress(DHookGetParamAddress(hParams, 1));
 	int attacker = EHandleToEntIndex(info.m_hAttacker);
 	if(!IsValidClient3(attacker))
 		return MRES_Ignored;

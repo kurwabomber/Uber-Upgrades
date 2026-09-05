@@ -361,7 +361,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			damage *= ConsumePierce(0.75, damageForce[0]);
 
 		//This is actually valid.
-		if(1 <= TF2Attrib_HookValueFloat(0.0, "plague_powerup", victim) <= 2)
+		if(1.0 <= TF2Attrib_HookValueFloat(0.0, "plague_powerup", victim) <= 2.0)
 			damage *= ConsumePierce(0.75, damageForce[0]);
 
 		if(hasBuffIndex(attacker, Buff_Plagued))
@@ -439,7 +439,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			if(teamTacticsRatio > 0.0){
 				float ratio = damage / TF2Util_GetEntityMaxHealth(victim);
 				if(ratio > 1.0)
-					ratio == 1.0;
+					ratio = 1.0;
 
 				TeamTacticsBuildup[victim] += teamTacticsRatio * ratio;
 				if(TeamTacticsBuildup[victim] > 0.5)

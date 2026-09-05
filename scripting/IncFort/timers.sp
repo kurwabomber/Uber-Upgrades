@@ -348,13 +348,13 @@ public Action:Timer_FixedVariables(Handle timer)
 			if(delta & IN_DUCK || delta & IN_JUMP || delta & IN_RELOAD || inverseDelta & IN_DUCK
 			|| inverseDelta & IN_JUMP || inverseDelta & IN_RELOAD)
 			{//Update menu based on operators
-				if(IsValidHandle(view_as<Menu>(playerUpgradeMenus[client])))
+				if((view_as<Menu>(playerUpgradeMenus[client])) != null)
 				{
 					char fstr2[100];
 					getUpgradeMenuTitle(client, current_w_list_id[client], current_w_c_list_id[client], current_slot_used[client], fstr2);
 					Menu_UpgradeChoice(client, current_w_sc_list_id[client], current_w_c_list_id[client], fstr2, RoundToFloor(playerUpgradeMenuPage[client]/7.0)*7);
 				}
-				else if(IsValidHandle(view_as<Menu>(playerTweakMenus[client])))
+				else if((view_as<Menu>(playerTweakMenus[client])) != null)
 				{
 					char fstr2[100];
 					getUpgradeMenuTitle(client, current_w_list_id[client], current_w_c_list_id[client], current_slot_used[client], fstr2);
@@ -1327,7 +1327,7 @@ public Action BuildingRegeneration(Handle timer, int entity)
 		float maxAmmoMultiplier = TF2Attrib_HookValueFloat(1.0, "mvm_sentry_ammo", pda);
 
 		if(TF2Attrib_HookValueFloat(0.0, "regeneration_powerup", owner) == 1.0 || TF2Attrib_HookValueFloat(0.0, "regeneration_powerup", owner) == 2.0)
-			ammoRegenerationRate += 50.0;
+			ammoRegenerationRate += 50;
 
 		if(ammoRegenerationRate > 0.0)
 		{

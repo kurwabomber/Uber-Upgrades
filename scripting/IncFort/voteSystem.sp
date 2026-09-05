@@ -49,7 +49,7 @@ public Action Command_VoteDifficulty(int client, int args)
 		return Plugin_Handled;
 	}
 	
-	char items[5][5] ={"1.0","1.2","1.4","1.6","1.8"};
+	char items[5][64] ={"1.0","1.2","1.4","1.6","1.8"};
 	DisplayVoteDifficultyMenu(client, 5, items);
 	
 	return Plugin_Handled;
