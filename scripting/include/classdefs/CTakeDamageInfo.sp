@@ -36,32 +36,32 @@ any offs_CTakeDamageInfo_m_eCritType = 100;
  * functions.
  */
 methodmap IMPL_internal_method_array_float3 {
-	property Address Addr {
+	property Address Address {
 		public get() {
 			return view_as<Address>(view_as<int>(this));
 		}
 	}
 	public void Get(float value[3]) {
 		for (int i; i < 3; ++i) {
-			value[i] = view_as<float>(LoadFromAddress(this.Addr + view_as<Address>(4 * i), NumberType_Int32));
+			value[i] = view_as<float>(LoadFromAddress(this.Address + view_as<Address>(4 * i), NumberType_Int32));
 		}
 	}
 	public void Set(const float value[3]) {
 		for (int i; i < 3; ++i) {
-			StoreToAddress(this.Addr + view_as<Address>(4 * i), view_as<any>(value[i]), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(4 * i), view_as<any>(value[i]), NumberType_Int32);
 		}
 	}
 	public float GetIndex(int index) {
 		if (index < 0 || index >= 3) {
 			ThrowError("Index %d is out of bounds (limit 3)", index);
 		}
-		return view_as<float>(LoadFromAddress(this.Addr + view_as<Address>(4 * index), NumberType_Int32));
+		return view_as<float>(LoadFromAddress(this.Address + view_as<Address>(4 * index), NumberType_Int32));
 	}
 	public void SetIndex(int index, float value) {
 		if (index < 0 || index >= 3) {
 			ThrowError("Index %d is out of bounds (limit 3)", index);
 		}
-		StoreToAddress(this.Addr + view_as<Address>(4 * index), view_as<any>(value), NumberType_Int32);
+		StoreToAddress(this.Address + view_as<Address>(4 * index), view_as<any>(value), NumberType_Int32);
 	}
 }
 #endif
@@ -84,7 +84,7 @@ methodmap CTakeDamageInfo {
 	 */
 	//#tryinclude "classmethods/CTakeDamageInfo.sp"
 
-	property Address Addr {
+	property Address Address {
 		public get() {
 			return view_as<Address>(view_as<int>(this));
 		}
@@ -92,172 +92,172 @@ methodmap CTakeDamageInfo {
 
 	property IMPL_internal_method_array_float3 m_vecDamageForce {
 		public get() {
-			return view_as<IMPL_internal_method_array_float3>(view_as<int>(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_vecDamageForce)));
+			return view_as<IMPL_internal_method_array_float3>(view_as<int>(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_vecDamageForce)));
 		}
 	}
 
 	property IMPL_internal_method_array_float3 m_vecDamagePosition {
 		public get() {
-			return view_as<IMPL_internal_method_array_float3>(view_as<int>(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_vecDamagePosition)));
+			return view_as<IMPL_internal_method_array_float3>(view_as<int>(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_vecDamagePosition)));
 		}
 	}
 
 	property IMPL_internal_method_array_float3 m_vecReportedPosition {
 		public get() {
-			return view_as<IMPL_internal_method_array_float3>(view_as<int>(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_vecReportedPosition)));
+			return view_as<IMPL_internal_method_array_float3>(view_as<int>(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_vecReportedPosition)));
 		}
 	}
 
 	property int m_hInflictor {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_hInflictor), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_hInflictor), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_hInflictor), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_hInflictor), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_hAttacker {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_hAttacker), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_hAttacker), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_hAttacker), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_hAttacker), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_hWeapon {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_hWeapon), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_hWeapon), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_hWeapon), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_hWeapon), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property float m_flDamage {
 		public get() {
-			return view_as<float>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flDamage), NumberType_Int32));
+			return view_as<float>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flDamage), NumberType_Int32));
 		}
 		public set(float value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flDamage), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flDamage), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property float m_flMaxDamage {
 		public get() {
-			return view_as<float>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flMaxDamage), NumberType_Int32));
+			return view_as<float>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flMaxDamage), NumberType_Int32));
 		}
 		public set(float value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flMaxDamage), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flMaxDamage), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property float m_flBaseDamage {
 		public get() {
-			return view_as<float>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flBaseDamage), NumberType_Int32));
+			return view_as<float>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flBaseDamage), NumberType_Int32));
 		}
 		public set(float value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flBaseDamage), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flBaseDamage), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_bitsDamageType {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_bitsDamageType), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_bitsDamageType), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_bitsDamageType), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_bitsDamageType), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_iDamageCustom {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iDamageCustom), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iDamageCustom), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iDamageCustom), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iDamageCustom), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_iDamageStats {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iDamageStats), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iDamageStats), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iDamageStats), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iDamageStats), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_iAmmoType {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iAmmoType), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iAmmoType), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iAmmoType), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iAmmoType), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_iDamagedOtherPlayers {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iDamagedOtherPlayers), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iDamagedOtherPlayers), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iDamagedOtherPlayers), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iDamagedOtherPlayers), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_iPlayerPenetrationCount {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iPlayerPenetrationCount), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iPlayerPenetrationCount), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_iPlayerPenetrationCount), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_iPlayerPenetrationCount), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property float m_flDamageBonus {
 		public get() {
-			return view_as<float>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flDamageBonus), NumberType_Int32));
+			return view_as<float>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flDamageBonus), NumberType_Int32));
 		}
 		public set(float value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flDamageBonus), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flDamageBonus), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_hDamageBonusProvider {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_hDamageBonusProvider), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_hDamageBonusProvider), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_hDamageBonusProvider), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_hDamageBonusProvider), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property bool m_bForceFriendlyFire {
 		public get() {
-			return view_as<bool>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_bForceFriendlyFire), NumberType_Int8));
+			return view_as<bool>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_bForceFriendlyFire), NumberType_Int8));
 		}
 		public set(bool value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_bForceFriendlyFire), view_as<any>(value), NumberType_Int8);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_bForceFriendlyFire), view_as<any>(value), NumberType_Int8);
 		}
 	}
 
 	property float m_flDamageForForce {
 		public get() {
-			return view_as<float>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flDamageForForce), NumberType_Int32));
+			return view_as<float>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flDamageForForce), NumberType_Int32));
 		}
 		public set(float value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_flDamageForForce), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_flDamageForForce), view_as<any>(value), NumberType_Int32);
 		}
 	}
 
 	property int m_eCritType {
 		public get() {
-			return view_as<int>(LoadFromAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_eCritType), NumberType_Int32));
+			return view_as<int>(LoadFromAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_eCritType), NumberType_Int32));
 		}
 		public set(int value) {
-			StoreToAddress(this.Addr + view_as<Address>(offs_CTakeDamageInfo_m_eCritType), view_as<any>(value), NumberType_Int32);
+			StoreToAddress(this.Address + view_as<Address>(offs_CTakeDamageInfo_m_eCritType), view_as<any>(value), NumberType_Int32);
 		}
 	}
 

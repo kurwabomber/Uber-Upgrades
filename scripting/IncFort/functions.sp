@@ -138,7 +138,7 @@ stock void DOTStock(int victim,int attacker,float damage,int weapon = -1,int dam
 		}
 	}
 }
-stock Action DOTDamage(Handle timer,any:data)
+stock Action DOTDamage(Handle timer, DataPack data)
 {
 	ResetPack(data);
 	int victim = EntRefToEntIndex(ReadPackCell(data));
@@ -178,7 +178,7 @@ stock Action DOTDamage(Handle timer,any:data)
 	{
 		DOTStacked[victim][attacker] = false;
 	}
-	CloseHandle(data);
+	delete data;
 	return Plugin_Continue;
 }
 
@@ -3535,9 +3535,7 @@ ResetVariables(){
 	disableMvMCash = false;
 	for(int client = 1;client<=MaxClients;client++){
 		buffChange[client] = false;
-		playerUpgradeMenus[client] = 0;
 		playerUpgradeMenuPage[client] = 0;
-		playerTweakMenus[client] = 0;
 		playerTweakMenuPage[client] = 0;
 		oldPlayerButtons[client] = 0;
 		MadmilkInflictor[client] = 0;
@@ -3586,6 +3584,9 @@ ResetVariables(){
 		for(int spellID = 0; spellID < MAX_ARCANESPELLS; spellID++) {
 			SpellCooldowns[client][spellID] = 0.0;
 		}
+
+		delete playerUpgradeMenus[client];
+		delete playerTweakMenus[client];
 	}
 }
 public void CheckForGamestage(){

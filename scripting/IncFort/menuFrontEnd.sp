@@ -58,8 +58,7 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 {
 	int i
 
-	Handle menu = CreateMenu(MenuHandler_UpgradeChoice, MENU_ACTIONS_DEFAULT|MenuAction_DisplayItem);
-	playerUpgradeMenus[client] = view_as<int>(menu);
+	playerUpgradeMenus[client] = CreateMenu(MenuHandler_UpgradeChoice, MENU_ACTIONS_DEFAULT|MenuAction_DisplayItem);
 	int rate = getUpgradeRate(client);
 	if (cat_choice != -1)
 	{
@@ -214,11 +213,11 @@ Action:Menu_UpgradeChoice(client, subcat_choice, cat_choice, char[] TitleStr, in
 				}
 			}
 
-			AddMenuItem(menu, "upgrade", Buffer, isEnabled ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED);
+			AddMenuItem(playerUpgradeMenus[client], "upgrade", Buffer, isEnabled ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED);
 		}
-		SetMenuTitle(menu, TitleStr);
-		SetMenuExitBackButton(menu, true);
-		DisplayMenuAtItem(menu, client, page, MENU_TIME_FOREVER)
+		SetMenuTitle(playerUpgradeMenus[client], TitleStr);
+		SetMenuExitBackButton(playerUpgradeMenus[client], true);
+		DisplayMenuAtItem(playerUpgradeMenus[client], client, page, MENU_TIME_FOREVER)
 	}
 }
 //Category Selection
@@ -312,10 +311,7 @@ public Action Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 		return Plugin_Stop;
 
 	int i, j
-	Handle menu = CreateMenu(MenuHandler_SpecialUpgradeChoice, MENU_ACTIONS_DEFAULT|MenuAction_DisplayItem);
-	SetMenuPagination(menu, 2);
-	SetMenuExitBackButton(menu, true);
-	playerTweakMenus[client] = view_as<int>(menu);
+	playerTweakMenus[client] = CreateMenu(MenuHandler_SpecialUpgradeChoice, MENU_ACTIONS_DEFAULT|MenuAction_DisplayItem);
 	
 	char desc_str[512], buft[256], plus_sign[4];
 	int w_id = current_w_list_id[client], tmp_up_idx, tmp_spe_up_idx, tmp_ref_idx, slot;
@@ -393,10 +389,12 @@ public Action Menu_SpecialUpgradeChoice(client, cat_choice, char[] TitleStr, sel
 			
 			Format(desc_str, sizeof(desc_str), "%s\n% -%s\n   %s%s (%s)",desc_str, buf, plus_sign, DisplayIncreaseBuffer, DisplayCurrentBuffer);
 		}
-		AddMenuItem(menu, "upgrade", desc_str, restricted ? ITEMDRAW_DISABLED : ITEMDRAW_DEFAULT);
+		AddMenuItem(playerTweakMenus[client], "upgrade", desc_str, restricted ? ITEMDRAW_DISABLED : ITEMDRAW_DEFAULT);
 	}
-	SetMenuTitle(menu, TitleStr);
-	DisplayMenuAtItem(menu, client, selectidx, MENU_TIME_FOREVER);
+	SetMenuPagination(playerTweakMenus[client], 2);
+	SetMenuExitBackButton(playerTweakMenus[client], true);
+	SetMenuTitle(playerTweakMenus[client], TitleStr);
+	DisplayMenuAtItem(playerTweakMenus[client], client, selectidx, MENU_TIME_FOREVER);
 
 	return Plugin_Continue; 
 }
@@ -439,7 +437,7 @@ public Menu_TweakUpgrades_slot(client, arg, page)
 		}
 		else{
 			PrintToChat(client, "This weapon has no changeable attributes.");
-			CloseHandle(menu);
+			delete menu;
 
 			char fstr2[64];
 			Format(fstr, sizeof(fstr), "%T", current_slot_name[current_slot_used[client]], client)

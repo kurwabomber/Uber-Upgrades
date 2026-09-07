@@ -1,11 +1,10 @@
-public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
+public MenuHandler_UpgradeChoice(Menu menu, MenuAction action, client, param2)
 {
 	if(action == MenuAction_DisplayItem){
 		playerUpgradeMenuPage[client] = param2;
 	}
 	else if (action == MenuAction_Select)
 	{
-		
 		int slot = current_slot_used[client]
 		int w_id = current_w_list_id[client]
 		int cat_id = current_w_c_list_id[client]
@@ -298,19 +297,21 @@ public MenuHandler_UpgradeChoice(Handle menu, MenuAction:action, client, param2)
 			}
 		}
 	}
-    if (action == MenuAction_End)
-	{
-        CloseHandle(menu);
+
+    if (action == MenuAction_End){
+        for(int i = 1; i <= MaxClients; i++)
+        {
+			if(playerUpgradeMenus[i] == menu)
+			{
+				playerUpgradeMenus[i] = null;
+                break;
+            }
+        }
+		delete menu;
 	}
-	return 0;
 }
 
 
-public MenuHandler_SpeMenubuy(Handle menu, MenuAction:action, client, param2)
-{
-	CloseHandle(menu);
-	return; 
-}
 public MenuHandler_ChooseSubcat(Handle menu, MenuAction:action, client, param2)
 {
 	if (action == MenuAction_Select)
@@ -355,8 +356,9 @@ public MenuHandler_ChooseSubcat(Handle menu, MenuAction:action, client, param2)
 			Menu_ChooseCategory(client, fstr2)
 		}
 	}
-    if (action == MenuAction_End)
-        CloseHandle(menu);
+    if (action == MenuAction_End){
+		delete menu;
+	}
 	return; 
 }
 public MenuHandler_Choosecat(Handle menu, MenuAction:action, client, param2)
@@ -421,8 +423,9 @@ public MenuHandler_Choosecat(Handle menu, MenuAction:action, client, param2)
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
 		Menu_BuyUpgrade(client, 0);
 	}
-    if (action == MenuAction_End)
-        CloseHandle(menu);
+    if (action == MenuAction_End){
+		delete menu;
+	}
 	return; 
 }
 
@@ -496,8 +499,9 @@ public MenuHandler_BuyUpgrade(Handle menu, MenuAction:action, client, param2)
 			}
 		}
 	}
-    if (action == MenuAction_End)
-        CloseHandle(menu);
+    if (action == MenuAction_End){
+		delete menu;
+	}
 }
 public MenuHandler_ConfirmNewWeapon(Handle menu, MenuAction:action, client, param2)
 {
@@ -510,8 +514,9 @@ public MenuHandler_ConfirmNewWeapon(Handle menu, MenuAction:action, client, para
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
 		Menu_BuyUpgrade(client, 7);
 	}
-	if(action == MenuAction_End)
-		CloseHandle(menu);
+    if (action == MenuAction_End){
+		delete menu;
+	}
 }
 
 public MenuHandler_BuyNewWeapon(Handle menu, MenuAction:action, client, param2)
@@ -539,9 +544,8 @@ public MenuHandler_BuyNewWeapon(Handle menu, MenuAction:action, client, param2)
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
 		CreateBuyNewWeaponMenu(client)
 	}
-	if(action == MenuAction_End)
-	{
-		CloseHandle(menu);
+    if (action == MenuAction_End){
+		delete menu;
 	}
 }
 public Action:Timer_giveactionslot(Handle timer, int client)
@@ -561,8 +565,9 @@ public MenuHandler_AttributesTweak(Handle menu, MenuAction:action, client, param
 	{
 		Menu_BuyUpgrade(client, 0);
 	}
-    if (action == MenuAction_End)
-        CloseHandle(menu);
+    if (action == MenuAction_End){
+		delete menu;
+	}
 	return; 
 }
 public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client, param2)
@@ -630,8 +635,8 @@ public MenuHandler_AttributesTweak_action(Handle menu, MenuAction:action, client
 															,fstr)
 		Menu_ChooseCategory(client, fstr2);
 	}
-	if(action == MenuAction_End){
-		CloseHandle(menu);
+    if (action == MenuAction_End){
+		delete menu;
 	}
 }
 public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, param2)
@@ -795,8 +800,18 @@ public MenuHandler_SpecialUpgradeChoice(Handle menu, MenuAction:action, client, 
 			Menu_ChooseCategory(client, fstr2)
 		}
 	}
-    if (action == MenuAction_End)
-        CloseHandle(menu);
+
+    if (action == MenuAction_End){
+        for(int i = 1; i <= MaxClients; i++)
+        {
+			if(playerTweakMenus[i] == menu)
+			{
+				playerTweakMenus[i] = null;
+                break;
+            }
+        }
+		delete menu;
+	}
 }
 public MenuHandler_Preferences(Handle menu, MenuAction:action, client, param2)
 {
@@ -877,11 +892,12 @@ public MenuHandler_Preferences(Handle menu, MenuAction:action, client, param2)
 			}
 		}
 	}
-	if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
+	if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
 		Menu_BuyUpgrade(client, 7);
-	
-    if (action == MenuAction_End)
-        CloseHandle(menu);
+	}
+    if (action == MenuAction_End){
+		delete menu;
+	}
 	return; 
 }
 
@@ -895,16 +911,17 @@ public MenuHandler_StatsViewer(Handle menu, MenuAction:action, client, param2)
 	{
 		ClientCommand(client, "buy");
 	}
-	if(action == MenuAction_End)
-		CloseHandle(menu);
+    if (action == MenuAction_End){
+		delete menu;
+	}
 	return; 
 }
 public MenuHandler_StatsSlotViewer(Handle menu, MenuAction:action, client, param2){
-	if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
+	if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack){
 		Menu_ShowStats(client);
-	
-	if(action == MenuAction_End)
-		CloseHandle(menu);
-
+	}
+    if (action == MenuAction_End){
+		delete menu;
+	}
 	return; 
 }

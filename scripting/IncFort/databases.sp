@@ -182,7 +182,7 @@ GivePlayerData(client)
 			CurrencyOwned[client] = StartMoney + additionalstartmoney;
 		}
 		
-		CloseHandle(pack);
+		delete pack;
 	}
 	else
 	{

@@ -383,11 +383,11 @@ stock bool:ClientCanSeeClient(client, target, Float:distance = 0.0, Float:height
 
             if(TR_DidHit(trace))
             {
-                CloseHandle(trace);
+                delete trace;
                 return (false);
             }
             
-            CloseHandle(trace);
+            delete trace;
 
             return (true);
         }

@@ -35,7 +35,7 @@ public MenuHandler_ArcaneCast(Handle menu, MenuAction:action, client, param2)
 	if (action == MenuAction_Select && IsValidClient(client) && IsPlayerAlive(client))
 	{
 		RequestFrame(Menu_ShowArcane, client);
-		CloseHandle(menu);
+		delete menu;
 
 		if(param2 < 0 || param2 > Max_Attunement_Slots)
 			return;
@@ -54,7 +54,7 @@ public MenuHandler_ArcaneCast(Handle menu, MenuAction:action, client, param2)
 	}
 	else if(action == MenuAction_Cancel && param2 == MenuCancel_ExitBack)
 	{
-		CloseHandle(menu);
+		delete menu;
 		Menu_BuyUpgrade(client, 0);
 	}
 	return; 
@@ -676,7 +676,7 @@ CastAerialStrike(client, attuneSlot)
 		TE_SendToAll();
 	}
 }
-public Action:aerialStrike(Handle timer,any:data)
+public Action aerialStrike(Handle timer,DataPack data)
 {
 	ResetPack(data);
 	int client = GetClientFromSerial(ReadPackCell(data));
@@ -688,7 +688,7 @@ public Action:aerialStrike(Handle timer,any:data)
 	ClientPos[1] = ReadPackFloat(data);
 	ClientPos[2] = ReadPackFloat(data);
 
-	if(!IsValidClient3(client)){CloseHandle(data);return;}
+	if(!IsValidClient3(client)){delete data;return Plugin_Stop;}
 
 	int quantity[] = {0,30,40,50}
 	float spread[] = {0.0,300.0,200.0,100.0}
@@ -727,8 +727,8 @@ public Action:aerialStrike(Handle timer,any:data)
 		TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 		DispatchSpawn(iEntity);
 	}
-	CloseHandle(data);
-	KillTimer(timer);
+	delete data;
+	return Plugin_Stop;
 }
 CastInferno(client, attuneSlot)
 {
@@ -1418,14 +1418,15 @@ DoZap(client,victim,spellLevel)
 		CreateTimer(0.1,zapAgain,hPack);
 	}
 }
-public Action:zapAgain(Handle timer,any:data)
+public Action zapAgain(Handle timer, DataPack data)
 {
 	ResetPack(data);
 	int client = EntRefToEntIndex(ReadPackCell(data));
 	int victim = EntRefToEntIndex(ReadPackCell(data));
 	int spellLevel = ReadPackCell(data);
 	DoZap(client,victim,spellLevel);
-	CloseHandle(data);
+	delete data;
+	return Plugin_Stop;
 }
 CastLightning(client, attuneSlot)
 {

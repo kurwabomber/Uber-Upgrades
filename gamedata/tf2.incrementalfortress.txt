@@ -220,7 +220,7 @@
 				{
 					"damage_info"
 					{
-						"type"	"int"
+						"type"	"objectptr"
 					}
 					"direction"
 					{

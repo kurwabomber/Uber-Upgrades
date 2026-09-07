@@ -1048,7 +1048,7 @@ public Action:OnTouchDrag(entity, other)
 	SDKUnhook(entity, SDKHook_Touch, OnTouchDrag);
 	return Plugin_Handled;
 }
-public Action:OnTouch(entity, other)
+public Action OnTouch(entity, other)
 {
 	float vOrigin[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", vOrigin);
@@ -1063,7 +1063,7 @@ public Action:OnTouch(entity, other)
 	
 	if(!TR_DidHit(trace))
 	{
-		CloseHandle(trace);
+		delete trace;
 		return Plugin_Continue;
 	}
 	
@@ -1072,7 +1072,7 @@ public Action:OnTouch(entity, other)
 	
 	//PrintToServer("Surface Normal: [%.2f, %.2f, %.2f]", vNormal[0], vNormal[1], vNormal[2]);
 	
-	CloseHandle(trace);
+	delete trace;
 	
 	float dotProduct = GetVectorDotProduct(vNormal, vVelocity);
 	

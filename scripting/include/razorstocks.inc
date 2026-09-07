@@ -1006,11 +1006,11 @@ stock bool LookPoint(client, float dest[3])
     }
     else
     {
-        CloseHandle(trace);
+        delete trace;
         return false;
     }
     
-    CloseHandle(trace);
+    delete trace;
     return true;
 }
 

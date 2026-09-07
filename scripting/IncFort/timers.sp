@@ -347,14 +347,14 @@ public Action:Timer_FixedVariables(Handle timer)
 			int inverseDelta = (oldPlayerButtons[client] ^ globalButtons[client]) & oldPlayerButtons[client];
 			if(delta & IN_DUCK || delta & IN_JUMP || delta & IN_RELOAD || inverseDelta & IN_DUCK
 			|| inverseDelta & IN_JUMP || inverseDelta & IN_RELOAD)
-			{//Update menu based on operators
-				if((view_as<Menu>(playerUpgradeMenus[client])) != null)
+			{
+				if(playerUpgradeMenus[client] != null)
 				{
 					char fstr2[100];
 					getUpgradeMenuTitle(client, current_w_list_id[client], current_w_c_list_id[client], current_slot_used[client], fstr2);
 					Menu_UpgradeChoice(client, current_w_sc_list_id[client], current_w_c_list_id[client], fstr2, RoundToFloor(playerUpgradeMenuPage[client]/7.0)*7);
 				}
-				else if((view_as<Menu>(playerTweakMenus[client])) != null)
+				else if(playerTweakMenus[client] != null)
 				{
 					char fstr2[100];
 					getUpgradeMenuTitle(client, current_w_list_id[client], current_w_c_list_id[client], current_slot_used[client], fstr2);
@@ -1916,7 +1916,7 @@ public Action Timer_SplittingThunderThink(Handle timer, int entityRef){
 
 	return Plugin_Continue;
 }
-public Action:AttackTwice(Handle timer, any:data) 
+public Action AttackTwice(Handle timer, DataPack data) 
 {  
 	ResetPack(data);
 	int client = EntRefToEntIndex(ReadPackCell(data));
@@ -1937,11 +1937,8 @@ public Action:AttackTwice(Handle timer, any:data)
 			CreateTimer(0.1,AttackTwice,hPack);
 		}
 	}
-	else
-	{
-		KillTimer(timer)
-	}
-	CloseHandle(data);
+	delete data;
+	return Plugin_Stop;
 }
 public Action deletePack(Handle timer, DataPack data){
 	delete data;
@@ -2042,7 +2039,7 @@ public Action SetTankTeleporter(Handle timer, int entity)
 	
 	return Plugin_Stop;
 }
-public Action:ShootTwice(Handle timer, any:data) 
+public Action ShootTwice(Handle timer, DataPack data) 
 {  
 	ResetPack(data);
 	int inflictor = EntRefToEntIndex(ReadPackCell(data));
@@ -2119,11 +2116,8 @@ public Action:ShootTwice(Handle timer, any:data)
 			}
 		}
 	}
-	else
-	{
-		KillTimer(timer)
-	}
-	CloseHandle(data);
+	delete data;
+	return Plugin_Stop;
 }
 public Action RecursiveExplosions(Handle timer, DataPack ref) 
 {

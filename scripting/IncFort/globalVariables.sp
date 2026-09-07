@@ -31,6 +31,10 @@ Handle hudSpells;
 Handle hudAbility;
 Handle hudStatus;
 Address g_offset_CTFPlayerShared_pOuter;
+
+Menu playerUpgradeMenus[MAXPLAYERS+1];
+Menu playerTweakMenus[MAXPLAYERS+1];
+
 //enum structy style
 enum struct Upgrade{
     float ratio;
@@ -258,9 +262,7 @@ StringMap projectileLifespanMap;
 
 //Integers
 int OwnerOffset;
-int playerUpgradeMenus[MAXPLAYERS+1];
 int playerUpgradeMenuPage[MAXPLAYERS+1];
-int playerTweakMenus[MAXPLAYERS+1];
 int playerTweakMenuPage[MAXPLAYERS+1];
 int oldPlayerButtons[MAXPLAYERS+1];
 int DisableBotUpgrades
