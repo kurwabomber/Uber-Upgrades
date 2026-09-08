@@ -3550,7 +3550,6 @@ ResetVariables(){
 		meleeLimiter[client] = 0;
 		lightningCounter[client] = 0;
 		lastKBSource[client] = 0;
-		knockbackFlags[client] = 0;
 		relentlessTicks[client] = 0;
 		Kills[client] = 0;
 		Deaths[client] = 0;
