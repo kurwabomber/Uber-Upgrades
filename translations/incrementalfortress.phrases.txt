@@ -1,5 +1,14 @@
 "Phrases"
 {
+	"global shoots additional rocket"{
+		"en"		"Weapons Shoot Rocket Every x Shots"
+	}
+	"global homing radius"{
+		"en"		"Projectile Homing Radius"
+	}
+	"global stomp damage mult"{
+		"en"		"Stomp Damage Multiplier"
+	}
 	"additive damage bonus"{
 		"en"		"Additive Damage Bonus"
 	}

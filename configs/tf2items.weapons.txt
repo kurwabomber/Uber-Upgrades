@@ -81,12 +81,12 @@
 		"1101"//B.A.S.E Jumper
 		{
 			"preserve_attributes"	"1"
-			"1"				"dmg taken from bullets reduced;0.8"
+			"1"				"global shoots additional rocket;5.0"
 		}
 		"133"//Gunboats
 		{
 			"preserve_attributes"	"1"
-			"1"				"dmg taken from bullets reduced;0.8"
+			"1"				"global homing radius;100.0"
 		}
 		"projectile spread angle penalty"//The Quick-Fix
 		{
@@ -224,8 +224,8 @@
 			"3"				"rocket jump damage reduction;0.6"
 			"4"				"rocketjump attackrate bonus;0.3"
 			"5"				"clipsize increase on kill;15"
-			"6"				"damage mult 13;0.33"
-			"7"				"ammo conservation;0.5"
+			"6"				"damage bonus HIDDEN;0.25"
+			"7"				"ammo conservation;0.25"
 		}
 		"61,1006" //Ambassador
 		{
@@ -536,6 +536,14 @@
 			"preserve_attributes"	"1"
 			"1"				"damage penalty;1.0"
 			"2"				"damage mult 13;0.65"
+		}
+		"444"//Mantreads
+		{
+			"1"				"knockback resistance;0.25"
+			"2"				"move speed bonus;1.15"
+			"3"				"increased jump height;1.2"
+			"4"				"increased air control;3.0"
+			"5"				"global stomp damage mult;1.35"
 		}
 	}
 }

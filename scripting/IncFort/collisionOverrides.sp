@@ -43,7 +43,7 @@ public Action:OnStartTouchStomp(client, other)
 	if(HeightDiff > victimHeight){
 		GetEntPropVector(client, Prop_Data, "m_vecAbsVelocity", vec);
 		if(vec[2] < -300.0){
-			float stompDamage = TF2_GetDamageModifiers(client, CWeapon, true, true, false) * 200.0;
+			float stompDamage = TF2_GetDamageModifiers(client, CWeapon, true, true, false) * 200.0 * TF2Attrib_HookValueFloat(1.0, "global_stomp_damage_mult", client);
 			stompDamage *= 1.0+(((trueVel[client][2]*-1.0) - 300.0)/1000.0)
 
 			if(TF2Attrib_HookValueFloat(0.0, "agility_powerup", client) == 2.0){

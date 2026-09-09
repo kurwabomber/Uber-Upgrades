@@ -2738,7 +2738,6 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 			TF2Attrib_SetByName(weapon, "sniper fires tracer", 0.0);
 		}
 		
-		Address projActive = TF2Attrib_GetByName(weapon, "sapper damage penalty hidden");
 		switch(TF2Attrib_HookValueFloat(0.0, "override_projectile_type", weapon))
 		{
 			case 27.0:
@@ -3211,7 +3210,9 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 				}
 			}
 		}
-		if(projActive != Address_Null && TF2Attrib_GetValue(projActive) == 2.0)
+
+		int globalShotsPerRocket = RoundToNearest(TF2Attrib_HookValueFloat(0.0, "global_shoots_additional_rocket", client));
+		if(globalShotsPerRocket > 0)
 		{
 			if(ShotsLeft[client] < 1)
 			{
@@ -3244,7 +3245,7 @@ public Action TF2_CalcIsAttackCritical(int client, int weapon, char[] weaponname
 					SetEntDataFloat(iEntity, FindSendPropInfo("CTFProjectile_Rocket", "m_iDeflected") + 4, ProjectileDamage, true);  
 					TeleportEntity(iEntity, fOrigin, fAngles, fVelocity);
 				}
-				ShotsLeft[client] = 25;
+				ShotsLeft[client] = globalShotsPerRocket;
 			}
 			else
 			{

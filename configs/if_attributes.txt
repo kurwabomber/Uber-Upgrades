@@ -7846,6 +7846,39 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1764"
+		{
+			"name"		"global stomp damage mult"
+			"ref"		"global stomp damage mult"
+			"display"	"%.0f%%"
+			"attr_class"	"global_stomp_damage_mult"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1765"
+		{
+			"name"		"global homing radius"
+			"ref"		"global homing radius"
+			"display"	"%.0fHU"
+			"attr_class"	"global_homing_radius"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1766"
+		{
+			"name"		"global shoots additional rocket"
+			"ref"		"global shoots additional rocket"
+			"display"	"%.0f"
+			"attr_class"	"global_shoots_additional_rocket"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
 		//Filler
 		"1900.0"
 		{

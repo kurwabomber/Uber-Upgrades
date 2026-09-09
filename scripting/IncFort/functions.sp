@@ -1243,7 +1243,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1104:
 		{
-			ChangeString = "The Air Strike | Deals 0.33x damage and shoots 0.3x faster while airborne. Conserves ammo for 50% of shots.";
+			ChangeString = "The Air Strike | Deals 0.25x weapon damage and shoots 0.3x faster while airborne. Conserves ammo for 75% of shots.";
 		}
 		case 730:
 		{
@@ -3162,6 +3162,7 @@ PrecisionHoming(entity)
 				addedRadius += GetAttribute(launcher, "projectile homing radius", 0.0);
 			}
 			float precision = TF2Attrib_HookValueFloat(0.0, "precision_powerup", client);
+			addedRadius += TF2Attrib_HookValueFloat(0.0, "global_homing_radius", client);
 
 			if(addedRadius > 0){
 				homingRadius[entity] = addedRadius;
