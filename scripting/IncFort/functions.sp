@@ -1264,7 +1264,11 @@ DisplayItemChange(client,itemidx)
 		}
 		case 133:
 		{
-			ChangeString = "The Gunboats | Reduces blast damage taken by -20%.";
+			ChangeString = "The Gunboats | Adds +100HU homing radius to projectiles.";
+		}
+		case 444:
+		{
+			ChangeString = "The Mantreads | Gives +15% move speed, +20% jump height, and +35% stomp damage. The Air Control while Airborne bonus applies outside of being airborne.";
 		}
 		case 442:
 		{
@@ -1272,7 +1276,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1101:
 		{
-			ChangeString = "The B.A.S.E Jumper | Increased gravity & heavily increased mobility when deployed.";
+			ChangeString = "The B.A.S.E Jumper | All weapons now fire a homing rocket every 5th shot, dealing 100 base damage. Increased gravity & heavily increased mobility when deployed.";
 		}
 		//Soldier Melee
 		case 416:
