@@ -411,7 +411,7 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 			{
 				float ReflectMult = TF2Attrib_GetValue(ReflectDamageMultiplier);
 				ReflectDamage *= ReflectMult
-				SDKHooks_TakeDamage(attacker, victim, victim, ReflectDamage, DMG_PREVENT_PHYSICS_FORCE|DMG_ENERGYBEAM|DMG_IGNOREHOOK,_,_,_,false);
+				SDKHooks_TakeDamage(attacker, victim, victim, ReflectDamage, DMG_PREVENT_PHYSICS_FORCE|DMG_REFLECT|DMG_IGNOREHOOK,_,_,_,false);
 			}
 		}
 
@@ -1052,7 +1052,7 @@ public void preDamageMitigationCalcs(victim, attacker, inflictor, float& damage,
 	}
 
 	//Guardian
-	if(!(damagetype & DMG_ENERGYBEAM)){
+	if(!(damagetype & DMG_REFLECT)){
 		int guardian = -1;
 		float guardianPercentage;
 		float victimPos[3];
@@ -1086,7 +1086,7 @@ public void preDamageMitigationCalcs(victim, attacker, inflictor, float& damage,
 			}
 		}
 		if(IsValidClient3(guardian)){
-			SDKHooks_TakeDamage(guardian, attacker, attacker, damage*guardianPercentage,DMG_PREVENT_PHYSICS_FORCE|DMG_ENERGYBEAM|DMG_IGNOREHOOK,_,_,_,false);
+			SDKHooks_TakeDamage(guardian, attacker, attacker, damage*guardianPercentage,DMG_PREVENT_PHYSICS_FORCE|DMG_REFLECT|DMG_IGNOREHOOK,_,_,_,false);
 			damage *= ConsumePierce((1-guardianPercentage), damageForce[0]);
 		}
 
@@ -1102,7 +1102,7 @@ public void preDamageMitigationCalcs(victim, attacker, inflictor, float& damage,
 				float victimPosition[3];
 				GetEntPropVector(victim, Prop_Data, "m_vecOrigin", victimPosition); 
 				
-				EntityExplosion(attacker, damage, 300.0,victimPosition,_,weaponArtParticle[attacker] <= GetGameTime() ? true : false, victim, weaponArtParticle[attacker] <= GetGameTime() ? 0.8 : 0.0, DMG_BLAST|DMG_ENERGYBEAM,weapon, 0.5);
+				EntityExplosion(attacker, damage, 300.0,victimPosition,_,weaponArtParticle[attacker] <= GetGameTime() ? true : false, victim, weaponArtParticle[attacker] <= GetGameTime() ? 0.8 : 0.0, DMG_BLAST|DMG_REFLECT,weapon, 0.5);
 				hasSupernovaSplashed[attacker] = true;
 				//PARTICLES
 				if(weaponArtParticle[attacker] <= GetGameTime())
@@ -1154,20 +1154,20 @@ public void preDamageMitigationCalcs(victim, attacker, inflictor, float& damage,
 				if(IsPlayerInSpawn(i))
 					continue;
 
-				SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK|DMG_IGNOREHOOK|DMG_ENERGYBEAM, _,_,_,false);
+				SDKHooks_TakeDamage(i, attacker, attacker, arcDamage, DMG_SHOCK|DMG_IGNOREHOOK|DMG_REFLECT, _,_,_,false);
 			}
 			hasSupernovaSplashed[attacker] = true;
 		}
 
 		int jaratedIndex = getBuffInArray(victim, Buff_Jarated);
 		if(jaratedIndex != -1 && IsValidClient3(playerBuffs[victim][jaratedIndex].inflictor)){
-			SDKHooks_TakeDamage(victim,playerBuffs[victim][jaratedIndex].inflictor,playerBuffs[victim][jaratedIndex].inflictor,5.0*playerBuffs[victim][jaratedIndex].priority,DMG_ENERGYBEAM|DMG_DISSOLVE|DMG_IGNOREHOOK,_,_,_,false);
+			SDKHooks_TakeDamage(victim,playerBuffs[victim][jaratedIndex].inflictor,playerBuffs[victim][jaratedIndex].inflictor,5.0*playerBuffs[victim][jaratedIndex].priority,DMG_REFLECT|DMG_DISSOLVE|DMG_IGNOREHOOK,_,_,_,false);
 		}
 		
 		if(IsValidWeapon(weapon)){
 			int championIndex = getBuffInArray(victim, Buff_ChampionMark);
 			if(championIndex != -1 && IsValidClient3(playerBuffs[victim][championIndex].inflictor)){
-				SDKHooks_TakeDamage(victim,playerBuffs[victim][championIndex].inflictor,playerBuffs[victim][championIndex].inflictor,playerBuffs[victim][championIndex].severity / TF2_GetFireRate(attacker,weapon,0.8),DMG_ENERGYBEAM|DMG_DISSOLVE|DMG_IGNOREHOOK,_,_,_,false);
+				SDKHooks_TakeDamage(victim,playerBuffs[victim][championIndex].inflictor,playerBuffs[victim][championIndex].inflictor,playerBuffs[victim][championIndex].severity / TF2_GetFireRate(attacker,weapon,0.8),DMG_REFLECT|DMG_DISSOLVE|DMG_IGNOREHOOK,_,_,_,false);
 			}
 
 			float chainLightningAttribute = GetAttribute(weapon, "chain lightning meter on hit", 0.0)
@@ -1218,7 +1218,7 @@ public void preDamageMitigationCalcs(victim, attacker, inflictor, float& damage,
 							CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart1));
 							CreateTimer(1.0, Timer_KillParticle, EntIndexToEntRef(iPart2));
 						}
-						SDKHooks_TakeDamage(target,attacker,attacker,100.0*TF2_GetDamageModifiers(attacker, weapon),DMG_ENERGYBEAM|DMG_IGNOREHOOK,_,_,_,false)
+						SDKHooks_TakeDamage(target,attacker,attacker,100.0*TF2_GetDamageModifiers(attacker, weapon),DMG_REFLECT|DMG_IGNOREHOOK,_,_,_,false)
 						++i
 					}
 				}

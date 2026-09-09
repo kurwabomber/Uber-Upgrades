@@ -392,6 +392,10 @@ public MRESReturn OnCondApply(Address pPlayerShared, Handle hParams) {
 					RequestFrame(ApplyTauntAttackSpeed, EntIndexToEntRef(client));
 				}
 			}
+			case TFCond_Charging:
+			{
+				TF2Attrib_AddCustomPlayerAttribute(client, "Attack not cancel charge", 1.0, 0.25);
+			}
 		}
 	}
 	return MRES_Ignored;

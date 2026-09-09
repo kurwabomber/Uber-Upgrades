@@ -18,6 +18,7 @@ Yeah.
 #define PI 3.142
 
 //Damage Types
+#define DMG_REFLECT (1 << 23)
 #define DMG_PIERCING (1 << 30)
 #define DMG_IGNOREHOOK (1 << 31)
 #define DMG_ARCANESCALING (1 << 22)

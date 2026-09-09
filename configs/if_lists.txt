@@ -1834,7 +1834,6 @@
 			"3"		"healing buff banner"
 			"4"		"speed buff banner"
 			"5"		"critblock buff banner"
-			"6"		"blast dmg to self decreased"
 		}
 		"Special Tweaks"
 		{
@@ -2028,9 +2027,8 @@
 		"special_tweaks_listid"		"1"
 		"Protection upgrades"
 		{
-			"0"		"blast dmg to self decreased"
-			"1"		"dmg from all reduced(wearable)"
-			"2"		"jarate backstabber"
+			"0"		"dmg from all reduced(wearable)"
+			"1"		"jarate backstabber"
 		}
 		"Special Tweaks"
 		{
