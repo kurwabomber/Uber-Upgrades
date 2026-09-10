@@ -412,6 +412,9 @@ float infernalDetonationCooldown[MAXPLAYERS+1];
 float LSPool[MAXPLAYERS+1];
 float detonateParticleCooldown[MAXPLAYERS+1];
 float arrowExpulsionCooldown[MAXPLAYERS+1];
+float SpellCooldowns[MAXPLAYERS+1][MAX_ARCANESPELLS];
+float lastDamageTime[MAXPLAYERS+1];
+float nextRetaliationTime[MAXPLAYERS+1];
 
 //String
 char given_upgrd_classnames[LISTS][LISTS_CATEGORIES][128]
@@ -428,7 +431,6 @@ char upgrades_weapon[NB_WEAPONS][128];
 char ArmorXPos[MAXPLAYERS+1][64];
 char ArmorYPos[MAXPLAYERS+1][64];
 char missionName[512];
-float SpellCooldowns[MAXPLAYERS+1][MAX_ARCANESPELLS];
 
 //Bools
 bool inScore[MAXPLAYERS+1];

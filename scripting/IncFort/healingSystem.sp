@@ -100,6 +100,16 @@ float GetPlayerHealingMultiplier(client){
 	if(TF2Attrib_HookValueFloat(0.0, "revenge_powerup", client) == 2.0 || TF2Attrib_HookValueFloat(0.0, "revenge_powerup", client) == 3.0)
 		buffMagnitude += RageBuildup[client]*0.5;
 	
+	float healingBoostPerSecond = TF2Attrib_HookValueFloat(0.0, "incoming_healing_boost_over_time", client);
+	if(healingBoostPerSecond > 0.0){
+		float healingBoostPerSecondCap = TF2Attrib_HookValueFloat(0.0, "incoming_healing_boost_over_time_cap", client);
+		float totalBonus = healingBoostPerSecond * (GetGameTime()-lastDamageTime[client]);
+		if(totalBonus > healingBoostPerSecondCap){
+			totalBonus = healingBoostPerSecondCap;
+		}
+		buffMagnitude += totalBonus;
+	}
+
 	return debuffMagnitude * (1+buffMagnitude);
 }
 void AddPlayerHealth(client, iAdd, float flOverheal = 1.5, bool bEvent = false, healer = -1)

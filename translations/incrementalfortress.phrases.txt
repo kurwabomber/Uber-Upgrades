@@ -1,5 +1,11 @@
 "Phrases"
 {
+	"incoming healing boost over time cap"{
+		"en"		"Increased Healing over Time Maximum"
+	}
+	"incoming healing boost over time"{
+		"en"		"Increased Healing over Time"
+	}
 	"global shoots additional rocket"{
 		"en"		"Weapons Shoot Rocket Every x Shots"
 	}

@@ -7879,6 +7879,52 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1767"
+		{
+			"name"		"incoming healing boost over time"
+			"ref"		"incoming healing boost over time"
+			"display"	"%.0f%%"
+			"attr_class"	"incoming_healing_boost_over_time"
+			"attr_type"		"value_is_additive"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1768"
+		{
+			"name"		"incoming healing boost over time cap"
+			"ref"		"incoming healing boost over time cap"
+			"display"	"%.0f%%"
+			"attr_class"	"incoming_healing_boost_over_time_cap"
+			"attr_type"		"value_is_additive"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1769"
+		{
+			"name"		"razorback retaliation"
+			"ref"		"razorback retaliation"
+			"display"	"%.0f"
+			"attr_class"	"razorback_retaliation"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
+		"1770"
+		{
+			"name"		"razorback retaliation count"
+			"ref"		"razorback retaliation count"
+			"display"	"%.0f"
+			"attr_class"	"razorback_retaliation_count"
+			"cost"		"0"
+			"value"		"1"
+			"init"		"0"
+			"max"		"0"
+		}
 		//Filler
 		"1900.0"
 		{

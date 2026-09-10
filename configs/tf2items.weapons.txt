@@ -11,16 +11,19 @@
 		"642"//Cozy Camper
 		{
 			"preserve_attributes"	"1"
-			"1"				"patient overheal penalty;1.75"
+			"1"				"patient overheal penalty;1.25"
 			"2"				"aiming knockback resistance;0"
-			"3"				"SET BONUS: move speed set bonus; 1.15"
+			"3"				"move speed bonus; 1.15"
 			"4"				"increased air control;1.50"
+			"5"				"incoming healing boost over time;0.2"
+			"6"				"incoming healing boost over time cap;1.0"
 		}
 		"231"//Darwin's Danger Shield
 		{
 			"preserve_attributes"	"1"
 			"1"				"aiming knockback resistance;0"
 			"2"				"aiming no flinch;1"
+			"3"				"debuff block rating;3"
 		}
 		"812,833"//The Flying Guillotine
 		{
@@ -537,7 +540,7 @@
 			"preserve_attributes"	"1"
 			"1"				"damage penalty;1.0"
 			"2"				"damage mult 13;0.65"
-		}
+		} 
 		"444"//Mantreads
 		{
 			"1"				"knockback resistance;0.25"
@@ -545,6 +548,13 @@
 			"3"				"increased jump height;1.2"
 			"4"				"increased air control;3.0"
 			"5"				"global stomp damage mult;1.35"
+		}
+		"57"//Razorback
+		{
+			"preserve_attributes"	"1"
+			"1"				"patient overheal penalty;1.0"
+			"2"				"razorback retaliation;15.0"
+			"3"				"razorback retaliation count;3.0"
 		}
 	}
 }

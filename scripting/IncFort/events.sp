@@ -4,7 +4,6 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 	int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 	
 	float damage = GetEventFloat(event, "damageamount");	
-	//lastDamageTaken[client] = 0.0;
 
 	if(critStatus[client])
 	{
@@ -12,7 +11,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 		critStatus[client] = false;
 	}
 
-	if(attacker != client && IsValidClient(attacker)){
+	if(attacker != client && IsValidClient3(attacker)){
 		isTagged[attacker][client] = true;
 		DamageDealt[attacker] += damage;
 
@@ -22,6 +21,48 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 				lifelinkDebuff.init("Life Link", "-35% HP drain/10s", Buff_LifeLink, RoundToCeil(GetClientHealth(attacker)*0.3), attacker, 10.0);
 				insertBuff(client, lifelinkDebuff);
 				SDKHooks_TakeDamage(attacker, attacker, attacker, GetClientHealth(attacker)*0.3, DMG_PREVENT_PHYSICS_FORCE|DMG_IGNOREHOOK|DMG_PIERCING,_,_,_,false);
+			}
+		}
+
+		float razorbackRetaliationDamage = TF2Attrib_HookValueFloat(0.0, "razorback_retaliation", client);
+		if(razorbackRetaliationDamage > 0.0 && GetGameTime() > nextRetaliationTime[client]){
+			nextRetaliationTime[client] = GetGameTime() + 1.0;
+			int projCount = RoundToNearest(TF2Attrib_HookValueFloat(0.0, "razorback_retaliation_count", client));
+
+			float fAngles[3], fVelocity[3], fOrigin[3], vImpulse[3];
+			int team = GetClientTeam(client);
+			GetClientEyeAngles(client, fAngles);
+			GetClientEyePosition(client, fOrigin);
+			GetCleaverAngularImpulse(vImpulse);
+			fAngles[1] -= 15.0 + 15.0/projCount;
+			fAngles[0] -= 2.0;
+			int CWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+			if(IsValidWeapon(CWeapon))
+			{
+				float damageDealt = razorbackRetaliationDamage * TF2_GetDPSModifiers(client, CWeapon);
+				for(int i = 0; i < projCount; i++)
+				{
+					fAngles[1] += 30.0/projCount;
+					int iEntity = CreateEntityByName("tf_projectile_cleaver");
+					if (!IsValidEdict(iEntity))
+						continue;
+
+					SetEntProp(iEntity, Prop_Send, "m_iTeamNum", team);
+
+					GetAngleVectors(fAngles, fVelocity, NULL_VECTOR, NULL_VECTOR);
+
+					ScaleVector(fVelocity, 4000.0);
+
+					// For some reason the launcher for cleavers is the inflictor during the damage step.
+					SetEntPropEnt(iEntity, Prop_Send, "m_hLauncher", iEntity);
+					SetEntProp(iEntity, Prop_Data, "m_bIsLive", true);
+
+					TeleportEntity(iEntity, fOrigin, fAngles, NULL_VECTOR);
+					DispatchSpawn(iEntity);
+					Phys_EnableDrag(iEntity, false);
+					SDKCall(g_SDKCallInitGrenade, iEntity, fVelocity, vImpulse, client, 50.0, 146.0);
+					projectileDamage[iEntity] = damageDealt;
+				}
 			}
 		}
 	}
@@ -34,6 +75,7 @@ public Event_Playerhurt(Handle event, const char[] name, bool:dontBroadcast)
 	}
 	if(IsValidClient3(client))
 	{
+		lastDamageTime[client] = GetGameTime();
 		Address revengePowerup = TF2Attrib_GetByName(client, "revenge powerup");
 		if(revengePowerup != Address_Null)
 		{

@@ -1474,7 +1474,15 @@ DisplayItemChange(client,itemidx)
 		}
 		case 231:
 		{
-			ChangeString = "Darwin's Danger Shield | Reduces afterburn duration by -1 tick of damage. Does not reduce incoming fire damage.";
+			ChangeString = "Darwin's Danger Shield | Reduces afterburn duration by -1 tick of damage. Does not reduce incoming fire damage. Gives +3 Debuff Block Rating.";
+		}
+		case 642:
+		{
+			ChangeString = "Cozy Camper | 1.25x incoming maximum overheal, 1.15x move speed, 1.5x air control. Passively gains +20% incoming healing per second, up to +100%. Getting hit will reset the bonus.";
+		}
+		case 57:
+		{
+			ChangeString = "The Razorback | No longer has an overheal penalty. Retaliate upon getting hit with a flurry of 3 cleavers, each doing 15 base damage, Has a 1s cooldown.";
 		}
 		//Sniper Melees
 		case 232:
@@ -3581,6 +3589,8 @@ ResetVariables(){
 		remainderHealthRegeneration[client] = 0.0;
 		InfernalEnchantmentDuration[client] = 0.0;
 		karmicJusticeScaling[client] = 0.0;
+		lastDamageTime[client] = 0.0;
+		nextRetaliationTime[client] = 0.0;
 		snowstormActive[client] = false;
 		for(int buffID = 0; buffID<MAXBUFFS; buffID++){
 			playerBuffs[client][buffID].clear();
