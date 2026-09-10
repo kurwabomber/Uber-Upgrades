@@ -1307,7 +1307,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1179:
 		{
-			ChangeString = "The Thermal Thruster | Heavily increased velocity. Usage is much quicker.";
+			ChangeString = "The Thermal Thruster | Heavily increased velocity. After charging, explode on contact for 100% DPS in a 500 HU radius.";
 		}
 		//Pyro Melee
 		case 348:

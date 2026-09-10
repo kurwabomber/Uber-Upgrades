@@ -557,5 +557,16 @@
 			"2"				"razorback retaliation;15.0"
 			"3"				"razorback retaliation count;3.0"
 		}
+		"132,266,482,1082"//Eyelander
+		{
+			"preserve_attributes"	"1"
+			"1"				"max health additive penalty;-60.0"
+		}
+		"1179"//Thermal Thruster
+		{
+			"preserve_attributes"	"1"
+			"1"				"weapon push force multiplier;1.5"
+			"2"				"jetpack charge damage;1.0"
+		}
 	}
 }

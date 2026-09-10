@@ -476,28 +476,31 @@ public Action:OnTakeDamageAlive(victim, &attacker, &inflictor, float &damage, &d
 				}
 			}
 			
-			if(TF2Attrib_HookValueFloat(0.0, "knockout_powerup", weapon) == 1){
-				if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee)
-				{
-					float buildupIncrease = damage/TF2_GetMaxHealth(victim)*175.0;
-					
-					if(hasBuffIndex(attacker, Buff_Plunder)){
-						Buff plunderBuff;
-						plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
-						buildupIncrease *= plunderBuff.severity;
-					}
+			float concussionRatio = TF2Attrib_HookValueFloat(0.0, "concussion_buildup_ratio", weapon);
+			if(TF2Util_GetWeaponSlot(weapon) == TFWeaponSlot_Melee && 
+				TF2Attrib_HookValueFloat(0.0, "knockout_powerup", weapon) == 1){
+					concussionRatio += 175.0;
+			}
 
-					ConcussionBuildup[victim] += buildupIncrease;
-					if(ConcussionBuildup[victim] >= 100.0)
-					{
-						ConcussionBuildup[victim] = 0.0;
-						if(TF2Attrib_HookValueFloat(0.0, "inverter_powerup", victim) == 1){
-							TF2_AddCondition(victim, TFCond_MegaHeal, 10.0, victim);
-							giveDefenseBuff(victim, 10.0);
-						}else{
-							miniCritStatusVictim[victim] = GetGameTime()+10.0;
-							TF2_StunPlayer(victim, 1.0, 1.0, TF_STUNFLAGS_NORMALBONK, attacker);
-						}
+			if(concussionRatio > 0.0){
+				float buildupIncrease = damage/TF2_GetMaxHealth(victim)*concussionRatio;
+				
+				if(hasBuffIndex(attacker, Buff_Plunder)){
+					Buff plunderBuff;
+					plunderBuff = playerBuffs[attacker][getBuffInArray(attacker, Buff_Plunder)]
+					buildupIncrease *= plunderBuff.severity;
+				}
+
+				ConcussionBuildup[victim] += buildupIncrease;
+				if(ConcussionBuildup[victim] >= 100.0)
+				{
+					ConcussionBuildup[victim] = 0.0;
+					if(TF2Attrib_HookValueFloat(0.0, "inverter_powerup", victim) == 1){
+						TF2_AddCondition(victim, TFCond_MegaHeal, 10.0, victim);
+						giveDefenseBuff(victim, 10.0);
+					}else{
+						miniCritStatusVictim[victim] = GetGameTime()+10.0;
+						TF2_StunPlayer(victim, 1.0, 1.0, TF_STUNFLAGS_NORMALBONK, attacker);
 					}
 				}
 			}

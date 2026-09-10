@@ -1,5 +1,11 @@
 "Phrases"
 {
+	"Crushing Impact"{
+		"en"		"Crushing Impact"
+	}
+	"concussion buildup ratio"{
+		"en"		"Damage Applies Concussion"
+	}
 	"weapon damage multiplier"{
 		"en"		"Weapon Damage Multiplier"
 	}

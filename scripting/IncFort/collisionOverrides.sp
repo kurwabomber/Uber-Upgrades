@@ -26,7 +26,8 @@ public Action:OnStartTouchStomp(client, other)
 				strongestDPS = currentDPS;
 		}
 
-		EntityExplosion(client, playerBuffs[client][getBuffInArray(client, Buff_InfernalLunge)].severity*strongestDPS, 500.0, clientPosition, 0,_,_,_,DMG_BLAST|DMG_BURN,CWeapon,0.25,_,_,_,300.0);
+		bool ignite = TF2Attrib_HookValueFloat(0.0, "afterburn_rating", CWeapon) > 0;
+		EntityExplosion(client, playerBuffs[client][getBuffInArray(client, Buff_InfernalLunge)].severity*strongestDPS, 500.0, clientPosition, 0,_,_,_,DMG_BLAST|DMG_BURN,CWeapon,0.25,_,ignite,_,300.0);
 		clearBuff(client, getBuffInArray(client, Buff_InfernalLunge));
 	}
 

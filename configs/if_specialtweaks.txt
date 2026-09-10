@@ -298,13 +298,6 @@
 			"buff barrage"					"7"
 			"Ability : Silent Dash"			"1"
 		}
-		"Infernal Lunge"
-		{
-			"gamestage"						"1"
-			"restriction"					"1"
-			"weapon push force multiplier"	"5"
-			"jetpack charge damage"			"10"
-		}
 		"Immolation"
 		{
 			"gamestage"						"1"
@@ -438,6 +431,15 @@
 			"convert health to damage reduction"	"0.3"
 			"additive damage bonus"					"5"
 			"debuff magnitude bonus"				"20"
+		}
+		"Crushing Impact"
+		{
+			"gamestage"								"1"
+			"restriction"							"1"
+			"slow enemy on hit major"				"3"
+			"bleeding duration"						"3"
+			"afterburn rating"						"1"
+			"concussion buildup ratio"				"200"
 		}
 	}
 }

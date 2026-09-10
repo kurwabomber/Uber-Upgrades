@@ -2116,7 +2116,7 @@
 		}
 		"Special Tweaks"
 		{
-			"0"		"Infernal Lunge"
+			"0"		"Crushing Impact"
 		}
 	}
 	"shotgun_primary_"
