@@ -1,5 +1,8 @@
 "Phrases"
 {
+	"weapon damage multiplier"{
+		"en"		"Weapon Damage Multiplier"
+	}
 	"incoming healing boost over time cap"{
 		"en"		"Increased Healing over Time Maximum"
 	}
