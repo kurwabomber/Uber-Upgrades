@@ -1921,9 +1921,10 @@
 		"special_tweaks_listid"		"1"
 		"Weapon Specific upgrades"
 		{
-			"0"		"rocket specialist"
-			"1"		"air control when blast jumping"
-			"2"		"damage taken multiplier when active"
+			"0"		"Sentry Damage While Active"
+			"1"		"rocket specialist"
+			"2"		"air control when blast jumping"
+			"3"		"damage taken multiplier when active"
 		}
 		"Special Tweaks"
 		{

@@ -50,7 +50,7 @@
 		"1099"//Tide Turner
 		{
 			"1"				"Charging Velocity;750.0"
-			"2"				"damage taken mult 2;1.5"
+			"2"				"damage taken mult 2;1.15"
 			"3"				"charge impact damage increased;1.7"
 			"4"				"mult charge turn control;50.0"
 			"5"				"major move speed bonus;1.35"
@@ -220,7 +220,7 @@
 		{
 			"preserve_attributes"	"1"
 			"1"				"Blast radius decreased;0.9"
-			"2"				"damage penalty;0.85"
+			"2"				"damage penalty;1.0"
 			"3"				"rocket jump damage reduction;0.6"
 			"4"				"rocketjump attackrate bonus;0.3"
 			"5"				"clipsize increase on kill;15"
@@ -473,6 +473,7 @@
 			"3"				"rocket specialist;1.0"
 			"4"				"Converts Firerate to Damage;1.0"
 			"5"				"fire rate bonus HIDDEN;1.0"
+			"6"				"provide on active;1.0"
 		}
 		"142"//Gunslinger
 		{

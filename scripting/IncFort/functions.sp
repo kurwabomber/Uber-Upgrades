@@ -1276,7 +1276,7 @@ DisplayItemChange(client,itemidx)
 		}
 		case 1101:
 		{
-			ChangeString = "The B.A.S.E Jumper | All weapons now fire a homing rocket every 5th shot, dealing 100 base damage. Increased gravity & heavily increased mobility when deployed.";
+			ChangeString = "The B.A.S.E Jumper | All weapons now fire a homing rocket every 5th shot, dealing 100 base damage. Heavily increased mobility when deployed.";
 		}
 		//Soldier Melee
 		case 416:

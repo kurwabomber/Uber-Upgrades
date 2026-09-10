@@ -755,6 +755,7 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 			{
 				float damage = TF2_GetDPSModifiers(client,CWeapon,false,false) * 70.0;
 				damage *= TF2Attrib_HookValueFloat(1.0, "charge_impact_damage", secondary);
+				damage *= 1.0 + 0.1 * (GetEntProp(client, Prop_Send, "m_iDecapitations") > 5 ? 5 : GetEntProp(client, Prop_Send, "m_iDecapitations"));
 				
 				if(GetAttribute(CWeapon, "charge explosion ignites instead", 0.0)){
 					float targetVec[3];
@@ -1202,6 +1203,7 @@ public Action:Event_PlayerDeath(Handle event, const char[] name, bool:dontBroadc
 
 	if(IsValidClient3(attack) && attack != client){
 		int weapon = GetEntPropEnt(attack, Prop_Send, "m_hActiveWeapon");
+		RequestFrame(UpdatePlayerMaxHealth, attack);
 		if(IsValidWeapon(weapon)){
 			float fireworksChance = GetAttribute(weapon, "fireworks chance", 0.0)
 			if(fireworksChance > 0.0){

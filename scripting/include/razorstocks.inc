@@ -1388,6 +1388,15 @@ stock int GetClientBaseHP(client){
 	HP += RoundToCeil(GetAttribute(client, "max health additive bonus", 0.0));
 	HP += RoundToCeil(GetAttribute(client, "max health additive penalty", 0.0));
 
+	if(TF2_GetPlayerClass(client) == TFClass_DemoMan) {
+		int weap = TF2Util_GetPlayerLoadoutEntity(client, 2);
+		if(IsValidEntity(weap)){
+			int decapitate = RoundToNearest(TF2Attrib_HookValueFloat(0.0, "decapitate_type", weap));
+			if(decapitate){
+				HP += 15*(GetEntProp(client, Prop_Send, "m_iDecapitations") > 4 ? 4 : GetEntProp(client, Prop_Send, "m_iDecapitations"));
+			}
+		}
+	}
 	return HP;
 }
 stock DealFakeDamage(victim, attacker, weapon = -1, damage = 0, custom = 0)
