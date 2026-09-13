@@ -773,10 +773,15 @@ public void TF2_OnConditionAdded(client, TFCond cond)
 			TF2_RemoveCondition(client, cond);
 			removeAfterburn(client);
 		}
-		case TFCond_Ubercharged, TFCond_UberchargedCanteen, TFCond_UberchargedHidden,
+		case TFCond_Ubercharged, TFCond_UberchargedCanteen,
 		TFCond_AfterburnImmune:
 		{
 			removeAfterburn(client);
+		}
+		case TFCond_UberchargedHidden:
+		{
+			removeAfterburn(client);
+			TF2Attrib_SetByName(client, "jump height cancel", 1.0/TF2Attrib_HookValueFloat(1.0, "mod_jump_height", client));
 		}
 	}
 	TF2Util_UpdatePlayerSpeed(client);
@@ -845,6 +850,11 @@ public void TF2_OnConditionRemoved(client, TFCond:cond)
 					TF2_AddCondition(client, TFCond_AfterburnImmune, afterburnImmunityDuration, client);
 				}
 			}
+		}
+		case TFCond_UberchargedHidden:
+		{
+			removeAfterburn(client);
+			TF2Attrib_RemoveByName(client, "jump height cancel");
 		}
 	}
 	TF2Util_UpdatePlayerSpeed(client);
