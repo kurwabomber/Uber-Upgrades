@@ -8213,6 +8213,17 @@
 			"init"		"0"
 			"max"		"0"
 		}
+		"1900.3"
+		{
+			"name"		"move speed while parachute deployed"
+			"ref"		"move speed while parachute deployed"
+			"display"	"%.0f%%"
+			"attr_class"	"move_speed_while_parachute_deployed"
+			"cost"		"1200"
+			"value"		"0.1"
+			"init"		"1"
+			"max"		"2.0"
+		}
 		//2000 series are tweaks -> attributes.
 		//New global damage multiplier 
 		"2000.999"

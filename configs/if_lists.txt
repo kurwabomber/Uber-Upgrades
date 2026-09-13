@@ -2016,6 +2016,7 @@
 			"1"		"dmg from all reduced(wearable)"
 			"2"		"increased air control"
 			"3"		"Is Parachute Re-Openable"
+			"4"		"move speed while parachute deployed"
 		}
 		"Special Tweaks"
 		{

@@ -540,6 +540,12 @@ public void ManagePlayerBuffs(int i){
 			}
 		}
 	}
+
+	if(TF2_IsPlayerInCondition(i, TFCond_Parachute))
+	{
+		multiplicativeMoveSpeedMult *= TF2Attrib_HookValueFloat(1.0, "move_speed_while_parachute_deployed", i);
+	}
+
 	if(TF2Attrib_HookValueFloat(0.0, "agility_powerup", i) == 1.0){
 		additiveAttackSpeedMultBuff += 0.5;
 	}
@@ -581,6 +587,7 @@ public void ManagePlayerBuffs(int i){
 	TF2Attrib_SetByName(i, "airblast vulnerability multiplier hidden", reactiveAirblastRes);
 	TF2Attrib_SetByName(i, "critical block rating buff", additiveCritBlock);
 	TF2Attrib_ClearCache(i);
+	TF2Util_UpdatePlayerSpeed(i);
 	int CWeapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
 	if(IsValidWeapon(CWeapon)){
 		TF2Attrib_ClearCache(CWeapon);

@@ -1,5 +1,8 @@
 "Phrases"
 {
+	"move speed while parachute deployed"{
+		"en"		"Move Speed while Parachute is Deployed"
+	}
 	"Crushing Impact"{
 		"en"		"Crushing Impact"
 	}
